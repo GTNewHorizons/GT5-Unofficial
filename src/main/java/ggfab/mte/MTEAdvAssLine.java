@@ -1,7 +1,6 @@
 package ggfab.mte;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUnlocalizedName;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static ggfab.BlockIcons.OVERLAY_FRONT_ADV_ASSLINE;
@@ -20,8 +19,9 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -98,6 +98,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -148,13 +149,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 10)) // grate machine casing
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 9)) // assembler machine casing
         .addElement('m', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembling line casing
-        .addElement(
-            'g',
-            ofChain(
-                ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
-                // warded glass
-                ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
+        .addElement('g', chainAllGlasses())
         .addElement(
             'e',
             buildHatchAdder(MTEAdvAssLine.class).anyOf(Energy, ExoticEnergy)
@@ -182,10 +177,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             'I',
             ofChain(
                 // all blocks nearby use solid steel casing, so let's use the texture of that
-                InputBus.newAny(16, 5, ForgeDirection.DOWN),
-                ofHatchAdder(MTEAdvAssLine::addOutputToMachineList, 16, 4)))
-        .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
-        .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
+                InputBus.newAny(16, 4, ForgeDirection.DOWN),
+                ofHatchAdder(MTEAdvAssLine::addOutputToMachineList, 16, 3)))
+        .addElement('i', InputBus.newAny(16, 4, ForgeDirection.DOWN))
+        .addElement('o', OutputBus.newAny(16, 3, ForgeDirection.DOWN))
         .build();
     private GTRecipe.RecipeAssemblyLine currentRecipe;
     private final Slice[] slices = IntStream.range(0, 16)
@@ -230,12 +225,12 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     private boolean checkMachine() {
+        mDataAccessHatches.clear();
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         return checkMachine(true) || checkMachine(false);
     }
 
     private boolean checkMachine(boolean leftToRight) {
-        clearHatches();
-        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0)) return false;
         for (int i = 1; i < 16; i++) {
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0)) return false;
             if (!mOutputBusses.isEmpty())
@@ -248,7 +243,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_FIRST, stackSize, hintsOnly, 0, 1, 0);
-        int tLength = Math.min(stackSize.stackSize + 3, 16); // render 4 slices at minimal
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16); // render 5 slices at
+                                                                                              // minimal
         for (int i = 1; i < tLength; i++) {
             buildPiece(STRUCTURE_PIECE_LATER, stackSize, hintsOnly, -i, 1, 0);
         }
@@ -257,14 +253,15 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 0, 1, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int tLength = Math.min(stackSize.stackSize + 3, 16); // render 4 slices at minimal
-        for (int i = 1; i < tLength - 1; i++) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
+        int tLength = GTStructureChannels.STRUCTURE_LENGTH.getValueClamped(stackSize, 5, 16); // render 5 slices at
+                                                                                              // minimal
+        for (int i = 1; i < tLength; i++) {
+            build = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, -i, 1, 0, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 1 - tLength, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -308,39 +305,43 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Assembly Line, AAL")
-            .addInfo("Built exactly the same as standard Assembly Line")
             .addInfo("Assembly Line with item pipelining")
-            .addInfo("All fluids are however consumed at start")
-            .addInfo("Use voltage of worst energy hatch for overclocking")
-            .addInfo("Performs normal overclock with given voltage")
-            .addTecTechHatchInfo()
-            .addInfo("Performs laser overclock with extra amperage from multi-amp energy hatches")
-            .addInfo("Each laser overclock reduces recipe time by 50%")
+            .addInfo("All fluids are consumed at the start of the recipe")
+            .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("Runs imperfect overclocks until Energy Hatch tier")
+            .addInfo("Additional overclocks are increasingly more expensive")
             .addInfo(
-                "and multiplies power by (4 + " + formatNumbers(LASER_OVERCLOCK_PENALTY_FACTOR)
-                    + " * total laser overclock count)")
-            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick.")
-            .addInfo("EU/t is (number of slices working) * (overclocked EU/t)")
+                EnumChatFormatting.AQUA
+                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
+                    + EnumChatFormatting.GRAY)
+            .addInfo(
+                EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
+                    + EnumChatFormatting.GRAY)
+            .addInfo("Overclocking assumes all recipe slices are active")
+            .addInfo(EnumChatFormatting.BOLD + "Does not overclock beyond 1 tick")
+            .addSeparator(EnumChatFormatting.GOLD, 67)
+            .addInfo("Constructed identically to the Assembly Line")
+            .addTecTechHatchInfo()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
             .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo(
-                "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
-            .addStructureInfo(
-                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembly Line Casing, Reinforced Glass")
+            .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
             .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
             .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
             .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
             .addController("Either Grate on layer 3 of the first slice")
             .addEnergyHatch("Any layer 4 casing", 1)
             .addMaintenanceHatch("Any layer 1 casing", 3)
-            .addInputBus("As specified on layer 1", 4, 5)
+            .addInputBus("As specified on layer 1", 4)
             .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
+            .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Optional, next to controller",
+                "Any Grate Machine Casing NOT on the first slice",
                 2)
-            .toolTipFinisher();
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(EnumChatFormatting.GRAY, 67);
         return tt;
     }
 
@@ -369,7 +370,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         // we need to check for active here.
         // if machine was turned off via soft mallet it will not call checkRecipe() on recipe end
         // in that case we don't have a current recipe, so this should be ignored
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && currentRecipe != null) {
             aNBT.setTag(TAG_KEY_CURRENT_RECIPE, AssemblyLineUtils.saveRecipe(currentRecipe));
             aNBT.setInteger(TAG_KEY_RECIPE_HASH, currentRecipe.getPersistentHash());
             aNBT.setIntArray(
@@ -443,8 +444,8 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     /**
-     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not
-     * loaded. also supports setting a stop reason
+     * Does a critical shutdown of the machine, but does not attempt to send a halting sound if world is not loaded.
+     * also supports setting a stop reason
      */
     private void criticalStopMachine(String reason) {
         int oMaxProgresstime = mMaxProgresstime;
@@ -495,7 +496,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         if (!processing) {
             super.startRecipeProcessing();
             curBatchItemsFromME = getStoredInputsFromME();
@@ -505,7 +506,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         if (!processing) return;
         super.endRecipeProcessing();
         processing = false;
@@ -521,6 +522,11 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public byte getUpdateData() {
         return (byte) (stuck ? 1 : 0);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -631,13 +637,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInputBus inputBus = mInputBusses.get(index);
         if (!inputBus.isValid()) return null;
         if (inputBus instanceof MTEHatchInputBusME meBus) {
-            ItemStack item = meBus.getShadowItemStack(0);
+            ItemStack item = meBus.getFirstValidStack(true);
             if (item == null) return null;
             GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(item);
             if (!curBatchItemsFromME.containsKey(id)) return null;
             return curBatchItemsFromME.get(id);
         }
-        return inputBus.getStackInSlot(0);
+        return inputBus.getFirstStack();
 
     }
 
@@ -646,13 +652,13 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         MTEHatchInput inputHatch = mInputHatches.get(index);
         if (!inputHatch.isValid()) return null;
         if (inputHatch instanceof MTEHatchInputME meHatch) {
-            FluidStack fluid = meHatch.getShadowFluidStack(0);
+            FluidStack fluid = meHatch.getFirstValidStack(true);
             if (fluid == null) return null;
             if (!curBatchFluidsFromME.containsKey(fluid.getFluid())) return null;
             return curBatchFluidsFromME.get(fluid.getFluid());
         }
         if (inputHatch instanceof MTEHatchMultiInput multiHatch) {
-            return multiHatch.getFluid(0);
+            return multiHatch.getFluid();
         }
         return inputHatch.getFillableStack();
     }
@@ -696,6 +702,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
 
         ArrayList<RecipeAssemblyLine> availableRecipes = new ArrayList<>();
 
+        if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
+            availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
+        }
+
         for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
             availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
         }
@@ -722,43 +732,36 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 continue;
             }
 
+            // Check voltage tier is at least recipe tier.
             if (recipe.mEUt > inputVoltage) {
-                result = CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                result = CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
+                continue;
+            }
+
+            // Check all slices can run with provided power.
+            if ((long) recipe.mInputs.length * recipe.mEUt > inputEUt) {
+                result = CheckRecipeResultRegistry.insufficientPower((long) recipe.mInputs.length * recipe.mEUt);
                 continue;
             }
 
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
-            OverclockCalculator calculator;
+            int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
 
-            OverclockCalculator normalOCCalculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            // Delete this one before enable overclocking under one tick.
+            int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
+
+            OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
-                .setEUt(inputVoltage);
-
-            if (!mExoticEnergyHatches.isEmpty()) {
-                normalOCCalculator
-                    .setCurrentParallel((int) Math.max(1 / normalOCCalculator.calculateDurationUnderOneTick(), 1))
-                    .calculate();
-                int normalOverclockCount = normalOCCalculator.getPerformedOverclocks();
-
-                calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
-                    .setEutIncreasePerOCSupplier(
-                        overclock -> 4 + LASER_OVERCLOCK_PENALTY_FACTOR * Math.max(overclock - normalOverclockCount, 0))
-                    .setParallel(originalMaxParallel)
-                    .setEUt(inputEUt / recipe.mInputs.length);
-            } else {
-                calculator = normalOCCalculator;
-            }
+                .setEUt(inputEUt / recipe.mInputs.length)
+                .setLaserOC(true)
+                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
 
             // Disabled to disable overclocking under one tick.
             /*
-             * double tickTimeAfterOC = calculator.calculateDurationUnderOneTick();
-             * if (tickTimeAfterOC < 1) {
-             * maxParallel = GTUtility.safeInt((long) (maxParallel / tickTimeAfterOC), 0);
-             * }
+             * maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
              */
 
             int maxParallelBeforeBatchMode = maxParallel;
@@ -815,9 +818,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 batchMultiplierMax = Math
                     .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
-            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMax);
+            int batchMultiplierMaxInt = (int) batchMultiplierMax;
+            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMaxInt);
             lEUt = calculator.getConsumption();
-            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax) * recipe.mInputs.length;
+            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMaxInt) * recipe.mInputs.length;
             setCurrentRecipe(recipe);
             result = CheckRecipeResultRegistry.SUCCESSFUL;
             break;
@@ -862,26 +866,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public Set<VoidingMode> getAllowedVoidingModes() {
         return VoidingMode.ITEM_ONLY_MODES;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -961,13 +945,16 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     private class SliceStatusWidget extends TextWidget implements ISyncedWidget {
@@ -1048,11 +1035,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 if (id + 1 >= currentInputLength) {
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
-                    if (addOutput(output) || !voidingMode.protectItem) reset();
-                    else stuck = true;
+                    if (addOutputAtomic(GTUtility.copy(output)) || !voidingMode.protectItem) {
+                        reset();
+                    } else {
+                        stuck = true;
+                    }
                 } else {
-                    if (slices[id + 1].start()) reset();
-                    else stuck = true;
+                    if (slices[id + 1].start()) {
+                        reset();
+                    } else {
+                        stuck = true;
+                    }
                 }
             }
         }

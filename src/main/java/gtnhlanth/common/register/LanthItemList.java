@@ -8,8 +8,11 @@ import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.MTEBeamlinePipe;
 import gtnhlanth.common.block.BlockAntennaCasing;
 import gtnhlanth.common.block.BlockCasing;
@@ -132,6 +135,8 @@ public final class LanthItemList {
         GameRegistry.registerItem(PARTICLE_ITEM, "particle");
 
         GameRegistry.registerBlock(SHIELDED_ACCELERATOR_CASING, SHIELDED_ACCELERATOR_CASING.getUnlocalizedName());
+        // Steal a texture page index from good generator, this desperately needs a refactor
+        Textures.BlockIcons.casingTexturePages[12][126] = TextureFactory.of(SHIELDED_ACCELERATOR_CASING);
 
         GameRegistry.registerBlock(ELECTRODE_CASING, ELECTRODE_CASING.getUnlocalizedName());
 
@@ -179,5 +184,7 @@ public final class LanthItemList {
 
         }
 
+        GTStructureChannels.SYNCHROTRON_ANTENNA.registerAsIndicator(new ItemStack(ANTENNA_CASING_T1), 1);
+        GTStructureChannels.SYNCHROTRON_ANTENNA.registerAsIndicator(new ItemStack(ANTENNA_CASING_T2), 2);
     }
 }

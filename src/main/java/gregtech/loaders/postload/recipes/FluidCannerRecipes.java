@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -13,7 +14,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
             .itemOutputs(ItemList.IC2_ReBattery.get(1))
-            .fluidInputs(Materials.Redstone.getMolten(288))
+            .fluidInputs(Materials.Redstone.getMolten(2 * INGOTS))
             .duration(4)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -21,7 +22,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
             .itemOutputs(ItemList.Battery_SU_LV_Mercury.getWithCharge(1, Integer.MAX_VALUE))
-            .fluidInputs(Materials.Mercury.getFluid(1000))
+            .fluidInputs(Materials.Mercury.getFluid(1_000))
             .duration(16)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -29,7 +30,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_MV.get(1))
             .itemOutputs(ItemList.Battery_SU_MV_Mercury.getWithCharge(1, Integer.MAX_VALUE))
-            .fluidInputs(Materials.Mercury.getFluid(4000))
+            .fluidInputs(Materials.Mercury.getFluid(4_000))
             .duration(64)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -37,7 +38,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_HV.get(1))
             .itemOutputs(ItemList.Battery_SU_HV_Mercury.getWithCharge(1, Integer.MAX_VALUE))
-            .fluidInputs(Materials.Mercury.getFluid(16000))
+            .fluidInputs(Materials.Mercury.getFluid(16_000))
             .duration(258)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -45,7 +46,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_LV.get(1))
             .itemOutputs(ItemList.Battery_SU_LV_SulfuricAcid.getWithCharge(1, Integer.MAX_VALUE))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1_000))
             .duration(16)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -53,7 +54,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_MV.get(1))
             .itemOutputs(ItemList.Battery_SU_MV_SulfuricAcid.getWithCharge(1, Integer.MAX_VALUE))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(4000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(4_000))
             .duration(64)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -61,7 +62,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Battery_Hull_HV.get(1))
             .itemOutputs(ItemList.Battery_SU_HV_SulfuricAcid.getWithCharge(1, Integer.MAX_VALUE))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(16000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(16_000))
             .duration(258)
             .eut(1)
             .addTo(fluidCannerRecipes);
@@ -76,7 +77,7 @@ public class FluidCannerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Spray_Color_Remover_Empty.get(1))
-            .fluidInputs(Materials.Acetone.getFluid(4000))
+            .fluidInputs(Materials.Acetone.getFluid(4_000))
             .itemOutputs(ItemList.Spray_Color_Remover.get(1))
             .duration(74)
             .eut(1)
@@ -85,7 +86,7 @@ public class FluidCannerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Spray_Color_Remover.get(1))
             .itemOutputs(ItemList.Spray_Color_Remover_Empty.get(1))
-            .fluidOutputs(Materials.Acetone.getFluid(4000))
+            .fluidOutputs(Materials.Acetone.getFluid(4_000))
             .duration(74)
             .eut(1)
             .addTo(fluidCannerRecipes);

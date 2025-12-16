@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -138,9 +139,13 @@ public class ItemBasicScrubberTurbine extends Item {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-        list.add(EnumChatFormatting.GRAY + "An early tier Turbine for Atmospheric Reconditioning.");
+        list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("gtpp.tooltip.scrubber_turbine.early_tier"));
         int maxDamage = getMaxDurability(stack);
-        list.add(EnumChatFormatting.GRAY + "" + (maxDamage - getFilterDamage(stack)) + "/" + maxDamage + " uses left.");
+        list.add(
+            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                "gtpp.tooltip.scrubber_turbine.uses_left",
+                (maxDamage - getFilterDamage(stack)),
+                maxDamage));
         super.addInformation(stack, player, list, bool);
     }
 

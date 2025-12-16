@@ -79,8 +79,9 @@ public class BehaviourCoverTool extends BehaviourNone {
                         chats = ImmutableList.of("Please Copy a Valid Cover First.");
                     } else if (targetCover.getCoverID() == copiedCoverId) {
                         coverable.updateAttachedCover(
-                            CoverRegistry.getRegistration(copiedCoverId)
-                                .buildCover(targetCover.getSide(), coverable, tNBT.getCompoundTag(NBT_COVER_DATA)));
+                            copiedCoverId,
+                            targetCover.getSide(),
+                            tNBT.getCompoundTag(NBT_COVER_DATA));
                         chats = ImmutableList.of("Cover Data Pasted.");
                     } else {
                         chats = ImmutableList.of("Not Matched Cover.");
@@ -91,7 +92,7 @@ public class BehaviourCoverTool extends BehaviourNone {
             }
             sendChatsToPlayer(chats, aPlayer);
             aItem.discharge(aStack, useCost, Integer.MAX_VALUE, true, false, false);
-            GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_OD_SCANNER, 1, 1.0F, aX, aY, aZ);
+            GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
         }
         return aPlayer instanceof EntityPlayerMP;
     }

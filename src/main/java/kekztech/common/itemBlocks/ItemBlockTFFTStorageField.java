@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import kekztech.common.tileentities.MTETankTFFT;
@@ -42,22 +41,19 @@ public class ItemBlockTFFTStorageField extends ItemBlock {
         if (meta > 0) {
             lines.add(StatCollector.translateToLocal("tile.kekztech_tfftstoragefield_block.desc"));
             lines.add(
-                "Capacity: " + EnumChatFormatting.BLUE
-                    + NumberFormat.getNumberInstance()
-                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity())
-                    + EnumChatFormatting.GRAY
-                    + " L");
+                StatCollector.translateToLocalFormatted(
+                    "tooltip.kekztech.tfft.capacity",
+                    NumberFormat.getNumberInstance()
+                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity())));
             lines.add(
-                "Per Fluid Capacity: " + EnumChatFormatting.BLUE
-                    + NumberFormat.getNumberInstance()
-                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)
-                    + EnumChatFormatting.GRAY
-                    + " L");
+                StatCollector.translateToLocalFormatted(
+                    "tooltip.kekztech.tfft.capacity.per_fluid",
+                    NumberFormat.getNumberInstance()
+                        .format(MTETankTFFT.Field.VALUES[meta - 1].getCapacity() / UNIQUE_FLUIDS_PER_CELL)));
             lines.add(
-                "Power Draw: " + EnumChatFormatting.BLUE
-                    + MTETankTFFT.Field.VALUES[meta - 1].getCost()
-                    + EnumChatFormatting.GRAY
-                    + " EU/t");
+                StatCollector.translateToLocalFormatted(
+                    "tooltip.kekztech.tfft.power_draw",
+                    MTETankTFFT.Field.VALUES[meta - 1].getCost()));
         }
     }
 }

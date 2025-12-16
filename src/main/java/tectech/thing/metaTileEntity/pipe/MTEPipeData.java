@@ -10,17 +10,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.GTClient;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IActivePipe;
@@ -97,7 +98,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
 
     @Override
     public byte getTileEntityBaseType() {
-        return 4;
+        return HarvestTool.WrenchPipeLevel0.toTileEntityBaseType();
     }
 
     @Override
@@ -206,16 +207,18 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
                         new PipeActivityMessage.PipeActivityData(this),
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256);
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
                 }
             }
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     @Override
@@ -254,10 +257,7 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
-            return 0.0625F;
-        }
+    public float getCollisionThickness() {
         return 0.375f;
     }
 

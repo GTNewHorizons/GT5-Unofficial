@@ -1,9 +1,13 @@
 package gregtech.api.interfaces.tileentity;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.util.ISerializableObject;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.common.covers.Cover;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
@@ -15,23 +19,21 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
     /**
-     * Actually removes the cover from the coverable and return the cover item.
-     * <br>
+     * Actually removes the cover from the coverable and return the cover item. <br>
      * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
      */
     ItemStack detachCover(ForgeDirection side);
-
-    void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData);
 
     /**
      * Called when the cover is initially attached to a machine.
      *
      * @param cover The cover
      */
-    void attachCover(Cover cover);
+    void attachCover(@NotNull Cover cover);
 
     boolean hasCoverAtSide(ForgeDirection side);
 
+    @NotNull
     Cover getCoverAtSide(ForgeDirection side);
 
     ItemStack getCoverItemAtSide(ForgeDirection side);
@@ -54,9 +56,16 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void issueCoverUpdate(ForgeDirection side);
 
     /**
+     * Receiving nbt with cover data.
+     *
+     * @param nbt
+     */
+    void updateAttachedCover(int coverId, ForgeDirection side, NBTTagCompound nbt);
+
+    /**
      * Receiving a packet with cover data.
      *
-     * @param cover
+     * @param data
      */
-    void updateAttachedCover(Cover cover);
+    void updateAttachedCover(ByteArrayDataInput data);
 }

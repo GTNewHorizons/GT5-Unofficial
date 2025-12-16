@@ -30,6 +30,16 @@ public interface IIconContainer {
         return 1;
     }
 
+    @SideOnly(Side.CLIENT)
+    default int getRenderIconPass() {
+        return 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    default boolean canRenderInPass(int pass) {
+        return pass == getRenderIconPass();
+    }
+
     /**
      * @return the Default Texture File for this Icon.
      */

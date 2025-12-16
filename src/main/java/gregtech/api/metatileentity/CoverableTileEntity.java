@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.util.GTLanguageManager.FACES;
 import static gregtech.api.util.GTLanguageManager.getTranslation;
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -29,6 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -52,8 +55,6 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.GTClient;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -72,10 +73,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
 
     // New Cover Information
-    protected final Cover[] covers = new Cover[] { null, null, null, null, null, null };
+    protected final Cover[] covers = new Cover[] { CoverRegistry.NO_COVER, CoverRegistry.NO_COVER,
+        CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER, CoverRegistry.NO_COVER };
     private byte validCoversMask;
 
-    protected byte[] mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
+    protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
 
@@ -113,29 +115,34 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
         mRedstone = aNBT.getBoolean("mRedstone");
-        mSidedRedstone = aNBT.hasKey("mRedstoneSided") ? aNBT.getByteArray("mRedstoneSided")
-            : new byte[] { 15, 15, 15, 15, 15, 15 };
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
-        if (aNBT.hasKey(GTValues.NBT.COVERS)) {
-            readCoversNBT(aNBT);
+        if (aNBT.hasKey("mRedstoneSided")) {
+            byte[] readArray = aNBT.getByteArray("mRedstoneSided");
+            System.arraycopy(readArray, 0, mSidedRedstone, 0, Math.min(mSidedRedstone.length, readArray.length));
         }
+        applyCovers(readCoversNBT(aNBT, this));
     }
 
-    public void readCoversNBT(NBTTagCompound aNBT) {
-        final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, 10);
-        for (byte i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = buildCover(tNBT);
+    private void applyCovers(@NotNull List<Cover> storedCovers) {
+        for (Cover cover : storedCovers) {
             this.applyCover(cover, cover.getSide());
-            if (cover.isDataNeededOnClient()) issueCoverUpdate(ForgeDirection.getOrientation(i));
+            if (cover.isDataNeededOnClient()) issueCoverUpdate(cover.getSide());
         }
     }
 
-    private Cover buildCover(NBTTagCompound nbt) {
-        ForgeDirection side = ForgeDirection.getOrientation(nbt.getByte(NBT_COVER_SIDE));
-        return CoverRegistry.getRegistrationFromNbt(nbt)
-            .buildCover(side, this, nbt);
+    public static @NotNull List<Cover> readCoversNBT(NBTTagCompound aNBT, CoverableTileEntity coverableTileEntity) {
+        if (aNBT != null && aNBT.hasKey(GTValues.NBT.COVERS)) {
+            final NBTTagList tList = aNBT.getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
+            List<Cover> storedCovers = new ArrayList<>();
+            for (byte i = 0; i < tList.tagCount(); i++) {
+                final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+                ForgeDirection side = ForgeDirection.getOrientation(tNBT.getByte(NBT_COVER_SIDE));
+                storedCovers.add(CoverRegistry.buildCoverFromNbt(tNBT, side, coverableTileEntity));
+            }
+            return storedCovers;
+        }
+        return Collections.emptyList();
     }
 
     public abstract boolean isStillValid();
@@ -168,20 +175,18 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         cover.onCoverUnload();
     }
 
-    public boolean tickCoverAtSide(ForgeDirection side) {
-        return tickCoverAtSide(side, mTickTimer);
-    }
-
     /**
      * @return {@code false} if the tile is no longer valid after ticking the cover
      */
-    public boolean tickCoverAtSide(ForgeDirection side, long aTickTimer) {
+    private boolean tickCoverAtSide(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return true;
+        final int aTickTimer = MinecraftServer.getServer()
+            .getTickCounter();
         final int tCoverTickRate = cover.getTickRate();
         if (tCoverTickRate > 0 && aTickTimer % tCoverTickRate == 0) {
             final byte tRedstone = cover.isRedstoneSensitive(aTickTimer) ? getInputRedstoneSignal(side) : 0;
-            cover.setCoverData(cover.doCoverThings(tRedstone, aTickTimer));
+            cover.doCoverThings(tRedstone, aTickTimer);
             return isStillValid();
         }
 
@@ -206,13 +211,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public final ITexture getCoverTexture(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
         if (!cover.isValid()) return null;
-        if (GTMod.instance.isClientSide() && (GTClient.hideValue & 0x1) != 0) {
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .shouldHideThings()) {
             return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
         }
         final ITexture coverTexture = this instanceof BaseMetaPipeEntity ? cover.getSpecialFaceTexture()
             : cover.getOverlayTexture();
 
-        return coverTexture != null ? coverTexture : CoverRegistry.getCoverTexture(cover.getCoverID());
+        return coverTexture != null ? coverTexture : CoverRegistry.getCoverTexture(cover.asItemStack());
     }
 
     protected void requestCoverDataIfNeeded() {
@@ -224,7 +230,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void attachCover(Cover cover) {
+    public void attachCover(@NotNull Cover cover) {
         final ForgeDirection side = cover.getSide();
         if (side == ForgeDirection.UNKNOWN) return;
         final Cover oldCover = getCoverAtSide(side);
@@ -241,16 +247,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * @param cover the cover to synchronize. Not guaranteed to have a side.
      * @param side  the side to apply the cover to.
      */
-    private void synchronizeCover(Cover cover, ForgeDirection side) {
+    private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
         issueCoverUpdate(side);
         issueBlockUpdate();
-    }
-
-    @Override
-    public void setCoverDataAtSide(ForgeDirection side, ISerializableObject aData) {
-        final Cover cover = getCoverAtSide(side);
-        if (cover.isValid() && cover.acceptsDataObject(aData)) cover.setCoverData(aData);
     }
 
     @Override
@@ -262,7 +262,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
      * @param cover the cover to apply. Not guaranteed to have a side.
      * @param side  the side to apply the cover to.
      */
-    private void applyCover(Cover cover, ForgeDirection side) {
+    private void applyCover(@NotNull Cover cover, ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
             covers[side.ordinal()] = cover;
 
@@ -278,12 +278,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public final Cover getCoverAtSide(ForgeDirection side) {
-        final int ordinalSide = side.ordinal();
+    public final @NotNull Cover getCoverAtSide(ForgeDirection side) {
         if (side != ForgeDirection.UNKNOWN) {
-            Cover cover = covers[ordinalSide];
-            if (cover == null) cover = (covers[ordinalSide] = CoverRegistry.NO_COVER);
-            return cover;
+            return covers[side.ordinal()];
         }
         return CoverRegistry.NO_COVER;
     }
@@ -320,6 +317,27 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             final Cover cover = getCoverAtSide(side);
             if (cover.isValid()) cover.onBaseTEDestroyed();
         }
+    }
+
+    protected void setRedstoneOutput(int packedRedstoneValue) {
+        mSidedRedstone[0] = (byte) ((packedRedstoneValue & 1) == 1 ? 15 : 0);
+        mSidedRedstone[1] = (byte) ((packedRedstoneValue & 2) == 2 ? 15 : 0);
+        mSidedRedstone[2] = (byte) ((packedRedstoneValue & 4) == 4 ? 15 : 0);
+        mSidedRedstone[3] = (byte) ((packedRedstoneValue & 8) == 8 ? 15 : 0);
+        mSidedRedstone[4] = (byte) ((packedRedstoneValue & 16) == 16 ? 15 : 0);
+        mSidedRedstone[5] = (byte) ((packedRedstoneValue & 32) == 32 ? 15 : 0);
+    }
+
+    public byte getSidedRedstoneMask() {
+        byte redstone = 0;
+
+        for (int i = 0; i < 6; i++) {
+            if (mSidedRedstone[i] > 0) {
+                redstone |= (byte) (0b1 << i);
+            }
+        }
+
+        return redstone;
     }
 
     @Override
@@ -415,20 +433,21 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     @Override
-    public void updateAttachedCover(Cover cover) {
-        final ForgeDirection side = cover.getSide();
-        if (side == ForgeDirection.UNKNOWN) return;
+    public void updateAttachedCover(int coverId, ForgeDirection side, NBTTagCompound nbt) {
+        final Cover cover = getCoverAtSide(side);
+        if (!cover.isValid() || cover.getCoverID() != coverId) return;
+        cover.readFromNbt(nbt);
+    }
 
-        final Cover oldCover = getCoverAtSide(side);
+    @Override
+    public void updateAttachedCover(ByteArrayDataInput data) {
+        // ByteArrayDataInput field read order matters. Do not reorder these declarations.
+        int coverId = data.readInt();
+        ForgeDirection side = ForgeDirection.getOrientation(data.readByte());
 
-        if (!oldCover.isValid()) return;
-        ISerializableObject coverData = cover.getCoverData();
-        oldCover.preDataChanged(cover.getCoverID(), coverData);
-        applyCover(cover, side);
-
-        if (isClientSide()) {
-            getCoverAtSide(side).onDataChanged();
-        }
+        final Cover cover = getCoverAtSide(side);
+        if (!cover.isValid() || cover.getCoverID() != coverId) return;
+        cover.readFromPacket(data);
     }
 
     protected void sendCoverDataIfNeeded() {
@@ -449,13 +468,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final NBTTagCompound tag = accessor.getNBTData();
         final ForgeDirection currentFacing = accessor.getSide();
 
-        final NBTTagList tList = tag.getTagList(GTValues.NBT.COVERS, 10);
-        for (byte i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = buildCover(tNBT);
+        for (final Cover cover : covers) {
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
@@ -487,7 +502,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         // While we have some cover data on the client (enough to render it); we don't have all the information we want,
         // such as details on the fluid filter, so send it all here.
-        writeCoverNBT(tag, false);
+        for (final Cover cover : covers) {
+            if (cover != null && cover.isValid()) {
+                NW.sendToPlayer(new GTPacketSendCoverData(cover, this, cover.getSide()), player);
+            }
+        }
     }
 
     /**
@@ -502,8 +521,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         for (byte i = 0; i < tList.tagCount(); i++) {
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final Cover cover = CoverRegistry.getRegistrationFromNbt(tNBT)
-                .buildCover(ForgeDirection.UNKNOWN, null, tNBT);
+            byte sideValue = tNBT.getByte(NBT_COVER_SIDE);
+            final Cover cover = CoverRegistry.buildCoverFromNbt(tNBT, ForgeDirection.getOrientation(sideValue), null);
             if (!cover.isValid()) continue;
 
             final ItemStack coverStack = cover.asItemStack();
@@ -511,7 +530,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.interface.coverTabs.cover_on",
-                        getTranslation(FACES[tNBT.getByte(NBT_COVER_SIDE)]),
+                        getTranslation(FACES[sideValue]),
                         coverStack.getDisplayName()));
             }
         }
@@ -546,13 +565,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int COVER_TAB_LEFT = -16, COVER_TAB_TOP = 1, COVER_TAB_HEIGHT = 20, COVER_TAB_WIDTH = 18,
             COVER_TAB_SPACING = 2, ICON_SIZE = 16;
-        final boolean flipHorizontally = GTMod.gregtechproxy.mCoverTabsFlipped;
+        final boolean flipHorizontally = GTMod.proxy.mCoverTabsFlipped;
 
         final Column columnWidget = new Column();
         builder.widget(columnWidget);
         final int xPos = flipHorizontally ? (getGUIWidth() - COVER_TAB_LEFT - COVER_TAB_WIDTH) : COVER_TAB_LEFT;
-        if (GTMod.gregtechproxy.mCoverTabsVisible) {
-            columnWidget.setPos(xPos, COVER_TAB_TOP)
+        if (GTMod.proxy.mCoverTabsVisible) {
+            columnWidget.setPos(xPos, COVER_TAB_TOP + getCoverTabHeightOffset())
                 .setEnabled(
                     widget -> ((Column) widget).getChildren()
                         .stream()
@@ -601,6 +620,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
                             (COVER_TAB_HEIGHT - ICON_SIZE) / 2))
                 .setEnabled(widget -> getCoverItemAtSide(direction) != null));
         }
+    }
+
+    protected int getCoverTabHeightOffset() {
+        return 0;
     }
 
     @SideOnly(Side.CLIENT)

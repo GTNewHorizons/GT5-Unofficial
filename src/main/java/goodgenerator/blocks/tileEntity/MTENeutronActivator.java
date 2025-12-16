@@ -115,8 +115,8 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
-                    .setDuration((int) Math.ceil(recipe.mDuration * Math.pow(0.9f, height - 4)))
-                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * Math.pow(0.9f, height - 4));
+                    .setDuration((int) Math.ceil(recipe.mDuration * GTUtility.powInt(0.9f, height - 4)))
+                    .setDurationUnderOneTickSupplier(() -> recipe.mDuration * GTUtility.powInt(0.9f, height - 4));
             }
 
             @NotNull
@@ -144,6 +144,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         // we have infinite power
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -157,11 +158,6 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
         }
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -191,13 +187,13 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutron Activator, NA")
             .addInfo("Superluminal-velocity Motion.")
-            .addInfo("The minimum height of the Speeding Pipe Casing is 4.")
-            .addInfo("Per extra Speeding Pipe Casing will give time discount.")
-            .addInfo("But it will reduce the Neutron Accelerator efficiency.")
-            .addInfo("You need to input energy to the Neutron Accelerator to get it running.")
-            .addInfo("It will output correct products with Specific Neutron Kinetic Energy.")
-            .addInfo("Otherwise it will output trash.")
-            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running.")
+            .addInfo("The minimum height of the Speeding Pipe Casing is 4")
+            .addInfo("Per extra Speeding Pipe Casing will give time discount")
+            .addInfo("But it will reduce the Neutron Accelerator efficiency")
+            .addInfo("You need to input energy to the Neutron Accelerator to get it running")
+            .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
+            .addInfo("Otherwise it will output trash")
+            .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
             .addInfo(
                 "It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED
                     + " 1200MeV"
@@ -209,7 +205,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .addCasingInfoExactly("Processor Machine Casing", 18, false)
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
-            .addCasingInfoMin("EV+ Glass", 32, false)
+            .addCasingInfoMin("Any Tiered Glass", 32, false)
             .addInputHatch("Hint block with dot 1")
             .addInputBus("Hint block with dot 1")
             .addOutputHatch("Hint block with dot 2")
@@ -348,7 +344,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                     anyWorking = true;
                     this.eV += Math.max(
                         (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                            * Math.pow(0.95, height - 4),
+                            * GTUtility.powInt(0.95, height - 4),
                         10);
                 }
             }
@@ -409,23 +405,19 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             if (tHatch.getBaseMetaTileEntity()
                 .isActive()) {
                 currentNKEInput += (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                    * Math.pow(0.95, height - 4);
+                    * GTUtility.powInt(0.95, height - 4);
                 anyWorking = true;
             }
         }
         if (!anyWorking) currentNKEInput = -72000;
-        return new String[] { "Progress:",
-            EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + this.mMaxProgresstime / 20
-                + EnumChatFormatting.RESET
-                + " s",
-            "Current Neutron Kinetic Energy Input: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(currentNKEInput)
-                + EnumChatFormatting.RESET
-                + "eV",
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gg.scanner.info.neutron_activator.progress",
+                EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "gg.scanner.info.neutron_activator.input",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(currentNKEInput) + EnumChatFormatting.RESET),
             StatCollector.translateToLocal("scanner.info.NA") + " "
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(getCurrentNeutronKineticEnergy())
@@ -437,14 +429,22 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49),
-                TextureFactory.of(textureFontOn), TextureFactory.builder()
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
+                .addIcon(textureFontOn)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOn_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49),
-                TextureFactory.of(textureFontOff), TextureFactory.builder()
+            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
+                .addIcon(textureFontOff)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(textureFontOff_Glow)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -455,14 +455,14 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
 
-        int built = survivialBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(NA_BOTTOM, stackSize, 2, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int heights = stackSize.stackSize + 3;
         for (int i = 1; i <= heights; i++) {
-            built = survivialBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
+            built = survivalBuildPiece(NA_MID, stackSize, 2, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(NA_TOP, stackSize, 2, heights + 1, 0, elementBudget, env, false, true);
     }
 
     protected void onCasingFound() {

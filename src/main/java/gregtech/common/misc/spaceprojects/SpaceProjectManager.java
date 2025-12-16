@@ -2,7 +2,9 @@ package gregtech.common.misc.spaceprojects;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.mojang.authlib.GameProfile;
 
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
@@ -149,6 +153,18 @@ public class SpaceProjectManager {
 
     public static boolean isInTeam(UUID member) {
         return spaceTeams.containsKey(member);
+    }
+
+    public static HashSet<UUID> getTeamMembers(UUID leader) {
+        HashSet<UUID> inTeam = new HashSet<>();
+
+        // spotless:off
+        SpaceProjectManager.spaceTeams.forEach((key, value) -> {
+            if (Objects.equals(leader, value)) inTeam.add(key);
+        });
+        // spotless:on
+
+        return inTeam;
     }
 
     /**
@@ -299,10 +315,13 @@ public class SpaceProjectManager {
      * Gets the player's name using their UUID
      */
     public static String getPlayerNameFromUUID(UUID playerUUID) {
-        return MinecraftServer.getServer()
+        GameProfile profile = MinecraftServer.getServer()
             .func_152358_ax()
-            .func_152652_a(playerUUID)
-            .getName();
+            .func_152652_a(playerUUID); // The profile can
+                                        // be null
+                                        // (offline mode
+                                        // issue?)
+        return profile == null ? "ERROR_NULL_PROFILE" : profile.getName();
     }
 
     // #endregion

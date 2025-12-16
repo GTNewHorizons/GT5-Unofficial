@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -30,6 +31,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,11 +46,13 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
     implements ISurvivalConstructable {
 
-    private int casingTier;
+    private int casingTier = -1;
+    private int glassTier = -1;
     private double speedBonus;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEComponentAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
@@ -122,14 +126,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                 { "         ", "         ", " HHHHHHH ", "HH     HH", "H       H", "H       H", "H       H",
                     "H       H", "H  KKK  H", "HHHHHHHHH" } })
-        .addElement(
-            'A',
-            ofChain(
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 5),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 13),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 14),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 15),
-                ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0)))
+        .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 9))
@@ -139,13 +136,13 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         .addElement(
             'B',
             ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
                 IntStream.range(0, 14)
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
-                -2,
-                (t, meta) -> t.casingTier = meta,
-                t -> t.casingTier))
+                -1,
+                MTEComponentAssemblyLine::setCasingTier,
+                MTEComponentAssemblyLine::getCasingTier))
         .addElement(
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -213,31 +210,24 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High-Capacity Component Assembler, CoAL")
-            .addInfo("Assembles basic components (motors, pumps, etc.) in large batches.")
+            .addInfo("Assembles basic components (motors, pumps, etc.) in large batches")
             .addInfo(
                 "The " + EnumChatFormatting.BOLD
                     + EnumChatFormatting.YELLOW
                     + "Component Assembly Line Casing "
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
-                    + "limits the recipes the machine can perform. See the NEI pages for details.")
+                    + "limits the recipes the machine can perform. See the NEI pages for details")
             .addInfo("Using casings above the required recipe tier provides a speed bonus:")
             .addInfo(EnumChatFormatting.YELLOW + "Halves recipe time per tier above recipe")
-            .addInfo(
-                "Supports " + EnumChatFormatting.BLUE
-                    + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.GRAY
-                    + " laser and multi-amp hatches!")
-            .addInfo("Supports overclocking beyond MAX!")
             .addInfo(EnumChatFormatting.ITALIC + "Much more efficient than other competing brands!")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .beginStructureBlock(9, 10, 33, false)
             .addController("Mid of the eighth layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 644, false)
             .addCasingInfoExactly("Advanced Filter Casing", 124, false)
-            .addCasingInfoExactly("Borosilicate Glass (UV+)", 280, false)
+            .addCasingInfoExactly("Any Tiered Glass (UV+)", 280, false)
             .addCasingInfoExactly("Assembler Machine Casing", 30, false)
             .addCasingInfoExactly("Component Assembly Line Casing", 43, true)
             .addCasingInfoExactly("PBI Pipe Casing", 126, false)
@@ -248,6 +238,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addEnergyHatch("Second-top layer", 3)
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -266,7 +257,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1] : "None!");
+            + (casingTier >= 0 ? GTValues.VN[casingTier + 1]
+                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
 
@@ -276,30 +268,25 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY)
+                .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE)
                 .extFacing()
                 .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183) };
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -318,8 +305,8 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                speedBonus = 1 / Math.pow(2, casingTier + 1 - recipe.mSpecialValue);
-                return super.createOverclockCalculator(recipe).setSpeedBoost(speedBonus);
+                speedBonus = GTUtility.powInt(2, -(casingTier + 1 - recipe.mSpecialValue));
+                return super.createOverclockCalculator(recipe).setDurationModifier(speedBonus);
             }
         };
     }
@@ -328,23 +315,38 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, realBudget, env, false, true);
+    }
+
+    private void setCasingTier(int tier) {
+        this.casingTier = tier;
+    }
+
+    private int getCasingTier() {
+        return this.casingTier;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -2;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
+        this.casingTier = -1;
+        this.glassTier = -1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0)) {
+            return false;
+        }
+
+        return this.glassTier >= VoltageIndex.UV;
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         inputSeparation = !inputSeparation;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -354,13 +356,16 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -371,21 +376,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override

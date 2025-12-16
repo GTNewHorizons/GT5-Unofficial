@@ -3,32 +3,28 @@ package gtPlusPlus.core.handler;
 import static gtPlusPlus.core.util.Utils.addBookPagesLocalization;
 import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTModHandler;
+import com.github.bsideup.jabel.Desugar;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public class BookHandler {
 
-    public static int mBookKeeperCount = 0;
-
-    public static Map<Integer, BookTemplate> mBookMap = new HashMap<>();
+    public static Int2ObjectMap<BookTemplate> mBookMap = new Int2ObjectOpenHashMap<>();
 
     public static BookTemplate book_ThermalBoiler;
     public static BookTemplate book_MultiPowerStation;
     public static BookTemplate book_ModularBauble;
-    public static BookTemplate book_MultiMachineManual;
     public static BookTemplate book_NuclearManual;
-    public static BookTemplate book_MultiChemicalPlant;
 
     public static void run() {
 
@@ -36,6 +32,7 @@ public class BookHandler {
 
         // Thermal Boiler
         book_ThermalBoiler = writeBookTemplate(
+            0,
             "Manual_Thermal_Boiler",
             "Thermal Boiler Manual",
             "GregoriusT",
@@ -59,6 +56,7 @@ public class BookHandler {
 
         // Test Novel
         book_MultiPowerStation = writeBookTemplate(
+            1,
             "Manual_Multi_PowerStation",
             "Power Storage & You [Version 0.64]",
             "Alkalus",
@@ -119,6 +117,7 @@ public class BookHandler {
 
         // Test Novel
         book_ModularBauble = writeBookTemplate(
+            2,
             "Manual_Modular_Bauble",
             "How to: Modular Baubles",
             "Alkalus",
@@ -138,21 +137,8 @@ public class BookHandler {
                     """, "There was once a sad and lonely oak tree. \n", "There was once a sad and lonely oak tree. \n",
                 "There was once a sad and lonely oak tree. \n" });
 
-        // Test Novel
-        // 20/21/22
-        book_MultiMachineManual = writeBookTemplate(
-            "Manual_Multi_Machine",
-            "Multi-Machine Manual",
-            "Alkalus",
-            new String[] {
-                "This Multiblock, depending upon the mode used, can function as a variety of different machines. The idea behind this, was that most of these machines are rather niche compared to any others, as such, not used often.",
-                "To build, you need to construct a hollow 3x3x3 structure made from Multi-Use casings, With a minimum of 6. Any Casing position can be substituted out with an Input Hatch/Bus, an Output Hatch/Bus, Muffler, Maint. Hatch or Energy Injector Hatch.",
-                "The Mode can be set by using a Screwdriver on the controller block. Each mode allows the use of Numbered Circuits, to allow a different machine 'type' for each input bus.",
-                "[Metal Work] Mode Metal - Allows the multiblock to function as a Compressor, a Lathe or an Electro-Magnet. To allow a hatch to run in Compressor mode, insert a No. 20 circuit. For Lathe, use No. 21 and for Electro-Magnet use No. 22.",
-                "[Fluid Work] Mode Fluid - Allows the multiblock to function as a Fermenter, a Fluid Extractor or an Extractor. To allow a hatch to run in Fermenter mode, insert a No. 20 circuit. For Fluid Extractor, use No. 21 and for Extractor use No. 22.",
-                "[Misc. Work] Mode Misc - Allows the multiblock to function as a Laser Engraver, an Autoclave or a Fluid Solidifier. To allow a hatch to run in Laser Engraver mode, insert a No. 20 circuit. For Autoclave, use No. 21 and for Solidifier use No. 22.", });
-
         book_NuclearManual = writeBookTemplate(
+            4,
             "Manual_NuclearStuff_1",
             "Nuclear Chemistry [FFPP]",
             "Alkalus",
@@ -173,7 +159,7 @@ public class BookHandler {
                 """
                     [1] 7x Hastelloy-X or I/O
                     [2] 5x Incoloy-DS Fluid Containment
-                    [3] 4x Zeron-100 Shielding
+                    [3] 4x Reactor Shield Casing
                     [4] 17x Hastelloy-N Sealant Case
                     Multiblock Construction
                     Convention is [LxHxW]
@@ -209,278 +195,51 @@ public class BookHandler {
                     Fission Fuel
                     Processing Plant----------------------
                     This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR].""" });
-
-        book_MultiChemicalPlant = writeBookTemplate(
-            "book_Multi_ChemicalPlant",
-            "Chemical Plant Manual",
-            "Alkalus",
-            new String[] {
-
-                // Intro
-                "This book will explain how the Chemical Plant is constructed, which blocks are valid to upgrade it and also how the upgrades work.",
-
-                // Info
-                """
-                    Solid Casings = Plant tier
-                    Machine Casings = Hatch tier
-                    Higher tier coils  More Speed
-                    T1 50% , T2 100% , T3 150%, etc
-                    """, """
-                    Higher tier pipe casings boost parallel
-                    and reduce catalyst consumption.
-                    +2 parallel per tier, 20% extra chance of
-                    not damaging catalyst per tier.""", """
-                    Awakened Draconium Coil (or above) with
-                    Tungstensteel Pipe Casing
-                    does not damage catalyst at all.""",
-
-                // Machine Casings
-                """
-                    Valid Solid Machine Casings:
-                    1 - Strong Bronze
-                    2 - Solid Steel
-                    3 - Sturdy Aluminium
-                    4 - Clean Stainless Steel
-                    5 - Stable Titanium
-                    6 - Robust Tungstensteel
-                    7 - Vigorous Laurenium
-                    8 - Rugged Botmium""",
-
-                // Machine Casings
-                "Valid Tiered Machine Casings:" + "\n"
-                    + "\n"
-                    + "1 - "
-                    + GTValues.VN[0]
-                    + "\n"
-                    + "2 - "
-                    + GTValues.VN[1]
-                    + "\n"
-                    + "3 - "
-                    + GTValues.VN[2]
-                    + "\n"
-                    + "4 - "
-                    + GTValues.VN[3]
-                    + "\n"
-                    + "5 - "
-                    + GTValues.VN[4]
-                    + "\n"
-                    + "6 - "
-                    + GTValues.VN[5]
-                    + "\n"
-                    + "7 - "
-                    + GTValues.VN[6]
-                    + "\n"
-                    + "8 - "
-                    + GTValues.VN[7]
-                    + "\n"
-                    + "9 - "
-                    + GTValues.VN[8]
-                    + "\n"
-                    + "10 - "
-                    + GTValues.VN[9],
-
-                // Pipe Casings
-                """
-                    Valid Pipe Casings:
-
-                    1 - Bronze
-                    2 - Steel
-                    3 - Titanium
-                    4 - Tungstensteel""",
-
-                // Coils
-                """
-                    Valid Coils:
-
-                    1 - Cupronickel
-                    2 - Kanthal
-                    3 - Nichrome
-                    4 - TPV-Alloy
-                    5 - HSS-G
-                    6 - HSS-S
-                    7 - Naquadah
-                    8 - Naquadah Alloy
-                    9 - Trinium
-                    10 - Fluxed Electrum""", """
-                    11 - Awakened Draconium
-                    12 - Infinity
-                    13 - Hypogen
-                    14 - Eternal""",
-
-                // Requirements
-                """
-                    Multiblock Requirements:
-
-                    27x Coils
-                    18x Pipe Casings
-                    57x Tiered Machine Casings
-                    70+ Solid Casings
-                    1x Catalyst Housing (Catalysts cannot go inside an Input Bus)""",
-
-                // Construction Guide
-                """
-                    Construction Guide Pt1:
-
-                    Controller is placed on a middle casing in the bottom layer
-                    Hatches can only be placed on the bottom layer edges""", """
-                    Construction Guide Pt2:
-
-                    7x7x7 Hollow frame of solid casings
-                    5x1x5 layer of solid casings (fills in top layer)
-                    5x1x5 layer of machine casings (fills in bottom layer)""", """
-                    Construction Guide Pt3:
-                    In the central 3x5x3:
-                    3x1x3 layer of Coils, surrounded by ring of Machine Casings
-                    3x1x3 layer of Pipe Casings
-                    3x1x3 layer of Coils
-                    3x1x3 layer of Pipe Casings
-                    3x1x3 layer of Coils, surrounded by ring of Machine Casings""",
-
-                // Construction Guide Info
-                """
-                    Information:
-
-                    A = Air
-                    X = Solid Casing
-                    M = Machine Casing
-                    P = Pipe Casing
-                    C = Coil Casing""", """
-                    Layer 1:
-
-                    XXXXXXX
-                    XMMMMMX
-                    XMMMMMX
-                    XMMMMMX
-                    XMMMMMX
-                    XMMMMMX
-                    XXXXXXX""", """
-                    Layer 2:
-
-                    XAAAAAX
-                    AMMMMMA
-                    AMCCCMA
-                    AMCCCMA
-                    AMCCCMA
-                    AMMMMMA
-                    XAAAAAX""", """
-                    Layer 3:
-
-                    XAAAAAX
-                    AAAAAAA
-                    AAPPPAA
-                    AAPPPAA
-                    AAPPPAA
-                    AAAAAAA
-                    XAAAAAX""", """
-                    Layer 4:
-
-                    XAAAAAX
-                    AAAAAAA
-                    AACCCAA
-                    AACCCAA
-                    AACCCAA
-                    AAAAAAA
-                    XAAAAAX""", """
-                    Layer 5:
-
-                    XAAAAAX
-                    AAAAAAA
-                    AAPPPAA
-                    AAPPPAA
-                    AAPPPAA
-                    AAAAAAA
-                    XAAAAAX""", """
-                    Layer 6:
-
-                    XAAAAAX
-                    AMMMMMA
-                    AMCCCMA
-                    AMCCCMA
-                    AMCCCMA
-                    AMMMMMA
-                    XAAAAAX""", """
-                    Layer 7:
-
-                    XXXXXXX
-                    XXXXXXX
-                    XXXXXXX
-                    XXXXXXX
-                    XXXXXXX
-                    XXXXXXX
-                    XXXXXXX""", });
     }
 
     public static ItemStack ItemBookWritten_ThermalBoiler;
     public static ItemStack ItemBookWritten_NuclearManual;
     public static ItemStack ItemBookWritten_ModularBaubles;
     public static ItemStack ItemBookWritten_MultiPowerStorage;
-    public static ItemStack ItemBookWritten_MultiMachineManual;
-    public static ItemStack ItemBookWritten_MultiChemicalPlant;
 
     public static void runLater() {
-        ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
-        ItemBookWritten_MultiPowerStorage = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
-        ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
-        ItemBookWritten_MultiMachineManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 3, 1);
-        ItemBookWritten_NuclearManual = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 4, 1);
-        ItemBookWritten_MultiChemicalPlant = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 5, 1);
+        ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook, 1, 0);
+        ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook, 1, 1);
+        ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook, 1, 2);
+        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook, 1, 4);
 
         // Multiblock Manuals
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getSimpleStack(Items.lava_bucket) },
+            new ItemStack[] { new ItemStack(Items.writable_book), new ItemStack(Items.lava_bucket) },
             ItemBookWritten_ThermalBoiler);
-        GTModHandler.addCraftingRecipe(
-            ItemBookWritten_MultiMachineManual,
-            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "Xw", 'X', ItemUtils.getSimpleStack(Items.writable_book) });
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Tin", 1) },
+            new ItemStack[] { new ItemStack(Items.writable_book),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) },
             ItemBookWritten_MultiPowerStorage);
         RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustUranium", 1) },
+            new ItemStack[] { new ItemStack(Items.writable_book),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) },
             ItemBookWritten_NuclearManual);
-        RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { ItemUtils.getSimpleStack(Items.writable_book),
-                ItemUtils.getItemStackOfAmountFromOreDict("wireGt01Copper", 1) },
-            ItemBookWritten_MultiChemicalPlant);
 
-        for (int i = 0; i < mBookKeeperCount; i++) {
-            ItemStack bookstack = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, i, 1);
+        for (int meta : mBookMap.keySet()) {
+            ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);
             GTOreDictUnificator.registerOre("bookWritten", bookstack);
             GTOreDictUnificator.registerOre("craftingBook", bookstack);
         }
     }
 
-    private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages) {
-        mBookKeeperCount++;
+    public static BookTemplate writeBookTemplate(int meta, String aMapping, String aTitle, String aAuthor,
+        String[] aPages) {
         for (int i = 0; i < aPages.length; i++) {
             aPages[i] = aPages[i].replaceAll("\n", "<BR>");
         }
         addBookTitleLocalization(aTitle);
         addBookPagesLocalization(aTitle, aPages);
-        BookTemplate mTemp = new BookTemplate(mBookKeeperCount, aMapping, aTitle, aAuthor, aPages);
-        mBookMap.put(mBookKeeperCount - 1, mTemp);
+        BookTemplate mTemp = new BookTemplate(meta, aMapping, aTitle, aAuthor, aPages);
+        mBookMap.put(meta, mTemp);
         return mTemp;
     }
 
-    public static class BookTemplate {
-
-        public final int mMeta;
-        public final String mMapping;
-        public final String mTitle;
-        public final String mAuthor;
-        public final String[] mPages;
-
-        BookTemplate(int aMeta, String aMapping, String aTitle, String aAuthor, String[] aPages) {
-            this.mMeta = aMeta;
-            this.mMapping = aMapping;
-            this.mTitle = aTitle;
-            this.mAuthor = aAuthor;
-            this.mPages = aPages;
-        }
-    }
+    @Desugar
+    public record BookTemplate(int mMeta, String mMapping, String mTitle, String mAuthor, String[] mPages) {}
 }

@@ -1,8 +1,9 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedText;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -11,35 +12,31 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 /**
- * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
- * 16 subtypes at most.
+ * The glass is split into separate files because they are registered as regular blocks, and a regular block can have 16
+ * subtypes at most.
  * <p>
  * This class hosts various special types of tiered glass with not many tiers.
  */
 public class BlockGlass1 extends BlockCasingsAbstract {
 
     public BlockGlass1() {
-        super(ItemGlass1.class, "gt.blockglass1", Material.glass, 4);
+        super(ItemCasings.class, "gt.blockglass1", Material.glass, 4);
         this.opaque = false;
 
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Chemical Grade Glass");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".1.name", "Electron-Permeable Neutronium Coated Glass");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Omni-Purpose Infinity Fused Glass");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".3.name", "Non-Photonic Matter Exclusion Glass");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".4.name", "Hawking Radiation Realignment Focus");
+        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass", translatedText("gt.casing.chemical-resistant"));
+        register(1, ItemList.GlassUVResistant, "Electron-Permeable Neutronium Coated Glass");
+        register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
+        register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
+        register(
+            4,
+            ItemList.Hawking_Glass,
+            "Hawking Radiation Realignment Focus",
+            translatedText("gt.casing.hawking-focus"));
+        register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
+        register(6, ItemList.Chamber_Grate, "Chamber Grate");
 
-        ItemList.GlassPHResistant.set(new ItemStack(this, 1, 0));
-        ItemList.GlassUVResistant.set(new ItemStack(this, 1, 1));
-        ItemList.GlassOmniPurposeInfinityFused.set(new ItemStack(this, 1, 2));
-        ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
-        ItemList.GlassQuarkContainment.set(new ItemStack(this, 1, 3));
-        ItemList.Hawking_Glass.set(new ItemStack(this, 1, 4));
     }
 
     @Override
@@ -78,6 +75,9 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
             case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
+            case 5 -> Textures.BlockIcons.NANITE_SHIELDING_FRAME.getIcon();
+            case 6 -> Textures.BlockIcons.SIEVE_MESH.getIcon();
+
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

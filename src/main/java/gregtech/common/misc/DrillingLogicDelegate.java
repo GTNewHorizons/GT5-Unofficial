@@ -7,14 +7,16 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.FakePlayer;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.ores.OreManager;
 
 /** @author Relvl on 27.01.2022 */
 @SuppressWarnings("ObjectEquality")
@@ -36,6 +38,8 @@ public class DrillingLogicDelegate {
     private int tipDepth;
     /** Cached fake player */
     private FakePlayer mFakePlayer;
+
+    private final XSTR rng = new XSTR();
 
     public DrillingLogicDelegate(IDrillingLogicDelegateOwner owner) {
         this.owner = owner;
@@ -130,9 +134,13 @@ public class DrillingLogicDelegate {
         }
 
         // Inspect target block - it should be a pipe tip, else something went wrong.
-        Block targetBlock = aBaseMetaTileEntity.getBlockOffset(0, tipDepth, 0);
-        if (targetBlock != MINING_PIPE_TIP_BLOCK && targetBlock != MINING_PIPE_BLOCK) {
+        if (!isMiningPipe(aBaseMetaTileEntity, tipDepth)) {
             return;
+        }
+
+        if (isMiningPipe(aBaseMetaTileEntity, tipDepth + 1) || isLastPipeSegment()) {
+            // Return the pipe back to the machine (inputs allowed for this case!)
+            owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
         }
 
         // Retract the pipe/tip
@@ -150,10 +158,16 @@ public class DrillingLogicDelegate {
         aBaseMetaTileEntity.getWorld()
             .setBlock(xCoord, actualDrillY, zCoord, Blocks.air, 0, /* send to client without neighbour updates */ 2);
 
-        // Return the pipe back to the machine (inputs allowed for this case!)
-        owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
-
         tipDepth++;
+    }
+
+    private boolean isLastPipeSegment() {
+        return tipDepth == -1;
+    }
+
+    private boolean isMiningPipe(@NotNull IGregTechTileEntity aBaseMetaTileEntity, int yOffset) {
+        Block pipeToRemove = aBaseMetaTileEntity.getBlockOffset(0, yOffset, 0);
+        return pipeToRemove == MINING_PIPE_BLOCK || pipeToRemove == MINING_PIPE_TIP_BLOCK;
     }
 
     /** Minings the block if it is possible. */
@@ -162,35 +176,26 @@ public class DrillingLogicDelegate {
             return;
         }
 
-        List<ItemStack> drops = getBlockDrops(block, x, y, z);
+        long seed = rng.getSeed();
 
-        boolean canFitDrops = true;
+        // See if we can store all of the outputs
+        List<ItemStack> drops = OreManager
+            .mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), true, true);
+
+        rng.setSeed(seed);
+
         for (ItemStack drop : drops) {
-            canFitDrops &= owner.pushOutputs(drop, drop.stackSize, true, false);
+            if (!owner.pushOutputs(drop, drop.stackSize, true, false)) {
+                return;
+            }
         }
-        if (!canFitDrops) {
-            return;
-        }
+
         for (ItemStack drop : drops) {
             owner.pushOutputs(drop, drop.stackSize, false, false);
         }
 
-        short metaData = 0;
-        TileEntity tTileEntity = owner.getBaseMetaTileEntity()
-            .getTileEntity(x, y, z);
-        if (tTileEntity instanceof TileEntityOres) {
-            metaData = ((TileEntityOres) tTileEntity).mMetaData;
-        }
-
-        ItemStack cobble = GTUtility.getCobbleForOre(block, metaData);
-        te.getWorld()
-            .setBlock(
-                x,
-                y,
-                z,
-                Block.getBlockFromItem(cobble.getItem()),
-                cobble.getItemDamage(), /* cause updates(1) + send to client(2) */
-                3);
+        // Actually mine it
+        OreManager.mineBlock(rng, te.getWorld(), x, y, z, false, owner.getMachineTier(), false, true);
     }
 
     /**
@@ -234,19 +239,6 @@ public class DrillingLogicDelegate {
     public boolean canFakePlayerInteract(IGregTechTileEntity te, int xCoord, int yCoord, int zCoord) {
         return GTUtility
             .setBlockByFakePlayer(getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
-    }
-
-    /** Get target block drops. We need to encapsulate everyting of mining in this class. */
-    private List<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
-        return oreBlock.getDrops(
-            owner.getBaseMetaTileEntity()
-                .getWorld(),
-            posX,
-            posY,
-            posZ,
-            owner.getBaseMetaTileEntity()
-                .getMetaID(posX, posY, posZ),
-            owner.getMachineTier());
     }
 
     /** Can the owner continue doing its work? If we await new pipes - it cannot. */

@@ -27,26 +27,14 @@ public class SaplingPineTree extends SaplingBase {
         rand.nextInt(10);
         new WorldGenBigTree(true);
         new WorldGenTrees(true);
-        int i1 = 0;
-        int j1 = 0;
-        boolean flag = false;
 
         Block block = Blocks.air;
 
-        if (flag) {
-            world.setBlock(x + i1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1, y, z + j1 + 1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1 + 1, block, 0, 4);
-        } else {
-            world.setBlock(x, y, z, block, 0, 4);
-        }
-        Object obj = new WorldGenPineTree();
-        if (obj != null) {
-            world.setBlockToAir(x, y, z);
-            if (!((WorldGenerator) obj).generate(world, GTPPCore.RANDOM, x, y, z)) {
-                world.setBlock(x, y, z, this, 0, 2);
-            }
+        world.setBlock(x, y, z, block, 0, 4);
+        WorldGenerator worldGenPineTree = new WorldGenPineTree();
+        world.setBlockToAir(x, y, z);
+        if (!worldGenPineTree.generate(world, GTPPCore.RANDOM, x, y, z)) {
+            world.setBlock(x, y, z, this, 0, 2);
         }
     }
 }

@@ -190,14 +190,17 @@ public enum IDMetaItem02 {
     Food_Sliced_Onion(573),
     Food_Sliced_Cucumber(574),
     Food_Sliced_Cheese(576),
-    Cover_AdvancedRedstoneTransmitterExternal(577),
+    Cover_AdvancedRedstoneTransmitter(577),
     Cover_AdvancedRedstoneTransmitterInternal(578),
-    Cover_AdvancedRedstoneReceiverExternal(579),
+    Cover_AdvancedRedstoneReceiver(579),
     Cover_AdvancedRedstoneReceiverInternal(580),
     Cover_WirelessFluidDetector(581),
     Cover_WirelessItemDetector(582),
     Cover_WirelessNeedsMaintainance(583),
     Cover_WirelessActivityDetector(584),
+    Vajra_Core(585),
+    Magnetron(586),
+    Plank_Cherry_EFR(587),
     Display_ITS_FREE(765);
 
     public final int ID;

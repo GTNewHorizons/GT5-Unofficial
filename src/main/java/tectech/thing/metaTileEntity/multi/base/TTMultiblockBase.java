@@ -17,7 +17,9 @@ import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -26,6 +28,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -59,6 +62,9 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -78,6 +84,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
@@ -87,7 +95,10 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
 import tectech.thing.gui.TecTechUITextures;
@@ -97,6 +108,8 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
@@ -161,14 +174,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // what type of certainty inconvenience is used - can be used as in Computer - more info in uncertainty hatch
     protected byte eCertainMode = 0, eCertainStatus = 0;
 
-    // minimal repair status to make the machine even usable (how much unfixed fixed stuff is needed)
-    // if u need to force some things to be fixed - u might need to override doRandomMaintenanceDamage
-    protected byte minRepairStatus = 3;
-
-    // whether there is a maintenance hatch in the multi and whether checks are necessary (for now only used in a
-    // transformer)
-    protected boolean hasMaintenanceChecks = true;
-
     // is power pass cover present
     public boolean ePowerPassCover = false;
 
@@ -188,9 +193,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // read only unless you are making computation generator - read computer class
     protected long eAvailableData = 0; // data being available
 
-    // just some info - private so hidden
-    private boolean explodedThisTick = false;
-
     /** Flag if the new long power variable should be used */
     protected boolean useLongPower = false;
 
@@ -201,6 +203,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         numberFormat.setMaximumFractionDigits(8);
     }
 
+    // Parameters for IParametrized multiblocks
+    public Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
     // endregion
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
@@ -208,6 +212,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
+        if (this instanceof IParametrized parametrized) {
+            parametrized.initParameters();
+        }
     }
 
     protected TTMultiblockBase(String aName) {
@@ -215,6 +222,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
+        if (this instanceof IParametrized parametrized) {
+            parametrized.initParameters();
+        }
     }
 
     // region SUPER STRUCT
@@ -323,26 +333,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public ArrayList<String> getFullLedDescriptionIn(int hatchNo, int paramID) {
         ArrayList<String> list = new ArrayList<>();
         list.add(
-            EnumChatFormatting.WHITE + "ID: "
-                + EnumChatFormatting.AQUA
-                + hatchNo
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + paramID
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + "I  "
-                + parametrization.getStatusIn(hatchNo, paramID).name.get());
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.in.id",
+                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                parametrization.getStatusIn(hatchNo, paramID).name.get()));
         list.add(
-            EnumChatFormatting.WHITE + "Value: "
-                + EnumChatFormatting.AQUA
-                + numberFormat.format(parametrization.getIn(hatchNo, paramID)));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.value",
+                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getIn(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterIn[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
-            list.add("Unused");
+            list.add(StatCollector.translateToFallback("tt.gui.tooltip.full_led_desc.unused"));
         }
         return list;
     }
@@ -350,26 +353,19 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public ArrayList<String> getFullLedDescriptionOut(int hatchNo, int paramID) {
         ArrayList<String> list = new ArrayList<>();
         list.add(
-            EnumChatFormatting.WHITE + "ID: "
-                + EnumChatFormatting.AQUA
-                + hatchNo
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + paramID
-                + EnumChatFormatting.YELLOW
-                + ":"
-                + EnumChatFormatting.AQUA
-                + "O "
-                + parametrization.getStatusOut(hatchNo, paramID).name.get());
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.out.id",
+                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                parametrization.getStatusOut(hatchNo, paramID).name.get()));
         list.add(
-            EnumChatFormatting.WHITE + "Value: "
-                + EnumChatFormatting.AQUA
-                + numberFormat.format(parametrization.getOut(hatchNo, paramID)));
+            EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                "tt.gui.tooltip.full_led_desc.value",
+                EnumChatFormatting.AQUA + numberFormat.format(parametrization.getOut(hatchNo, paramID))));
         try {
             list.add(parametrization.groups[hatchNo].parameterOut[paramID].getBrief());
         } catch (NullPointerException | IndexOutOfBoundsException e) {
-            list.add("Unused");
+            list.add(StatCollector.translateToLocal("tt.gui.tooltip.full_led_desc.unused"));
         }
         return list;
     }
@@ -400,63 +396,52 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 .getEUCapacity();
         }
 
-        return new String[] { "Progress:",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.progress",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.energy_hatches",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                getPowerFlow() * eAmpereFlow <= 0 ? "GT5U.infodata.currently_uses"
+                    : "tt.infodata.multi.currently_generates",
+                EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(getPowerFlow())) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + GTUtility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocal("tt.keyphrase.Tier_Rating") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            "Energy Hatches:",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            (getPowerFlow() * eAmpereFlow <= 0 ? "Currently uses: " : "Currently generates: ") + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(Math.abs(getPowerFlow()))
-                + EnumChatFormatting.RESET
-                + " EU/t at "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(eAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            "Tier Rating: " + EnumChatFormatting.YELLOW
                 + VN[getMaxEnergyInputTier_EM()]
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.GREEN
                 + VN[getMinEnergyInputTier_EM()]
                 + EnumChatFormatting.RESET
-                + " Amp Rating: "
+                + " "
+                + StatCollector.translateToLocal("tt.keyphrase.Amp_Rating")
+                + " "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(eMaxAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
-            "Problems: " + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " Efficiency: "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            "PowerPass: " + EnumChatFormatting.BLUE
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.problems_efficiency",
+                "" + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET,
+                "" + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %"),
+            StatCollector.translateToLocalFormatted("tt.keyword.PowerPass") + ": "
+                + EnumChatFormatting.BLUE
                 + ePowerPass
                 + EnumChatFormatting.RESET
-                + " SafeVoid: "
+                + " "
+                + StatCollector.translateToFallback("tt.keyword.SafeVoid")
+                + ": "
                 + EnumChatFormatting.BLUE
                 + eSafeVoid,
-            "Computation: " + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eAvailableData)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(eRequiredData)
-                + EnumChatFormatting.RESET };
+            StatCollector.translateToLocalFormatted(
+                "tt.infodata.multi.computation",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET) };
     }
 
     /**
@@ -503,22 +488,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // endregion
 
     // region Methods to maybe override (if u implement certain stuff)
-
-    /**
-     * is the thing inside controller a valid item to make the machine work
-     */
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
-    }
-
-    /**
-     * how much damage to apply to thing in controller - not sure how it does it
-     */
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
 
     /**
      * called when removing from map - not when unloading? //todo check
@@ -689,7 +658,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         aNBT.setLong("eDataA", eAvailableData);
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
-        aNBT.setByte("eMinRepair", minRepairStatus);
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("ePowerPassCover", ePowerPassCover);
@@ -722,7 +690,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
-
+        // TODO: REMOVE AFTER NEW PARAMETER PORT COMPLETE
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
@@ -746,6 +714,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             paramOs.setByte(Integer.toString(i), parametrization.eParamsOutStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsOutS", paramOs);
+
+        if (this instanceof IParametrized parametrized) {
+            parametrized.saveParameters(aNBT);
+        }
     }
 
     /**
@@ -765,7 +737,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         eAvailableData = aNBT.getLong("eDataA");
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
-        minRepairStatus = aNBT.hasKey("eMinRepair") ? aNBT.getByte("eMinRepair") : 3;
         eParameters = !aNBT.hasKey("eParam") || aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
         ePowerPassCover = aNBT.getBoolean("ePowerPassCover");
@@ -824,6 +795,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
             parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
         }
+
+        if (this instanceof IParametrized parametrized) {
+            parametrized.loadParameters(aNBT);
+        }
     }
 
     /**
@@ -832,27 +807,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
-        if (!ShutDownReasonRegistry.isRegistered(reason.getID())) {
-            throw new RuntimeException(String.format("Reason %s is not registered for registry", reason.getID()));
-        }
+        super.stopMachine(reason);
+
         for (MTEHatchDataOutput data : eOutputData) {
             data.q = null;
         }
-        mLastWorkingTick = mTotalRunTime;
-        mOutputItems = null;
-        mOutputFluids = null;
-        mEfficiency = 0;
-        mEfficiencyIncrease = 0;
-        mProgresstime = 0;
-        mMaxProgresstime = 0;
+
         eAvailableData = 0;
         hatchesStatusUpdate_EM();
-        getBaseMetaTileEntity().disableWorking();
-        getBaseMetaTileEntity().setShutDownReason(reason);
-        getBaseMetaTileEntity().setShutdownStatus(true);
-        if (reason.wasCritical()) {
-            sendSound(INTERRUPT_SOUND_INDEX);
-        }
     }
 
     /**
@@ -884,12 +846,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
-    /**
-     * mining level...
-     */
     @Override
     public byte getTileEntityBaseType() {
-        return 3;
+        return HarvestTool.WrenchLevel3.toTileEntityBaseType();
     }
 
     // endregion
@@ -938,7 +897,26 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             eCertainStatus = uncertainty.update(eCertainMode);
         }
         eAvailableData = getAvailableData_EM();
-        parametersStatusesWrite_EM(busy);
+
+        if (!GTValues.DEVENV) {
+            parametersStatusesWrite_EM(busy);
+        } else {
+            try {
+                parametersStatusesWrite_EM(busy);
+            } catch (NoSuchMethodError e) {
+                GTMod.GT_FML_LOGGER.info("Caught exception that was probably thrown because of a hotswap", e);
+
+                Arrays.fill(parametrization.groups, null);
+                parametrization.parameterInArrayList.clear();
+                parametrization.parameterOutArrayList.clear();
+                Arrays.fill(parametrization.eParamsInStatus, LedStatus.STATUS_UNUSED);
+                Arrays.fill(parametrization.eParamsOutStatus, LedStatus.STATUS_UNUSED);
+
+                parametersInstantiation_EM();
+
+                parametersStatusesWrite_EM(busy);
+            }
+        }
     }
 
     @Deprecated
@@ -999,7 +977,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             mTotalRunTime++;
-            explodedThisTick = false;
             if (mEfficiency < 0) {
                 mEfficiency = 0;
             }
@@ -1052,7 +1029,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                         checkMaintenance();
                     }
 
-                    if (getRepairStatus() >= minRepairStatus) { // S
+                    if (getRepairStatus() >= 3) { // S
                         if (CommonValues.MULTI_CHECK_AT == Tick) {
                             hatchesStatusUpdate_EM();
                         }
@@ -1125,7 +1102,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             setErrorDisplayID(
                 getErrorDisplayID() & -512 | (mWrench ? 0 : 1)
                     | (mScrewdriver ? 0 : 2)
-                    | (mSoftHammer ? 0 : 4)
+                    | (mSoftMallet ? 0 : 4)
                     | (mHardHammer ? 0 : 8)
                     | (mSolderingTool ? 0 : 16)
                     | (mCrowbar ? 0 : 32)
@@ -1142,11 +1119,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     protected void addClassicOutputs_EM() {
         if (mOutputItems != null) {
-            for (ItemStack tStack : mOutputItems) {
-                if (tStack != null) {
-                    addOutput(tStack);
-                }
-            }
+            addItemOutputs(mOutputItems);
         }
         mOutputItems = null;
 
@@ -1277,60 +1250,49 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     protected void dischargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (ePowerPass && getEUVar() > getMinimumStoredEU()) {
-            powerPass(aBaseMetaTileEntity);
-        }
-    }
-
-    protected final void powerPass(IGregTechTileEntity aBaseMetaTileEntity) {
-        long euVar;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity
-                    .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
-            }
-        }
-        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
-            euVar = tHatch.maxEUOutput() * tHatch.maxAmperesOut();
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity
-                    .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.maxAmperesOut()), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
+        if (ePowerPass) {
+            if (getEUVar() > getMinimumStoredEU()) {
+                powerPass(aBaseMetaTileEntity);
+            } else {
+                onPostPowerPass(0);
             }
         }
     }
 
-    protected final void powerPass_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        long euVar;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            euVar = tHatch.maxEUOutput();
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, 1), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
+    protected final void powerPass(IGregTechTileEntity igte) {
+        double injectedEU = 0;
+
+        for (MTEHatchDynamo hatch : validMTEList(mDynamoHatches)) {
+            long euToInject = hatch.maxEUOutput() * hatch.maxAmperesOut();
+
+            if (hatch.getEUVar() + euToInject > hatch.maxEUStore()) continue;
+
+            long withInefficiency = euToInject + Math.max(euToInject / 24576, hatch.maxAmperesOut());
+
+            if (igte.decreaseStoredEnergyUnits(withInefficiency, false)) {
+                hatch.setEUVar(hatch.getEUVar() + euToInject);
+                injectedEU += euToInject;
             }
         }
-        for (MTEHatchDynamoMulti tHatch : validMTEList(eDynamoMulti)) {
-            euVar = tHatch.maxEUOutput() * tHatch.Amperes;
-            if (tHatch.getBaseMetaTileEntity()
-                .getStoredEU() <= tHatch.maxEUStore() - euVar
-                && aBaseMetaTileEntity
-                    .decreaseStoredEnergyUnits(euVar + Math.max(euVar / 24576, tHatch.Amperes), false)) {
-                tHatch.setEUVar(
-                    tHatch.getBaseMetaTileEntity()
-                        .getStoredEU() + euVar);
+
+        for (MTEHatchDynamoMulti hatch : validMTEList(eDynamoMulti)) {
+            long euToInject = hatch.maxEUOutput() * hatch.maxAmperesOut();
+
+            if (hatch.getEUVar() + euToInject > hatch.maxEUStore()) continue;
+
+            long withInefficiency = euToInject + Math.max(euToInject / 24576, hatch.maxAmperesOut());
+
+            if (igte.decreaseStoredEnergyUnits(withInefficiency, false)) {
+                hatch.setEUVar(hatch.getEUVar() + euToInject);
+                injectedEU += euToInject;
             }
         }
+
+        onPostPowerPass(injectedEU);
+    }
+
+    protected void onPostPowerPass(double eu) {
+
     }
 
     protected void chargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -1388,11 +1350,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // endregion
 
     // region EFFICIENCY AND FIXING LIMITS
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
 
     @Override
     public int getIdealStatus() {
@@ -1533,15 +1490,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             EUuse = -EUuse;
         }
         if (EUuse > getEUVar() || // not enough power
-            (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() : (EUtTierVoltage > maxEUinputMax) || // TIER IS
-                                                                                                     // BASED ON
-                                                                                                     // BEST HATCH!
-                                                                                                     // not total
-                                                                                                     // EUtEffective
-                                                                                                     // input
-                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) { // EUuse==0? --> (EUuse
-                                                                                        // - 1) / maxEUinputMin
-                                                                                        // + 1 = 1! //if
+        // TIER IS BASED ON BEST HATCH! not total EUtEffective input
+            (EUtTierVoltage == 0 ? EUuse > getMaxInputEnergy() : (EUtTierVoltage > maxEUinputMax) ||
+            // EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1!
+                (EUtTierVoltage * Amperes - 1) / maxEUinputMin + 1 > eMaxAmpereFlow)) {
             // not too much A
             if (ConfigHandler.debug.DEBUG_MODE) {
                 TecTech.LOGGER.debug("L1 " + EUuse + ' ' + getEUVar() + ' ' + (EUuse > getEUVar()));
@@ -1659,11 +1611,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new ArrayList<>(eEnergyMulti);
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
     // empty body to prevent any explosion
     @Override
     public final void explodeMultiblock() {}
@@ -1675,59 +1622,20 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     // region adder methods
     @Override
     public final boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
+        if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
-        if (aMetaTileEntity instanceof MTEHatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-        }
-        if (aMetaTileEntity instanceof IDualInputHatch) {
-            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchInputBus) {
-            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
-            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchMuffler) {
-            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchUncertainty) {
-            return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDataInput) {
-            return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchDataOutput) {
-            return eOutputData.add((MTEHatchDataOutput) aMetaTileEntity);
-        }
-        return false;
+        if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) return eUncertainHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) return eEnergyMulti.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) return eDynamoMulti.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) return eInputData.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) return eOutputData.add(hatch);
+
+        return super.addToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     public final boolean addClassicToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -1738,8 +1646,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
@@ -1762,8 +1671,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity instanceof MTEHatchDynamo) {
             return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+            return mMaintenanceHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchMuffler) {
             return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
@@ -1794,8 +1706,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
 
         return false;
@@ -1818,9 +1731,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchMuffler) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMufflerHatches.add((MTEHatchMuffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMuffler muffler) {
+            muffler.updateTexture(aBaseCasingIndex);
+            muffler.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mMufflerHatches.add(muffler);
         }
 
         return false;
@@ -1835,19 +1749,21 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof IDualInputHatch) {
-            ((IDualInputHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
+        if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDualInputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputHatches.add((MTEHatchInput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mInputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchInputBus) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
-            return mInputBusses.add((MTEHatchInputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInputBus hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            hatch.mRecipeMap = getRecipeMap();
+            return mInputBusses.add(hatch);
         }
 
         return false;
@@ -1862,13 +1778,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mOutputHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchOutputBus) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mOutputBusses.add((MTEHatchOutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mOutputBusses.add(hatch);
         }
 
         return false;
@@ -1884,13 +1802,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mEnergyHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eEnergyMulti.add(hatch);
         }
         return false;
     }
@@ -1905,13 +1825,15 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eDynamoMulti.add(hatch);
         }
         return false;
     }
@@ -1925,21 +1847,25 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergy hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mEnergyHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchEnergyMulti hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eEnergyMulti.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mDynamoHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eDynamoMulti.add(hatch);
         }
         return false;
     }
@@ -1983,9 +1909,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchUncertainty) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eUncertainHatches.add(hatch);
         }
         return false;
     }
@@ -1999,13 +1926,18 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
+                droneDownLink.registerMachineController(this);
+            }
+            return mMaintenanceHatches.add(hatch);
         }
-        if (aMetaTileEntity instanceof MTEHatchUncertainty) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eUncertainHatches.add((MTEHatchUncertainty) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchUncertainty hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eUncertainHatches.add(hatch);
         }
         return false;
     }
@@ -2019,9 +1951,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mMaintenanceHatches.add(hatch);
         }
         return false;
     }
@@ -2035,9 +1968,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchDataInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eInputData.add((MTEHatchDataInput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDataInput hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eInputData.add(hatch);
         }
         return false;
     }
@@ -2051,9 +1985,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
-        if (aMetaTileEntity instanceof MTEHatchDataOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eOutputData.add((MTEHatchDataOutput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchDataOutput hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return eOutputData.add(hatch);
         }
         return false;
     }
@@ -2101,35 +2036,37 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     public enum HatchElement implements IHatchElement<TTMultiblockBase> {
 
-        Uncertainty(TTMultiblockBase::addUncertainToMachineList, MTEHatchUncertainty.class) {
+        Uncertainty("GT5U.MBTT.Uncertainty", TTMultiblockBase::addUncertainToMachineList, MTEHatchUncertainty.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eUncertainHatches.size();
             }
         },
-        EnergyMulti(TTMultiblockBase::addEnergyInputToMachineList, MTEHatchEnergyMulti.class) {
+        EnergyMulti("GT5U.MBTT.ExoticEnergyHatch", TTMultiblockBase::addEnergyInputToMachineList,
+            MTEHatchEnergyMulti.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eEnergyMulti.size();
             }
         },
-        DynamoMulti(TTMultiblockBase::addDynamoToMachineList, MTEHatchDynamoMulti.class) {
+        DynamoMulti("GT5U.MBTT.ExoticEnergyDynamo", TTMultiblockBase::addDynamoToMachineList,
+            MTEHatchDynamoMulti.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eDynamoMulti.size();
             }
         },
-        InputData(TTMultiblockBase::addDataInputToMachineList, MTEHatchDataInput.class) {
+        InputData("GT5U.MBTT.InputData", TTMultiblockBase::addDataInputToMachineList, MTEHatchDataInput.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
                 return t.eInputData.size();
             }
         },
-        OutputData(TTMultiblockBase::addDataOutputToMachineList, MTEHatchDataOutput.class) {
+        OutputData("GT5U.MBTT.OutputData", TTMultiblockBase::addDataOutputToMachineList, MTEHatchDataOutput.class) {
 
             @Override
             public long count(TTMultiblockBase t) {
@@ -2137,11 +2074,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             }
         },;
 
+        private final String name;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<TTMultiblockBase> adder;
 
         @SafeVarargs
-        HatchElement(IGTHatchAdder<TTMultiblockBase> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        HatchElement(String name, IGTHatchAdder<TTMultiblockBase> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.name = name;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -2149,6 +2089,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
             return mteClasses;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return GTUtility.translate(name);
         }
 
         public IGTHatchAdder<? super TTMultiblockBase> adder() {
@@ -2168,17 +2113,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
+    protected <T> T getParamValue(String key, Class<T> tClass) {
+        if (!parameterMap.containsKey(key)) {
+            throw new IllegalArgumentException("Tried to access nonexistent parameter " + key);
+        }
+
+        Object value = parameterMap.get(key)
+            .getValue();
+        if (value.getClass()
+            .equals(tClass)) {
+            return tClass.cast(value);
+        }
+
+        throw new IllegalArgumentException(
+            String.format("Tried to cast parameter %s to %s when its type is %s", key, tClass, value.getClass()));
+    }
     // region ModularUI
-
-    @Override
-    public int getGUIWidth() {
-        return 198;
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return 192;
-    }
 
     @Override
     public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -2206,6 +2156,21 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     }
 
     private static byte LEDCounter = 0;
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new TTMultiblockBaseGui(this);
+    }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -2360,7 +2325,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setPos(174, doesBindPlayerInventory() ? 116 : 140)
             .setSize(16, 16);
         if (isPowerPassButtonEnabled()) {
-            button.addTooltip("Power Pass")
+            button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_pass"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
@@ -2391,7 +2356,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setPos(174, doesBindPlayerInventory() ? 132 : 156)
             .setSize(16, 16);
         if (isSafeVoidButtonEnabled()) {
-            button.addTooltip("Safe Void")
+            button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.safe_void"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;
@@ -2426,7 +2391,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .setPos(174, doesBindPlayerInventory() ? 148 : 172)
             .setSize(16, 16);
         if (isAllowedToWorkButtonEnabled()) {
-            button.addTooltip("Power Switch")
+            button.addTooltip(StatCollector.translateToLocal("tt.gui.tooltip.power_switch"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         }
         return (ButtonWidget) button;

@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.common.covers.Cover;
+import gregtech.common.text.ClientTickRateFormatter;
 
 public class CoverTickRateButton extends ButtonWidget {
 
@@ -74,7 +75,7 @@ public class CoverTickRateButton extends ButtonWidget {
         return ImmutableList.of(
             StatCollector.translateToLocalFormatted(
                 "gt.cover.info.button.tick_rate.1",
-                new Cover.ClientTickRateFormatter(clientTickRate),
+                new ClientTickRateFormatter(clientTickRate),
                 boundsNotification),
             StatCollector.translateToLocal("gt.cover.info.button.tick_rate.2"),
             StatCollector.translateToLocal("gt.cover.info.button.tick_rate.3"));

@@ -12,13 +12,14 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
+import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 
 public class GoodGeneratorRecipeMaps {
 
-    public static final RecipeMap<RecipeMapBackend> naquadahReactorFuels = RecipeMapBuilder
-        .of("gg.recipe.naquadah_reactor")
+    public static final RecipeMap<FuelBackend> naquadahReactorFuels = RecipeMapBuilder
+        .of("gg.recipe.naquadah_reactor", FuelBackend::new)
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("value.naquadah_reactor"))

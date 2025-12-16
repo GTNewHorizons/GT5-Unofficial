@@ -95,11 +95,6 @@ public class MTEHatchInputBattery extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -141,7 +136,7 @@ public class MTEHatchInputBattery extends MTEHatch {
                             }
                         }
                     }
-                } else {}
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
@@ -154,19 +149,7 @@ public class MTEHatchInputBattery extends MTEHatch {
     }
 
     protected void fillStacksIntoFirstSlots() {
-        for (int i = 0; i < mInventory.length; i++)
-            for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
+        GTUtility.compactInventory(this);
     }
 
     @Override
@@ -184,27 +167,9 @@ public class MTEHatchInputBattery extends MTEHatch {
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
     public int rechargerSlotCount() {
-        return switch (mTier) {
-            case 2 -> 4;
-            case 4 -> 16;
-            default -> 16;
-        };
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
-        return 0;
+        if (mTier == 2) return 2;
+        return 16;
     }
 
     @Override

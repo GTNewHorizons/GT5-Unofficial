@@ -14,12 +14,10 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenPlates extends RecipeGenBase {
 
@@ -57,7 +55,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         Logger.WARNING("Generating Plate recipes for " + material.getLocalizedName());
 
         // Forge Hammer
-        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single)) {
+        if (ingotStackTwo != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackThree)
                 .itemOutputs(plate_SingleTwo)
@@ -69,9 +67,10 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Bender
-        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(plate_Single)) {
+        if (ingotStackOne != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(1))
+                .itemInputs(ingotStackOne)
+                .circuit(1)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 1L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -80,9 +79,10 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(ingotStackOne) && ItemUtils.checkForInvalidItems(foil_SingleFour)) {
+        if (ingotStackOne != null && foil_SingleFour != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(10))
+                .itemInputs(ingotStackOne)
+                .circuit(10)
                 .itemOutputs(foil_SingleFour)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -92,7 +92,7 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Alloy Smelter
-        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Single)) {
+        if (ingotStackTwo != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ingotStackTwo, shape_Mold)
                 .itemOutputs(plate_Single)
@@ -103,7 +103,7 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Alloy Smelter Recipe: " + material.getLocalizedName() + " - Success");
         }
         // Cutting Machine
-        if (ItemUtils.checkForInvalidItems(block) && ItemUtils.checkForInvalidItems(plate_Single)) {
+        if (block != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(block)
                 .itemOutputs(plate_SingleNine)
@@ -115,9 +115,10 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Making Double Plates
-        if (ItemUtils.checkForInvalidItems(ingotStackTwo) && ItemUtils.checkForInvalidItems(plate_Double)) {
+        if (ingotStackTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackTwo, GTUtility.getIntegratedCircuit(2))
+                .itemInputs(ingotStackTwo)
+                .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -126,9 +127,10 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(plate_SingleTwo) && ItemUtils.checkForInvalidItems(plate_Double)) {
+        if (plate_SingleTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(plate_SingleTwo, GTUtility.getIntegratedCircuit(2))
+                .itemInputs(plate_SingleTwo)
+                .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -137,10 +139,10 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Bender
-        if (ItemUtils.checkForInvalidItems(material.getPlate(1))
-            && ItemUtils.checkForInvalidItems(material.getFoil(1))) {
+        if (material.getPlate(1) != null && material.getFoil(1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getPlate(1), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(material.getPlate(1))
+                .circuit(1)
                 .itemOutputs(material.getFoil(4))
                 .duration(Math.max(material.getMass(), 1L))
                 .eut(material.vVoltageMultiplier)
@@ -153,9 +155,10 @@ public class RecipeGenPlates extends RecipeGenBase {
         }
 
         // Making Dense Plates
-        if (ItemUtils.checkForInvalidItems(ingotStackNine) && ItemUtils.checkForInvalidItems(plate_Dense)) {
+        if (ingotStackNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackNine, GTUtility.getIntegratedCircuit(9))
+                .itemInputs(ingotStackNine)
+                .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -164,9 +167,10 @@ public class RecipeGenPlates extends RecipeGenBase {
             Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
         }
 
-        if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense)) {
+        if (plate_SingleNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(plate_SingleNine, GTUtility.getIntegratedCircuit(9))
+                .itemInputs(plate_SingleNine)
+                .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)

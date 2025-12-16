@@ -31,9 +31,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -320,8 +323,8 @@ public class MTERockBreaker extends MTEBasicMachine {
             }
 
             /**
-             * @param desc A description to show in NEI if there are no recipe inputs.
-             *             For example: "IT'S FREE! Place Lava on Side"
+             * @param desc A description to show in NEI if there are no recipe inputs. For example: "IT'S FREE! Place
+             *             Lava on Side"
              */
             public Builder recipeDescription(String desc) {
                 this.recipeDescription = desc;
@@ -372,12 +375,19 @@ public class MTERockBreaker extends MTEBasicMachine {
                     // Add the "IT'S FREE" item
                     inputs.add(ItemList.Display_ITS_FREE.getWithName(1, this.recipeDescription));
                 }
-                if (this.circuit != -1) {
-                    inputs.add(GTUtility.getIntegratedCircuit(this.circuit));
-                }
                 b.itemInputs(inputs.toArray(new ItemStack[0]));
+                if (this.circuit != -1) {
+                    b.circuit(this.circuit);
+                }
                 b.addTo(rockBreakerFakeRecipes);
             }
         }
     }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
+    }
+
 }

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -94,7 +95,8 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     private int tierMachineCasing = -1;
 
-    public int getTierMachineCasing(Block block, int meta) {
+    @Nullable
+    public Integer getTierMachineCasing(Block block, int meta) {
         if (block == sBlockCasings1 && 10 == meta) {
             mCounCasing++;
             return 1;
@@ -103,7 +105,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             mCounCasing++;
             return 2;
         }
-        return 0;
+        return null;
     }
 
     protected void updateHatchTexture() {
@@ -129,12 +131,18 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     @Override
     protected ITexture getFrontOverlay() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR)
+            .extFacing()
+            .build();
     }
 
     @Override
     protected ITexture getFrontOverlayActive() {
-        return TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE);
+        return TextureFactory.builder()
+            .addIcon(Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE)
+            .extFacing()
+            .build();
     }
 
     @Override
@@ -181,7 +189,7 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTUR_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -198,7 +206,6 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
         tierMachineCasing = -1;
         mCounCasing = 0;
         if (!checkPiece(STRUCTUR_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0) return false;
         if (tierMachineCasing == 1 && mCounCasing >= 14 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -254,9 +261,10 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setEUtDiscount(1.25 * tierMachine)
-                    .setSpeedBoost(1.6 / tierMachine);
+                    .setDurationModifier(1.6 / tierMachine);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -268,13 +276,11 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("25% faster than using single block steam machines of the same pressure")
-            .addInfo("Only consumes steam at 62.5% of the L/s normally required")
-            .addInfo("Processes up to 8 items at once")
+            .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(3, 3, 3, true)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
+            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addStructureInfo(
                 EnumChatFormatting.WHITE + "Steam Input Hatch "
                     + EnumChatFormatting.GOLD
@@ -295,8 +301,14 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        info.add("Machine Tier: " + EnumChatFormatting.YELLOW + tierMachine);
-        info.add("Parallel: " + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.tier",
+                "" + EnumChatFormatting.YELLOW + tierMachine));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi.steam.parallel",
+                "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
         return info.toArray(new String[0]);
     }
 
@@ -322,25 +334,31 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
+        aNBT.setInteger("tierMachineCasing", tierMachineCasing);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
+        tierMachineCasing = aNBT.getInteger("tierMachineCasing");
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.IC2_MACHINES_MACERATOR_OP;
+        return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
+    @Override
+    public int getThemeTier() {
+        return tierMachineCasing;
+    }
 }

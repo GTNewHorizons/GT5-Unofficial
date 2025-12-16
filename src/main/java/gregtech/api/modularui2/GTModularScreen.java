@@ -12,8 +12,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This class is responsible for client-only functionalities of the GUI.
- * Override {@link IGuiHolder#createScreen} to use.
+ * This class is responsible for client-only functionalities of the GUI. Override {@link IGuiHolder#createScreen} to
+ * use.
  */
 @SideOnly(Side.CLIENT)
 public class GTModularScreen extends ModularScreen {

@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -183,6 +184,29 @@ public class FormingPressRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.brick, 1, 0))
             .duration(5 * SECONDS)
             .eut(16)
+            .addTo(formingPressRecipes);
+        // Bartworks Glass Tube
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
+                ItemList.Shape_Mold_Rod_Long.get(0L))
+            .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
+            .duration(15 * SECONDS)
+            .eut(16)
+            .addTo(formingPressRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WhiteDwarfMatter, 1L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 4L),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 4L),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlackDwarfMatter, 1L))
+            .fluidInputs(Materials.UUMatter.getFluid(4_096_000L))
+            .itemOutputs(ItemList.NaniteFramework.get(1))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(formingPressRecipes);
     }
 }

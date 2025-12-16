@@ -20,12 +20,10 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -112,8 +110,8 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.GTClient;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -126,7 +124,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private static final int drone = 6;
     private static final int upgradeSlot = drone + 1;
     private static final int upgradeSlotCount = 4;
-    private static Field AlleleBeeEffectThrottledField;
 
     final IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
 
@@ -216,7 +213,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
@@ -507,46 +504,39 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private void doAcceleratedEffects() {
         final IBeeGenome genome = usedQueenBee.getGenome();
         final IAlleleBeeEffect effect = genome.getEffect();
-        try {
-            if (AlleleBeeEffectThrottledField == null) {
-                AlleleBeeEffectThrottledField = AlleleEffectThrottled.class.getDeclaredField("throttle");
-                AlleleBeeEffectThrottledField.setAccessible(true);
-            }
-            if (effect instanceof IAlleleBeeAcceleratableEffect) {
-                effectData[0] = effect.validateStorage(effectData[0]);
-                effectData[0] = ((IAlleleBeeAcceleratableEffect) effect).doEffectAccelerated(
-                    genome,
-                    effectData[0],
-                    this,
-                    usedBeeLife / (effect instanceof AlleleEffectThrottled
-                        ? (float) AlleleBeeEffectThrottledField.getInt(effect)
+        if (effect instanceof IAlleleBeeAcceleratableEffect) {
+            effectData[0] = effect.validateStorage(effectData[0]);
+            effectData[0] = ((IAlleleBeeAcceleratableEffect) effect).doEffectAccelerated(
+                genome,
+                effectData[0],
+                this,
+                usedBeeLife
+                    / (effect instanceof AlleleEffectThrottled ? (float) ((AlleleEffectThrottled) effect).getThrottle()
                         : 1f));
-            }
+        }
 
-            if (!effect.isCombinable()) return;
+        if (!effect.isCombinable()) return;
 
-            final IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
-            if (!secondary.isCombinable()) return;
+        final IAlleleBeeEffect secondary = (IAlleleBeeEffect) genome.getInactiveAllele(EnumBeeChromosome.EFFECT);
+        if (!secondary.isCombinable()) return;
 
-            if (secondary instanceof IAlleleBeeAcceleratableEffect) {
-                effectData[1] = secondary.validateStorage(effectData[1]);
-                effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
-                    genome,
-                    effectData[0],
-                    this,
-                    usedBeeLife / (secondary instanceof AlleleEffectThrottled
-                        ? (float) AlleleBeeEffectThrottledField.getInt(secondary)
-                        : 1f));
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (secondary instanceof IAlleleBeeAcceleratableEffect) {
+            effectData[1] = secondary.validateStorage(effectData[1]);
+            effectData[1] = ((IAlleleBeeAcceleratableEffect) secondary).doEffectAccelerated(
+                genome,
+                effectData[0],
+                this,
+                usedBeeLife / (secondary instanceof AlleleEffectThrottled
+                    ? (float) ((AlleleEffectThrottled) secondary).getThrottle()
+                    : 1f));
         }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isClientSide()) {
-            if (GTClient.changeDetected == 4) {
+            if (GTMod.clientProxy()
+                .changeDetected() == 4) {
                 /*
                  * Client tick counter that is set to 5 on hiding pipes and covers. It triggers a texture update next
                  * client tick when reaching 4, with provision for 3 more update tasks, spreading client change
@@ -649,24 +639,12 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     aBaseMetaTileEntity.setActive(false);
 
                     if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing) {
-                        final TileEntity tTileEntity2 = aBaseMetaTileEntity
-                            .getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                        final long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                        int tMaxStacks = (int) (tStoredEnergy / 64L);
-                        if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                        GTItemTransfer transfer = new GTItemTransfer();
 
-                        moveMultipleItemStacks(
-                            aBaseMetaTileEntity,
-                            tTileEntity2,
-                            aBaseMetaTileEntity.getFrontFacing(),
-                            aBaseMetaTileEntity.getBackFacing(),
-                            null,
-                            false,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1,
-                            tMaxStacks);
+                        transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                        transfer.setStacksToTransfer(mOutputItems.length);
+
+                        transfer.transfer();
                     }
 
                     if (aBaseMetaTileEntity.isAllowedToWork() && checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE)
@@ -911,30 +889,44 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private int flowerBlockMeta;
 
     private boolean checkFlower(IBee bee) {
+        final World world = getWorld();
         final String flowerType = bee.getGenome()
             .getFlowerProvider()
             .getFlowerType();
-        if (!this.flowerType.equals(flowerType)) flowercoords = null;
+
         if (flowercoords != null) {
-            if (getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlock
-                || getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ)
-                    != flowerBlockMeta)
-                if (!FlowerManager.flowerRegistry
-                    .isAcceptedFlower(flowerType, getWorld(), flowercoords.posX, flowercoords.posY, flowercoords.posZ))
-                    flowercoords = null;
-                else {
-                    flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                    flowerBlockMeta = getWorld()
-                        .getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                }
-        }
-        if (flowercoords == null) {
-            flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
-            if (flowercoords != null) {
-                flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                this.flowerType = flowerType;
+            int x = flowercoords.posX;
+            int y = flowercoords.posY;
+            int z = flowercoords.posZ;
+
+            if (!this.flowerType.equals(flowerType) || !world.blockExists(x, y, z)) {
+                return findFlower(bee, flowerType);
             }
+
+            if (world.getBlock(x, y, z) != flowerBlock || world.getBlockMetadata(x, y, z) != flowerBlockMeta) {
+                if (!FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z)) {
+                    return findFlower(bee, flowerType);
+                }
+
+                flowerBlock = world.getBlock(x, y, z);
+                flowerBlockMeta = world.getBlockMetadata(x, y, z);
+            }
+        }
+
+        if (flowercoords == null) {
+            return findFlower(bee, flowerType);
+        }
+
+        return true;
+    }
+
+    /** @return true if a flower was found, false otherwise */
+    private boolean findFlower(IBee bee, String flowerType) {
+        flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
+        if (flowercoords != null) {
+            flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            this.flowerType = flowerType;
         }
         return flowercoords != null;
     }
@@ -1282,7 +1274,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
                         builder,
                         (widget, val) -> widget.notifyTooltipChange())
-                    .setPos(163, 5)
+                    .setPos(163, 19)
                     .setSize(7, 18))
             .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
                 if (clickData.mouseButton == 0) {
@@ -1466,10 +1458,8 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         @Override
         public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
             final Slot s = getSlot(aSlotIndex);
-            if (s == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            if (aSlotIndex >= playerInventorySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (s instanceof ApiarySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
             final ItemStack aStack = s.getStack();
-            if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (!GTApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
             for (int i = playerInventorySlot + 2; i < playerInventorySlot + 2 + 4; i++) {
                 final Slot iSlot = getSlot(i);

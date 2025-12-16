@@ -38,6 +38,8 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.GTValues;
+
 public class CommandHandler extends CommandBase {
 
     enum Translations {
@@ -121,7 +123,9 @@ public class CommandHandler extends CommandBase {
             chatcomponenttranslation2.getChatStyle()
                 .setColor(EnumChatFormatting.RED);
             sender.addChatMessage(chatcomponenttranslation2);
-        } else cmd.processCommand(sender, args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
+        } else cmd.processCommand(
+            sender,
+            args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : GTValues.emptyStringArray);
     }
 
     @Override

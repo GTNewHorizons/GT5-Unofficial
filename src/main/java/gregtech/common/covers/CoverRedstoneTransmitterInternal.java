@@ -1,10 +1,13 @@
 package gregtech.common.covers;
 
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
 
 public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase {
 
@@ -17,13 +20,17 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void onCoverRemoval() {
+        GregTechAPI.sWirelessRedstone.remove(getMapFrequency());
+    }
+
+    @Override
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
-        GregTechAPI.sWirelessRedstone.put(coverData.get(), coverable.getOutputRedstoneSignal(coverSide));
-        return coverData;
+        GregTechAPI.sWirelessRedstone.put(getMapFrequency(), coverable.getOutputRedstoneSignal(coverSide));
     }
 
     @Override
@@ -34,5 +41,17 @@ public class CoverRedstoneTransmitterInternal extends CoverRedstoneWirelessBase 
     @Override
     public boolean manipulatesSidedRedstoneOutput() {
         return true;
+    }
+
+    // TODO: Remove this in 2.9 unless class moved from CoverLegacyData
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt nbtInt) {
+            int data = nbtInt.func_150287_d();
+            processCoverData(getFlagFrequency(data), getFlagCheckbox(data));
+            return;
+        }
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        processCoverData(tag.getInteger("frequency"), tag.getBoolean("privateChannel"));
     }
 }

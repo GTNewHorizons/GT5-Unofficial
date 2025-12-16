@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
@@ -85,105 +84,80 @@ public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
         switch (stack.getItemDamage()) {
             case 1:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(IV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(IV_cap_storage)));
                 break;
             case 2:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(LuV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(LuV_cap_storage)));
                 break;
             case 3:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(ZPM_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(ZPM_cap_storage)));
                 break;
             case 4:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(UV_cap_storage)));
                 break;
             case 5:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UHV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(UHV_cap_storage)));
                 lines.add(
-                    "Supports up to " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UHV_cap_eu_per_tick)
-                        + EnumChatFormatting.GRAY
-                        + "EU/t of wireless transfer per "
-                        + GTValues.TIER_COLORS[9]
-                        + GTValues.VN[9]
-                        + EnumChatFormatting.GRAY
-                        + " capacitor.");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
+                        GTUtility.formatNumbers(UHV_cap_eu_per_tick),
+                        GTValues.TIER_COLORS[9] + GTValues.VN[9]));
                 break;
             case 6:
-                lines.add("Capacity: None");
+                lines.add(StatCollector.translateToLocal("tooltip.kekztech.lapotronic_energy_unit.capacity.none"));
                 break;
             case 7:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(EV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + " EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(EV_cap_storage)));
                 break;
             case 8:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UEV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(UEV_cap_storage)));
                 lines.add(
-                    "Supports up to " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UEV_cap_eu_per_tick)
-                        + EnumChatFormatting.GRAY
-                        + "EU/t of wireless transfer per "
-                        + GTValues.TIER_COLORS[10]
-                        + GTValues.VN[10]
-                        + EnumChatFormatting.GRAY
-                        + " capacitor.");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
+                        GTUtility.formatNumbers(UEV_cap_eu_per_tick),
+                        GTValues.TIER_COLORS[10] + GTValues.VN[10]));
                 break;
             case 9:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UIV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(UIV_cap_storage)));
                 lines.add(
-                    "Supports up to " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UIV_cap_eu_per_tick)
-                        + EnumChatFormatting.GRAY
-                        + "EU/t of wireless transfer per "
-                        + GTValues.TIER_COLORS[11]
-                        + GTValues.VN[11]
-                        + EnumChatFormatting.GRAY
-                        + " capacitor.");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
+                        GTUtility.formatNumbers(UIV_cap_eu_per_tick),
+                        GTValues.TIER_COLORS[11] + GTValues.VN[11]));
                 break;
             case 10:
                 lines.add(
-                    "Capacity: " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UMV_cap_storage)
-                        + EnumChatFormatting.GRAY
-                        + "EU");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.capacity",
+                        GTUtility.formatNumbers(UMV_cap_storage)));
                 lines.add(
-                    "Supports up to " + EnumChatFormatting.RED
-                        + GTUtility.formatNumbers(UMV_cap_eu_per_tick)
-                        + EnumChatFormatting.GRAY
-                        + "EU/t of wireless transfer per "
-                        + GTValues.TIER_COLORS[12]
-                        + GTValues.VN[12]
-                        + EnumChatFormatting.GRAY
-                        + " capacitor.");
+                    StatCollector.translateToLocalFormatted(
+                        "tooltip.kekztech.lapotronic_energy_unit.wire_less_transfer",
+                        GTUtility.formatNumbers(UMV_cap_eu_per_tick),
+                        GTValues.TIER_COLORS[12] + GTValues.VN[12]));
                 break;
         }
     }

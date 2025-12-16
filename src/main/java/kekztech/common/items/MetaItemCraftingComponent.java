@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import kekztech.KekzCore;
@@ -66,7 +67,7 @@ public class MetaItemCraftingComponent extends Item {
     @SuppressWarnings({ "unchecked" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean b) {
-        list.add("Crafting component for KekzTech things");
+        list.add(StatCollector.translateToLocal("tooltip.kekztech.crafting_component"));
     }
 
     @Override

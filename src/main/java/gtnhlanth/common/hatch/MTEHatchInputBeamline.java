@@ -2,7 +2,6 @@ package gtnhlanth.common.hatch;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -14,7 +13,7 @@ import gregtech.api.render.TextureFactory;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 
-public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePacket> {
+public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
 
     private boolean delay = true;
 
@@ -52,12 +51,7 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity tile) {
-        return new MTEHatchInputBeamline(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    protected BeamLinePacket loadPacketFromNBT(NBTTagCompound tag) {
-        return new BeamLinePacket(tag);
+        return new MTEHatchInputBeamline(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -68,11 +62,6 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
     @Override
     public boolean isDataInputFacing(ForgeDirection side) {
         return isInputFacing(side);
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
-        return false;
     }
 
     @Override
@@ -97,22 +86,22 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector<BeamLinePac
 
     public void setContents(BeamLinePacket in) {
         if (in == null) {
-            this.q = null;
+            this.dataPacket = null;
         } else {
             if (in.getContent()
                 .getRate() > 0) {
-                this.q = in;
+                this.dataPacket = in;
                 delay = true;
             } else {
-                this.q = null;
+                this.dataPacket = null;
             }
         }
     }
 
     @Override
     public void moveAround(IGregTechTileEntity tile) {
-        if (delay) {
-            delay = false;
+        if (this.delay) {
+            this.delay = false;
         } else {
             this.setContents(null);
         }

@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.misc;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -131,17 +132,13 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { this.getLocalName(), "Testificate" };
+        return new String[] { this.getLocalName(),
+            StatCollector.translateToLocal("gtpp.infodata.solar_heater.testificate") };
     }
 
     @Override
     public boolean isGivingInformation() {
         return true;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-        return false;
     }
 
     public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
@@ -150,7 +147,7 @@ public class MTESolarHeater extends MTETieredMachineBlock {
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -161,26 +158,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     @Override
     public ItemStack getStackInSlot(final int p_70301_1_) {
         return null;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 0;
-    }
-
-    @Override
-    public int getCapacity() {
-        return 0;
-    }
-
-    @Override
-    public long maxEUInput() {
-        return 0;
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return 0;
     }
 
     @Override
@@ -206,16 +183,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return facing.offsetY == 0;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
     }
 
     @Override
@@ -317,11 +284,6 @@ public class MTESolarHeater extends MTETieredMachineBlock {
     @Override
     public boolean isOutputFacing(ForgeDirection side) {
         return side.offsetY == 0;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override

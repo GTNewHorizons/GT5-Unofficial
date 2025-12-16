@@ -36,8 +36,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        switch (aPrefix) {
-            case cell -> {
+        switch (aPrefix.getName()) {
+            case "cell" -> {
                 if (aMaterial == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(aStack);
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
@@ -120,7 +120,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
 
                     tItemAmount = GTUtility.ceilDiv(tItemAmount * tDensityMultiplier, aMaterial.getDensity());
 
-                    if (tList.size() <= 0) {
+                    if (tList.size() == 0) {
                         break;
                     }
 
@@ -183,7 +183,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                     }
                 }
             }
-            case cellPlasma -> {
+            case "cellPlasma" -> {
                 if (aMaterial == Materials.Empty) {
                     GTModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {
@@ -247,6 +247,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         case "Copper" -> recipeBuilder.metadata(FUEL_VALUE, 219_340)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);
+                        case "Creon" -> {}
                         case "Deuterium" -> recipeBuilder.metadata(FUEL_VALUE, 40_960)
                             .metadata(FUEL_TYPE, 4)
                             .addTo(GTRecipeConstants.Fuel);

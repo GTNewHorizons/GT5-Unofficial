@@ -5,8 +5,8 @@ import java.util.Collection;
 import gregtech.api.factory.standard.StandardFactoryNetwork;
 
 /**
- * A factory network is a logical group of factory elements.
- * You usually want to extend {@link StandardFactoryNetwork}, not this.
+ * A factory network is a logical group of factory elements. You usually want to extend {@link StandardFactoryNetwork},
+ * not this.
  */
 public interface IFactoryNetwork<TSelf extends IFactoryNetwork<TSelf, TElement, TGrid>, TElement extends IFactoryElement<TElement, TSelf, TGrid>, TGrid extends IFactoryGrid<TGrid, TElement, TSelf>> {
 

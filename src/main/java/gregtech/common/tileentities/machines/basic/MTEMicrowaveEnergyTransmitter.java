@@ -7,25 +7,22 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
 
-import java.util.function.Consumer;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -34,7 +31,6 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -42,8 +38,9 @@ import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
+import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
-public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
+public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddGregtechLogo {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int mMaxLoss = 50;
@@ -91,17 +88,33 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Coordinates:",
-            "X: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET,
-            "Y: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET,
-            "Z: " + EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET,
-            "Dimension: " + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET,
-            "Dimension Valid: " + (GTUtility.isRealDimension(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET),
-            "Dimension Registered: " + (DimensionManager.isDimensionRegistered(this.mTargetD)
-                ? EnumChatFormatting.GREEN + "Yes" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "No" + EnumChatFormatting.RESET) };
+        return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.x",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.y",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.coordinates.z",
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension",
+                "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension.valid",
+                (GTUtility.isRealDimension(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
+                        + EnumChatFormatting.RESET)),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.dimension.registered",
+                (DimensionManager.isDimensionRegistered(this.mTargetD)
+                    ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.infodata.yes")
+                        + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.infodata.no")
+                        + EnumChatFormatting.RESET)) };
     }
 
     @Override
@@ -255,18 +268,12 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     private int distanceCalculation() {
+        double dx = getBaseMetaTileEntity().getXCoord() - this.mTargetX;
+        double dy = getBaseMetaTileEntity().getYCoord() - this.mTargetY;
+        double dz = getBaseMetaTileEntity().getZCoord() - this.mTargetZ;
         return Math.abs(
             ((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                && (isDimensionalTeleportAvailable()) ? 100 : 1)
-                * (int) Math.sqrt(
-                    Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
-                        + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
-                        + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D)));
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
+                && (isDimensionalTeleportAvailable()) ? 100 : 1) * (int) Math.sqrt(dx * dx + dy * dy + dz * dz));
     }
 
     @Override
@@ -282,11 +289,6 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -310,28 +312,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 3;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getInputSlot() {
-        return 0;
     }
 
     @Override
@@ -369,63 +351,14 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
         return null;
     }
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "X: " + numberFormat.format(mTargetX))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 8))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "Y: " + numberFormat.format(mTargetY))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 16))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "Z: " + numberFormat.format(mTargetZ))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 24))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "Dim: " + numberFormat.format(mTargetD))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 32))
-            .widget(
-                TextWidget.dynamicString(() -> "Dim Valid: " + (GTUtility.isRealDimension(mTargetD) ? "Yes" : "No"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> hasDimensionalTeleportCapability())
-                    .setPos(46, 40))
-            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
-
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mTargetD += val, -16, -8, 7, 58);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mTargetD += val, -4, -1, 25, 58);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD += val, 4, 1, 133, 58);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD += val, 16, 8, 151, 58);
-    }
-
-    private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
-        int addNumber, int xPos) {
-        addChangeNumberButton(builder, overlay, val -> mTargetX += val, addNumberShift, addNumber, xPos, 4);
-        addChangeNumberButton(builder, overlay, val -> mTargetY += val, addNumberShift, addNumber, xPos, 22);
-        addChangeNumberButton(builder, overlay, val -> mTargetZ += val, addNumberShift, addNumber, xPos, 40);
-    }
-
-    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int addNumberShift, int addNumber, int xPos, int yPos) {
-        builder.widget(
-            new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
-                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEMicrowaveEnergyTransmitterGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override

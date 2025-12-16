@@ -116,6 +116,10 @@ public class MTELargeTurbineGas extends MTELargerTurbineBase {
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
             // log("Fuel Value of "+aFluids.get(0).getLocalizedName()+" is "+fuelValue+"eu");
+            if (fuelValue <= 0) {
+                return 0;
+            }
+
             if (turbine.getOptimalGasEUt() < fuelValue) {
                 // turbine too weak and/or fuel too powerful
                 // at least consume 1L

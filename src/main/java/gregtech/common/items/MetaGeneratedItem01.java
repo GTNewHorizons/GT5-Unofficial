@@ -21,6 +21,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCREEN_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SHUTTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VALVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_8V;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_EV;
@@ -145,9 +146,8 @@ import static gregtech.common.items.IDMetaItem01.Cover_FluidLimiter;
 import static gregtech.common.items.IDMetaItem01.Cover_ItemDetector;
 import static gregtech.common.items.IDMetaItem01.Cover_NeedsMaintenance;
 import static gregtech.common.items.IDMetaItem01.Cover_PlayerDetector;
-import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiverExternal;
-import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiverInternal;
-import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitterExternal;
+import static gregtech.common.items.IDMetaItem01.Cover_RedstoneReceiver;
+import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitter;
 import static gregtech.common.items.IDMetaItem01.Cover_RedstoneTransmitterInternal;
 import static gregtech.common.items.IDMetaItem01.Cover_Screen;
 import static gregtech.common.items.IDMetaItem01.Cover_Shutter;
@@ -161,6 +161,7 @@ import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_LuV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_MV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_UV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_ZPM;
+import static gregtech.common.items.IDMetaItem01.Cover_WirelessController;
 import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_LV;
 import static gregtech.common.items.IDMetaItem01.Duct_Tape;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_EV;
@@ -311,6 +312,7 @@ import static gregtech.common.items.IDMetaItem01.Schematic_2by2;
 import static gregtech.common.items.IDMetaItem01.Schematic_3by3;
 import static gregtech.common.items.IDMetaItem01.Schematic_Crafting;
 import static gregtech.common.items.IDMetaItem01.Schematic_Dust;
+import static gregtech.common.items.IDMetaItem01.Schematic_Dust_Small;
 import static gregtech.common.items.IDMetaItem01.Sensor_EV;
 import static gregtech.common.items.IDMetaItem01.Sensor_HV;
 import static gregtech.common.items.IDMetaItem01.Sensor_IV;
@@ -453,12 +455,12 @@ import static gregtech.common.items.IDMetaItem01.Tool_MatchBox_Used;
 import static gregtech.common.items.IDMetaItem01.Tool_Matches;
 import static gregtech.common.items.IDMetaItem01.Tool_Scanner;
 import static gregtech.common.items.IDMetaItem01.Upgrade_Lock;
-import static gregtech.common.items.IDMetaItem01.Upgrade_Muffler;
 import static gregtech.common.items.IDMetaItem01.ZPM2;
 import static gregtech.common.items.IDMetaItem01.ZPM3;
 import static gregtech.common.items.IDMetaItem01.ZPM4;
 import static gregtech.common.items.IDMetaItem01.ZPM5;
 import static gregtech.common.items.IDMetaItem01.ZPM6;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.HashMap;
 import java.util.List;
@@ -474,13 +476,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -495,7 +501,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTFoodStat;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -504,7 +509,6 @@ import gregtech.common.config.Other;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
-import gregtech.common.covers.CoverControlsWorkPlacer;
 import gregtech.common.covers.CoverConveyor;
 import gregtech.common.covers.CoverCrafting;
 import gregtech.common.covers.CoverDoesWork;
@@ -522,14 +526,13 @@ import gregtech.common.covers.CoverNeedMaintainance;
 import gregtech.common.covers.CoverPlayerDetector;
 import gregtech.common.covers.CoverPump;
 import gregtech.common.covers.CoverRedstoneReceiverExternal;
-import gregtech.common.covers.CoverRedstoneReceiverInternal;
 import gregtech.common.covers.CoverRedstoneTransmitterExternal;
 import gregtech.common.covers.CoverRedstoneTransmitterInternal;
-import gregtech.common.covers.CoverScreen;
 import gregtech.common.covers.CoverShutter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.covers.CoverSteamRegulator;
 import gregtech.common.covers.CoverSteamValve;
+import gregtech.common.covers.CoverWirelessController;
 import gregtech.common.items.behaviors.BehaviourCoverTool;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.items.behaviors.BehaviourDataStick;
@@ -541,13 +544,19 @@ import gregtech.common.items.behaviors.BehaviourSprayColor;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.common.items.behaviors.BehaviourSprayColorRemover;
 import gregtech.common.items.behaviors.BehaviourWrittenBook;
+import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
+import gregtech.common.render.items.InfinityMetaItemRenderer;
+import gregtech.common.render.items.TranscendentalMetaItemRenderer;
+import gregtech.common.render.items.WireFrameTesseractRenderer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
+import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
-    private final String mToolTipPurify = GTLanguageManager
-        .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
     private static final String aTextEmptyRow = "   ";
     private static final String aTextShape = " P ";
     private static final String PartCoverText = " L/t (";
@@ -646,7 +655,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 IDMetaItem01.Coin_Chocolate.ID,
                 "Chocolate Coin",
                 "Wrapped in Gold",
-                new ItemData(Materials.Gold, OrePrefixes.foil.mMaterialAmount),
+                new ItemData(Materials.Gold, OrePrefixes.foil.getMaterialAmount()),
                 new GTFoodStat(
                     1,
                     0.1F,
@@ -844,7 +853,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Fuel_Can_Plastic_Empty.ID,
                 "Empty Plastic Fuel Can",
                 "Used to store Fuels",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
         ItemList.Fuel_Can_Plastic_Filled.set(
@@ -852,7 +861,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Fuel_Can_Plastic_Filled.ID,
                 "Plastic Fuel Can",
                 "Burns well in Diesel Generators",
-                new ItemData(Materials.Plastic, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.Polyethylene, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
 
@@ -863,9 +872,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Used for making Sprays",
                 new ItemData(
                     Materials.Tin,
-                    OrePrefixes.plate.mMaterialAmount * 2L,
+                    OrePrefixes.plate.getMaterialAmount() * 2L,
                     Materials.Redstone,
-                    OrePrefixes.dust.mMaterialAmount),
+                    OrePrefixes.dust.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
@@ -876,7 +885,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Keeping hot things hot and cold things cold",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 1L + 2L * OrePrefixes.ring.mMaterialAmount),
+                    OrePrefixes.plateDouble.getMaterialAmount() + 2L * OrePrefixes.ring.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L)));
@@ -888,8 +897,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Steel,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Bronze, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Bronze, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 2L)));
 
@@ -900,8 +909,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.TungstenSteel,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Platinum, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Platinum, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 9L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 7L)));
 
@@ -912,8 +921,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Silver, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Silver, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 5L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 3L)));
 
@@ -924,8 +933,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.StainlessSteel,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Electrum, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Electrum, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 6L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L)));
 
@@ -936,8 +945,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Titanium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.RoseGold, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.RoseGold, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 7L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 5L)));
 
@@ -948,8 +957,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Chrome,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Palladium, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Palladium, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 6L)));
 
@@ -960,8 +969,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Iridium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Naquadah, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Naquadah, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 8L)));
 
@@ -972,8 +981,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Osmium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.ElectrumFlux, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 11L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 9L)));
 
@@ -984,8 +993,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "",
                 new ItemData(
                     Materials.Neutronium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
-                    new MaterialStack(Materials.Draconium, OrePrefixes.ring.mMaterialAmount * 4L)),
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
+                    new MaterialStack(Materials.Draconium, OrePrefixes.ring.getMaterialAmount() * 4L)),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 12L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L)));
 
@@ -1028,9 +1037,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 "Used for making Spray Can Solvent",
                 new ItemData(
                     Materials.Aluminium,
-                    OrePrefixes.plateDouble.mMaterialAmount * 4L,
+                    OrePrefixes.plateDouble.getMaterialAmount() * 4L,
                     Materials.Redstone,
-                    OrePrefixes.dust.mMaterialAmount),
+                    OrePrefixes.dust.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
@@ -1074,7 +1083,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Tool_Lighter_Invar_Empty.ID,
                 "Lighter (Empty)",
                 "",
-                new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
         ItemList.Tool_Lighter_Invar_Used.set(
@@ -1082,7 +1091,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Tool_Lighter_Invar_Used.ID,
                 "Lighter",
                 "",
-                new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
                 SubTag.INVISIBLE));
@@ -1091,7 +1100,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Tool_Lighter_Invar_Full.ID,
                 "Lighter (Full)",
                 "",
-                new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Invar, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
 
@@ -1100,7 +1109,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Tool_Lighter_Platinum_Empty.ID,
                 "Platinum Lighter (Empty)",
                 "A known Prank Master is engraved on it",
-                new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1109,7 +1118,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Tool_Lighter_Platinum_Used.ID,
                 "Platinum Lighter",
                 "A known Prank Master is engraved on it",
-                new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 1L),
@@ -1119,7 +1128,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Tool_Lighter_Platinum_Full.ID,
                 "Platinum Lighter (Full)",
                 "A known Prank Master is engraved on it",
-                new ItemData(Materials.Platinum, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.Platinum, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 2L)));
@@ -1268,13 +1277,20 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new ItemData(Materials.Steel, 7257600L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
-
+        ItemList.Schematic_Dust_Small.set(
+            addItem(
+                Schematic_Dust_Small.ID,
+                "Schematic (Small Dusts)",
+                "Splits Dusts into 4 (use in Packager)",
+                new ItemData(Materials.Steel, 7257600L),
+                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 1L)));
         ItemList.Battery_Hull_LV.set(
             addItem(
                 Battery_Hull_LV.ID,
                 "Small Battery Hull",
                 "An empty LV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 1L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount()),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1283,7 +1299,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Battery_Hull_MV.ID,
                 "Medium Battery Hull",
                 "An empty MV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 3L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 3L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1292,7 +1308,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Battery_Hull_HV.ID,
                 "Large Battery Hull",
                 "An empty HV Battery Hull",
-                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.mMaterialAmount * 9L),
+                new ItemData(Materials.BatteryAlloy, OrePrefixes.plate.getMaterialAmount() * 9L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1L)));
@@ -1635,30 +1651,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 128L)));
-        ItemList.Electric_Motor_UHV.set(
-            addItem(
-                Electric_Motor_UHV.ID,
-                "Electric Motor (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)));
-        ItemList.Electric_Motor_UEV.set(
-            addItem(
-                Electric_Motor_UEV.ID,
-                "Electric Motor (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
-        ItemList.Electric_Motor_UIV.set(
-            addItem(
-                Electric_Motor_UIV.ID,
-                "Electric Motor (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
+        ItemList.Electric_Motor_UHV
+            .set(
+                addItem(
+                    Electric_Motor_UHV.ID,
+                    "Electric Motor (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Electric_Motor_UEV
+            .set(
+                addItem(
+                    Electric_Motor_UEV.ID,
+                    "Electric Motor (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Electric_Motor_UIV
+            .set(
+                addItem(
+                    Electric_Motor_UIV.ID,
+                    "Electric Motor (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Motor_UMV.set(
             addItem(
                 Electric_Motor_UMV.ID,
@@ -1693,28 +1715,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
-        ItemList.Tesseract.set(
-            addItem(
-                Tesseract.ID,
-                "Raw Tesseract",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.Tesseract
+            .set(
+                addItem(
+                    Tesseract.ID,
+                    "Raw Tesseract",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(0, 0, 0));
         ItemList.GigaChad.set(
             addItem(
                 GigaChad.ID,
                 "Giga Chad Token",
                 "You are worthy",
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1000L)));
-        ItemList.EnergisedTesseract.set(
-            addItem(
-                EnergisedTesseract.ID,
-                "Energised Tesseract",
-                "Higher dimensional engineering",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
+        ItemList.EnergisedTesseract
+            .set(
+                addItem(
+                    EnergisedTesseract.ID,
+                    "Energised Tesseract",
+                    "Higher dimensional engineering",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)))
+            .setRender(new WireFrameTesseractRenderer(23, 129, 166));
 
         ItemList.Electric_Piston_LV.set(
             addItem(
@@ -1780,30 +1806,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 128L)));
-        ItemList.Electric_Piston_UHV.set(
-            addItem(
-                Electric_Piston_UHV.ID,
-                "Electric Piston (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)));
-        ItemList.Electric_Piston_UEV.set(
-            addItem(
-                Electric_Piston_UEV.ID,
-                "Electric Piston (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
-        ItemList.Electric_Piston_UIV.set(
-            addItem(
-                Electric_Piston_UIV.ID,
-                "Electric Piston (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)));
+        ItemList.Electric_Piston_UHV
+            .set(
+                addItem(
+                    Electric_Piston_UHV.ID,
+                    "Electric Piston (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Electric_Piston_UEV
+            .set(
+                addItem(
+                    Electric_Piston_UEV.ID,
+                    "Electric Piston (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Electric_Piston_UIV
+            .set(
+                addItem(
+                    Electric_Piston_UIV.ID,
+                    "Electric Piston (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Piston_UMV.set(
             addItem(
                 Electric_Piston_UMV.ID,
@@ -1901,42 +1933,52 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 128L)));
-        ItemList.Electric_Pump_UHV.set(
-            addItem(
-                Electric_Pump_UHV.ID,
-                "Electric Pump (UHV)",
-                GTUtility.formatNumbers(1048576) + PartCoverText
-                    + GTUtility.formatNumbers(1048576 * 20)
-                    + PartCoverText2,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 256L)));
-        ItemList.Electric_Pump_UEV.set(
-            addItem(
-                Electric_Pump_UEV.ID,
-                "Electric Pump (UEV)",
-                GTUtility.formatNumbers(2097152) + PartCoverText
-                    + GTUtility.formatNumbers(2097152 * 20)
-                    + PartCoverText2,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
-        ItemList.Electric_Pump_UIV.set(
-            addItem(
-                Electric_Pump_UIV.ID,
-                "Electric Pump (UIV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)));
+        ItemList.Electric_Pump_UHV
+            .set(
+                addItem(
+                    Electric_Pump_UHV.ID,
+                    "Electric Pump (UHV)",
+                    GTUtility.formatNumbers(1048576) + PartCoverText
+                        + GTUtility.formatNumbers(1048576 * 20)
+                        + PartCoverText2,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Electric_Pump_UEV
+            .set(
+                addItem(
+                    Electric_Pump_UEV.ID,
+                    "Electric Pump (UEV)",
+                    GTUtility.formatNumbers(2097152) + PartCoverText
+                        + GTUtility.formatNumbers(2097152 * 20)
+                        + PartCoverText2,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Electric_Pump_UIV
+            .set(
+                addItem(
+                    Electric_Pump_UIV.ID,
+                    "Electric Pump (UIV)",
+                    GTUtility.formatNumbers(4194304) + PartCoverText
+                        + GTUtility.formatNumbers(4194304 * 20)
+                        + PartCoverText2,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Electric_Pump_UMV.set(
             addItem(
                 Electric_Pump_UMV.ID,
                 "Electric Pump (UMV)",
-                PartNotCoverText,
+                GTUtility.formatNumbers(8388608) + PartCoverText
+                    + GTUtility.formatNumbers(8388608 * 20)
+                    + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1945,7 +1987,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Electric_Pump_UXV.ID,
                 "Electric Pump (UXV)",
-                PartNotCoverText,
+                GTUtility.formatNumbers(16777216) + PartCoverText
+                    + GTUtility.formatNumbers(16777216 * 20)
+                    + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1954,7 +1998,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Electric_Pump_MAX.ID,
                 "Electric Pump (MAX)",
-                PartNotCoverText,
+                GTUtility.formatNumbers(33554432) + PartCoverText
+                    + GTUtility.formatNumbers(33554432 * 20)
+                    + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2046,21 +2092,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 FluidRegulator_UV.ID,
                 "Fluid Regulator (UV)",
                 FRText1 + GTUtility.formatNumbers(524288 * 20) + FRText2));
-        ItemList.FluidRegulator_UHV.set(
-            addItem(
-                FluidRegulator_UHV.ID,
-                "Fluid Regulator (UHV)",
-                FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2));
-        ItemList.FluidRegulator_UEV.set(
-            addItem(
-                FluidRegulator_UEV.ID,
-                "Fluid Regulator (UEV)",
-                FRText1 + GTUtility.formatNumbers(2097152 * 20) + FRText2));
-        ItemList.FluidRegulator_UIV.set(
-            addItem(
-                FluidRegulator_UIV.ID,
-                "Fluid Regulator (UIV)",
-                FRText1 + GTUtility.formatNumbers(4194304 * 20) + FRText2));
+        ItemList.FluidRegulator_UHV
+            .set(
+                addItem(
+                    FluidRegulator_UHV.ID,
+                    "Fluid Regulator (UHV)",
+                    FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.FluidRegulator_UEV
+            .set(
+                addItem(
+                    FluidRegulator_UEV.ID,
+                    "Fluid Regulator (UEV)",
+                    FRText1 + GTUtility.formatNumbers(2097152 * 20) + FRText2))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.FluidRegulator_UIV
+            .set(
+                addItem(
+                    FluidRegulator_UIV.ID,
+                    "Fluid Regulator (UIV)",
+                    FRText1 + GTUtility.formatNumbers(4194304 * 20) + FRText2))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
             addItem(
                 FluidRegulator_UMV.ID,
@@ -2099,7 +2151,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_LV.ID,
                 "Conveyor Module (LV)",
-                "1 stack every 20 secs (as Cover)",
+                "16 items every 5 secs (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L)));
@@ -2107,7 +2159,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_MV.ID,
                 "Conveyor Module (MV)",
-                "1 stack every 5 secs (as Cover)",
+                "64 items every 5 secs (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 2L)));
@@ -2115,7 +2167,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_HV.ID,
                 "Conveyor Module (HV)",
-                "1 stack every 1 sec (as Cover)",
+                "64 items every 1 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 4L)));
@@ -2123,7 +2175,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_EV.ID,
                 "Conveyor Module (EV)",
-                "1 stack every 1/5 sec (as Cover)",
+                "64 items every 1/5 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 8L)));
@@ -2131,7 +2183,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_IV.ID,
                 "Conveyor Module (IV)",
-                "1 stack every 1/20 sec (as Cover)",
+                "64 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L)));
@@ -2139,7 +2191,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_LuV.ID,
                 "Conveyor Module (LuV)",
-                "2 stacks every 1/20 sec (as Cover)",
+                "128 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 32L)));
@@ -2147,7 +2199,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_ZPM.ID,
                 "Conveyor Module (ZPM)",
-                "4 stacks every 1/20 sec (as Cover)",
+                "256 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 64L)));
@@ -2155,39 +2207,45 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_UV.ID,
                 "Conveyor Module (UV)",
-                "8 stacks every 1/20 sec (as Cover)",
+                "512 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 128L)));
-        ItemList.Conveyor_Module_UHV.set(
-            addItem(
-                Conveyor_Module_UHV.ID,
-                "Conveyor Module (UHV)",
-                "16 stacks every 1/20 sec (as Cover)",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 256L)));
-        ItemList.Conveyor_Module_UEV.set(
-            addItem(
-                Conveyor_Module_UEV.ID,
-                "Conveyor Module (UEV)",
-                "32 stacks every 1/20 sec (as Cover)",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
-        ItemList.Conveyor_Module_UIV.set(
-            addItem(
-                Conveyor_Module_UIV.ID,
-                "Conveyor Module (UIV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
+        ItemList.Conveyor_Module_UHV
+            .set(
+                addItem(
+                    Conveyor_Module_UHV.ID,
+                    "Conveyor Module (UHV)",
+                    "1024 items every 1/20 sec (as Cover)",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Conveyor_Module_UEV
+            .set(
+                addItem(
+                    Conveyor_Module_UEV.ID,
+                    "Conveyor Module (UEV)",
+                    "2,048 items every 1/20 sec (as Cover)",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Conveyor_Module_UIV
+            .set(
+                addItem(
+                    Conveyor_Module_UIV.ID,
+                    "Conveyor Module (UIV)",
+                    "4,096 items every 1/20 sec (as Cover)",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Conveyor_Module_UMV.set(
             addItem(
                 Conveyor_Module_UMV.ID,
                 "Conveyor Module (UMV)",
-                PartNotCoverText,
+                "8,192 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2195,7 +2253,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_UXV.ID,
                 "Conveyor Module (UXV)",
-                PartNotCoverText,
+                "16,384 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2203,7 +2261,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Conveyor_Module_MAX.ID,
                 "Conveyor Module (MAX)",
-                PartNotCoverText,
+                "32,768 items every 1/20 sec (as Cover)",
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L)));
@@ -2280,33 +2338,39 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 128L)));
-        ItemList.Robot_Arm_UHV.set(
-            addItem(
-                Robot_Arm_UHV.ID,
-                "Robot Arm (UHV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 256L)));
-        ItemList.Robot_Arm_UEV.set(
-            addItem(
-                Robot_Arm_UEV.ID,
-                "Robot Arm (UEV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)));
-        ItemList.Robot_Arm_UIV.set(
-            addItem(
-                Robot_Arm_UIV.ID,
-                "Robot Arm (UIV)",
-                PartNotCoverText,
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)));
+        ItemList.Robot_Arm_UHV
+            .set(
+                addItem(
+                    Robot_Arm_UHV.ID,
+                    "Robot Arm (UHV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Robot_Arm_UEV
+            .set(
+                addItem(
+                    Robot_Arm_UEV.ID,
+                    "Robot Arm (UEV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Robot_Arm_UIV
+            .set(
+                addItem(
+                    Robot_Arm_UIV.ID,
+                    "Robot Arm (UIV)",
+                    PartNotCoverText,
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MOTUS, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Robot_Arm_UMV.set(
             addItem(
                 Robot_Arm_UMV.ID,
@@ -2403,30 +2467,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.LUX, 128L)));
-        ItemList.Emitter_UHV.set(
-            addItem(
-                Emitter_UHV.ID,
-                "Emitter (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.LUX, 256L)));
-        ItemList.Emitter_UEV.set(
-            addItem(
-                Emitter_UEV.ID,
-                "Emitter (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)));
-        ItemList.Emitter_UIV.set(
-            addItem(
-                Emitter_UIV.ID,
-                "Emitter (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)));
+        ItemList.Emitter_UHV
+            .set(
+                addItem(
+                    Emitter_UHV.ID,
+                    "Emitter (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.LUX, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Emitter_UEV
+            .set(
+                addItem(
+                    Emitter_UEV.ID,
+                    "Emitter (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Emitter_UIV
+            .set(
+                addItem(
+                    Emitter_UIV.ID,
+                    "Emitter (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.LUX, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Emitter_UMV.set(
             addItem(
                 Emitter_UMV.ID,
@@ -2517,30 +2587,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 128L)));
-        ItemList.Sensor_UHV.set(
-            addItem(
-                Sensor_UHV.ID,
-                "Sensor (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 256L)));
-        ItemList.Sensor_UEV.set(
-            addItem(
-                Sensor_UEV.ID,
-                "Sensor (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)));
-        ItemList.Sensor_UIV.set(
-            addItem(
-                Sensor_UIV.ID,
-                "Sensor (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)));
+        ItemList.Sensor_UHV
+            .set(
+                addItem(
+                    Sensor_UHV.ID,
+                    "Sensor (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.SENSUS, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Sensor_UEV
+            .set(
+                addItem(
+                    Sensor_UEV.ID,
+                    "Sensor (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Sensor_UIV
+            .set(
+                addItem(
+                    Sensor_UIV.ID,
+                    "Sensor (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.SENSUS, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Sensor_UMV.set(
             addItem(
                 Sensor_UMV.ID,
@@ -2630,30 +2706,36 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 128L)));
-        ItemList.Field_Generator_UHV.set(
-            addItem(
-                Field_Generator_UHV.ID,
-                "Field Generator (UHV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 256L)));
-        ItemList.Field_Generator_UEV.set(
-            addItem(
-                Field_Generator_UEV.ID,
-                "Field Generator (UEV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)));
-        ItemList.Field_Generator_UIV.set(
-            addItem(
-                Field_Generator_UIV.ID,
-                "Field Generator (UIV)",
-                "",
-                new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
-                new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)));
+        ItemList.Field_Generator_UHV
+            .set(
+                addItem(
+                    Field_Generator_UHV.ID,
+                    "Field Generator (UHV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
+                    new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 256L)))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Field_Generator_UEV
+            .set(
+                addItem(
+                    Field_Generator_UEV.ID,
+                    "Field Generator (UEV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.Field_Generator_UIV
+            .set(
+                addItem(
+                    Field_Generator_UIV.ID,
+                    "Field Generator (UIV)",
+                    "",
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
+                    new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 512L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Field_Generator_UMV.set(
             addItem(
                 Field_Generator_UMV.ID,
@@ -2848,13 +2930,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 6L),
                 OreDictNames.craftingGrinder));
 
-        ItemList.Upgrade_Muffler.set(
-            addItem(
-                Upgrade_Muffler.ID,
-                "Muffler Upgrade",
-                "Makes Machines silent",
-                new TCAspects.TC_AspectStack(TCAspects.SENSUS, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         ItemList.Upgrade_Lock.set(
             addItem(
                 Upgrade_Lock.ID,
@@ -2867,7 +2942,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 Component_Filter.ID,
                 "Item Filter",
                 "",
-                new ItemData(Materials.Zinc, OrePrefixes.foil.mMaterialAmount * 16L),
+                new ItemData(Materials.Zinc, OrePrefixes.foil.getMaterialAmount() * 16L),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 1L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 1L),
@@ -3113,10 +3188,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8L)));
 
-        ItemList.Cover_RedstoneTransmitterExternal.set(
+        ItemList.Cover_RedstoneTransmitter.set(
             addItem(
-                Cover_RedstoneTransmitterExternal.ID,
-                "Redstone Transmitter (External)",
+                Cover_RedstoneTransmitter.ID,
+                "Redstone Transmitter",
                 "Transfers Redstone signals wireless",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
@@ -3124,21 +3199,21 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_RedstoneTransmitterInternal.ID,
                 "Redstone Transmitter (Internal)",
+                "Transfers Redstone signals wireless/n §cDEPRECATED! This will be removed in the next major update.",
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
+        ItemList.Cover_RedstoneReceiver.set(
+            addItem(
+                Cover_RedstoneReceiver.ID,
+                "Redstone Receiver",
                 "Transfers Redstone signals wireless",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
-        ItemList.Cover_RedstoneReceiverExternal.set(
+        ItemList.Cover_WirelessController.set(
             addItem(
-                Cover_RedstoneReceiverExternal.ID,
-                "Redstone Receiver (External)",
-                "Transfers Redstone signals wireless",
-                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
-                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
-        ItemList.Cover_RedstoneReceiverInternal.set(
-            addItem(
-                Cover_RedstoneReceiverInternal.ID,
-                "Redstone Receiver (Internal)",
-                "Transfers Redstone signals wireless",
+                Cover_WirelessController.ID,
+                "Wireless Machine Controller Cover",
+                "Turns Machines ON/OFF wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
@@ -3253,7 +3328,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_EV.ID,
                 "Small Sunnarium Battery (Empty)",
                 "An empty EV Battery Container",
-                new ItemData(Materials.BlueSteel, OrePrefixes.plate.mMaterialAmount * 2L),
+                new ItemData(Materials.BlueSteel, OrePrefixes.plate.getMaterialAmount() * 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 8L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 8L)));
@@ -3262,7 +3337,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_IV.ID,
                 "Medium Sunnarium Battery (Empty)",
                 "An empty IV Battery Container",
-                new ItemData(Materials.RoseGold, OrePrefixes.plate.mMaterialAmount * 6L),
+                new ItemData(Materials.RoseGold, OrePrefixes.plate.getMaterialAmount() * 6L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L)));
@@ -3271,7 +3346,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_LuV.ID,
                 "Large Sunnarium Battery (Empty)",
                 "An empty LuV Battery Container",
-                new ItemData(Materials.RedSteel, OrePrefixes.plate.mMaterialAmount * 18L),
+                new ItemData(Materials.RedSteel, OrePrefixes.plate.getMaterialAmount() * 18L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 32L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L)));
@@ -3280,7 +3355,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_ZPM.ID,
                 "Medium Naquadria Battery (Empty)",
                 "An empty ZPM Energy Storage",
-                new ItemData(Materials.Europium, OrePrefixes.plate.mMaterialAmount * 6L),
+                new ItemData(Materials.Europium, OrePrefixes.plate.getMaterialAmount() * 6L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 64L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64L)));
@@ -3289,7 +3364,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_UV.ID,
                 "Large Naquadria Battery (Empty)",
                 "An empty UV Energy Storage",
-                new ItemData(Materials.Americium, OrePrefixes.plate.mMaterialAmount * 18L),
+                new ItemData(Materials.Americium, OrePrefixes.plate.getMaterialAmount() * 18L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 128L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 128L)));
@@ -3298,7 +3373,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_UHV.ID,
                 "Small Neutronium Battery (Empty)",
                 "An empty UHV Energy Storage",
-                new ItemData(Materials.Naquadah, OrePrefixes.plate.mMaterialAmount * 24L),
+                new ItemData(Materials.Naquadah, OrePrefixes.plate.getMaterialAmount() * 24L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 256L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 256L)));
@@ -3307,7 +3382,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_UEV.ID,
                 "Medium Neutronium Battery (Empty)",
                 "An empty UEV Energy Storage",
-                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.mMaterialAmount * 36L),
+                new ItemData(Materials.NaquadahEnriched, OrePrefixes.plate.getMaterialAmount() * 36L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 512L)));
@@ -3316,7 +3391,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_UIV.ID,
                 "Large Neutronium Battery (Empty)",
                 "An empty UIV Energy Storage",
-                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.mMaterialAmount * 48L),
+                new ItemData(Materials.NaquadahAlloy, OrePrefixes.plate.getMaterialAmount() * 48L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 1024L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 1024L)));
@@ -3325,7 +3400,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_UMV.ID,
                 "Medium Plasma Battery (Empty)",
                 "An empty UMV Energy Storage",
-                new ItemData(Materials.Neutronium, OrePrefixes.plate.mMaterialAmount * 56L),
+                new ItemData(Materials.Neutronium, OrePrefixes.plate.getMaterialAmount() * 56L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 2048L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2048L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2048L)));
@@ -3334,7 +3409,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                 BatteryHull_UxV.ID,
                 "Large Plasma Battery (Empty)",
                 "An empty UXV Energy Storage",
-                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.mMaterialAmount * 64L),
+                new ItemData(Materials.DraconiumAwakened, OrePrefixes.plate.getMaterialAmount() * 64L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 4096L),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4096L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 4096L)));
@@ -3480,6 +3555,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3490,6 +3567,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                         aItemEntity.setEntityItemStack(
                             GTOreDictUnificator
                                 .get(OrePrefixes.crushedPurified, aMaterial, aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3498,6 +3577,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
                     int tMetaData = aItemEntity.worldObj.getBlockMetadata(tX, tY, tZ);
                     if ((tBlock == Blocks.cauldron) && (tMetaData > 0)) {
                         aItemEntity.setEntityItemStack(ItemList.Food_Dough.get(aItemEntity.getEntityItem().stackSize));
+                        aItemEntity.delayBeforeCanPickup = 0;
+                        cancelMovementAndTeleport(aItemEntity, tX, tY, tZ);
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -3505,6 +3586,76 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onItemUse(final ItemStack oldItemStack, final EntityPlayer player, final World world, final int x,
+        final int y, final int z, final int ordinalSide, final float hitX, final float hitY, final float hitZ) {
+        final Block blockClicked = world.getBlock(x, y, z);
+        final int metadata = world.getBlockMetadata(x, y, z);
+
+        if (blockClicked == Blocks.cauldron && metadata > 0) {
+            final int damage = oldItemStack.getItemDamage();
+
+            if ((damage < 32000) && (damage >= 0)) {
+                final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
+                final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
+                final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
+
+                if (newItemStack != null) {
+                    world.setBlockMetadataWithNotify(x, y, z, metadata - 1, 3);
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, newItemStack);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a function to get a new ItemStack after washing.
+     *
+     * @param oldPrefix   The old prefix of the stack being converted
+     * @param oldMaterial The old material to be converted
+     * @param stackSize   The stack size to be returned
+     * @return the new ItemStack after washing, or null if the material/prefix was invalid
+     */
+    static ItemStack getCauldronWashingResult(final OrePrefixes oldPrefix, final Materials oldMaterial,
+        final int stackSize) {
+        if ((oldMaterial != null) && (oldMaterial != Materials.Empty) && (oldMaterial != Materials._NULL)) {
+            switch (oldPrefix.getName()) {
+                case "dustImpure":
+                case "dustPure":
+                    return GTOreDictUnificator
+                        .get(OrePrefixes.dust, cauldronRemap.getOrDefault(oldMaterial, oldMaterial), stackSize);
+                case "crushed":
+                    return GTOreDictUnificator.get(OrePrefixes.crushedPurified, oldMaterial, stackSize);
+                case "dust":
+                    if (oldMaterial == Materials.Wheat) {
+                        return ItemList.Food_Dough.get(stackSize);
+                    }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Cancels the movement of an EntityItem and teleports it above the cauldron.
+     *
+     * @param entityItem The item entity to move
+     * @param x          The X coordinate of the cauldron
+     * @param y          The Y coordinate of the cauldron
+     * @param z          The Z coordinate of the cauldron
+     */
+    static void cancelMovementAndTeleport(EntityItem entityItem, int x, int y, int z) {
+        entityItem.motionX = 0;
+        entityItem.motionY = 0;
+        entityItem.motionZ = 0;
+        entityItem.posX = x + 0.5;
+        entityItem.posY = y + 1.5;
+        entityItem.posZ = z + 0.5;
     }
 
     @Override
@@ -3516,7 +3667,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(this.mToolTipPurify);
+                    aList.add(translateToLocal("GT5U.tooltip.purify.1"));
                 }
             }
         }
@@ -3525,7 +3676,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
     public boolean isPlasmaCellUsed(OrePrefixes aPrefix, Materials aMaterial) {
         // Materials has a plasma fluid
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) {
-            if (aMaterial.mHasPlasma) return true;
+            if (aMaterial.hasPlasma()) return true;
             // Loop through fusion recipes
             for (GTRecipe recipe : RecipeMaps.fusionRecipes.getAllRecipes()) {
                 // Make sure fluid output can't be null (not sure if possible)
@@ -3663,6 +3814,22 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Electric_Pump_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
             context -> new CoverPump(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_UIV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 4194304, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_UMV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_UXV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
+        CoverRegistry.registerCover(
+            ItemList.Electric_Pump_MAX.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_PUMP)),
+            context -> new CoverPump(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_LV.get(1L),
@@ -3765,43 +3932,59 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_LV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 400, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 100, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_MV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 100, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 100, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_HV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 20, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 20, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_EV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 4, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 4, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_IV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 1, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 1, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_LuV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[6][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 2, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 2, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_ZPM.get(1L),
             TextureFactory.of(MACHINE_CASINGS[7][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 4, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 4, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 8, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 8, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 16, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
         CoverRegistry.registerCover(
             ItemList.Conveyor_Module_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            context -> new CoverConveyor(context, 1, 32, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 32, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UIV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 64, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UMV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 128, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_UXV.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 256, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
+        CoverRegistry.registerCover(
+            ItemList.Conveyor_Module_MAX.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_CONVEYOR)),
+            context -> new CoverConveyor(context, 1, 512, 64, TextureFactory.of(OVERLAY_CONVEYOR)));
 
         CoverRegistry.registerCover(
             ItemList.Robot_Arm_LV.get(1L),
@@ -3833,7 +4016,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Cover_Controller.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_CONTROLLER)),
             context -> new CoverControlsWork(context, TextureFactory.of(OVERLAY_CONTROLLER)),
-            new CoverControlsWorkPlacer());
+            CoverPlacer.builder()
+                .onlyPlaceIf(CoverControlsWork::isCoverPlaceable)
+                .build());
 
         CoverRegistry.registerCover(
             ItemList.Cover_Chest_Basic.get(1L),
@@ -3876,10 +4061,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0),
             CoverFluidStorageMonitor::new);
 
-        CoverRegistry.registerCover(
+        CoverRegistry.registerDecorativeCover(
             ItemList.Cover_Screen.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture),
-            context -> new CoverScreen(context, screenCoverTexture));
+            TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture));
         CoverRegistry.registerCover(
             ItemList.Cover_Crafting.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CRAFTING)),
@@ -3946,7 +4130,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
-            ItemList.Cover_RedstoneTransmitterExternal.get(1L),
+            ItemList.Cover_RedstoneTransmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
             context -> new CoverRedstoneTransmitterExternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
@@ -3956,14 +4140,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             context -> new CoverRedstoneTransmitterInternal(context, TextureFactory.of(OVERLAY_REDSTONE_TRANSMITTER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
-            ItemList.Cover_RedstoneReceiverExternal.get(1L),
+            ItemList.Cover_RedstoneReceiver.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
             context -> new CoverRedstoneReceiverExternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         CoverRegistry.registerCover(
-            ItemList.Cover_RedstoneReceiverInternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
-            context -> new CoverRedstoneReceiverInternal(context, TextureFactory.of(OVERLAY_REDSTONE_RECEIVER)),
+            ItemList.Cover_WirelessController.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
+            context -> new CoverWirelessController(context, TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(
@@ -3996,8 +4180,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             int tier = i + 1;
             CoverRegistry.registerCover(
                 ItemList.WIRELESS_ENERGY_COVERS[i].get(1),
-                TextureFactory
-                    .of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0]),
+                TextureFactory.of(MACHINE_CASINGS[i + 1][0], Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0]),
                 context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
                 CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }
@@ -4041,7 +4224,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Plastic) });
+            new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),
@@ -4059,6 +4242,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Schematic_Dust.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
+        GTModHandler.addCraftingRecipe(
+            ItemList.Schematic_Dust_Small.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Battery_Hull_LV.get(1L),
@@ -4531,6 +4718,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Schematic.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Dust });
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.Schematic.get(1L),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Tool_DataOrb.get(1L),
@@ -4541,19 +4732,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
             ItemList.Tool_DataStick.get(1L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Tool_DataStick.get(1L) });
-
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneTransmitterInternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneTransmitterExternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneReceiverInternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneReceiverExternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneTransmitterInternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_RedstoneReceiverExternal.get(1L),
-            new Object[] { ItemList.Cover_RedstoneReceiverInternal.get(1L) });
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Export.get(1L),
@@ -4710,5 +4888,25 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 {
         registerTieredTooltip(ItemList.BatteryHull_UMV_Full.get(1), UMV);
         registerTieredTooltip(ItemList.BatteryHull_UxV_Full.get(1), UXV);
 
+    }
+
+    @Override
+    @Optional.Method(modid = Mods.ModIDs.RAILCRAFT)
+    public boolean shouldBurn(ItemStack itemStack) {
+        ItemData data = GTOreDictUnificator.getAssociation(itemStack);
+        if (data == null || data.mMaterial == null
+            || data.mMaterial.mMaterial != Materials.Firestone
+            || data.mPrefix == null) {
+            return false;
+        }
+        return data.mPrefix == OrePrefixes.dustTiny || data.mPrefix == OrePrefixes.dustSmall
+            || data.mPrefix == OrePrefixes.dust
+            || data.mPrefix == OrePrefixes.dustImpure
+            || data.mPrefix == OrePrefixes.dustRefined
+            || data.mPrefix == OrePrefixes.dustPure
+            || data.mPrefix == OrePrefixes.crushed
+            || data.mPrefix == OrePrefixes.crushedPurified
+            || data.mPrefix == OrePrefixes.crushedCentrifuged
+            || data.mPrefix == OrePrefixes.gem;
     }
 }

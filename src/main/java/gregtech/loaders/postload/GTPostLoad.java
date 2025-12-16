@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,7 +60,7 @@ public class GTPostLoad {
     public static void activateOreDictHandler() {
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GTMod.gregtechproxy.activateOreDictHandler();
+        GTMod.proxy.activateOreDictHandler();
 
         // noinspection UnstableApiUsage// Stable enough for this project
         GTMod.GT_FML_LOGGER
@@ -307,7 +308,7 @@ public class GTPostLoad {
         }
 
         MTEMassfabricator.uuaRecipe = GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .fluidInputs(Materials.UUAmplifier.getFluid(MTEMassfabricator.sUUAperUUM))
             .fluidOutputs(Materials.UUMatter.getFluid(1L))
             .duration(MTEMassfabricator.sDurationMultiplier / MTEMassfabricator.sUUASpeedBonus)
@@ -320,14 +321,14 @@ public class GTPostLoad {
         massFabFakeRecipes.add(MTEMassfabricator.uuaRecipe);
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.top"))
                 .sideBlocks(Blocks.water)
                 .topBlock(Blocks.lava)
                 .outputItem(new ItemStack(Blocks.stone, 1))
                 .duration(16 * TICKS));
 
         MTERockBreaker.addRockBreakerRecipe(
-            b -> b.recipeDescription("IT'S FREE! Place Lava on Side")
+            b -> b.recipeDescription(StatCollector.translateToLocal("gt.recipe.rockbreaker.fakeitem.side"))
                 .sideBlocks(Blocks.water, Blocks.lava)
                 .outputItem(new ItemStack(Blocks.cobblestone, 1))
                 .duration(16 * TICKS));
@@ -339,6 +340,14 @@ public class GTPostLoad {
                 .circuit(1)
                 .outputItem(new ItemStack(Blocks.obsidian, 1))
                 .duration(6 * SECONDS + 8 * TICKS));
+
+        MTERockBreaker.addRockBreakerRecipe(
+            b -> b.sideBlocks(Blocks.water)
+                .anywhereBlocks(Blocks.lava)
+                .inputItem(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), true)
+                .circuit(6)
+                .outputItem(new ItemStack(Blocks.netherrack, 1))
+                .duration(16 * TICKS));
 
         if (Mods.EtFuturumRequiem.isModLoaded()) {
             MTERockBreaker.addRockBreakerRecipe(
@@ -360,7 +369,7 @@ public class GTPostLoad {
     }
 
     public static void changeWoodenVanillaTools() {
-        if (!GTMod.gregtechproxy.mChangeWoodenVanillaTools) {
+        if (!GTMod.proxy.mChangeWoodenVanillaTools) {
             return;
         }
 
@@ -400,8 +409,8 @@ public class GTPostLoad {
         String plateName = OrePrefixes.plate.get(m)
             .toString();
         boolean noSmash = !m.contains(SubTag.NO_SMASHING);
-        if ((m.mTypes & 2) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
-        if ((m.mTypes & 4) != 0) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
+        if (m.hasMetalItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getIngots(1));
+        if (m.hasGemItems()) GTRecipeRegistrator.registerUsagesForMaterials(plateName, noSmash, m.getGems(1));
         if (m.getBlocks(1) != null) GTRecipeRegistrator.registerUsagesForMaterials(null, noSmash, m.getBlocks(1));
     }
 
@@ -434,6 +443,26 @@ public class GTPostLoad {
         if (Thaumcraft.isModLoaded()) {
             RecipeMaps.largeBoilerFakeFuels.getBackend()
                 .addSolidRecipe(GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
+        }
+    }
+
+    public static void addCauldronRecipe() {
+        for (Materials material : Materials.getAll()) {
+            ItemStack dustImpure = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1);
+            ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1);
+
+            if (dust == null && dustImpure == null) {
+                continue;
+            }
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(dustImpure)
+                .fluidInputs(Materials.Water.getFluid(333))
+                .itemOutputs(dust)
+                .duration(0)
+                .eut(0)
+                .fake()
+                .addTo(RecipeMaps.cauldronRecipe);
         }
     }
 

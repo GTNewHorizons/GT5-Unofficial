@@ -56,7 +56,7 @@ public class MTELocker extends MTETieredMachineBlock {
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
             ITexture[] tmp0 = { MACHINE_CASINGS[this.mTier][(i + 1)] };
             rTextures[0][(i + 1)] = tmp0;
-            ITexture[] tmp1 = { MACHINE_CASINGS[this.mTier][(i + 1)], OVERLAYS_ENERGY_IN[this.mTier] };
+            ITexture[] tmp1 = { MACHINE_CASINGS[this.mTier][(i + 1)], OVERLAYS_ENERGY_IN[this.mTier + 1] };
             rTextures[1][(i + 1)] = tmp1;
             ITexture[] tmp2 = { MACHINE_CASINGS[this.mTier][(i + 1)], TextureFactory.of(OVERLAY_LOCKER) };
             rTextures[2][(i + 1)] = tmp2;
@@ -77,16 +77,6 @@ public class MTELocker extends MTETieredMachineBlock {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTELocker(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
     }
 
     @Override
@@ -125,18 +115,8 @@ public class MTELocker extends MTETieredMachineBlock {
     }
 
     @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
     public int rechargerSlotCount() {
         return getBaseMetaTileEntity().isAllowedToWork() ? this.mInventory.length : 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -162,12 +142,13 @@ public class MTELocker extends MTETieredMachineBlock {
     @Override
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex == 16) {
-            GTUtility.doSoundAtClient(SoundResource.RANDOM_CLICK, 1, 1.0F);
+            GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_CLICK, 1, 1.0F);
         }
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             this.mType = ((byte) (this.mType + 1));
         }

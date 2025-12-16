@@ -1,11 +1,13 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_RECEIVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_REDSTONE_TRANSMITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ACTIVITYDETECTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_FLUID_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_ITEM_DETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_WIRELESS_MAINTENANCE_DETECTOR;
@@ -54,9 +56,9 @@ import static gregtech.common.items.IDMetaItem02.Bottle_Vodka;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Hops_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wheaty_Juice;
 import static gregtech.common.items.IDMetaItem02.Bottle_Wine;
-import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverExternal;
+import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiver;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneReceiverInternal;
-import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitterExternal;
+import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitter;
 import static gregtech.common.items.IDMetaItem02.Cover_AdvancedRedstoneTransmitterInternal;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessActivityDetector;
 import static gregtech.common.items.IDMetaItem02.Cover_WirelessFluidDetector;
@@ -171,12 +173,14 @@ import static gregtech.common.items.IDMetaItem02.Food_Sliced_Onion;
 import static gregtech.common.items.IDMetaItem02.Food_Sliced_Tomato;
 import static gregtech.common.items.IDMetaItem02.GelledToluene;
 import static gregtech.common.items.IDMetaItem02.MSFMixture;
+import static gregtech.common.items.IDMetaItem02.Magnetron;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia;
 import static gregtech.common.items.IDMetaItem02.Plank_Acacia_Green;
 import static gregtech.common.items.IDMetaItem02.Plank_Balsa;
 import static gregtech.common.items.IDMetaItem02.Plank_Baobab;
 import static gregtech.common.items.IDMetaItem02.Plank_Birch;
 import static gregtech.common.items.IDMetaItem02.Plank_Cherry;
+import static gregtech.common.items.IDMetaItem02.Plank_Cherry_EFR;
 import static gregtech.common.items.IDMetaItem02.Plank_Chestnut;
 import static gregtech.common.items.IDMetaItem02.Plank_Citrus;
 import static gregtech.common.items.IDMetaItem02.Plank_DarkOak;
@@ -212,6 +216,7 @@ import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Jesus_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Latte;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Sweet_Tea;
 import static gregtech.common.items.IDMetaItem02.ThermosCan_Tea;
+import static gregtech.common.items.IDMetaItem02.Vajra_Core;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -230,7 +235,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -1944,6 +1948,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .set(addItem(Plank_Maple.ID, "Maple Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.Plank_Citrus.set(
             addItem(Plank_Citrus.ID, "Citrus Plank", aTextCover, new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
+        ItemList.Plank_Cherry_EFR.set(
+            addItem(
+                Plank_Cherry_EFR.ID,
+                "Cherry Plank",
+                aTextCover,
+                new TCAspects.TC_AspectStack(TCAspects.ARBOR, 1L)));
         ItemList.SFMixture.set(addItem(SFMixture.ID, "Super Fuel Binder", "Raw Material"));
         ItemList.MSFMixture.set(addItem(MSFMixture.ID, "Magic Super Fuel Binder", "Raw Material"));
 
@@ -2314,10 +2324,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new GTFoodStat(1, 0.1F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L)));
 
-        ItemList.Cover_AdvancedRedstoneTransmitterExternal.set(
+        ItemList.Cover_AdvancedRedstoneTransmitter.set(
             addItem(
-                Cover_AdvancedRedstoneTransmitterExternal.ID,
-                "Advanced Redstone Transmitter (External)",
+                Cover_AdvancedRedstoneTransmitter.ID,
+                "Advanced Redstone Transmitter",
                 "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
@@ -2325,13 +2335,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_AdvancedRedstoneTransmitterInternal.ID,
                 "Advanced Redstone Transmitter (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
-        ItemList.Cover_AdvancedRedstoneReceiverExternal.set(
+        ItemList.Cover_AdvancedRedstoneReceiver.set(
             addItem(
-                Cover_AdvancedRedstoneReceiverExternal.ID,
-                "Advanced Redstone Receiver (External)",
+                Cover_AdvancedRedstoneReceiver.ID,
+                "Advanced Redstone Receiver",
                 "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
@@ -2339,7 +2349,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Cover_AdvancedRedstoneReceiverInternal.ID,
                 "Advanced Redstone Receiver (Internal)",
-                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers",
+                "Transfers Redstone signals wirelessly/n Can only connect with advanced wireless covers/n §cDEPRECATED! This will be removed in the next major update.",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L)));
 
@@ -2387,6 +2397,12 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 "(or at least almost free)",
                 SubTag.INVISIBLE,
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
+        ItemList.Item_Redstone_Sniffer
+            .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
+        ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
+        ItemList.ChaosLocator
+            .set(new ItemChaosLocator("Item_Chaos_Locator", "Chaos Locator", "Warps to areas with extreme entropy"));
 
         try {
             CropCard tCrop;
@@ -2427,15 +2443,15 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public boolean isItemStackUsable(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
         Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
-        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mEnchantmentTools != null)) {
-            Enchantment tEnchant = aMaterial.mEnchantmentTools == Enchantment.fortune ? Enchantment.looting
-                : aMaterial.mEnchantmentTools;
+        if ((aDamage >= 25000) && (aDamage < 27000) && (aMaterial != null) && (aMaterial.mToolEnchantment != null)) {
+            Enchantment tEnchant = aMaterial.mToolEnchantment == Enchantment.fortune ? Enchantment.looting
+                : aMaterial.mToolEnchantment;
             if (tEnchant.type == EnumEnchantmentType.weapon) {
                 NBTTagCompound tNBT = GTUtility.ItemNBT.getNBT(aStack);
                 if (!tNBT.getBoolean("GT.HasBeenUpdated")) {
                     tNBT.setBoolean("GT.HasBeenUpdated", true);
                     GTUtility.ItemNBT.setNBT(aStack, tNBT);
-                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mEnchantmentToolsLevel);
+                    GTUtility.ItemNBT.addEnchantment(aStack, tEnchant, aMaterial.mToolEnchantmentLevel);
                 }
             }
         }
@@ -2489,6 +2505,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         setBurnValue(32000 + Plank_Plum.ID, 75);
         setBurnValue(32000 + Plank_Maple.ID, 75);
         setBurnValue(32000 + Plank_Citrus.ID, 75);
+        setBurnValue(32000 + Plank_Cherry_EFR.ID, 75);
         setBurnValue(32000 + Crop_Drop_Tine.ID, 100);
         setBurnValue(32000 + Crop_Drop_Mica.ID, 240);
     }
@@ -2523,54 +2540,53 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public void initAssemblerRecipes() {
         RA.stdBuilder()
             .itemInputs(
-                ItemList.Cover_RedstoneTransmitterExternal.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L))
+                ItemList.Cover_RedstoneTransmitter.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneTransmitter.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
             .itemInputs(
-                ItemList.Cover_RedstoneReceiverExternal.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                GTUtility.getIntegratedCircuit(1))
-            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L))
+                ItemList.Cover_RedstoneReceiver.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_AdvancedRedstoneReceiver.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_FluidDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_Controller.get(1L), ItemList.Sensor_EV.get(1L))
+            .circuit(1)
+            .itemOutputs(ItemList.Cover_WirelessController.get(1L))
+            .duration(2 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+        RA.stdBuilder()
+            .itemInputs(ItemList.Cover_FluidDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessFluidDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ItemDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ItemDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessItemDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_NeedsMaintainance.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_NeedsMaintainance.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessNeedsMaintainance.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         RA.stdBuilder()
-            .itemInputs(
-                ItemList.Cover_ActivityDetector.get(1L),
-                ItemList.Emitter_EV.get(1L),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(ItemList.Cover_ActivityDetector.get(1L), ItemList.Emitter_EV.get(1L))
+            .circuit(1)
             .itemOutputs(ItemList.Cover_WirelessActivityDetector.get(1L))
             .duration(2 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -2578,18 +2594,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     }
 
     public void initCraftingShapelessRecipes() {
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L) });
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.Cover_AdvancedRedstoneTransmitterInternal.get(1L),
-            new Object[] { ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L) });
+
     }
 
     public void initExtractorRecipes() {
@@ -2862,7 +2867,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 8L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 8L))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
@@ -3019,9 +3024,16 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 GTUtility.getBlockFromStack(
                     GTModHandler.getModItem(Forestry.ID, "planks", 1L, 23, new ItemStack(Blocks.planks, 1, 0))),
                 7));
+        CoverRegistry.registerDecorativeCover(
+            ItemList.Plank_Cherry_EFR.get(1L),
+            TextureFactory.of(
+                GTUtility.getBlockFromStack(
+                    GTModHandler
+                        .getModItem(EtFuturumRequiem.ID, "wood_planks", 1L, 3, new ItemStack(Blocks.planks, 1, 0))),
+                0));
 
         CoverRegistry.registerCover(
-            ItemList.Cover_AdvancedRedstoneTransmitterExternal.get(1L),
+            ItemList.Cover_AdvancedRedstoneTransmitter.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)),
             context -> new CoverAdvancedRedstoneTransmitterExternal(
                 context,
@@ -3035,7 +3047,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_TRANSMITTER)));
 
         CoverRegistry.registerCover(
-            ItemList.Cover_AdvancedRedstoneReceiverExternal.get(1L),
+            ItemList.Cover_AdvancedRedstoneReceiver.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
             context -> new CoverAdvancedRedstoneReceiverExternal(
                 context,
@@ -3043,10 +3055,10 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         CoverRegistry.registerCover(
             ItemList.Cover_AdvancedRedstoneReceiverInternal.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             context -> new CoverAdvancedRedstoneReceiverInternal(
                 context,
-                TextureFactory.of(OVERLAY_ADVANCED_REDSTONE_RECEIVER)));
+                TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)));
 
         CoverRegistry.registerCover(
             ItemList.Cover_WirelessFluidDetector.get(1L),
@@ -3075,7 +3087,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.name()
+        return (aDoShowAllItems) || (!aPrefix.getName()
             .startsWith("toolHead"));
     }
 

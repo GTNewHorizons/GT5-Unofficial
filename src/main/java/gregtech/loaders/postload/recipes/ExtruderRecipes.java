@@ -6,6 +6,8 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
+import gregtech.api.util.GTModHandler;
 
 public class ExtruderRecipes implements Runnable {
 
@@ -25,5 +27,19 @@ public class ExtruderRecipes implements Runnable {
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(16)
             .addTo(extruderRecipes);
+        if (Mods.PamsHarvestCraft.isModLoaded()) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Food_Dough.get(1L), ItemList.Shape_Extruder_Bolt.get(0L))
+                .itemOutputs(GTModHandler.getModItem(Mods.PamsHarvestCraft.ID, "pastaItem", 1, 0))
+                .duration(4 * SECONDS)
+                .eut(16)
+                .addTo(extruderRecipes);
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Food_Dough.get(1L), ItemList.Shape_Extruder_Plate.get(0L))
+                .itemOutputs(GTModHandler.getModItem(Mods.PamsHarvestCraft.ID, "pastaItem", 1, 0))
+                .duration(4 * SECONDS)
+                .eut(16)
+                .addTo(extruderRecipes);
+        }
     }
 }

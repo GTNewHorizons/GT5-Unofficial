@@ -26,7 +26,12 @@ public class MTEPipeBlockLaser extends MTEPipeLaser {
     }
 
     @Override
-    public float getThickNess() {
+    public float getThickness() {
+        return 1f;
+    }
+
+    @Override
+    public float getCollisionThickness() {
         return 1f;
     }
 

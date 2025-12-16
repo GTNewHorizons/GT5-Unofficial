@@ -7,6 +7,5 @@ public class BaseItemPlateDouble extends BaseItemComponent {
 
     public BaseItemPlateDouble(final Material material) {
         super(material, BaseItemComponent.ComponentTypes.PLATEDOUBLE);
-        this.setMaxStackSize(32);
     }
 }

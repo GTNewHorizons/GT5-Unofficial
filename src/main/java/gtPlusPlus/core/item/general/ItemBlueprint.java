@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -16,12 +15,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class ItemBlueprint extends Item implements IItemBlueprint {
 
@@ -80,14 +79,10 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
     }
 
     @Override
-    public void onUpdate(final ItemStack itemStack, final World par2World, final Entity par3Entity, final int par4,
-        final boolean par5) {}
-
-    @Override
     public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer par3Entity) {
         // Let the player know what blueprint is held
         if (itemStack.hasTagCompound()) {
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 par3Entity,
                 "This Blueprint holds NBT data. " + "|"
                     + this.getNBT(itemStack, "mID")
@@ -99,7 +94,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     + ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
         } else {
             this.createNBT(itemStack);
-            PlayerUtils.messagePlayer(par3Entity, "This is a placeholder. " + this.getNBT(itemStack, "mID"));
+            GTUtility.sendChatToPlayer(par3Entity, "This is a placeholder. " + this.getNBT(itemStack, "mID"));
         }
 
         return super.onItemRightClick(itemStack, world, par3Entity);
@@ -171,8 +166,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     if (stack.getTagCompound()
                         .getCompoundTag("Items") != null) {
                         stack.stackTagCompound.setBoolean("mBlueprint", true);
-                    } else {
-                        // Invalid BP saved?
                     }
                     hasBP = (boolean) this.getNBT(stack, "mBlueprint");
                 }
@@ -244,16 +237,6 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                             return false;
                         }
             return false;
-        } else if (!itemStack.hasTagCompound()) {
-            final int bpID = MathUtils.randInt(0, 1000);
-            final boolean hasRecipe = false;
-            final String recipeName = "";
-            Logger.WARNING("Creating Blueprint, setting up it's NBT data. " + bpID);
-            itemStack.stackTagCompound = new NBTTagCompound();
-            itemStack.stackTagCompound.setInteger("mID", bpID);
-            itemStack.stackTagCompound.setBoolean("mBlueprint", hasRecipe);
-            itemStack.stackTagCompound.setString("mName", recipeName);
-            return true;
         } else {
             final int bpID = MathUtils.randInt(0, 1000);
             final boolean hasRecipe = false;

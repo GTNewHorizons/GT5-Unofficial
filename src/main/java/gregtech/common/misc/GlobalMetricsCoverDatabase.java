@@ -1,7 +1,6 @@
 package gregtech.common.misc;
 
 import static net.minecraftforge.common.util.Constants.NBT.TAG_BYTE_ARRAY;
-import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -15,7 +14,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import net.minecraft.entity.item.EntityItem;
@@ -28,7 +26,6 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent.Detonate;
@@ -38,8 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.covers.CoverRegistry;
-import gregtech.api.enums.GTValues;
+import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
@@ -48,8 +44,7 @@ import gregtech.common.events.MetricsCoverSelfDestructEvent;
 
 /**
  * Catches and provides data transmitted from deployed Metrics Transmitter covers. Only stores one result per frequency
- * at a time. Metrics covers are intended to overwrite an old result every time they emit a new event.
- * <br />
+ * at a time. Metrics covers are intended to overwrite an old result every time they emit a new event. <br />
  * <br />
  * This information is only partially persisted; frequencies that are in a non-operational state will be written to
  * disk, while operational frequencies are volatile. The assumption is that any frequency with a broadcasting card will,
@@ -130,7 +125,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         // In case someone else wants to listen to these, go the roundabout way.
         final Set<UUID> uuids = REVERSE_LOOKUP.get(coords);
         if (uuids != null) {
-            uuids.forEach(
+            new HashSet<>(uuids).forEach(
                 uuid -> MinecraftForge.EVENT_BUS.post(
                     ForgeHooks.canHarvestBlock(event.block, event.getPlayer(), event.blockMetadata)
                         && !event.getPlayer().capabilities.isCreativeMode ? new MetricsCoverHostDeconstructedEvent(uuid)
@@ -184,8 +179,8 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     /**
-     * Once a card has received the fact that it has self-destructed, this method can be called to free up its spot
-     * in the database. Does nothing if the frequency is missing or is not in a self-destructed state.
+     * Once a card has received the fact that it has self-destructed, this method can be called to free up its spot in
+     * the database. Does nothing if the frequency is missing or is not in a self-destructed state.
      *
      * @param frequency The UUID corresponding to the frequency to possibly cull.
      */
@@ -302,30 +297,18 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     private static Stream<UUID> getCoverUUIDsFromItemStack(final ItemStack stack) {
-        if (stack.hasTagCompound() && stack.getTagCompound()
-            .hasKey(GTValues.NBT.COVERS, TAG_COMPOUND)) {
-            final NBTTagList tagList = stack.getTagCompound()
-                .getTagList(GTValues.NBT.COVERS, TAG_COMPOUND);
-            return IntStream.range(0, tagList.tagCount())
-                .mapToObj(tagList::getCompoundTagAt)
-                .map(
-                    nbt -> CoverRegistry.getRegistrationFromNbt(nbt)
-                        .buildCover(ForgeDirection.UNKNOWN, null, nbt)
-                        .getCoverData())
-                .filter(
-                    serializableObject -> serializableObject instanceof CoverMetricsTransmitter.MetricsTransmitterData)
-                .map(data -> ((CoverMetricsTransmitter.MetricsTransmitterData) data).getFrequency());
-        }
-        return Stream.empty();
+        return CoverableTileEntity.readCoversNBT(stack.getTagCompound(), null)
+            .stream()
+            .filter(cover -> cover instanceof CoverMetricsTransmitter)
+            .map(cover -> ((CoverMetricsTransmitter) cover).getFrequency());
     }
 
     /**
      * Data transmitted by a Metrics Transmitter cover.
      * <p>
-     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and
-     * {@link State#SELF_DESTRUCTED SELF DESTRUCTED}) are persisted, additional fields can be added to this data with
-     * little consequence. Ensure that any new fields are nullable, and make any getter for these fields return an
-     * {@link Optional}.
+     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and {@link State#SELF_DESTRUCTED
+     * SELF DESTRUCTED}) are persisted, additional fields can be added to this data with little consequence. Ensure that
+     * any new fields are nullable, and make any getter for these fields return an {@link Optional}.
      */
     public static class Data {
 
@@ -356,9 +339,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         }
 
         /**
-         * Retrieves the payload for this data. Only present if the frequency is in an
-         * {@link State#OPERATIONAL operational} state. Will be cleared if the frequency goes into a
-         * {@link State#HOST_DECONSTRUCTED host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
+         * Retrieves the payload for this data. Only present if the frequency is in an {@link State#OPERATIONAL
+         * operational} state. Will be cleared if the frequency goes into a {@link State#HOST_DECONSTRUCTED
+         * host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
          *
          * @return The data if present, or an empty Optional otherwise.
          */

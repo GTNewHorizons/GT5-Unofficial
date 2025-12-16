@@ -17,15 +17,14 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -52,6 +51,7 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
 import gregtech.api.util.TurbineStatCalculator;
@@ -98,6 +98,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     protected final float[] flowMultipliers = new float[] { 1, 1, 1 };
 
     // client side stuff
+    protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     protected boolean mHasTurbine;
     // mMachine got overwritten by StructureLib extended facing query response
     // so we use a separate field for this
@@ -105,10 +106,12 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     public MTELargeTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        usesTurbine = true;
     }
 
     public MTELargeTurbine(String aName) {
         super(aName);
+        usesTurbine = true;
     }
 
     @Override
@@ -161,6 +164,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
 
     public abstract int getCasingTextureIndex();
 
+    @Deprecated
     public boolean isNewStyleRendering() {
         return false;
     }
@@ -178,16 +182,33 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer) {
-        if (!isNewStyleRendering() || !mFormed) return false;
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        setTurbineOverlay();
+    }
+
+    protected void setTurbineOverlay() {
+        IGregTechTileEntity tile = getBaseMetaTileEntity();
+        if (tile.isServerSide()) return;
 
         IIconContainer[] tTextures;
-        if (getBaseMetaTileEntity().isActive()) tTextures = getTurbineTextureActive();
+        if (tile.isActive()) tTextures = getTurbineTextureActive();
         else if (hasTurbine()) tTextures = getTurbineTextureFull();
         else tTextures = getTurbineTextureEmpty();
-        GTUtilityClient
-            .renderTurbineOverlay(aWorld, aX, aY, aZ, aRenderer, getExtendedFacing(), getCasingBlock(), tTextures);
-        return false;
+
+        GTUtilityClient.setTurbineOverlay(
+            tile.getWorld(),
+            tile.getXCoord(),
+            tile.getYCoord(),
+            tile.getZCoord(),
+            getExtendedFacing(),
+            tTextures,
+            overlayTickets);
+    }
+
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
     }
 
     @Override
@@ -195,6 +216,13 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         mHasTurbine = (aValue & 0x1) != 0;
         mFormed = (aValue & 0x2) != 0;
         super.onValueUpdate(aValue);
+        setTurbineOverlay();
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        if (getBaseMetaTileEntity().isClientSide()) GTUtilityClient.clearTurbineOverlay(overlayTickets);
     }
 
     @Override
@@ -247,7 +275,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                 || this.getBaseMetaTileEntity()
                     .hasInventoryBeenModified()) {
                 counter = 0;
-                baseEff = (int) (100 * turbine.getEfficiency());
+                baseEff = (int) (100 * turbine.getBaseEfficiency());
                 optFlow = (int) turbine.getOptimalFlow();
 
                 overflowMultiplier = turbine.getOverflowEfficiency();
@@ -407,7 +435,8 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
             GTUtility.sendChatToPlayer(
@@ -418,8 +447,8 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public boolean isGivingInformation() {
-        return true;
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override
@@ -430,7 +459,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)

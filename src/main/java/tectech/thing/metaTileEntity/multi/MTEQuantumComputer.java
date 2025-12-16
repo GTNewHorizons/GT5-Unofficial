@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -361,7 +362,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                                                                                            // the Quantum Computer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.1")) // Used to generate
                                                                                            // computation (and heat)
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to toggle
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to
+                                                                                           // toggle
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
@@ -402,7 +404,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
             if (wirelessModeEnabled) {
@@ -530,19 +533,19 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         int built;
-        built = survivialBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("front", stackSize, 1, 2, 0, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        built = survivialBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("cap", stackSize, 1, 2, -1, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
 
         byte offset = -2;
         for (int rackSlices = Math.min(stackSize.stackSize, 12); rackSlices > 0; rackSlices--) {
-            built = survivialBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+            built = survivalBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
             if (built >= 0) return built;
         }
-        built = survivialBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
+        built = survivalBuildPiece("cap", stackSize, 1, 2, offset--, elementBudget, source, actor, false, true);
         if (built >= 0) return built;
-        return survivialBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("back", stackSize, 1, 2, offset, elementBudget, source, actor, false, true);
     }
 
     @Override
@@ -561,12 +564,13 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (wirelessModeEnabled) {
             WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
                 .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
-            data.add("Wireless mode: " + EnumChatFormatting.GREEN + "enabled");
+            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.enabled"));
             data.add(
-                "Total wireless computation available: " + EnumChatFormatting.YELLOW
-                    + wirelessComputationPacket.getAvailableComputationStored());
+                StatCollector.translateToLocalFormatted(
+                    "tt.infodata.qc.total_wireless_computation",
+                    "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
         } else {
-            data.add("Wireless mode: " + EnumChatFormatting.RED + "disabled");
+            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.disabled"));
         }
         return data.toArray(new String[] {});
     }

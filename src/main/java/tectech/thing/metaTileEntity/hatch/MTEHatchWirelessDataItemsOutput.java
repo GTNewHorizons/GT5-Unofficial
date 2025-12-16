@@ -13,6 +13,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -83,11 +84,6 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (dataPacket != null) {
@@ -108,6 +104,8 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
         if (aBaseMetaTileEntity.isServerSide()) {
             // Upload data packet and mark it as uploaded, so it will not be uploaded again
             // until the data bank resets the wireless network
+            aTick = MinecraftServer.getServer()
+                .getTickCounter();
             if (dataPacket != null && aTick % WirelessDataStore.IO_TICK_RATE == 0) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());

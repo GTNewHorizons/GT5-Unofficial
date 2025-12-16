@@ -27,7 +27,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
     }
 
     @Override
-    protected int getItemCapacity() {
+    public int getItemCapacity() {
         return naniteCapacity;
     }
 
@@ -39,7 +39,7 @@ public class MTEHatchNanite extends MTEHatchNonConsumableBase {
     }
 
     @Override
-    protected boolean isValidItem(ItemStack item) {
+    public boolean isValidItem(ItemStack item) {
         ItemData data = GTOreDictUnificator.getAssociation(item);
         if (data == null) {
             return false;

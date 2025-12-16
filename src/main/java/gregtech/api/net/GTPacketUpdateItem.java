@@ -11,7 +11,7 @@ import com.google.common.io.ByteArrayDataInput;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.interfaces.INetworkUpdatableItem;
-import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.GTByteBuffer;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -50,7 +50,7 @@ public class GTPacketUpdateItem extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
-        return new GTPacketUpdateItem(ISerializableObject.readCompoundTagFromGreggyByteBuf(aData));
+        return new GTPacketUpdateItem(GTByteBuffer.readCompoundTagFromGreggyByteBuf(aData));
     }
 
     @Override

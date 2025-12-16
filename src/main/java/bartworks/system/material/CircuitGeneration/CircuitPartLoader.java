@@ -89,6 +89,7 @@ import static gregtech.api.enums.ItemList.Optically_Compatible_Memory;
 import static gregtech.api.enums.ItemList.Optically_Perfected_CPU;
 import static gregtech.api.enums.ItemList.values;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -176,12 +177,12 @@ public class CircuitPartLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     single.get(16)
-                        .copy(),
-                    GTUtility.getIntegratedCircuit(16))
+                        .copy())
+                .circuit(16)
                 .itemOutputs(
                     BWMetaItems.getCircuitParts()
                         .getStack(CircuitImprintLoader.reverseIDs))
-                .fluidInputs(Materials.Plastic.getMolten(72))
+                .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);

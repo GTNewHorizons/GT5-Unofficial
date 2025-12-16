@@ -1,60 +1,63 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.modularui.cover.CoverRedstoneWirelessBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.mui1.cover.RedstoneWirelessBaseUIFactory;
+import io.netty.buffer.ByteBuf;
 
-public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
+public abstract class CoverRedstoneWirelessBase extends Cover {
 
-    private static final int MAX_CHANNEL = 65535;
+    private int frequency;
+    private boolean privateChannel;
+    public static final int MAX_CHANNEL = 65535;
     private static final int PRIVATE_MASK = 0xFFFE0000;
-    private static final int PUBLIC_MASK = 0x0000FFFF;
-    private static final int CHECKBOX_MASK = 0x00010000;
+    public static final int CHANNEL_MASK = 0x0000FFFF;
+    public static final int CHECKBOX_MASK = 0x00010000;
 
     public CoverRedstoneWirelessBase(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
     }
 
     @Override
-    public void onCoverRemoval() {
-        GregTechAPI.sWirelessRedstone.put(coverData.get(), (byte) 0);
-    }
-
-    @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))) {
-            GregTechAPI.sWirelessRedstone.put(coverData.get(), (byte) 0);
-            coverData.set(
-                (coverData.get() & (PRIVATE_MASK | CHECKBOX_MASK))
-                    | (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode() & PUBLIC_MASK));
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + coverData);
+            int newFrequency = (((Integer) GTUtility.stackToInt(aPlayer.inventory.getCurrentItem())).hashCode()
+                & CHANNEL_MASK);
+            processCoverData(newFrequency, this.privateChannel);
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                translateToLocalFormatted("gt.interact.desc.freq_format", frequency, privateChannel));
             return true;
         }
         return false;
     }
 
     @Override
-    public ISerializableObject.LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        int coverDataValue = coverData.get();
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((coverSide.offsetX == 0)
             || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
-            GregTechAPI.sWirelessRedstone.put(coverDataValue, (byte) 0);
             final float[] tCoords = GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ);
 
-            final short tAdjustVal = switch ((byte) ((byte) (int) (tCoords[0] * 2.0F)
+            final short adjustFrequencyValue = switch ((byte) ((byte) (int) (tCoords[0] * 2.0F)
                 + 2 * (byte) (int) (tCoords[1] * 2.0F))) {
                 case 0 -> -32;
                 case 1 -> 32;
@@ -63,18 +66,12 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
                 default -> 0;
             };
 
-            final int tPublicChannel = (coverDataValue & PUBLIC_MASK) + tAdjustVal;
-
-            if (tPublicChannel < 0) {
-                coverDataValue = coverDataValue & ~PUBLIC_MASK;
-            } else if (tPublicChannel > MAX_CHANNEL) {
-                coverDataValue = (coverDataValue & (PRIVATE_MASK | CHECKBOX_MASK)) | MAX_CHANNEL;
-            } else {
-                coverDataValue = (coverDataValue & (PRIVATE_MASK | CHECKBOX_MASK)) | tPublicChannel;
-            }
+            int newFrequency = Math.max(0, Math.min(MAX_CHANNEL, this.frequency + adjustFrequencyValue));
+            processCoverData(newFrequency, this.privateChannel);
         }
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("081", "Frequency: ") + (coverDataValue & PUBLIC_MASK));
-        return ISerializableObject.LegacyCoverData.of(coverDataValue);
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            translateToLocalFormatted("gt.interact.desc.freq_format", frequency, privateChannel));
     }
 
     @Override
@@ -109,7 +106,7 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
 
     @Override
     public String getDescription() {
-        return GTUtility.trans("081", "Frequency: ") + coverData.get();
+        return translateToLocalFormatted("gt.interact.desc.freq_format", frequency, privateChannel);
     }
 
     @Override
@@ -117,6 +114,88 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
         return 1;
     }
 
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    public boolean isPrivateChannel() {
+        return privateChannel;
+    }
+
+    public void setPrivateChannel(boolean privateChannel) {
+        this.privateChannel = privateChannel;
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt nbtTagInt) {
+            readLegacyDataFromNbt(nbtTagInt);
+            return;
+        }
+
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        processCoverData(tag.getInteger("frequency"), tag.getBoolean("privateChannel"));
+    }
+
+    private void readLegacyDataFromNbt(NBTTagInt nbtTagInt) {
+        int data = nbtTagInt.func_150287_d();
+        processCoverData(getFlagFrequency(data), getFlagCheckbox(data));
+    }
+
+    @Override
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {
+        processCoverData(byteData.readInt(), byteData.readBoolean());
+    }
+
+    protected void processCoverData(int frequency, boolean privateChannel) {
+        if (this.frequency != frequency || this.privateChannel != privateChannel) {
+            GregTechAPI.sWirelessRedstone.remove(getMapFrequency());
+
+            ICoverable tile = coveredTile.get();
+            if (tile == null) {
+                return;
+            }
+            this.frequency = frequency;
+            this.privateChannel = privateChannel;
+            GregTechAPI.sWirelessRedstone.put(getMapFrequency(), tile.getOutputRedstoneSignal(coverSide));
+        }
+    }
+
+    protected int getMapFrequency() {
+        return this.frequency + (this.privateChannel ? MAX_CHANNEL + 1 : 0);
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("frequency", this.frequency);
+        tag.setBoolean("privateChannel", this.privateChannel);
+
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeInt(this.frequency);
+        byteBuf.writeBoolean(this.privateChannel);
+    }
+
+    protected int getFlagFrequency(int coverVariable) {
+        return coverVariable & CoverRedstoneWirelessBase.CHANNEL_MASK;
+    }
+
+    protected boolean getFlagCheckbox(int coverVariable) {
+        return (coverVariable & CoverRedstoneWirelessBase.CHECKBOX_MASK) != 0;
+    }
+
+    @Override
+    public boolean isRedstoneSensitive(long aTimer) {
+        return true;
+    }
     // GUI stuff
 
     @Override
@@ -125,68 +204,13 @@ public abstract class CoverRedstoneWirelessBase extends CoverBehavior {
     }
 
     @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverRedstoneWirelessBaseGui(this);
+    }
+
+    @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new RedstoneWirelessBaseUIFactory(buildContext).createWindow();
     }
 
-    private class RedstoneWirelessBaseUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public RedstoneWirelessBaseUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @Override
-        protected int getGUIWidth() {
-            return 250;
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        CoverRedstoneWirelessBase.this::loadFromNbt)
-
-                            .addFollower(
-                                new CoverDataFollowerNumericWidget<>(),
-                                coverData -> (double) getFlagFrequency(convert(coverData)),
-                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                    state.intValue() | getFlagCheckbox(convert(coverData))),
-                                widget -> widget.setBounds(0, MAX_CHANNEL)
-                                    .setScrollValues(1, 1000, 10)
-                                    .setFocusOnGuiOpen(true)
-                                    .setPos(spaceX * 0, spaceY * 0 + 2)
-                                    .setSize(spaceX * 4 - 3, 12))
-                            .addFollower(
-                                CoverDataFollowerToggleButtonWidget.ofCheck(),
-                                coverData -> getFlagCheckbox(convert(coverData)) > 0,
-                                (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                    getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
-                                widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GTUtility.trans("602", "Use Private Frequency"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
-        }
-
-        private int getFlagFrequency(int coverVariable) {
-            return coverVariable & PUBLIC_MASK;
-        }
-
-        private int getFlagCheckbox(int coverVariable) {
-            return coverVariable & CHECKBOX_MASK;
-        }
-    }
 }

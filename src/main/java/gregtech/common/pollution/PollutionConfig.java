@@ -6,7 +6,7 @@ import gregtech.api.enums.Mods;
 
 // needs to be loaded early from the coremod because
 // it decides to load some mixins or not
-@Config(modid = Mods.Names.GREG_TECH, category = "Pollution", configSubDirectory = "GregTech", filename = "Pollution")
+@Config(modid = Mods.ModIDs.GREG_TECH, category = "Pollution", configSubDirectory = "GregTech", filename = "Pollution")
 public class PollutionConfig {
 
     // override name to be at the top of the cfg file
@@ -61,19 +61,19 @@ public class PollutionConfig {
     @Config.RequiresMcRestart
     public static int pollutionImplosionCompressorPerSecond;
     @Config.Comment("Controls the pollution released per second by the large bronze boiler.")
-    @Config.DefaultInt(1_000)
+    @Config.DefaultInt(200)
     @Config.RequiresMcRestart
     public static int pollutionLargeBronzeBoilerPerSecond;
     @Config.Comment("Controls the pollution released per second by the large steel boiler.")
-    @Config.DefaultInt(2_000)
+    @Config.DefaultInt(400)
     @Config.RequiresMcRestart
     public static int pollutionLargeSteelBoilerPerSecond;
     @Config.Comment("Controls the pollution released per second by the large titanium boiler.")
-    @Config.DefaultInt(3_000)
+    @Config.DefaultInt(800)
     @Config.RequiresMcRestart
     public static int pollutionLargeTitaniumBoilerPerSecond;
     @Config.Comment("Controls the pollution released per second by the large tungstensteel boiler.")
-    @Config.DefaultInt(4_000)
+    @Config.DefaultInt(1_600)
     @Config.RequiresMcRestart
     public static int pollutionLargeTungstenSteelBoilerPerSecond;
     @Config.Comment("Controls the pollution reduction obtained with each increment of the circuit when throttling large boilers.")
@@ -114,7 +114,7 @@ public class PollutionConfig {
     @Config.Comment({
         "Pollution released by tier, with the following formula: PollutionBaseDieselGeneratorPerSecond * PollutionDieselGeneratorReleasedByTier[Tier]",
         "The first entry has meaning as it is here to since machine tier with array index: LV is 1, etc." })
-    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8 })
+    @Config.DefaultDoubleList({ 0.1, 1.0, 0.9, 0.8, 0.7, 0.6 })
     @Config.RequiresMcRestart
     public static double[] pollutionDieselGeneratorReleasedByTier;
 
@@ -261,15 +261,6 @@ public class PollutionConfig {
     @Config.Comment("pollution rate in gibbl/s for the Industrial mixing machine")
     @Config.DefaultInt(800)
     public static int pollutionPerSecondMultiIndustrialMixer;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in metal mode")
-    @Config.DefaultInt(400)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in fluid mode")
-    @Config.DefaultInt(400)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
-    @Config.Comment("pollution rate in gibbl/s for the Large processing factory in misc mode")
-    @Config.DefaultInt(600)
-    public static int pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
     @Config.Comment("pollution rate in gibbl/s for the Industrial material press in forming mode")
     @Config.DefaultInt(240)
     public static int pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
@@ -318,9 +309,6 @@ public class PollutionConfig {
     @Config.Comment("pollution rate in gibbl/s for the Alloy blast furnace")
     @Config.DefaultInt(200)
     public static int pollutionPerSecondMultiABS;
-    @Config.Comment("pollution rate in gibbl/s for the Cyclotron")
-    @Config.DefaultInt(200)
-    public static int pollutionPerSecondMultiCyclotron;
     @Config.Comment("pollution rate in gibbl/s for the Zuhai - fishing port")
     @Config.DefaultInt(20)
     public static int pollutionPerSecondMultiIndustrialFishingPond;

@@ -192,6 +192,20 @@ public enum IDMetaItem03 {
     Quark_Creation_Catalyst_Bottom(239),
     Quark_Creation_Catalyst_Top(240),
     Quark_Creation_Catalyst_Unaligned(241),
+    Heavy_Hellish_Mud(242),
+    Netherite_Scrap_Seed(243),
+    Brittle_Netherite_Scrap(244),
+    Netherite_Nanoparticles(245),
+    Intensely_Bonded_Netherite_Nanoparticles(246),
+    Hot_Netherite_Scrap(247),
+    Prismarine_Precipitate(248),
+    Prismatic_Crystal(249),
+    Radiation_Proof_Prismatic_Naquadah_Composite_Sheet(250),
+    Naquarite_Universal_Insulator_Foil(251),
+    Manafly(252),
+    Alumina_Support_Ring(253),
+    Alumina_Support_Ring_Raw(254),
+    Beryllium_Shielding_Plate(255),
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
@@ -232,7 +246,8 @@ public enum IDMetaItem03 {
     Transdimensional_Alignment_Matrix(758),
     Thermal_Superconductor(759),
     Relativistic_Heat_Capacitor(760),
-    Phononic_Seed_Crystal(761);
+    Phononic_Seed_Crystal(761),
+    Harmonic_Compound(762);
 
     public final int ID;
 

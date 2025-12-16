@@ -11,19 +11,24 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.auxiliary.PlayerChatHelper;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
@@ -57,12 +62,12 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     private int _mRadiusTierOverride = -1;
     private int _mSpeedTierOverride = -1;
 
-    private int getRadiusTierOverride() {
+    public final int getRadiusTierOverride() {
         if (_mRadiusTierOverride == -1) _mRadiusTierOverride = mTier;
         return _mRadiusTierOverride;
     }
 
-    private int getSpeedTierOverride() {
+    public final int getSpeedTierOverride() {
         if (_mSpeedTierOverride == -1) _mSpeedTierOverride = mTier;
         return _mSpeedTierOverride;
     }
@@ -82,12 +87,12 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return _mRadiusTierOverride;
     }
 
-    private byte mMode = 0; // 0: RandomTicks around 1: TileEntities with range 1
+    private byte mMode = 1; // 0: RandomTicks around 1: TileEntities with range 1
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_Norm_Active;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Idle;
     private static Textures.BlockIcons.CustomIcon _mGTIco_TE_Active;
-    private static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
+    public static final int[] mAccelerateStatic = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 512, 512, 512, 512, 512,
         512 };
     private static final int AMPERAGE_NORMAL = 3;
     private static final int AMPERAGE_TE = 6;
@@ -118,13 +123,16 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            String
-                .format("Accelerating things (Max Radius: %d | Max Speed Bonus: x%d)", mTier, mAccelerateStatic[mTier]),
-            "Use a screwdriver to change mode, sneak to change Radius", "Use a wrench to change speed",
-            "To accelerate TileEntities, this machine has to be adjacent to it",
-            String.format("Normal mode consumes up to %s amperage, depending on radius", AMPERAGE_NORMAL),
-            String.format("TE mode consumes %s amperage", AMPERAGE_TE) };
+        return new String[] { "Machine Type: " + EnumChatFormatting.YELLOW + "World Accelerator, WA",
+            "Max Speed Bonus " + EnumChatFormatting.GREEN + String.format("x%d", mAccelerateStatic[mTier]),
+            EnumChatFormatting.GOLD + "Blocks Mode: "
+                + EnumChatFormatting.RESET
+                + String.format("Range: 1-%d blocks to each side | Amps \u2264%s", mTier, AMPERAGE_NORMAL),
+            EnumChatFormatting.GOLD + "TileEntity Mode: "
+                + EnumChatFormatting.RESET
+                + String.format("Adjacent blocks only | Amps \u2264%s", AMPERAGE_TE),
+            "Use a screwdriver to change mode, sneak to change range", "Use a wrench to change speed",
+            "Power consumption increases with speed/range" };
     }
 
     @Override
@@ -136,19 +144,24 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     public String[] getInfoData() {
         List<String> tInfoDisplay = new ArrayList<>();
 
-        tInfoDisplay.add(String.format("Accelerator running in %s mode", mModeStr[mMode]));
         tInfoDisplay.add(
-            String.format(
-                "Speed setting: [%d / %d]",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.mode",
+                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
+        tInfoDisplay.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.speed",
                 mAccelerateStatic[getSpeedTierOverride()],
                 mAccelerateStatic[mTier]));
         tInfoDisplay.add(
-            String.format(
-                "Consuming %d EU/t",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.world_accelerator.consuming",
                 getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
-        if (mMode == 0) tInfoDisplay.add(String.format("Radius setting: [%d / %d]", getRadiusTierOverride(), mTier));
+        if (mMode == 0) tInfoDisplay.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }
@@ -224,11 +237,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer pPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
@@ -249,11 +257,6 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     @Override
-    public long getMinimumStoredEU() {
-        return 512;
-    }
-
-    @Override
     public long maxEUStore() {
         return 512 + V[mTier] * 50;
     }
@@ -268,36 +271,55 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         return 8;
     }
 
-    private static final String[] mModeStr = { "Blocks", "TileEntities" };
+    private static final String[] mUnlocalizedModeStr = { "GT5U.word_accelerator.mode.blocks",
+        "GT5U.word_accelerator.mode.tile_entities" };
 
     // This uses the Wrench as second tool to cycle speeds
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer pPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         incSpeedTierOverride();
+        getBaseMetaTileEntity().issueTileUpdate();
 
         markDirty();
-        PlayerChatHelper.SendInfo(
-            pPlayer,
-            String.format("Machine acceleration changed to x%d", mAccelerateStatic[getSpeedTierOverride()]));
+        if (pPlayer instanceof EntityPlayerMP playerMP) {
+            playerMP.addChatMessage(
+                new ChatComponentTranslation(
+                    "tt.block.world_accelerator.set_speed",
+                    mAccelerateStatic[getSpeedTierOverride()]));
+        }
 
         return true;
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer pPlayer, float pX, float pY, float pZ,
+        ItemStack aTool) {
         if (pPlayer.isSneaking()) {
             if (mMode == 0) {
                 incRadiusTierOverride();
 
                 markDirty();
-                PlayerChatHelper
-                    .SendInfo(pPlayer, String.format("Machine radius changed to %d Blocks", getRadiusTierOverride()));
-            } else PlayerChatHelper.SendError(pPlayer, "Can't change radius; Machine is in TileEntity Mode!");
+                if (pPlayer instanceof EntityPlayerMP playerMP) {
+                    playerMP.addChatMessage(
+                        new ChatComponentTranslation("tt.block.world_accelerator.set_range", getRadiusTierOverride()));
+                }
+            } else {
+                if (pPlayer instanceof EntityPlayerMP playerMP) {
+                    playerMP.addChatMessage(
+                        new ChatComponentTranslation("tt.block.world_accelerator.set_range_fail")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
+                }
+            }
         } else {
             mMode = (byte) (mMode == 0x00 ? 0x01 : 0x00);
             markDirty();
-            PlayerChatHelper.SendInfo(pPlayer, String.format("Switched mode to: %s", mModeStr[mMode]));
+            if (pPlayer instanceof EntityPlayerMP playerMP) {
+                playerMP.addChatMessage(
+                    new ChatComponentTranslation(
+                        "tt.block.world_accelerator.set_mode",
+                        new ChatComponentTranslation(mUnlocalizedModeStr[mMode])));
+            }
         }
     }
 
@@ -341,6 +363,21 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         }
     }
 
+    /**
+     * Send the acceleration value to the client
+     */
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("acceleration", getSpeedTierOverride());
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        this._mSpeedTierOverride = data.getInteger("acceleration");
+    }
+
     private void doAccelerateTileEntities(IGregTechTileEntity pBaseMetaTileEntity, World pWorld) {
         try {
             if (!pBaseMetaTileEntity.isActive()) {
@@ -353,8 +390,9 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
                     continue;
                 }
 
-                long tMaxTime = System.nanoTime() + 1000000;
-                for (int j = 0; j < mAccelerateStatic[getSpeedTierOverride()]; j++) {
+                final long tMaxTime = System.nanoTime() + 1000000;
+                final int iterations = mAccelerateStatic[getSpeedTierOverride()];
+                for (int j = 0; j < iterations; j++) {
                     tTile.updateEntity();
                     if (System.nanoTime() > tMaxTime) {
                         break;
@@ -367,7 +405,7 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     }
 
     // Inspired by ChromatiCraft's TileAccelerator
-    private boolean isTEBlackListed(TileEntity pTile) {
+    public static boolean isTEBlackListed(TileEntity pTile) {
         if (pTile == null) {
             return true; // Obvious
         }
@@ -461,5 +499,38 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         } catch (Exception e) {
             GTLog.err.println("MTEWorldAccelerator.tryTickBlock.crash\n" + e.getMessage());
         }
+    }
+
+    /**
+     * This method makes it easier for other mods to get the WA's bonus
+     *
+     * @return the acceleration bonus of the TE
+     */
+    public static int getAccelerationForTE(TileEntity pTile) {
+        return isTEBlackListed(pTile) ? 0 : getAccelerationForTEUnsafe(pTile);
+    }
+
+    /**
+     * Same as the method above, but now without the TE check. Only use this is you're 100% sure what type the TE is.
+     *
+     * @return the acceleration bonus of the TE
+     */
+    public static int getAccelerationForTEUnsafe(TileEntity pTile) {
+        final int x = pTile.xCoord;
+        final int y = pTile.yCoord;
+        final int z = pTile.zCoord;
+        final World worldObj = pTile.getWorldObj();
+
+        int acceleration = 0;
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            final TileEntity te = worldObj.getTileEntity(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+            if (te instanceof BaseMetaTileEntity mte) {
+                if (mte.getMetaTileEntity() instanceof MTEWorldAccelerator accelerator && mte.isActive()
+                    && accelerator.mMode != 0) {
+                    acceleration += mAccelerateStatic[accelerator.getSpeedTierOverride()];
+                }
+            }
+        }
+        return acceleration;
     }
 }

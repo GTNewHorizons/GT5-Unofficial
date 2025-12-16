@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -77,7 +78,11 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q == null) {
-            q = WirelessComputationPacket.downloadData(aBaseMetaTileEntity.getOwnerUuid(), requiredComputation, aTick);
+            q = WirelessComputationPacket.downloadData(
+                aBaseMetaTileEntity.getOwnerUuid(),
+                requiredComputation,
+                MinecraftServer.getServer()
+                    .getTickCounter());
         }
 
     }

@@ -9,6 +9,7 @@ import java.util.Collections;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -160,11 +161,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     @Override
     public long maxEUStore() {
         return V[mTier] * 256;
-    }
-
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
     }
 
     @Override
@@ -321,17 +317,12 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                                     } // End of valid air sides block.
                                 } // End of valid toolstats block.
                             } // End of correct inventory item block.
-                            else {
-                                // Utils.LOG_WARNING("Wrong Tool metaitem Found.");
-                            }
                         }
                     } else if (!aBaseMetaTileEntity.isActive()) {
                         return;
                     }
                 } // End of can work block.
-                else { // Disable Machine.
-                       // aBaseMetaTileEntity.setActive(false);
-                }
+
             } // End of 1/sec action block.
             else {
 
@@ -411,11 +402,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 && rotorStack.getItemDamage() <= 179) {
                     // Logger.INFO("Found Turbine Rotor.");
                     return true;
-                } else {
-                    // Logger.INFO("Found: "+rotorStack.getDisplayName()+":"+rotorStack.getItemDamage());
                 }
         }
-        // Logger.INFO("Found No Turbine Rotor.");
         return false;
     }
 
@@ -740,8 +728,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -767,11 +756,18 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 * Math.max((tTier - 2), 1);
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
-            aTooltipSuper.add("Maximum pollution removed per second: " + reduction);
+            aTooltipSuper.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
+                    reduction));
         } catch (Throwable t) {
-            aTooltipSuper.add("Maximum pollution removed per second: " + mPollutionReduction);
+            aTooltipSuper.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
+                    mPollutionReduction));
         }
-        aTooltipSuper.add("Air Sides: " + mAirSides);
+        aTooltipSuper.add(
+            StatCollector.translateToLocalFormatted("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
 
         String[] mBuiltOutput = new String[aTooltipSuper.size()];
         int aIndex = 0;
@@ -780,11 +776,6 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         }
 
         return mBuiltOutput;
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
     }
 
     @Override
@@ -865,7 +856,11 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     .setPos(124, 62));
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
-                .dynamicTooltip(() -> Collections.singletonList("Reduction: " + mPollutionReduction + "/s"))
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.atmospheric_reconditioner.tooltip.reduction",
+                            mPollutionReduction)))
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> mPollutionReduction, val -> mPollutionReduction = val),
                     builder,

@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;
 
 /**
- * This annotation can be applied to a package or class to indicate that
- * the fields in that element are nonnull by default unless there is an explicit nullness annotation.
+ * This annotation can be applied to a package or class to indicate that the fields in that element are nonnull by
+ * default unless there is an explicit nullness annotation.
  * </ul>
  */
 @Nonnull

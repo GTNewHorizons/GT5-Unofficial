@@ -22,8 +22,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import bartworks.MainMod;
-import bartworks.util.Pair;
 import bwcrossmod.BartWorksCrossmod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.OrePrefixes;
@@ -52,14 +53,11 @@ public class OreDictHandler {
                 ItemStack tmpstack = OreDictionary.getOres(s)
                     .get(0)
                     .copy();
-                Pair<Integer, Short> p = new Pair<>(
-                    Item.getIdFromItem(tmpstack.getItem()),
-                    (short) tmpstack.getItemDamage());
+                Pair<Integer, Short> p = Pair
+                    .of(Item.getIdFromItem(tmpstack.getItem()), (short) tmpstack.getItemDamage());
                 OreDictHandler.cache.put(s, p);
                 for (ItemStack tmp : OreDictionary.getOres(s)) {
-                    Pair<Integer, Short> p2 = new Pair<>(
-                        Item.getIdFromItem(tmp.getItem()),
-                        (short) tmp.getItemDamage());
+                    Pair<Integer, Short> p2 = Pair.of(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage());
                     GameRegistry.UniqueIdentifier UI = GameRegistry.findUniqueIdentifierFor(tmp.getItem());
                     if (UI == null) UI = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(tmp.getItem()));
                     if (!MainMod.MOD_ID.equals(UI.modId) && !BartWorksCrossmod.MOD_ID.equals(UI.modId)
@@ -85,7 +83,7 @@ public class OreDictHandler {
                 .copy();
             OreDictHandler.cache.put(
                 prefixes + elementName.replace(" ", ""),
-                new Pair<>(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
+                Pair.of(Item.getIdFromItem(tmp.getItem()), (short) tmp.getItemDamage()));
             tmp.stackSize = amount;
             return tmp;
         }

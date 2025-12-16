@@ -32,6 +32,10 @@ public class GTUODimension {
         }
     }
 
+    public BiMap<String, GTUOFluid> getFluids() {
+        return fFluids;
+    }
+
     public GTUOFluid getRandomFluid(Random aRandom) {
         int random = aRandom.nextInt(1000);
         for (BiMap.Entry<String, GTUOFluid> fl : fFluids.entrySet()) {

@@ -9,13 +9,13 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.google.common.base.Objects;
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.GTRenderUtil;
 
 public class MetaGeneratedItemRenderer implements IItemRenderer {
 
@@ -31,12 +31,11 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
     }
 
     public static void registerSpecialRenderer(ItemList item, IItemRenderer renderer) {
-        specialRenderers.put(
-            new RendererKey(
-                item.getItem(),
-                (short) item.getInternalStack_unsafe()
-                    .getItemDamage()),
-            renderer);
+        registerSpecialRenderer(item.getItem(), item.getInternalStack_unsafe(), renderer);
+    }
+
+    public static void registerSpecialRenderer(Item aItem, ItemStack aStack, IItemRenderer renderer) {
+        specialRenderers.put(new RendererKey(aItem, (short) aStack.getItemDamage()), renderer);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class MetaGeneratedItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
-        GTRenderUtil.applyStandardItemTransform(type);
+        ItemRenderUtil.applyStandardItemTransform(type);
 
         IItemRenderer itemRenderer = getRendererForItemStack(aStack);
         itemRenderer.renderItem(type, aStack, data);

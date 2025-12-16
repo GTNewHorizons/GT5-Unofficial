@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -238,7 +239,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[getTier() + 1] };
     }
 
     @Override
@@ -278,7 +279,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE), TextureFactory.builder()
             .addIcon(Textures.BlockIcons.OVERLAY_SIDE_RTG_ACTIVE_GLOW)
             .glow()
-            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()] };
+            .build(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[getTier() + 1] };
     }
 
     @Override
@@ -351,11 +352,20 @@ public class MTERTGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "RTG - Running at tier " + this.mTier, "Active: " + this.getBaseMetaTileEntity()
-            .isActive(), "Current Output: " + GTUtility.formatNumbers(mVoltage) + " EU/t",
-            "Days of Fuel remaining: " + GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20),
-            "Hours of Fuel remaining: " + GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60),
-            "Ticks of " + this.mVoltage + "v remaining: " + mTicksToBurnFor,
+        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.running_at", this.mTier),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.active",
+                this.getBaseMetaTileEntity()
+                    .isActive()),
+            StatCollector.translateToLocalFormatted("gtpp.infodata.rtg.output", GTUtility.formatNumbers(mVoltage)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.days",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 20)),
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.rtg.remaining.hours",
+                GTUtility.formatNumbers(mTicksToBurnFor / 20 / 60 / 60)),
+            StatCollector
+                .translateToLocalFormatted("gtpp.infodata.rtg.remaining.ticks", this.mVoltage, mTicksToBurnFor),
             this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" };
     }
 }

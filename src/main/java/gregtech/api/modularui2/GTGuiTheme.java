@@ -6,16 +6,15 @@ import java.util.function.Consumer;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.IThemeApi;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.theme.ReloadThemeEvent;
+import com.cleanroommc.modularui.utils.JsonArrayBuilder;
 import com.cleanroommc.modularui.utils.JsonBuilder;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.Dyes;
 
 /**
  * Theme object gets applied to the entire panel. If you want to customize the appearance of specific widget, see
@@ -29,8 +28,6 @@ public class GTGuiTheme {
 
     private final List<Consumer<JsonBuilder>> elementBuilder;
     private final JsonBuilder jsonBuilder;
-
-    private UITexture logo;
 
     private GTGuiTheme(String themeId) {
         this.themeId = themeId;
@@ -48,10 +45,6 @@ public class GTGuiTheme {
             .getTheme(themeId);
     }
 
-    public @Nullable UITexture getLogo() {
-        return logo;
-    }
-
     private void register() {
         buildJson();
         IThemeApi.get()
@@ -63,14 +56,17 @@ public class GTGuiTheme {
     }
 
     public static void registerThemes() {
-        MinecraftForge.EVENT_BUS.register(GTGuiTheme.class);
+        MinecraftForge.EVENT_BUS.register(new GTGuiTheme.EventHandler());
         GTGuiThemes.init();
         THEMES.forEach(GTGuiTheme::register);
     }
 
-    @SubscribeEvent
-    public static void onReloadThemes(ReloadThemeEvent.Pre event) {
-        THEMES.forEach(GTGuiTheme::buildJson);
+    public static class EventHandler {
+
+        @SubscribeEvent
+        public void onReloadThemes(ReloadThemeEvent.Pre event) {
+            THEMES.forEach(GTGuiTheme::buildJson);
+        }
     }
 
     public static Builder builder(String themeId) {
@@ -81,13 +77,26 @@ public class GTGuiTheme {
 
         private final GTGuiTheme theme;
 
+        private String itemSlotId;
+        private int itemSlotHoverColor;
+        private String fluidSlotId;
+        private int fluidSlotHoverColor;
+
         private Builder(String themeId) {
             theme = new GTGuiTheme(themeId);
         }
 
         /**
-         * Set a parent theme for this theme, which unset values will inherit from.
-         * If not set, it will use the default theme as the parent (VANILLA).
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
+         */
+        public Builder parent(GTGuiTheme parent) {
+            return parent(parent.themeId);
+        }
+
+        /**
+         * Set a parent theme for this theme, which unset values will inherit from. If not set, it will use the default
+         * theme as the parent (VANILLA).
          */
         public Builder parent(String parentId) {
             theme.elementBuilder.add(b -> b.add("parent", parentId));
@@ -106,7 +115,7 @@ public class GTGuiTheme {
          * Set a tooltip hover background fallback for when specific widgets do not set their own.
          */
         public Builder globalHoverBackground(String hoverBackgroundId) {
-            theme.elementBuilder.add(b -> b.add("hoverBackground", hoverBackgroundId));
+            theme.elementBuilder.add(b -> b.add("background:hover", hoverBackgroundId));
             return this;
         }
 
@@ -208,7 +217,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", buttonId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverId))
                         .add("textColor", textColor)
@@ -230,6 +239,8 @@ public class GTGuiTheme {
          * @param hoverColor The color of the tooltip hover box for this widget
          */
         public Builder itemSlot(String itemSlotId, int hoverColor) {
+            this.itemSlotId = itemSlotId;
+            this.itemSlotHoverColor = hoverColor;
             theme.elementBuilder.add(
                 b -> b.add(
                     "itemSlot",
@@ -255,6 +266,8 @@ public class GTGuiTheme {
          * @param hoverColor  The color of the tooltip hover box for this widget
          */
         public Builder fluidSlot(String fluidSlotId, int hoverColor) {
+            this.fluidSlotId = fluidSlotId;
+            this.fluidSlotHoverColor = hoverColor;
             theme.elementBuilder.add(
                 b -> b.add(
                     "fluidSlot",
@@ -330,7 +343,7 @@ public class GTGuiTheme {
                         new JsonBuilder().add("type", "texture")
                             .add("id", backgroundId))
                         .add(
-                            "hoverBackground",
+                            "background:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", hoverBackgroundId))
                         .add(
@@ -338,7 +351,7 @@ public class GTGuiTheme {
                             new JsonBuilder().add("type", "texture")
                                 .add("id", selectedBackgroundId))
                         .add(
-                            "selectedHoverBackground",
+                            "selectedBackground:hover",
                             new JsonBuilder().add("type", "texture")
                                 .add("id", selectedHoverBackgroundId))
                         .add("selectedColor", selectedColor)
@@ -390,11 +403,155 @@ public class GTGuiTheme {
             return this;
         }
 
+        public Builder themedColor(String themeId, int color) {
+            theme.elementBuilder.add(b -> b.add(themeId, new JsonBuilder().add("color", color)));
+            return this;
+        }
+
         /**
-         * Set a logo for this theme.
+         * Registers texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param textureId      Texture id found at {@link GTTextureIds}.
          */
-        public Builder logo(UITexture logo) {
-            theme.logo = logo;
+        public Builder themedTexture(String textureThemeId, String textureId) {
+            theme.elementBuilder.add(b -> {
+                b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "background",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", textureId)));
+            });
+            return this;
+        }
+
+        /**
+         * Registers item slot overlay which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param textureId      Texture id found at {@link GTTextureIds}.
+         */
+        public Builder themedOverlayItemSlot(String textureThemeId, String textureId) {
+            return themedOverlaySlot(textureThemeId, textureId, itemSlotId, itemSlotHoverColor, "itemSlot");
+        }
+
+        /**
+         * Registers fluid slot overlay which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param textureId      Texture id found at {@link GTTextureIds}.
+         */
+        public Builder themedOverlayFluidSlot(String textureThemeId, String textureId) {
+            return themedOverlaySlot(textureThemeId, textureId, fluidSlotId, fluidSlotHoverColor, "fluidSlot");
+        }
+
+        private Builder themedOverlaySlot(String textureThemeId, String textureId, String slotId, Integer hoverColor,
+            String errorMessage) {
+            theme.elementBuilder.add(b -> {
+                if (slotId == null) {
+                    throw new IllegalStateException(errorMessage + "must be specified for this method to work!");
+                }
+                b.add(
+                    textureThemeId,
+                    new JsonBuilder()
+                        .add(
+                            "background",
+                            new JsonArrayBuilder().add(
+                                new JsonBuilder().add("type", "texture")
+                                    .add("id", slotId))
+                                .add(
+                                    new JsonBuilder().add("type", "texture")
+                                        .add("id", textureId)))
+                        .add("slotHoverColor", hoverColor));
+            });
+            return this;
+        }
+
+        /**
+         * Registers button texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param backgroundId   Texture id found at {@link GTTextureIds}.
+         */
+        public Builder themedButton(String textureThemeId, String backgroundId) {
+            return themedButton(textureThemeId, backgroundId, backgroundId);
+        }
+
+        /**
+         * Registers button texture which can be changed depending on theme.
+         *
+         * @param textureThemeId    Widget theme id. See {@link GTWidgetThemes}.
+         * @param backgroundId      Texture id found at {@link GTTextureIds}.
+         * @param hoverBackgroundId Texture id found at {@link GTTextureIds}.
+         */
+        public Builder themedButton(String textureThemeId, String backgroundId, String hoverBackgroundId) {
+            theme.elementBuilder.add(
+                b -> b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "background",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", backgroundId))
+                        .add(
+                            "background:hover",
+                            new JsonBuilder().add("type", "texture")
+                                .add("id", hoverBackgroundId))));
+            return this;
+        }
+
+        /**
+         * Registers progressbar texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param wholeTextureId Texture id found at {@link GTTextureIds}, having empty and full texture in one image.
+         * @param imageSize      Size of the image for the direction in which the progressbar fills up.
+         */
+        public Builder progressbar(String textureThemeId, String wholeTextureId, int imageSize) {
+            theme.elementBuilder.add(
+                b -> b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "wholeTexture",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", wholeTextureId))
+                        .add("imageSize", imageSize)));
+            return this;
+        }
+
+        /**
+         * Registers progressbar texture which can be changed depending on theme.
+         *
+         * @param textureThemeId Widget theme id. See {@link GTWidgetThemes}.
+         * @param emptyTextureId Texture id found at {@link GTTextureIds}, shown when progress is empty.
+         * @param fullTextureId  Texture id found at {@link GTTextureIds}, shown when progress is full.
+         * @param imageSize      Size of the image for the direction in which the progressbar fills up.
+         */
+        public Builder progressbar(String textureThemeId, String emptyTextureId, String fullTextureId, int imageSize) {
+            theme.elementBuilder.add(
+                b -> b.add(
+                    textureThemeId,
+                    new JsonBuilder().add(
+                        "emptyTexture",
+                        new JsonBuilder().add("type", "texture")
+                            .add("id", emptyTextureId))
+                        .add(
+                            "fullTexture",
+                            new JsonBuilder().add("type", "texture")
+                                .add("id", fullTextureId))
+                        .add("imageSize", imageSize)));
+            return this;
+        }
+
+        /**
+         * A shorthand for applying a Dye to every (non-text) part of the UI theme
+         * 
+         * @param dye - dye to apply
+         * @return this
+         */
+        public Builder fullColor(Dyes dye) {
+            this.color(dye.toInt())
+                .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, dye.toInt());
             return this;
         }
 

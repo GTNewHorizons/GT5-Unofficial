@@ -6,12 +6,10 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import gregtech.api.recipe.RecipeMaps;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NEIGTPPConfig implements IConfigureNEI {
@@ -38,29 +36,11 @@ public class NEIGTPPConfig implements IConfigureNEI {
             GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
             API.addRecipeCatalyst(item.get(1), "crafting", -10);
         }
-        // Bronze workbench
-        API.removeRecipeCatalyst(ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:31081", 1), "crafting");
-        API.removeRecipeCatalyst(ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:31082", 1), "crafting");
 
         // Moved to its own handler
         API.removeRecipeCatalyst(
             GregtechItemList.Controller_Vacuum_Furnace.get(1),
             GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
-
-        // ULV simple washer
-        API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:767", 1),
-            GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
-
-        // ULV combustion generator
-        API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:960", 1),
-            RecipeMaps.dieselFuels.unlocalizedName);
-
-        // ULV gas turbine
-        API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:961", 1),
-            RecipeMaps.gasTurbineFuels.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {

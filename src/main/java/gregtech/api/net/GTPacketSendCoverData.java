@@ -6,7 +6,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
-import gregtech.api.covers.CoverRegistry;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.common.covers.Cover;
@@ -66,11 +65,7 @@ public class GTPacketSendCoverData extends GTPacket {
         if (world == null) return;
         final TileEntity tile = world.getTileEntity(data.readInt(), data.readShort(), data.readInt());
         if (tile instanceof CoverableTileEntity coverable && !coverable.isDead()) {
-            int coverId = data.readInt();
-            ForgeDirection side = ForgeDirection.getOrientation(data.readByte());
-            Cover cover = CoverRegistry.getRegistration(coverId)
-                .buildCover(side, coverable, data);
-            coverable.updateAttachedCover(cover);
+            coverable.updateAttachedCover(data);
         }
     }
 

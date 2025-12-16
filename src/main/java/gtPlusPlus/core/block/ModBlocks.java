@@ -22,7 +22,6 @@ import gtPlusPlus.core.block.machine.BlockFlaskSetter;
 import gtPlusPlus.core.block.machine.BlockPestKiller;
 import gtPlusPlus.core.block.machine.BlockPooCollector;
 import gtPlusPlus.core.block.machine.BlockProjectTable;
-import gtPlusPlus.core.block.machine.BlockSuperJukebox;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -80,7 +79,6 @@ public final class ModBlocks {
         GregtechItemList.WitherGuard.set(new ItemStack(new BlockWitherProof()));
         blockCircuitProgrammer = new BlockCircuitProgrammer();
         blockDecayablesChest = new BlockDecayablesChest();
-        blockCustomJukebox = new BlockSuperJukebox();
         blockPooCollector = new BlockPooCollector();
         GregtechItemList.PestKiller.set(new ItemStack(new BlockPestKiller()));
         blockVolumetricFlaskSetter = new BlockFlaskSetter();
@@ -132,5 +130,10 @@ public final class ModBlocks {
         GregtechItemList.TripleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 8));
         GregtechItemList.QuadrupleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 9));
         GregtechItemList.QuintupleCompressedGlowstone.set(new ItemStack(compressedObsidian, 1, 10));
+
+        // Compressed Netherrack shares the block with Compressed Obsidian
+        GregtechItemList.CompressedNetherrack.set(new ItemStack(compressedObsidian, 1, 11));
+        GregtechItemList.DoubleCompressedNetherrack.set(new ItemStack(compressedObsidian, 1, 12));
+        GregtechItemList.TripleCompressedNetherrack.set(new ItemStack(compressedObsidian, 1, 13));
     }
 }

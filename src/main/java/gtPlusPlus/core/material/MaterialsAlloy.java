@@ -16,7 +16,7 @@ public final class MaterialsAlloy {
     public static final Material TUNGSTENSTEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.TungstenSteel);
     public static final Material STAINLESS_STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.StainlessSteel);
     public static final Material OSMIRIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmiridium);
-    public static final Material POLYETHYLENE = MaterialUtils.generateMaterialFromGtENUM(Materials.Plastic);
+    public static final Material POLYETHYLENE = MaterialUtils.generateMaterialFromGtENUM(Materials.Polyethylene);
     public static final Material POLYTETRAFLUOROETHYLENE = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Polytetrafluoroethylene);
     public static final Material ENERGYCRYSTAL = new Material(
@@ -28,12 +28,11 @@ public final class MaterialsAlloy {
         90, // Protons
         40, // Neutrons
         true, // Uses Blast furnace?
-        "⬟ ⯂ ⬢ ⬣ ⯃ ⯄",
         // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().AER, 5),
-        new MaterialStack(MaterialsElements.getInstance().IGNIS, 5),
-        new MaterialStack(MaterialsElements.getInstance().TERRA, 5),
-        new MaterialStack(MaterialsElements.getInstance().AQUA, 5));
+        new MaterialStack(MaterialsElements.getInstance().AER, 25),
+        new MaterialStack(MaterialsElements.getInstance().TERRA, 25),
+        new MaterialStack(MaterialsElements.getInstance().IGNIS, 25),
+        new MaterialStack(MaterialsElements.getInstance().AQUA, 25));
 
     public static final Material BLOODSTEEL = new Material(
         "Blood Steel", // Material Name

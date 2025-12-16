@@ -1,6 +1,7 @@
 package tectech.thing.item;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,8 @@ public final class ItemParametrizerMemoryCard extends Item {
                     if (!tNBT.hasKey("controller")) {
                         reason = translateToLocal("item.em.parametrizerMemoryCard.noConfig");
                     } else {
-                        reason = String.format(
-                            translateToLocal("item.em.parametrizerMemoryCard.controllerMismatch"),
+                        reason = translateToLocalFormatted(
+                            "item.em.parametrizerMemoryCard.controllerMismatch",
                             tNBT.getString("controller"),
                             controller.getLocalName());
                     }
@@ -192,12 +193,10 @@ public final class ItemParametrizerMemoryCard extends Item {
         if (tNBT == null) return;
         if (tNBT.hasKey("controller")) {
             aList.add(
-                "Copied from: " + EnumChatFormatting.RED
-                    + tNBT.getString("controller")
-                    + EnumChatFormatting.RESET
-                    + " at "
-                    + EnumChatFormatting.GREEN
-                    + tNBT.getString("coords"));
+                translateToLocalFormatted(
+                    "item.em.parametrizerMemoryCard.desc.copied_controller",
+                    EnumChatFormatting.RED + tNBT.getString("controller") + EnumChatFormatting.RESET,
+                    EnumChatFormatting.GREEN + tNBT.getString("coords")));
         }
         if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
             NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);

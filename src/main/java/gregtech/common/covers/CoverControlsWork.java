@@ -1,27 +1,40 @@
 package gregtech.common.covers;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.covers.conditions.RedstoneCondition;
+import gregtech.common.gui.modularui.cover.CoverControlsWorkGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.mui1.cover.ControlsWorkUIFactory;
 
-public class CoverControlsWork extends CoverBehavior {
+public class CoverControlsWork extends CoverLegacyData {
+
+    public static boolean isCoverPlaceable(ForgeDirection side, ItemStack coverItem, ICoverable coverable) {
+        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+            if (coverable.getCoverAtSide(tSide) instanceof CoverControlsWork) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private enum State {
         ENABLE_WITH_SIGNAL,
@@ -33,10 +46,39 @@ public class CoverControlsWork extends CoverBehavior {
 
     private boolean handledShutdown = false;
     protected WeakReference<EntityPlayer> lastPlayer = null;
-    private boolean mPlayerNotified = false;
 
     public CoverControlsWork(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+    }
+
+    public RedstoneCondition getRedstoneCondition() {
+        if (coverData % 3 == 0) {
+            return RedstoneCondition.ENABLE_WITH_REDSTONE;
+        } else if (coverData % 3 == 1) {
+            return RedstoneCondition.DISABLE_WITH_REDSTONE;
+        }
+        return RedstoneCondition.DISABLE;
+    }
+
+    public void setRedstoneCondition(RedstoneCondition mode) {
+        boolean safeMode = isSafeMode();
+        coverData = switch (mode) {
+            case ENABLE_WITH_REDSTONE -> safeMode ? 3 : 0;
+            case DISABLE_WITH_REDSTONE -> safeMode ? 4 : 1;
+            case DISABLE -> safeMode ? 5 : 2;
+        };
+    }
+
+    public boolean isSafeMode() {
+        return coverData > 2;
+    }
+
+    public void setSafeMode(boolean safeMode) {
+        if (safeMode && coverData < 3) {
+            coverData = coverData + 3;
+        } else if (!safeMode && coverData > 2) {
+            coverData = coverData - 3;
+        }
     }
 
     @Override
@@ -44,19 +86,16 @@ public class CoverControlsWork extends CoverBehavior {
         ICoverable coverable = coveredTile.get();
         if (coverable != null && hasCoverGUI() && aPlayer instanceof EntityPlayerMP) {
             lastPlayer = new WeakReference<>(aPlayer);
-            mPlayerNotified = false;
-            GTUIInfos.openCoverUI(coverable, aPlayer, coverSide);
-            return true;
+            return super.onCoverShiftRightClick(aPlayer);
         }
         return false;
     }
 
     @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable instanceof IMachineProgress machine) {
-            int coverDataValue = coverData.get();
-            State state = coverDataValue < State.values().length ? State.values()[coverDataValue] : State.DISABLED;
+            State state = this.coverData < State.values().length ? State.values()[this.coverData] : State.DISABLED;
             switch (state) {
                 case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
                     if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL)) {
@@ -74,24 +113,8 @@ public class CoverControlsWork extends CoverBehavior {
                 case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
                     if (machine.wasShutdown() && machine.getLastShutDownReason()
                         .wasCritical() && !handledShutdown) {
-                        if (!mPlayerNotified) {
-                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
-                            if (player != null) {
-                                lastPlayer = null;
-                                mPlayerNotified = true;
-                                GTUtility.sendChatToPlayer(
-                                    player,
-                                    coverable.getInventoryName() + "at "
-                                        + String.format(
-                                            "(%d,%d,%d)",
-                                            coverable.getXCoord(),
-                                            coverable.getYCoord(),
-                                            coverable.getZCoord())
-                                        + " shut down.");
-                            }
-                        }
                         handledShutdown = true;
-                        return LegacyCoverData.of(State.DISABLED.ordinal());
+                        coverData = State.DISABLED.ordinal();
                     } else {
                         if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL_SAFE)) {
                             if (!machine.isAllowedToWork()) {
@@ -105,12 +128,11 @@ public class CoverControlsWork extends CoverBehavior {
                 }
             }
         }
-        return coverData;
     }
 
     @Override
     public boolean isRedstoneSensitive(long aTimer) {
-        return coverData.get() != 2; // always off, so no redstone needed either
+        return coverData != 2; // always off, so no redstone needed either
     }
 
     @Override
@@ -151,28 +173,28 @@ public class CoverControlsWork extends CoverBehavior {
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int newCoverData = (convert(coverData) + (aPlayer.isSneaking() ? -1 : 1)) % 5;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        int newCoverData = (coverData + (aPlayer.isSneaking() ? -1 : 1)) % 5;
         if (newCoverData < 0) {
             newCoverData = 2;
         }
         if (newCoverData == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("003", "Enable with Signal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on"));
         }
         if (newCoverData == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("004", "Disable with Signal"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted"));
         }
         if (newCoverData == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("005", "Disabled"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_off"));
         }
         if (newCoverData == 3) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("505", "Enable with Signal (Safe)"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on_safe"));
         }
         if (newCoverData == 4) {
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("506", "Disable with Signal (Safe)"));
+            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted_safe"));
         }
         // TODO: Set lastPlayer
-        return LegacyCoverData.of(newCoverData);
+        coverData = newCoverData;
     }
 
     @Override
@@ -181,6 +203,11 @@ public class CoverControlsWork extends CoverBehavior {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverControlsWorkGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {
@@ -192,90 +219,4 @@ public class CoverControlsWork extends CoverBehavior {
         return new ControlsWorkUIFactory(buildContext).createWindow();
     }
 
-    private class ControlsWorkUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public ControlsWorkUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            builder
-                .widget(
-                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        CoverControlsWork.this::loadFromNbt,
-                        (id, coverData) -> !getClickable(id, convert(coverData)),
-                        (id, coverData) -> new LegacyCoverData(getNewCoverVariable(id, convert(coverData))))
-                            .addToggleButton(
-                                0,
-                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                    .setPos(spaceX * 0, spaceY * 0))
-                            .addToggleButton(
-                                1,
-                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                    .setPos(spaceX * 0, spaceY * 1))
-                            .addToggleButton(
-                                2,
-                                CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                                widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_CROSS)
-                                    .setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
-                .widget(
-                    new CoverDataControllerWidget<>(
-                        this::getCoverData,
-                        this::setCoverData,
-                        CoverControlsWork.this::loadFromNbt).addFollower(
-                            CoverDataFollowerToggleButtonWidget.ofCheckAndCross(),
-                            coverData -> convert(coverData) > 2,
-                            (coverData, state) -> new LegacyCoverData(adjustCoverVariable(state, convert(coverData))),
-                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                            .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GTUtility.trans("243", "Enable with Redstone"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GTUtility.trans("244", "Disable with Redstone"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GTUtility.trans("245", "Disable machine")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                .widget(
-                    new TextWidget(GTUtility.trans("507", "Safe Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
-        }
-
-        private int getNewCoverVariable(int id, int coverVariable) {
-            if (coverVariable > 2) {
-                return id + 3;
-            } else {
-                return id;
-            }
-        }
-
-        private boolean getClickable(int id, int coverVariable) {
-            return ((id != coverVariable && id != coverVariable - 3) || id == 3);
-        }
-
-        private int adjustCoverVariable(boolean safeMode, int coverVariable) {
-            if (safeMode && coverVariable <= 2) {
-                coverVariable += 3;
-            }
-            if (!safeMode && coverVariable > 2) {
-                coverVariable -= 3;
-            }
-            return coverVariable;
-        }
-    }
 }

@@ -8,12 +8,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage.MTEPowerSubStation;
@@ -53,7 +55,10 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
             int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (meta == 7 && tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
-                aList.add("Energy Storage: " + GTUtility.formatNumbers(capacity));
+                aList.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gtpp.tooltip.meta_casing.energy_storage",
+                        GTUtility.formatNumbers(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }
@@ -102,6 +107,8 @@ public class GregtechMetaCasingBlocks2 extends GregtechMetaCasingBlocksAbstract 
         GregtechItemList.Casing_CuttingFactoryFrame.set(new ItemStack(this, 1, 13));
 
         GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.set(new ItemStack(this, 1, 15)); // Tree Farmer Textures
+
+        GTStructureChannels.PSS_CELL.registerAsIndicator(new ItemStack(this, 1, 7), 1);
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -18,7 +19,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.GTClient;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
@@ -77,11 +77,12 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
                         new PipeActivityMessage.PipeActivityData(this),
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256);
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
                 }
                 if (active) {
                     active = false;
@@ -122,19 +123,31 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                 }
             }
 
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
         if (dir == null) return null;
-        for (ForgeDirection bendDir : connectedSides) {
-            if (bendDir != null && bendDir != dir) {
-                chainedFrontFacing = bendDir.getOpposite();
-                return bendDir;
-            }
+
+        if (connectionCount < 2) {
+            return null;
         }
+
+        ForgeDirection a = connectedSides[0];
+        ForgeDirection b = connectedSides[1];
+        if (dir == a) {
+            chainedFrontFacing = b.getOpposite();
+            return b;
+        }
+        if (dir == b) {
+            chainedFrontFacing = a.getOpposite();
+            return a;
+        }
+
+        // the input direction is not connected to this mirror
         return null;
     }
 
@@ -195,10 +208,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     }
 
     @Override
-    public float getThickNess() {
-        if (GTMod.instance.isClientSide() && GTClient.hideValue == 1) {
-            return 0.0625F;
-        }
+    public float getCollisionThickness() {
         return 0.6f;
     }
 

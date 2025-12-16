@@ -1,9 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.formingPressRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
-import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -46,12 +46,13 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
             .itemOutputs(ItemList.Food_Sliced_Cheese.get(4L))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(4)
-            .addTo(slicerRecipes);
+            .addTo(cutterRecipes);
     }
 
     private void registerBenderRecipes(ItemStack stack) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, stack), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTUtility.copyAmount(1, stack))
+            .circuit(1)
             .itemOutputs(ItemList.Food_Flat_Dough.get(1L))
             .duration(16 * TICKS)
             .eut(4)

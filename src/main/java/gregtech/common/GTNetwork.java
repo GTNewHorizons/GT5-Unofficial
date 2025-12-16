@@ -18,7 +18,7 @@ import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
-import gregtech.api.enums.GTValues;
+import gregtech.GTMod;
 import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketTypes;
 import gregtech.api.net.IGT_NetworkHandler;
@@ -140,12 +140,23 @@ public class GTNetwork extends MessageToMessageCodec<FMLProxyPacket, GTPacket> i
         }
     }
 
+    @Override
+    public void sendToWorld(World world, GTPacket packet) {
+        if (!world.isRemote) {
+            for (EntityPlayer player : world.playerEntities) {
+                if (player instanceof EntityPlayerMP mp) {
+                    sendToPlayer(packet, mp);
+                }
+            }
+        }
+    }
+
     @ChannelHandler.Sharable
     static final class HandlerShared extends SimpleChannelInboundHandler<GTPacket> {
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, GTPacket aPacket) {
-            final EntityPlayer aPlayer = GTValues.GT.getThePlayer();
+            final EntityPlayer aPlayer = GTMod.GT.getThePlayer();
             aPacket.process(aPlayer == null ? null : aPlayer.worldObj);
         }
     }

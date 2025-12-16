@@ -4,9 +4,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
+
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
@@ -16,14 +17,6 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
 
 public class MetaGeneratedToolRenderer implements IItemRenderer {
-
-    public MetaGeneratedToolRenderer() {
-        for (MetaGeneratedTool tItem : MetaGeneratedTool.sInstances.values()) {
-            if (tItem != null) {
-                MinecraftForgeClient.registerItemRenderer(tItem, this);
-            }
-        }
-    }
 
     @Override
     public boolean handleRenderType(ItemStack stack, ItemRenderType type) {
@@ -42,7 +35,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
     public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
         MetaGeneratedTool item = (MetaGeneratedTool) stack.getItem();
         GL11.glEnable(GL11.GL_BLEND);
-        GTRenderUtil.applyStandardItemTransform(type);
+        ItemRenderUtil.applyStandardItemTransform(type);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
 
         IToolStats toolStats = item != null ? item.getToolStats(stack) : null;
@@ -52,7 +45,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
 
             if ((type == ItemRenderType.INVENTORY)
                 && (MetaGeneratedTool.getPrimaryMaterial(stack) != Materials._NULL)) {
-                if (GTMod.gregtechproxy.mRenderItemDurabilityBar) {
+                if (GTMod.proxy.mRenderItemDurabilityBar) {
                     IIconContainer iconContainer;
                     long damage = MetaGeneratedTool.getToolDamage(stack);
                     long maxDamage = MetaGeneratedTool.getToolMaxDamage(stack);
@@ -67,7 +60,7 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                     renderIcon(iconContainer);
                 }
 
-                if (GTMod.gregtechproxy.mRenderItemChargeBar) {
+                if (GTMod.proxy.mRenderItemChargeBar) {
                     IIconContainer iconContainer;
                     Long[] stats = item.getElectricStats(stack);
                     if ((stats != null) && (stats[3] < 0L)) {
@@ -97,12 +90,12 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
             if (icon != null) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GTRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             }
             if (overlay != null) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GTRenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                ItemRenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             }
         }
     }
@@ -117,13 +110,13 @@ public class MetaGeneratedToolRenderer implements IItemRenderer {
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 short[] modulation = toolStats.getRGBa(isToolHead, stack);
                 GL11.glColor3f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F);
-                GTRenderUtil.renderItem(type, icon);
+                ItemRenderUtil.renderItem(type, icon);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
             }
             if (overlay != null) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(iconContainer.getTextureFile());
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GTRenderUtil.renderItem(type, overlay);
+                ItemRenderUtil.renderItem(type, overlay);
             }
         }
     }

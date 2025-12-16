@@ -1,38 +1,43 @@
 package gregtech.common.covers;
 
-import java.text.FieldPosition;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject.LegacyCoverData;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.gui.modularui.cover.CoverArmGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.mui1.cover.ArmUIFactory;
+import io.netty.buffer.ByteBuf;
 
-public class CoverArm extends CoverBehavior {
+public class CoverArm extends Cover {
 
+    private boolean export;
+    private int internalSlotId;
+    private int externalSlotId;
     public final int mTickRate;
+    // TODO: REMOVE AFTER 2.9
     // msb converted, 2nd : direction (1=export)
     // right 14 bits: internalSlot, next 14 bits adjSlot, 0 = all, slot = -1
-    protected static final int EXPORT_MASK = 0x40000000;
-    protected static final int SLOT_ID_MASK = 0x3FFF;
-    protected static final int SLOT_ID_MIN = 0;
-    protected static final int CONVERTED_BIT = 0x80000000;
+    public static final int EXPORT_MASK = 0x40000000;
+    public static final int SLOT_ID_MASK = 0x3FFF;
+    public static final int CONVERTED_BIT = 0x80000000;
 
     public CoverArm(CoverContext context, int aTickRate, ITexture coverTexture) {
         super(context, coverTexture);
@@ -40,160 +45,96 @@ public class CoverArm extends CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(long aTimer) {
-        return false;
-    }
-
-    @Override
-    public LegacyCoverData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null || (((coverable instanceof IMachineProgress machine)) && (!machine.isAllowedToWork()))
             || !(coverable instanceof TileEntity tileEntity)) {
-            return coverData;
+            return;
         }
 
-        // Convert from ver. 5.09.33.50, check if 3 last bits are equal
-        int coverDataValue = convert(coverData);
-        if ((coverDataValue >>> 29) == 0) {
-            coverDataValue = CONVERTED_BIT | (((coverDataValue + 1) & SLOT_ID_MASK) << 14) | EXPORT_MASK;
-        } else if ((coverDataValue >>> 29) == 7) {
-            coverDataValue = CONVERTED_BIT | Math.min(Math.abs(coverDataValue - 1), SLOT_ID_MASK);
-        }
+        GTItemTransfer transfer = new GTItemTransfer();
 
-        final TileEntity toTile;
-        final TileEntity fromTile;
         final int toSlot;
         final int fromSlot;
 
-        if ((coverDataValue & EXPORT_MASK) > 0) {
-            fromTile = tileEntity;
-            toTile = coverable.getTileEntityAtSide(coverSide);
-            fromSlot = coverDataValue & SLOT_ID_MASK;
-            toSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
+        if (export) {
+            transfer.push(coverable, coverSide);
+
+            fromSlot = internalSlotId;
+            toSlot = externalSlotId;
         } else {
-            fromTile = coverable.getTileEntityAtSide(coverSide);
-            toTile = tileEntity;
-            fromSlot = (coverDataValue >> 14) & SLOT_ID_MASK;
-            toSlot = coverDataValue & SLOT_ID_MASK;
+            transfer.pull(coverable, coverSide);
+
+            fromSlot = externalSlotId;
+            toSlot = internalSlotId;
         }
 
-        if (fromSlot > 0 && toSlot > 0) {
-            if (fromTile instanceof IInventory fromInventory && toTile instanceof IInventory toInventory)
-                GTUtility.moveFromSlotToSlot(
-                    fromInventory,
-                    toInventory,
-                    fromSlot - 1,
-                    toSlot - 1,
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1);
-        } else if (toSlot > 0) {
-            final ForgeDirection toSide;
-            if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
-            else toSide = coverSide.getOpposite();
-            GTUtility.moveOneItemStackIntoSlot(
-                fromTile,
-                toTile,
-                toSide,
-                toSlot - 1,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
-        } else if (fromSlot > 0) {
-            final ForgeDirection toSide;
-            if ((coverDataValue & EXPORT_MASK) > 0) toSide = coverSide;
-            else toSide = coverSide.getOpposite();
-            if (fromTile instanceof IInventory fromInventory) GTUtility.moveFromSlotToSide(
-                fromInventory,
-                toTile,
-                fromSlot - 1,
-                toSide,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
-        } else {
-            final ForgeDirection fromSide;
-            final ForgeDirection toSide;
-            if ((coverDataValue & EXPORT_MASK) > 0) {
-                fromSide = coverSide;
-                toSide = coverSide.getOpposite();
-            } else {
-                fromSide = coverSide.getOpposite();
-                toSide = coverSide;
-            }
-            GTUtility.moveOneItemStack(
-                fromTile,
-                toTile,
-                fromSide,
-                toSide,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
-        }
+        if (fromSlot > 0) transfer.setSourceSlots(fromSlot - 1);
+        if (toSlot > 0) transfer.setSinkSlots(toSlot - 1);
 
-        return LegacyCoverData.of(coverDataValue);
+        transfer.transfer();
     }
 
     @Override
-    public LegacyCoverData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        int step = 0;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) {
-            step += aPlayer.isSneaking() ? 256 : 16;
+            internalSlotId += aPlayer.isSneaking() ? 16 : 1;
         } else {
-            step -= aPlayer.isSneaking() ? 256 : 16;
+            internalSlotId = Math.max(0, internalSlotId - (aPlayer.isSneaking() ? 16 : 1));
         }
-        int newCoverData = getNewVar(convert(coverData), step);
-        sendMessageToPlayer(aPlayer, newCoverData);
-        return LegacyCoverData.of(newCoverData);
+        sendMessageToPlayer(aPlayer);
     }
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int step = (GTUtility.getClickedFacingCoords(coverSide, aX, aY, aZ)[0] >= 0.5F) ? 1 : -1;
-        int tCoverVariable = getNewVar(convert(coverData), step);
-        sendMessageToPlayer(aPlayer, tCoverVariable);
-        coverData.set(tCoverVariable);
+        internalSlotId = Math.max(0, internalSlotId + step);
+        sendMessageToPlayer(aPlayer);
         return true;
     }
 
-    private void sendMessageToPlayer(EntityPlayer aPlayer, int var) {
-        if ((var & EXPORT_MASK) != 0) GTUtility.sendChatToPlayer(
-            aPlayer,
-            GTUtility.trans("001", "Puts out into adjacent Slot #") + (((var >> 14) & SLOT_ID_MASK) - 1));
-        else GTUtility
-            .sendChatToPlayer(aPlayer, GTUtility.trans("002", "Grabs in for own Slot #") + ((var & SLOT_ID_MASK) - 1));
+    private void sendMessageToPlayer(EntityPlayer aPlayer) {
+        if (export) GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.out_slot") + externalSlotId);
+        else GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.in_slot") + internalSlotId);
     }
 
-    private int getNewVar(int var, int step) {
-        int intSlot = (var & SLOT_ID_MASK);
-        int adjSlot = (var >> 14) & SLOT_ID_MASK;
-        if ((var & EXPORT_MASK) == 0) {
-            int x = (intSlot + step);
-            if (x > SLOT_ID_MASK) return createVar(0, SLOT_ID_MASK, 0);
-            else if (x < 1) return createVar(-step - intSlot + 1, 0, EXPORT_MASK);
-            else return createVar(0, x, 0);
-        } else {
-            int x = (adjSlot - step);
-            if (x > SLOT_ID_MASK) return createVar(SLOT_ID_MASK, 0, EXPORT_MASK);
-            else if (x < 1) return createVar(0, step - adjSlot + 1, 0);
-            else return createVar(x, 0, EXPORT_MASK);
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(export);
+        byteBuf.writeInt(internalSlotId);
+        byteBuf.writeInt(externalSlotId);
+    }
+
+    @Override
+    protected void readDataFromPacket(ByteArrayDataInput byteData) {
+        this.export = byteData.readBoolean();
+        this.internalSlotId = byteData.readInt();
+        this.externalSlotId = byteData.readInt();
+    }
+
+    @Override
+    protected void readDataFromNbt(NBTBase nbt) {
+        if (nbt instanceof NBTTagInt legacyData) {
+            int data = legacyData.func_150287_d();
+            this.export = getFlagExport(data);
+            this.internalSlotId = getFlagInternalSlot(data);
+            this.externalSlotId = getFlagExternalSlot(data);
+            return;
         }
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        this.export = tag.getBoolean("export");
+        this.internalSlotId = tag.getInteger("internalSlotId");
+        this.externalSlotId = tag.getInteger("externalSlotId");
     }
 
-    private int createVar(int adjSlot, int intSlot, int export) {
-        return CONVERTED_BIT | export | ((adjSlot & SLOT_ID_MASK) << 14) | (intSlot & SLOT_ID_MASK);
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("export", this.export);
+        tag.setInteger("internalSlotId", this.internalSlotId);
+        tag.setInteger("externalSlotId", this.externalSlotId);
+
+        return tag;
     }
 
     @Override
@@ -245,6 +186,41 @@ public class CoverArm extends CoverBehavior {
         return this.mTickRate;
     }
 
+    public boolean isExport() {
+        return export;
+    }
+
+    public void setExport(boolean export) {
+        this.export = export;
+    }
+
+    public int getInternalSlotId() {
+        return internalSlotId;
+    }
+
+    public void setInternalSlotId(int internalSlotId) {
+        this.internalSlotId = internalSlotId;
+    }
+
+    public int getExternalSlotId() {
+        return externalSlotId;
+    }
+
+    public void setExternalSlotId(int externalSlotId) {
+        this.externalSlotId = externalSlotId;
+    }
+
+    private boolean getFlagExport(int coverVariable) {
+        return (coverVariable & CoverArm.EXPORT_MASK) != 0;
+    }
+
+    private int getFlagInternalSlot(int coverVariable) {
+        return coverVariable & CoverArm.SLOT_ID_MASK;
+    }
+
+    private int getFlagExternalSlot(int coverVariable) {
+        return (coverVariable >> 14) & CoverArm.SLOT_ID_MASK;
+    }
     // GUI stuff
 
     @Override
@@ -253,152 +229,13 @@ public class CoverArm extends CoverBehavior {
     }
 
     @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverArmGui(this);
+    }
+
+    @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
         return new ArmUIFactory(buildContext).createWindow();
     }
 
-    private class ArmUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        private int maxSlot;
-
-        /**
-         * Display the text "Any" instead of a number when the slot is set to -1.
-         */
-        protected static final NumberFormatMUI numberFormatAny = new NumberFormatMUI() {
-
-            @Override
-            public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
-                if (number < 0) {
-                    return toAppendTo.append(GTUtility.trans("ANY", "Any"));
-                } else {
-                    return super.format(number, toAppendTo, pos);
-                }
-            }
-        };
-
-        protected ArmUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            maxSlot = getMaxSlot();
-            builder.widget(
-                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, CoverArm.this::loadFromNbt)
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> getFlagExport(convert(coverData)) > 0,
-                        (coverData, state) -> {
-                            if (state) {
-                                return new LegacyCoverData(convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
-                            } else {
-                                return new LegacyCoverData(convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
-                            }
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_EXPORT)
-                            .addTooltip(GTUtility.trans("006", "Export"))
-                            .setPos(spaceX * 0, spaceY * 0))
-                    .addFollower(
-                        CoverDataFollowerToggleButtonWidget.ofDisableable(),
-                        coverData -> getFlagExport(convert(coverData)) == 0,
-                        (coverData, state) -> {
-                            if (state) {
-                                return new LegacyCoverData(convert(coverData) & ~EXPORT_MASK | CONVERTED_BIT);
-                            } else {
-                                return new LegacyCoverData(convert(coverData) | EXPORT_MASK | CONVERTED_BIT);
-                            }
-                        },
-                        widget -> widget.setStaticTexture(GTUITextures.OVERLAY_BUTTON_IMPORT)
-                            .addTooltip(GTUtility.trans("007", "Import"))
-                            .setPos(spaceX * 1, spaceY * 0))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) (getFlagInternalSlot(convert(coverData)) - 1),
-                        (coverData, state) -> {
-                            final int coverVariable = convert(coverData);
-                            return new LegacyCoverData(
-                                getFlagExport(coverVariable) | ((state.intValue() + 1) & SLOT_ID_MASK)
-                                    | (getFlagAdjacentSlot(coverVariable) << 14)
-                                    | CONVERTED_BIT);
-                        },
-                        widget -> widget.setBounds(-1, maxSlot)
-                            .setDefaultValue(-1)
-                            .setScrollValues(1, 100, 10)
-                            .setNumberFormat(numberFormatAny)
-                            .setPos(spaceX * 0, spaceY * 1 + 2)
-                            .setSize(spaceX * 2 + 5, 12))
-                    .addFollower(
-                        new CoverDataFollowerNumericWidget<>(),
-                        coverData -> (double) (getFlagAdjacentSlot(convert(coverData)) - 1),
-                        (coverData, state) -> {
-                            final int coverVariable = convert(coverData);
-                            return new LegacyCoverData(
-                                getFlagExport(coverVariable) | getFlagInternalSlot(coverVariable)
-                                    | (((state.intValue() + 1) & SLOT_ID_MASK) << 14)
-                                    | CONVERTED_BIT);
-                        },
-                        widget -> widget.setValidator(val -> {
-                            // We need to check the adjacent inventory here, and can't simply set a maximum value,
-                            // because it can change while this cover is alive.
-                            final int adjacentMaxSlot;
-                            final ICoverable tile = getUIBuildContext().getTile();
-                            if (tile instanceof TileEntity && !tile.isDead()) {
-                                TileEntity adj = tile.getTileEntityAtSide(getUIBuildContext().getCoverSide());
-                                if (adj instanceof IInventory)
-                                    adjacentMaxSlot = ((IInventory) adj).getSizeInventory() - 1;
-                                else adjacentMaxSlot = -1;
-                            } else {
-                                adjacentMaxSlot = -1;
-                            }
-                            return Math.min(val, adjacentMaxSlot);
-                        })
-                            .setMinValue(-1)
-                            .setDefaultValue(-1)
-                            .setScrollValues(1, 100, 10)
-                            .setNumberFormat(numberFormatAny)
-                            .setPos(spaceX * 0, spaceY * 2 + 2)
-                            .setSize(spaceX * 2 + 5, 12))
-                    .setPos(startX, startY))
-                .widget(
-                    new TextWidget()
-                        .setStringSupplier(
-                            () -> (convert(getCoverData()) & EXPORT_MASK) > 0 ? GTUtility.trans("006", "Export")
-                                : GTUtility.trans("007", "Import"))
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
-                .widget(
-                    new TextWidget(GTUtility.trans("254.1", "Internal slot#")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GTUtility.trans("255", "Adjacent slot#")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 3, 4 + startY + spaceY * 2));
-        }
-
-        private int getMaxSlot() {
-            final ICoverable tile = getUIBuildContext().getTile();
-            if (tile instanceof TileEntity && !tile.isDead()) {
-                return tile.getSizeInventory() - 1;
-            } else {
-                return -1;
-            }
-        }
-
-        private int getFlagExport(int coverVariable) {
-            return coverVariable & EXPORT_MASK;
-        }
-
-        private int getFlagInternalSlot(int coverVariable) {
-            return coverVariable & SLOT_ID_MASK;
-        }
-
-        private int getFlagAdjacentSlot(int coverVariable) {
-            return (coverVariable >> 14) & SLOT_ID_MASK;
-        }
-    }
 }

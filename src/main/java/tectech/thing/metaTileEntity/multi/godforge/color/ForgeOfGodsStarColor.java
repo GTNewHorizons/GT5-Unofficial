@@ -8,14 +8,15 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.shapes.Rectangle;
-import com.gtnewhorizons.modularui.api.math.Color;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.Rectangle;
+import com.cleanroommc.modularui.utils.Color;
 
-import tectech.thing.gui.TecTechUITextures;
+import gregtech.api.modularui2.GTGuiTextures;
 
 @SuppressWarnings("unused") // for the preset color fields
 public class ForgeOfGodsStarColor {
@@ -28,23 +29,31 @@ public class ForgeOfGodsStarColor {
     public static final int DEFAULT_RED = 179;
     public static final int DEFAULT_GREEN = 204;
     public static final int DEFAULT_BLUE = 255;
+    public static final int DEFAULT_HUE = 220;
+    public static final float DEFAULT_SATURATION = 0.298f;
+    public static final float DEFAULT_VALUE = 1.0f;
     public static final float DEFAULT_GAMMA = 3.0f;
     public static final int DEFAULT_CYCLE_SPEED = 1;
+    public static final int MAX_COLORS = 9;
 
     public static final ForgeOfGodsStarColor DEFAULT = new ForgeOfGodsStarColor("Default")
+        .setNameKey("tt.godforge.star_color.preset.default")
         .addColor(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE, DEFAULT_GAMMA)
         .registerPreset();
 
-    public static final ForgeOfGodsStarColor RAINBOW = new ForgeOfGodsStarColor("Rainbow").addColor(255, 0, 0, 3.0f)
+    public static final ForgeOfGodsStarColor RAINBOW = new ForgeOfGodsStarColor("Rainbow")
+        .setNameKey("tt.godforge.star_color.preset.rainbow")
+        .addColor(255, 0, 0, 3.0f)
         .addColor(255, 255, 0, 3.0f)
         .addColor(0, 255, 0, 3.0f)
         .addColor(0, 255, 255, 3.0f)
         .addColor(255, 0, 255, 3.0f)
         .setCycleSpeed(1)
-        .setCustomDrawable(TecTechUITextures.PICTURE_RAINBOW_SQUARE)
+        .setCustomDrawable(GTGuiTextures.PICTURE_RAINBOW_SQUARE)
         .registerPreset();
 
     public static final ForgeOfGodsStarColor CLOUDS_PICK = new ForgeOfGodsStarColor("Cloud's Pick")
+        .setNameKey("tt.godforge.star_color.preset.clouds_pick")
         .addColor(255, 255, 0, 0.8f)
         .addColor(0, 0, 0, 0)
         .addColor(0, 255, 255, 0.4f)
@@ -56,6 +65,7 @@ public class ForgeOfGodsStarColor {
         .registerPreset();
 
     public static final ForgeOfGodsStarColor MAYAS_PICK = new ForgeOfGodsStarColor("Maya's Pick")
+        .setNameKey("tt.godforge.star_color.preset.mayas_pick")
         .addColor(0, 0, 0, 0.0f)
         .addColor(109, 201, 225, 1.0f)
         .addColor(255, 255, 255, 3.0f)
@@ -80,6 +90,7 @@ public class ForgeOfGodsStarColor {
     private final int version;
     private boolean isPreset;
     private IDrawable drawable;
+    private String nameKey = "";
 
     // Star render settings
     private final List<StarColorSetting> settings = new ArrayList<>();
@@ -110,6 +121,20 @@ public class ForgeOfGodsStarColor {
 
     public void setName(String name) {
         this.name = name;
+        // Only presets need unlocalized name
+        this.nameKey = "";
+    }
+
+    public ForgeOfGodsStarColor setNameKey(String key) {
+        this.nameKey = key;
+        return this;
+    }
+
+    public String getLocalizedName() {
+        if (this.nameKey.isEmpty()) {
+            return this.getName();
+        }
+        return StatCollector.translateToLocal(this.nameKey);
     }
 
     public ForgeOfGodsStarColor setCycleSpeed(int speed) {

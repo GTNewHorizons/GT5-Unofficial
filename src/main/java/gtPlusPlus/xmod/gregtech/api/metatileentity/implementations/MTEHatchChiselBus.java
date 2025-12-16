@@ -24,6 +24,11 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex < getSlots(this.mTier);
     }
@@ -44,7 +49,9 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Item Input Bus for Industrial Chisel", getSlots(this.mTier) - 1 + " + 1 " + " Slots",
+        return new String[] {
+            "Item Input Bus for " + EnumChatFormatting.YELLOW + "Industrial Chisel" + EnumChatFormatting.RESET,
+            getSlots(this.mTier) - 1 + " + 1 " + " Slots",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l"
                 + " - "

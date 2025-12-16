@@ -11,13 +11,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -55,24 +55,25 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                    EnumChatFormatting.AQUA + "Contains "
-                        + GTUtility.formatNumbers(tStats[3])
-                        + " EU   Tier: "
-                        + (tStats[2] >= 0 ? tStats[2] : 0)
-                        + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "item.itemBaseEuItem.tooltip.1",
+                        GTUtility.formatNumbers(tStats[3]),
+                        (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
                     aList.add(
-                        EnumChatFormatting.AQUA + "Empty. You should recycle it properly." + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
+                            + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                        EnumChatFormatting.AQUA + GTUtility.formatNumbers(tCharge)
-                            + " / "
-                            + GTUtility.formatNumbers(Math.abs(tStats[0]))
-                            + " EU - Voltage: "
-                            + GTUtility.formatNumbers(
-                                V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
+                        EnumChatFormatting.AQUA
+                            + StatCollector.translateToLocalFormatted(
+                                "item.itemBaseEuItem.tooltip.3",
+                                GTUtility.formatNumbers(tCharge),
+                                GTUtility.formatNumbers(Math.abs(tStats[0])),
+                                GTUtility.formatNumbers(
+                                    V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
             }
@@ -458,46 +459,8 @@ public abstract class GTMetaItemBase extends GTGenericItem
     } // just to be sure.
 
     @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
     public boolean isBookEnchantable(final ItemStack aStack, final ItemStack aBook) {
         return false;
     }
 
-    @Override
-    public boolean getIsRepairable(final ItemStack aStack, final ItemStack aMaterial) {
-        return false;
-    }
-
-    @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName()
-            .contains("LuV")) {
-            HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName()
-            .contains("ZPM")) {
-                HEX_OxFFFFFF = 0xace600;
-            } else if (stack.getDisplayName()
-                .contains("UV")) {
-                    HEX_OxFFFFFF = 0xffff00;
-                } else if (stack.getDisplayName()
-                    .contains("MAX")) {
-                        HEX_OxFFFFFF = 0xff0000;
-                    } else if (stack.getDisplayName()
-                        .contains("Sodium")) {
-                            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
-                        } else if (stack.getDisplayName()
-                            .contains("Cadmium")) {
-                                HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
-                            } else if (stack.getDisplayName()
-                                .contains("Lithium")) {
-                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-                                } else {
-                                    HEX_OxFFFFFF = 0xffffff;
-                                }
-        return HEX_OxFFFFFF;
-    }
 }

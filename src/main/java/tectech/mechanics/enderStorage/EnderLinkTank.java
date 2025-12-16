@@ -34,17 +34,14 @@ public class EnderLinkTank implements Serializable {
         D = d;
     }
 
-    public IFluidHandler getFluidHandler() {
+    public boolean shouldSave() {
         World world = DimensionManager.getWorld(D);
 
-        if (world == null) return null;
+        // If world is unloaded (null) or block doesn't exist (chunk unloaded), not safe to remove fluid handler
+        if (world == null || !world.blockExists(X, Y, Z)) return true;
 
         TileEntity tile = world.getTileEntity(X, Y, Z);
-        if (tile instanceof IFluidHandler fluidHandler) {
-            return fluidHandler;
-        } else {
-            return null;
-        }
+        return tile instanceof IFluidHandler;
     }
 
     @Override

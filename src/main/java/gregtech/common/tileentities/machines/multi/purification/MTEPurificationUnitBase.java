@@ -1,8 +1,5 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -19,29 +16,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -53,31 +40,30 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
+import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
- * Base class for purification units. This class handles all shared behaviour between units.
- * When inheriting from this, make sure to call super.loadNBTData() and super.saveNBTData()
- * if you override these methods, or linking will break.
+ * Base class for purification units. This class handles all shared behaviour between units. When inheriting from this,
+ * make sure to call super.loadNBTData() and super.saveNBTData() if you override these methods, or linking will break.
  */
 public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
 
     /**
-     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost".
-     * Must be in [0, 1].
+     * Ratio of output fluid that needs to be inserted back as input to trigger a "water boost". Must be in [0, 1].
      */
     public static final float WATER_BOOST_NEEDED_FLUID = 0.1f;
     /**
-     * Additive bonus to success chance when water boost is active.
-     * Must be in [0, 1]
+     * Additive bonus to success chance when water boost is active. Must be in [0, 1]
      */
     public static final float WATER_BOOST_BONUS_CHANCE = 0.15f;
 
     /**
-     * Small internal enum to report back the various error cases when linking purification units to the
-     * purification plant.
+     * Small internal enum to report back the various error cases when linking purification units to the purification
+     * plant.
      */
     private enum LinkResult {
         /**
@@ -95,8 +81,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Coordinates of the main purification plant controller. These can be used to find the controller again
-     * on world load.
+     * Coordinates of the main purification plant controller. These can be used to find the controller again on world
+     * load.
      */
     private int controllerX, controllerY, controllerZ;
 
@@ -111,9 +97,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private MTEPurificationPlant controller = null;
 
     /**
-     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special,
-     * so input and output in the recipe might not exactly match the required inputs and produced outputs.
-     * For more information, always look at the purification unit tooltip and implementation.
+     * The current recipe being run in the purification unit. Note that purification unit recipes are a bit special, so
+     * input and output in the recipe might not exactly match the required inputs and produced outputs. For more
+     * information, always look at the purification unit tooltip and implementation.
      */
     protected GTRecipe currentRecipe = null;
 
@@ -137,21 +123,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     protected MTEPurificationUnitBase(String aName) {
         super(aName);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -261,6 +232,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                     amountAvailable += fluid.amount;
                 }
             }
+
             // Determine effective parallel
             effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
             // This should not happen, throw an error
@@ -275,8 +247,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe()
-     * is protected.
+     * Equivalent to checkRecipe(), but public because the purification plant needs to access it and checkRecipe() is
+     * protected.
      *
      * @return True if successfully found a recipe and/or started processing/
      */
@@ -286,9 +258,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items
-     * or modifiers used to boost might disappear by the time recipe check comes around,
-     * which would invalidate this result.
+     * Get the success chance of the recipe, from 0 to 100. Never call this while a recipe is running, because items or
+     * modifiers used to boost might disappear by the time recipe check comes around, which would invalidate this
+     * result.
      */
     public float calculateBoostedSuccessChance() {
         // If this.currentRecipe is null, there is a bug, so throwing a NPE is fine.
@@ -301,10 +273,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * By default, the final recipe success chance is simply the success chance calculated on recipe check.
-     * This applies water boosts when needed to the base chance. Purification units can override this to perform
-     * more complex success chance calculations, that even take into account what happened during the runtime of the
-     * recipe.
+     * By default, the final recipe success chance is simply the success chance calculated on recipe check. This applies
+     * water boosts when needed to the base chance. Purification units can override this to perform more complex success
+     * chance calculations, that even take into account what happened during the runtime of the recipe.
      *
      * @return The success chance of the recipe, at the point in time the outputs are to be produced.
      */
@@ -328,9 +299,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe.
-     * This should only be called during recipe check! Never call this while a recipe is running, because water used to
-     * boost might disappear by the time recipe check comes around, which would invalidate this result.
+     * Returns true if this purification unit contains enough water to apply a water boost for the selected recipe. This
+     * should only be called during recipe check! Never call this while a recipe is running, because water used to boost
+     * might disappear by the time recipe check comes around, which would invalidate this result.
      *
      * @param recipe The recipe to check the water boost of
      */
@@ -341,8 +312,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     /**
-     * Consumes all <b>fluid</b> inputs of the current recipe.
-     * Should only scale the first fluid input with water
+     * Consumes all <b>fluid</b> inputs of the current recipe. Should only scale the first fluid input with water
      */
     public void depleteRecipeInputs() {
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
@@ -389,25 +359,29 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
             fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
-            fluidOutputs[i].amount *= effectiveParallel;
+            // Clamp the fluid output to max int to avoid overflow at extreme parallels
+            fluidOutputs[i].amount = (int) Math
+                .min((long) effectiveParallel * fluidOutputs[i].amount, Integer.MAX_VALUE);
         }
 
-        ItemStack[] itemOutputs = new ItemStack[this.currentRecipe.mOutputs.length];
+        ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
+        ItemStack[] itemOutputs = new ItemStack[recipeOutputs.length];
+        int[] mChances = this.currentRecipe.mChances;
 
         // If this recipe has random item outputs, roll on it and add to outputs
-        if (this.currentRecipe.mChances != null) {
+        if (mChances != null) {
             // Roll on each output individually
-            for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
+            for (int i = 0; i < recipeOutputs.length; ++i) {
                 // Recipes store probabilities as a value ranging from 1-10000
                 int roll = random.nextInt(10000);
-                if (roll <= this.currentRecipe.mChances[i]) {
-                    itemOutputs[i] = this.currentRecipe.mOutputs[i].copy();
+                if (roll <= mChances[i]) {
+                    itemOutputs[i] = recipeOutputs[i].copy();
                 }
             }
         } else {
             // Guaranteed item output
-            for (int i = 0; i < this.currentRecipe.mOutputs.length; ++i) {
-                itemOutputs[i] = this.currentRecipe.mOutputs[i].copy();
+            for (int i = 0; i < recipeOutputs.length; ++i) {
+                itemOutputs[i] = recipeOutputs[i].copy();
             }
         }
 
@@ -459,13 +433,15 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private void onRecipeFail() {
         // Possibly output lower quality water.
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
-        FluidStack outputWater = getDegradedOutputWater();
-        this.addOutput(outputWater);
+        if (mOutputFluids != null) {
+            FluidStack outputWater = getDegradedOutputWater();
+            this.addOutput(outputWater);
+        }
     }
 
     /**
-     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output
-     * in this case, or null if no water is produced at all.
+     * On recipe fail, water quality may degrade to the same or lower tier. This function returns the water to output in
+     * this case, or null if no water is produced at all.
      */
     private FluidStack getDegradedOutputWater() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -507,7 +483,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         this.mCrowbar = true;
         this.mWrench = true;
         this.mHardHammer = true;
-        this.mSoftHammer = true;
+        this.mSoftMallet = true;
         this.mSolderingTool = true;
         this.mScrewdriver = true;
         return true;
@@ -669,24 +645,27 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                "This Purification Unit is linked to the Water Purification Plant at " + controllerX
-                    + ", "
-                    + controllerY
-                    + ", "
-                    + controllerZ
-                    + ".");
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.purification_unit_base.linked_at",
+                    controllerX,
+                    controllerY,
+                    controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    "Success chance: " + EnumChatFormatting.YELLOW
-                        + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
-                        + "%"
-                        + EnumChatFormatting.RESET);
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.infodata.purification_unit_base.success_chance",
+                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                            + "%"
+                            + EnumChatFormatting.RESET));
             }
 
-        } else ret.add("This Purification Unit is not linked to any Water Purification Plant.");
-        ret.add("Current parallel: " + EnumChatFormatting.YELLOW + this.effectiveParallel);
+        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        ret.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.parallel.current",
+                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 
@@ -749,66 +728,25 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addSyncedWindow(PARALLEL_WINDOW_ID, this::createParallelWindow);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient()) {
-                widget.getContext()
-                    .openSyncedWindow(PARALLEL_WINDOW_ID);
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
-                return ret.toArray(new IDrawable[0]);
-            })
-            .addTooltip(translateToLocal("GT5U.tpm.parallelwindow"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(174, 112)
-            .setSize(16, 16));
-        super.addUIWidgets(builder, buildContext);
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPurificationUnitBaseGui(this);
     }
 
-    protected ModularWindow createParallelWindow(final EntityPlayer player) {
-        final int WIDTH = 158;
-        final int HEIGHT = 52;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)
-                        .subtract(0, 10)));
-        builder.widget(
-            TextWidget.localised("GTPP.CC.parallel")
-                .setPos(3, 4)
-                .setSize(150, 20))
-            .widget(
-                new NumericWidget().setSetter(val -> maxParallel = (int) val)
-                    .setGetter(() -> maxParallel)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setDefaultValue(1)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(150, 18)
-                    .setPos(4, 25)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> maxParallel, (val) -> maxParallel = val),
-                        builder));
-        return builder.build();
+    public int getMaxParallel() {
+        return maxParallel;
+    }
+
+    public void setMaxParallel(int value) {
+        maxParallel = value;
     }
 
     @Override
-    public boolean supportsVoidProtection() {
+    public boolean supportsMaintenanceIssueHoverable() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsLogo() {
         return false;
     }
 

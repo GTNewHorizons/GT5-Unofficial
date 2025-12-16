@@ -55,7 +55,11 @@ public class OutputHatchWrapper implements IFluidStore {
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return outputHatch.isEmptyAndAcceptsAnyFluid();
+        // https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/19177
+        // always false because this hatch is filtered, and not always accepts any fluids
+        // if not, when calculating parallels, it will be mistakenly used for other fluids,
+        // but voiding them when they are actually put into this hatch.
+        return false;
     }
 
     @Override

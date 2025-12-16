@@ -6,7 +6,6 @@ import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
-import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.brewingRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -22,13 +21,19 @@ import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.HOURS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
+import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
+import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
@@ -59,7 +64,6 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -68,6 +72,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
+import gregtech.loaders.postload.chains.NetheriteRecipes;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -87,6 +92,8 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
+import ic2.core.Ic2Items;
 
 public class RecipesGregTech {
 
@@ -127,6 +134,7 @@ public class RecipesGregTech {
          */
         RecipesSeleniumProcessing.init();
         RecipesRareEarthProcessing.init();
+        NetheriteRecipes.run();
 
         addFuels();
     }
@@ -151,9 +159,13 @@ public class RecipesGregTech {
 
         // Advanced method for Nitric Acid Production
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.getPinkCatalyst(0))
-            .fluidInputs(Materials.NitrogenDioxide.getGas(4000L), FluidUtils.getAir(4000), FluidUtils.getWater(2000))
-            .fluidOutputs(FluidUtils.getFluidStack("nitricacid", 4000))
+            .itemInputs(CI.getPinkCatalyst(0))
+            .circuit(17)
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(4_000),
+                Materials.Air.getGas(4_000),
+                Materials.Water.getFluid(2_000))
+            .fluidOutputs(Materials.NitricAcid.getFluid(4_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -162,33 +174,30 @@ public class RecipesGregTech {
         // Advanced recipe for Fluorine Production
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(17),
                 CI.getPurpleCatalyst(0),
-                ItemUtils.getSimpleStack(Blocks.sandstone, 64),
-                ItemUtils.getSimpleStack(Blocks.sandstone, 64))
+                new ItemStack(Blocks.sandstone, 64),
+                new ItemStack(Blocks.sandstone, 64))
+            .circuit(17)
             .itemOutputs(
                 MaterialsFluorides.FLUORITE.getOre(8),
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(4))
-            .fluidInputs(FluidUtils.getFluidStack("nitricacid", 4000), FluidUtils.getAir(8000))
+            .fluidInputs(Materials.NitricAcid.getFluid(4_000), Materials.Air.getGas(8_000))
             .duration(10 * SECONDS)
             .eut(1024)
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
         // Advanced recipe for Fluorine Production
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(17),
-                CI.getPurpleCatalyst(0),
-                ItemUtils.getSimpleStack(Blocks.sand, 64),
-                ItemUtils.getSimpleStack(Blocks.sand, 64))
+            .itemInputs(CI.getPurpleCatalyst(0), new ItemStack(Blocks.sand, 64), new ItemStack(Blocks.sand, 64))
+            .circuit(17)
             .itemOutputs(
                 MaterialsFluorides.FLUORITE.getOre(4),
                 MaterialsFluorides.FLUORITE.getOre(2),
                 MaterialsFluorides.FLUORITE.getOre(2),
                 MaterialsFluorides.FLUORITE.getOre(2))
-            .fluidInputs(FluidUtils.getFluidStack("nitricacid", 5000), FluidUtils.getAir(12000))
+            .fluidInputs(Materials.NitricAcid.getFluid(5_000), Materials.Air.getGas(12_000))
             .duration(10 * SECONDS)
             .eut(1024)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -196,9 +205,10 @@ public class RecipesGregTech {
 
         // 3NO2 + H2O = 2HNO3 + NO
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(16), CI.getPinkCatalyst(0))
-            .fluidInputs(Materials.NitrogenDioxide.getGas(3000L), FluidUtils.getDistilledWater(1000))
-            .fluidOutputs(FluidUtils.getFluidStack("nitricacid", 2000), Materials.NitricOxide.getGas(1000L))
+            .itemInputs(CI.getPinkCatalyst(0))
+            .circuit(16)
+            .fluidInputs(Materials.NitrogenDioxide.getGas(3_000), GTModHandler.getDistilledWater(1_000))
+            .fluidOutputs(Materials.NitricAcid.getFluid(2_000), Materials.NitricOxide.getGas(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 2)
@@ -206,10 +216,11 @@ public class RecipesGregTech {
         // Produce Boric Acid
         // Na2B4O7·10H2O + 2HCl = 4B(OH)3 + 2NaCl + 5H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(21), ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 23))
+            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustBorax", 23))
+            .circuit(21)
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSalt", 4))
-            .fluidInputs(Materials.HydrochloricAcid.getFluid(2000))
-            .fluidOutputs(FluidUtils.getFluidStack("boricacid", 4000), FluidUtils.getWater(5000))
+            .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))
+            .fluidOutputs(FluidUtils.getFluidStack("boricacid", 4_000), Materials.Water.getFluid(5_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -217,13 +228,14 @@ public class RecipesGregTech {
 
         // Produce Th232
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(22), MaterialsElements.getInstance().THORIUM.getDust(16))
+            .itemInputs(MaterialsElements.getInstance().THORIUM.getDust(16))
+            .circuit(22)
             .itemOutputs(
                 MaterialsElements.getInstance().THORIUM.getSmallDust(32),
                 MaterialsElements.getInstance().THORIUM232.getDust(2),
                 MaterialsElements.getInstance().THORIUM232.getSmallDust(2),
                 MaterialsElements.getInstance().URANIUM232.getDust(1))
-            .fluidInputs(FluidUtils.getDistilledWater(2000), FluidUtils.getFluidStack("boricacid", 1500))
+            .fluidInputs(GTModHandler.getDistilledWater(2_000), FluidUtils.getFluidStack("boricacid", 1_500))
             .duration(5 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
@@ -231,20 +243,20 @@ public class RecipesGregTech {
 
         // Modify Sapling into Pine Sapling
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(6), ItemUtils.getSimpleStack(Blocks.sapling, 32))
-            .itemOutputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Pine, 16))
-            .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2000), FluidUtils.getDistilledWater(8000))
+            .itemInputs(new ItemStack(Blocks.sapling, 32))
+            .circuit(6)
+            .itemOutputs(new ItemStack(BOPBlockRegistrator.sapling_Pine, 16))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.geneticmutagen", 2_000), GTModHandler.getDistilledWater(8_000))
             .duration(120 * SECONDS)
             .eut(64)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2),
-                GTUtility.getIntegratedCircuit(20))
-            .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5000))
-            .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8000))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 2))
+            .circuit(20)
+            .fluidInputs(FluidRegistry.getFluidStack("mobessence", 5_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.GeneticMutagen, 8_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -258,9 +270,9 @@ public class RecipesGregTech {
                 CI.getGear(aLaureniumTier, 2))
             .itemOutputs(GregtechItemList.Casing_Machine_Custom_3.get(1))
             .fluidInputs(
-                CI.getTieredFluid(aLaureniumTier, 2 * 144),
-                CI.getAlternativeTieredFluid(aLaureniumTier - 1, 4 * 144),
-                CI.getTertiaryTieredFluid(aLaureniumTier - 2, 6 * 144))
+                CI.getTieredFluid(aLaureniumTier, 2 * INGOTS),
+                CI.getAlternativeTieredFluid(aLaureniumTier - 1, 4 * INGOTS),
+                CI.getTertiaryTieredFluid(aLaureniumTier - 2, 6 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 5)
@@ -275,9 +287,9 @@ public class RecipesGregTech {
                 CI.getGear(aBotmiumTier, 2))
             .itemOutputs(GregtechItemList.Casing_Machine_Custom_4.get(1))
             .fluidInputs(
-                CI.getTieredFluid(aBotmiumTier, 2 * 144),
-                CI.getAlternativeTieredFluid(aBotmiumTier - 1, 4 * 144),
-                CI.getTertiaryTieredFluid(aBotmiumTier - 2, 6 * 144))
+                CI.getTieredFluid(aBotmiumTier, 2 * INGOTS),
+                CI.getAlternativeTieredFluid(aBotmiumTier - 1, 4 * INGOTS),
+                CI.getTertiaryTieredFluid(aBotmiumTier - 2, 6 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(CHEMPLANT_CASING_TIER, 6)
@@ -286,9 +298,9 @@ public class RecipesGregTech {
         // Refine GT HF into GT++ HF
         if (FluidUtils.doesHydrofluoricAcidGtExist()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(22))
-                .fluidInputs(FluidUtils.getHydrofluoricAcid(2000), FluidUtils.getHydrofluoricAcidGT(5000))
-                .fluidOutputs(FluidUtils.getHydrofluoricAcid(4500))
+                .circuit(22)
+                .fluidInputs(FluidUtils.getHydrofluoricAcid(2_000), FluidUtils.getHydrofluoricAcidGT(5_000))
+                .fluidOutputs(FluidUtils.getHydrofluoricAcid(4_500))
                 .duration(30 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .metadata(CHEMPLANT_CASING_TIER, 3)
@@ -299,9 +311,9 @@ public class RecipesGregTech {
 
     private static void fluidHeaterRecipes() {
         RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(20))
-            .fluidInputs(Materials.Water.getFluid(1000))
-            .fluidOutputs(FluidUtils.getHotWater(1000))
+            .circuit(20)
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(FluidUtils.getHotWater(1_000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidHeaterRecipes);
@@ -311,24 +323,35 @@ public class RecipesGregTech {
         // Hypogen
         RA.stdBuilder()
             .fluidInputs(
-                MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(144),
-                MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(288))
+                MaterialsElements.STANDALONE.DRAGON_METAL.getFluidStack(1 * INGOTS),
+                MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(2 * INGOTS))
             .fluidOutputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(36))
             .duration(6 * MINUTES + 49 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UHV)
-            .metadata(FUSION_THRESHOLD, 1_200_000_000)
+            .metadata(FUSION_THRESHOLD, 1_200_000_000L)
             .addTo(fusionRecipes);
 
         // Rhugnor
         RA.stdBuilder()
             .fluidInputs(
                 MaterialUtils.getMaterial("Infinity", "Neutronium")
-                    .getMolten(144),
-                MaterialsAlloy.QUANTUM.getFluidStack(288))
-            .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(144))
+                    .getMolten(1 * INGOTS),
+                MaterialsAlloy.QUANTUM.getFluidStack(2 * INGOTS))
+            .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(1 * INGOTS))
             .duration(25 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UV)
-            .metadata(FUSION_THRESHOLD, 2_000_000_000)
+            .metadata(FUSION_THRESHOLD, 2_000_000_000L)
+            .addTo(fusionRecipes);
+
+        // Rhugnor Mk5
+        RA.stdBuilder()
+            .fluidInputs(
+                Materials.QuarkGluonPlasma.getFluid(1 * HALF_INGOTS),
+                MaterialsAlloy.QUANTUM.getFluidStack(4 * INGOTS))
+            .fluidOutputs(MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(4 * INGOTS))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_UEV)
+            .metadata(FUSION_THRESHOLD, 2_000_000_000L)
             .addTo(fusionRecipes);
     }
 
@@ -350,22 +373,22 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, 32L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Samarium, 16L),
                 MaterialsAlloy.ARCANITE.getGear(8),
-                new Object[] { CI.getTieredCircuitOreDictName(5), 64 },
-                new Object[] { CI.getTieredCircuitOreDictName(6), 32 },
-                new Object[] { CI.getTieredCircuitOreDictName(7), 16 },
+                new Object[] { "circuitElite", 64 },
+                new Object[] { "circuitMaster", 32 },
+                new Object[] { "circuitUltimate", 16 },
                 GregtechItemList.Laser_Lens_Special.get(1),
-                ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
+                GregtechItemList.DehydratorCoilWireZPM.get(64))
             .fluidInputs(
-                MaterialsAlloy.NITINOL_60.getFluidStack(144 * 9 * 4),
-                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(144 * 9 * 8),
-                MaterialsAlloy.TUMBAGA.getFluidStack(144 * 9 * 32),
+                MaterialsAlloy.NITINOL_60.getFluidStack(36 * INGOTS),
+                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
+                MaterialsAlloy.TUMBAGA.getFluidStack(4 * STACKS + 32 * INGOTS),
                 Materials.Nichrome.getMolten(16 * INGOTS))
-            .itemOutputs(ItemUtils.getSimpleStack(ModBlocks.blockCasings3Misc, 15, 32))
+            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * MINUTES)
             .addTo(AssemblyLine);
 
-        // Turbine Automation Port
+        // Turbine Housing / Turbine Automation Port
         RA.stdBuilder()
             .metadata(
                 RESEARCH_ITEM,
@@ -381,25 +404,24 @@ public class RecipesGregTech {
                 CI.getTieredComponent(OrePrefixes.screw, 8, 48),
                 CI.getTieredComponent(OrePrefixes.bolt, 7, 32),
                 CI.getTieredComponent(OrePrefixes.rod, 6, 12),
-                new Object[] { CI.getTieredCircuitOreDictName(7), 20 },
+                new Object[] { "circuitUltimate", 20 },
                 CI.getTieredComponent(OrePrefixes.rotor, 6, 16))
             .fluidInputs(
-                CI.getTieredFluid(8, 144 * 32),
-                CI.getAlternativeTieredFluid(7, 144 * 16),
-                CI.getTertiaryTieredFluid(7, 144 * 16),
-                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(128 * 144))
+                CI.getTieredFluid(8, 32 * INGOTS),
+                CI.getAlternativeTieredFluid(7, 16 * INGOTS),
+                CI.getTertiaryTieredFluid(7, 16 * INGOTS),
+                MaterialsAlloy.BABBIT_ALLOY.getFluidStack(2 * STACKS))
             .itemOutputs(GregtechItemList.Hatch_Input_TurbineHousing.get(4))
             .eut(TierEU.RECIPE_UV)
-            .duration(2 * HOURS)
+            .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
         /*
          * Containment casings
          */
-        ItemStack[] aCoilWire = new ItemStack[] { ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 0, 64),
-            ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 1, 64),
-            ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 2, 64),
-            ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64), };
+        ItemStack[] aCoilWire = new ItemStack[] { GregtechItemList.DehydratorCoilWireEV.get(64),
+            GregtechItemList.DehydratorCoilWireIV.get(64), GregtechItemList.DehydratorCoilWireLuV.get(64),
+            GregtechItemList.DehydratorCoilWireZPM.get(64) };
         ItemStack[] aGemCasings = new ItemStack[] { GregtechItemList.Battery_Casing_Gem_1.get(1),
             GregtechItemList.Battery_Casing_Gem_2.get(1), GregtechItemList.Battery_Casing_Gem_3.get(1),
             GregtechItemList.Battery_Casing_Gem_4.get(1), };
@@ -418,9 +440,9 @@ public class RecipesGregTech {
                     CI.getTieredComponent(OrePrefixes.gearGt, j - 1, 4),
                     aCoilWire[aCasingSlot])
                 .fluidInputs(
-                    CI.getTieredFluid(j, 144 * 8),
-                    CI.getTertiaryTieredFluid(j - 2, 144 * 16),
-                    CI.getAlternativeTieredFluid(j, 144 * 16))
+                    CI.getTieredFluid(j, 8 * INGOTS),
+                    CI.getTertiaryTieredFluid(j - 2, 16 * INGOTS),
+                    CI.getAlternativeTieredFluid(j, 16 * INGOTS))
                 .itemOutputs(aGemCasings[aCasingSlot++])
                 .eut(GTValues.VP[j])
                 .duration(2 * MINUTES)
@@ -445,17 +467,17 @@ public class RecipesGregTech {
                 .metadata(SCANNING, new Scanning(1 * MINUTES, GTValues.VP[aCasingSlot + 7]))
                 .itemInputs(
                     aGemCasings[aCasingSlot],
-                    ItemUtils.getSimpleStack(aExoticInputs[aCasingSlot], 16),
+                    GTUtility.copyAmount(16, aExoticInputs[aCasingSlot]),
                     CI.getTieredComponent(OrePrefixes.plate, j, 16),
-                    new Object[] { CI.getTieredCircuitOreDictName(j), 8 },
+                    new Object[] { CI.circuits[j], 8 },
                     CI.getTieredComponent(OrePrefixes.wireGt16, j + 1, 32),
                     CI.getTieredComponent(OrePrefixes.bolt, j, 8),
                     CI.getTieredComponent(OrePrefixes.screw, j - 1, 8))
                 .fluidInputs(
-                    CI.getTieredFluid(j, 144 * 1 * 16),
-                    CI.getTertiaryTieredFluid(j - 2, 144 * 2 * 16),
-                    CI.getAlternativeTieredFluid(j, 144 * 16),
-                    CI.getTertiaryTieredFluid(j - 1, 144 * 16))
+                    CI.getTieredFluid(j, 16 * INGOTS),
+                    CI.getTertiaryTieredFluid(j - 2, 32 * INGOTS),
+                    CI.getAlternativeTieredFluid(j, 16 * INGOTS),
+                    CI.getTertiaryTieredFluid(j - 1, 16 * INGOTS))
                 .itemOutputs(aGemBatteries[aCasingSlot++])
                 .eut(GTValues.VP[j])
                 .duration(2 * MINUTES)
@@ -463,42 +485,39 @@ public class RecipesGregTech {
         }
 
         if (Baubles.isModLoaded()) {
-            // Nano Healer
+            // Personal Healing Nanobooster
             RA.stdBuilder()
-                .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1))
+                .metadata(RESEARCH_ITEM, new ItemStack(Items.golden_apple, 1, 1))
                 .metadata(SCANNING, new Scanning(2 * MINUTES, TierEU.RECIPE_LuV))
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aGemCasings[2], 4),
+                    GTUtility.copyAmount(4, aGemCasings[2]),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
-                    new Object[] { CI.getTieredCircuitOreDictName(7), 16 },
+                    new Object[] { "circuitUltimate", 16 },
                     CI.getTieredComponent(OrePrefixes.cableGt02, 7, 16),
                     CI.getTieredComponent(OrePrefixes.gearGt, 6, 6),
                     CI.getTieredComponent(OrePrefixes.screw, 7, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 5, 24),
                     CI.getTieredComponent(OrePrefixes.frameGt, 4, 12),
-                    ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
+                    GregtechItemList.DehydratorCoilWireZPM.get(64))
                 .fluidInputs(
-                    CI.getTieredFluid(7, 144 * 18 * 16),
-                    CI.getTertiaryTieredFluid(7, 144 * 18 * 16),
-                    CI.getAlternativeTieredFluid(6, 144 * 18 * 16),
-                    CI.getAlternativeTieredFluid(7, 144 * 18 * 16))
-                .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalHealingDevice", 1))
+                    CI.getTieredFluid(7, 4 * STACKS + 32 * INGOTS),
+                    CI.getTertiaryTieredFluid(7, 4 * STACKS + 32 * INGOTS),
+                    CI.getAlternativeTieredFluid(6, 4 * STACKS + 32 * INGOTS),
+                    CI.getAlternativeTieredFluid(7, 4 * STACKS + 32 * INGOTS))
+                .itemOutputs(GregtechItemList.PersonalHealingDevice.get(1))
                 .eut(TierEU.RECIPE_ZPM)
-                .duration(1 * HOURS)
+                .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
 
             // Charge Pack LuV-UV
 
-            ItemStack[] aChargeResearch = new ItemStack[] {
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore7", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore8", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore9", 1),
-                ItemUtils.getItemStackFromFQRN("miscutils:item.itemBufferCore10", 1), };
+            ItemStack[] aChargeResearch = new ItemStack[] { GregtechItemList.Energy_Core_LuV.get(1),
+                GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
+                GregtechItemList.Energy_Core_UHV.get(1) };
 
-            ItemStack[] aChargeOutputs = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemChargePack_High_1, 1),
-                ItemUtils.getSimpleStack(ModItems.itemChargePack_High_2, 1),
-                ItemUtils.getSimpleStack(ModItems.itemChargePack_High_3, 1),
-                ItemUtils.getSimpleStack(ModItems.itemChargePack_High_4, 1), };
+            ItemStack[] aChargeOutputs = new ItemStack[] { new ItemStack(ModItems.itemChargePack_High_1, 1),
+                new ItemStack(ModItems.itemChargePack_High_2, 1), new ItemStack(ModItems.itemChargePack_High_3, 1),
+                new ItemStack(ModItems.itemChargePack_High_4, 1), };
 
             int aCurrSlot = 0;
             for (int h = 6; h < 9; h++) {
@@ -506,23 +525,23 @@ public class RecipesGregTech {
                     .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
                     .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                     .itemInputs(
-                        ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
+                        GTUtility.copyAmount(2, aGemBatteries[aCurrSlot]),
                         aCoilWire[aCurrSlot],
                         CI.getTieredComponent(OrePrefixes.plate, h, 8),
-                        new Object[] { CI.getTieredCircuitOreDictName(h), 4 },
-                        new Object[] { CI.getTieredCircuitOreDictName(h - 1), 8 },
+                        new Object[] { CI.circuits[h], 4 },
+                        new Object[] { CI.circuits[h - 1], 8 },
                         CI.getTieredComponent(OrePrefixes.cableGt12, h - 1, 16),
                         CI.getTieredComponent(OrePrefixes.screw, h, 16),
                         CI.getTieredComponent(OrePrefixes.bolt, h - 2, 32),
                         CI.getFieldGenerator(h - 1, 1))
                     .fluidInputs(
-                        CI.getTieredFluid(h, 144 * 4 * 8),
-                        CI.getTertiaryTieredFluid(h - 1, 144 * 4 * 8),
-                        CI.getAlternativeTieredFluid(h - 1, 144 * 4 * 8),
-                        CI.getAlternativeTieredFluid(h - 2, 144 * 4 * 8))
+                        CI.getTieredFluid(h, 32 * INGOTS),
+                        CI.getTertiaryTieredFluid(h - 1, 32 * INGOTS),
+                        CI.getAlternativeTieredFluid(h - 1, 32 * INGOTS),
+                        CI.getAlternativeTieredFluid(h - 2, 32 * INGOTS))
                     .itemOutputs(aChargeOutputs[aCurrSlot])
                     .eut(GTValues.VP[h])
-                    .duration((aCurrSlot + 1) * HOURS)
+                    .duration(3 * MINUTES)
                     .addTo(AssemblyLine);
                 aCurrSlot++;
             }
@@ -531,48 +550,47 @@ public class RecipesGregTech {
                 .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
                 .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aGemBatteries[aCurrSlot], 2),
+                    GTUtility.copyAmount(2, aGemBatteries[aCurrSlot]),
                     aCoilWire[aCurrSlot],
                     CI.getTieredComponent(OrePrefixes.plate, 9, 8),
-                    new Object[] { CI.getTieredCircuitOreDictName(9), 4 },
-                    new Object[] { CI.getTieredCircuitOreDictName(8), 8 },
+                    new Object[] { "circuitInfinite", 4 },
+                    new Object[] { "circuitSuperconductor", 8 },
                     CI.getTieredComponent(OrePrefixes.cableGt12, 8, 16),
                     CI.getTieredComponent(OrePrefixes.screw, 9, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 7, 32),
                     CI.getFieldGenerator(8, 1))
                 .fluidInputs(
-                    CI.getTieredFluid(9, 144 * 4 * 8),
-                    CI.getTertiaryTieredFluid(8, 144 * 4 * 8 * 2),
-                    CI.getAlternativeTieredFluid(7, 144 * 4 * 8))
+                    CI.getTieredFluid(9, 32 * INGOTS),
+                    CI.getTertiaryTieredFluid(8, 1 * STACKS),
+                    CI.getAlternativeTieredFluid(7, 32 * INGOTS))
                 .itemOutputs(aChargeOutputs[aCurrSlot])
                 .eut(GTValues.VP[9])
-                .duration((aCurrSlot + 1) * HOURS)
+                .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
 
-            // Cloaking device
+            // Personal Cloaking device
             RA.stdBuilder()
                 .metadata(
                     RESEARCH_ITEM,
                     ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1))
                 .metadata(SCANNING, new Scanning(1 * MINUTES + 40 * SECONDS, TierEU.RECIPE_ZPM))
                 .itemInputs(
-                    ItemUtils.getSimpleStack(aGemCasings[3], 4),
+                    GTUtility.copyAmount(4, aGemCasings[3]),
                     CI.getTieredComponent(OrePrefixes.plate, 8, 32),
-                    new Object[] { CI.getTieredCircuitOreDictName(7), 16 },
+                    new Object[] { "circuitUltimate", 16 },
                     CI.getTieredComponent(OrePrefixes.cableGt04, 8, 16),
                     CI.getTieredComponent(OrePrefixes.gearGt, 7, 6),
                     CI.getTieredComponent(OrePrefixes.screw, 8, 16),
                     CI.getTieredComponent(OrePrefixes.bolt, 7, 24),
                     CI.getTieredComponent(OrePrefixes.frameGt, 5, 12),
-                    ItemUtils.simpleMetaStack("miscutils:itemDehydratorCoilWire", 3, 64))
+                    GregtechItemList.DehydratorCoilWireZPM.get(64))
                 .fluidInputs(
-                    CI.getTieredFluid(8, 144 * 18 * 16),
-                    CI.getTertiaryTieredFluid(8, 144 * 18 * 16),
-                    CI.getAlternativeTieredFluid(7, 144 * 18 * 16),
-                    CI.getAlternativeTieredFluid(8, 144 * 18 * 16))
-                .itemOutputs(ItemUtils.getItemStackFromFQRN("miscutils:personalCloakingDevice-0.0", 1))
+                    CI.getTieredFluid(8, 4 * STACKS + 32 * INGOTS),
+                    CI.getTertiaryTieredFluid(8, 4 * STACKS + 32 * INGOTS),
+                    CI.getAlternativeTieredFluid(7, 9 * STACKS))
+                .itemOutputs(GregtechItemList.PersonalCloakingDevice.get(1))
                 .eut(TierEU.RECIPE_UV)
-                .duration(1 * HOURS)
+                .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
         }
 
@@ -593,9 +611,9 @@ public class RecipesGregTech {
                 MaterialsAlloy.PIKYONIUM.getPlate(16),
                 MaterialsAlloy.CINOBITE.getScrew(32))
             .fluidInputs(
-                MaterialsAlloy.PIKYONIUM.getFluidStack(144 * 8),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(144 * 9),
-                Materials.SolderingAlloy.getMolten(144 * 10))
+                MaterialsAlloy.PIKYONIUM.getFluidStack(8 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
+                Materials.SolderingAlloy.getMolten(10 * INGOTS))
             .itemOutputs(GregtechItemList.Mega_AlloyBlastSmelter.get(1L))
             .eut(TierEU.RECIPE_UHV / 2)
             .duration(1 * MINUTES)
@@ -603,7 +621,7 @@ public class RecipesGregTech {
 
         // Expandable Hand Pump
         RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
+            .metadata(RESEARCH_ITEM, new ItemStack(ModItems.itemGenericToken, 1, 4))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_IV))
             .itemInputs(
                 ItemList.Electric_Pump_LuV.get(4),
@@ -614,9 +632,9 @@ public class RecipesGregTech {
                 WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.stick, 16),
                 Materials.Osmiridium.getPlates(32))
             .fluidInputs(
-                MaterialsAlloy.HELICOPTER.getFluidStack(144 * 32),
-                MaterialsAlloy.INDALLOY_140.getFluidStack(144 * 64))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1))
+                MaterialsAlloy.HELICOPTER.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS))
+            .itemOutputs(GregtechItemList.ExpandableHandPump.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
             .addTo(AssemblyLine);
@@ -680,30 +698,21 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_IV)
             .addTo(laserEngraverRecipes);
 
-        // Distillus Upgrade Chip
-        RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Laser_Lens_WoodsGlass.get(0),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 1L))
-            .itemOutputs(GregtechItemList.Distillus_Upgrade_Chip.get(1))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(laserEngraverRecipes);
     }
 
     private static void breweryRecipes() {
 
         if (Mods.OpenBlocks.isModLoaded()) {
             RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(14))
+                .circuit(14)
                 .fluidInputs(FluidRegistry.getFluidStack("mobessence", 100))
-                .fluidOutputs(FluidRegistry.getFluidStack("xpjuice", 1332))
+                .fluidOutputs(FluidRegistry.getFluidStack("xpjuice", 1_332))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
                 .addTo(brewingRecipes);
             RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(14))
-                .fluidInputs(FluidRegistry.getFluidStack("xpjuice", 1332))
+                .circuit(14)
+                .fluidInputs(FluidRegistry.getFluidStack("xpjuice", 1_332))
                 .fluidOutputs(FluidRegistry.getFluidStack("mobessence", 100))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_MV)
@@ -711,23 +720,23 @@ public class RecipesGregTech {
         }
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Rainforest))
-            .fluidInputs(Materials.Water.getFluid(100L))
-            .fluidOutputs(Materials.Biomass.getFluid(100L))
+            .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
+            .fluidInputs(Materials.Water.getFluid(100))
+            .fluidOutputs(Materials.Biomass.getFluid(100))
             .duration(1 * MINUTES)
             .eut(3)
             .addTo(brewingRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Rainforest))
-            .fluidInputs(Materials.Honey.getFluid(100L))
-            .fluidOutputs(Materials.Biomass.getFluid(100L))
+            .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
+            .fluidInputs(Materials.Honey.getFluid(100))
+            .fluidOutputs(Materials.Biomass.getFluid(100))
             .duration(1 * MINUTES)
             .eut(3)
             .addTo(brewingRecipes);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(BOPBlockRegistrator.sapling_Rainforest))
+            .itemInputs(new ItemStack(BOPBlockRegistrator.sapling_Rainforest))
             .fluidInputs(FluidUtils.getFluidStack("juice", 100))
-            .fluidOutputs(Materials.Biomass.getFluid(100L))
+            .fluidOutputs(Materials.Biomass.getFluid(100))
             .duration(1 * MINUTES)
             .eut(3)
             .addTo(brewingRecipes);
@@ -735,8 +744,8 @@ public class RecipesGregTech {
 
     private static void electrolyzerRecipes() {
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(ModItems.dustDecayedRadium226, 1))
-            .fluidOutputs(FluidUtils.getFluidStack("radon", 144))
+            .itemInputs(new ItemStack(ModItems.dustDecayedRadium226, 1))
+            .fluidOutputs(Materials.Radon.getGas(1 * INGOTS))
             .duration(1 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(electrolyzerRecipes);
@@ -757,13 +766,13 @@ public class RecipesGregTech {
         // Enderium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
                 Materials.Tin.getDust(2),
                 Materials.Platinum.getDust(1),
                 Materials.Silver.getDust(1),
                 Materials.Thaumium.getDust(2),
                 Materials.EnderPearl.getDust(2))
-            .fluidOutputs(Materials.Enderium.getMolten(8 * 144))
+            .circuit(5)
+            .fluidOutputs(Materials.Enderium.getMolten(8 * INGOTS))
             .eut(TierEU.RECIPE_EV)
             .duration(20 * SECONDS + 1 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -771,11 +780,11 @@ public class RecipesGregTech {
         // Signalium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(3),
                 Materials.AnnealedCopper.getDust(30),
                 Materials.Ardite.getDust(10),
                 Materials.Redstone.getDust(50))
-            .fluidOutputs(GGMaterial.signalium.getMolten(5 * 144))
+            .circuit(3)
+            .fluidOutputs(GGMaterial.signalium.getMolten(5 * INGOTS))
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -783,14 +792,14 @@ public class RecipesGregTech {
         // Lumiium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(6),
                 Materials.Tin.getDust(10),
                 Materials.Iron.getDust(10),
                 Materials.Copper.getDust(2),
                 Materials.Silver.getDust(8),
                 GGMaterial.lumiinessence.get(OrePrefixes.dust, 10),
                 Materials.Glowstone.getDust(10))
-            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * 144))
+            .circuit(6)
+            .fluidOutputs(GGMaterial.lumiium.getMolten(5 * INGOTS))
             .eut(TierEU.RECIPE_LuV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -798,14 +807,14 @@ public class RecipesGregTech {
         // Eglin Steel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(6),
                 MaterialsElements.getInstance().IRON.getDust(4),
                 MaterialsAlloy.KANTHAL.getDust(1),
                 MaterialsAlloy.INVAR.getDust(5),
                 MaterialsElements.getInstance().SULFUR.getDust(1),
                 MaterialsElements.getInstance().CARBON.getDust(1),
                 MaterialsElements.getInstance().SILICON.getDust(4))
-            .fluidOutputs(MaterialsAlloy.EGLIN_STEEL.getFluidStack(16 * 144))
+            .circuit(6)
+            .fluidOutputs(MaterialsAlloy.EGLIN_STEEL.getFluidStack(16 * INGOTS))
             .eut(TierEU.RECIPE_MV)
             .duration(45 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
@@ -813,12 +822,12 @@ public class RecipesGregTech {
         // HG1223
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
                 MaterialsElements.getInstance().BARIUM.getDust(2),
                 MaterialsElements.getInstance().CALCIUM.getDust(2),
                 MaterialsElements.getInstance().COPPER.getDust(3))
-            .fluidInputs(Materials.Oxygen.getGas(8000), Materials.Mercury.getFluid(1000))
-            .fluidOutputs(MaterialsAlloy.HG1223.getFluidStack(16 * 144))
+            .circuit(5)
+            .fluidInputs(Materials.Oxygen.getGas(8_000), Materials.Mercury.getFluid(1_000))
+            .fluidOutputs(MaterialsAlloy.HG1223.getFluidStack(16 * INGOTS))
             .eut(TierEU.RECIPE_LuV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -826,10 +835,10 @@ public class RecipesGregTech {
         // NITINOL_60
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
                 MaterialsElements.getInstance().TITANIUM.getDust(3),
                 MaterialsElements.getInstance().NICKEL.getDust(2))
-            .fluidOutputs(MaterialsAlloy.NITINOL_60.getFluidStack(5 * 144))
+            .circuit(2)
+            .fluidOutputs(MaterialsAlloy.NITINOL_60.getFluidStack(5 * INGOTS))
             .eut(TierEU.RECIPE_IV)
             .duration(1 * MINUTES + 15 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
@@ -837,13 +846,13 @@ public class RecipesGregTech {
         // INDALLOY_140
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
                 MaterialsElements.getInstance().BISMUTH.getDust(47),
                 MaterialsElements.getInstance().LEAD.getDust(25),
                 MaterialsElements.getInstance().TIN.getDust(13),
                 MaterialsElements.getInstance().CADMIUM.getDust(10),
                 MaterialsElements.getInstance().INDIUM.getDust(5))
-            .fluidOutputs(MaterialsAlloy.INDALLOY_140.getFluidStack(100 * 144))
+            .circuit(5)
+            .fluidOutputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1 * STACKS + 36 * INGOTS))
             .eut(TierEU.RECIPE_IV)
             .duration(40 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
@@ -851,11 +860,11 @@ public class RecipesGregTech {
         // Germanium Roasting
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(15),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedSphalerite", 1),
                 MaterialsElements.getInstance().CARBON.getDust(4))
+            .circuit(15)
             .fluidInputs(Materials.SulfuricAcid.getFluid(250))
-            .fluidOutputs(MaterialsElements.getInstance().GERMANIUM.getFluidStack(36))
+            .fluidOutputs(MaterialsElements.getInstance().GERMANIUM.getFluidStack(1 * QUARTER_INGOTS))
             .eut(4_000)
             .duration(37 * SECONDS + 10 * TICKS)
             .addTo(alloyBlastSmelterRecipes);
@@ -863,33 +872,33 @@ public class RecipesGregTech {
         // Rhenium Roasting
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedScheelite", 1),
                 MaterialsElements.getInstance().CARBON.getDust(4))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
-            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(18))
+            .circuit(20)
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1_250))
+            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(1 * EIGHTH_INGOTS))
             .eut(4_000)
             .duration(1 * MINUTES + 15 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenite", 2),
                 MaterialsElements.getInstance().CARBON.getDust(8))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1875))
-            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(36))
+            .circuit(20)
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1_875))
+            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(1 * QUARTER_INGOTS))
             .eut(4_000)
             .duration(37 * SECONDS + 10 * TICKS)
             .addTo(alloyBlastSmelterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(20),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedMolybdenum", 1),
                 MaterialsElements.getInstance().CARBON.getDust(4))
+            .circuit(20)
             .fluidInputs(Materials.SulfuricAcid.getFluid(625))
-            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(36))
+            .fluidOutputs(MaterialsElements.getInstance().RHENIUM.getFluidStack(1 * QUARTER_INGOTS))
             .eut(4_000)
             .duration(37 * SECONDS + 10 * TICKS)
             .addTo(alloyBlastSmelterRecipes);
@@ -897,26 +906,24 @@ public class RecipesGregTech {
         // Thallium Roasting
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(21),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedZinc", 3),
                 ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedPyrite", 4),
                 MaterialsElements.getInstance().CARBON.getDust(16))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(1250))
-            .fluidOutputs(MaterialsElements.getInstance().THALLIUM.getFluidStack(288))
+            .circuit(21)
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1_250))
+            .fluidOutputs(MaterialsElements.getInstance().THALLIUM.getFluidStack(2 * INGOTS))
             .eut(TierEU.RECIPE_IV)
             .duration(1 * MINUTES + 15 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
 
         // Strontium processing
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(21),
-                MaterialMisc.STRONTIUM_OXIDE.getDust(8),
-                MaterialsElements.getInstance().ALUMINIUM.getDust(8))
+            .itemInputs(MaterialMisc.STRONTIUM_OXIDE.getDust(8), MaterialsElements.getInstance().ALUMINIUM.getDust(8))
+            .circuit(21)
             .fluidOutputs(
-                MaterialsElements.getInstance().OXYGEN.getFluidStack(8000),
-                MaterialsElements.getInstance().ALUMINIUM.getFluidStack(144 * 8),
-                MaterialsElements.getInstance().STRONTIUM.getFluidStack(144 * 8))
+                MaterialsElements.getInstance().OXYGEN.getFluidStack(8_000),
+                MaterialsElements.getInstance().ALUMINIUM.getFluidStack(8 * INGOTS),
+                MaterialsElements.getInstance().STRONTIUM.getFluidStack(8 * INGOTS))
             .eut(TierEU.RECIPE_EV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -924,12 +931,12 @@ public class RecipesGregTech {
         // molten botmium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(4),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustNitinol60", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustRuthenium", 6),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustThallium", 3))
-            .fluidOutputs(MaterialsAlloy.BOTMIUM.getFluidStack(2304))
+            .circuit(4)
+            .fluidOutputs(MaterialsAlloy.BOTMIUM.getFluidStack(16 * INGOTS))
             .eut(TierEU.RECIPE_UV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -937,41 +944,41 @@ public class RecipesGregTech {
         // lossless phonon transfer medium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.dust, 5),
                 GGMaterial.metastableOganesson.get(OrePrefixes.dust, 1),
                 Materials.Praseodymium.getDust(15),
                 Materials.SuperconductorUIVBase.getDust(6))
-            .fluidInputs(MaterialsUEVplus.PhononCrystalSolution.getFluid(4000L))
-            .fluidOutputs(MaterialsUEVplus.PhononMedium.getFluid(1000L))
+            .circuit(5)
+            .fluidInputs(Materials.PhononCrystalSolution.getFluid(4_000))
+            .fluidOutputs(Materials.PhononMedium.getFluid(1_000))
             .eut(TierEU.RECIPE_UIV)
             .duration(2 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(5),
-                MaterialsUEVplus.TranscendentMetal.getDust(2),
+                Materials.TranscendentMetal.getDust(2),
                 GGMaterial.tairitsu.get(OrePrefixes.dust, 2),
                 Materials.Tartarite.getDust(2),
                 TITANSTEEL.getDust(1),
                 Materials.Infinity.getDust(1))
-            .fluidInputs(MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(1000))
-            .fluidOutputs(MaterialsUEVplus.MoltenProtoHalkoniteBase.getFluid(1152))
+            .circuit(5)
+            .fluidInputs(Materials.DTR.getFluid(1_000))
+            .fluidOutputs(Materials.MoltenProtoHalkoniteBase.getFluid(8 * INGOTS))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(6),
                 Materials.Iron.getDust(12),
                 Materials.Nickel.getDust(10),
                 Materials.Cobalt.getDust(8),
                 Materials.Titanium.getDust(4),
                 Materials.Molybdenum.getDust(2),
                 Materials.Aluminium.getDust(1))
-            .fluidOutputs(GGMaterial.incoloy903.getMolten(144 * 37))
+            .circuit(6)
+            .fluidOutputs(GGMaterial.incoloy903.getMolten(37 * INGOTS))
             .eut(TierEU.RECIPE_IV)
             .duration(1 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);
@@ -995,7 +1002,7 @@ public class RecipesGregTech {
         // Process Waste Water
         GTValues.RA.stdBuilder()
             .itemOutputs(
-                ItemUtils.getSimpleStack(Blocks.dirt),
+                new ItemStack(Blocks.dirt),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L),
@@ -1005,7 +1012,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
             .outputChances(20_00, 5_00, 10, 7, 6, 5, 4, 3, 2)
-            .fluidInputs(FluidUtils.getFluidStack("sludge", 1000))
+            .fluidInputs(FluidUtils.getFluidStack("sludge", 1_000))
             .fluidOutputs(Materials.Methane.getGas(100))
             .eut(TierEU.RECIPE_HV)
             .duration(2 * SECONDS)
@@ -1013,11 +1020,12 @@ public class RecipesGregTech {
 
         // C8H10 = C8H8 + 2H
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), CI.emptyCells(3))
+            .itemInputs(ItemList.Cell_Empty.get(3))
+            .circuit(17)
             .itemOutputs(
                 ItemUtils.getItemStackOfAmountFromOreDict("cellStyrene", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 2))
-            .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
             .eut(TierEU.RECIPE_LV)
             .duration(3 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -1027,20 +1035,20 @@ public class RecipesGregTech {
          */
         if (Backpack.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(18), new ItemStack(Items.leather, 2))
-                .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
-                .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
+                .itemInputs(new ItemStack(Items.leather, 2))
+                .circuit(18)
+                .itemOutputs(getModItem(Backpack.ID, "tannedLeather", 1))
+                .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
                 .eut(180)
                 .duration(5 * SECONDS)
                 .addTo(chemicalDehydratorRecipes);
 
             if (NewHorizonsCoreMod.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(
-                        GTUtility.getIntegratedCircuit(18),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
-                    .itemOutputs(ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1))
-                    .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
+                    .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
+                    .circuit(18)
+                    .itemOutputs(getModItem(Backpack.ID, "tannedLeather", 1))
+                    .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
                     .eut(180)
                     .duration(5 * SECONDS)
                     .addTo(chemicalDehydratorRecipes);
@@ -1049,10 +1057,10 @@ public class RecipesGregTech {
         // Alternative ACETIC ANHYDRIDE recipe for Kevlar Line
         // 2C2H4O2 = C4H6O3 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.emptyCells(1))
+            .itemInputs(ItemList.Cell_Empty.get(1))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1))
-            .fluidInputs(FluidUtils.getFluidStack("aceticacid", 2000))
-            .fluidOutputs(MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1000))
+            .fluidInputs(FluidUtils.getFluidStack("aceticacid", 2_000))
+            .fluidOutputs(MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1_000))
             .eut(TierEU.RECIPE_HV)
             .duration(30 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
@@ -1062,10 +1070,10 @@ public class RecipesGregTech {
         // Styrene
         // C8H10 = C8H8 + 2H
         RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24))
+            .circuit(24)
             .itemOutputs()
-            .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1000))
-            .fluidOutputs(Materials.Styrene.getFluid(1000L), Materials.Hydrogen.getGas(2000))
+            .fluidInputs(FluidUtils.getFluidStack("fluid.ethylbenzene", 1_000))
+            .fluidOutputs(Materials.Styrene.getFluid(1_000), Materials.Hydrogen.getGas(2_000))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -1077,17 +1085,17 @@ public class RecipesGregTech {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vanadium, 32L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.VanadiumSteel, 8L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 4))
-            .fluidInputs(Materials.Oxygen.getGas(8000L))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 4))
+            .fluidInputs(Materials.Oxygen.getGas(8_000))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
-                ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.VanadiumGallium, 8L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8))
+            .itemOutputs(new ItemStack(ModItems.itemHalfCompleteCasings, 8, 1))
             .fluidInputs(Materials.Tantalum.getMolten(4 * INGOTS))
             .duration(32 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1095,12 +1103,12 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1),
+                new ItemStack(ModItems.itemHalfCompleteCasings, 1, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4L),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2L))
-            .itemOutputs(ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1))
-            .fluidInputs(Materials.Oxygen.getGas(16 * BUCKETS))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox.get(1))
+            .fluidInputs(Materials.Oxygen.getGas(16_000))
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);
@@ -1112,7 +1120,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_IV.get(1))
-            .fluidInputs(Materials.Nitrogen.getGas(16 * BUCKETS))
+            .fluidInputs(Materials.Nitrogen.getGas(16_000))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1124,7 +1132,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_LuV.get(1))
-            .fluidInputs(Materials.Helium.getGas(8 * BUCKETS))
+            .fluidInputs(Materials.Helium.getGas(8_000))
             .duration(12 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
@@ -1136,7 +1144,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1))
-            .fluidInputs(Materials.Argon.getGas(4 * BUCKETS))
+            .fluidInputs(Materials.Argon.getGas(4_000))
             .duration(25 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
@@ -1148,7 +1156,7 @@ public class RecipesGregTech {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 2L))
             .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_UV.get(1))
-            .fluidInputs(Materials.Radon.getGas(4 * BUCKETS))
+            .fluidInputs(Materials.Radon.getGas(4_000))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
@@ -1167,8 +1175,8 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                ItemUtils.getSimpleStack(CI.explosiveITNT, 2),
-                ItemUtils.getSimpleStack(CI.explosiveTNT, 4),
+                GTUtility.copyAmount(2, CI.explosiveITNT),
+                GTUtility.copyAmount(4, CI.explosiveTNT),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iron, 1L))
             .itemOutputs(GregtechItemList.MiningExplosives.get(3))
@@ -1188,80 +1196,84 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_LV,
-                CI.electricMotor_LV,
+                ItemList.FluidRegulator_LV.get(1),
+                ItemList.Electric_Motor_LV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 1, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Brass, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_MV,
-                CI.electricMotor_MV,
+                ItemList.FluidRegulator_MV.get(1),
+                ItemList.Electric_Motor_MV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 2, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Invar, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 2))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_HV,
-                CI.electricMotor_HV,
+                ItemList.FluidRegulator_HV.get(1),
+                ItemList.Electric_Motor_HV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 3, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Chrome, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 3))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
-                CI.fluidRegulator_EV,
-                CI.electricMotor_EV,
+                ItemList.FluidRegulator_EV.get(1),
+                ItemList.Electric_Motor_EV.get(1),
                 CI.getTieredComponent(OrePrefixes.bolt, 4, 8),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1L),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1))
+            .itemOutputs(new ItemStack(ModItems.itemGenericToken, 1, 4))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 1, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1000, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 1))
+            .circuit(20)
+            .itemOutputs(GregtechItemList.SimpleHandPump.get(1))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 2, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1001, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 2))
+            .circuit(20)
+            .itemOutputs(GregtechItemList.AdvancedHandPump.get(1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 3, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1002, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 3))
+            .circuit(20)
+            .itemOutputs(GregtechItemList.SuperHandPump.get(1))
             .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.simpleMetaStack(ModItems.itemGenericToken, 4, 1), GTUtility.getIntegratedCircuit(20))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1003, 1))
+            .itemInputs(new ItemStack(ModItems.itemGenericToken, 1, 4))
+            .circuit(20)
+            .itemOutputs(GregtechItemList.UltimateHandPump.get(1))
             .duration(1 * MINUTES + 36 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
@@ -1282,11 +1294,9 @@ public class RecipesGregTech {
         final ItemStack[] aPackRing = new ItemStack[] { CI.getTieredComponent(OrePrefixes.ring, 1, 12),
             CI.getTieredComponent(OrePrefixes.ring, 2, 12), CI.getTieredComponent(OrePrefixes.ring, 3, 12),
             CI.getTieredComponent(OrePrefixes.ring, 4, 12), CI.getTieredComponent(OrePrefixes.ring, 5, 12), };
-        final ItemStack[] aPackOutput = new ItemStack[] { ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_1),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_2),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_3),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_4),
-            ItemUtils.getSimpleStack(ModItems.itemChargePack_Low_5) };
+        final ItemStack[] aPackOutput = new ItemStack[] { new ItemStack(ModItems.itemChargePack_Low_1),
+            new ItemStack(ModItems.itemChargePack_Low_2), new ItemStack(ModItems.itemChargePack_Low_3),
+            new ItemStack(ModItems.itemChargePack_Low_4), new ItemStack(ModItems.itemChargePack_Low_5) };
 
         for (int i = 1; i < 6; i++) {
 
@@ -1301,7 +1311,7 @@ public class RecipesGregTech {
                     aPackBatteries[aAS],
                     CI.getSensor(i, 4))
                 .itemOutputs(aPackOutput[aAS])
-                .fluidInputs(CI.getTieredFluid(i, (144 * 4)))
+                .fluidInputs(CI.getTieredFluid(i, 4 * INGOTS))
                 .duration(30 * i * SECONDS)
                 .eut(GTValues.VP[i])
                 .addTo(assemblerRecipes);
@@ -1312,15 +1322,15 @@ public class RecipesGregTech {
             // Turbine Housing Research Page
             RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(17),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Trinium, 64L),
                     CI.getSensor(6, 6),
                     CI.getBolt(7, 64),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Platinum, 64L),
-                    ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(7), 12))
+                    ItemUtils.getItemStackOfAmountFromOreDict("circuitUltimate", 12))
+                .circuit(17)
                 .itemOutputs(
                     ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_8_TURBINE_AUTOMATION, 1))
-                .fluidInputs(CI.getAlternativeTieredFluid(7, 144 * 32))
+                .fluidInputs(CI.getAlternativeTieredFluid(7, 32 * INGOTS))
                 .duration(5 * MINUTES)
                 .eut(TierEU.RECIPE_LuV)
                 .addTo(assemblerRecipes);
@@ -1328,13 +1338,13 @@ public class RecipesGregTech {
             // Cloaking Device Research Page
             RA.stdBuilder()
                 .itemInputs(
-                    GTUtility.getIntegratedCircuit(17),
-                    ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, 4),
+                    new ItemStack(ModItems.itemCircuitLFTR, 4),
                     CI.getFieldGenerator(6, 16),
                     GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Palladium, 32L),
-                    ItemUtils.getItemStackOfAmountFromOreDict(CI.getTieredCircuitOreDictName(6), 12))
+                    ItemUtils.getItemStackOfAmountFromOreDict("circuitMaster", 12))
+                .circuit(17)
                 .itemOutputs(ItemDummyResearch.getResearchStack(ASSEMBLY_LINE_RESEARCH.RESEARCH_9_CLOAKING, 1))
-                .fluidInputs(CI.getAlternativeTieredFluid(7, 144 * 32))
+                .fluidInputs(CI.getAlternativeTieredFluid(7, 32 * INGOTS))
                 .duration(10 * MINUTES)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(assemblerRecipes);
@@ -1344,15 +1354,15 @@ public class RecipesGregTech {
     private static void distilleryRecipes() {
         Logger.INFO("Registering Distillery/Distillation Tower Recipes.");
         RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(4))
-            .fluidInputs(Materials.Air.getGas(1000L))
+            .circuit(4)
+            .fluidInputs(Materials.Air.getGas(1_000))
             .fluidOutputs(Materials.Helium.getGas(1L))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         RA.stdBuilder()
-            .fluidInputs(Materials.Air.getGas(20000L))
+            .fluidInputs(Materials.Air.getGas(20_000))
             .fluidOutputs(Materials.Helium.getGas(25L))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1364,17 +1374,17 @@ public class RecipesGregTech {
          */
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getFluidStack("sulfuricapatite", 5200))
+            .fluidInputs(FluidUtils.getFluidStack("sulfuricapatite", 5_200))
             .fluidOutputs(
-                FluidUtils.getFluidStack("sulfurousacid", 3800),
-                FluidUtils.getFluidStack("hydrogenchloride", 1000),
+                FluidUtils.getFluidStack("sulfurousacid", 3_800),
+                FluidUtils.getFluidStack("hydrogenchloride", 1_000),
                 FluidUtils.getFluidStack("hydrofluoricacid", 400))
             .duration(45 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(distillationTowerRecipes);
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getFluidStack("sulfurousacid", 1000))
+            .fluidInputs(FluidUtils.getFluidStack("sulfurousacid", 1_000))
             .fluidOutputs(Materials.SulfurDioxide.getGas(500), Materials.Water.getFluid(500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -1389,8 +1399,8 @@ public class RecipesGregTech {
         // Lava
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getLava(1000), FluidUtils.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getPahoehoeLava(1000), FluidUtils.getSteam(16_000))
+            .fluidInputs(Materials.Lava.getFluid(1_000), Materials.Water.getFluid(16_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(FluidUtils.getPahoehoeLava(1_000), Materials.Steam.getGas(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Copper, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Tin, 1),
@@ -1407,8 +1417,8 @@ public class RecipesGregTech {
         // Pahoehoe Lava
 
         RA.stdBuilder()
-            .fluidInputs(FluidUtils.getPahoehoeLava(1000), FluidUtils.getWater(16_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getSteam(16_000))
+            .fluidInputs(FluidUtils.getPahoehoeLava(1_000), Materials.Water.getFluid(16_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(Materials.Steam.getGas(16_000))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Electrum, 1),
@@ -1425,8 +1435,8 @@ public class RecipesGregTech {
         RA.stdBuilder()
             .fluidInputs(
                 FluidUtils.getFluidStack("ic2hotcoolant", 500),
-                FluidUtils.getWater(100_000 / GTValues.STEAM_PER_WATER))
-            .fluidOutputs(FluidUtils.getFluidStack("ic2coolant", 500), FluidUtils.getSuperHeatedSteam(100_000))
+                Materials.Water.getFluid(100_000 / GTValues.STEAM_PER_WATER))
+            .fluidOutputs(GTModHandler.getIC2Coolant(500), FluidUtils.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)
             .addTo(thermalBoilerRecipes);
@@ -1436,7 +1446,7 @@ public class RecipesGregTech {
         RA.stdBuilder()
             .fluidInputs(
                 MaterialMisc.SOLAR_SALT_HOT.getFluidStack(100),
-                FluidUtils.getWater(100_000 / GTValues.STEAM_PER_WATER))
+                Materials.Water.getFluid(100_000 / GTValues.STEAM_PER_WATER))
             .fluidOutputs(MaterialMisc.SOLAR_SALT_COLD.getFluidStack(100), FluidUtils.getSuperHeatedSteam(100_000))
             .duration(1 * SECONDS)
             .eut(0)
@@ -1447,21 +1457,21 @@ public class RecipesGregTech {
         Logger.INFO("Registering New Fuels.");
 
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(Items.lava_bucket))
+            .itemInputs(new ItemStack(Items.lava_bucket))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getIC2Cell(2))
+            .itemInputs(GTUtility.copyAmount(2, Ic2Items.lavaCell))
             .metadata(FUEL_VALUE, 32)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
             .eut(0)
             .addTo(GTRecipeConstants.Fuel);
         RA.stdBuilder()
-            .itemInputs(ItemUtils.getIC2Cell(11))
+            .itemInputs(Ic2Items.pahoehoelavaCell.copy())
             .metadata(FUEL_VALUE, 24)
             .metadata(FUEL_TYPE, 2)
             .duration(0)
@@ -1495,7 +1505,7 @@ public class RecipesGregTech {
         // Gelid Cryotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cryotheum, 1L))
-            .fluidOutputs(FluidUtils.getFluidStack("cryotheum", 250))
+            .fluidOutputs(new FluidStack(TFFluids.fluidCryotheum, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
@@ -1503,7 +1513,7 @@ public class RecipesGregTech {
         // Blazing Pyrotheum
         RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Pyrotheum, 1L))
-            .fluidOutputs(FluidUtils.getFluidStack("pyrotheum", 250))
+            .fluidOutputs(new FluidStack(TFFluids.fluidPyrotheum, 250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(fluidExtractionRecipes);
@@ -1512,11 +1522,12 @@ public class RecipesGregTech {
     private static void centrifugeRecipes() {
 
         RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2), MaterialMisc.SOLAR_SALT_COLD.getCell(1))
+            .itemInputs(MaterialMisc.SOLAR_SALT_COLD.getCell(1))
+            .circuit(2)
             .itemOutputs(
                 MaterialMisc.SODIUM_NITRATE.getDust(3),
                 MaterialMisc.POTASSIUM_NITRATE.getDust(2),
-                CI.emptyCells(1))
+                ItemList.Cell_Empty.get(1))
             .duration(6 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(centrifugeRecipes);
@@ -1526,10 +1537,10 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
-                CI.emptyCells(1),
+                ItemList.Cell_Empty.get(1),
                 MaterialMisc.SODIUM_NITRATE.getDust(3),
                 MaterialMisc.POTASSIUM_NITRATE.getDust(2))
+            .circuit(2)
             .itemOutputs(MaterialMisc.SOLAR_SALT_COLD.getCell(1))
             .duration(2 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -1537,26 +1548,26 @@ public class RecipesGregTech {
 
         RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
                 Materials.Titanium.getDust(9),
                 Materials.Carbon.getDust(9),
                 Materials.Potassium.getDust(9),
                 Materials.Lithium.getDust(9),
                 Materials.Sulfur.getDust(9))
+            .circuit(2)
             .itemOutputs(MaterialsAlloy.LEAGRISIUM.getDust(50))
-            .fluidInputs(Materials.Hydrogen.getGas(5000))
+            .fluidInputs(Materials.Hydrogen.getGas(5_000))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(mixerRecipes);
 
         RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
                 Materials.Steel.getDust(16),
                 Materials.Molybdenum.getDust(1),
                 Materials.Titanium.getDust(1),
                 Materials.Nickel.getDust(4),
                 Materials.Cobalt.getDust(2))
+            .circuit(2)
             .itemOutputs(MaterialsAlloy.MARAGING250.getDust(24))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -1566,32 +1577,33 @@ public class RecipesGregTech {
     private static void chemicalReactorRecipes() {
 
         RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(21),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 32L))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 32L))
+            .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 2L))
-            .fluidInputs(FluidUtils.getFluidStack("sulfuricacid", 4000))
-            .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 8000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(4_000))
+            .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 8_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         // KOH + HNO3 = KNO3 + H2O
         RA.stdBuilder()
-            .itemInputs(GregtechItemList.PotassiumHydroxide.get(3), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GregtechItemList.PotassiumHydroxide.get(3))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.PotassiumNitrade, 5L))
-            .fluidInputs(Materials.NitricAcid.getFluid(1000))
-            .fluidOutputs(Materials.Water.getFluid(1000))
+            .fluidInputs(Materials.NitricAcid.getFluid(1_000))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         // Na2CO3 + 2HNO3 = 2NaNO3 + CO2 + H2O
         RA.stdBuilder()
-            .itemInputs(Materials.SodiumCarbonate.getDust(6), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(Materials.SodiumCarbonate.getDust(6))
+            .circuit(1)
             .itemOutputs(MaterialMisc.SODIUM_NITRATE.getDust(10))
-            .fluidInputs(Materials.NitricAcid.getFluid(2000))
-            .fluidOutputs(Materials.CarbonDioxide.getGas(1000))
+            .fluidInputs(Materials.NitricAcid.getFluid(2_000))
+            .fluidOutputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -1601,16 +1613,16 @@ public class RecipesGregTech {
 
         // Synthetic Graphite
         RA.stdBuilder()
-            .itemInputs(MaterialsAlloy.SILICON_CARBIDE.getDust(2), GTUtility.getIntegratedCircuit(22))
+            .itemInputs(MaterialsAlloy.SILICON_CARBIDE.getDust(2))
+            .circuit(22)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Silicon, 1L))
-            .fluidInputs(Materials.Nitrogen.getGas(500))
-            .fluidOutputs()
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .metadata(COIL_HEAT, 4500)
-            .addTo(blastFurnaceRecipes);
+            .metadata(ADDITIVE_AMOUNT, 500)
+            .addTo(BlastFurnaceWithGas);
 
     }
 
@@ -1632,7 +1644,7 @@ public class RecipesGregTech {
 
     private static void macerationRecipes() {
 
-        if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null) {
+        if (getModItem(Mods.Chisel.ID, "limestone", 1, 0) != null) {
             RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("limestone", 1))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 4L))
@@ -1646,37 +1658,37 @@ public class RecipesGregTech {
 
         // Polonium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_PO210.get(1))
             .outputChances(100)
-            .fluidInputs(FluidUtils.getFluidStack("molten.bismuth", 1))
+            .fluidInputs(Materials.Bismuth.getMolten(1))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(cyclotronRecipes);
 
         // Americium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_AM241.get(4))
             .outputChances(2500)
-            .fluidInputs(FluidUtils.getFluidStack("molten.americium", 1))
+            .fluidInputs(Materials.Americium.getMolten(1))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
 
         // Strontium u235
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .outputChances(570)
-            .fluidInputs(FluidUtils.getFluidStack("molten.uranium235", 10))
+            .fluidInputs(Materials.Uranium235.getMolten(10))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
 
         // Strontium u233
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .outputChances(660)
             .fluidInputs(FluidUtils.getFluidStack("molten.uranium233", 10))
@@ -1686,17 +1698,17 @@ public class RecipesGregTech {
 
         // Strontium pu239
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .outputChances(220)
-            .fluidInputs(FluidUtils.getFluidStack("molten.plutonium", 10))
+            .fluidInputs(Materials.Plutonium.getMolten(10))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
 
         // Plutonium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_PU238.get(2))
             .outputChances(780)
             .fluidInputs(FluidUtils.getFluidStack("molten.plutonium238", 1))
@@ -1707,9 +1719,9 @@ public class RecipesGregTech {
         // Neptunium
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().URANIUM238.getDust(1))
-            .itemOutputs(ItemUtils.getSimpleStack(ModItems.dustNeptunium238))
+            .itemOutputs(new ItemStack(ModItems.dustNeptunium238))
             .outputChances(500)
-            .fluidInputs(FluidUtils.getFluidStack("deuterium", 400))
+            .fluidInputs(Materials.Deuterium.getGas(400))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(cyclotronRecipes);
@@ -1720,7 +1732,7 @@ public class RecipesGregTech {
 
         // Quark Smash
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3))
+            .circuit(3)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.UP),
                 Particle.getBaseParticle(Particle.DOWN),
@@ -1735,7 +1747,7 @@ public class RecipesGregTech {
             .addTo(cyclotronRecipes);
         // Lepton Smash
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(6))
+            .circuit(6)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.ELECTRON),
                 Particle.getBaseParticle(Particle.MUON),
@@ -1744,13 +1756,13 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.MUON_NEUTRINO),
                 Particle.getBaseParticle(Particle.TAU_NEUTRINO))
             .outputChances(600, 40, 20, 15, 10, 5)
-            .fluidInputs(FluidUtils.getFluidStack("plasma.helium", 1500))
+            .fluidInputs(FluidUtils.getFluidStack("plasma.helium", 1_500))
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
         // Boson Smash
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(9))
+            .circuit(9)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.GLUON),
                 Particle.getBaseParticle(Particle.PHOTON),
@@ -1758,13 +1770,13 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.W_BOSON),
                 Particle.getBaseParticle(Particle.HIGGS_BOSON))
             .outputChances(160, 260, 150, 150, 1)
-            .fluidInputs(FluidUtils.getFluidStack("plasma.helium", 1500))
+            .fluidInputs(FluidUtils.getFluidStack("plasma.helium", 1_500))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
         // Mixed Smash 1
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(12))
+            .circuit(12)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.GRAVITON),
                 Particle.getBaseParticle(Particle.ETA_MESON),
@@ -1775,13 +1787,13 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.OMEGA),
                 Particle.getBaseParticle(Particle.HIGGS_BOSON))
             .outputChances(50, 50, 50, 40, 30, 20, 20, 10)
-            .fluidInputs(Materials.Americium.getPlasma(2500))
+            .fluidInputs(Materials.Americium.getPlasma(2_500))
             .duration(16 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(cyclotronRecipes);
         // Mixed Smash 1
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(12))
+            .circuit(12)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.GRAVITON),
                 Particle.getBaseParticle(Particle.ETA_MESON),
@@ -1792,13 +1804,13 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.OMEGA),
                 Particle.getBaseParticle(Particle.HIGGS_BOSON))
             .outputChances(5000, 200, 200, 100, 80, 60, 40, 30)
-            .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 2500))
+            .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 2_500))
             .duration(1 * MINUTES + 40 * SECONDS)
             .eut(TierEU.RECIPE_UV)
             .addTo(cyclotronRecipes);
         // Graviton Smash
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(15))
+            .circuit(15)
             .itemOutputs(Particle.getBaseParticle(Particle.GRAVITON), Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(1000, 100)
             .fluidInputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
@@ -1815,7 +1827,8 @@ public class RecipesGregTech {
 
         // Quantum Anomaly
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24), Particle.getBaseParticle(Particle.UNKNOWN))
+            .itemInputs(Particle.getBaseParticle(Particle.UNKNOWN))
+            .circuit(24)
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
             .outputChances(100)
             .fluidInputs(aPlasma)
@@ -1835,15 +1848,15 @@ public class RecipesGregTech {
                 .contains("hydrogen")) {
                 continue;
             }
-            FluidStack aPlasma2 = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 2);
-            Materials aTestMat = MaterialUtils.getMaterial(y);
-            FluidStack aPlasma3 = aTestMat != null ? aTestMat.getPlasma(2) : aPlasma2;
+            FluidStack plasmaFromName = FluidUtils.getFluidStack("plasma." + y.toLowerCase(), 1_000);
+
+            Materials particleMaterial = MaterialUtils.getMaterial(y);
+            FluidStack recipePlasma = particleMaterial != null ? particleMaterial.getPlasma(1_000) : plasmaFromName;
 
             // Ionize Plasma
-            if ((aPlasma2 != null && !aPlasma2.isFluidEqual(aPlasma_NULL))
-                || (aPlasma3 != null && !aPlasma3.isFluidEqual(aPlasma_NULL))) {
+            if (recipePlasma != null && !recipePlasma.isFluidEqual(aPlasma_NULL)) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(1 + (tenCountA - 1)))
+                    .circuit(1 + (tenCountA - 1))
                     .itemOutputs(
                         Particle.getIon(y, 1),
                         Particle.getIon(y, 2),
@@ -1855,6 +1868,7 @@ public class RecipesGregTech {
                         Particle.getIon(y, 2),
                         Particle.getIon(y, -1))
                     .outputChances(275, 250, 225, 275, 250, 225, 275, 250, 275)
+                    .fluidInputs(recipePlasma)
                     .duration(20 * SECONDS * (IonCount++) * tenCountA)
                     .eut(TierEU.RECIPE_ZPM)
                     .addTo(cyclotronRecipes);
@@ -1873,7 +1887,7 @@ public class RecipesGregTech {
 
         // Generate Hydrogen Ion Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24))
+            .circuit(24)
             .itemOutputs(
                 Particle.getIon("Hydrogen", 1),
                 Particle.getIon("Hydrogen", 2),
@@ -1885,13 +1899,14 @@ public class RecipesGregTech {
                 Particle.getIon("Hydrogen", -2),
                 Particle.getIon("Hydrogen", -3))
             .outputChances(500, 500, 500, 500, 500, 500, 500, 500, 500)
-            .fluidInputs(FluidUtils.getWildcardFluidStack("hydrogen", 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);
         // Generate Hydrogen Plasma Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(21), Particle.getIon("Hydrogen", 0))
+            .itemInputs(Particle.getIon("Hydrogen", 0))
+            .circuit(21)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.NEUTRON),
@@ -1900,14 +1915,15 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.UNKNOWN),
                 Particle.getBaseParticle(Particle.UNKNOWN))
             .outputChances(1250, 1250, 1250, 750, 750, 750)
-            .fluidInputs(FluidUtils.getFluidStack("hydrogen", 1000))
+            .fluidInputs(Materials.Hydrogen.getGas(1_000))
             .fluidOutputs(FluidUtils.getFluidStack("plasma.hydrogen", 100))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);
         // Generate Protons Easily
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(20), Particle.getIon("Hydrogen", 0))
+            .itemInputs(Particle.getIon("Hydrogen", 0))
+            .circuit(20)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.PROTON),
@@ -1919,12 +1935,13 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.PROTON))
             .outputChances(750, 750, 750, 750, 750, 750, 750, 750, 750)
-            .fluidInputs(FluidUtils.getWildcardFluidStack("hydrogen", 100))
+            .fluidInputs(Materials.Hydrogen.getGas(100))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(22), Particle.getBaseParticle(Particle.UNKNOWN))
+            .itemInputs(Particle.getBaseParticle(Particle.UNKNOWN))
+            .circuit(22)
             .itemOutputs(
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.PROTON),
@@ -1936,7 +1953,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.PROTON),
                 Particle.getBaseParticle(Particle.PROTON))
             .outputChances(375, 375, 375, 375, 375, 375, 375, 375, 375)
-            .fluidInputs(FluidUtils.getWildcardFluidStack("hydrogen", 100))
+            .fluidInputs(Materials.Hydrogen.getGas(100))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(cyclotronRecipes);
@@ -1954,7 +1971,7 @@ public class RecipesGregTech {
                 Particle.getBaseParticle(Particle.UNKNOWN))
             .itemOutputs(MaterialsOres.DEEP_EARTH_REACTOR_FUEL_DEPOSIT.getDust(1))
             .outputChances(2500)
-            .fluidInputs(FluidUtils.getFluidStack(FluidUtils.getWildcardFluidStack("ender", 1000), 1000))
+            .fluidInputs(new FluidStack(TFFluids.fluidEnder, 1_000))
             .duration(15 * MINUTES)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(cyclotronRecipes);
@@ -1978,10 +1995,10 @@ public class RecipesGregTech {
         for (int i = 0; i < 10; i++) {
             ItemStack tank = tankList.get(i)
                 .get(1);
-            ItemStack handPump = ItemUtils.simpleMetaStack(ModItems.toolGregtechPump, 1004, 1);
+            ItemStack handPump = GregtechItemList.ExpandableHandPump.get(1);
             ItemStack pumpWithNBT = handPump.copy();
             NBTTagCompound nbt = new NBTTagCompound();
-            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) Math.pow(2, i);
+            int capacity = i == 9 ? Integer.MAX_VALUE : 4_000_000 * (int) GTUtility.powInt(2, i);
             nbt.setInteger("mMeta", 4);
             nbt.setBoolean("mInit", true);
             nbt.setString("mFluid", "@@@@@");

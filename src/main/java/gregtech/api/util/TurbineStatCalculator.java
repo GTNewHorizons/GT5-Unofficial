@@ -36,25 +36,25 @@ public class TurbineStatCalculator {
     }
 
     // Efficiency in percentages
-    public float getEfficiency() {
+    public float getBaseEfficiency() {
         return 0.5F + (0.5F + turbine.getToolCombatDamage(item)) * 0.1F;
     }
 
     public float getSteamEfficiency() {
-        return getEfficiency();
+        return getBaseEfficiency();
     }
 
     public float getGasEfficiency() {
-        return getEfficiency();
+        return getBaseEfficiency();
     }
 
     public float getPlasmaEfficiency() {
-        return getEfficiency();
+        return getBaseEfficiency();
     }
 
     public float getLooseEfficiency() {
         // 0.85x - 0.3, where x is the base efficiency
-        return (float) (-0.2f + Math.round(getEfficiency() * 85.0f) * 0.01);
+        return (float) (-0.2f + Math.round(getBaseEfficiency() * 85.0f) * 0.01);
     }
 
     public float getLooseSteamEfficiency() {
@@ -92,17 +92,17 @@ public class TurbineStatCalculator {
 
     public float getOptimalLooseSteamFlow() {
         // 3 * 1.1^((Efficiency - 0.8) * 20)
-        return 3.0f * getOptimalSteamFlow() * (float) Math.pow(1.1f, ((getEfficiency() - 0.8f)) * 20f);
+        return 3.0f * getOptimalSteamFlow() * (float) Math.pow(1.1f, ((getBaseEfficiency() - 0.8f)) * 20f);
     }
 
     public float getOptimalLooseGasFlow() {
         // 2 * 1.05^((Efficiency - 0.8) * 20)
-        return 2.0f * getOptimalGasFlow() * (float) Math.pow(1.05f, ((getEfficiency() - 0.8f)) * 20f);
+        return 2.0f * getOptimalGasFlow() * (float) Math.pow(1.05f, ((getBaseEfficiency() - 0.8f)) * 20f);
     }
 
     public float getOptimalLoosePlasmaFlow() {
         // 1 * 1.05^((Efficiency - 0.8) * 20)
-        return 2.0f * getOptimalPlasmaFlow() * (float) Math.pow(1.03f, ((getEfficiency() - 0.8f)) * 20f);
+        return 2.0f * getOptimalPlasmaFlow() * (float) Math.pow(1.03f, ((getBaseEfficiency() - 0.8f)) * 20f);
     }
 
     // Base EU/t from optimal flow

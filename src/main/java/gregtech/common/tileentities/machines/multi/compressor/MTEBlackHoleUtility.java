@@ -48,11 +48,6 @@ public class MTEBlackHoleUtility extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }

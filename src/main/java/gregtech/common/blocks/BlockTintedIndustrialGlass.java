@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -12,21 +11,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 public class BlockTintedIndustrialGlass extends BlockCasingsAbstract {
 
     public BlockTintedIndustrialGlass() {
-        super(ItemGlass1.class, "gt.blocktintedglass", Material.glass, 4);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Tinted Industrial Glass (White)");
-        GTLanguageManager
-            .addStringLocalization(getUnlocalizedName() + ".1.name", "Tinted Industrial Glass (Light Gray)");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Tinted Industrial Glass (Gray)");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Tinted Industrial Glass (Black)");
-        ItemList.GlassTintedIndustrialWhite.set(new ItemStack(this, 1, 0));
-        ItemList.GlassTintedIndustrialLightGray.set(new ItemStack(this, 1, 1));
-        ItemList.GlassTintedIndustrialGray.set(new ItemStack(this, 1, 2));
-        ItemList.GlassTintedIndustrialBlack.set(new ItemStack(this, 1, 3));
+        super(ItemCasings.class, "gt.blocktintedglass", Material.glass, 4);
+
+        register(0, ItemList.GlassTintedIndustrialWhite, "Tinted Industrial Glass (White)");
+        register(1, ItemList.GlassTintedIndustrialLightGray, "Tinted Industrial Glass (Light Gray)");
+        register(2, ItemList.GlassTintedIndustrialGray, "Tinted Industrial Glass (Gray)");
+        register(3, ItemList.GlassTintedIndustrialBlack, "Tinted Industrial Glass (Black)");
 
         // Register tinted industrial glass as EV-Tier glass
         OreDictionary.registerOre("blockGlassEV", this);

@@ -2,24 +2,40 @@ package gregtech.api.enums;
 
 import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_AQUA;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RESET;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
+import static gregtech.api.util.CustomGlyphs.AIR;
+import static gregtech.api.util.CustomGlyphs.CHAOS;
+import static gregtech.api.util.CustomGlyphs.EARTH;
+import static gregtech.api.util.CustomGlyphs.ORDER;
+import static gregtech.api.util.CustomGlyphs.STAR;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -28,9 +44,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.internal.IGTMod;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
+import gregtech.api.objects.XSTR;
+import gregtech.api.util.CustomGlyphs;
+import gregtech.api.util.GTChunkAssociatedData;
 
 /**
  * Made for static imports, this Class is just a Helper.
@@ -57,10 +75,12 @@ public class GTValues {
     /**
      * The first 32 Bits
      */
-    @SuppressWarnings("PointlessBitwiseExpression") // Nicer source layout this way
-    public static final int[] B = new int[] { 1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8,
-        1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20,
-        1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31 };
+    public static final int[] B;
+
+    static {
+        B = new int[32];
+        for (int i = 0; i < B.length; i++) B[i] = 1 << i;
+    }
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
@@ -78,12 +98,18 @@ public class GTValues {
      * Renamed from "FLUID_MATERIAL_UNIT" to just "L"
      * <p/>
      * Fluid per Material Unit (Prime Factors: 3 * 3 * 2 * 2 * 2 * 2)
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#INGOTS} instead.
      */
+    @Deprecated
     public static final long L = 144;
 
     /**
      * The Item WildCard Tag. Even shorter than the "-1" of the past
+     *
+     * @deprecated Use {@link gregtech.api.util.GTRecipeBuilder#WILDCARD} instead.
      */
+    @Deprecated
     public static final short W = OreDictionary.WILDCARD_VALUE;
 
     /**
@@ -171,17 +197,17 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.GRAY.toString(), // LV, 1
+        EnumChatFormatting.DARK_GREEN.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-        EnumChatFormatting.GREEN.toString(), // IV, 5
+        EnumChatFormatting.BLUE.toString(), // IV, 5
         EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
         EnumChatFormatting.AQUA.toString(), // ZPM, 7
-        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
-        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+        EnumChatFormatting.DARK_GREEN.toString() + EnumChatFormatting.UNDERLINE, // UV, 8
+        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.UNDERLINE, // UHV, 9
+        EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.UNDERLINE, // UEV, 10
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UIV, 11
         EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
         EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
         EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
@@ -259,10 +285,6 @@ public class GTValues {
         { 0, 1, 2, 3, 4, 5, 6 } };
 
     /**
-     * The Mod Object itself. That is the GTMod-Object. It's needed to open GUI's and similar.
-     */
-    public static IGTMod GT;
-    /**
      * Use this Object to add Recipes. (Recipe Adder)
      */
     public static IGTRecipeAdder RA;
@@ -270,10 +292,6 @@ public class GTValues {
      * For Internal Usage (Network)
      */
     public static IGT_NetworkHandler NW;
-    /**
-     * Control percentage of filled 3x3 chunks. Lower number means less oreveins spawn
-     */
-    public static int oreveinPercentage;
     /**
      * Control number of attempts to find a valid orevein. Generally this maximum limit isn't hit, selecting a vein is
      * cheap
@@ -311,6 +329,10 @@ public class GTValues {
      * Debug parameter for world generation. Tracks chunks added/removed from run queue.
      */
     public static boolean debugWorldGen = false;
+    /**
+     * Debug parameter for world generation. Measures amount of time taken to generate oreveins, stone, etc.
+     */
+    public static boolean profileWorldGen = false;
     /**
      * Debug parameter for orevein generation.
      */
@@ -437,13 +459,26 @@ public class GTValues {
     public static boolean worldTickHappened = false;
 
     public static final int[] emptyIntArray = new int[0];
+    public static final long[] emptyLongArray = new long[0];
 
     public static final IFluidTank[] emptyFluidTank = new IFluidTank[0];
     public static final GTFluidTank[] emptyFluidTankGT = new GTFluidTank[0];
     public static final FluidTankInfo[] emptyFluidTankInfo = new FluidTankInfo[0];
-    public static final FluidStack[] emptyFluidStack = new FluidStack[0];
+    public static final FluidStack[] emptyFluidStackArray = new FluidStack[0];
     public static final ItemStack[] emptyItemStackArray = new ItemStack[0];
+    public static final String[] emptyStringArray = new String[0];
+    public static final Object[] emptyObjectArray = new Object[0];
     public static final IIconContainer[] emptyIconContainerArray = new IIconContainer[3];
+    @SuppressWarnings("rawtypes")
+    public static final Iterator[] EMPTY_ITERATOR_ARRAY = new Iterator[0];
+
+    /**
+     * Detects if we're in a deobfuscated environment, meaning that additional sanity checks should be ran. If the
+     * blackboard is null, we're in a unit test that hasn't set its env up properly and also want those checks to be
+     * ran.
+     */
+    public static boolean DEVENV = Launch.blackboard == null ? true
+        : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Pretty formatting for author names.
@@ -500,12 +535,26 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "0";
 
+    public static final String AuthorPxx500 = "Author: " + EnumChatFormatting.DARK_BLUE
+        + EnumChatFormatting.BOLD
+        + "Pxx500";
+
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
         + "Blue"
         + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "Weabo";
+
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
 
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
@@ -538,18 +587,6 @@ public class GTValues {
     public static final String AuthorQuerns = "Author: " + EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = "Author: " + EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = "Author: " + EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
-    public static final String AuthorFourIsTheNumber = "Author: " + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "Four"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Is"
-        + EnumChatFormatting.LIGHT_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "The"
-        + EnumChatFormatting.WHITE
-        + EnumChatFormatting.ITALIC
-        + "Number";
     public static final String Ollie = EnumChatFormatting.GREEN.toString() + EnumChatFormatting.BOLD + "Ollie";
     public static final String authorBaps = "Author: " + EnumChatFormatting.GOLD
         + "Ba"
@@ -585,30 +622,110 @@ public class GTValues {
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
+    public static final Supplier<String> AuthorNoc = chain(
+        animatedText(
+            "Noc",
+            0,
+            500,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.GOLD + BOLD,
+            EnumChatFormatting.DARK_GREEN + BOLD,
+            EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
+
+    public static final String AuthorJulia =
+        // spotless:off
+        EnumChatFormatting.BOLD.toString() +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES +
+        EnumChatFormatting.AQUA            + "J"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "u"                   +
+        EnumChatFormatting.WHITE           + "l"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "i"                   +
+        EnumChatFormatting.AQUA            + "a"                   +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES ;
+        // spotless:on
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
-    // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
-    public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
-        return (5F + (7.5F + material.mToolQuality)) / 10.0;
-    }
+    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
+        + "Pure"
+        + EnumChatFormatting.AQUA
+        + "B"
+        + EnumChatFormatting.DARK_AQUA
+        + "l"
+        + EnumChatFormatting.BLUE
+        + "u"
+        + EnumChatFormatting.DARK_BLUE
+        + "ez";
 
-    // Called once in GT_Client on world load, has to be called late so that Materials is populated.
-    public static void calculateMaxPlasmaTurbineEfficiency() {
+    // a list specifically for random selection of formatting codes.
+    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
+        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
-        ArrayList<Double> effArray = new ArrayList<>();
+    public static final Supplier<String> fancyAuthorChrom = chain(
+        createChromLetter("C", ORDER),
+        createChromLetter("h", EARTH),
+        createChromLetter("r", CHAOS),
+        createChromLetter("o", AIR),
+        createChromLetter("m", STAR));
 
-        // Iteration seems to work but need to check turbine as all items appear null.
-        for (Materials material : Materials.values()) {
-            effArray.add(getMaxPlasmaTurbineEfficiencyFromMaterial(material));
+    public static final Supplier<String> AuthorThree = chain(
+        animatedText(
+            "Three",
+            0,
+            1000,
+            EnumChatFormatting.BLUE + BOLD,
+            EnumChatFormatting.RED + BOLD,
+            EnumChatFormatting.YELLOW + BOLD));
+
+    private static Supplier<String> createChromLetter(String letter, String... injectedUnicode) {
+
+        XSTR random = XSTR.XSTR_INSTANCE;
+        // calculates the amount of cycles
+        int length = 4 + injectedUnicode.length * 2;
+        String[] colorList = new String[length];
+
+        int currentUnicodeIndex = 0;
+        for (int i = 0; i < colorList.length; i++) {
+            StringBuilder builder = new StringBuilder();
+            int prependedFormattingCodes = 1 + random.nextInt(2);
+            for (int codeStep = 0; codeStep < prependedFormattingCodes; codeStep++) {
+                // adds fun formatting codes
+                int randIndex = random.nextInt(formattingCodes.length);
+                builder.append(formattingCodes[randIndex]);
+            }
+            // checks if its the correct positon to insert a special unicode character, injects if so, otherwise adds
+            // the letter
+            if (currentUnicodeIndex < injectedUnicode.length && ((i + 1) % injectedUnicode.length == 0)) {
+                builder.append(injectedUnicode[currentUnicodeIndex]);
+                currentUnicodeIndex += 1;
+            } else {
+                builder.append(letter);
+            }
+            colorList[i] = builder.toString();
         }
-
-        maxPlasmaTurbineEfficiency = Collections.max(effArray);
+        return chromAnimatedText(" ", 1, 1000, colorList);
     }
 
-    private static double maxPlasmaTurbineEfficiency;
+    // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
+    private static Supplier<String> chromAnimatedText(String text, int posstep, int delay, String... formattingArray) {
+        if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
 
-    public static double getMaxPlasmaTurbineEfficiency() {
-        return maxPlasmaTurbineEfficiency;
+        final int finalDelay = Math.max(delay, 1);
+        final int finalPosstep = Math.max(posstep, 0);
+
+        return () -> {
+            StringBuilder sb = new StringBuilder(text.length() * 3);
+            int offset = (int) ((System.currentTimeMillis() / finalDelay) % formattingArray.length);
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
+                int indexColorArray = (i * finalPosstep + formattingArray.length - offset) % formattingArray.length;
+                sb.append(formattingArray[indexColorArray]);
+                sb.append(c);
+            }
+            return sb.toString()
+                .replaceAll("\\s", "");
+        };
     }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
@@ -623,5 +740,23 @@ public class GTValues {
             }
         }
         return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
+    }
+
+    public static String getLocalizedLongVoltageName(int voltage) {
+        if (voltage >= VOLTAGE_NAMES.length) {
+            return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+        }
+        String unlocalizedName = "GT5U.voltage_names." + VOLTAGE_NAMES[voltage].toLowerCase()
+            .replace(",", "")
+            .replace(' ', '_');
+        if (StatCollector.canTranslate(unlocalizedName)) {
+            return StatCollector.translateToLocal(unlocalizedName);
+        }
+        return StatCollector.translateToLocal("GT5U.voltage_names.error_voltage_report_this");
+    }
+
+    public static <T> Iterator<T>[] emptyIteratorArray() {
+        // noinspection unchecked
+        return EMPTY_ITERATOR_ARRAY;
     }
 }

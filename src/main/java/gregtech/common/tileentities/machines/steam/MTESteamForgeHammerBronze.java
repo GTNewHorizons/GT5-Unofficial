@@ -32,7 +32,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineBronze;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 
 public class MTESteamForgeHammerBronze extends MTEBasicMachineBronze {
@@ -55,17 +54,10 @@ public class MTESteamForgeHammerBronze extends MTEBasicMachineBronze {
         return RecipeMaps.hammerRecipes;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.RANDOM_ANVIL_USE, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FORGE_HAMMER;
     }
 
     @Override

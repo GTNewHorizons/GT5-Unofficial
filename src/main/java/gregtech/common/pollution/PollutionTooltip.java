@@ -1,5 +1,7 @@
 package gregtech.common.pollution;
 
+import static gregtech.api.enums.Mods.*;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -21,38 +23,88 @@ public class PollutionTooltip {
         if (event.itemStack == null) return;
 
         if (PollutionConfig.furnacesPollute) {
-            String furnacePollution = StatCollector
-                .translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, PollutionConfig.furnacePollutionAmount);
 
             // Furnace and Iron Furnace
-            if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace))
-                || GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem("IC2", "blockMachine", 1, 1))) {
-                event.toolTip.add(furnacePollution);
+            if (GTUtility.areStacksEqual(event.itemStack, new ItemStack(Blocks.furnace))) {
+                event.toolTip.add(
+                    StatCollector
+                        .translateToLocalFormatted(PRODUCES_POLLUTION_FORMAT, FurnacePollution.FURNACE.getPollution()));
+            }
+
+            if (GTUtility
+                .areStacksEqual(event.itemStack, GTModHandler.getModItem(IndustrialCraft2.ID, "blockMachine", 1, 1))) {
+                event.toolTip.add(
+                    StatCollector.translateToLocalFormatted(
+                        PRODUCES_POLLUTION_FORMAT,
+                        FurnacePollution.IRON_FURNACE.getPollution()));
             }
 
             // Alchemical Furnace
-            if (Mods.Thaumcraft.isModLoaded()) {
-                if (GTUtility
-                    .areStacksEqual(event.itemStack, GTModHandler.getModItem("Thaumcraft", "blockStoneDevice", 1, 0))) {
-                    event.toolTip.add(furnacePollution);
+            if (Thaumcraft.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.ALCHEMICAL_FURNACE.getPollution()));
                 }
             }
 
             // Advanced Alchemical Furnace
-            if (Mods.ThaumicBases.isModLoaded()) {
+            if (ThaumicBases.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(ThaumicBases.ID, "advAlchFurnace", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.ADVANCED_ALCHEMICAL_FURNACE.getPollution()));
+                }
+            }
+
+            if (EtFuturumRequiem.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0))
+                    || GTUtility.areStacksEqual(
+                        event.itemStack,
+                        GTModHandler.getModItem(EtFuturumRequiem.ID, "smoker", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.BLAST_FURNACE.getPollution()));
+                }
+            }
+
+            if (Natura.isModLoaded()) {
                 if (GTUtility
-                    .areStacksEqual(event.itemStack, GTModHandler.getModItem("thaumicbases", "advAlchFurnace", 1, 0))) {
-                    event.toolTip.add(furnacePollution);
+                    .areStacksEqual(event.itemStack, GTModHandler.getModItem(Natura.ID, "NetherFurnace", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.NETHER_FURNACE.getPollution()));
+                }
+            }
+
+            if (TinkerConstruct.isModLoaded()) {
+                if (GTUtility.areStacksEqual(
+                    event.itemStack,
+                    GTModHandler.getModItem(TinkerConstruct.ID, "FurnaceSlab", 1, 0))) {
+                    event.toolTip.add(
+                        StatCollector.translateToLocalFormatted(
+                            PRODUCES_POLLUTION_FORMAT,
+                            FurnacePollution.SLAB_FURNACE.getPollution()));
                 }
             }
         }
 
-        if (Mods.Railcraft.isModLoaded() && PollutionConfig.railcraftPollutes) {
+        if (Railcraft.isModLoaded() && PollutionConfig.railcraftPollutes) {
 
             // Solid and Liquid Boiler Firebox
-            if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.beta", 1, 5))
+            if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "machine.beta", 1, 5))
                 || GTUtility
-                    .areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.beta", 1, 6))) {
+                    .areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "machine.beta", 1, 6))) {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.tooltip.pollution.produces.firebox",
@@ -60,7 +112,7 @@ public class PollutionTooltip {
             }
 
             // Tunnel Bore
-            if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "cart.bore", 1, 0))) {
+            if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "cart.bore", 1, 0))) {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         PRODUCES_POLLUTION_FORMAT,
@@ -69,7 +121,7 @@ public class PollutionTooltip {
 
             // Coke Oven Brick
             if (GTUtility
-                .areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.alpha", 1, 7))) {
+                .areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "machine.alpha", 1, 7))) {
                 event.toolTip.add(
                     StatCollector
                         .translateToLocalFormatted(MULTI_POLLUTION_FORMAT, PollutionConfig.cokeOvenPollutionAmount));
@@ -77,7 +129,7 @@ public class PollutionTooltip {
 
             // Advanced Coke Oven Brick
             if (GTUtility
-                .areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.alpha", 1, 12))) {
+                .areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "machine.alpha", 1, 12))) {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         MULTI_POLLUTION_FORMAT,
@@ -85,7 +137,8 @@ public class PollutionTooltip {
             }
 
             // Hobbyist's Steam Engine
-            if (GTUtility.areStacksEqual(event.itemStack, GTModHandler.getModItem("Railcraft", "machine.beta", 1, 7))) {
+            if (GTUtility
+                .areStacksEqual(event.itemStack, GTModHandler.getModItem(Railcraft.ID, "machine.beta", 1, 7))) {
                 event.toolTip.add(
                     StatCollector.translateToLocalFormatted(
                         PRODUCES_POLLUTION_FORMAT,

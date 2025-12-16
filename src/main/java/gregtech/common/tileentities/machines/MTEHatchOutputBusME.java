@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -28,33 +30,48 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import appeng.api.AEApi;
+import appeng.api.config.Upgrades;
 import appeng.api.implementations.IPowerChannelState;
+import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.items.contents.CellConfig;
 import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.me.storage.CellInventory;
+import appeng.me.storage.CellInventoryHandler;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputBusType;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import it.unimi.dsi.fastutil.objects.Object2LongMaps;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -62,6 +79,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     protected static final long DEFAULT_CAPACITY = 1_600;
     protected long baseCapacity = DEFAULT_CAPACITY;
+    public static final String COPIED_DATA_IDENTIFIER = "outputBusME";
 
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
@@ -72,6 +90,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     long lastInputTick = 0;
     long tickCounter = 0;
     boolean additionalConnection = false;
+    EntityPlayer lastClickedPlayer = null;
+    private final HashSet<GTUtility.ItemId> lockedItems = new HashSet<>();
+
+    boolean hadCell = false;
+    boolean blackList = false;
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -81,7 +104,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             3,
             new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
                 "Change cache size by inserting a storage cell",
-                "Change ME connection behavior by right-clicking with wire cutter" },
+                "Change ME connection behavior by right-clicking with wire cutter",
+                "Partition the inserted Storage Cell to filter accepted outputs" },
             1);
     }
 
@@ -111,9 +135,36 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public boolean storeAll(ItemStack aStack) {
-        aStack.stackSize = store(aStack);
-        return aStack.stackSize == 0;
+    public boolean storePartial(ItemStack stack, boolean simulate) {
+        if (!lockedItems.isEmpty()) {
+            boolean isOk = false;
+
+            for (GTUtility.ItemId lockedItem : lockedItems) {
+                if (blackList ^ lockedItem.matches(stack)) {
+                    isOk = true;
+
+                    break;
+                }
+            }
+
+            if (!isOk) {
+                return false;
+            }
+        }
+
+        if (canAcceptItem()) {
+            if (!simulate) {
+                itemCache.add(
+                    AEApi.instance()
+                        .storage()
+                        .createItemStack(stack));
+                lastInputTick = tickCounter;
+            }
+            stack.stackSize = 0;
+            return true;
+        }
+
+        return false;
     }
 
     protected long getCachedAmount() {
@@ -126,36 +177,122 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     protected long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
-            return ((ItemBasicStorageCell) upgradeItemStack.getItem()).getBytesLong(upgradeItemStack) * 8;
+
+        if (upgradeItemStack == null) return baseCapacity;
+        if (!(upgradeItemStack.getItem() instanceof ItemBasicStorageCell storageCell)) return baseCapacity;
+
+        final IMEInventoryHandler<?> inventory = AEApi.instance()
+            .registries()
+            .cell()
+            .getCellInventory(upgradeItemStack, null, StorageChannel.ITEMS);
+
+        long capacity = storageCell.getBytesLong(upgradeItemStack) * 8;
+
+        if (inventory instanceof CellInventoryHandler<?>handler) {
+            final CellInventory<?> cellInventory = (CellInventory<?>) handler.getCellInv();
+
+            long restriction = (long) cellInventory.getRestriction()
+                .get(0);
+
+            if (restriction > 0) {
+                capacity = Math.min(capacity, restriction);
+            }
         }
-        return baseCapacity;
+
+        return capacity;
     }
 
     /**
      * Check if the internal cache can still fit more items in it
      */
     public boolean canAcceptItem() {
+        // Always allow insertion on the same tick so we can output the entire recipe
+        if (lastInputTick == tickCounter) return true;
+
         return getCachedAmount() < getCacheCapacity();
     }
 
-    /**
-     * Attempt to store items in connected ME network. Returns how many items did not fit (if the network was down e.g.)
-     *
-     * @param stack input stack
-     * @return amount of items left over
-     */
-    public int store(final ItemStack stack) {
-        // Always allow insertion on the same tick so we can output the entire recipe
-        if (canAcceptItem() || (lastInputTick == tickCounter)) {
-            itemCache.add(
-                AEApi.instance()
-                    .storage()
-                    .createItemStack(stack));
-            lastInputTick = tickCounter;
-            return 0;
+    @Override
+    public boolean isFiltered() {
+        return !lockedItems.isEmpty();
+    }
+
+    @Override
+    public boolean isFilteredToItem(GTUtility.ItemId id) {
+        return blackList ^ lockedItems.contains(id);
+    }
+
+    @Override
+    public OutputBusType getBusType() {
+        return lockedItems.isEmpty() ? OutputBusType.MEUnfiltered : OutputBusType.MEFiltered;
+    }
+
+    @Override
+    public IOutputBusTransaction createTransaction() {
+        return new MEOutputBusTransaction();
+    }
+
+    class MEOutputBusTransaction implements IOutputBusTransaction {
+
+        private final Object2LongOpenHashMap<GTUtility.ItemId> pendingItems = new Object2LongOpenHashMap<>();
+        private final long initialStored, capacity, tick;
+        private long currentStored;
+        private boolean active = true;
+
+        public MEOutputBusTransaction() {
+            initialStored = getCachedAmount();
+            capacity = getCacheCapacity();
+            // We don't want to mutate lastInputTick, so we'll keep a simulated version of it.
+            // This transaction assumes that something will be ejected into this bus, so we can just use the current
+            // tick if this bus still has space.
+            tick = initialStored >= capacity ? lastInputTick : tickCounter;
         }
-        return stack.stackSize;
+
+        @Override
+        public IOutputBus getBus() {
+            return MTEHatchOutputBusME.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            // There's really no reason for the tick counter, it's just more accurate to the real bus's behaviour.
+            // Transactions should never be kept around long enough for it to matter, but in case someone does something
+            // stupid it's here to make sure nothing breaks.
+            // This condition should always return true unless this transaction is kept around for more than one tick.
+            return initialStored + currentStored < capacity || tickCounter == tick;
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            if (!hasAvailableSpace()) return false;
+            if (!lockedItems.isEmpty() && !(blackList ^ lockedItems.contains(id))) return false;
+
+            pendingItems.addTo(id, stack.stackSize);
+            currentStored += stack.stackSize;
+            stack.stackSize = 0;
+
+            return true;
+        }
+
+        @Override
+        public void completeItem(GTUtility.ItemId id) {
+            // Do nothing
+        }
+
+        @Override
+        public void commit() {
+            // spotless:off
+            Object2LongMaps.fastForEach(pendingItems, e -> {
+                itemCache.add(AEItemStack.create(e.getKey().getItemStack()).setStackSize(e.getLongValue()));
+            });
+            // spotless:on
+
+            MTEHatchOutputBusME.this.markDirty();
+
+            active = false;
+        }
     }
 
     protected BaseActionSource getRequest() {
@@ -183,19 +320,23 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        this.lastClickedPlayer = aPlayer;
+
         openGui(aPlayer);
+
         return true;
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -234,10 +375,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     protected void flushCachedStack() {
+        if (!isActive() || itemCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
-        if (proxy == null) {
-            return;
-        }
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
                 .getItemInventory();
@@ -246,13 +385,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
                 if (rest != null && rest.getStackSize() > 0) {
                     s.setStackSize(rest.getStackSize());
-                    break;
+                    continue;
                 }
                 s.setStackSize(0);
             }
-        } catch (final GridAccessException ignored) {
-
-        }
+        } catch (final GridAccessException ignored) {}
         lastOutputTick = tickCounter;
     }
 
@@ -267,7 +404,20 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    public boolean pushOutputInventory() {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        checkItemLock();
+
         if (getBaseMetaTileEntity().isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
@@ -277,8 +427,109 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
-    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
 
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
+        }
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    @Override
+    public boolean isLocked() {
+        return !this.lockedItems.isEmpty();
+    }
+
+    private void checkItemLock() {
+        ItemStack upgradeItemStack = mInventory[0];
+
+        if ((hadCell && upgradeItemStack != null) || (!hadCell && upgradeItemStack == null)) {
+            return;
+        }
+
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
+            hadCell = true;
+
+            if (this.lockedItems.isEmpty()) {
+                IInventory upgrades = ((ItemBasicStorageCell) upgradeItemStack.getItem())
+                    .getUpgradesInventory(upgradeItemStack);
+                for (int i = 0; i < upgrades.getSizeInventory(); i++) {
+                    ItemStack is = upgrades.getStackInSlot(i);
+                    if (is != null) {
+                        Upgrades u = ((IUpgradeModule) is.getItem()).getType(is);
+                        if (u == Upgrades.INVERTER) {
+                            blackList = true;
+                            break;
+                        }
+                    }
+                }
+
+                CellConfig cfg = (CellConfig) ((ItemBasicStorageCell) upgradeItemStack.getItem())
+                    .getConfigAEInventory(upgradeItemStack);
+
+                if (!cfg.isEmpty()) {
+                    StringBuilder builder = new StringBuilder();
+
+                    boolean hadFilters = false;
+                    boolean isFirst = true;
+
+                    for (int i = 0; i < cfg.getSizeInventory(); i++) {
+                        IAEStack<?> stack = cfg.getAEStackInSlot(i);
+
+                        if (!(stack instanceof IAEItemStack ais)) continue;
+
+                        hadFilters = true;
+
+                        lockedItems.add(GTUtility.ItemId.create(ais.getItemStack()));
+
+                        if (isFirst) {
+                            builder.append(stack.getDisplayName());
+
+                            isFirst = false;
+                        } else {
+                            builder.append(", ")
+                                .append(stack.getDisplayName());
+                        }
+                    }
+
+                    if (hadFilters) {
+                        if (lastClickedPlayer != null) {
+                            GTUtility.sendChatToPlayer(
+                                lastClickedPlayer,
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.item.filter.enable", builder));
+                        }
+
+                        markDirty();
+                    }
+                }
+            }
+        } else {
+            hadCell = false;
+
+            if (!this.lockedItems.isEmpty()) {
+                this.lockedItems.clear();
+
+                markDirty();
+
+                GTUtility.sendChatToPlayer(
+                    lastClickedPlayer,
+                    StatCollector.translateToLocal("GT5U.hatch.item.filter.disable"));
+            }
+        }
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
             tooltip.add(
                 "Current cache capacity: " + EnumChatFormatting.YELLOW
@@ -297,6 +548,17 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
+        NBTTagList lockedItemsTag = new NBTTagList();
+
+        for (GTUtility.ItemId stack : this.lockedItems) {
+            NBTTagCompound stackTag = new NBTTagCompound();
+            stack.getItemStack()
+                .writeToNBT(stackTag);
+            lockedItemsTag.appendTag(stackTag);
+        }
+
+        aNBT.setTag("lockedItems", lockedItemsTag);
+
         NBTTagList items = new NBTTagList();
         for (IAEItemStack s : itemCache) {
             if (s.getStackSize() == 0) continue;
@@ -308,12 +570,22 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cachedItems", items);
         aNBT.setLong("baseCapacity", baseCapacity);
+        aNBT.setBoolean("hadCell", hadCell);
         getProxy().writeToNBT(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+
+        NBTBase lockedItemsTag = aNBT.getTag("lockedItems");
+
+        if (lockedItemsTag instanceof NBTTagList lockedItemsList) {
+            for (int i = 0; i < lockedItemsList.tagCount(); i++) {
+                NBTTagCompound stackTag = lockedItemsList.getCompoundTagAt(i);
+                this.lockedItems.add(GTUtility.ItemId.create(GTUtility.loadItem(stackTag)));
+            }
+        }
 
         NBTBase t = aNBT.getTag("cachedStack"); // legacy
         if (t instanceof NBTTagCompound) itemCache.add(
@@ -347,7 +619,54 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         }
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
+        if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
+        hadCell = aNBT.getBoolean("hadCell");
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
+        tag.setBoolean("additionalConnection", additionalConnection);
+        tag.setByte("color", this.getColor());
+        return tag;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        additionalConnection = nbt.getBoolean("additionalConnection");
+        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        return true;
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = super.getDescriptionData();
+
+        // Sync the hatch capacity to the client so that MM can show its exchanging preview properly
+        // This is only called when the hatch is placed since it will never change over its lifetime
+
+        tag.setLong("baseCapacity", baseCapacity);
+
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        baseCapacity = data.getLong("baseCapacity");
     }
 
     @Override
@@ -397,11 +716,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 EnumChatFormatting.GOLD,
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
+    }
 
-        if (!GuiScreen.isShiftKeyDown()) {
-            ss.add("Hold Shift for more info");
-            return;
-        }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasWailaAdvancedBody(ItemStack itemStack, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return true;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaAdvancedBody(itemStack, ss, accessor, config);
+
+        NBTTagCompound tag = accessor.getNBTData();
 
         NBTTagList stacks = tag.getTagList("stacks", 10);
         int stackCount = tag.getInteger("stackCount");
@@ -440,16 +769,21 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public String[] getInfoData() {
         List<String> ss = new ArrayList<>();
         ss.add(
-            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            (getProxy() != null && getProxy().isActive())
+                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
+                : StatCollector.translateToLocalFormatted(
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
-            "Item cache capacity: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(getCacheCapacity())
-                + EnumChatFormatting.RESET);
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.hatch.output_bus_me.cache_capacity",
+                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity()) + EnumChatFormatting.RESET));
         if (itemCache.isEmpty()) {
-            ss.add("The bus has no cached items");
+            ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_bus_me.empty"));
         } else {
-            ss.add(String.format("The bus contains %d cached stacks: ", itemCache.size()));
+            ss.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.infodata.hatch.output_bus_me.contains", itemCache.size()));
             int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(

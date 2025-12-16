@@ -25,7 +25,7 @@ public class GTParallelHelperTest {
     @BeforeAll
     static void setup() {
         machine = new MockIVoidableMachine();
-        ItemStack rubberDust = Materials.RawRubber.getDust(1);
+        ItemStack rubberDust = Materials.RubberRaw.getDust(1);
         ItemStack sulfurDust = Materials.Sulfur.getDust(1);
         rubberRecipe = new GTRecipe(
             new ItemStack[] { rubberDust.copy(), sulfurDust.copy() },
@@ -33,7 +33,7 @@ public class GTParallelHelperTest {
             null,
             new int[] { 10000, 6667 },
             null,
-            new FluidStack[] { Materials.Rubber.getMolten(1000) },
+            new FluidStack[] { Materials.Rubber.getMolten(1_000) },
             1,
             1,
             0);
@@ -104,19 +104,4 @@ public class GTParallelHelperTest {
         assertTrue(rubberDustTinyAmount >= 60 && rubberDustTinyAmount <= 70);
     }
 
-    @Test
-    void outputMultiplier() {
-        ParallelHelper helper = new ParallelHelper().setRecipe(rubberRecipe)
-            .setMachine(machine, false, false)
-            .setItemInputs(inputItems)
-            .setMaxParallel(1)
-            .setAvailableEUt(1)
-            .setConsumption(false)
-            .setOutputCalculation(true)
-            .setOutputMultiplier(2)
-            .build();
-
-        assertEquals(2000, helper.getFluidOutputs()[0].amount);
-        assertEquals(2, helper.getItemOutputs()[0].stackSize);
-    }
 }

@@ -14,6 +14,8 @@ import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 
 public class MTEBoilerSteel extends MTEBoilerBronze {
@@ -24,7 +26,7 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
             aName,
             aNameRegional,
             new String[] { "Faster than the Bronze Boiler", "Produces 300L of Steam per second",
-                "Causes " + GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond + " Pollution per second" });
+                "Causes " + GTMod.proxy.mPollutionHighPressureCoalBoilerPerSecond + " Pollution per second" });
     }
 
     public MTEBoilerSteel(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -69,7 +71,7 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
 
     @Override
     protected int getPollution() {
-        return GTMod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond;
+        return GTMod.proxy.mPollutionHighPressureCoalBoilerPerSecond;
     }
 
     @Override
@@ -100,5 +102,10 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
     @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.STEEL;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.STEEL;
     }
 }

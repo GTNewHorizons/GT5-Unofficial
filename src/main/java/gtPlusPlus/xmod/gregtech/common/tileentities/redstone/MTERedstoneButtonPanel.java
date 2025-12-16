@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -100,10 +101,8 @@ public class MTERedstoneButtonPanel extends MTERedstoneBase {
                     case 2:
                         switch (side) {
                             case DOWN, UP -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (aZ * 4))));
-                            case NORTH -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                            case SOUTH -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                            case WEST -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
-                            case EAST -> mRedstoneStrength = (byte) (mRedstoneStrength ^ (1 << ((byte) (4 - aY * 4))));
+                            case NORTH, SOUTH, WEST, EAST -> mRedstoneStrength = (byte) (mRedstoneStrength
+                                ^ (1 << ((byte) (4 - aY * 4))));
                         }
                         break;
                 }
@@ -134,7 +133,8 @@ public class MTERedstoneButtonPanel extends MTERedstoneBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) mType = (byte) ((mType + 1) % 3);
     }
 

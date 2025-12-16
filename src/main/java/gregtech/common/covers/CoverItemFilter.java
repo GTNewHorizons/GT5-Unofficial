@@ -1,50 +1,106 @@
 package gregtech.common.covers;
 
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.util.GTByteBuffer;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
-import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerSlotWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
+import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.cover.CoverItemFilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.mui1.cover.ItemFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
-public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilterData> {
+public class CoverItemFilter extends Cover {
 
     private final boolean mExport;
 
+    /**
+     * This variable is extremely confusing... mWhitelist == false means whitelist mode, true means blacklist mode
+     */
+    private boolean mWhitelist;
+    private ItemStackHandler filter = new LimitingItemStackHandler(1, 1);
+
     public CoverItemFilter(CoverContext context, boolean isExport, ITexture coverTexture) {
-        super(context, ItemFilterData.class, coverTexture);
+        super(context, coverTexture);
         this.mExport = isExport;
+        this.mWhitelist = false;
+    }
+
+    public boolean isWhitelist() {
+        return mWhitelist;
+    }
+
+    public CoverItemFilter setWhitelist(boolean whitelist) {
+        this.mWhitelist = whitelist;
+        return this;
+    }
+
+    public ItemStackHandler getFilter() {
+        return filter;
+    }
+
+    public CoverItemFilter setFilter(ItemStackHandler filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    public FilterType getFilterType() {
+        return mWhitelist ? FilterType.BLACKLIST : FilterType.WHITELIST;
+    }
+
+    public void setFilterType(FilterType filterType) {
+        mWhitelist = filterType == FilterType.BLACKLIST;
     }
 
     @Override
-    protected ItemFilterData initializeData() {
-        return new CoverItemFilter.ItemFilterData();
+    protected void readDataFromNbt(NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        mWhitelist = tag.getBoolean("mWhitelist");
+        if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND)) {
+            // Old format
+            filter = new ItemStackHandler(1);
+            filter.setStackInSlot(0, ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter")));
+        } else {
+            filter.deserializeNBT(tag.getCompoundTag("filter"));
+        }
+    }
+
+    @Override
+    public void readDataFromPacket(ByteArrayDataInput byteData) {
+        mWhitelist = byteData.readBoolean();
+        filter.deserializeNBT(GTByteBuffer.readCompoundTagFromGreggyByteBuf(byteData));
+    }
+
+    @Override
+    protected @NotNull NBTBase saveDataToNbt() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("mWhitelist", mWhitelist);
+        tag.setTag("filter", filter.serializeNBT());
+        return tag;
+    }
+
+    @Override
+    protected void writeDataToByteBuf(ByteBuf byteBuf) {
+        byteBuf.writeBoolean(mWhitelist);
+        ByteBufUtils.writeTag(byteBuf, filter.serializeNBT());
     }
 
     public boolean isRedstoneSensitive() {
@@ -52,56 +108,52 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     }
 
     @Override
-    public CoverItemFilter.ItemFilterData doCoverThings(byte aInputRedstone, long aTimer) {
+    public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable == null) {
-            return coverData;
+            return;
         }
-        final TileEntity tTileEntity = coverable.getTileEntityAtSide(coverSide);
-        final Object fromEntity = mExport ? coverable : tTileEntity;
-        final Object toEntity = !mExport ? coverable : tTileEntity;
-        final ForgeDirection fromSide = !mExport ? coverSide.getOpposite() : coverSide;
-        final ForgeDirection toSide = mExport ? coverSide.getOpposite() : coverSide;
 
-        final List<ItemStack> filter = Collections.singletonList(coverData.mFilter);
+        GTItemTransfer transfer = new GTItemTransfer();
 
-        moveMultipleItemStacks(
-            fromEntity,
-            toEntity,
-            fromSide,
-            toSide,
-            filter,
-            coverData.mWhitelist,
-            (byte) 64,
-            (byte) 1,
-            (byte) 64,
-            (byte) 1,
-            64);
+        if (mExport) {
+            transfer.push(coverable, coverSide);
+        } else {
+            transfer.pull(coverable, coverSide);
+        }
 
-        return coverData;
+        ItemStackPredicate predicate = ItemStackPredicate.matches(this.filter.getStackInSlot(0));
+
+        if (mWhitelist) {
+            predicate = predicate.negate();
+        }
+
+        transfer.setFilter(predicate);
+
+        transfer.setStacksToTransfer(64);
+
+        transfer.transfer();
     }
 
     @Override
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         final ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
-            coverData.mFilter = tStack;
+            filter.setStackInSlot(0, tStack);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("299", "Item Filter: ") + tStack.getDisplayName());
         } else {
-            coverData.mFilter = null;
+            filter.setStackInSlot(0, null);
             GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("300", "Filter Cleared!"));
         }
         return true;
     }
 
     @Override
-    public ItemFilterData onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        coverData.mWhitelist = !coverData.mWhitelist;
+    public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        mWhitelist = !mWhitelist;
         GTUtility.sendChatToPlayer(
             aPlayer,
-            coverData.mWhitelist ? GTUtility.trans("125.1", "Whitelist Mode")
-                : GTUtility.trans("124.1", "Blacklist Mode"));
-        return coverData;
+            mWhitelist ? GTUtility.trans("124.1", "Blacklist Mode") : GTUtility.trans("125.1", "Whitelist Mode"));
     }
 
     @Override
@@ -147,6 +199,11 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
     // GUI stuff
 
     @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverItemFilterGui(this);
+    }
+
+    @Override
     public boolean hasCoverGUI() {
         return true;
     }
@@ -156,115 +213,4 @@ public class CoverItemFilter extends CoverBehaviorBase<CoverItemFilter.ItemFilte
         return new ItemFilterUIFactory(buildContext).createWindow();
     }
 
-    private class ItemFilterUIFactory extends UIFactory {
-
-        private static final int startX = 10;
-        private static final int startY = 25;
-        private static final int spaceX = 18;
-        private static final int spaceY = 18;
-
-        public ItemFilterUIFactory(CoverUIBuildContext buildContext) {
-            super(buildContext);
-        }
-
-        @SuppressWarnings("PointlessArithmeticExpression")
-        @Override
-        protected void addUIWidgets(ModularWindow.Builder builder) {
-            ItemStackHandler filterInvHandler = new ItemStackHandler(1);
-            if (getCoverData() != null) {
-                filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
-            }
-            builder.widget(
-                new CoverDataControllerWidget<>(
-                    this::getCoverData,
-                    this::setCoverData,
-                    CoverItemFilter.this::loadFromNbt)
-                        .addFollower(
-                            new CoverDataFollowerToggleButtonWidget<>(),
-                            coverData -> coverData.mWhitelist,
-                            (coverData, state) -> {
-                                coverData.mWhitelist = state;
-                                return coverData;
-                            },
-                            widget -> widget
-                                .setToggleTexture(
-                                    GTUITextures.OVERLAY_BUTTON_BLACKLIST,
-                                    GTUITextures.OVERLAY_BUTTON_WHITELIST)
-                                .addTooltip(0, GTUtility.trans("125.1", "Whitelist Mode"))
-                                .addTooltip(1, GTUtility.trans("124.1", "Blacklist Mode"))
-                                .setPos(spaceX * 0, spaceY * 0))
-                        .addFollower(
-                            new CoverDataFollowerSlotWidget<>(filterInvHandler, 0, true),
-                            coverData -> setStackSize1(coverData.mFilter),
-                            (coverData, stack) -> {
-                                coverData.mFilter = setStackSize1(stack);
-                                return coverData;
-                            },
-                            widget -> widget.setBackground(GTUITextures.SLOT_DARK_GRAY)
-                                .setPos(spaceX * 0, spaceY * 2))
-                        .setPos(startX, startY))
-                .widget(
-                    new TextWidget(GTUtility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
-                .widget(
-                    new TextWidget(GTUtility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
-        }
-
-        private ItemStack setStackSize1(ItemStack stack) {
-            if (stack != null) {
-                stack.stackSize = 1;
-            }
-            return stack;
-        }
-    }
-
-    public static class ItemFilterData implements ISerializableObject {
-
-        private boolean mWhitelist;
-        private ItemStack mFilter;
-
-        public ItemFilterData() {}
-
-        public ItemFilterData(boolean mWhitelist, ItemStack mFilter) {
-            this.mWhitelist = mWhitelist;
-            this.mFilter = mFilter;
-        }
-
-        @Nonnull
-        @Override
-        public ISerializableObject copy() {
-            return new ItemFilterData(mWhitelist, mFilter);
-        }
-
-        @Nonnull
-        @Override
-        public NBTBase saveDataToNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setBoolean("mWhitelist", mWhitelist);
-            if (mFilter != null) tag.setTag("mFilter", mFilter.writeToNBT(new NBTTagCompound()));
-            return tag;
-        }
-
-        @Override
-        public void writeToByteBuf(ByteBuf aBuf) {
-            aBuf.writeBoolean(mWhitelist);
-            ByteBufUtils.writeItemStack(aBuf, mFilter);
-        }
-
-        @Override
-        public void loadDataFromNBT(NBTBase aNBT) {
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
-            mWhitelist = tag.getBoolean("mWhitelist");
-            if (tag.hasKey("mFilter", Constants.NBT.TAG_COMPOUND))
-                mFilter = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("mFilter"));
-            else mFilter = null;
-        }
-
-        @Override
-        public void readFromPacket(ByteArrayDataInput aBuf) {
-            mWhitelist = aBuf.readBoolean();
-            mFilter = ISerializableObject.readItemStackFromGreggyByteBuf(aBuf);
-        }
-    }
 }

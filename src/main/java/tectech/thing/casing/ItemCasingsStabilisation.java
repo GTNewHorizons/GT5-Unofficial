@@ -7,19 +7,18 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
-import gregtech.common.blocks.ItemCasingsAbstract;
+import gregtech.common.blocks.ItemCasings;
 
-public class ItemCasingsStabilisation extends ItemCasingsAbstract {
+public class ItemCasingsStabilisation extends ItemCasings {
 
     public ItemCasingsStabilisation(Block par1) {
         super(par1);
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
         switch (aStack.getItemDamage()) {
             case 0:
             case 1:
@@ -30,18 +29,11 @@ public class ItemCasingsStabilisation extends ItemCasingsAbstract {
             case 6:
             case 7:
             case 8:
-                aList.add(
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager.addStringLocalization(
-                            "EOH.Stability.Tooltip.0",
-                            "Increases stability of spacetime field."));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.stability.tooltip"));
                 break;
             default:
-                aList.add(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager
-                            .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        aList.add(AuthorColen);
+        tooltip.add(AuthorColen);
     }
 }

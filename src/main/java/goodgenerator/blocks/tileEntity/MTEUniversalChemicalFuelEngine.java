@@ -5,10 +5,15 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -151,22 +156,28 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Engine, UCFE")
             .addInfo("BURNING BURNING BURNING")
-            .addInfo("Use combustible liquid to generate power.")
-            .addInfo("You need to supply Combustion Promoter to keep it running.")
-            .addInfo("It will consume all the fuel and promoter in the hatch every second.")
-            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop.")
-            .addInfo("When turned on, there is a 10-second period where the machine will not stop.")
-            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed.")
-            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel.")
-            .addInfo("The proportion is bigger, and the efficiency will be higher.")
+            .addInfo("Use combustible liquid to generate power")
+            .addInfo("You need to supply Combustion Promoter to keep it running")
+            .addInfo("It will consume all the fuel and combustion promoter in the hatch every second")
+            .addInfo("Energy output to the dynamo will be distributed over the next second")
+            .addInfo("If the Dynamo Hatch's buffer fills up, the machine will stop")
+            .addInfo(
+                "If the amount of energy to be produced is higher "
+                    + "than the dynamo hatch can handle then all produced energy will void")
+            .addInfo("When turned on, there is a 10-second period where the machine will not stop")
+            .addInfo("Even if it doesn't stop, all the fuel in the hatch will be consumed")
+            .addInfo("The efficiency is determined by the proportion of Combustion Promoter to fuel")
+            .addInfo(
+                "The higher the amount of promoter, the higher the efficiency"
+                    + "It follows an exponential curve exp(-C/(p/x))*1.5 ")
+            .addInfo("Where x is the amount of fuel in liters, p is the amount of promoter in liters")
+            .addInfo("and C depends on the fuel type. Diesel: C=0.04; Gas: C=0.04; Rocket fuel: C=0.005")
             .addInfo("It creates sqrt(Current Output Power) pollution every second")
             .addInfo(
                 "If you forget to supply Combustion Promoter, this engine will swallow all the fuel "
                     + EnumChatFormatting.YELLOW
-                    + "without outputting energy"
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addInfo("The efficiency is up to 150%.")
+                    + "without outputting energy")
+            .addInfo("The efficiency is up to 150%")
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 4, 9, false)
             .addController("Mid of the second layer")
@@ -174,7 +185,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
             .addCasingInfoExactly("Engine Intake Casing", 14, false)
             .addCasingInfoExactly("Titanium Plated Cylinder", 14, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 93, false)
+            .addCasingInfoExactly("Titanium Pipe Casing", 14, false)
             .addMaintenanceHatch("Hint block with dot 1")
             .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
             .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
@@ -250,14 +261,17 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = "Currently generates: " + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
-            + EnumChatFormatting.RESET
-            + " EU/t";
-        info[6] = "Problems: " + EnumChatFormatting.RED
+        info[4] = StatCollector.translateToLocalFormatted(
+            "gg.scanner.info.generator.generates",
+            EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
+                + EnumChatFormatting.RESET);
+        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+            + EnumChatFormatting.RED
             + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
-            + " Efficiency: "
+            + " "
+            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
+            + " "
             + EnumChatFormatting.YELLOW
             + GTUtility.formatNumbers(tEff / 100D)
             + EnumChatFormatting.RESET
@@ -276,7 +290,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
         if (!eDynamoMulti.isEmpty()) {
@@ -288,7 +302,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
                         tHatch.getBaseMetaTileEntity()
                             .getStoredEU() + exEU));
             } else if (!isStoppingSafe) {
-                stopMachine(ShutDownReasonRegistry.NONE);
+                stopMachine(ShutDownReasonRegistry.INSUFFICIENT_DYNAMO);
             }
         }
     }
@@ -332,14 +346,22 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][50],
-                TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE), TextureFactory.builder()
+            if (aActive) return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][50], TextureFactory.of(OVERLAY_FRONT_DIESEL_ENGINE),
+            return new ITexture[] { casingTexturePages[0][50], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DIESEL_ENGINE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -354,6 +376,22 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 2, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(GTPPRecipeMaps.rocketFuels, RecipeMaps.dieselFuels, RecipeMaps.gasTurbineFuels);
+    }
+
+    @Override
+    public int getRecipeCatalystPriority() {
+        return -2;
     }
 }

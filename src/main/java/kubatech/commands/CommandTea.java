@@ -35,7 +35,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 
-import kubatech.api.helpers.UUIDFinder;
+import gregtech.GTMod;
 import kubatech.api.tea.TeaNetwork;
 
 public class CommandTea extends CommandBase {
@@ -90,7 +90,7 @@ public class CommandTea extends CommandBase {
             sender.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
             return;
         }
-        UUID player = UUIDFinder.getUUID(args[0]);
+        UUID player = GTMod.proxy.getPlayersUUID(args[0]);
         if (player == null) {
             sender.addChatMessage(new ChatComponentText(PLAYER_NOT_FOUND.get()));
             return;

@@ -45,8 +45,8 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     public double getDemandedEnergy() {
         if (cableMeta != null) {
             /*
-             * We don't want everything to join the enet, treating the cable as a conductor, so we join it as a link.
-             * We don't want to traverse all cables connected to this, like we would during distribution, to see if it
+             * We don't want everything to join the enet, treating the cable as a conductor, so we join it as a link. We
+             * don't want to traverse all cables connected to this, like we would during distribution, to see if it
              * actually needs any EU, so we just always say we want it all. If there are more than two things attached
              * and one of them is a GT cable that doesn't have anywhere to send its energy, the distribution will be a
              * bit weird. In that case, use only one cable or a transformer.

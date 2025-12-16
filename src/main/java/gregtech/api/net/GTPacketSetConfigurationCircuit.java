@@ -15,8 +15,8 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasInventory;
 import gregtech.api.metatileentity.BaseTileEntity;
+import gregtech.api.util.GTByteBuffer;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ISerializableObject;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -87,7 +87,7 @@ public class GTPacketSetConfigurationCircuit extends GTPacket {
             aData.readInt(),
             aData.readShort(),
             aData.readInt(),
-            ISerializableObject.readItemStackFromGreggyByteBuf(aData));
+            GTByteBuffer.readItemStackFromGreggyByteBuf(aData));
     }
 
     @Override

@@ -1,16 +1,11 @@
 package gregtech.api.util;
 
 import static gregtech.api.util.GTRecipeMapUtil.SPECIAL_VALUE_ALIASES;
-import static gregtech.api.util.GTUtility.copyFluidArray;
-import static gregtech.api.util.GTUtility.copyItemArray;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -60,11 +55,12 @@ public class GTRecipeBuilder {
 
     // fluid units
     public static final int INGOTS = 144;
-    public static final int HALF_INGOT = 72;
-    public static final int QUARTER_INGOT = 36;
-    public static final int EIGHTH_INGOT = 18;
-    public static final int NUGGETS = 16;
-    public static final int BUCKETS = 1000;
+    public static final int HALF_INGOTS = INGOTS / 2;
+    public static final int QUARTER_INGOTS = INGOTS / 4;
+    public static final int EIGHTH_INGOTS = INGOTS / 8;
+    public static final int NUGGETS = INGOTS / 9;
+    public static final int STACKS = 64 * INGOTS;
+    public static final int BUCKETS = 1_000;
 
     static {
         final boolean debugAll;
@@ -87,12 +83,12 @@ public class GTRecipeBuilder {
         ENABLE_COLLISION_CHECK = Boolean.getBoolean("gt.recipebuilder.recipe_collision_check");
     }
 
-    protected ItemStack[] inputsBasic = new ItemStack[0];
+    protected ItemStack[] inputsBasic = GTValues.emptyItemStackArray;
     protected Object[] inputsOreDict;
-    protected ItemStack[] outputs = new ItemStack[0];
+    protected ItemStack[] outputs = GTValues.emptyItemStackArray;
     protected ItemStack[][] alts;
-    protected FluidStack[] fluidInputs = new FluidStack[0];
-    protected FluidStack[] fluidOutputs = new FluidStack[0];
+    protected FluidStack[] fluidInputs = GTValues.emptyFluidStackArray;
+    protected FluidStack[] fluidOutputs = GTValues.emptyFluidStackArray;
     protected int[] chances;
     protected Object special;
     protected int duration = -1;
@@ -109,6 +105,8 @@ public class GTRecipeBuilder {
     @Nullable
     protected IRecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
+    @Nullable
+    protected ItemStack pendingIntegratedCircuit;
     /**
      * If recipe addition should be skipped.
      */
@@ -152,16 +150,8 @@ public class GTRecipeBuilder {
 
     // region helper methods
 
-    private static FluidStack[] fix(FluidStack[] fluidInputs) {
-        return Arrays.stream(fluidInputs)
-            .filter(Objects::nonNull)
-            .map(FluidStack::copy)
-            .toArray(FluidStack[]::new);
-    }
-
-    private static ItemStack[] fix(ItemStack[] inputs, boolean aUnsafe) {
-        return GTOreDictUnificator
-            .setStackArray(true, aUnsafe, ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new));
+    private static ItemStack[] fixItemArray(ItemStack[] inputs, boolean aUnsafe) {
+        return GTOreDictUnificator.setStackArray(true, aUnsafe, ArrayExt.removeTrailingNulls(inputs));
     }
 
     public static GTRecipeBuilder builder() {
@@ -177,8 +167,11 @@ public class GTRecipeBuilder {
     }
 
     private static boolean containsNull(Object[] arr) {
-        return arr == null || Arrays.stream(arr)
-            .anyMatch(Objects::isNull);
+        if (arr == null) return true;
+        for (final Object o : arr) {
+            if (o == null) return true;
+        }
+        return false;
     }
 
     private static void handleNullRecipeComponents(String componentType) {
@@ -246,7 +239,7 @@ public class GTRecipeBuilder {
     }
 
     public static void onConfigLoad() {
-        PANIC_MODE_NULL |= GTMod.gregtechproxy.crashOnNullRecipeInput;
+        PANIC_MODE_NULL |= GTMod.proxy.crashOnNullRecipeInput;
     }
 
     // endregion
@@ -254,12 +247,49 @@ public class GTRecipeBuilder {
     // region setter
 
     /**
+     * circuit method helper. Adds appropriate integrated circuit into item inputs.
+     */
+    private ItemStack[] applyPendingCircuit(ItemStack[] baseInputs) {
+        if (pendingIntegratedCircuit == null) {
+            return baseInputs;
+        }
+        // Append pending circuit & clear it
+        ItemStack[] newInputs = new ItemStack[baseInputs.length + 1];
+        System.arraycopy(baseInputs, 0, newInputs, 0, baseInputs.length);
+        newInputs[baseInputs.length] = pendingIntegratedCircuit;
+        pendingIntegratedCircuit = null;
+        return newInputs;
+    }
+
+    /**
+     * Specialized item input method for adding integrated circuits into a recipe.
+     */
+    public GTRecipeBuilder circuit(int integratedCircuitNumber) {
+        ItemStack circuit = GTUtility.getIntegratedCircuit(integratedCircuitNumber);
+
+        if (inputsBasic != null && inputsBasic.length > 0) {
+            // Input condition
+            pendingIntegratedCircuit = circuit;
+            inputsBasic = applyPendingCircuit(inputsBasic);
+        } else {
+            // No inputs condition
+            inputsBasic = new ItemStack[] { circuit };
+            pendingIntegratedCircuit = circuit;
+        }
+
+        return this;
+    }
+
+    /**
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
-        inputsBasic = ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new);
+
+        ItemStack[] itemInputs = ArrayExt.removeTrailingNulls(inputs);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
         return this;
@@ -271,7 +301,10 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fix(inputs, false);
+
+        ItemStack[] itemInputs = fixItemArray(inputs, false);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
         return this;
@@ -283,7 +316,10 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fix(inputs, true);
+
+        ItemStack[] itemInputs = fixItemArray(inputs, true);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
         return this;
@@ -304,30 +340,34 @@ public class GTRecipeBuilder {
                 alts[i] = ((ItemStack[]) input).clone();
             } else if (input instanceof Object[]arr) {
                 if (arr.length != 2) continue;
-                List<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
+                ArrayList<ItemStack> ores = GTOreDictUnificator.getOres(arr[0]);
                 if (ores.isEmpty()) continue;
                 int size = ((Number) arr[1]).intValue();
-                alts[i] = ores.stream()
-                    .map(s -> GTUtility.copyAmount(size, s))
-                    .filter(GTUtility::isStackValid)
-                    .toArray(ItemStack[]::new);
+                ArrayList<ItemStack> list = new ArrayList<>(ores.size());
+                // noinspection ForLoopReplaceableByForEach
+                for (int j = 0, oresSize = ores.size(); j < oresSize; j++) {
+                    ItemStack itemStack = GTUtility.copyAmount(size, ores.get(j));
+                    if (GTUtility.isStackValid(itemStack)) list.add(itemStack);
+                }
+                alts[i] = list.toArray(new ItemStack[0]);
             } else if (input == null) {
                 handleNullRecipeComponents("recipe oredict input");
-                alts[i] = new ItemStack[0];
+                alts[i] = GTValues.emptyItemStackArray;
             } else {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
-        inputsBasic = Arrays.stream(alts)
-            .map(ss -> ss.length > 0 ? ss[0] : null)
-            .toArray(ItemStack[]::new);
+        ArrayList<ItemStack> list = new ArrayList<>(alts.length);
+        for (final ItemStack[] ss : alts) list.add(ss.length > 0 ? ss[0] : null);
+        ItemStack[] itemInputs = list.isEmpty() ? GTValues.emptyItemStackArray : list.toArray(new ItemStack[0]);
+        inputsBasic = applyPendingCircuit(itemInputs);
         return this;
     }
 
     public GTRecipeBuilder itemOutputs(ItemStack... outputs) {
         if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
-        this.outputs = outputs;
+        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
         }
@@ -335,13 +375,12 @@ public class GTRecipeBuilder {
     }
 
     /**
-     * Not intended to be used by recipe authors.
-     * Intended for recipe rewrite middlewares.
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
      */
     public GTRecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
         if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
-        this.outputs = outputs;
+        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
         this.chances = chances;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
@@ -352,14 +391,14 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder fluidInputs(FluidStack... fluidInputs) {
         if (skip) return this;
         if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
-        this.fluidInputs = fix(fluidInputs);
+        this.fluidInputs = ArrayExt.removeNullFluids(fluidInputs);
         return this;
     }
 
     public GTRecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
         if (skip) return this;
         if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
-        this.fluidOutputs = fix(fluidOutputs);
+        this.fluidOutputs = ArrayExt.removeNullFluids(fluidOutputs);
         return this;
     }
 
@@ -482,8 +521,7 @@ public class GTRecipeBuilder {
 
     /**
      * Gets metadata already set for this builder. Can return null. Use
-     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)}
-     * if you want to specify default value.
+     * {@link #getMetadataOrDefault(RecipeMetadataKey, Object)} if you want to specify default value.
      */
     @Nullable
     public <T> T getMetadata(RecipeMetadataKey<T> key) {
@@ -512,8 +550,13 @@ public class GTRecipeBuilder {
      * @param mods Mod(s) required for the recipe.
      */
     public GTRecipeBuilder requireMods(Mods... mods) {
-        skip = Stream.of(mods)
-            .anyMatch(mod -> !mod.isModLoaded());
+        for (final Mods mod : mods) {
+            if (!mod.isModLoaded()) {
+                skip = true;
+                return this;
+            }
+        }
+        skip = false;
         return this;
     }
 
@@ -543,12 +586,12 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder copy() {
         return new GTRecipeBuilder(
-            copyItemArray(inputsBasic),
+            ArrayExt.copyItemsIfNonEmpty(inputsBasic),
             copy(inputsOreDict),
-            copyItemArray(outputs),
+            ArrayExt.copyItemsIfNonEmpty(outputs),
             copy(alts),
-            copyFluidArray(fluidInputs),
-            copyFluidArray(fluidOutputs),
+            ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
+            ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
             copy(chances),
             special,
             duration,
@@ -573,12 +616,12 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder copyNoMetadata() {
         return new GTRecipeBuilder(
-            copyItemArray(inputsBasic),
+            ArrayExt.copyItemsIfNonEmpty(inputsBasic),
             copy(inputsOreDict),
-            copyItemArray(outputs),
+            ArrayExt.copyItemsIfNonEmpty(outputs),
             copy(alts),
-            copyFluidArray(fluidInputs),
-            copyFluidArray(fluidOutputs),
+            ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
+            ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
             copy(chances),
             special,
             duration,
@@ -787,8 +830,8 @@ public class GTRecipeBuilder {
     // endregion
 
     /**
-     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap,
-     * use {@link #addTo} instead.
+     * Builds new recipe, without custom behavior of recipemaps. For adding recipe to recipemap, use {@link #addTo}
+     * instead.
      *
      * @return Built recipe. Returns empty if failed to build.
      */
@@ -928,6 +971,7 @@ public class GTRecipeBuilder {
         specialValue = 0;
         skip = false;
         valid = true;
+        pendingIntegratedCircuit = null;
         return this;
     }
 }
