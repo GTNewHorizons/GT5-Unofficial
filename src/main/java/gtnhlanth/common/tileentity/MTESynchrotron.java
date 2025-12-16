@@ -499,27 +499,29 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo("Due to the relativistic Larmor effect, it produces then outputs a photon beam")
             .addInfo("The " + createEnergyText("Beam Energy") + ", " + createFocusText("Beam Focus") + ", and " + createRateText("Beam Rate") + " are all determined by the formulae in this tooltip")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.AQUA + "32 kL/s" + EnumChatFormatting.GRAY + " of "  + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " is required for operation, and " + EnumChatFormatting.RED + "hot coolant" + EnumChatFormatting.WHITE +" is returned")
             .addInfo("The input beam must have a " + createFocusText("Focus") + " of at least 25")
             .addInfo("The " + createFocusText("Output Beam Focus") + " can be improved by using lower temperature coolant")
             .addInfo("Valid coolants:")
-            .addInfo(coolantLine("Coolant",300))
             .addInfo(coolantLine("Liquid Nitrogen",90))
             .addInfo(coolantLine("Liquid Oxygen",90))
+            .addInfo(coolantLine("Coolant",60))
             .addInfo(coolantLine("Super Coolant",1))
             .addInfo("There are two types of " + EnumChatFormatting.DARK_AQUA + "Antenna Casings" + EnumChatFormatting.GRAY + ", upgrade them to improve the machine")
             .addInfo("All energies in the following formulae must be in keV")
             .addSeparator()
             .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.RED + "IR " + EnumChatFormatting.WHITE + "* "+EnumChatFormatting.DARK_GREEN + "Power Scale Factor")
             .addInfo("where " + EnumChatFormatting.RED + "IR " + EnumChatFormatting.WHITE + " =  (" + EnumChatFormatting.YELLOW + "Input Beam Energy"+EnumChatFormatting.WHITE+")^(1.13*("+EnumChatFormatting.DARK_AQUA+"Antenna Tier"+EnumChatFormatting.WHITE+")^(4/9))/40,000,000")
-            .addInfo("and "+EnumChatFormatting.DARK_GREEN+"Power Scale Factor"+EnumChatFormatting.WHITE+" = 1 - 0.15^("+EnumChatFormatting.BLUE + "Total EU/t Provided" + EnumChatFormatting.WHITE + " / (30,384 * (" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ")^(5/2)))")
+            .addInfo("and "+EnumChatFormatting.DARK_GREEN+"Power Scale Factor"+EnumChatFormatting.WHITE+" = 1 - 0.15^("+EnumChatFormatting.BLUE + "Total EU/t Provided" + EnumChatFormatting.WHITE + " / (30,384 * (" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ")^(2.5)))")
             .addSeparator()
-            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + ")/2.5")
+            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + "depends on the relation between " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " and " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE)
             .addInfo(EnumChatFormatting.WHITE + "where " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + " = max(min(1.5^(12 - " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + "/40), 90), 10)")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " > " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + ")/2.5")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
             .addSeparator()
             .addInfo(createRateText("Output Beam Rate") + EnumChatFormatting.WHITE + " = floor(2.5^(" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ") * sqrt(" + EnumChatFormatting.BLUE + "Total EU/t Provided)" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.YELLOW + "Input Beam Rate" + EnumChatFormatting.WHITE + "/15,000)")
-            .addTecTechHatchInfo()
 
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
@@ -738,7 +740,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
      */
     private static double calculateOutputParticleEnergy(long voltage, double inputParticleEnergy, int antennaTier) {
         return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
-            * (-(Math.pow(0.15, (2.0 * voltage) / ((Math.pow(antennaTier, 2.5) * 60768.0)))) + 1);
+            * (1 - (Math.pow(0.15, (voltage) / ((Math.pow(antennaTier, 2.5) * 30384.0)))));
 
     }
 
