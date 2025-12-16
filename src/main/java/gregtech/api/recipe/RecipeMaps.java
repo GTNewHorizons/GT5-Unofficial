@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -49,6 +50,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.maps.AssemblerBackend;
 import gregtech.api.recipe.maps.AssemblyLineFrontend;
+import gregtech.api.recipe.maps.CauldronFrontend;
 import gregtech.api.recipe.maps.DistillationTowerFrontend;
 import gregtech.api.recipe.maps.EFRBlastingBackend;
 import gregtech.api.recipe.maps.EFRSmokingBackend;
@@ -1317,4 +1319,23 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
+    public static final RecipeMap<RecipeMapBackend> cauldronRecipe = RecipeMapBuilder
+        .of("gt.recipe.cauldron", RecipeMapBackend::new)
+        .maxIO(1, 1, 1, 0)
+        .minInputs(1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW)
+        .neiRecipeBackgroundOffset(7, 0)
+        .neiRecipeBackgroundSize(165, 60)
+        .logoPos(150, 38)
+        .frontend(CauldronFrontend::new)
+        .neiHandlerInfo(builder -> {
+            builder.setWidth(170);
+            builder.setHeight(60);
+            builder.setDisplayStack(new ItemStack(Items.cauldron));
+            builder.setShowFavoritesButton(false);
+            builder.setShowOverlayButton(false);
+            return builder;
+        })
+        .build();
+
 }
