@@ -1078,6 +1078,7 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.cauldron=Cauldron
 gt.recipe.entropic-processing=Entropic Processing
 gt.recipe.isotope-decay=Isotope Decay
 gt.recipe.purificationplantclarifier=Clarifier
@@ -1862,6 +1863,7 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+GT5U.nei.cauldron.consumed=Consumed per operation
 
 
 GT5U.config.colormodulation=Color Modulator
