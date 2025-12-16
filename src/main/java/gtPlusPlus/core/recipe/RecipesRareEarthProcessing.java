@@ -25,7 +25,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.item.ModItems;
@@ -68,7 +67,8 @@ public class RecipesRareEarthProcessing {
 
         // Chloralkali process
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Cell_Empty.get(2L))
+            .itemInputs(ItemList.Cell_Empty.get(2L))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
@@ -82,8 +82,8 @@ public class RecipesRareEarthProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
-                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
-                GTUtility.getIntegratedCircuit(2))
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L))
+            .circuit(2)
             .itemOutputs(new ItemStack(ModItems.cellHydrogenChlorideMix, 2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)

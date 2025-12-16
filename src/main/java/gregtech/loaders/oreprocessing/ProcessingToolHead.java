@@ -19,7 +19,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 
@@ -508,8 +507,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial, 1L),
-                            GTUtility.getIntegratedCircuit(15))
+                            GTOreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial, 1L))
+                        .circuit(15)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE
                                 .getToolWithStats(IDMetaTool01.FILE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
@@ -541,8 +540,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L),
-                            GTUtility.getIntegratedCircuit(7))
+                            GTOreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial, 1L))
+                        .circuit(7)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE
                                 .getToolWithStats(IDMetaTool01.SAW.ID, 1, aMaterial, aMaterial.mHandleMaterial, null))
@@ -803,8 +802,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     GTValues.RA.stdBuilder()
                         .itemInputs(
                             GTOreDictUnificator.get(OrePrefixes.stick, aMaterial.mHandleMaterial, 1L),
-                            GTOreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L),
-                            GTUtility.getIntegratedCircuit(14))
+                            GTOreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L))
+                        .circuit(14)
                         .itemOutputs(
                             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                                 aProducesSoftMallet ? IDMetaTool01.SOFTMALLET.ID : IDMetaTool01.HARDHAMMER.ID,
