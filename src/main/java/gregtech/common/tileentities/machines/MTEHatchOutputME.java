@@ -3,9 +3,6 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -31,10 +28,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
-import com.glodblock.github.common.storage.FluidCellInventory;
-import com.glodblock.github.common.storage.FluidCellInventoryHandler;
-import com.glodblock.github.common.storage.IStorageFluidCell;
-import com.glodblock.github.util.Util;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -53,6 +46,7 @@ import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
@@ -61,6 +55,8 @@ import appeng.items.contents.CellConfig;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.me.storage.CellInventory;
+import appeng.me.storage.CellInventoryHandler;
 import appeng.util.ReadableNumberConverter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -199,12 +195,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             return;
         }
 
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof IStorageFluidCell) {
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof FCBaseItemCell fcbc) {
             hadCell = true;
 
             if (this.mMode == 0) {
-                CellConfig cfg = (CellConfig) ((FCBaseItemCell) upgradeItemStack.getItem())
-                    .getConfigInventory(upgradeItemStack);
+                CellConfig cfg = (CellConfig) fcbc.getConfigAEInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
                     StringBuilder builder = new StringBuilder();
@@ -215,11 +210,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     lockedFluids.clear();
 
                     for (int i = 0; i < cfg.getSizeInventory(); i++) {
-                        ItemStack stack = cfg.getStackInSlot(i);
+                        IAEStack<?> stack = cfg.getAEStackInSlot(i);
 
-                        if (stack == null) continue;
+                        if (!(stack instanceof IAEFluidStack ifs)) continue;
 
-                        FluidStack tFluid = Util.getFluidFromItem(stack);
+                        FluidStack tFluid = ifs.getFluidStack();
 
                         if (tFluid != null) {
                             hadFilters = true;
@@ -282,27 +277,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return fluidAmount;
     }
 
-    private static final MethodHandle GET_RESTRICTION_LONG;
-
-    static {
-        try {
-            Field field = FluidCellInventory.class.getDeclaredField("restrictionLong");
-            field.setAccessible(true);
-            GET_RESTRICTION_LONG = MethodHandles.lookup()
-                .unreflectGetter(field);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Could not unreflect getter for FluidCellInventory.restrictionLong", e);
-        }
-    }
-
-    private static long getRestrictionLong(FluidCellInventory cellInventory) {
-        try {
-            return (long) GET_RESTRICTION_LONG.invokeExact(cellInventory);
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private long getCacheCapacity() {
         ItemStack upgradeItemStack = mInventory[0];
 
@@ -314,12 +288,13 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             .cell()
             .getCellInventory(upgradeItemStack, null, StorageChannel.FLUIDS);
 
-        long capacity = storageCell.getBytes(upgradeItemStack) * 2048;
+        long capacity = storageCell.getBytesLong(upgradeItemStack) * 2048L;
 
-        if (inventory instanceof FluidCellInventoryHandler handler) {
-            final FluidCellInventory cellInventory = (FluidCellInventory) handler.getCellInv();
+        if (inventory instanceof CellInventoryHandler<?>handler) {
+            final CellInventory<?> cellInventory = (CellInventory<?>) handler.getCellInv();
 
-            long restriction = getRestrictionLong(cellInventory);
+            long restriction = (long) cellInventory.getRestriction()
+                .get(0);
 
             if (restriction > 0) {
                 capacity = Math.min(capacity, restriction);

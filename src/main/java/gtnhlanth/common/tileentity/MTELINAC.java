@@ -178,19 +178,21 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Requires " + EnumChatFormatting.WHITE + "Length * kL/s " + EnumChatFormatting.GRAY + "of " + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " for operation")
             .addInfo(createFocusText("Beam Focus") + " loss can be mitigated more effectively with lower temperature " + EnumChatFormatting.AQUA+"coolant")
             .addInfo("Valid coolants:")
-            .addInfo(coolantLine("Coolant",300))
             .addInfo(coolantLine("Liquid Nitrogen",90))
             .addInfo(coolantLine("Liquid Oxygen",90))
+            .addInfo(coolantLine("Coolant",60))
             .addInfo(coolantLine("Super Coolant",1))
             .addSeparator()
             .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = max("+EnumChatFormatting.YELLOW+"V"+EnumChatFormatting.WHITE+", 50) * 10^"+EnumChatFormatting.RED+"IE")
             .addInfo("where " + EnumChatFormatting.YELLOW + "V" + EnumChatFormatting.WHITE + " = (Length - 1) * cbrt(" + EnumChatFormatting.DARK_GREEN + "Machine Voltage" + EnumChatFormatting.WHITE + ") / 4")
-            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1+min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Source Energy")
+            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1 + min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Particle Energy")
             .addInfo(EnumChatFormatting.RED + "Input Beam Energies" + EnumChatFormatting.GRAY + " higher than 7500keV are treated as if they are 7500keV")
-            .addInfo(EnumChatFormatting.GREEN +"Maximum Source Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
+            .addInfo(EnumChatFormatting.GREEN +"Maximum Particle Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
             .addSeparator()
-            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
+            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + "depends on the relation between " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " and " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE)
             .addInfo("where " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + " = min(max((-0.9 * (Length-1) * 1.1^(0.2 * " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + ") + 110), 5), 90)")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " > " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 325, 1285, false)
@@ -288,7 +290,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         this.outputRate = inputRate;
 
-        final int fluidConsumed = 1000 * (length);
+        final int fluidConsumed = 1000 * (this.length);
         if (Util.coolantFluidCheck(fluidCoolant, fluidConsumed)) {
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;

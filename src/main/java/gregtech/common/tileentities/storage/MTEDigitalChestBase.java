@@ -119,12 +119,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver, Object o) {
+    public void addListener(IMEMonitorHandlerReceiver imeMonitorHandlerReceiver, Object o) {
         meInventoryHandler.addListener(imeMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver imeMonitorHandlerReceiver) {
         meInventoryHandler.removeListener(imeMonitorHandlerReceiver);
     }
 
@@ -290,13 +290,16 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             }
 
             int extraCount = 0;
-            if (GTUtility.areStacksEqual(mInventory[1], stack)) {
-                extraCount = mInventory[1].stackSize;
-            } else if (stack == null || stack.stackSize <= 0) {
-                extraCount = mInventory[1].stackSize;
-                stack = mInventory[1];
+            if (mInventory[1] != null) {
+                if (GTUtility.areStacksEqual(mInventory[1], stack)) {
+                    extraCount = mInventory[1].stackSize;
+                } else if (stack == null || stack.stackSize <= 0) {
+                    extraCount = mInventory[1].stackSize;
+                    stack = mInventory[1];
+                }
             }
 
+            // notifyListeners has a null check on the stack arg
             meInventoryHandler.notifyListeners(count + extraCount - lastTrueCount, stack);
             lastTrueCount = count + extraCount;
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
