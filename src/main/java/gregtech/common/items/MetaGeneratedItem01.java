@@ -564,8 +564,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     private static final String PartNotCoverText = "Cannot be used as a Cover";
     private static final String RAText = "Grabs from and inserts into specific slots";
     private static final String FRText1 = "Configurable up to ";
-    private static final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click";
-
+    private static final String FRText2 = " L/sec (as Cover)/n Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick/n to adjust the pump speed by 1/16/256 L/sec per click/n Can not transfer more than 2.1B L per Operation";
     private static final int[] Spray_Colors = new int[] { Spray_Color_0.ID, Spray_Color_1.ID, Spray_Color_2.ID,
         Spray_Color_3.ID, Spray_Color_4.ID, Spray_Color_5.ID, Spray_Color_6.ID, Spray_Color_7.ID, Spray_Color_8.ID,
         Spray_Color_9.ID, Spray_Color_10.ID, Spray_Color_11.ID, Spray_Color_12.ID, Spray_Color_13.ID, Spray_Color_14.ID,
@@ -1938,8 +1937,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UHV.ID,
                     "Electric Pump (UHV)",
-                    GTUtility.formatNumbers(1048576) + PartCoverText
-                        + GTUtility.formatNumbers(1048576 * 20)
+                    GTUtility.formatNumbers(8388608) + PartCoverText
+                        + GTUtility.formatNumbers(8388608 * 20)
                         + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
@@ -1951,8 +1950,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UEV.ID,
                     "Electric Pump (UEV)",
-                    GTUtility.formatNumbers(2097152) + PartCoverText
-                        + GTUtility.formatNumbers(2097152 * 20)
+                    GTUtility.formatNumbers(16777216) + PartCoverText
+                        + GTUtility.formatNumbers(16777216 * 20)
                         + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1964,8 +1963,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UIV.ID,
                     "Electric Pump (UIV)",
-                    GTUtility.formatNumbers(4194304) + PartCoverText
-                        + GTUtility.formatNumbers(4194304 * 20)
+                    GTUtility.formatNumbers(33554432) + PartCoverText
+                        + GTUtility.formatNumbers(33554432 * 20)
                         + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1976,8 +1975,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UMV.ID,
                 "Electric Pump (UMV)",
-                GTUtility.formatNumbers(8388608) + PartCoverText
-                    + GTUtility.formatNumbers(8388608 * 20)
+                GTUtility.formatNumbers(67108864) + PartCoverText
+                    + GTUtility.formatNumbers(67108864 * 20)
                     + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1987,8 +1986,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UXV.ID,
                 "Electric Pump (UXV)",
-                GTUtility.formatNumbers(16777216) + PartCoverText
-                    + GTUtility.formatNumbers(16777216 * 20)
+                GTUtility.formatNumbers(134217728) + PartCoverText
+                    + GTUtility.formatNumbers(134217728 * 20L)
                     + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -1998,8 +1997,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_MAX.ID,
                 "Electric Pump (MAX)",
-                GTUtility.formatNumbers(33554432) + PartCoverText
-                    + GTUtility.formatNumbers(33554432 * 20)
+                GTUtility.formatNumbers(268435456) + PartCoverText
+                    + GTUtility.formatNumbers(268435456 * 20L)
                     + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
@@ -2097,37 +2096,37 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     FluidRegulator_UHV.ID,
                     "Fluid Regulator (UHV)",
-                    FRText1 + GTUtility.formatNumbers(1048576 * 20) + FRText2))
+                    FRText1 + GTUtility.formatNumbers(8388608 * 20) + FRText2))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
         ItemList.FluidRegulator_UEV
             .set(
                 addItem(
                     FluidRegulator_UEV.ID,
                     "Fluid Regulator (UEV)",
-                    FRText1 + GTUtility.formatNumbers(2097152 * 20) + FRText2))
+                    FRText1 + GTUtility.formatNumbers(16777216 * 20) + FRText2))
             .setRender(new InfinityMetaItemRenderer());
         ItemList.FluidRegulator_UIV
             .set(
                 addItem(
                     FluidRegulator_UIV.ID,
                     "Fluid Regulator (UIV)",
-                    FRText1 + GTUtility.formatNumbers(4194304 * 20) + FRText2))
+                    FRText1 + GTUtility.formatNumbers(33554432 * 20) + FRText2))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
             addItem(
                 FluidRegulator_UMV.ID,
                 "Fluid Regulator (UMV)",
-                FRText1 + GTUtility.formatNumbers(8388608 * 20) + FRText2));
+                FRText1 + GTUtility.formatNumbers(67108864 * 20) + FRText2));
         ItemList.FluidRegulator_UXV.set(
             addItem(
                 FluidRegulator_UXV.ID,
                 "Fluid Regulator (UXV)",
-                FRText1 + GTUtility.formatNumbers(16777216 * 20) + FRText2));
+                FRText1 + GTUtility.formatNumbers(134217728 * 20L) + FRText2));
         ItemList.FluidRegulator_MAX.set(
             addItem(
                 FluidRegulator_MAX.ID,
                 "Fluid Regulator (MAX)",
-                FRText1 + GTUtility.formatNumbers(33554432 * 20) + FRText2));
+                FRText1 + GTUtility.formatNumbers(268435456 * 20L) + FRText2));
 
         ItemList.FluidFilter.set(
             addItem(FluidFilter.ID, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
@@ -3809,27 +3808,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UIV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 4194304, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UMV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 67108864, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_UXV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 134217728, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.Electric_Pump_MAX.get(1L),
             TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverPump(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 268435456, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.Steam_Valve_LV.get(1L),
@@ -3887,27 +3886,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UHV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[9][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UEV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[10][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 2097152, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UIV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[11][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 4194304, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UMV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 8388608, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 67108864, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_UXV.get(1L),
             TextureFactory.of(MACHINE_CASINGS[12][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 16777216, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 134217728, TextureFactory.of(OVERLAY_PUMP)));
         CoverRegistry.registerCover(
             ItemList.FluidRegulator_MAX.get(1L),
             TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverFluidRegulator(context, 33554432, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverFluidRegulator(context, 268435456, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             ItemList.FluidFilter.get(1L),
