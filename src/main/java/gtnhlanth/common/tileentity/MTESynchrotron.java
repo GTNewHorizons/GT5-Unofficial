@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -531,12 +531,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(2))
-            .addMaintenanceHatch(addDotText(3))
-            .addInputHatch(addDotText(4))
-            .addOutputHatch(addDotText(5))
-            .addEnergyHatch(addDotText(6))
+            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(1))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(2))
+            .addMaintenanceHatch(addHintNumber(3))
+            .addInputHatch(addHintNumber(4))
+            .addOutputHatch(addHintNumber(5))
+            .addEnergyHatch(addHintNumber(6))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();

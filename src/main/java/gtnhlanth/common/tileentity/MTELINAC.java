@@ -13,7 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -202,12 +202,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
             .addCasingInfoExactly("Grate Machine Casing", 47, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
-            .addEnergyHatch(addDotText(1))
-            .addMaintenanceHatch(addDotText(1))
-            .addInputHatch(addDotText(2))
-            .addOutputHatch(addDotText(2))
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
+            .addEnergyHatch(addHintNumber(1))
+            .addMaintenanceHatch(addHintNumber(1))
+            .addInputHatch(addHintNumber(2))
+            .addOutputHatch(addHintNumber(2))
+            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(3))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         //spotless:on
