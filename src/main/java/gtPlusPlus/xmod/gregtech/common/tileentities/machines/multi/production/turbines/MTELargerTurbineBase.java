@@ -163,17 +163,17 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addCasingInfoMin("Turbine Shaft", 30, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
-                "Any 1 hint hint",
+                "Hint Block Number 1",
                 1)
-            .addInputBus("Any 4 hint hint (min 1)", 4)
-            .addInputHatch("Any 4 hint hint(min 1)", 4);
+            .addInputBus("Hint Block Number 4 (Min 1)", 4)
+            .addInputHatch("Hint Block Number 4 (Min 1)", 4);
         if (requiresOutputHatch()) {
-            tt.addOutputHatch("Any 4 hint hint(min 1)", 4);
+            tt.addOutputHatch("Hint Block Number 4 (Min 1)", 4);
         }
-        tt.addDynamoHatch("Any 4 hint hint(min 1)", 4)
-            .addMaintenanceHatch("Any 4 hint hint(min 1)", 4);
+        tt.addDynamoHatch("Hint Block Number 4 (Min 1)", 4)
+            .addMaintenanceHatch("Hint Block Number 4 (Min 1)", 4);
         if (requiresMufflers()) {
-            tt.addMufflerHatch("Any 7 hint hint (x4)", 7);
+            tt.addMufflerHatch("Hint Block Number 7 (x4)", 7);
         }
         tt.toolTipFinisher();
         return tt;

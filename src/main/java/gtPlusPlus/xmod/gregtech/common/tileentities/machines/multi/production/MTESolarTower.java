@@ -103,9 +103,9 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addCasingInfoMin("Thermally Insulated Casing", 60, false)
             .addCasingInfoMin("Salt Containment Casing", 66, false)
             .addCasingInfoMin("Thermal Containment Casing", 60, false)
-            .addInputHatch("Any 2 hint hint(min 1)", 2)
-            .addOutputHatch("Any 2 hint hint(min 1)", 2)
-            .addMaintenanceHatch("Any 2 hint hint", 2)
+            .addInputHatch("Hint Block Number 2 (Min 1)", 2)
+            .addOutputHatch("Hint Block Number 2 (Min 1)", 2)
+            .addMaintenanceHatch("Hint Block Number 2", 2)
             .toolTipFinisher();
         return tt;
     }

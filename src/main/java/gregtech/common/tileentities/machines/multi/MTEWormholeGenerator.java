@@ -988,10 +988,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (hint 1)")
-            .addInputBus("§61§r (hint 1)")
-            .addDynamoHatch("§60§r - §64§r (laser only, hint 2)")
-            .addEnergyHatch("§60§r - §64§r (laser only, hint 2)")
+            .addMaintenanceHatch("§61§r (Hint Block Number 1)")
+            .addInputBus("§61§r (Hint Block Number 1)")
+            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
+            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
