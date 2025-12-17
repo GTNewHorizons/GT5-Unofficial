@@ -36,9 +36,14 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             new String[] { "Grants creative flight to everyone wearing a MagLev Harness in range.",
                 "Range is a cube centered on the pylon.",
                 String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
-                String.format("Powered Range: %s%d blocks (%s%d EU/t%s)", EnumChatFormatting.WHITE, getPylonRange(aTier, true), EnumChatFormatting.GREEN, getPylonPowerCost(aTier), EnumChatFormatting.WHITE) ,
-                "Only consumes power while any players are tethered."
-            });
+                String.format(
+                    "Powered Range: %s%d blocks (%s%d EU/t%s)",
+                    EnumChatFormatting.WHITE,
+                    getPylonRange(aTier, true),
+                    EnumChatFormatting.GREEN,
+                    getPylonPowerCost(aTier),
+                    EnumChatFormatting.WHITE),
+                "Only consumes power while any players are tethered." });
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
