@@ -272,7 +272,7 @@ public class GTUtility {
             rField = aObject.getClass()
                 .getDeclaredField(aField);
             rField.setAccessible(true);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rField;
@@ -283,7 +283,7 @@ public class GTUtility {
             final Field field = clazz.getDeclaredField(fieldName);
             field.setAccessible(true);
             return field;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (D1) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -298,7 +298,7 @@ public class GTUtility {
                         .getDeclaredField(aField);
             if (aPrivate) tField.setAccessible(true);
             return tField;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -313,7 +313,7 @@ public class GTUtility {
                         .getDeclaredField(aField);
             if (aPrivate) tField.setAccessible(true);
             return tField.get(aObject instanceof Class || aObject instanceof String ? null : aObject);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -354,7 +354,7 @@ public class GTUtility {
                     .getMethod(aMethod, tParameterTypes);
             if (aPrivate) tMethod.setAccessible(true);
             return tMethod.invoke(aObject, aParameters);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (aLogErrors) e.printStackTrace(GTLog.err);
         }
         return null;
@@ -367,17 +367,17 @@ public class GTUtility {
                 for (Constructor<?> tConstructor : aClass.getConstructors()) {
                     try {
                         return tConstructor.newInstance(aParameters);
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         if (D1) e.printStackTrace(GTLog.err);
                     }
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
             }
         } else {
             try {
                 return aClass.getConstructors()[aConstructorIndex].newInstance(aParameters);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (aLogErrors) e.printStackTrace(GTLog.err);
             }
         }
@@ -630,21 +630,21 @@ public class GTUtility {
                 Class<IItemDuct> tClass = IItemDuct.class;
                 tClass.getCanonicalName();
                 TE_CHECK = true;
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (D1) e.printStackTrace(GTLog.err);
             }
             try {
                 Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                 tClass.getCanonicalName();
                 RF_CHECK = true;
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 if (D1) e.printStackTrace(GTLog.err);
             }
             CHECK_ALL = false;
@@ -1848,7 +1848,7 @@ public class GTUtility {
             && !HazardProtection.isWearingFullHeatHazmat(aEntity)) {
             try {
                 return aEntity.attackEntityFrom(source, aDamage);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error("Error damaging entity", t);
             }
         }
@@ -2190,7 +2190,7 @@ public class GTUtility {
                 tMap = (Map<X, Y>) aMap.getClass()
                     .getMethod("clone")
                     .invoke(aMap);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GTLog.err.println("Failed to clone Map of type " + aMap.getClass());
                 e.printStackTrace(GTLog.err);
             }
@@ -2511,7 +2511,7 @@ public class GTUtility {
             if (tBlock.isBeaconBase(aWorld, aX, aY, aZ, aX, aY + 1, aZ)) tList.add(
                 EnumChatFormatting.GOLD + GTUtility.trans("166", "Is valid Beacon Pyramid Material")
                     + EnumChatFormatting.RESET);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this block's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2540,7 +2540,7 @@ public class GTUtility {
                             + EnumChatFormatting.RESET);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this tile's fluid tank info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2556,7 +2556,7 @@ public class GTUtility {
                 final ArrayList<String> temp = debugableBlock.getDebugInfo(aPlayer, aX, aY, aZ, 3);
                 if (temp != null) tList.addAll(temp);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this block's debug info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2611,7 +2611,7 @@ public class GTUtility {
                     tree.addTooltip(tList);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this leaves' info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2663,7 +2663,7 @@ public class GTUtility {
                             .discoveredBy());
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this crop's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2675,7 +2675,7 @@ public class GTUtility {
             if (tTileEntity instanceof IGregTechDeviceInformation info && info.isGivingInformation()) {
                 tList.addAll(Arrays.asList(info.getInfoData()));
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2689,7 +2689,7 @@ public class GTUtility {
                         + gtTE.getOwnerName()
                         + EnumChatFormatting.RESET);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's owner.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2732,7 +2732,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET
                         + " EU");
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's energy info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2747,7 +2747,7 @@ public class GTUtility {
                     .getDescription();
                 if (tString != null && !tString.equals(E)) tList.add(tString);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's covers.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2779,7 +2779,7 @@ public class GTUtility {
                         + formatNumbers(tValue)
                         + EnumChatFormatting.RESET);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's progress.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2794,7 +2794,7 @@ public class GTUtility {
                 if (upgradableMachine.isMuffled()) tList
                     .add(EnumChatFormatting.GREEN + GTUtility.trans("177", "Is Muffled") + EnumChatFormatting.RESET);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's upgrades.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2816,7 +2816,7 @@ public class GTUtility {
                         + EnumChatFormatting.RESET
                         + " EU");
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's IC2 energy info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2833,7 +2833,7 @@ public class GTUtility {
                         + conductor.getConductionLoss()
                         + EnumChatFormatting.RESET);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's EU conduction info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2861,7 +2861,7 @@ public class GTUtility {
                         : EnumChatFormatting.RED + GTUtility.trans("174", "You can NOT remove this with a Wrench")
                             + EnumChatFormatting.RESET);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's IC@ wrenchability.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2881,7 +2881,7 @@ public class GTUtility {
                             + EnumChatFormatting.RESET);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this device's alignment info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
@@ -2906,7 +2906,7 @@ public class GTUtility {
                         + reactor.getHeatEffectModifier()
                         + EnumChatFormatting.RESET);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             tList.add("§cAn exception was thrown while fetching this reactor's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }

@@ -274,7 +274,7 @@ public class GTItemIterator implements Runnable {
 
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             /**/
         }
     }

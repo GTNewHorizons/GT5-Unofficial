@@ -665,7 +665,7 @@ public class Material implements IOreMaterial {
             Logger.MATERIALS("Mass: " + this.vMass + "/units");
             Logger.MATERIALS("Melting Point: " + this.meltingPointC + "C.");
             Logger.MATERIALS("Boiling Point: " + this.boilingPointC + "C.");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.MATERIALS("Stack Trace for " + materialName);
             t.printStackTrace();
         }
@@ -1168,7 +1168,7 @@ public class Material implements IOreMaterial {
             if (x != null) {
                 return x;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         // Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
@@ -1221,7 +1221,7 @@ public class Material implements IOreMaterial {
                 try {
                     testNull = this.vMaterialInput.get(i)
                         .getValidStack();
-                } catch (final Throwable r) {
+                } catch (final Exception r) {
                     Logger.MATERIALS("Failed gathering material stack for " + this.localizedName + ".");
                     Logger.MATERIALS("What Failed: Length:" + this.vMaterialInput.size() + " current:" + i);
                 }
@@ -1231,7 +1231,7 @@ public class Material implements IOreMaterial {
                         temp[i] = this.vMaterialInput.get(i)
                             .getValidStack();
                     }
-                } catch (final Throwable r) {
+                } catch (final Exception r) {
                     Logger.MATERIALS("Failed setting slot " + i + ", using " + this.localizedName);
                 }
             }
@@ -1561,7 +1561,7 @@ public class Material implements IOreMaterial {
             } else {
                 return Materials.Steel.mRGBa;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return Materials.Steel.mRGBa;
         }
