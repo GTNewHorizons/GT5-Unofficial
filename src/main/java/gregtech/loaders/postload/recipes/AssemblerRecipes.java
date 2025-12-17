@@ -54,6 +54,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -6741,6 +6743,66 @@ public class AssemblerRecipes implements Runnable {
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_CASING, 16),
+                new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 64),
+                ItemList.Sensor_UV.get(1),
+                ItemList.Naquarite_Universal_Insulator_Foil.get(16))
+            .itemOutputs(ItemList.ColliderCasing.get(16))
+            .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(64 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2),
+                ItemRefer.Field_Restriction_Coil_T1.get(1))
+            .itemOutputs(ItemList.BeamStabilizer.get(1))
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 4),
+                GTUtility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2))
+            .itemOutputs(ItemList.BeamMirror.get(1))
+            .fluidInputs(Materials.Grade6PurifiedWater.getFluid(1000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.NIOBIUM_CAVITY_CASING, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2),
+                ItemRefer.Field_Restriction_Coil_T1.get(1))
+            .itemOutputs(ItemList.BeamStabilizer.get(1))
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(2000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 4),
+                GTUtility.copyAmount(8, LanthItemList.BEAMLINE_PIPE),
+                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlateDense(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit.get(Materials.UHV), 2))
+            .itemOutputs(ItemList.BeamMirror.get(1))
+            .fluidInputs(Materials.Grade5PurifiedWater.getFluid(2000L))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(assemblerRecipes);
+
     }
 
     public void withIC2NuclearControl() {
