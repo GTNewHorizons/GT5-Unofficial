@@ -239,7 +239,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 HatchElementBuilder.<TileEntitySpaceElevator>builder()
                     .atLeast(ElevatorUtil.ProjectModuleElement.ProjectModule)
                     .casingIndex(CASING_INDEX_BASE)
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing or project module
             .build();
     // spotless:on

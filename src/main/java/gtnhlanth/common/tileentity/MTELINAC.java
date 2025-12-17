@@ -123,14 +123,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(3)
+                    .hint(3)
                     .adder(MTELINAC::addBeamLineInputHatch)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTELINAC::addBeamLineOutputHatch)
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
@@ -141,13 +141,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 'h',
                 buildHatchAdder(MTELINAC.class).atLeast(InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .build())
             .addElement(
                 'j',
                 buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
             .build();
     }
