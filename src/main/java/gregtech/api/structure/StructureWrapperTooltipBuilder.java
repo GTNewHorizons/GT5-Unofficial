@@ -178,7 +178,8 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     /**
      * Add a hatch line manually.
      */
-    public StructureWrapperTooltipBuilder<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch, int... hintNumbers) {
+    public StructureWrapperTooltipBuilder<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch,
+        int... hintNumbers) {
         String nameOverride = hatchNameOverrides.get(hatch);
 
         String info = hatchInfoOverrides.get(hatch);
