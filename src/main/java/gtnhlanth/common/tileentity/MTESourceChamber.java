@@ -81,26 +81,26 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 'b',
                 buildHatchAdder(MTESourceChamber.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTESourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
                 buildHatchAdder(MTESourceChamber.class).atLeast(InputBus)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .build())
             .addElement(
                 'd',
                 buildHatchAdder(MTESourceChamber.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
-                    .dot(3)
+                    .hint(3)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
 
             .build();

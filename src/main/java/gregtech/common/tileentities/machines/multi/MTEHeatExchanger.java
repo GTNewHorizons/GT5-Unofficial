@@ -80,7 +80,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             'c',
             buildHatchAdder(MTEHeatExchanger.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEHeatExchanger::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, (byte) 2))))
         .build();

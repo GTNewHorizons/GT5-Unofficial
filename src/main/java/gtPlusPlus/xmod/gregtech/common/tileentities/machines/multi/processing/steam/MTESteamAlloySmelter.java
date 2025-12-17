@@ -110,12 +110,12 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
                     'C',
                     ofChain(
                         buildSteamInput(MTESteamAlloySmelter.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTESteamAlloySmelter.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
