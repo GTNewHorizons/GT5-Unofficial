@@ -33,11 +33,10 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
             aNameRegional,
             aTier,
             0,
-            new String[] { "Grants creative flight to those wearing a MagLev Harness.",
+            new String[] { "Grants creative flight to anyone wearing a MagLev Harness.",
                 "Range is a cube centered on the pylon.",
                 String.format("Unpowered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, false)),
-                String.format("Powered Range: %s%d blocks", EnumChatFormatting.WHITE, getPylonRange(aTier, true)),
-                String.format("Cost: %s%d EU/t if tethered", EnumChatFormatting.WHITE, getPylonPowerCost(aTier)), });
+                String.format("Powered Range: %s%d blocks (%s%d EU/t%s)", EnumChatFormatting.WHITE, getPylonRange(aTier, true), EnumChatFormatting.GREEN, getPylonPowerCost(aTier), EnumChatFormatting.WHITE) });
     }
 
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
