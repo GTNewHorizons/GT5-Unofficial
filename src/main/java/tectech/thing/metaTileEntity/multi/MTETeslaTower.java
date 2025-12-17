@@ -1131,6 +1131,11 @@ public class MTETeslaTower extends TTMultiblockBase
         return new MTETeslaTowerGui(this);
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private enum CapacitorHatchElement implements IHatchElement<MTETeslaTower> {
 
         INSTANCE;
