@@ -881,5 +881,46 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
 
+        // Drone remote interface
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.TierdDrone2.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 16),
+                ItemList.Cover_Screen.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
+                ItemList.Field_Generator_UHV.get(4),
+                ItemList.Sensor_UHV.get(8),
+                ItemList.Emitter_UHV.get(8),
+                ItemList.TierdDrone2.get(1),
+                ItemList.Tool_DataOrb.get(4))
+            .itemOutputs(ItemList.DroneRemoteInterface.get(1))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
+                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(2_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(AssemblyLine);
+
+        // Drone T4
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.DroneRemoteInterface.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UIV))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 16),
+                new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 },
+                ItemList.Field_Generator_UIV.get(16),
+                ItemList.NuclearStar.get(8),
+                ItemList.Emitter_UIV.get(4),
+                ItemList.EnergisedTesseract.get(4),
+                ItemList.ZPM3.get(1),
+                ItemList.SpaceElevatorMotorT4.get(64))
+            .itemOutputs(ItemList.TierdDrone3.get(1))
+            .fluidInputs(
+                Materials.DimensionallyShiftedSuperfluid.getFluid(16 * STACKS),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(AssemblyLine);
     }
 }
