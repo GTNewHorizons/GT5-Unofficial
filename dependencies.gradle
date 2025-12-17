@@ -129,13 +129,6 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.+")
     testImplementation("com.github.GTNewHorizons:Chisel:2.17.7-GTNH:dev") { transitive = false }
 
-    functionalTestImplementation(platform('org.junit:junit-bom:5.14.1'))
-    functionalTestImplementation('org.junit.jupiter:junit-jupiter')
-    functionalTestRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    functionalTestImplementation('org.junit.platform:junit-platform-engine')
-    functionalTestImplementation('org.junit.platform:junit-platform-launcher')
-    functionalTestImplementation('org.junit.platform:junit-platform-reporting')
-
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.4.0:dev")
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.8:dev')
 
@@ -147,6 +140,17 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
+}
+
+afterEvaluate {
+    dependencies {
+        functionalTestImplementation(platform('org.junit:junit-bom:5.14.1'))
+        functionalTestImplementation('org.junit.jupiter:junit-jupiter')
+        functionalTestRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        functionalTestImplementation('org.junit.platform:junit-platform-engine')
+        functionalTestImplementation('org.junit.platform:junit-platform-launcher')
+        functionalTestImplementation('org.junit.platform:junit-platform-reporting')
+    }
 }
 
 // deps may transitively add Baubles, so we replace it
