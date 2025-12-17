@@ -196,7 +196,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                     'C',
                     buildHatchAdder(MTELargeSemifluidGenerator.class).atLeast(Muffler, InputHatch, Maintenance)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
                 .addElement('I', ofBlock(getIntakeBlock(), getIntakeMeta()))

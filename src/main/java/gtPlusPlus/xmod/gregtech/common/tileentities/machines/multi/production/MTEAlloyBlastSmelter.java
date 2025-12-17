@@ -112,7 +112,7 @@ public class MTEAlloyBlastSmelter extends GTPPMultiBlockBase<MTEAlloyBlastSmelte
                     buildHatchAdder(MTEAlloyBlastSmelter.class)
                         .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.GTPP_INDEX(15))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
                 .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 14))
                 .build();

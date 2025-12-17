@@ -206,13 +206,13 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 2")
-            .addOutputBus("Hint block with dot 2")
-            .addMaintenanceHatch("Hint block with dot 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint block with dot 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint block with dot 2")
+            .addInputHatch("Hint block with hint 1")
+            .addInputBus("Hint block with hint 1")
+            .addOutputHatch("Hint block with hint 2")
+            .addOutputBus("Hint block with hint 2")
+            .addMaintenanceHatch("Hint block with hint 2")
+            .addOtherStructurePart("Neutron Accelerator", "Hint block with hint 2")
+            .addOtherStructurePart("Neutron Sensor", "Hint block with hint 2")
             .toolTipFinisher();
         return tt;
     }
@@ -233,7 +233,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                                 gregtech.api.enums.HatchElement.InputBus,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(49)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
@@ -251,7 +251,7 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                                 NeutronHatchElement.NeutronAccelerator,
                                 NeutronHatchElement.NeutronSensor)
                             .casingIndex(49)
-                            .dot(2)
+                            .hint(2)
                             .build(),
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .build();

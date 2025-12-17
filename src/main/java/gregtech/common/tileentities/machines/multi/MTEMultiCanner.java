@@ -69,7 +69,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
             buildHatchAdder(MTEMultiCanner.class)
                 .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTEMultiCanner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 13))
         .build();

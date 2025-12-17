@@ -72,7 +72,7 @@ public interface IHatchElement<T> {
         return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
-            .dot(aDot)
+            .hint(aDot)
             .continueIfSuccess()
             .exclusive()
             .build();
@@ -84,7 +84,7 @@ public interface IHatchElement<T> {
         return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
-            .dot(aDot)
+            .hint(aDot)
             .continueIfSuccess()
             .buildAndChain(com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock(casingBlock, casingMeta));
     }
@@ -94,7 +94,7 @@ public interface IHatchElement<T> {
         return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
-            .dot(aDot)
+            .hint(aDot)
             .continueIfSuccess()
             .allowOnly(allowedFacings)
             .exclusive()
@@ -107,7 +107,7 @@ public interface IHatchElement<T> {
         return GTStructureUtility.<T2>buildHatchAdder()
             .anyOf(this)
             .casingIndex(aCasingIndex)
-            .dot(aDot)
+            .hint(aDot)
             .shouldSkip(aShouldSkip)
             .continueIfSuccess()
             .build();

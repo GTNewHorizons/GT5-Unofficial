@@ -98,14 +98,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("Modulator III", 16, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Any 1 dot hint (1x)",
+                "Any 1 hint hint (1x)",
                 1)
-            .addInputHatch("Any 1 dot hint", 1)
-            .addOutputBus("Any 1 dot hint", 1)
-            .addOutputHatch("Any 1 dot hint", 1)
-            .addEnergyHatch("Any 1 dot hint", 1)
-            .addMaintenanceHatch("Any 1 dot hint", 1)
-            .addMufflerHatch("Any 1 dot hint", 1)
+            .addInputHatch("Any 1 hint hint", 1)
+            .addOutputBus("Any 1 hint hint", 1)
+            .addOutputHatch("Any 1 hint hint", 1)
+            .addEnergyHatch("Any 1 hint hint", 1)
+            .addMaintenanceHatch("Any 1 hint hint", 1)
+            .addMufflerHatch("Any 1 hint hint", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -158,14 +158,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
                                 .casingIndex(getCasingTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .hatchClass(MTEHatchElementalDataOrbHolder.class)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))))
                 .build();
