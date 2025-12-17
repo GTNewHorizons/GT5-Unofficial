@@ -315,11 +315,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint block with hint 1", 1)
-            .addEnergyHatch("1-9, Hint block with hint 2", 2)
+            .addInputHatch("1-6, Hint Block Number 1", 1)
+            .addEnergyHatch("1-9, Hint Block Number 2", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block with hint 3",
+                "16, Hint Block Number 3",
                 3)
             .toolTipFinisher();
         return tt;

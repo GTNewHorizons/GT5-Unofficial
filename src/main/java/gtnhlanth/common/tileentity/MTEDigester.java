@@ -210,12 +210,12 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
             .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch("Hint block with hint 1")
-            .addInputBus("Hint block with hint 1")
-            .addOutputHatch("Hint block with hint 1")
-            .addOutputBus("Hint block with hint 1")
-            .addMaintenanceHatch("Hint block with hint 1")
-            .addMufflerHatch("Hint block with hint 1")
+            .addInputHatch("Hint Block Number 1")
+            .addInputBus("Hint Block Number 1")
+            .addOutputHatch("Hint Block Number 1")
+            .addOutputBus("Hint Block Number 1")
+            .addMaintenanceHatch("Hint Block Number 1")
+            .addMufflerHatch("Hint Block Number 1")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

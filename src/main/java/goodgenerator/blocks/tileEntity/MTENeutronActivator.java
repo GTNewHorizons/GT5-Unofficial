@@ -206,13 +206,13 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint block with hint 1")
-            .addInputBus("Hint block with hint 1")
-            .addOutputHatch("Hint block with hint 2")
-            .addOutputBus("Hint block with hint 2")
-            .addMaintenanceHatch("Hint block with hint 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint block with hint 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint block with hint 2")
+            .addInputHatch("Hint Block Number 1")
+            .addInputBus("Hint Block Number 1")
+            .addOutputHatch("Hint Block Number 2")
+            .addOutputBus("Hint Block Number 2")
+            .addMaintenanceHatch("Hint Block Number 2")
+            .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
+            .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
             .toolTipFinisher();
         return tt;
     }

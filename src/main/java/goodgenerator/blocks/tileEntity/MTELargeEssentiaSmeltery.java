@@ -215,12 +215,12 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint block with hint 1")
-            .addInputBus("Hint block with hint 1")
-            .addInputHatch("Hint block with hint 1")
-            .addEnergyHatch("Hint block with hint 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint block with hint 1")
-            .addMufflerHatch("Hint block with hint 2")
+            .addMaintenanceHatch("Hint Block Number 1")
+            .addInputBus("Hint Block Number 1")
+            .addInputHatch("Hint Block Number 1")
+            .addEnergyHatch("Hint Block Number 1")
+            .addOtherStructurePart("Essentia Output Hatch", "Hint Block Number 1")
+            .addMufflerHatch("Hint Block Number 2")
             .toolTipFinisher();
         return tt;
     }
