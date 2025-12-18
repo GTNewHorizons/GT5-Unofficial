@@ -47,6 +47,7 @@ import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -153,7 +154,8 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (mIcons == null) {
+                if (mIcons == null && FMLLaunchHandler.side()
+                    .isClient()) {
                     mIcons = new IIcon[6];
                     Arrays.fill(mIcons, aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
                 }
