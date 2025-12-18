@@ -218,12 +218,12 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
                     'A',
                     ofChain(
                         buildSteamInput(MTESteamCentrifuge.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTESteamCentrifuge.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, OutputHatch)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
