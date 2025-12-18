@@ -162,7 +162,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
     public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
-    public static final UITexture OVERLAY_SLOT_IN = fullImage(GregTech.ID, "gui/overlay_slot/in");
     public static final UITexture OVERLAY_SLOT_OUT = fullImage(GregTech.ID, "gui/overlay_slot/out");
 
     // endregion overlay
@@ -483,7 +482,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
-    public static final UITexture OVERLAY_SLOT_MOLD = fullImage(GregTech.ID, "gui/overlay_slot/mold");
     public static final UITexture OVERLAY_BUTTON_TESLA_TOWER_CHART = UITexture.builder()
         .location(MODID, "gui/overlay_button/tesla_tower_chart")
         .build();
@@ -606,12 +604,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .fullImage()
         .location(GregTech.ID, "gui/overlay_slot/explosive")
-        .build();
-
-    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
         .build();
 
     public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.builder()
@@ -1270,9 +1262,6 @@ public final class GTGuiTextures {
         .fullImage("goodgenerator", "gui/overlay_button/precise_mode");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/autooutput_item");
-    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/autooutput_fluid");
-
     public static final UITexture OVERLAY_BUTTON_SORTING_MODE = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/sorting_mode");
     public static final UITexture OVERLAY_BUTTON_ONE_STACK_LIMIT = UITexture
