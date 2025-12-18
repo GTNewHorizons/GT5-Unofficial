@@ -209,12 +209,12 @@ public class MTESteamForgeHammer extends MTESteamMultiBase<MTESteamForgeHammer> 
                     'A',
                     ofChain(
                         buildSteamInput(MTESteamForgeHammer.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTESteamForgeHammer.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,
