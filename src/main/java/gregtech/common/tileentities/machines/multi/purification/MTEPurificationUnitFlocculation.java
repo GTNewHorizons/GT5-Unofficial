@@ -135,7 +135,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     t -> GTStructureUtility.<MTEPurificationUnitFlocculation>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(MAIN_CASING_INDEX)
-                        .dot(1)
+                        .hint(1)
                         .build()),
                 // Clean Flocculation Casing
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 6))))

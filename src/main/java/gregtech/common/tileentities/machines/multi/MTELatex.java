@@ -141,7 +141,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             buildHatchAdder(MTELatex.class)
                 .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTELatex::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
         .addElement('D', ofFrame(Materials.PolyvinylChloride))
         .build();

@@ -597,6 +597,7 @@ public class Textures {
         BLOCK_IRREIN,
         BLOCK_PLASCRETE,
         BLOCK_TSREIN,
+        BLOCK_POWDER,
 
         OVERLAY_LOCKER,
         OVERLAY_LOCKER_000,
