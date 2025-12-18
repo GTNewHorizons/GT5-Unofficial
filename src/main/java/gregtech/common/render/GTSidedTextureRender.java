@@ -16,13 +16,12 @@ public class GTSidedTextureRender extends GTTextureBase implements ITexture, ICo
      */
     private final short[] mRGBa;
 
-    protected GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2,
-        IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa, boolean aAllowAlpha) {
+    public GTSidedTextureRender(IIconContainer aIcon0, IIconContainer aIcon1, IIconContainer aIcon2,
+        IIconContainer aIcon3, IIconContainer aIcon4, IIconContainer aIcon5, short[] aRGBa) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTSidedTextureRender");
-        mTextures = new ITexture[] { TextureFactory.of(aIcon0, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon1, aRGBa, aAllowAlpha), TextureFactory.of(aIcon2, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon3, aRGBa, aAllowAlpha), TextureFactory.of(aIcon4, aRGBa, aAllowAlpha),
-            TextureFactory.of(aIcon5, aRGBa, aAllowAlpha) };
+        mTextures = new ITexture[] { TextureFactory.of(aIcon0, aRGBa), TextureFactory.of(aIcon1, aRGBa),
+            TextureFactory.of(aIcon2, aRGBa), TextureFactory.of(aIcon3, aRGBa), TextureFactory.of(aIcon4, aRGBa),
+            TextureFactory.of(aIcon5, aRGBa) };
         mRGBa = aRGBa;
     }
 
