@@ -702,6 +702,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return new MTELargeMolecularAssemblerGui(this);
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private static class CraftingDisplayPoint {
 
         private final World w;

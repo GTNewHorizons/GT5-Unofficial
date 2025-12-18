@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.fluid.IFluidStore;
@@ -60,7 +61,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
     implements ISurvivalConstructable {
 
-    private Mode mMode = Mode.DistillationTower;
+    private static final int MACHINEMODE_TOWER = 0;
+    private static final int MACHINEMODE_DISTILLERY = 1;
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
@@ -262,7 +264,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         boolean check = mTopLayerFound && mHeight >= 2 && checkHatch();
         if (check && mHeight < 11) {
             // force the mode to DT if not in full height
-            mMode = Mode.DistillationTower;
+            machineMode = MACHINEMODE_TOWER;
+            setSingleRecipeCheck(null);
             mLastRecipe = null;
         }
         return check;
@@ -270,7 +273,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mMode.getRecipeMap();
+        return machineMode == MACHINEMODE_TOWER ? RecipeMaps.distillationTowerRecipes : RecipeMaps.distilleryRecipes;
     }
 
     @Nonnull
@@ -287,21 +290,39 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        if (this.mMode == Mode.Distillery)
+        if (machineMode == MACHINEMODE_DISTILLERY)
             return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
         return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mMode", (byte) mMode.ordinal());
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mMode = Mode.VALUES[aNBT.getByte("mMode")];
+        if (aNBT.hasKey("mMode")) {
+            machineMode = aNBT.getByte("mMode");
+        }
         super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (mHeight < 11) return MACHINEMODE_TOWER;
+        else return super.nextMachineMode();
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DTOWER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLERY);
     }
 
     @Override
@@ -310,8 +331,10 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             GTUtility.sendChatToPlayer(aPlayer, "Cannot switch mode if not in full height.");
             return;
         }
-        mMode = mMode.next();
-        GTUtility.sendChatToPlayer(aPlayer, "Now running in " + mMode + " Mode.");
+        setMachineMode(nextMachineMode());
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
         mLastRecipe = null;
     }
 
@@ -330,7 +353,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected void addFluidOutputs(FluidStack[] outputFluids) {
-        if (mMode == Mode.DistillationTower) {
+        if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
             for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
                 FluidStack tStack = outputFluids[i].copy();
@@ -363,15 +386,16 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier(mMode == Mode.Distillery ? 0.15F : 1F);
-        logic.setSpeedBonus(mMode == Mode.Distillery ? 1F / 2F : 1F / 3.5F);
+        logic.setEuModifier(machineMode == MACHINEMODE_DISTILLERY ? 0.15F : 1F);
+        logic.setSpeedBonus(machineMode == MACHINEMODE_DISTILLERY ? 1F / 2F : 1F / 3.5F);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return switch (mMode) {
-            case DistillationTower -> DT_MODE_MAX_PARALLELS;
-            case Distillery -> 8 * GTUtility.getTier(this.getMaxInputVoltage());
+        return switch (machineMode) {
+            case MACHINEMODE_TOWER -> DT_MODE_MAX_PARALLELS;
+            case MACHINEMODE_DISTILLERY -> 8 * GTUtility.getTier(this.getMaxInputVoltage());
+            default -> throw new IllegalStateException("Unexpected value: " + machineMode);
         };
     }
 
@@ -409,27 +433,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                     .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
-    private enum Mode {
-
-        DistillationTower(RecipeMaps.distillationTowerRecipes),
-        Distillery(RecipeMaps.distilleryRecipes),;
-
-        static final Mode[] VALUES = values();
-        private final RecipeMap<?> recipeMap;
-
-        Mode(RecipeMap<?> recipeMap) {
-            this.recipeMap = recipeMap;
-        }
-
-        public RecipeMap<?> getRecipeMap() {
-            return recipeMap;
-        }
-
-        public Mode next() {
-            return VALUES[(ordinal() + 1) % VALUES.length];
-        }
-    }
-
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
@@ -439,6 +442,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + mMode.ordinal());
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + machineMode);
     }
 }

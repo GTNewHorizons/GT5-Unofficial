@@ -833,11 +833,6 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     private enum CentrifugeHatchElement implements IHatchElement<MTEChamberCentrifuge> {
 
         ROTOR_ASSEMBLY(MTEChamberCentrifuge::addTurbineHatch, MTEHatchTurbine.class) {
