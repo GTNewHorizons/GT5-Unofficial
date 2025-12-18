@@ -78,7 +78,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                     buildHatchAdder(MTEDistillationTower.class)
                         .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
                         .casingIndex(CASING_INDEX)
-                        .dot(1)
+                        .hint(1)
                         .build(),
                     onElementPass(MTEDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
             .addElement(
@@ -86,7 +86,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                 ofChain(
                     buildHatchAdder(MTEDistillationTower.class).atLeast(layeredOutputHatch)
                         .casingIndex(CASING_INDEX)
-                        .dot(2)
+                        .hint(2)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .build(),
                     ofHatchAdder(MTEDistillationTower::addEnergyInputToMachineList, CASING_INDEX, 2),
@@ -98,7 +98,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                 'L',
                 buildHatchAdder(MTEDistillationTower.class).atLeast(layeredOutputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .disallowOnly(ForgeDirection.UP)
                     .buildAndChain(GregTechAPI.sBlockCasings4, 1))
             .addElement(

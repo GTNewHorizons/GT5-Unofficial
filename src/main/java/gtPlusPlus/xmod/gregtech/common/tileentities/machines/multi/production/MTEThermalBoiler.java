@@ -328,7 +328,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
                     buildHatchAdder(MTEThermalBoiler.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Muffler)
                         .casingIndex(TAE.getIndexFromPage(0, 1))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 11))))
                 .build();
         }

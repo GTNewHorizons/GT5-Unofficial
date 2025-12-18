@@ -2010,7 +2010,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 HatchElement.OutputData,
                 HatchElement.Uncertainty)
             .casingIndex(casingIndex)
-            .dot(dot)
+            .hint(dot)
             .buildAndChain(casingBlock, casingMeta);
     }
 
@@ -2030,7 +2030,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 HatchElement.OutputData,
                 HatchElement.Uncertainty)
             .casingIndex(casingIndex)
-            .dot(dot)
+            .hint(dot)
             .buildAndChain(casingBlock, casingMeta);
     }
 

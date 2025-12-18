@@ -337,7 +337,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             'B',
             buildHatchAdder(MTENanoForge.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
@@ -351,7 +351,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             'V',
             buildHatchAdder(MTENanoForge.class).atLeast(
                 ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))

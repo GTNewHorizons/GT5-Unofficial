@@ -95,14 +95,14 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                             .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterGenerator::addLaserSource)
                             .casingIndex(x.textureIndex(2))
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
                     'I',
                     lazy(
                         x -> buildHatchAdder(AntimatterGenerator.class).atLeast(HatchElement.InputHatch)
                             .casingIndex(x.textureIndex(1))
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(x.getCasingBlock(1), x.getCasingMeta(1))))
                 .build();
         }
@@ -398,10 +398,10 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
             .addCasingInfoMin("Naquadria Frame Box", 293, false)
             .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint block with dot 1", 1)
+            .addInputHatch("2, Hint Block Number 1", 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint Block with dot 2",
+                "1-64, Hint Block Number 2",
                 2)
             .toolTipFinisher();
         return tt;
