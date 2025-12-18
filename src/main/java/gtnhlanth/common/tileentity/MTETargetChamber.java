@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 
@@ -210,12 +210,12 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
             .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
             .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
-            .addOtherStructurePart("Focus Input Bus", addDotText(1))
-            .addMaintenanceHatch(addDotText(2))
-            .addEnergyHatch(addDotText(2))
-            .addInputBus(addDotText(3))
-            .addOutputBus(addDotText(4))
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(5))
+            .addOtherStructurePart("Focus Input Bus", addHintNumber(1))
+            .addMaintenanceHatch(addHintNumber(2))
+            .addEnergyHatch(addHintNumber(2))
+            .addInputBus(addHintNumber(3))
+            .addOutputBus(addHintNumber(4))
+            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(5))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
