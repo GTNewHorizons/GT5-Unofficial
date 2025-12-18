@@ -14,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 
@@ -84,26 +84,26 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 'b',
                 buildHatchAdder(MTESourceChamber.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTESourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
                 buildHatchAdder(MTESourceChamber.class).atLeast(InputBus, InputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .build())
             .addElement(
                 'd',
                 buildHatchAdder(MTESourceChamber.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
-                    .dot(3)
+                    .hint(3)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
 
             .build();
@@ -167,12 +167,12 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
-            .addEnergyHatch(addDotText(3))
-            .addMaintenanceHatch(addDotText(3))
-            .addInputBus(addDotText(1))
-            .addInputHatch(addDotText(1))
-            .addOutputBus(addDotText(2))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addEnergyHatch(addHintNumber(3))
+            .addMaintenanceHatch(addHintNumber(3))
+            .addInputBus(addHintNumber(1))
+            .addInputHatch(addHintNumber(1))
+            .addOutputBus(addHintNumber(2))
             .toolTipFinisher();
         return tt;
         //spotless:on
