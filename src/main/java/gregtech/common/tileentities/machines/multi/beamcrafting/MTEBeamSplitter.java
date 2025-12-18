@@ -96,21 +96,21 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
             'B', // collider casing
             buildHatchAdder(MTEBeamSplitter.class).atLeast(Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', chainAllGlasses()) // new glass type todo: (?)
         .addElement(
             'C',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(2)
+                .hint(2)
                 .adder(MTEBeamSplitter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(3)
+                .hint(3)
                 .adder(MTEBeamSplitter::addAdvancedBeamLineOutputHatch)
                 .build()) // beamline input hatch
         .build();

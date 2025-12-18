@@ -91,14 +91,14 @@ public class MTEBeamMirror
             'C',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchInputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(1)
+                .hint(1)
                 .adder(MTEBeamMirror::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(2)
+                .hint(2)
                 .adder(MTEBeamMirror::addBeamLineOutputHatch)
                 .build()) // beamline output hatch
         .build();

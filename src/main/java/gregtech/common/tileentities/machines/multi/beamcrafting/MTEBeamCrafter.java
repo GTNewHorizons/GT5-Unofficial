@@ -137,14 +137,14 @@ public class MTEBeamCrafter
             buildHatchAdder(MTEBeamCrafter.class)
                 .atLeast(Energy, ExoticEnergy, Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', chainAllGlasses()) // new glass type todo: (?)
         .addElement(
             'C',
             buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(2)
+                .hint(2)
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .build();

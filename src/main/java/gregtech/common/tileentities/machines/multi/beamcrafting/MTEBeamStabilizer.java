@@ -150,21 +150,21 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
             'B', // collider casing
             buildHatchAdder(MTEBeamStabilizer.class).atLeast(Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', chainAllGlasses()) // new glass type todo: (?)
         .addElement(
             'C',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchInputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(2)
+                .hint(2)
                 .adder(MTEBeamStabilizer::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             'D',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(3)
+                .hint(3)
                 .adder(MTEBeamStabilizer::addBeamLineOutputHatch)
                 .build()) // beamline input hatch
         .build();

@@ -2432,7 +2432,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             'C', // collider casing
             buildHatchAdder(MTELargeHadronCollider.class).atLeast(Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
         .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         .addElement('D', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -2448,35 +2448,35 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
             'F',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchInputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(2)
+                .hint(2)
                 .adder(MTELargeHadronCollider::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .addElement(
             '1',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(3)
+                .hint(3)
                 .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchEM)
                 .build()) // EM beam output hatch
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(4)
+                .hint(4)
                 .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchWeak)
                 .build()) // Weak beam output hatch
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(5)
+                .hint(5)
                 .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchStrong)
                 .build()) // Strong beam output hatch
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
-                .dot(6)
+                .hint(6)
                 .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchGrav)
                 .build()) // Grav beam output hatch
 
