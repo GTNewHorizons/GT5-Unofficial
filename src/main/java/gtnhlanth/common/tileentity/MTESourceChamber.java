@@ -13,7 +13,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 
@@ -163,11 +163,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
-            .addEnergyHatch(addDotText(3))
-            .addMaintenanceHatch(addDotText(3))
-            .addInputBus(addDotText(1))
-            .addOutputBus(addDotText(2))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addEnergyHatch(addHintNumber(3))
+            .addMaintenanceHatch(addHintNumber(3))
+            .addInputBus(addHintNumber(1))
+            .addOutputBus(addHintNumber(2))
             .toolTipFinisher();
         return tt;
         //spotless:on
