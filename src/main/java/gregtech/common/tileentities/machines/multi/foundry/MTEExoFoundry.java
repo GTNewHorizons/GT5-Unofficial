@@ -311,7 +311,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement(
             'H',
             buildHatchAdder(MTEExoFoundry.class).atLeast(InputHatch, OutputBus, InputBus, Energy.or(ExoticEnergy))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
                     onElementPass(MTEExoFoundry::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
@@ -346,7 +346,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEExoFoundry::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('q', ofFrame(Materials.Netherite))
         .addElement('r', ofBlock(GregTechAPI.sBlockGlass1, 3))
