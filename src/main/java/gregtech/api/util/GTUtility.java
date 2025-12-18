@@ -140,10 +140,13 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.mojang.authlib.GameProfile;
 
 import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
+import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
+import forestry.api.arboriculture.ITree;
+import forestry.arboriculture.tiles.TileLeaves;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -187,10 +190,16 @@ import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
+import ic2.api.crops.ICropTile;
+import ic2.api.energy.tile.IEnergyConductor;
+import ic2.api.reactor.IReactor;
+import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
+import ic2.api.tile.IEnergyStorage;
+import ic2.api.tile.IWrenchable;
 import ic2.core.IC2Potion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -626,27 +635,9 @@ public class GTUtility {
 
     public static void checkAvailabilities() {
         if (CHECK_ALL) {
-            try {
-                Class<IItemDuct> tClass = IItemDuct.class;
-                tClass.getCanonicalName();
-                TE_CHECK = true;
-            } catch (Exception e) {
-                if (D1) e.printStackTrace(GTLog.err);
-            }
-            try {
-                Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
-                tClass.getCanonicalName();
-                BC_CHECK = true;
-            } catch (Exception e) {
-                if (D1) e.printStackTrace(GTLog.err);
-            }
-            try {
-                Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
-                tClass.getCanonicalName();
-                RF_CHECK = true;
-            } catch (Exception e) {
-                if (D1) e.printStackTrace(GTLog.err);
-            }
+            TE_CHECK = ModAPIManager.INSTANCE.hasAPI("CoFHAPI|transport");
+            BC_CHECK = ModAPIManager.INSTANCE.hasAPI("BuildCraftAPI|transport");
+            RF_CHECK = ModAPIManager.INSTANCE.hasAPI("CoFHAPI|energy");
             CHECK_ALL = false;
         }
     }
@@ -655,9 +646,8 @@ public class GTUtility {
         if (tileEntity == null) return false;
         checkAvailabilities();
         if (TE_CHECK && tileEntity instanceof IItemDuct) return true;
-        if (BC_CHECK && tileEntity instanceof buildcraft.api.transport.IPipeTile pipeTile)
-            return pipeTile.isPipeConnected(side);
-        return Translocator.isModLoaded() && tileEntity instanceof codechicken.translocator.TileItemTranslocator;
+        if (BC_CHECK && tileEntity instanceof IPipeTile pipeTile) return pipeTile.isPipeConnected(side);
+        return Translocator.isModLoaded() && tileEntity instanceof TileItemTranslocator;
     }
 
     public static List<ItemStack> wrapInventory(IInventory inv) {
@@ -1232,16 +1222,15 @@ public class GTUtility {
     }
 
     public static synchronized boolean removeIC2BottleRecipe(ItemStack aContainer, ItemStack aInput,
-        Map<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
+        Map<ICannerBottleRecipeManager.Input, RecipeOutput> aRecipeList, ItemStack aOutput) {
         if ((isStackInvalid(aInput) && isStackInvalid(aOutput) && isStackInvalid(aContainer)) || aRecipeList == null)
             return false;
         boolean rReturn = false;
-        Iterator<Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList
-            .entrySet()
+        Iterator<Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput>> tIterator = aRecipeList.entrySet()
             .iterator();
         aOutput = GTOreDictUnificator.get(aOutput);
         while (tIterator.hasNext()) {
-            Map.Entry<ic2.api.recipe.ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
+            Map.Entry<ICannerBottleRecipeManager.Input, RecipeOutput> tEntry = tIterator.next();
             if (aInput == null || tEntry.getKey()
                 .matches(aContainer, aInput)) {
                 List<ItemStack> tList = tEntry.getValue().items;
@@ -2602,9 +2591,8 @@ public class GTUtility {
     private static int addForestryLeavesInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (Mods.Forestry.isModLoaded()
-                && tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
-                final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
+            if (Mods.Forestry.isModLoaded() && tTileEntity instanceof TileLeaves tileLeaves) {
+                final ITree tree = tileLeaves.getTree();
                 if (tree != null) {
                     rEUAmount += 1000;
                     if (!tree.isAnalyzed()) tree.analyze();
@@ -2621,7 +2609,7 @@ public class GTUtility {
     private static int addIC2CropInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof ic2.api.crops.ICropTile crop) {
+            if (tTileEntity instanceof ICropTile crop) {
                 rEUAmount += 1000;
                 if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                 if (crop.getCrop() != null) {
@@ -2804,7 +2792,7 @@ public class GTUtility {
     private static int addIC2EnergyStorageInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof ic2.api.tile.IEnergyStorage storage) {
+            if (tTileEntity instanceof IEnergyStorage storage) {
                 rEUAmount += 200;
                 tList.add(
                     GTUtility.trans("176", "Contained Energy: ") + EnumChatFormatting.YELLOW
@@ -2826,7 +2814,7 @@ public class GTUtility {
     private static int addIC2EnergyConductorInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof ic2.api.energy.tile.IEnergyConductor conductor) {
+            if (tTileEntity instanceof IEnergyConductor conductor) {
                 rEUAmount += 200;
                 tList.add(
                     GTUtility.trans("175", "Conduction Loss: ") + EnumChatFormatting.YELLOW
@@ -2843,7 +2831,7 @@ public class GTUtility {
     private static int addIC2WrenchableInfo(EntityPlayer aPlayer, ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof ic2.api.tile.IWrenchable wrenchable) {
+            if (tTileEntity instanceof IWrenchable wrenchable) {
                 rEUAmount += 100;
                 tList.add(
                     GTUtility.trans("171", "Facing: ") + EnumChatFormatting.GREEN
@@ -2891,7 +2879,7 @@ public class GTUtility {
     private static int addReactorInfo(ArrayList<String> tList, TileEntity tTileEntity) {
         int rEUAmount = 0;
         try {
-            if (tTileEntity instanceof ic2.api.reactor.IReactor reactor) {
+            if (tTileEntity instanceof IReactor reactor) {
                 rEUAmount += 500;
                 tList.add(
                     GTUtility.trans("168", "Heat: ") + EnumChatFormatting.GREEN
@@ -3072,8 +3060,7 @@ public class GTUtility {
      * Check if stack has enough items of given gregtech material (will be oredicted) and subtract from stack, if
      * there's no creative or 111 stack.
      */
-    public static boolean consumeItems(EntityPlayer player, ItemStack stack, gregtech.api.enums.Materials mat,
-        int count) {
+    public static boolean consumeItems(EntityPlayer player, ItemStack stack, Materials mat, int count) {
         if (stack != null && GTOreDictUnificator.getItemData(stack).mMaterial.mMaterial == mat
             && stack.stackSize >= count) {
             if ((!player.capabilities.isCreativeMode) && (stack.stackSize != 111)) stack.stackSize -= count;
@@ -3337,15 +3324,7 @@ public class GTUtility {
             if (aFluid != null) tData.append(aFluid.amount)
                 .append(",")
                 .append(aFluid.getLocalizedName())
-                .append(","); // TODO
-            // CHECK
-            // IF
-            // THAT
-            // /5000
-            // is
-            // needed
-            // (Not
-            // needed)
+                .append(",");
             for (String tString : aOres) {
                 tData.append(tString)
                     .append(",");
