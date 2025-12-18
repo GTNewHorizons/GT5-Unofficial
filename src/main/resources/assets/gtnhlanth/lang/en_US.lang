@@ -8,7 +8,7 @@ gtnhlanth.tt.beaminfo=Use a §bportable scanner §7for info about the input/outp
 gtnhlanth.tt.blueprint=Follow the §9Structure§2Lib §7hologram projector to build the main structure.
 gtnhlanth.tt.pc=§6Partially consumed: §7Takes damage in the process
 
-gtnhlanth.tt.hintNumber=Hint block with dot %s
+gtnhlanth.tt.hintNumber=Hint block with number %s
 
 GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
 GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
