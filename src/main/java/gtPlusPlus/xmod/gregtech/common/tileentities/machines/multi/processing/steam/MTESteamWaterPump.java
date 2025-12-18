@@ -145,12 +145,12 @@ public class MTESteamWaterPump extends MTESteamMultiBase<MTESteamWaterPump> impl
                         ofChain(
                             buildSteamInput(MTESteamWaterPump.class)
                                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(2))
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             buildHatchAdder(MTESteamWaterPump.class)
                                 .atLeast(OutputHatch)
                                 .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(2))
-                                .dot(1)
+                                .hint(1)
                                 .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings9, 2)))
                         )
                     )

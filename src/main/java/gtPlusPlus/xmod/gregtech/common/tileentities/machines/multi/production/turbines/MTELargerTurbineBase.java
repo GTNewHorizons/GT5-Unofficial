@@ -90,7 +90,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                         t -> buildHatchAdder(MTELargerTurbineBase.class).adder(MTELargerTurbineBase::addTurbineHatch)
                             .hatchClass(MTEHatchTurbine.class)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build()))
                 .addElement(
                     'h',
@@ -98,7 +98,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                         t -> buildHatchAdder(MTELargerTurbineBase.class)
                             .atLeast(InputBus, InputHatch, OutputHatch, Dynamo.or(TTDynamo), Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(4)
+                            .hint(4)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                 .addElement(
                     'm',
@@ -163,17 +163,17 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addCasingInfoMin("Turbine Shaft", 30, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
-                "Any 1 dot hint",
+                "Hint Block Number 1",
                 1)
-            .addInputBus("Any 4 dot hint (min 1)", 4)
-            .addInputHatch("Any 4 dot hint(min 1)", 4);
+            .addInputBus("Hint Block Number 4 (Min 1)", 4)
+            .addInputHatch("Hint Block Number 4 (Min 1)", 4);
         if (requiresOutputHatch()) {
-            tt.addOutputHatch("Any 4 dot hint(min 1)", 4);
+            tt.addOutputHatch("Hint Block Number 4 (Min 1)", 4);
         }
-        tt.addDynamoHatch("Any 4 dot hint(min 1)", 4)
-            .addMaintenanceHatch("Any 4 dot hint(min 1)", 4);
+        tt.addDynamoHatch("Hint Block Number 4 (Min 1)", 4)
+            .addMaintenanceHatch("Hint Block Number 4 (Min 1)", 4);
         if (requiresMufflers()) {
-            tt.addMufflerHatch("Any 7 dot hint (x4)", 7);
+            tt.addMufflerHatch("Hint Block Number 7 (x4)", 7);
         }
         tt.toolTipFinisher();
         return tt;

@@ -164,12 +164,12 @@ public class MTESteamMacerator extends MTESteamMultiBase<MTESteamMacerator> impl
                     'C',
                     ofChain(
                         buildSteamInput(MTESteamMacerator.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTESteamMacerator.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(),
                         ofBlocksTiered(
                             this::getTierMachineCasing,

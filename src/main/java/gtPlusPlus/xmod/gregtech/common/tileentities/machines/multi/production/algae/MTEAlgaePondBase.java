@@ -146,7 +146,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     ofChain(
                         buildHatchAdder(MTEAlgaePondBase.class).atLeast(InputHatch, InputBus, OutputBus)
                             .casingIndex(TAE.getIndexFromPage(1, 15))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(
                             x -> ++x.mCasing,
