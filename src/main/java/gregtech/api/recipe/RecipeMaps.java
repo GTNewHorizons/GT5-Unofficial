@@ -1379,7 +1379,7 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_BEAMCRAFTER)
         .progressBarSize(50, 30)
         .build();
-      
+
     public static final RecipeMap<RecipeMapBackend> cauldronRecipe = RecipeMapBuilder
         .of("gt.recipe.cauldron", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
