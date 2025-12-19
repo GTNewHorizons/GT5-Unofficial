@@ -2,6 +2,7 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
+import appeng.api.parts.IFacadeControl;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -30,7 +31,7 @@ import gregtech.common.render.GTRendererBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
-public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures {
+public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures, IFacadeControl {
 
     private final Int2ObjectFunction<IOreMaterial> materials;
     private final int maxMeta;
@@ -145,5 +146,10 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
                 .duration(10)
                 .addTo(RecipeMaps.benderRecipes);
         }
+    }
+
+    @Override
+    public boolean createFacadeForBlock(int meta) {
+        return false;
     }
 }
