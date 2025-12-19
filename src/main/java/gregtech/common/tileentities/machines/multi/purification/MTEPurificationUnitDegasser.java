@@ -97,7 +97,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                     t -> GTStructureUtility.<MTEPurificationUnitDegasser>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch, SpecialHatchElement.ControlHatch))
                         .casingIndex(CASING_INDEX_MAIN)
-                        .dot(1)
+                        .hint(1)
                         .cacheHint(() -> "Input Hatch, Output Hatch, Control Hatch")
                         .build()),
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))

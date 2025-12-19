@@ -74,7 +74,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                         t -> buildHatchAdder(MTEDieselEngine.class)
                             .atLeast(InputHatch, InputHatch, InputHatch, Muffler, Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }

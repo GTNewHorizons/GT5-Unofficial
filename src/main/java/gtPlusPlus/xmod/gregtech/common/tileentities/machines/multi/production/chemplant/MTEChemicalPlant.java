@@ -162,7 +162,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Any catalyst must be placed in the catalyst housing")
             .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
             .addController("Bottom Center")
-            .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
+            .addOtherStructurePart("Catalyst Housing", "Any Casing")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -226,7 +226,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     ofChain(
                         buildHatchAdder(MTEChemicalPlant.class).atLeast(Maintenance)
                             .casingIndex(getCasingTextureID())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
                             .adder(MTEChemicalPlant::addChemicalPlantList)
@@ -235,13 +235,13 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                                     Integer.MIN_VALUE,
                                     s.stackSize >= 10 ? Integer.MAX_VALUE : s.stackSize))
                             .casingIndex(getCasingTextureID())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
                             .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         allCasingsElement))
                 .addElement(
