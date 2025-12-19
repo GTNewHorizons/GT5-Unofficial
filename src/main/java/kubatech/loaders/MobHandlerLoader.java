@@ -20,6 +20,7 @@
 
 package kubatech.loaders;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.InfernalMobs;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
@@ -238,8 +239,8 @@ public class MobHandlerLoader {
         if (recipe != null) {
             event.additionalInformation.addAll(
                 Arrays.asList(
-                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+                    GTUtility.trans("153", "Usage: ") + formatNumber(recipe.mEUt) + " EU/t",
+                    GTUtility.trans("158", "Time: ") + formatNumber(recipe.mDuration / 20d) + " secs"));
         }
     }
 }

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -48,7 +49,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -122,7 +122,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     public String[] getExtraInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
             + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(mHeatingCapacity.getHeat())
+            + formatNumber(mHeatingCapacity.getHeat())
             + EnumChatFormatting.RESET
             + " K" };
     }

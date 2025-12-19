@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 import static gregtech.api.util.GTUtility.trans;
@@ -17,7 +18,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
@@ -63,10 +63,10 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
             default -> "T1-T3";
         };
 
-        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t");
+        recipeInfo.drawText(trans("152", "Total: ") + formatNumber(eut * duration) + " EU");
+        recipeInfo.drawText(trans("153", "Usage: ") + formatNumber(eut) + " EU/t");
         recipeInfo.drawText(
-            trans("158", "Time: ") + GTUtility.formatNumbers(duration / 20d)
+            trans("158", "Time: ") + formatNumber(duration / 20d)
                 + " secs"
                 + (duration < 20 ? " (" + duration + " ticks)" : ""));
         recipeInfo.drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmamultistep") + ": " + multistep);

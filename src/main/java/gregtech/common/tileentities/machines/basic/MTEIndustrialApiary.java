@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
@@ -1233,7 +1234,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             .widget(
                 new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
                     .setGTTooltip(() -> {
-                        final String energyreq = GTUtility.formatNumbers(
+                        final String energyreq = formatNumber(
                             (int) ((float) MTEIndustrialApiary.baseEUtUsage * getEnergyModifier() * getAcceleration())
                                 + getAdditionalEnergyUsage());
                         // The localization in Forestry is written like this.
@@ -1295,7 +1296,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     () -> mTooltipCache.getUncachedTooltipData(
                         mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
                         getAcceleration(),
-                        GTUtility.formatNumbers(getAdditionalEnergyUsage())))
+                        formatNumber(getAdditionalEnergyUsage())))
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> mSpeed = val),
                     builder,

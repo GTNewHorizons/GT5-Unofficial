@@ -1,5 +1,7 @@
 package gregtech.api.recipe.check;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -9,8 +11,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
-
-import gregtech.api.util.GTUtility;
 
 public class ResultInsufficientStartupPower implements CheckRecipeResult {
 
@@ -35,9 +35,8 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
     @Nonnull
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.insufficient_startup_power",
-                GTUtility.formatNumbers(required)));
+            StatCollector
+                .translateToLocalFormatted("GT5U.gui.text.insufficient_startup_power", formatNumber(required)));
     }
 
     @Override

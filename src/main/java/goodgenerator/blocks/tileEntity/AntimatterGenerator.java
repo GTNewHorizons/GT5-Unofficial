@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -335,7 +336,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             .addInfo("Any excess EU generated will be " + EnumChatFormatting.RED + "voided!" + EnumChatFormatting.GRAY)
             .addInfo(
                 "Cannot produce more than " + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(Long.MAX_VALUE)
+                    + formatNumber(Long.MAX_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU per cycle")
             .addSeparator()
@@ -369,7 +370,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     + EnumChatFormatting.GRAY
                     + " base value: "
                     + EnumChatFormatting.GREEN
-                    + GTUtility.scientificFormat(ANTIMATTER_FUEL_VALUE)
+                    + formatNumber(ANTIMATTER_FUEL_VALUE)
                     + EnumChatFormatting.GRAY
                     + " EU/L")
             .addInfo(
@@ -466,35 +467,35 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
+                + formatNumber(mProgresstime)
                 + EnumChatFormatting.RESET
                 + "t / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
+                + formatNumber(mMaxProgresstime)
                 + EnumChatFormatting.RESET
                 + "t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(this.euLastCycle)
+                + formatNumber(this.euLastCycle)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
+                + formatNumber(Math.ceil(this.annihilationEfficiency * 100))
                 + EnumChatFormatting.RESET
                 + " %",
             StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+                + formatNumber(Math.ceil(this.avgEffCache * 100))
                 + EnumChatFormatting.RESET
                 + " % ⟩₁₀" };
     }
@@ -546,7 +547,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         currentTip.add(
             StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
                 + EnumChatFormatting.BLUE
-                + GTUtility.scientificFormat(energyProducedCache)
+                + formatNumber(energyProducedCache)
                 + EnumChatFormatting.WHITE
                 + " EU");
         currentTip.add(

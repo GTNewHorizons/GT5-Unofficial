@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -535,7 +537,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 0);
-                    return tString == null ? GTUtility.formatNumbers(mGateData[0]) : tString;
+                    return tString == null ? formatNumber(mGateData[0]) : tString;
                 }
                 return "";
             })
@@ -546,7 +548,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 1);
-                    return tString == null ? GTUtility.formatNumbers(mGateData[1]) : tString;
+                    return tString == null ? formatNumber(mGateData[1]) : tString;
                 }
                 return "";
             })
@@ -557,7 +559,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 2);
-                    return tString == null ? GTUtility.formatNumbers(mGateData[2]) : tString;
+                    return tString == null ? formatNumber(mGateData[2]) : tString;
                 }
                 return "";
             })
@@ -568,7 +570,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                 CircuitryBehavior tCircuit = GregTechAPI.sCircuitryBehaviors.get(mGate);
                 if (tCircuit != null) {
                     String tString = tCircuit.getDataDisplay(mGateData, 3);
-                    return tString == null ? GTUtility.formatNumbers(mGateData[3]) : tString;
+                    return tString == null ? formatNumber(mGateData[3]) : tString;
                 }
                 return "";
             })

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.LOCKERS;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_IN;
@@ -207,7 +208,7 @@ public class MTELocker extends MTETieredMachineBlock {
         final NBTTagCompound tag = accessor.getNBTData();
 
         for (int i = 0; i < 4; i++) {
-            final String index = GTUtility.formatNumbers(i + 1);
+            final String index = formatNumber(i + 1);
 
             if (tag.hasKey(CHARGE_SLOT_WAILA_TAG + i)) {
                 final ItemStack slotItem = ItemStack
@@ -239,7 +240,7 @@ public class MTELocker extends MTETieredMachineBlock {
                                 index,
                                 slotItem.getDisplayName(),
                                 chargeFormat,
-                                GTUtility.formatNumbers(ratio * 100));
+                                formatNumber(ratio * 100));
                         })
                         .orElseGet(
                             // Lazy initialization

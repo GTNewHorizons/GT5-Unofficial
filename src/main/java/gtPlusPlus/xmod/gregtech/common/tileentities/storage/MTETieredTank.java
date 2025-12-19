@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +36,7 @@ public class MTETieredTank extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            "Stores " + GTUtility.formatNumbers(((int) (GTUtility.powInt(2, aTier) * 32000))) + "L of fluid");
+            "Stores " + formatFluid(((int) (GTUtility.powInt(2, aTier) * 32000))) + " of fluid");
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
@@ -85,10 +87,7 @@ public class MTETieredTank extends MTEBasicTank {
                     GTLanguageManager.addStringLocalization(
                         "TileEntity_TANK_AMOUNT",
                         "Fluid Amount: ",
-                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tContents.amount)
-                        + " L"
-                        + EnumChatFormatting.GRAY);
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN + formatFluid(tContents.amount));
             }
         }
     }

@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.trans;
 import static tectech.loader.recipe.Godforge.magmatterItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterSpaceFluidItemsForNEI;
@@ -21,7 +22,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
@@ -70,9 +70,9 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
     protected void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
-        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t");
-        recipeInfo.drawText(trans("158", "Time: ") + GTUtility.formatNumbers(duration / 20) + " secs");
+        recipeInfo.drawText(trans("152", "Total: ") + formatNumber(eut * duration) + " EU");
+        recipeInfo.drawText(trans("153", "Usage: ") + formatNumber(eut) + " EU/t");
+        recipeInfo.drawText(trans("158", "Time: ") + formatNumber(duration / 20) + " secs");
 
     }
 

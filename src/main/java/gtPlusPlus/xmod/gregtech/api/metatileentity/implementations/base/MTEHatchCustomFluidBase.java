@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_STEAM_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
@@ -37,7 +38,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
+            new String[] { "Fluid Input for Multiblocks", "Capacity: " + formatFluid(aAmount) });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }

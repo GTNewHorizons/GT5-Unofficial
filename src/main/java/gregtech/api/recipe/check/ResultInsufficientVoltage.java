@@ -1,5 +1,7 @@
 package gregtech.api.recipe.check;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -37,7 +39,7 @@ public class ResultInsufficientVoltage implements CheckRecipeResult {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_voltage",
-                GTUtility.formatNumbers(required),
+                formatNumber(required),
                 GTUtility.getColoredTierNameFromVoltage(required)));
     }
 

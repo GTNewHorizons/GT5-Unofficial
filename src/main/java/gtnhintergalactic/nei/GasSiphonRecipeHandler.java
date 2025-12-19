@@ -1,5 +1,7 @@
 package gtnhintergalactic.nei;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Rectangle;
 import java.util.Map;
 
@@ -217,7 +219,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(GTUtility.translate(recipe.planet), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(Integer.toString(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(formatNumber(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
