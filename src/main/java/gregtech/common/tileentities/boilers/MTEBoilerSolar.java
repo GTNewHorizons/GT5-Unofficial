@@ -76,7 +76,7 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[4][17][];
+        ITexture[][][] rTextures = new ITexture[5][17][];
         for (int color = -1; color < 16; color++) {
             int i = color + 1;
             short[] colorModulation = Dyes.getModulation(color);
@@ -88,6 +88,8 @@ public class MTEBoilerSolar extends MTEBoiler {
                 TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation) };
             rTextures[3][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation),
                 TextureFactory.of(BlockIcons.OVERLAY_PIPE) };
+            rTextures[4][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
+                TextureFactory.of(BlockIcons.BOILER_SOLAR_CALCIFIED) };
         }
         return rTextures;
     }
@@ -99,6 +101,12 @@ public class MTEBoilerSolar extends MTEBoiler {
         if ((sideDirection.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0) { // Horizontal
             if (sideDirection != facingDirection) return mTextures[2][i];
             return mTextures[3][i];
+        }
+        if (sideDirection == ForgeDirection.UP) {
+            if (isCalcified()) {
+                return mTextures[4][i];
+            }
+            return mTextures[1][i];
         }
         return mTextures[sideDirection.ordinal()][i];
     }
@@ -123,6 +131,7 @@ public class MTEBoilerSolar extends MTEBoiler {
             // produceSteam is getting called every 10 ticks
             if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
             else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
+            getBaseMetaTileEntity().issueTileUpdate();
         }
     }
 
@@ -154,6 +163,10 @@ public class MTEBoilerSolar extends MTEBoiler {
         } else {
             return getMaxOutputPerSecond();
         }
+    }
+
+    protected boolean isCalcified() {
+        return mRunTimeTicks > getCalcificationTicks();
     }
 
     protected int getCalcificationTicks() {
@@ -213,6 +226,19 @@ public class MTEBoilerSolar extends MTEBoiler {
         } else {
             mProcessingEnergy += basicTemperatureMod;
         }
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("RuntimeTicks", mRunTimeTicks);
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        mRunTimeTicks = data.getInteger("RuntimeTicks");
     }
 
     @Override
