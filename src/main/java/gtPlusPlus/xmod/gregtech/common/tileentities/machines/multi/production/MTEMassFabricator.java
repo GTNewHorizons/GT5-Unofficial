@@ -192,7 +192,7 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                     buildHatchAdder(MTEMassFabricator.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.GTPP_INDEX(9))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 9))))
                 .addElement('H', ofBlock(ModBlocks.blockCasingsMisc, 8))
                 .addElement('G', ofBlock(ModBlocks.blockCasings3Misc, 15))
