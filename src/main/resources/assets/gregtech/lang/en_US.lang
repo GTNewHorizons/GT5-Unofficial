@@ -3262,6 +3262,9 @@ GT5U.tooltip.typefilter.set_to=Filter set to %s
 GT5U.tooltip.typefilter.ore_prefix=Ore prefix: %s
 GT5U.tooltip.typefilter.size=Filter size: %s
 
+GT5U.die.frozen=%s got frozen
+GT5U.die.boiled=%s was boiled alive
+GT5U.die.exploded=%s exploded
 
 gt.coilheattooltip=Base Heating Capacity =
 gt.coilunittooltip= Kelvin
