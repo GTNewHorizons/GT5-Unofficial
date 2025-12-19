@@ -226,13 +226,13 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
                     'A',
                     ofChain(
                         buildSteamInput(MTESteamWasher.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(MTESteamWasher.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(

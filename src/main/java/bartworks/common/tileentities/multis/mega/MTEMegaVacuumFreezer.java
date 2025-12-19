@@ -223,7 +223,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             buildHatchAdder(MTEMegaVacuumFreezer.class)
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTechAPI.sBlockCasings2, 1))))
         // Infinity Cooled Casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 14))

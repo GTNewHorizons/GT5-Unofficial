@@ -202,7 +202,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     Maintenance,
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.NaniteBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
@@ -211,7 +211,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEPCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 12))
         .addElement(
             'P',
@@ -223,7 +223,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     Maintenance,
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.NaniteBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 11))
         .build();

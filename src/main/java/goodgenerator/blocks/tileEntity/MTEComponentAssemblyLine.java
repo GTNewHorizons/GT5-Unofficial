@@ -147,42 +147,42 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'N',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(183)
                 .buildAndChain(GTStructureUtility.ofFrame(Materials.TungstenSteel)))
         .addElement(
             'K',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(OutputBus)
-                .dot(2)
+                .hint(2)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'L',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Energy, ExoticEnergy)
-                .dot(3)
+                .hint(3)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Maintenance)
-                .dot(4)
+                .hint(4)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'M',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputHatch)
-                .dot(5)
+                .hint(5)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement('n', GTStructureUtility.ofFrame(Materials.TungstenSteel))

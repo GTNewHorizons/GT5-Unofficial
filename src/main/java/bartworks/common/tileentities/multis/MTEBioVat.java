@@ -152,7 +152,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         OutputHatch,
                         Energy,
                         RadioHatchElement.RadioHatch)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))

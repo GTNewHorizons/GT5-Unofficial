@@ -110,7 +110,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                                     .or(gregtech.api.enums.HatchElement.InputBus),
                                 gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(x.textureIndex())
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
                 .addElement(
                     'E',
@@ -122,7 +122,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             .adder(MTELargeFusionComputer::addEnergyInjector)
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.energyHatchTier(), Integer.MAX_VALUE))
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
                 .addElement(
@@ -131,7 +131,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                         x -> buildHatchAdder(MTELargeFusionComputer.class).adder(MTELargeFusionComputer::addDroneHatch)
                             .hatchId(9401)
                             .casingIndex(x.textureIndex())
-                            .dot(3)
+                            .hint(3)
                             .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
                 .build();
         }

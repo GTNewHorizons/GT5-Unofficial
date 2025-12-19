@@ -451,7 +451,7 @@ public class GTPostLoad {
             ItemStack dustImpure = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1);
             ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1);
 
-            if (dust == null && dustImpure == null) {
+            if (dust == null || dustImpure == null) {
                 continue;
             }
 

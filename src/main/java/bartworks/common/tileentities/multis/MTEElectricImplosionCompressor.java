@@ -167,7 +167,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 'B',
                 buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
@@ -176,7 +176,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 buildHatchAdder(MTEElectricImplosionCompressor.class)
                     .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))

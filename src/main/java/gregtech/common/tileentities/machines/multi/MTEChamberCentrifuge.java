@@ -206,7 +206,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             buildHatchAdder(MTEChamberCentrifuge.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0)) // PBI Pipe Casing

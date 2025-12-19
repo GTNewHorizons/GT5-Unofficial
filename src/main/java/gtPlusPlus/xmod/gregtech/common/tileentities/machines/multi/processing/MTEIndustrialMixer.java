@@ -115,7 +115,7 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
                     buildHatchAdder(MTEIndustrialMixer.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(CASING_TEXTURE_ID)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 2))))
                 .addElement('M', ofBlock(GregTechAPI.sBlockCasings4, 11))
                 .build();

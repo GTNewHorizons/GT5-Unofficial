@@ -123,13 +123,13 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             buildHatchAdder(MTEMegaAlloyBlastSmelter.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
                 .casingIndex(TAE.GTPP_INDEX(15))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
         .addElement(
             'E',
             buildHatchAdder(MTEMegaAlloyBlastSmelter.class).atLeast(Maintenance)
                 .casingIndex(TAE.GTPP_INDEX(15))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(ModBlocks.blockCasingsMisc, 15)))
         .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 15))
         .addElement('C', ofBlock(ModBlocks.blockCasingsMisc, 14))
