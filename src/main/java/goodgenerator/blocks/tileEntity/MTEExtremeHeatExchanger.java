@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -347,11 +348,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
@@ -367,12 +368,12 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 + " %",
             StatCollector.translateToLocal("scanner.info.XHE.0") + " "
                 + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(this.mEUt)
+                + formatNumber(this.mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("scanner.info.XHE.1") + " "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(tThreshold)
+                + formatNumber(tThreshold)
                 + EnumChatFormatting.RESET
                 + " L/s" };
     }

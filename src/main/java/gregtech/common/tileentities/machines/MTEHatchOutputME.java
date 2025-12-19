@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
@@ -546,7 +547,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             String.format(
                 "Fluid cache capacity: %s%s L%s",
                 EnumChatFormatting.GOLD,
-                GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
+                formatNumber(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
     }
 
@@ -587,7 +588,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         "%s: %s%s L%s",
                         stack.getLocalizedName(),
                         EnumChatFormatting.GOLD,
-                        GTUtility.formatNumbers(stackTag.getLong("Amount")),
+                        formatNumber(stackTag.getLong("Amount")),
                         EnumChatFormatting.RESET));
             }
 
@@ -736,7 +737,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
+                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity())
                     + " L"
                     + EnumChatFormatting.RESET));
         if (fluidCache.isEmpty()) {
@@ -750,7 +751,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     s.getFluidStack()
                         .getLocalizedName() + ": "
                         + EnumChatFormatting.GOLD
-                        + GTUtility.formatNumbers(s.getStackSize())
+                        + formatNumber(s.getStackSize())
                         + " L"
                         + EnumChatFormatting.RESET);
                 if (++counter > 100) break;

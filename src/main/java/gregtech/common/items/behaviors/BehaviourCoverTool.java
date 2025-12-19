@@ -25,6 +25,8 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class BehaviourCoverTool extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourCoverTool();
@@ -118,15 +120,15 @@ public class BehaviourCoverTool extends BehaviourNone {
                 + EnumChatFormatting.RESET
                 + " X: "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(aX)
+                + formatNumber(aX)
                 + EnumChatFormatting.RESET
                 + " Y: "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(aY)
+                + formatNumber(aY)
                 + EnumChatFormatting.RESET
                 + " Z: "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(aZ)
+                + formatNumber(aZ)
                 + EnumChatFormatting.RESET
                 + " D: "
                 + EnumChatFormatting.AQUA

@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.util.GTUtility;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class ResultInsufficientMachineTier implements CheckRecipeResult {
 
     private int required;
@@ -37,7 +39,7 @@ public class ResultInsufficientMachineTier implements CheckRecipeResult {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_machine_tier",
-                GTUtility.formatNumbers(required)));
+                formatNumber(required)));
     }
 
     @Override

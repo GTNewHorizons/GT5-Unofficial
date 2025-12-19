@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_COLORS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
@@ -44,7 +45,7 @@ public class MTEHatchInput extends MTEHatch {
             aTier,
             4,
             new String[] { "Fluid Input for Multiblocks", "Right click with screwdriver to toggle input filter",
-                String.format("Capacity: %sL", GTUtility.formatNumbers(8000L * (1L << aTier))) });
+                String.format("Capacity: %s", formatFluid(8000L * (1L << aTier))) });
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -60,7 +61,7 @@ public class MTEHatchInput extends MTEHatch {
             aTier,
             new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
         mDescriptionArray[1] = String
-            .format("Capacity: %sL", GTUtility.formatNumbers(getCapacityPerTank(aTier, aSlot)));
+            .format("Capacity: %s", formatFluid(getCapacityPerTank(aTier, aSlot)));
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -83,7 +84,7 @@ public class MTEHatchInput extends MTEHatch {
         this.customCapacity = capacity;
         if (mDescriptionArray != null && mDescriptionArray.length > 0)
             mDescriptionArray[mDescriptionArray.length - 1] = String
-                .format("Capacity: %sL", GTUtility.formatNumbers(capacity));
+                .format("Capacity: %s", formatFluid(capacity));
     }
 
     @Override

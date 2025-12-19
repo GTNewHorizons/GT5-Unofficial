@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -119,6 +120,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
 
         NBTTagCompound tag = accessor.getNBTData();
         currenttip
-            .add(translate("tt.keyphrase.Computation_Receiving", GTUtility.formatNumbers(tag.getLong("computation"))));
+            .add(translate("tt.keyphrase.Computation_Receiving", formatNumber(tag.getLong("computation"))));
     }
 }

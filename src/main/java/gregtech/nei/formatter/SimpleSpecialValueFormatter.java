@@ -12,6 +12,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 /**
  * Simple formatter for recipe's special value.
  */
@@ -44,6 +46,6 @@ public class SimpleSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 translationKey,
-                GTUtility.formatNumbers((long) recipeInfo.recipe.mSpecialValue * multiplier)));
+                formatNumber((long) recipeInfo.recipe.mSpecialValue * multiplier)));
     }
 }

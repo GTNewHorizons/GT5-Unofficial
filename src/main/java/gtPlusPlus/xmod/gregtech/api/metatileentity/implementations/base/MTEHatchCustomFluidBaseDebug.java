@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
@@ -137,7 +138,7 @@ public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
             + "???";
         return new String[] { "Debug Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
             "Replenishes itself every 30 seconds",
-            "Capacity: " + EnumChatFormatting.WHITE + GTUtility.formatNumbers(getCapacity()) + "L", aFluidName,
+            "Capacity: " + EnumChatFormatting.WHITE + formatNumber(getCapacity()) + "L", aFluidName,
             "Author: " + GREEN + BOLD + "Chrom" };
     }
 

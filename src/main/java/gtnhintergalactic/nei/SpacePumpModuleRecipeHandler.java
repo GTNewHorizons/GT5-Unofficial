@@ -28,6 +28,8 @@ import gregtech.api.util.GTUtility;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 /**
  * Recipe handler for the space pumping recipes
  *
@@ -226,7 +228,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(Integer.toString(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(Integer.toString(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(formatNumber(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),

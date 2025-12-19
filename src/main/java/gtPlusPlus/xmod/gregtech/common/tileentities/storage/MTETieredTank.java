@@ -25,6 +25,9 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class MTETieredTank extends MTEBasicTank {
 
     public MTETieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
@@ -34,7 +37,7 @@ public class MTETieredTank extends MTEBasicTank {
             aNameRegional,
             aTier,
             3,
-            "Stores " + GTUtility.formatNumbers(((int) (GTUtility.powInt(2, aTier) * 32000))) + "L of fluid");
+            "Stores " + formatFluid(((int) (GTUtility.powInt(2, aTier) * 32000))) + " of fluid");
     }
 
     public MTETieredTank(final String aName, final int aTier, final String[] aDescription,
@@ -86,9 +89,7 @@ public class MTETieredTank extends MTEBasicTank {
                         "TileEntity_TANK_AMOUNT",
                         "Fluid Amount: ",
                         !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tContents.amount)
-                        + " L"
-                        + EnumChatFormatting.GRAY);
+                        + formatFluid(tContents.amount));
             }
         }
     }

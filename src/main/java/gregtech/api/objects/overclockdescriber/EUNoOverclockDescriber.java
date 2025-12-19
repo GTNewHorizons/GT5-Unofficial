@@ -10,6 +10,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class EUNoOverclockDescriber extends OverclockDescriber {
@@ -64,7 +66,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     protected String getTotalPowerString(OverclockCalculator calculator) {
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.total",
-            GTUtility.formatNumbers(calculator.getConsumption() * calculator.getDuration()));
+            formatNumber(calculator.getConsumption() * calculator.getDuration()));
     }
 
     /**
@@ -82,7 +84,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
             : getTierNameWithParentheses(calculator.getConsumption(), calculator);
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.usage",
-            GTUtility.formatNumbers(calculator.getConsumption()),
+            formatNumber(calculator.getConsumption()),
             tier_displayed);
     }
 
@@ -93,7 +95,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.voltage",
-            GTUtility.formatNumbers(voltage),
+            formatNumber(voltage),
             getTierNameWithParentheses(voltage, calculator));
 
     }
@@ -103,7 +105,7 @@ public class EUNoOverclockDescriber extends OverclockDescriber {
     }
 
     protected String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(amperage));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(amperage));
     }
 
     protected long computeVoltageForEURate(long euPerTick) {

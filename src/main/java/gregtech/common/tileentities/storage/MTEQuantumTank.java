@@ -8,6 +8,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class MTEQuantumTank extends MTEDigitalTankBase {
 
     public MTEQuantumTank(int aID, String aName, String aNameRegional, int aTier) {
@@ -39,7 +41,7 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
                     + EnumChatFormatting.RESET
                     + " "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(getCapacity())
+                    + formatNumber(getCapacity())
                     + " L"
                     + EnumChatFormatting.RESET };
         }
@@ -48,12 +50,12 @@ public class MTEQuantumTank extends MTEDigitalTankBase {
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
+            EnumChatFormatting.GREEN + formatNumber(mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
+                + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET };
     }

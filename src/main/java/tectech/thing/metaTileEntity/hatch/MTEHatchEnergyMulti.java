@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -154,7 +155,7 @@ public class MTEHatchEnergyMulti extends MTEHatch {
         currenttip.add(
             translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+                + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
                 + EnumChatFormatting.RESET
@@ -165,7 +166,7 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     public String[] getInfoData() {
         return new String[] { translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
             + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(Amperes * V[mTier])
+            + formatNumber(Amperes * V[mTier])
             + EnumChatFormatting.RESET
             + " EU/t" };
     }

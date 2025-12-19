@@ -1,7 +1,5 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
-
 import java.util.Objects;
 
 import net.minecraft.init.Items;
@@ -11,6 +9,8 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class ReasonOutOfItem implements ShutDownReason {
 
@@ -33,7 +33,7 @@ public class ReasonOutOfItem implements ShutDownReason {
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.out_of_item",
                 requiredItem.getDisplayName(),
-                formatNumbers(requiredItem.stackSize)));
+                formatNumber(requiredItem.stackSize)));
     }
 
     @Override

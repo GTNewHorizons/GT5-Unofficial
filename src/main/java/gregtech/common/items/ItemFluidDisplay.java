@@ -31,6 +31,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class ItemFluidDisplay extends GTGenericItem {
 
     private static final Map<Fluid, String> sFluidTooltips = new HashMap<>();
@@ -60,13 +62,13 @@ public class ItemFluidDisplay extends GTGenericItem {
             if (tToolTipAmount > 0L) {
                 aList.add(
                     EnumChatFormatting.BLUE + StatCollector
-                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", GTUtility.formatNumbers(tToolTipAmount))
+                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatNumber(tToolTipAmount))
                         + EnumChatFormatting.GRAY);
             }
             aList.add(
                 EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
                     "GT5U.tooltip.fluid.temperature",
-                    GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
+                    formatNumber(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.GREEN
                     + StatCollector.translateToLocalFormatted(

@@ -18,9 +18,11 @@ import gregtech.GTMod;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 /**
  * A simple cooperative scheduler that will run expensive tasks in the background without multithreading.
- * 
+ *
  * This cooperative scheduler differs from typical schedulers in that it will try to run the oldest tasks first, without
  * considering newer tasks.
  * This is to prevent it from becoming clogged if something's generating bad tasks.
@@ -89,7 +91,7 @@ public final class CooperativeScheduler {
                         + " "
                         + future.task
                         + " took "
-                        + GTUtility.formatNumbers((end - start2) / 1e3)
+                        + formatNumber((end - start2) / 1e3)
                         + " microseconds");
             }
 
@@ -100,7 +102,7 @@ public final class CooperativeScheduler {
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
             GTMod.GT_FML_LOGGER.info(
-                "Task scheduler took " + GTUtility.formatNumbers((System.nanoTime() - start) / 1e3) + " microseconds");
+                "Task scheduler took " + formatNumber((System.nanoTime() - start) / 1e3) + " microseconds");
         }
 
         for (CoopFuture<?> future : newTasks) {

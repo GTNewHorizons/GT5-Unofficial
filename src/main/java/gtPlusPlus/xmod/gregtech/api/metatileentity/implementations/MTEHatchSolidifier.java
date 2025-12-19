@@ -31,6 +31,9 @@ import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 
     public static final int moldSlot = 2;
@@ -64,7 +67,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     public String[] getDescription() {
         return new String[] {
             "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+            "Capacity: " + formatFluid(getCapacity()),
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l - "
                 + EnumChatFormatting.RED

@@ -11,11 +11,13 @@ import gregtech.api.enums.ChatMessage;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GTPacketChat;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 /**
  * A text builder meant for use with complex localization formats. All formatting is handled by this text builder, so
  * localization keys should just include the text. All values are converted to strings when localized. Localization is
  * deferred as long as possible, and may be deferred to the client if {@link #toLocalized()} is used.
- * 
+ *
  * @see gregtech.api.enums.ChatMessage
  * @see GTPacketChat
  * @see Localized
@@ -68,15 +70,15 @@ public class GTTextBuilder {
     public GTTextBuilder addCoord(int x, int y, int z) {
         values.add(
             "X=" + NUMERIC
-                + GTUtility.formatNumbers(x)
+                + formatNumber(x)
                 + base
                 + " Y="
                 + NUMERIC
-                + GTUtility.formatNumbers(y)
+                + formatNumber(y)
                 + base
                 + " Z="
                 + NUMERIC
-                + GTUtility.formatNumbers(z)
+                + formatNumber(z)
                 + base);
         return this;
     }
@@ -92,22 +94,22 @@ public class GTTextBuilder {
     }
 
     public GTTextBuilder addNumber(int i) {
-        add(NUMERIC, GTUtility.formatNumbers(i));
+        add(NUMERIC, formatNumber(i));
         return this;
     }
 
     public GTTextBuilder addNumber(long l) {
-        add(NUMERIC, GTUtility.formatNumbers(l));
+        add(NUMERIC, formatNumber(l));
         return this;
     }
 
     public GTTextBuilder addNumber(float f) {
-        add(NUMERIC, GTUtility.formatNumbers(f));
+        add(NUMERIC, formatNumber(f));
         return this;
     }
 
     public GTTextBuilder addNumber(double d) {
-        add(NUMERIC, GTUtility.formatNumbers(d));
+        add(NUMERIC, formatNumber(d));
         return this;
     }
 

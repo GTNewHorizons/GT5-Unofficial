@@ -1,5 +1,7 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -105,12 +107,12 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(
-                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
+                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Superheated Steam")
-            .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
+            .addInfo("Outputs " + formatNumber(EU_PER_TICK) + "EU/t and " + formatFluid(STEAM_PER_SEC) + "/s Superheated Steam")
+            .addInfo("Additionally, requires " + formatFluid(OXYGEN_PER_SEC) + "L/s Oxygen gas")
             .beginStructureBlock(3, 3, 5, false)
             .addController("Front center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)

@@ -20,6 +20,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     protected static XSTR floatGen = new XSTR();
@@ -48,7 +50,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             .concat(
                 Stream.of(
                     mDescriptionArray[0],
-                    "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+                    "Capacity: " + formatFluid(getCapacity()),
                     "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier)),
                 Arrays.stream(getCustomTooltip()))
             .toArray(String[]::new);

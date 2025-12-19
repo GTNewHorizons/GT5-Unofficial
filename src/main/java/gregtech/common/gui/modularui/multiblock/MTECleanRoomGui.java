@@ -14,6 +14,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class MTECleanRoomGui extends MTEMultiBlockBaseGui<MTECleanroom> {
 
     public MTECleanRoomGui(MTECleanroom multiblock) {
@@ -27,7 +29,7 @@ public class MTECleanRoomGui extends MTEMultiBlockBaseGui<MTECleanroom> {
             IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                     + ": "
-                    + GTUtility.formatNumbers(efficency.getValue() / 100D)
+                    + formatNumber(efficency.getValue() / 100D)
                     + "%"
             // enabled if active
             )

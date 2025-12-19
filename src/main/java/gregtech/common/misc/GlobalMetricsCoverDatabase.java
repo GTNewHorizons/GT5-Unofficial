@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_BYTE_ARRAY;
 
 import java.nio.ByteBuffer;
@@ -420,9 +421,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         public String getLocalizedCoordinates() {
             return StatCollector.translateToLocalFormatted(
                 "gt.db.metrics_cover.coords",
-                GTUtility.formatNumbers(x),
-                GTUtility.formatNumbers(y),
-                GTUtility.formatNumbers(z));
+                formatNumber(x),
+                formatNumber(y),
+                formatNumber(z));
         }
 
         @Override

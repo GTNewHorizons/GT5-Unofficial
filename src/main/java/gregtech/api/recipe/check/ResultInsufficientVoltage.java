@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.util.GTUtility;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class ResultInsufficientVoltage implements CheckRecipeResult {
 
     private long required;
@@ -37,7 +39,7 @@ public class ResultInsufficientVoltage implements CheckRecipeResult {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_voltage",
-                GTUtility.formatNumbers(required),
+                formatNumber(required),
                 GTUtility.getColoredTierNameFromVoltage(required)));
     }
 

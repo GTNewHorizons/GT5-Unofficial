@@ -12,6 +12,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatter {
@@ -24,7 +26,7 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.heat_capacity",
-                GTUtility.formatNumbers(heat),
+                formatNumber(heat),
                 HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
     }
 }

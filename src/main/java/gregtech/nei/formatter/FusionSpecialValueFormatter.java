@@ -13,6 +13,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
@@ -27,7 +29,7 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         int tier = getFusionTier(euToStart, voltage);
 
         return Collections.singletonList(
-            StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", GTUtility.formatNumbers(euToStart), tier));
+            StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", formatNumber(euToStart), tier));
     }
 
     public static int getFusionTier(long startupPower, long voltage) {

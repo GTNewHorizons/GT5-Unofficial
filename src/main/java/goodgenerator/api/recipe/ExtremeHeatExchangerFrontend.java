@@ -13,10 +13,11 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -45,15 +46,15 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
             int threshold = recipeInfo.recipe.mSpecialValue;
             String[] description = new String[4];
             description[0] = StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                + GTUtility.formatNumbers(Inputs[0].amount)
+                + formatFluid(Inputs[0].amount)
                 + " L/s";
             description[1] = StatCollector.translateToLocal("value.extreme_heat_exchanger.1");
-            description[2] = GTUtility.formatNumbers(Inputs[1].amount) + " L/s";
+            description[2] = formatFluid(Inputs[1].amount) + " /s";
             if (!Inputs[0].getUnlocalizedName()
                 .contains("plasma")) {
                 description[3] = StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " "
                     + threshold
-                    + " L/s";
+                    + " /s";
 
             }
             return Arrays.asList(description);

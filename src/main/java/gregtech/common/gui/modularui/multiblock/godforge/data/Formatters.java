@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static tectech.util.TTUtility.toExponentForm;
 
 import java.math.BigInteger;
@@ -25,8 +25,8 @@ public enum Formatters {
         return switch (this) {
             case NONE -> number.toString();
             case COMMA -> {
-                if (number instanceof BigInteger bi) yield formatNumbers(bi);
-                else yield formatNumbers(number.longValue());
+                if (number instanceof BigInteger bi) yield formatNumber(bi);
+                else yield formatNumber(number.longValue());
             }
             case EXPONENT -> {
                 if (number instanceof BigInteger bi) {

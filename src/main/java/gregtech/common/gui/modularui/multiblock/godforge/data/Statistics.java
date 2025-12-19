@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -53,15 +54,15 @@ public enum Statistics {
             }
             case SPEED_BONUS -> {
                 GodforgeMath.calculateSpeedBonusForModules(module, data);
-                yield String.valueOf(GTUtility.formatNumbers(module.getSpeedBonus()));
+                yield String.valueOf(formatNumber(module.getSpeedBonus()));
             }
             case ENERGY_DISCOUNT -> {
                 GodforgeMath.calculateEnergyDiscountForModules(module, data);
-                yield String.valueOf(GTUtility.formatNumbers(module.getEnergyDiscount()));
+                yield String.valueOf(formatNumber(module.getEnergyDiscount()));
             }
             case OC_DIVISOR -> {
                 GodforgeMath.setMiscModuleParameters(module, data);
-                yield String.valueOf(GTUtility.formatNumbers(module.getOverclockTimeFactor()));
+                yield String.valueOf(formatNumber(module.getOverclockTimeFactor()));
             }
             case PROCESSING_VOLTAGE -> {
                 GodforgeMath.calculateProcessingVoltageForModules(module, data, fuelFactor);

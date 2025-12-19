@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -45,7 +46,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                 translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(amps * V[tier])
+                    + formatNumber(amps * V[tier])
                     + EnumChatFormatting.RESET
                     + " EU/t" },
             amps);

@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -54,15 +55,15 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
-                GTUtility.formatNumbers(
+                formatNumber(
                     (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut * ampere) + " EU/t");
+        recipeInfo.drawText(trans("153", "Usage: ") + formatNumber(eut * ampere) + " EU/t");
         recipeInfo
-            .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
+            .drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.min_computation",
-                GTUtility.formatNumbers(minComputationPerSec)));
+                formatNumber(minComputationPerSec)));
     }
 
     @Override

@@ -52,6 +52,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsContent, IFluidHandler, IFluidTank,
     ITileWithModularUI, ITileAddsInformation, ITileHasDifferentTextureSides {
 
@@ -331,7 +333,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
+                + formatNumber(Configuration.singleBlocks.mbWaterperSec)
                 + StatCollector.translateToLocalFormatted(
                     "tooltip.tile.waterpump.1.name",
                     PollutionConfig.pollutionHeatedWaterPumpSecond),

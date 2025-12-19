@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.util.GTUtility;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class ResultInsufficientHeat implements CheckRecipeResult {
 
     private int required;
@@ -38,7 +40,7 @@ public class ResultInsufficientHeat implements CheckRecipeResult {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.insufficient_heat",
-                GTUtility.formatNumbers(required),
+                formatNumber(required),
                 HeatingCoilLevel.getDisplayNameFromHeat(required, true)));
     }
 

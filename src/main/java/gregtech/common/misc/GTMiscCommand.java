@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
@@ -260,7 +261,7 @@ public final class GTMiscCommand extends GTBaseCommand {
 
         // Usage is /gt global_energy_add username EU
 
-        String EU_string_formatted = EnumChatFormatting.RED + GTUtility.formatNumbers(new BigInteger(EU_String))
+        String EU_string_formatted = EnumChatFormatting.RED + formatNumber(new BigInteger(EU_String))
             + EnumChatFormatting.RESET;
 
         if (addEUToGlobalEnergyMap(uuid, new BigInteger(EU_String))) {
@@ -283,7 +284,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             sender,
             formatted_username + " currently has "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
+                + formatNumber(new BigInteger(getUserEU(uuid).toString()))
                 + EnumChatFormatting.RESET
                 + "EU in their network.");
     }
@@ -309,7 +310,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             "Successfully set " + formatted_username
                 + "'s global energy network to "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(new BigInteger(EU_String_0))
+                + formatNumber(new BigInteger(EU_String_0))
                 + EnumChatFormatting.RESET
                 + "EU.");
     }
@@ -372,7 +373,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             "User " + formatted_username
                 + " has "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getUserEU(userUUID))
+                + formatNumber(getUserEU(userUUID))
                 + EnumChatFormatting.RESET
                 + "EU in their network.");
         if (!userUUID.equals(teamUUID)) sendChatToPlayer(

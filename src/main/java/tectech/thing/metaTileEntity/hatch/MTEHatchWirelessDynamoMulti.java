@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -42,7 +43,7 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
                 AuthorColen + GRAY + BOLD + " & " + GREEN + BOLD + "Chrom",
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + YELLOW
-                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + formatNumber(aAmp * V[aTier])
                     + GRAY
                     + " EU/t" },
             aAmp);

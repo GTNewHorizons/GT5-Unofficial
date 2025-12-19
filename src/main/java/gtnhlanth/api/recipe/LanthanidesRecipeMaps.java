@@ -25,6 +25,8 @@ import gtnhlanth.common.tileentity.recipe.beamline.SourceChamberMetadata;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberFrontend;
 import gtnhlanth.common.tileentity.recipe.beamline.TargetChamberMetadata;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class LanthanidesRecipeMaps {
 
     public static final RecipeMetadataKey<TargetChamberMetadata> TARGET_CHAMBER_METADATA = SimpleRecipeMetadataKey
@@ -69,12 +71,12 @@ public class LanthanidesRecipeMaps {
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
 
                 StatCollector.translateToLocal("beamline.energy") + ": <="
-                    + GTUtility.formatNumbers(Math.min(maxEnergy, particle.maxSourceEnergy()))
+                    + formatNumber(Math.min(maxEnergy, particle.maxSourceEnergy()))
                     + " keV",
 
-                StatCollector.translateToLocal("beamline.focus") + ": " + GTUtility.formatNumbers(focus),
+                StatCollector.translateToLocal("beamline.focus") + ": " + formatNumber(focus),
 
-                StatCollector.translateToLocal("beamline.rate") + ": " + GTUtility.formatNumbers(amount)
+                StatCollector.translateToLocal("beamline.rate") + ": " + formatNumber(amount)
 
         );
         })
@@ -111,14 +113,14 @@ public class LanthanidesRecipeMaps {
                 // StatCollector.translateToLocal("beamline.particle") + ": " + particle.getLocalisedName(),
 
                 StatCollector.translateToLocal("beamline.energy") + ": "
-                    + GTUtility.formatNumbers(minEnergy * 1000)
+                    + formatNumber(minEnergy * 1000)
                     + "-"
-                    + GTUtility.formatNumbers(maxEnergy * 1000)
+                    + formatNumber(maxEnergy * 1000)
                     + " eV", // Note the eV unit
 
-                StatCollector.translateToLocal("beamline.focus") + ": >=" + GTUtility.formatNumbers(minFocus),
+                StatCollector.translateToLocal("beamline.focus") + ": >=" + formatNumber(minFocus),
 
-                StatCollector.translateToLocal("beamline.amount") + ": " + GTUtility.formatNumbers(amount)
+                StatCollector.translateToLocal("beamline.amount") + ": " + formatNumber(amount)
 
         );
         }))

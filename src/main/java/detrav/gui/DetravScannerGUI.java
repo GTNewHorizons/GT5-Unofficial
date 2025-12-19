@@ -15,6 +15,9 @@ import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.util.GTUtility;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 /**
  * Created by wital_000 on 21.03.2016.
  */
@@ -109,8 +112,7 @@ public class DetravScannerGUI extends GuiScreen {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name") + object.left());
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount")
-                            + GTUtility.formatNumbers(amount)
-                            + " L");
+                            + formatFluid(amount));
                 } else {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 }
@@ -130,7 +132,7 @@ public class DetravScannerGUI extends GuiScreen {
                 if (amount > 0) {
                     info.add(
                         StatCollector.translateToLocal("gui.detrav.scanner.pollution") + ": "
-                            + GTUtility.formatNumbers(amount)
+                            + formatNumber(amount)
                             + GTUtility.trans("203", " gibbl"));
                 }
 

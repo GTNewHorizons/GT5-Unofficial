@@ -11,6 +11,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class SteamOverclockDescriber extends OverclockDescriber {
@@ -49,13 +51,13 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     private String getTotalPowerString(OverclockCalculator calculator) {
         long steamTotal = convertEUToSteam(calculator.getConsumption() * calculator.getDuration());
         return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.total.steam", GTUtility.formatNumbers(steamTotal));
+            .translateToLocalFormatted("GT5U.nei.display.total.steam", formatNumber(steamTotal));
     }
 
     private String getSteamUsageString(OverclockCalculator calculator) {
         long steamUsage = 20 * convertEUToSteam(calculator.getConsumption());
         return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.usage.steam", GTUtility.formatNumbers(steamUsage));
+            .translateToLocalFormatted("GT5U.nei.display.usage.steam", formatNumber(steamUsage));
     }
 
     private static long convertEUToSteam(long eu) {

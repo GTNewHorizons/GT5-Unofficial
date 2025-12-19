@@ -11,6 +11,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class FuelSpecialValueFormatter implements INEISpecialInfoFormatter {
@@ -22,6 +24,6 @@ public class FuelSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.fuel",
-                GTUtility.formatNumbers(recipeInfo.recipe.mSpecialValue * 1000L)));
+                formatNumber(recipeInfo.recipe.mSpecialValue * 1000L)));
     }
 }

@@ -18,6 +18,8 @@ import gregtech.nei.formatter.INEISpecialInfoFormatter;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class SpaceMiningFrontend extends RecipeMapFrontend {
@@ -65,7 +67,7 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
                         + data.maxDistance);
                 result.add(GTUtility.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
                 result.add(
-                    GTUtility.translate("tt.nei.research.min_computation", GTUtility.formatNumbers(data.computation)));
+                    GTUtility.translate("tt.nei.research.min_computation", formatNumber(data.computation)));
                 result.add(GTUtility.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;
