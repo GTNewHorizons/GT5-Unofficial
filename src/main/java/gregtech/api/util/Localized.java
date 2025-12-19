@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.nio.charset.StandardCharsets;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +17,6 @@ import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketChat;
 import io.netty.buffer.ByteBuf;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 /**
  * A data structure that represents an unlocalized message. This can be sent over the network easily. The use

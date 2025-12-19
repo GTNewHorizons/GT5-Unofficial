@@ -393,20 +393,16 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
             .widget(new FakeSyncWidget.LongSyncer(() -> wastedComputation, value -> wastedComputation = value));
 
         screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> GTUtility.translate(
-                        "GT5U.machines.computation_hatch.pending_computation",
-                        formatNumber(pendingComputation)))
+            TextWidget.dynamicString(
+                () -> GTUtility
+                    .translate("GT5U.machines.computation_hatch.pending_computation", formatNumber(pendingComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
         screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> GTUtility.translate(
-                        "GT5U.machines.computation_hatch.wasted_computation",
-                        formatNumber(wastedComputation)))
+            TextWidget.dynamicString(
+                () -> GTUtility
+                    .translate("GT5U.machines.computation_hatch.wasted_computation", formatNumber(wastedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));

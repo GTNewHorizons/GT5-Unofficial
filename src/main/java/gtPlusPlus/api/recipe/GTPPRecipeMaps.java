@@ -23,11 +23,9 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
@@ -47,9 +45,8 @@ public class GTPPRecipeMaps {
         .maxIO(0, 0, 1, 0)
         .neiSpecialInfoFormatter(
             recipeInfo -> Collections.singletonList(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.nei.fuel",
-                    formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
+                StatCollector
+                    .translateToLocalFormatted("GT5U.nei.fuel", formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelter")
@@ -99,10 +96,8 @@ public class GTPPRecipeMaps {
             final int duration = recipeInfo.recipe.mDuration;
             return Arrays.asList(
                 StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", formatNumber(eut)),
-                StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.dynamo", formatNumber(duration * eut)),
-                StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.total", formatNumber(duration * eut * 4)));
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.dynamo", formatNumber(duration * eut)),
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.total", formatNumber(duration * eut * 4)));
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nuclearSaltProcessingPlantRecipes = RecipeMapBuilder

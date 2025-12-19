@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,8 +41,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedstoneCircuitBlock, IAddUIWidgets {
 

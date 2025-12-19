@@ -86,9 +86,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
         // Draw tooltip on planet item.
         if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
             currentTip.add(
-                EnumChatFormatting.GRAY + translateToLocalFormatted(
-                    "tt.nei.eoh.total_items",
-                    formatNumber(currentRecipe.getSumOfItems())));
+                EnumChatFormatting.GRAY
+                    + translateToLocalFormatted("tt.nei.eoh.total_items", formatNumber(currentRecipe.getSumOfItems())));
             return currentTip;
         }
 

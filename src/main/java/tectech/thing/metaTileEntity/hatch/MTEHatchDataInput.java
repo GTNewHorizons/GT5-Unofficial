@@ -16,7 +16,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
@@ -119,7 +118,6 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
         super.getWailaBody(itemStack, currenttip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip
-            .add(translate("tt.keyphrase.Computation_Receiving", formatNumber(tag.getLong("computation"))));
+        currenttip.add(translate("tt.keyphrase.Computation_Receiving", formatNumber(tag.getLong("computation"))));
     }
 }

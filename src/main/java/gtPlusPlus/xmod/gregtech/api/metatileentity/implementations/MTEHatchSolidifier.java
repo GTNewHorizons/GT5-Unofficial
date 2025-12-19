@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +32,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationCircuitSupport {
 

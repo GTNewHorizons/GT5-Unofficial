@@ -1,5 +1,7 @@
 package gregtech.api.util.shutdown;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,8 +9,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class ReasonOutOfStuff implements ShutDownReason {
 

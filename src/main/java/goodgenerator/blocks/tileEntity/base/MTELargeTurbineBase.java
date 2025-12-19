@@ -346,11 +346,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
         }
         return new String[] {
             // 8 Lines available for information panels
-            tRunning + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t", /* 1 */
+            tRunning + ": " + EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET + " EU/t", /* 1 */
             tMaintainance, /* 2 */
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
                 + EnumChatFormatting.YELLOW

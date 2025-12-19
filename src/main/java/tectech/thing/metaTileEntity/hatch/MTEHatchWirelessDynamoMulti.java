@@ -21,7 +21,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 
 public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
 

@@ -27,7 +27,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;
-import gregtech.api.util.GTUtility;
 import gregtech.commands.GTBaseCommand;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.pollution.Pollution;

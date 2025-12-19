@@ -799,9 +799,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
         sb.append(EnumChatFormatting.WHITE)
             .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.helium_supply",
-                    formatNumber(this.heliumSupply)))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.infodata.htgr.helium_supply", formatNumber(this.heliumSupply)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
@@ -811,9 +810,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.water_per_tick",
-                    formatNumber(this.watertaking)))
+                StatCollector
+                    .translateToLocalFormatted("kubatech.infodata.htgr.water_per_tick", formatNumber(this.watertaking)))
             .append("\n");
         return sb.toString();
     }

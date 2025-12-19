@@ -1,5 +1,7 @@
 package gregtech.nei.formatter;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -8,11 +10,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault

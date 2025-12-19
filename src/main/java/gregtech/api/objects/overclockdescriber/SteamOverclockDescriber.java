@@ -1,17 +1,16 @@
 package gregtech.api.objects.overclockdescriber;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -50,14 +49,12 @@ public class SteamOverclockDescriber extends OverclockDescriber {
 
     private String getTotalPowerString(OverclockCalculator calculator) {
         long steamTotal = convertEUToSteam(calculator.getConsumption() * calculator.getDuration());
-        return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.total.steam", formatNumber(steamTotal));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.total.steam", formatNumber(steamTotal));
     }
 
     private String getSteamUsageString(OverclockCalculator calculator) {
         long steamUsage = 20 * convertEUToSteam(calculator.getConsumption());
-        return StatCollector
-            .translateToLocalFormatted("GT5U.nei.display.usage.steam", formatNumber(steamUsage));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.usage.steam", formatNumber(steamUsage));
     }
 
     private static long convertEUToSteam(long eu) {

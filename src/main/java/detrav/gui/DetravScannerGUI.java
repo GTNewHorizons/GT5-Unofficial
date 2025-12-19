@@ -1,5 +1,8 @@
 package detrav.gui;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +17,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.util.GTUtility;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 /**
  * Created by wital_000 on 21.03.2016.

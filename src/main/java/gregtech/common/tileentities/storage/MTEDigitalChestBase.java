@@ -74,8 +74,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "Stores " + formatNumber(commonSizeCompute(aTier)) + " items",
-                "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
+            new String[] { "Stores " + formatNumber(commonSizeCompute(aTier)) + " items", "Use a screwdriver to enable",
+                "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
     protected static int commonSizeCompute(int tier) {

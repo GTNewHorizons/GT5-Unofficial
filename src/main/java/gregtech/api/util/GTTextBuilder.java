@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -10,8 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.ChatMessage;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.net.GTPacketChat;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 /**
  * A text builder meant for use with complex localization formats. All formatting is handled by this text builder, so

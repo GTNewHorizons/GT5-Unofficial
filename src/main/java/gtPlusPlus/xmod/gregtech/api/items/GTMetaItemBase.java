@@ -89,9 +89,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.BLUE
-                    + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / "
-                        + formatNumber(tStats[0])
-                        + "L")
+                    + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / " + formatNumber(tStats[0]) + "L")
                     + EnumChatFormatting.GRAY);
         }
 

@@ -419,8 +419,11 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
                 + formatFluid(storedFluid), /* 6 */
-            StatCollector.translateToLocal(
-                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + formatNumber(tDura) + EnumChatFormatting.RESET + "%", /* 7 */
+            StatCollector.translateToLocal("GT5U.turbine.dmg") + ": "
+                + EnumChatFormatting.RED
+                + formatNumber(tDura)
+                + EnumChatFormatting.RESET
+                + "%", /* 7 */
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()

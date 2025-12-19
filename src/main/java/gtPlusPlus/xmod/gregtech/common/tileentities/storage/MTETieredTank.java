@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,9 +26,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class MTETieredTank extends MTEBasicTank {
 
@@ -88,8 +87,7 @@ public class MTETieredTank extends MTEBasicTank {
                     GTLanguageManager.addStringLocalization(
                         "TileEntity_TANK_AMOUNT",
                         "Fluid Amount: ",
-                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN
-                        + formatFluid(tContents.amount));
+                        !GregTechAPI.sPostloadFinished) + EnumChatFormatting.GREEN + formatFluid(tContents.amount));
             }
         }
     }

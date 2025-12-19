@@ -17,7 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
@@ -55,15 +54,11 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
-                formatNumber(
-                    (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
+                formatNumber((1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
         recipeInfo.drawText(trans("153", "Usage: ") + formatNumber(eut * ampere) + " EU/t");
+        recipeInfo.drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
         recipeInfo
-            .drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
-        recipeInfo.drawText(
-            translateToLocalFormatted(
-                "tt.nei.research.min_computation",
-                formatNumber(minComputationPerSec)));
+            .drawText(translateToLocalFormatted("tt.nei.research.min_computation", formatNumber(minComputationPerSec)));
     }
 
     @Override

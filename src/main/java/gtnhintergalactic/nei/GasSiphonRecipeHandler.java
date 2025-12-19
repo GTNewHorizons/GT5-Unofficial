@@ -1,5 +1,7 @@
 package gtnhintergalactic.nei;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Rectangle;
 import java.util.Map;
 
@@ -25,8 +27,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.util.GTUtility;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.recipe.GasSiphonRecipes;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 /**
  * Recipe handler for the gas siphon recipes

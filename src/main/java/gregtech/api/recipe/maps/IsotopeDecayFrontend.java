@@ -1,13 +1,13 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.RecipeDisplayInfo;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class IsotopeDecayFrontend extends RecipeMapFrontend {
 
@@ -52,8 +52,7 @@ public class IsotopeDecayFrontend extends RecipeMapFrontend {
         }
 
         recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.half-life", formatNumber(halflife), unit));
-        recipeInfo
-            .drawText(GTUtility.translate("GT5U.gui.text.isotope-prod-per-s", formatNumber(perStackSecond)));
+        recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.isotope-prod-per-s", formatNumber(perStackSecond)));
 
         drawRecipeOwnerInfo(recipeInfo);
     }

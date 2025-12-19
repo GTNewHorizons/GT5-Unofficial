@@ -111,7 +111,11 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + formatNumber(EU_PER_TICK) + "EU/t and " + formatFluid(STEAM_PER_SEC) + "/s Superheated Steam")
+            .addInfo(
+                "Outputs " + formatNumber(EU_PER_TICK)
+                    + "EU/t and "
+                    + formatFluid(STEAM_PER_SEC)
+                    + "/s Superheated Steam")
             .addInfo("Additionally, requires " + formatFluid(OXYGEN_PER_SEC) + "L/s Oxygen gas")
             .beginStructureBlock(3, 3, 5, false)
             .addController("Front center")

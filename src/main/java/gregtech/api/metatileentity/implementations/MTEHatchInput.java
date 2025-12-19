@@ -60,8 +60,7 @@ public class MTEHatchInput extends MTEHatch {
             aNameRegional,
             aTier,
             new String[] { "Fluid Input for Multiblocks", "Can hold " + aSlot + " types of fluid." });
-        mDescriptionArray[1] = String
-            .format("Capacity: %s", formatFluid(getCapacityPerTank(aTier, aSlot)));
+        mDescriptionArray[1] = String.format("Capacity: %s", formatFluid(getCapacityPerTank(aTier, aSlot)));
     }
 
     public MTEHatchInput(int aID, int aSlot, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -83,8 +82,7 @@ public class MTEHatchInput extends MTEHatch {
     public void setCustomCapacity(int capacity) {
         this.customCapacity = capacity;
         if (mDescriptionArray != null && mDescriptionArray.length > 0)
-            mDescriptionArray[mDescriptionArray.length - 1] = String
-                .format("Capacity: %s", formatFluid(capacity));
+            mDescriptionArray[mDescriptionArray.length - 1] = String.format("Capacity: %s", formatFluid(capacity));
     }
 
     @Override
