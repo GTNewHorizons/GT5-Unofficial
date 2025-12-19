@@ -2,7 +2,6 @@ package gregtech.common.blocks;
 
 import java.util.List;
 
-import appeng.api.parts.IFacadeControl;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -11,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
 
+import appeng.api.parts.IFacadeControl;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
