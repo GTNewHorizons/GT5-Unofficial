@@ -3258,6 +3258,11 @@ GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
 
+GT5U.tooltip.typefilter.set_to=Filter set to %s
+GT5U.tooltip.typefilter.ore_prefix=Ore prefix: %s
+GT5U.tooltip.typefilter.size=Filter size: %s
+
+
 gt.coilheattooltip=Base Heating Capacity =
 gt.coilunittooltip= Kelvin
 
