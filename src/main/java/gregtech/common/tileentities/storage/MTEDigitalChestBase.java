@@ -64,6 +64,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     protected boolean mDisableFilter;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
 
+    private int lastTrueCount;
+
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -117,12 +119,12 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver, Object o) {
+    public void addListener(IMEMonitorHandlerReceiver imeMonitorHandlerReceiver, Object o) {
         meInventoryHandler.addListener(imeMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver imeMonitorHandlerReceiver) {
         meInventoryHandler.removeListener(imeMonitorHandlerReceiver);
     }
 
@@ -287,7 +289,19 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                 mInventory[2] = null;
             }
 
-            meInventoryHandler.notifyListeners(count - savedCount, stack);
+            int extraCount = 0;
+            if (mInventory[1] != null) {
+                if (GTUtility.areStacksEqual(mInventory[1], stack)) {
+                    extraCount = mInventory[1].stackSize;
+                } else if (stack == null || stack.stackSize <= 0) {
+                    extraCount = mInventory[1].stackSize;
+                    stack = mInventory[1];
+                }
+            }
+
+            // notifyListeners has a null check on the stack arg
+            meInventoryHandler.notifyListeners(count + extraCount - lastTrueCount, stack);
+            lastTrueCount = count + extraCount;
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
     }
@@ -373,6 +387,10 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             setItemStack(ItemStack.loadItemStackFromNBT((NBTTagCompound) aNBT.getTag("mItemStack")));
         mVoidOverflow = aNBT.getBoolean("mVoidOverflow");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
+        lastTrueCount = getItemCount();
+        if (GTUtility.areStacksEqual(getItemStack(), mInventory[1])) {
+            lastTrueCount += mInventory[1].stackSize;
+        }
     }
 
     @Override
@@ -550,25 +568,42 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                 @Override
                 public int insert(ImmutableItemStack stack, boolean forced) {
-                    if (getCurrentSlot() != 0) return stack.getStackSize();
+                    int remaining = stack.getStackSize();
 
-                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
-                        return stack.getStackSize();
+                    if (getCurrentSlot() == 1) {
+                        int max = getStackSizeLimit(1, stack.toStackFast());
+
+                        ItemStack stored = mInventory[1];
+
+                        int storedAmount = stored == null ? 0 : stored.stackSize;
+
+                        int toInsert = Math.min(stack.getStackSize(), max - storedAmount);
+
+                        if (stored == null) mInventory[1] = stack.toStackFast(0);
+
+                        mInventory[1].stackSize += toInsert;
+                        remaining -= toInsert;
                     }
 
-                    int insertable = Math.min(getItemCapacity() - getItemCount(), stack.getStackSize());
+                    if (!ItemUtil.isStackEmpty(getItemStack()) && !stack.matches(getItemStack())) {
+                        return remaining;
+                    }
+
+                    int insertable = Math
+                        .min((forced ? Integer.MAX_VALUE : getItemCapacity()) - getItemCount(), remaining);
 
                     if (ItemUtil.isStackEmpty(getItemStack())) {
                         setItemStack(stack.toStack(0));
                     }
 
                     setItemCount(getItemCount() + insertable);
+                    remaining -= insertable;
 
                     meInventoryHandler.notifyListeners(insertable, getItemStack());
 
                     MTEDigitalChestBase.this.markDirty();
 
-                    return stack.getStackSize() - insertable;
+                    return remaining;
                 }
             };
         }

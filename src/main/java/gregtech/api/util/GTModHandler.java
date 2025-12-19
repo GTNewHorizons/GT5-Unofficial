@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -455,16 +454,11 @@ public class GTModHandler {
      * Removes IC2 recipes.
      */
     public static void removeAllIC2Recipes() {
-        getMaceratorRecipeList().entrySet()
-            .clear();
-        getCompressorRecipeList().entrySet()
-            .clear();
-        getExtractorRecipeList().entrySet()
-            .clear();
-        getOreWashingRecipeList().entrySet()
-            .clear();
-        getThermalCentrifugeRecipeList().entrySet()
-            .clear();
+        getMaceratorRecipeList().clear();
+        getCompressorRecipeList().clear();
+        getExtractorRecipeList().clear();
+        getOreWashingRecipeList().clear();
+        getThermalCentrifugeRecipeList().clear();
     }
 
     public static Map<IRecipeInput, RecipeOutput> getExtractorRecipeList() {
@@ -1265,8 +1259,7 @@ public class GTModHandler {
      */
     public static ItemStack removeRecipe(ItemStack... aRecipe) {
         if (aRecipe == null) return null;
-        if (Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return null;
+        if (isAllNulls(aRecipe)) return null;
 
         ItemStack rReturn = null;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
@@ -1276,19 +1269,21 @@ public class GTModHandler {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < aRecipe.length && i < 9; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+        for (int i = 0; i < aRecipe.length && i < 9; i++) {
+            aCrafting.setInventorySlotContents(i, aRecipe[i]);
+        }
+        ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        int tList_sS = tList.size();
-        for (int i = 0; i < tList_sS; i++) {
-            for (; i < tList_sS; i++) {
-                if ((!(tList.get(i) instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) tList.get(i)).isRemovable())
-                    && tList.get(i)
+        int size = allRecipes.size();
+        for (int i = 0; i < size; i++) {
+            for (; i < size; i++) {
+                if ((!(allRecipes.get(i) instanceof IGTCraftingRecipe)
+                    || ((IGTCraftingRecipe) allRecipes.get(i)).isRemovable()) && allRecipes.get(i)
                         .matches(aCrafting, DW)) {
-                    rReturn = tList.get(i)
+                    rReturn = allRecipes.get(i)
                         .getCraftingResult(aCrafting);
-                    if (rReturn != null) tList.remove(i--);
-                    tList_sS = tList.size();
+                    if (rReturn != null) allRecipes.remove(i--);
+                    size = allRecipes.size();
                 }
             }
         }
@@ -1302,8 +1297,7 @@ public class GTModHandler {
         }
 
         if (aRecipe == null) return;
-        if (Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return;
+        if (isAllNulls(aRecipe)) return;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
@@ -1317,11 +1311,11 @@ public class GTModHandler {
     }
 
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+        ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + tList.size() + " toRemove: " + toRemove.size());
+        GT_FML_LOGGER.info("BulkRemoveByRecipe: allRecipes: " + allRecipes.size() + " toRemove: " + toRemove.size());
 
-        Set<IRecipe> tListToRemove = tList.parallelStream()
+        Set<IRecipe> tListToRemove = allRecipes.parallelStream()
             .filter(tRecipe -> {
                 if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
                     return false;
@@ -1330,7 +1324,7 @@ public class GTModHandler {
             })
             .collect(Collectors.toSet());
 
-        tList.removeIf(tListToRemove::contains);
+        allRecipes.removeIf(tListToRemove::contains);
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
@@ -1353,54 +1347,58 @@ public class GTModHandler {
     /**
      * Removes a Crafting Recipe.
      *
-     * @param aOutput The output of the Recipe.
+     * @param output The output of the Recipe.
      * @return if it has removed at least one Recipe.
      */
-    public static boolean removeRecipeByOutput(ItemStack aOutput, boolean aIgnoreNBT,
-        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
-        if (aOutput == null) return false;
+    public static boolean removeRecipeByOutput(ItemStack output, boolean aIgnoreNBT, boolean aNotRemoveShapelessRecipes,
+        boolean aOnlyRemoveNativeHandlers) {
+        if (output == null) return false;
         boolean rReturn = false;
-        final ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+        final ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        aOutput = GTOreDictUnificator.get(aOutput);
-        int tList_sS = tList.size();
-        for (int i = 0; i < tList_sS; i++) {
-            final IRecipe tRecipe = tList.get(i);
+        output = GTOreDictUnificator.get(output);
+        int size = allRecipes.size();
+        for (int i = 0; i < size; i++) {
+            final IRecipe recipe = allRecipes.get(i);
             if (aNotRemoveShapelessRecipes
-                && (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) continue;
+                && (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe)) {
+                continue;
+            }
             if (aOnlyRemoveNativeHandlers) {
                 if (!sNativeRecipeClasses.contains(
-                    tRecipe.getClass()
+                    recipe.getClass()
                         .getName()))
                     continue;
             } else {
                 if (sSpecialRecipeClasses.contains(
-                    tRecipe.getClass()
+                    recipe.getClass()
                         .getName()))
                     continue;
             }
-            ItemStack tStack = tRecipe.getRecipeOutput();
-            if ((!(tRecipe instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) tRecipe).isRemovable())
-                && GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
-                tList.remove(i--);
-                tList_sS = tList.size();
-                rReturn = true;
+            ItemStack recipeOutput = recipe.getRecipeOutput();
+            if (!(recipe instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) recipe).isRemovable()) {
+                if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(recipeOutput), output, aIgnoreNBT)) {
+                    allRecipes.remove(i--);
+                    size = allRecipes.size();
+                    rReturn = true;
+                }
             }
         }
         return rReturn;
     }
 
     public static boolean bulkRemoveRecipeByOutput(List<ItemStack> toRemove) {
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+        ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
 
         Set<ItemStack> setToRemove = toRemove.parallelStream()
             .map(GTOreDictUnificator::get_nocopy)
             .collect(Collectors.toSet());
 
-        GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: tList: " + tList.size() + " setToRemove: " + setToRemove.size());
+        GT_FML_LOGGER
+            .info("BulkRemoveRecipeByOutput: allRecipes: " + allRecipes.size() + " setToRemove: " + setToRemove.size());
 
-        Set<IRecipe> tListToRemove = tList.parallelStream()
+        Set<IRecipe> tListToRemove = allRecipes.parallelStream()
             .filter(tRecipe -> {
                 if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
                     return false;
@@ -1414,7 +1412,7 @@ public class GTModHandler {
             })
             .collect(Collectors.toSet());
 
-        tList.removeIf(tListToRemove::contains);
+        allRecipes.removeIf(tListToRemove::contains);
         return true;
     }
 
@@ -1442,12 +1440,12 @@ public class GTModHandler {
             }
         }, 3, 3);
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        List<IRecipe> tList = CraftingManager.getInstance()
+        List<IRecipe> allRecipes = CraftingManager.getInstance()
             .getRecipeList();
         synchronized (sAllRecipeList) {
-            if (sAllRecipeList.size() != tList.size()) {
+            if (sAllRecipeList.size() != allRecipes.size()) {
                 sAllRecipeList.clear();
-                sAllRecipeList.addAll(tList);
+                sAllRecipeList.addAll(allRecipes);
             }
             for (int i = 0, j = sAllRecipeList.size(); i < j; i++) {
                 IRecipe tRecipe = sAllRecipeList.get(i);
@@ -1498,7 +1496,7 @@ public class GTModHandler {
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection. If available, will choose a
      * recipe that wasn't auto generated during OreDictionary registration. The OreDict recipe is still chosen if it is
      * the only one that exists.
-     *
+     * <p>
      * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab, but also have another that
      * results in Minecraft's default Oak Slab. This second recipe is generated automatically when the plank is
      * registered as 'plankWood' in the OreDict. This method will select the former, regardless of the order they appear
@@ -1516,8 +1514,7 @@ public class GTModHandler {
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... aRecipe) {
-        if (aRecipe == null || Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return null;
+        if (aRecipe == null || isAllNulls(aRecipe)) return null;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
@@ -1601,8 +1598,7 @@ public class GTModHandler {
      */
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
         List<ItemStack> rList = new ArrayList<>();
-        if (aRecipe == null || Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return rList;
+        if (aRecipe == null || isAllNulls(aRecipe)) return rList;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
             @Override
@@ -1647,6 +1643,15 @@ public class GTModHandler {
             }
         }
         return rList;
+    }
+
+    private static boolean isAllNulls(ItemStack[] aRecipe) {
+        for (ItemStack stack : aRecipe) {
+            if (stack != null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -1987,7 +1992,7 @@ public class GTModHandler {
      *
      * @param aStack Any ItemStack.
      * @return Optional.empty() if the stack is null or not an electric item, or an Optional containing a payload of an
-     *         array containing [ current_charge, maximum_charge ] on success.
+     * array containing [ current_charge, maximum_charge ] on success.
      */
     public static Optional<Long[]> getElectricItemCharge(ItemStack aStack) {
         if (aStack == null || !isElectricItem(aStack)) {
@@ -1999,13 +2004,11 @@ public class GTModHandler {
         if (item instanceof final MetaBaseItem metaBaseItem) {
             final Long[] stats = metaBaseItem.getElectricStats(aStack);
             if (stats != null && stats.length > 0) {
-                return Optional.of(new Long[] { metaBaseItem.getRealCharge(aStack), stats[0] });
+                return Optional.of(new Long[]{metaBaseItem.getRealCharge(aStack), stats[0]});
             }
 
         } else if (item instanceof final IElectricItem ic2ElectricItem) {
-            return Optional.of(
-                new Long[] { (long) ic2.api.item.ElectricItem.manager.getCharge(aStack),
-                    (long) ic2ElectricItem.getMaxCharge(aStack) });
+            return Optional.of(new Long[]{(long) ic2.api.item.ElectricItem.manager.getCharge(aStack), (long) ic2ElectricItem.getMaxCharge(aStack)});
         }
 
         return Optional.empty();

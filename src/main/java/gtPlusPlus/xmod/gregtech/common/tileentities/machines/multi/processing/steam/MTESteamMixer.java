@@ -212,7 +212,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                     'A',
                     ofChain(
                         buildSteamInput(MTESteamMixer.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(MTESteamMixer.class)
@@ -222,7 +222,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                                 OutputHatch,
                                 InputHatch)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(

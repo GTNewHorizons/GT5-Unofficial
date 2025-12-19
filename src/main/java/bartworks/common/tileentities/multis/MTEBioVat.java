@@ -152,7 +152,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         OutputHatch,
                         Energy,
                         RadioHatchElement.RadioHatch)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
@@ -613,14 +613,18 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
         this.doAllVisualThings();
-        if (aBaseMetaTileEntity.isServerSide() && this.mRadHatches.size() == 1) {
-            this.mSievert = this.mRadHatches.get(0)
-                .getSievert();
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (this.mRadHatches.size() == 1) {
+                this.mSievert = this.mRadHatches.get(0)
+                    .getSievert();
+            } else {
+                this.mSievert = 0;
+            }
             if (aBaseMetaTileEntity.isActive() && this.mNeededSievert > this.mSievert) this.mOutputFluids = null;
-        }
-        if (aBaseMetaTileEntity.isServerSide() && this.mMaxProgresstime <= 0) {
-            this.mTimes = 0;
-            this.mMaxProgresstime = 0;
+            if (this.mMaxProgresstime <= 0) {
+                this.mTimes = 0;
+                this.mMaxProgresstime = 0;
+            }
         }
     }
 
