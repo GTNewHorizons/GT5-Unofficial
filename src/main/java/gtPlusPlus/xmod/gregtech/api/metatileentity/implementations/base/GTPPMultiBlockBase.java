@@ -507,7 +507,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (aTileEntity instanceof MTEHatchInputBus) {
                 resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
 
@@ -728,7 +728,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             } else {
                 return false;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return false;
         }

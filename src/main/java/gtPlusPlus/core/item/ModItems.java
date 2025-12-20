@@ -433,7 +433,7 @@ public final class ModItems {
             MaterialsElements.getInstance().HAFNIUM.setWerkstoffID((short) 11000);
             MaterialsElements.getInstance().IODINE.setWerkstoffID((short) 11012);
 
-        } catch (final Throwable r) {
+        } catch (final Exception r) {
             Logger.INFO("Failed to Generated a Material. " + r.getMessage());
             r.printStackTrace();
         }
