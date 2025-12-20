@@ -74,7 +74,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
@@ -106,7 +105,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         new CoolingFluid(Materials.SpaceTime, 2, 50),
         new CoolingFluid(Materials.Eternity, 3, 25));
 
-    private final ArrayList<MTEHatchInput> mCoolantInputHatches = new ArrayList<>();
+    private final ArrayList<MTEHatchInput> coolantHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
     private static final int horizontalOffset = 7;
     private static final int verticalOffset = 43 + 10;
@@ -119,7 +118,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private final int parallelScaleBase = 16;
     private final float ocFactorBase = 2.0F;
     private int additionalOverclocks = 0;
-    private boolean uevRecipesEnabled = false;
+    private boolean UIVRecipesEnabled = false;
     private boolean hypercoolerPresent = false;
     private boolean tdsPresent = false;
     private boolean effOCPresent = false;
@@ -754,7 +753,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
         tier = -1;
-        mCoolantInputHatches.clear();
+        coolantHatches.clear();
         // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
@@ -775,7 +774,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 moduleDepthOffsets[i])) {
                 return false;
             }
-            if (m == FoundryModules.HYPERCOOLER && mCoolantInputHatches.size() != 1) return false;
+            if (m == FoundryModules.HYPERCOOLER && coolantHatches.size() != 1) return false;
         }
         return true;
 
@@ -785,17 +784,16 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchInput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            ((MTEHatchInput) aMetaTileEntity).mRecipeMap = null;
-            mCoolantInputHatches.add((MTEHatchInput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchInput inp) {
+            inp.updateTexture(aBaseCasingIndex);
+            coolantHatches.add(inp);
             return true;
         }
         return false;
     }
 
     public CoolingFluid findCoolingFluid() {
-        for (MTEHatchInput hatch : mCoolantInputHatches) {
+        for (MTEHatchInput hatch : coolantHatches) {
             Optional<CoolingFluid> fluid = COOLING_FLUIDS.stream()
                 .filter(candidate -> drain(hatch, candidate.getStack(), false))
                 .findFirst();
@@ -817,7 +815,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         parallelScaleMultiplier = 1.0F;
 
         hypercoolerPresent = false;
-        uevRecipesEnabled = false;
+        UIVRecipesEnabled = false;
         tdsPresent = false;
         effOCPresent = false;
     }
@@ -834,7 +832,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     hypercoolerPresent = true;
                     break;
                 case HARMONIC_REINFORCEMENT:
-                    uevRecipesEnabled = true;
+                    UIVRecipesEnabled = true;
                     break;
                 case EFFICIENT_OC:
                     effOCPresent = true;
@@ -862,6 +860,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     private void calculateNewStats() {
+
         parallelScaleAdj = (parallelScaleBase + parallelScaleAdditive) * parallelScaleMultiplier;
         speedModifierAdj = (speedModifierBase + speedAdditive) * speedMultiplier;
         euEffAdj = (euEffBase + euEffAdditive) * euEffMultiplier;
@@ -923,7 +922,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     additionalOverclocks = currentCoolingFluid.grantedOC;
                 }
 
-                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UEV && !uevRecipesEnabled) {
+                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UIV && !UIVRecipesEnabled) {
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -946,7 +945,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (mMaxProgresstime > 0 && aTick % 20 == 0 && hypercoolerPresent) {
             if (this.currentCoolingFluid != null) {
                 FluidStack fluid = this.currentCoolingFluid.getStack();
-                for (MTEHatchInput hatch : mCoolantInputHatches) {
+                for (MTEHatchInput hatch : coolantHatches) {
                     if (drain(hatch, fluid, false)) {
                         drain(hatch, fluid, true);
                         return;
@@ -1018,7 +1017,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
         if (moduleToAdd == FoundryModules.HARMONIC_REINFORCEMENT) {
             checkSolidifierModules();
-            if (uevRecipesEnabled) return;
+            if (UIVRecipesEnabled) return;
         }
         if (moduleToAdd == FoundryModules.HYPERCOOLER) {
             checkSolidifierModules();
@@ -1327,7 +1326,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     // data class
-    protected static class CoolingFluid {
+    public static class CoolingFluid {
 
         public Materials material;
         public int grantedOC;

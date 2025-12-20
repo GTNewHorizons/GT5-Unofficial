@@ -450,7 +450,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             case HARMONIC_REINFORCEMENT -> {
                 t.addLine(
                     "Allows for " + EnumChatFormatting.LIGHT_PURPLE
-                        + "UEV+ Recipes"
+                        + "UIV+ Recipes"
                         + EnumChatFormatting.RESET
                         + " to be processed");
             }

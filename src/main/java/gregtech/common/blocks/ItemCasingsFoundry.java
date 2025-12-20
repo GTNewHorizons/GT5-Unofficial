@@ -74,7 +74,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(moduleLimitText);
                 tooltip.add(
                     "Allows for " + EnumChatFormatting.LIGHT_PURPLE
-                        + "UEV+ Recipes"
+                        + "UIV+ Recipes"
                         + EnumChatFormatting.GRAY
                         + " to be processed");
                 tooltip.add(createTierLine(11));
