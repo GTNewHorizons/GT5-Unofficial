@@ -933,6 +933,8 @@ public final class ModItems {
             .registerOre("catalystHellishForce");
         GregtechItemList.CrystalColorizationCatalyst.set(new ItemStack(genericChemItem, 1, 35))
             .registerOre("catalystCrystalColorization");
+        GregtechItemList.TeleportiumCatalyst.set(new ItemStack(genericChemItem, 1, 36))
+            .registerOre("catalystTeleportium");
 
         // Milled Ore Processing
         GregtechItemList.MilledSphalerite

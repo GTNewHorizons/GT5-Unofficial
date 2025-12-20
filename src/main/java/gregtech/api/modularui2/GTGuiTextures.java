@@ -980,6 +980,13 @@ public final class GTGuiTextures {
         .build();
 
     // endregion machine modes
+
+    // Lockality Locking Lattice Textures
+
+    public static final UITexture UNSTABLE_ENDER_HEX_CAPSULE = fullImageGT(
+        "locality_locking_lattice/unstable_ender_hex_capsule");
+    public static final UITexture UNSTABLE_ENDER_VORTEX = fullImage("locality_locking_lattice/unstable_ender_vortex");
+
     /**
      * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.
      *

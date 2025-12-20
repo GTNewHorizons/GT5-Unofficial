@@ -729,6 +729,8 @@ public enum GregtechItemList implements IGregtechItemContainer {
     SynchrotronCapableCatalyst,
     AlgagenicGrowthPromoterCatalyst,
 
+    TeleportiumCatalyst,
+
     // Algae Items
     Algae,
     AlgaeBiomass,

@@ -901,6 +901,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials PrismaticNaquadah;
     public static Materials PrismaticNaquadahCompositeSlurry;
 
+    // Ender line Materials
+
+    public static Materials EnderAir;
+    public static Materials EnderAirUnstable;
+    public static Materials EnderAirCryostable;
+    public static Materials EnderAirBalanced;
+    public static Materials EnderAirFortified;
+    public static Materials EnderAirPyrostable;
+    public static Materials TeleportatiumStable;
+    public static Materials TeleportatiumSemistable;
+    public static Materials TeleportatiumUnstableVolatile;
+    public static Materials TeleportatiumUnstableUnbalanced;
+    public static Materials TeleportatiumUnstableSemifluid;
+    public static Materials TeleportatiumUnstableHypercritical;
+    public static Materials TeleportatiumUnstableAmalgam;
+    public static Materials TeleportatiumEncased;
+
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
@@ -1511,6 +1528,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static void initClient() {
         Materials.TranscendentMetal.renderer = new TranscendentMetalRenderer();
         Materials.GaiaSpirit.renderer = new GaiaSpiritRenderer();
+        Infinity.renderer = new InfinityRenderer();
+        CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
+        Materials.TeleportatiumEncased.renderer = new GaiaSpiritRenderer();
         Materials.Infinity.renderer = new InfinityRenderer();
         Materials.CosmicNeutronium.renderer = new CosmicNeutroniumRenderer();
         Materials.Universium.renderer = new UniversiumRenderer();

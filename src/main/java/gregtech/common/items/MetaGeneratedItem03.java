@@ -27,6 +27,7 @@ import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Bubble_Capsule_Polymer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biowarecomputer;
@@ -229,6 +230,7 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Unalign
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
+import static gregtech.common.items.IDMetaItem03.Resonant_Stable_Seed;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
@@ -1286,6 +1288,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "An unfired support ring used for insulated fluid pipes"));
         ItemList.Prismarine_Precipitate.set(addItem(Prismarine_Precipitate.ID, "Prismarine Precipitate", ""));
         ItemList.Prismatic_Crystal.set(addItem(Prismatic_Crystal.ID, "Prismatic Crystal", ""));
+        ItemList.Resonant_Stable_Seed.set(addItem(Resonant_Stable_Seed.ID, "Resonant Seed", ""));
+        ItemList.Bubble_Capsule_Polymer.set(addItem(Bubble_Capsule_Polymer.ID, "Bubble Capsule Polymer", ""));
         ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet
             .set(
                 addItem(

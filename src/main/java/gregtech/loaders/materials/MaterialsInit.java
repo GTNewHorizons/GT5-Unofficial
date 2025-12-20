@@ -56,6 +56,7 @@ public class MaterialsInit {
         loadNetheriteLine();
         loadPrismaticAcidLine();
         loadMagicMaterials();
+        loadEnderAirLine();
         loadBotaniaMaterials();
         loadKevlarLine();
         loadAluminiumOres();
@@ -13973,6 +13974,183 @@ public class MaterialsInit {
             .addFluid()
             .addCell()
             .constructMaterial();
+    }
+
+    private static void loadEnderAirLine() {
+        Materials.EnderAir = loadEnderAir();
+        Materials.EnderAirUnstable = loadEnderAirUnstable();
+        Materials.EnderAirCryostable = loadEnderAirCryostable();
+        Materials.EnderAirBalanced = loadEnderAirBalanced();
+        Materials.EnderAirFortified = loadEnderAirFortified();
+        Materials.EnderAirPyrostable = loadEnderAirPyrostable();
+        Materials.TeleportatiumStable = loadTeleportatiumStable();
+        Materials.TeleportatiumSemistable = loadTeleportatiumSemistable();
+        Materials.TeleportatiumUnstableVolatile = loadTeleportatiumUnstableVolatile();
+        Materials.TeleportatiumUnstableUnbalanced = loadTeleportatiumUnstableUnbalanced();
+        Materials.TeleportatiumUnstableSemifluid = loadTeleportatiumUnstableSemifluid();
+        Materials.TeleportatiumUnstableHypercritical = loadTeleportatiumUnstableHypercritical();
+        Materials.TeleportatiumUnstableAmalgam = loadTeleportatiumUnstableAmalgam();
+        Materials.TeleportatiumEncased = loadTeleportatiumEncased();
+
+    }
+
+    private static Materials loadEnderAir() {
+        return new MaterialBuilder().setName("EnderAir")
+            .setDefaultLocalName("Ender Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00197545)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadEnderAirUnstable() {
+        return new MaterialBuilder().setName("EnderAirUnstable")
+            .setDefaultLocalName("Unstable Ender Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00036916)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadEnderAirCryostable() {
+        return new MaterialBuilder().setName("EnderAirCryostable")
+            .setDefaultLocalName("Cryostable Ender Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x005cedd3)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadEnderAirBalanced() {
+        return new MaterialBuilder().setName("EnderAirBalanced")
+            .setDefaultLocalName("Balanced Ender Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x005fb509)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadEnderAirFortified() {
+        return new MaterialBuilder().setName("EnderAirFortified")
+            .setDefaultLocalName("Fortified Ender Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x001c361a)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadEnderAirPyrostable() {
+        return new MaterialBuilder().setName("EnderAirPyrostable")
+            .setDefaultLocalName("Pyrostable Ender Air")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00e4f07d)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumStable() {
+        return new MaterialBuilder().setName("Teleportatium")
+            .setDefaultLocalName("Teleportatium")
+            .setIconSet(new TextureSet("teleportatium", true))
+            .setARGB(0x00ffffff)
+            .addCell()
+            .addFluid()
+            .addSubTag(SubTag.TRANSPARENT)
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumSemistable() {
+        return new MaterialBuilder().setName("TeleportatiumSemistable")
+            .setDefaultLocalName("Semistable Teleportatium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x003718b5)
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumUnstableVolatile() {
+        return new MaterialBuilder().setName("TeleportatiumUnstableVolatile")
+            .setDefaultLocalName("Volatile Teleportatium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00c47b74)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumUnstableUnbalanced() {
+        return new MaterialBuilder().setName("TeleportatiumUnstableUnbalanced")
+            .setDefaultLocalName("Unbalanced Teleportatium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00cca2f2)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumUnstableSemifluid() {
+        return new MaterialBuilder().setName("TeleportatiumUnstableSemifluid")
+            .setDefaultLocalName("Semifluid Teleportatium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x000f1d4a)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumUnstableHypercritical() {
+        return new MaterialBuilder().setName("TeleportatiumUnstableHypercritical")
+            .setDefaultLocalName("Hypercritical Teleportatium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x00400c0b)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumUnstableAmalgam() {
+        return new MaterialBuilder().setName("TeleportatiumUnstableAmalgam")
+            .setDefaultLocalName("Unstable Amalgam")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0x0017064f)
+            .addCell()
+            .addFluid()
+            .constructMaterial();
+    }
+
+    public static Materials loadTeleportatiumEncased() {
+        return new MaterialBuilder().setName("TeleportatiumEncased")
+            .setDefaultLocalName("Encased Teleportatium")
+            .setIconSet(new TextureSet("teleportatiumencased", true))
+            .setColor(Dyes.dyeLightGray)
+            .setARGB(0xffffffff)
+            .addMetalItems()
+            .addGearItems()
+            .setMeltingPoint(1_200)
+            .setBlastFurnaceTemp(1_900)
+            .setBlastFurnaceRequired(true)
+            .setAutoGenerateBlastFurnaceRecipes(false)
+            .setAutoGeneratedVacuumFreezerRecipe(false)
+            .setAutoGeneratedRecycleRecipes(false)
+            .addSubTag(SubTag.NO_RECIPES)
+            .addSubTag(SubTag.SMELTING_TO_FLUID)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addSubTag(SubTag.NO_RECYCLING_RECIPES)
+            .addSubTag(SubTag.NO_RECYCLING)
+            .addSubTag(SubTag.NO_ORE_PROCESSING)
+            .removeOrePrefix(OrePrefixes.cellMolten)
+            .removeOrePrefix(OrePrefixes.nugget)
+            .removeOrePrefix(OrePrefixes.spring)
+            .removeOrePrefix(OrePrefixes.springSmall)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UV);
+
     }
 
     private static void loadBotaniaMaterials() {
