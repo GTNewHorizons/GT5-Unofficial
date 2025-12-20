@@ -3,7 +3,6 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -29,13 +28,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
@@ -43,7 +35,6 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,7 +47,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
-import kekztech.client.gui.KTUITextures;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
@@ -412,40 +402,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (!widget.isClient()) {
-                canUseWireless = canUseWireless();
-            }
-            if (canUseWireless) {
-                wirelessEnabled = !wirelessEnabled;
-            }
-        })
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(GTUITextures.BUTTON_STANDARD);
-                if (canUseWireless) {
-                    if (wirelessEnabled) {
-                        ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_ON);
-                    } else {
-                        ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_OFF);
-                    }
-                } else {
-                    ret.add(KTUITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
-                }
-                return ret.toArray(new IDrawable[0]);
-            })
-            .setPos(80, 91)
-            .setSize(16, 16)
-            .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> wirelessEnabled, val -> wirelessEnabled = val))
-            .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val));
-    }
-
-    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
@@ -532,7 +488,6 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     protected long energyProducedCache;
     protected float efficiencyCache;
     protected float avgEffCache;
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     @Override
     public IStructureDefinition<AntimatterGenerator> getStructureDefinition() {
@@ -552,13 +507,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
         currentTip.add(
             StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
                 + EnumChatFormatting.RED
-                + numberFormat.format(Math.ceil(efficiencyCache * 100))
+                + GTUtility.formatNumbers(Math.ceil(efficiencyCache * 100))
                 + EnumChatFormatting.WHITE
                 + " %");
         currentTip.add(
             StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
                 + EnumChatFormatting.RED
-                + numberFormat.format(Math.ceil(avgEffCache * 100))
+                + GTUtility.formatNumbers(Math.ceil(avgEffCache * 100))
                 + EnumChatFormatting.WHITE
                 + " % ⟩₁₀");
     }

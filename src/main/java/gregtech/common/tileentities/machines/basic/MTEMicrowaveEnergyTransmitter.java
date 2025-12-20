@@ -21,16 +21,11 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -40,7 +35,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import gregtech.common.gui.modularui.singleblock.MTEMicrowaveEnergyTransmitterGui;
 
-public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddGregtechLogo {
+public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int mMaxLoss = 50;
@@ -359,18 +354,5 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank implements IAddG
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEMicrowaveEnergyTransmitterGui(this).build(data, syncManager, uiSettings);
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 56));
     }
 }

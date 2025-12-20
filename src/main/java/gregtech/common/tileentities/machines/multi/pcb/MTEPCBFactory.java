@@ -46,7 +46,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -981,11 +980,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GTCEU_LOOP_ASSEMBLER;
-    }
-
-    @Override
-    public Pos2d getStructureUpdateButtonPos() {
-        return new Pos2d(80, 91);
     }
 
     public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {

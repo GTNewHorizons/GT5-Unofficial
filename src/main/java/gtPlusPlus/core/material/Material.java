@@ -608,6 +608,8 @@ public class Material implements IOreMaterial {
                 this.vChemicalFormula = "??";
             }
 
+            this.textureSet = setTextureSet(set, vTier);
+
             if (generateFluid) {
                 final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();
                 FluidStack aTest = FluidUtils.getWildcardFluidStack(localizedName, 1);
@@ -646,8 +648,6 @@ public class Material implements IOreMaterial {
                     }
                 }
             }
-
-            this.textureSet = setTextureSet(set, vTier);
 
             if (TinkerConstruct.isModLoaded() && this.materialState == MaterialState.SOLID) {
                 if (this.getProtons() >= 98 || this.getComposites()
@@ -1473,7 +1473,8 @@ public class Material implements IOreMaterial {
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells);
+                this.vGenerateCells,
+                this);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
             return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
@@ -1484,7 +1485,8 @@ public class Material implements IOreMaterial {
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells);
+                this.vGenerateCells,
+                this);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils
                 .generateGas(unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);

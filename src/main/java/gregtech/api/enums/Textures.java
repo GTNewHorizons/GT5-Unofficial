@@ -473,6 +473,7 @@ public class Textures {
         MACHINE_COIL_ETERNAL_FOREGROUND,
 
         BOILER_SOLAR,
+        BOILER_SOLAR_CALCIFIED,
         BOILER_FRONT,
         BOILER_FRONT_GLOW,
 
