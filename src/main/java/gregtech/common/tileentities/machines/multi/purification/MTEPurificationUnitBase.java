@@ -725,8 +725,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
     }
 
-    private static final int PARALLEL_WINDOW_ID = 10;
-
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEPurificationUnitBaseGui(this);
