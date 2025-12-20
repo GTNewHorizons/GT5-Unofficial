@@ -397,13 +397,13 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayerTrans(aPlayer, "BW.chat.thtr.cannot_change_mode");
+            GTUtility.sendChatToPlayer(aPlayer, "THTR mode cannot be changed while the machine is running.");
             return;
         }
         this.emptyingMode = !this.emptyingMode;
-        GTUtility.sendChatToPlayerTrans(
+        GTUtility.sendChatToPlayer(
             aPlayer,
-            this.emptyingMode ? "BW.chat.thtr.running_in.emptying" : "BW.chat.thtr.running_in.normal");
+            "THTR is now running in " + (this.emptyingMode ? "emptying mode." : "normal Operation"));
     }
 
     @Override

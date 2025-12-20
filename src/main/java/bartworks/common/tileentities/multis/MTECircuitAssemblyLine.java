@@ -292,11 +292,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            switchMode();
-            GTUtility.sendChatToPlayerTrans(aPlayer, "chat.cal.mode." + mode.index);
-        }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        setMachineMode(nextMachineMode());
+        // TODO: Replace with GT5U.MULTI_MACHINE_CHANGE. Requires changing translations
+        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("chat.cal.mode." + machineMode));
     }
 
     @Override
@@ -581,13 +579,15 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (!aPlayer.isSneaking()) {
             if (machineMode == MACHINEMODE_CAL) return false;
             inputSeparation = !inputSeparation;
-            GTUtility.sendChatToPlayerTrans(aPlayer, "GT5U.machines.separatebus", inputSeparation);
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
         } else {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayerTrans(aPlayer, "misc.BatchModeTextOn");
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
             } else {
-                GTUtility.sendChatToPlayerTrans(aPlayer, "misc.BatchModeTextOff");
+                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
             }
         }
         return true;

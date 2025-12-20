@@ -79,7 +79,7 @@ public class MTEDiode extends MTEBasicHull {
             ++this.aAmps;
             if (this.aAmps > this.maxAmps) this.aAmps = 0;
         }
-        GTUtility.sendChatToPlayerTrans(aPlayer, "BW.chat.diode.max_amps", this.aAmps);
+        GTUtility.sendChatToPlayer(aPlayer, "Max Amps: " + this.aAmps);
     }
 
     @Override
