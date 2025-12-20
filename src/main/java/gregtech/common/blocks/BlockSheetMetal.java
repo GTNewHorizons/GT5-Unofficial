@@ -10,6 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Nullable;
 
+import appeng.api.parts.IFacadeControl;
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,7 +31,7 @@ import gregtech.common.render.GTRendererBlock;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
-public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures {
+public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures, IFacadeControl {
 
     private final Int2ObjectFunction<IOreMaterial> materials;
     private final int maxMeta;
@@ -145,5 +146,10 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures 
                 .duration(10)
                 .addTo(RecipeMaps.benderRecipes);
         }
+    }
+
+    @Override
+    public boolean createFacadeForBlock(int meta) {
+        return false;
     }
 }
