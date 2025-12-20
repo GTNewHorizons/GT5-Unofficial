@@ -1581,7 +1581,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     private static void addHasGasFluid(Materials aMaterial) {
-        if (aMaterial.mIconSet.is_custom) {
+        if (aMaterial.mIconSet.hasCustomFluid()) {
             return;
         }
 

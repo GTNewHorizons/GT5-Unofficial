@@ -525,7 +525,7 @@ public final class MaterialsElements {
         public static final Material HYPOGEN = new Material(
             "Hypogen",
             MaterialState.SOLID,
-            TextureSet.SET_HYPOGEN,
+            new TextureSet("hypogen", false),
             new short[] { 220, 120, 75, 2 },
             11255,
             19377,
@@ -537,7 +537,7 @@ public final class MaterialsElements {
         public static final Material RHUGNOR = new Material(
             "Rhugnor",
             MaterialState.SOLID,
-            TextureSet.SET_RHUGNOR,
+            new TextureSet("rhugnor", true),
             new short[] { 190, 0, 255, 0 },
             8750,
             14757,
