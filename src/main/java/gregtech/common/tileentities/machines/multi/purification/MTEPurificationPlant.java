@@ -35,6 +35,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -76,6 +78,8 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEPurificationPlantGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.ShutDownReasonSyncer;
 import gregtech.common.gui.modularui.widget.TextButtonWidget;
 
@@ -706,6 +710,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEPurificationPlantGui(this);
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
 
         buildContext.addSyncedWindow(STATUS_WINDOW_ID, this::createStatusWindow);
@@ -778,6 +787,15 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             }
             return null;
         }));
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public boolean setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+        return debugMode;
     }
 
     @Override
