@@ -604,6 +604,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 
+        if (aBaseMetaTileEntity.getWorld().isRemote) {
+            return true;
+        }
         // Right-clicking could be a data stick linking action, so try this first.
         if (tryLinkDataStick(aPlayer)) {
             return true;
