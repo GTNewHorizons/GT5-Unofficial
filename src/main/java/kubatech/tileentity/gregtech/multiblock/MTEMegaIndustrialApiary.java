@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksMap;
@@ -38,7 +39,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
-import static gregtech.api.util.GTUtility.formatShortenedLong;
+import static gregtech.api.util.GTUtility.appendRate;
 import static gregtech.api.util.GTUtility.truncateText;
 import static kubatech.api.gui.KubaTechUITextures.APIARY_INVENTORY_BACKGROUND;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
@@ -1068,11 +1069,11 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     .getDisplayName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
+                    + formatNumber(itemCount)
                     + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
+                    + appendRate(false, mMaxProgresstime, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, mMaxProgresstime, itemCount, false);
 
                 processingDetails.widget(
                     new MultiChildWidget().addChild(

@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -504,16 +506,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 t -> t.addLine(
                     EnumChatFormatting.AQUA + itemName
                         + "\n"
-                        + GTUtility.appendRate(false, amount, false, maxProgressTimeSyncer.getValue())));
+                        + GTUtility.appendRate(false, maxProgressTimeSyncer.getValue(), amount, false)));
     }
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
 
         String amountString = EnumChatFormatting.WHITE + " x "
             + EnumChatFormatting.GOLD
-            + GTUtility.formatShortenedLong(amount)
+            + formatNumber(amount)
             + EnumChatFormatting.WHITE
-            + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
+            + GTUtility.appendRate(false, maxProgressTimeSyncer.getValue(), amount, true);
         String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
             + amountString;
         return itemTextLine;
@@ -540,16 +542,15 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 t -> t.addLine(
                     EnumChatFormatting.AQUA + fluidName
                         + "\n"
-                        + GTUtility.appendRate(true, amount, false, maxProgressSyncer.getIntValue())));
+                        + GTUtility.appendRate(true, maxProgressSyncer.getValue(), amount, false)));
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
         String amountString = EnumChatFormatting.WHITE + " x "
             + EnumChatFormatting.GOLD
-            + GTUtility.formatShortenedLong(amount)
-            + "L"
+            + formatFluid(amount)
             + EnumChatFormatting.WHITE
-            + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
+            + GTUtility.appendRate(false, maxProgressTimeSyncer.getValue(), amount, true);
         String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
             + amountString;
         return fluidTextLine;

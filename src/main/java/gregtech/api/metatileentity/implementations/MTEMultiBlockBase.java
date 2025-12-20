@@ -1,15 +1,12 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.GTUtility.formatShortenedLong;
-import static gregtech.api.util.GTUtility.min;
-import static gregtech.api.util.GTUtility.truncateText;
-import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTUtility.*;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -2337,8 +2334,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     currentTip.add(
                         "  " + tag.getString("outputFluid" + i)
                             + " x "
-                            + formatNumber(tag.getInteger("outputFluidCount" + i))
-                            + "L");
+                            + formatFluid(tag.getInteger("outputFluidCount" + i))
+                    );
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
@@ -3126,16 +3123,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             for (Map.Entry<ItemStack, Long> entry : sortedMap) {
                 Long itemCount = entry.getValue();
-                String itemName = entry.getKey()
-                    .getDisplayName();
+                String itemName = entry.getKey().getDisplayName();
+
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
+                    + formatNumber(itemCount)
                     + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
-                    + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+                    + appendRate(false, mMaxProgresstime, itemCount, true);
+
+                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length()) + itemAmountString;
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, mMaxProgresstime, itemCount, false);
 
                 processingDetails.widget(
                     new MultiChildWidget().addChild(
@@ -3171,13 +3168,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     .getLocalizedName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + "L"
+                    + formatFluid(itemCount)
                     + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
+                    + appendRate(false, mMaxProgresstime, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
                     + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, mMaxProgresstime, itemCount, false);
 
                 processingDetails.widget(
                     new MultiChildWidget().addChild(
@@ -3195,99 +3191,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
         }
         return processingDetails;
-    }
-
-    protected String appendRate(boolean isLiquid, Long amount, boolean isFormatShortened) {
-        final StringBuffer ret = new StringBuffer();
-        final DecimalFormat df = new DecimalFormat("0.00");
-        final double progressTime = (double) mMaxProgresstime / 20;
-        double perSecond = amount / progressTime;
-        double perMinute = perSecond * 60;
-        double perHour = perSecond * 3_600;
-        double perDay = perSecond * 86_400;
-
-        final String amountText = translateToLocal("GT5U.gui.text.amount") + " ";
-        final String perSecondText = translateToLocal("GT5U.gui.text.per_second") + " ";
-        final String perMinuteText = translateToLocal("GT5U.gui.text.per_minute") + " ";
-        final String perHourText = translateToLocal("GT5U.gui.text.per_hour") + " ";
-        final String perDayText = translateToLocal("GT5U.gui.text.per_day") + " ";
-
-        final Function<Double, Double> roundNumber = (number) -> {
-            if (Math.abs(number) < 10) {
-                return Math.round(number * 100) / 100.0;
-            } else {
-                return Math.floor(number);
-            }
-        };
-
-        if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
-            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
-            ret.append("/s");
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
-        } else {
-            ret.append(EnumChatFormatting.RESET);
-            ret.append(
-                amountText + EnumChatFormatting.GOLD
-                    + formatNumber(amount)
-                    + (isLiquid ? "L" : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perSecondText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perSecond))
-                    + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perSecond)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perMinute))
-                    + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perMinute)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perHourText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perHour))
-                    + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perHour)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
-            ret.append("\n");
-            ret.append(
-                perDayText + EnumChatFormatting.GOLD
-                    + formatNumber(roundNumber.apply(perDay))
-                    + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perDay)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
-                    + EnumChatFormatting.RESET);
-        }
-        return ret.toString();
     }
 
     protected String generateCurrentProgress() {

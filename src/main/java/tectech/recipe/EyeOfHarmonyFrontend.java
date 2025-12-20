@@ -1,6 +1,7 @@
 package tectech.recipe;
 
 import static com.google.common.math.LongMath.pow;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
@@ -146,12 +147,10 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
-                    + formatNumber(recipe.getHydrogenRequirement())
-                    + " L");
+                    + formatFluid(recipe.getHydrogenRequirement()));
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
-                    + formatNumber(recipe.getHydrogenRequirement())
-                    + " L");
+                    + formatFluid(recipe.getHydrogenRequirement()));
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
                     + EOH_TIER_FANCY_NAMES[(int) recipe.getSpacetimeCasingTierRequired()]);

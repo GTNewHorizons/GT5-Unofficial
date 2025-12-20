@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.tool.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatFluid;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GTPlusPlus;
@@ -160,12 +161,15 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
         aList.add(
             EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
                 : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
-        aList.add(
-            EnumChatFormatting.BLUE + (f != null ? "" + formatNumber(f.amount) : "" + 0)
-                + "L"
-                + " / "
-                + formatNumber(getCapacity(aStack))
-                + "L");
+
+        long amount = f != null ? f.amount : 0;
+        aList.add(String.format(
+            "%s%s / %s",
+            EnumChatFormatting.BLUE,
+            formatFluid(amount),
+            formatFluid(getCapacity(aStack))
+        ));
+
 
         final Long[] tStats = this.getElectricStats(aStack);
         if (tStats != null) {

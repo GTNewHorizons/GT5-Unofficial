@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -32,9 +33,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.formatShortenedLong;
-import static gregtech.api.util.GTUtility.truncateText;
-import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTUtility.*;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -1198,11 +1197,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     .getDisplayName();
                 String itemAmountString = EnumChatFormatting.WHITE + " x "
                     + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
+                    + formatNumber(itemCount)
                     + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
+                    + appendRate(false, mMaxProgresstime, itemCount, true);
                 String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 20) + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, mMaxProgresstime, itemCount, false);
 
                 processingDetails.widget(
                     new MultiChildWidget().addChild(
