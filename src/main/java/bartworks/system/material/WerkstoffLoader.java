@@ -115,6 +115,7 @@ import bwcrossmod.cls.CLSCompat;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
@@ -1609,8 +1610,7 @@ public class WerkstoffLoader {
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMetalItems()
-            .addMolten()
-            .setBlacklist(OrePrefixes.plate),
+            .addMolten(),
         11503,
         TextureSet.SET_METALLIC);
 
@@ -1663,6 +1663,9 @@ public class WerkstoffLoader {
         if (orePrefixes == OrePrefixes.blockCasingAdvanced) {
             return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
         }
+        if (orePrefixes == OrePrefixes.sheetmetal) {
+            return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
+        }
 
         if (WerkstoffLoader.items.get(orePrefixes) == null) {
             return null;
@@ -1685,6 +1688,11 @@ public class WerkstoffLoader {
                     + " OrePrefix for Werkstoff "
                     + werkstoff.getDefaultName()));
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
+    }
+
+    /// Forces this class to be loaded
+    public static void load() {
+
     }
 
     public static void runInit() {
@@ -1894,7 +1902,7 @@ public class WerkstoffLoader {
                             + werkstoff.getVarName()
                             + " in GT material system, disable and reroute my Items to that, also add a Tooltip.");
                     werkstoff.getGenerationFeatures()
-                        .setBlacklist(p);
+                        .removePrefix(p);
                 }
             WerkstoffLoader.toGenerateGlobal = WerkstoffLoader.toGenerateGlobal
                 | werkstoff.getGenerationFeatures().toGenerate;
