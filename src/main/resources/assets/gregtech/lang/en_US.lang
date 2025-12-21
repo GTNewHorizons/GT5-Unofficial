@@ -3782,7 +3782,10 @@ gt.charcoal_pit.info.8=No air between logs allowed.\nAll logs must be within 6 x
 
 gt.fusion.tips.a=It's over 9000!!!
 gt.fusion.tips.b=A SUN DOWN ON EARTH
-gt.fusion.tips.1=§b%s§7 EU/t and §b%sM§7 EU capacity per Energy Hatch\nIf the recipe has a startup cost greater than the\nnumber of energy hatches * cap, you can't do it
+gt.fusion.tips.c=HARNESSING THE POWER OF A BLUE GIANT
+gt.fusion.tips.d=HARNESSING THE POWER OF A NEUTRON STAR
+gt.fusion.tips=§b%s§7 EU/t and §b%s§7 EU capacity per Energy Hatch\nIf the recipe has a startup cost greater than the\nnumber of energy hatches * cap, you can't do it
+gt.fusion.tips.overclock=Performs 4/4 overclocks
 gt.fusion.info.1=See diagram when placed
 gt.fusion.info.2=Cover the coils with casing
 gt.fusion.info.3=Center part of the ring
@@ -4017,14 +4020,12 @@ gt.nuclear_salt_processing_plant.info.3=Top Side, 2 Required
 gt.nuclear_salt_processing_plant.info.4=Bottom Side, 2 Required
 gt.nuclear_salt_processing_plant.info.5=Back Side, Opposite of Controller
 
-gt.wwxl.tips.1=Works as fast as 32 Large Heat Exchangers\nInputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam §7or §fSH Steam §7in the process\nOutputs §fSH Steam §7if the input rate of hot fluid is above a certain §dthreshold
-gt.wwxl.tips.2=§cLava §7: SH Threshold §d32,000 L/s §7: Max Input §c64,000 L/s §7: Max Output §f5,120,000 SH Steam/s\n§cHot Coolant §7: SH Threshold §d25,600 L/s §7: Max Input §c51,200 L/s §7: Max Output §f10,240,000 SH Steam/s\n§cHot Solar Salt §7: SH Threshold §d5,120 L/s §7: Max Input §c10,240 L/s §7: Max Output §f10,240,000 SH Steam/s
-gt.wwxl.tips.3=A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75% §7reduced SH threshold and §f1.5% §7reduced steam per circuit over 1
-gt.wwxl.info.1=Center 3x5x3 (45 blocks)
-gt.wwxl.info.2=Hot fluid, bottom center casing
-gt.wwxl.info.3=Distilled water, any bottom layer casing
-gt.wwxl.info.4=Cold fluid, top center casing
-gt.wwxl.info.5=Steam/SH Steam, any bottom layer casing
+gt.wwxl.tips=Works as fast as 32 Large Heat Exchangers\nInputs are §cLava§7, §cHot Coolant§7, or §cHot Solar Salt\nOutputs are §9Pahoehoe Lava§7, §9IC2 Coolant§7, or §9Cold Solar Salt\nConverts Distilled Water into §fSteam §7or §fSH Steam §7in the process\nOutputs §fSH Steam §7if the input rate of hot fluid is above a certain §dthreshold<SEPARATOR>§cLava §7: SH Threshold §d32,000 L/s §7: Max Input §c64,000 L/s §7: Max Output §f5,120,000 SH Steam/s\n§cHot Coolant §7: SH Threshold §d25,600 L/s §7: Max Input §c51,200 L/s §7: Max Output §f10,240,000 SH Steam/s\n§cHot Solar Salt §7: SH Threshold §d5,120 L/s §7: Max Input §c10,240 L/s §7: Max Output §f10,240,000 SH Steam/s<SEPARATOR>A circuit in the controller lowers the SH threshold at the cost of steam\n§d3.75% §7reduced SH threshold and §f1.5% §7reduced steam per circuit over 1
+gt.wwxl.info.casing=Center 3x5x3 (45 blocks)
+gt.wwxl.info.i_hatch.1=Hot fluid, bottom center casing
+gt.wwxl.info.i_hatch.2=Distilled water, any bottom layer casing
+gt.wwxl.info.o_hatch.1=Cold fluid, top center casing
+gt.wwxl.info.o_hatch.2=Steam/SH Steam, any bottom layer casing
 
 gt.duplicator.tips.1=Produces raw elements from UU-Matter
 gt.duplicator.tips.2=Maximum 1x Data Orb Repository\nThe programmed circuit selects which Data Orb to use (1-16)

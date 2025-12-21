@@ -80,7 +80,7 @@ public class MTEFusionComputer3 extends MTEFusionComputer {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("gt.recipe.fusionreactor")
             .addInfo("gt.fusion.tips.b")
-            .addInfo("gt.fusion.tips.1", "32,768", "40")
+            .addInfo("gt.fusion.tips", "32,768", "40M")
             .beginStructureBlock(15, 3, 15, false)
             .addController("gt.fusion.info.1")
             .addCasingInfoRange("gt.blockcasings4.8.name", 79, 123, false)

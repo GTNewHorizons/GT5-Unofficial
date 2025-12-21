@@ -132,12 +132,12 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .beginStructureBlock(5, 9, 5, false)
             .addController("front_bottom_middle")
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.14.name", 90)
-            .addStructurePart("gt.blockcasings2.15.name", "gt.wwxl.info.1")
-            .addMaintenanceHatch("GT5U.MBTT.AnyCasing", 1)
-            .addInputHatch("gt.wwxl.info.2", 2)
-            .addInputHatch("gt.wwxl.info.3", 1)
-            .addOutputHatch("gt.wwxl.info.4", 3)
-            .addOutputHatch("gt.wwxl.info.5", 1)
+            .addStructurePart("gt.blockcasings2.15.name", "gt.wwxl.info.casing")
+            .addMaintenanceHatch("<casing>", 1)
+            .addInputHatch("gt.wwxl.info.i_hatch.1", 2)
+            .addInputHatch("gt.wwxl.info.i_hatch.2", 1)
+            .addOutputHatch("gt.wwxl.info.o_hatch.1", 3)
+            .addOutputHatch("gt.wwxl.info.o_hatch.2", 1)
             .toolTipFinisher();
         return tt;
     }
