@@ -930,26 +930,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     public void setModule(int index, int ordinal) {
-        // just in case, shouldn't be possible
-        if (index > foundryData.modules.length - 1) return;
-        FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
-
-        if (moduleToAdd == FoundryModules.HYPERCOOLER) {
-            foundryData.checkSolidifierModules();
-            if (foundryData.hypercoolerPresent) return;
-        }
-        if (moduleToAdd == FoundryModules.UNIVERSAL_COLLAPSER) {
-            foundryData.checkSolidifierModules();
-            if (foundryData.tdsPresent) return;
-        }
-        if (moduleToAdd == FoundryModules.EFFICIENT_OC) {
-            foundryData.checkSolidifierModules();
-            if (foundryData.effOCPresent) return;
-        }
-
-        if (foundryData.modules[index] == moduleToAdd) return;
-
-        foundryData.modules[index] = moduleToAdd;
+        foundryData.setModule(index, ordinal);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);

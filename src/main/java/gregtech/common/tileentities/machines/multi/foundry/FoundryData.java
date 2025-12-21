@@ -149,6 +149,36 @@ public class FoundryData {
         euEffAdj = (euEffBase + euEffAdditive) * euEffMultiplier;
     }
 
+    public boolean areModulesEqual(FoundryData other) {
+        if (this.modules[0] != other.modules[0]) return false;
+        if (this.modules[1] != other.modules[1]) return false;
+        if (this.modules[2] != other.modules[2]) return false;
+        return this.modules[3] == other.modules[3];
+    }
+
+    public void setModule(int index, int ordinal) {
+        // just in case, shouldn't be possible
+        if (index > modules.length - 1) return;
+        FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
+
+        if (moduleToAdd == FoundryModules.HYPERCOOLER) {
+            checkSolidifierModules();
+            if (hypercoolerPresent) return;
+        }
+        if (moduleToAdd == FoundryModules.UNIVERSAL_COLLAPSER) {
+            checkSolidifierModules();
+            if (tdsPresent) return;
+        }
+        if (moduleToAdd == FoundryModules.EFFICIENT_OC) {
+            checkSolidifierModules();
+            if (effOCPresent) return;
+        }
+
+        if (modules[index] == moduleToAdd) return;
+
+        modules[index] = moduleToAdd;
+    }
+
     public String getSpeedStr() {
         checkSolidifierModules();
         return (speedModifierAdj) * 100 + "%";

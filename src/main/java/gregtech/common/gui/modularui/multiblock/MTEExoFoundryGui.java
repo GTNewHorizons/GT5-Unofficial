@@ -10,13 +10,12 @@ import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import org.apache.commons.lang3.mutable.MutableInt;
-
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
@@ -25,10 +24,9 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.value.IntValue;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -45,23 +43,25 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryData;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 
 public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
+    private final FoundryData calculatorData;
+    private boolean usingPreview = false;
+
     public MTEExoFoundryGui(MTEExoFoundry base) {
         super(base);
+        calculatorData = base.foundryData.copy();
+        calculatorData.tier = 3; // to allow testing with any module combination regardless of structure
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        // values modified include: Parallels, Speed Bonus, Eu EFF, OC Factor.
-        syncManager.syncValue("Speed", new StringSyncValue(multiblock.foundryData::getSpeedStr));
-        syncManager.syncValue("Parallels", new StringSyncValue(multiblock.foundryData::getParallelsString));
-        syncManager.syncValue("EuEFF", new StringSyncValue(multiblock.foundryData::getEuEFFString));
-        syncManager.syncValue("OCFactor", new StringSyncValue(multiblock.foundryData::getOCFactorString));
+
         syncManager.syncValue(
             "Module1",
             new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
@@ -74,11 +74,30 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         syncManager.syncValue(
             "Module4",
             new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
+
+        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
+        syncManager.syncValue("UsingPreview", usingPreviewSync);
+        syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
+            calculatorData.setModule(0, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
+        syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
+            calculatorData.setModule(1, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
+        syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
+            calculatorData.setModule(2, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
+        syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
+            calculatorData.setModule(3, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
     }
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createConfigButton(syncManager, parent));
+        return super.createRightPanelGapRow(parent, syncManager).child(createConfigButton());
     }
 
     @Override
@@ -107,10 +126,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler contribPanel = syncManager.panel(
-            "contributorsPanel",
-            (p_syncManager, syncHandler) -> openContributorsPanel(p_syncManager, parent, syncManager),
-            true);
+        IPanelHandler contribPanel = syncManager
+            .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
         return new ButtonWidget<>().size(18)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
@@ -129,8 +146,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             });
     }
 
-    private ModularPanel openContributorsPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-        PanelSyncManager syncManager) {
+    private ModularPanel openContributorsPanel(ModularPanel parent) {
         ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
             .size(getBasePanelWidth(), getBasePanelHeight())
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
@@ -236,26 +252,29 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        StringSyncValue speedSync = syncManager.findSyncHandler("Speed", StringSyncValue.class);
-        StringSyncValue parallelSync = syncManager.findSyncHandler("Parallels", StringSyncValue.class);
-        StringSyncValue euEffBaseSync = syncManager.findSyncHandler("EuEFF", StringSyncValue.class);
-        StringSyncValue ocFactorSync = syncManager.findSyncHandler("OCFactor", StringSyncValue.class);
+        IntSyncValue moduleSync0 = syncManager.findSyncHandler("Module1", IntSyncValue.class);
+        IntSyncValue moduleSync1 = syncManager.findSyncHandler("Module2", IntSyncValue.class);
+        IntSyncValue moduleSync2 = syncManager.findSyncHandler("Module3", IntSyncValue.class);
+        IntSyncValue moduleSync3 = syncManager.findSyncHandler("Module4", IntSyncValue.class);
 
-        MutableInt module0 = new MutableInt(0);
-        MutableInt module1 = new MutableInt(0);
-        MutableInt module2 = new MutableInt(0);
-        MutableInt module3 = new MutableInt(0);
+        BooleanSyncValue usingPreviewSync = syncManager.findSyncHandler("UsingPreview", BooleanSyncValue.class);
+        IntSyncValue moduleCalc0 = syncManager.findSyncHandler("Module1Calc", IntSyncValue.class);
+        IntSyncValue moduleCalc1 = syncManager.findSyncHandler("Module2Calc", IntSyncValue.class);
+        IntSyncValue moduleCalc2 = syncManager.findSyncHandler("Module3Calc", IntSyncValue.class);
+        IntSyncValue moduleCalc3 = syncManager.findSyncHandler("Module4Calc", IntSyncValue.class);
 
         return new ModularPanel("statsPanel").relative(parent)
             .rightRel(1)
             .topRel(0)
-            .size(130, 120)
+            .size(130, 130)
             .widgetTheme("backgroundPopup")
             .onCloseAction(() -> {
-                module0.setValue(0);
-                module1.setValue(0);
-                module2.setValue(0);
-                module3.setValue(0);
+                // Reset preview for next time in case the panel is reopened before the GUI is closed
+                moduleCalc0.setIntValue(moduleSync0.getIntValue());
+                moduleCalc1.setIntValue(moduleSync1.getIntValue());
+                moduleCalc2.setIntValue(moduleSync2.getIntValue());
+                moduleCalc3.setIntValue(moduleSync3.getIntValue());
+                usingPreviewSync.setBoolValue(false);
             })
             .child(
                 new Column().sizeRel(1)
@@ -264,60 +283,57 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         new TextWidget<>("Stats").alignment(Alignment.TopCenter)
                             .height(9))
                     .widgetTheme("backgroundPopup")
-                    .child(
-                        IKey.dynamic(() -> "Speed: " + TooltipHelper.SPEED_COLOR + speedSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2))
 
-                    .child(
-                        IKey.dynamic(
-                            () -> "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + parallelSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
-                    .child(
-                        IKey.dynamic(() -> "EU Consumption: " + TooltipHelper.EFF_COLOR + euEffBaseSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
-                    .child(
-                        IKey.dynamic(() -> "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + ocFactorSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + data.getParallelsString();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + data.getOCFactorString();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2))
                     .child(
                         new Row().size(76, 20)
                             .childPadding(4)
                             .alignX(0.5f)
-                            .child(
-                                createModuleSelectButton(
-                                    p_syncManager,
-                                    parent,
-                                    0,
-                                    new IntValue.Dynamic(module0::intValue, module0::setValue)))
-                            .child(
-                                createModuleSelectButton(
-                                    p_syncManager,
-                                    parent,
-                                    1,
-                                    new IntValue.Dynamic(module1::intValue, module1::setValue)))
-                            .child(
-                                createModuleSelectButton(
-                                    p_syncManager,
-                                    parent,
-                                    2,
-                                    new IntValue.Dynamic(module2::intValue, module2::setValue)))
-                            .child(
-                                createModuleSelectButton(
-                                    p_syncManager,
-                                    parent,
-                                    3,
-                                    new IntValue.Dynamic(module3::intValue, module3::setValue)))));
+                            .marginBottom(2)
+                            .child(createModuleSelectButton(p_syncManager, parent, 0, moduleCalc0, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 1, moduleCalc1, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 2, moduleCalc2, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 3, moduleCalc3, true)))
+                    .child(IKey.dynamic(() -> {
+                        if (usingPreviewSync.getBoolValue()) {
+                            return EnumChatFormatting.RED + "Showing Preview Modules";
+                        }
+                        return EnumChatFormatting.GREEN + "Showing Installed Modules";
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .alignX(0.5f)));
 
     }
 
-    protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
+    protected IWidget createConfigButton() {
         return new ButtonWidget<>().size(18, 18)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
@@ -349,17 +365,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .collapseDisabledChild())
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager))
-
-            );
+                        createTerminalRightCornerColumn(panel, syncManager)));
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index,
-        IIntValue<Integer> moduleSync) {
+        IIntValue<Integer> moduleSync, boolean isStats) {
         IPanelHandler selectPanel = syncManager.panel(
-            "moduleSelectPanel" + index,
-            (p_syncManager,
-                syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index, moduleSync),
+            "moduleSelectPanel" + index + (isStats ? "stats" : ""),
+            (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats),
             true);
 
         return new Row().size(30, 16)
@@ -369,16 +382,21 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .tooltipBuilder(t -> {
                         t.addLine("Select Module " + (index + 1));
                         createTooltipForModule(t, moduleSync.getIntValue());
+                        t.addLine(EnumChatFormatting.GRAY + "Shift-click to unset");
                         t.setAutoUpdate(true);
                     })
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .overlay(GuiTextures.ADD)
                     .onMousePressed(d -> {
-                        if (!selectPanel.isPanelOpen()) {
-                            selectPanel.openPanel();
+                        if (Interactable.hasShiftDown()) {
+                            moduleSync.setIntValue(FoundryModules.UNSET.ordinal());
                         } else {
-                            selectPanel.closePanel();
-                            selectPanel.closeSubPanels();
+                            if (!selectPanel.isPanelOpen()) {
+                                selectPanel.openPanel();
+                            } else {
+                                selectPanel.closePanel();
+                                selectPanel.closeSubPanels();
+                            }
                         }
                         return true;
                     })
@@ -392,10 +410,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     }
 
-    private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-        PanelSyncManager syncManager, int index, IIntValue<Integer> moduleSync) {
-
-        ModularPanel panel = new ModularPanel("moduleSelectPanel" + index) {
+    private ModularPanel openModuleConfigPanel(ModularPanel parent, int index, IIntValue<Integer> moduleSync,
+        boolean isStats) {
+        ModularPanel panel = new ModularPanel("moduleSelectPanel" + index + (isStats ? "stats" : "")) {
 
             @Override
             public boolean disablePanelsBelow() {
@@ -407,6 +424,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 return true;
             }
         };
+
         panel.relative(parent)
             .leftRel(1)
             .topRel(0)
@@ -533,23 +551,20 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .background(IDrawable.EMPTY)
-            .child(createFoundryDisplay(syncManager, parent))
+            .child(createFoundryDisplay(syncManager))
             // module selecting
             .child(
                 new Column().size(40, 80)
                     .background(IDrawable.EMPTY)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
-                    .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3))
-                    .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2))
-                    .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1))
-                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0)))
-
-        ;
-
+                    .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3, false))
+                    .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2, false))
+                    .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1, false))
+                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, false)));
     }
 
-    private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager, ModularPanel parent) {
+    private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager) {
         ParentWidget<?> parentWidget = new ParentWidget<>().coverChildren();
         IntSyncValue module1Sync = syncManager.findSyncHandler("Module1", IntSyncValue.class);
         IntSyncValue module2Sync = syncManager.findSyncHandler("Module2", IntSyncValue.class);
@@ -562,7 +577,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .child(
                 new Column().size(59, 80)
                     .pos(0, 0)
-
                     .child(
                         new Column().size(59, 40)
                             .paddingTop(8)
@@ -577,10 +591,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture)))
-
-                    )
-
+                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture))))
                     .child(
                         new Column().size(59, 40)
                             .paddingTop(7)
@@ -595,9 +606,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture))))
-
-            );
+                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture)))));
         return parentWidget;
     }
 
@@ -625,5 +634,4 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         + " Per "
         + EnumChatFormatting.GOLD
         + "Foundry";
-
 }
