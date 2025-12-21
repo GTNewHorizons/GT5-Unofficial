@@ -322,7 +322,6 @@ public class GTClient extends GTProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class,  new NanoForgeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new BaseMetaTileEntityRenderer());
 
-
         MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
         for (MetaGeneratedItem item : MetaGeneratedItem.sInstances.values()) {
             metaItemRenderer.registerItem(item);

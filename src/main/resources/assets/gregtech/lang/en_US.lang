@@ -1352,7 +1352,6 @@ GT5U.machines.coke_oven_hatch.mode.output=Hatch now outputs items
 GT5U.machines.coke_oven_hatch.mode.output_fluid=Hatch now outputs fluids
 
 
-
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
 GT5U.type_filter.representation_slot.tooltip=§7Left click to cycle forward

@@ -2778,6 +2778,7 @@ public enum ItemList implements IItemContainer {
     PlanetaryGasSiphonCasing,
 
     MagLevHarness,
+
     ManaFly,
     DebugEnergyHatch,
 

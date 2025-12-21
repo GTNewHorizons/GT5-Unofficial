@@ -23,7 +23,6 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
-
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
