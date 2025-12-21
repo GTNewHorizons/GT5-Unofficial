@@ -124,6 +124,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private boolean hypercoolerPresent = false;
     private boolean tdsPresent = false;
     private boolean effOCPresent = false;
+    private boolean allowEternity = false;
 
     // modified values for display and calculations
     private float ocFactorAdditive = 0.0F;
@@ -822,6 +823,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         UIVRecipesEnabled = false;
         tdsPresent = false;
         effOCPresent = false;
+        allowEternity = false;
         extraOverclocks = 0;
     }
 
@@ -842,7 +844,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     break;
                 case EFFICIENT_OC:
                     effOCPresent = true;
-                    ocFactorAdditive += 0.25F;
+                    ocFactorAdditive += 0.35F;
                     break;
                 case ACTIVE_TIME_DILATION_SYSTEM:
                     if (tdsPresent) break;
@@ -877,7 +879,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
         if (ArrayUtils.contains(modules, FoundryModules.POWER_EFFICIENT_SUBSYSTEMS)
             && ArrayUtils.contains(modules, FoundryModules.EFFICIENT_OC)) {
-            ocFactorAdditive += 0.2F;
+            ocFactorAdditive += 0.1F;
             euEffAdditive -= 0.5F;
         }
 
@@ -885,17 +887,18 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             && ArrayUtils.contains(modules, FoundryModules.ACTIVE_TIME_DILATION_SYSTEM)) {
             euEffMultiplier *= 2;
             speedMultiplier *= 2;
+            allowEternity = true;
         }
 
         int numHarmonic = (int) Arrays.stream(modules)
             .filter(m -> m == FoundryModules.HARMONIC_REINFORCEMENT)
             .count();
         if (numHarmonic > 1) {
-            speedAdditive += numHarmonic;
-            euEffAdditive -= (0.15F * numHarmonic);
-            parallelScaleAdditive += (6 * numHarmonic);
+            speedAdditive += (0.75F * numHarmonic);
+            euEffAdditive -= (0.1F * numHarmonic);
             if (numHarmonic >= 3) {
                 ocFactorAdditive += 0.1F;
+                parallelScaleAdditive += (6 * numHarmonic);
             }
             if (numHarmonic == 4) {
                 extraOverclocks += 2;
@@ -960,7 +963,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
                 if (hypercoolerPresent) {
                     currentCoolingFluid = findCoolingFluid();
-                    if (currentCoolingFluid == null) {
+                    if (currentCoolingFluid == null
+                        || (currentCoolingFluid.material == Materials.Eternity && !allowEternity)) {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                     additionalOverclocks = currentCoolingFluid.grantedOC;

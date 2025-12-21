@@ -2587,7 +2587,7 @@ achievement.gt.blockcasings5.13=Eternal Coil
 achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 
 # Exo-Foundry
-gt.blockmachines.multimachine.foundry.basemodule=This is a module casing of the Exo-Foundry
+gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
 gt.blockmachines.multimachine.foundry.chassis1=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3=Ascend Reality
