@@ -2588,16 +2588,16 @@ achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 
 # Exo-Foundry
 gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
-gt.blockmachines.multimachine.foundry.flavor.chassis1=Break Infinity
-gt.blockmachines.multimachine.foundry.flavor.chassis2=Become Eternal
-gt.blockmachines.multimachine.foundry.flavor.chassis3=Ascend Reality
-gt.blockmachines.multimachine.foundry.flavor.timedilation=Fractured Universe
-gt.blockmachines.multimachine.foundry.flavor.efficientoc=Optimized Overclocks
-gt.blockmachines.multimachine.foundry.flavor.powerefficient=Stable Current
-gt.blockmachines.multimachine.foundry.flavor.harmonicreinforcement=Raised Boundary
-gt.blockmachines.multimachine.foundry.flavor.parallel=Greater Fate
-gt.blockmachines.multimachine.foundry.flavor.hypercooler=Tempered Fury
-gt.blockmachines.multimachine.foundry.flavor.streamlinedcasters=Witch Time!
+gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
+gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
+gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
+gt.blockmachines.multimachine.foundry.timedilation.flavor=Fractured Universe
+gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
+gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.flavor=Raised Boundary
+gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
+gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
+gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
