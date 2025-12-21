@@ -10,9 +10,12 @@ import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import org.apache.commons.lang3.mutable.MutableInt;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -22,6 +25,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -54,10 +58,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         // values modified include: Parallels, Speed Bonus, Eu EFF, OC Factor.
-        syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
-        syncManager.syncValue("Parallels", new StringSyncValue(multiblock::getParallelsString));
-        syncManager.syncValue("EuEFF", new StringSyncValue(multiblock::getEuEFFString));
-        syncManager.syncValue("OCFactor", new StringSyncValue(multiblock::getOCFactorString));
+        syncManager.syncValue("Speed", new StringSyncValue(multiblock.foundryData::getSpeedStr));
+        syncManager.syncValue("Parallels", new StringSyncValue(multiblock.foundryData::getParallelsString));
+        syncManager.syncValue("EuEFF", new StringSyncValue(multiblock.foundryData::getEuEFFString));
+        syncManager.syncValue("OCFactor", new StringSyncValue(multiblock.foundryData::getOCFactorString));
         syncManager.syncValue(
             "Module1",
             new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
@@ -236,11 +240,23 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         StringSyncValue parallelSync = syncManager.findSyncHandler("Parallels", StringSyncValue.class);
         StringSyncValue euEffBaseSync = syncManager.findSyncHandler("EuEFF", StringSyncValue.class);
         StringSyncValue ocFactorSync = syncManager.findSyncHandler("OCFactor", StringSyncValue.class);
+
+        MutableInt module0 = new MutableInt(0);
+        MutableInt module1 = new MutableInt(0);
+        MutableInt module2 = new MutableInt(0);
+        MutableInt module3 = new MutableInt(0);
+
         return new ModularPanel("statsPanel").relative(parent)
             .rightRel(1)
             .topRel(0)
             .size(130, 120)
             .widgetTheme("backgroundPopup")
+            .onCloseAction(() -> {
+                module0.setValue(0);
+                module1.setValue(0);
+                module2.setValue(0);
+                module3.setValue(0);
+            })
             .child(
                 new Column().sizeRel(1)
                     .paddingTop(4)
@@ -269,7 +285,35 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         IKey.dynamic(() -> "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + ocFactorSync.getValue())
                             .asWidget()
                             .size(120, 20)
-                            .marginBottom(2)));
+                            .marginBottom(2))
+                    .child(
+                        new Row().size(76, 20)
+                            .childPadding(4)
+                            .alignX(0.5f)
+                            .child(
+                                createModuleSelectButton(
+                                    p_syncManager,
+                                    parent,
+                                    0,
+                                    new IntValue.Dynamic(module0::intValue, module0::setValue)))
+                            .child(
+                                createModuleSelectButton(
+                                    p_syncManager,
+                                    parent,
+                                    1,
+                                    new IntValue.Dynamic(module1::intValue, module1::setValue)))
+                            .child(
+                                createModuleSelectButton(
+                                    p_syncManager,
+                                    parent,
+                                    2,
+                                    new IntValue.Dynamic(module2::intValue, module2::setValue)))
+                            .child(
+                                createModuleSelectButton(
+                                    p_syncManager,
+                                    parent,
+                                    3,
+                                    new IntValue.Dynamic(module3::intValue, module3::setValue)))));
 
     }
 
@@ -310,13 +354,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             );
     }
 
-    protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
+    protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index,
+        IIntValue<Integer> moduleSync) {
         IPanelHandler selectPanel = syncManager.panel(
             "moduleSelectPanel" + index,
-            (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
+            (p_syncManager,
+                syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index, moduleSync),
             true);
 
-        IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new Row().size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)
             .child(
@@ -348,8 +393,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-        PanelSyncManager syncManager, int index) {
-        IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
+        PanelSyncManager syncManager, int index, IIntValue<Integer> moduleSync) {
+
         ModularPanel panel = new ModularPanel("moduleSelectPanel" + index) {
 
             @Override
@@ -480,6 +525,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        IntSyncValue moduleSync0 = syncManager.findSyncHandler("Module1", IntSyncValue.class);
+        IntSyncValue moduleSync1 = syncManager.findSyncHandler("Module2", IntSyncValue.class);
+        IntSyncValue moduleSync2 = syncManager.findSyncHandler("Module3", IntSyncValue.class);
+        IntSyncValue moduleSync3 = syncManager.findSyncHandler("Module4", IntSyncValue.class);
 
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
@@ -491,10 +540,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .background(IDrawable.EMPTY)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
-                    .child(createModuleSelectButton(syncManager, parent, 3))
-                    .child(createModuleSelectButton(syncManager, parent, 2))
-                    .child(createModuleSelectButton(syncManager, parent, 1))
-                    .child(createModuleSelectButton(syncManager, parent, 0)))
+                    .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3))
+                    .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2))
+                    .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1))
+                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0)))
 
         ;
 
