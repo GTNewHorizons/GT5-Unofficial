@@ -162,11 +162,11 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1",
-                        TooltipHelper.speedText("150%")));
+                        TooltipHelper.SPEED_COLOR));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2",
-                        TooltipHelper.speedText("75%")));
+                        TooltipHelper.SPEED_COLOR));
                 tooltip.add(
                     StatCollector
                         .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
