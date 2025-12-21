@@ -36,86 +36,102 @@ public class ItemCasingsFoundry extends ItemCasings {
             case 4 -> {
                 tooltip.add(createModuleBaseText());
                 tooltip.add(createModuleLimitText());
-                tooltip.add("- Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "2x");
-                tooltip.add("- Multiplies EU Consumption by " + EnumChatFormatting.RED + "4x");
-                tooltip.add("- Reduces Hatch Space by " + EnumChatFormatting.GOLD + "20");
                 tooltip.add(
-                    "- Multiplies Speed by an additional " + TooltipHelper.SPEED_COLOR
-                        + "2x "
-                        + EnumChatFormatting.GRAY
-                        + "and EU Consumption by an additional "
-                        + EnumChatFormatting.RED
-                        + "2x "
-                        + EnumChatFormatting.GRAY
-                        + "when");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.timedilation.tooltip1",
+                        TooltipHelper.SPEED_COLOR));
                 tooltip.add(
-                    "   paired with the " + EnumChatFormatting.AQUA
-                        + "Hypercooler "
-                        + EnumChatFormatting.GRAY
-                        + "module");
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip2"));
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip3"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.timedilation.tooltip4",
+                        TooltipHelper.SPEED_COLOR));
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip5"));
                 tooltip.add(createTierLine(13));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.timedilation"));
             }
             case 5 -> {
                 tooltip.add(createModuleBaseText());
                 tooltip.add(createModuleLimitText());
-                tooltip.add("- Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.35");
                 tooltip.add(
-                    "- This means that each overclock provides an additional " + TooltipHelper.speedText("35%")
-                        + " speed");
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip1"));
                 tooltip.add(
-                    "- Increases Overclock Factor by an additional " + EnumChatFormatting.LIGHT_PURPLE
-                        + "0.1 "
-                        + EnumChatFormatting.GRAY
-                        + "when");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.efficientoc.tooltip2",
+                        TooltipHelper.SPEED_COLOR));
                 tooltip.add(
-                    "   paired with the " + EnumChatFormatting.GREEN
-                        + "Power Efficient Subsystems "
-                        + EnumChatFormatting.GRAY
-                        + "module");
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip3"));
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip4"));
+
                 tooltip.add(createTierLine(12));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.efficientoc"));
             }
             case 6 -> {
                 tooltip.add(createModuleBaseText());
-                tooltip.add("- Subtracts " + TooltipHelper.effText("10%") + " from Initial EU Cost");
-                tooltip.add("- Multiplies EU cost by " + TooltipHelper.effText("0.8x"));
-                tooltip.add("- Subtracts an additional " + TooltipHelper.effText("50%") + " from Initial EU Cost when");
                 tooltip.add(
-                    "   paired with the " + EnumChatFormatting.DARK_AQUA
-                        + "Efficient Overclocking System "
-                        + EnumChatFormatting.GRAY
-                        + "module");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip1",
+                        TooltipHelper.EFF_COLOR));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip2",
+                        TooltipHelper.EFF_COLOR));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip3",
+                        TooltipHelper.EFF_COLOR));
+                tooltip.add(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.powerefficient.tooltip4"));
                 tooltip.add(createTierLine(10));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.powerefficient"));
             }
             case 7 -> {
                 tooltip.add(createModuleBaseText());
                 tooltip.add(
-                    "- Allows for " + EnumChatFormatting.LIGHT_PURPLE
-                        + "UIV+ Recipes"
-                        + EnumChatFormatting.GRAY
-                        + " to be processed");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip1"));
                 tooltip.add(
-                    "- Grants benefits when paired with other " + EnumChatFormatting.LIGHT_PURPLE
-                        + "Harmonic Reinforcement "
-                        + EnumChatFormatting.GRAY
-                        + "modules");
-                tooltip.add(EnumChatFormatting.WHITE + "- 2+ Modules:");
-                tooltip.add("   - Increases Base Speed by " + TooltipHelper.speedText("75%") + " per module");
-                tooltip.add("   - Subtracts " + TooltipHelper.effText("10%") + " from Initial EU Cost per module");
-                tooltip.add(EnumChatFormatting.WHITE + "- 3+ Modules:");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip2"));
                 tooltip.add(
-                    "   - Adds " + EnumChatFormatting.GOLD
-                        + "6"
-                        + EnumChatFormatting.GRAY
-                        + " Parallels per "
-                        + TooltipTier.VOLTAGE.getValue()
-                        + EnumChatFormatting.GRAY
-                        + " tier per module");
-                tooltip.add("   - Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.1");
-                tooltip.add(EnumChatFormatting.WHITE + "- 4 Modules:");
-                tooltip.add("   - Grants 2 extra " + EnumChatFormatting.LIGHT_PURPLE + "overclocks");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip3"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip4",
+                        TooltipHelper.SPEED_COLOR));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip5",
+                        TooltipHelper.EFF_COLOR));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip6"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip7",
+                        TooltipHelper.PARALLEL_COLOR,
+                        TooltipHelper.TIER_COLOR));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip8"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip9"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip10"));
                 tooltip.add(createTierLine(11));
                 tooltip
                     .add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.harmonicreinforcement"));

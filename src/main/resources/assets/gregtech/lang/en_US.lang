@@ -2593,22 +2593,52 @@ gt.blockmachines.multimachine.foundry.tier=- Tier: %s
 gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
+
 gt.blockmachines.multimachine.foundry.timedilation.flavor=Fractured Universe
+gt.blockmachines.multimachine.foundry.timedilation.tooltip1=- Multiplies Speed by %s2x
+gt.blockmachines.multimachine.foundry.timedilation.tooltip2=- Multiplies EU Consumption by §c4x
+gt.blockmachines.multimachine.foundry.timedilation.tooltip3=- Reduces Hatch Space by §620
+gt.blockmachines.multimachine.foundry.timedilation.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
+gt.blockmachines.multimachine.foundry.timedilation.tooltip5=   paired with the §bHypercooler§7 module
+
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s35%%§7 speed
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aPower Efficient Subsystems§7 module
+
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Efficient Overclocking System§7 module
+
 gt.blockmachines.multimachine.foundry.harmonicreinforcement.flavor=Raised Boundary
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip1=- Allows for §dUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip2=- Grants benefits when paired with other §dHarmonic Reinforcement§7 modules
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip3=- §f2+ Modules:
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip6=- §f3+ Modules:
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip9=- §f4 Modules:
+gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
+
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
 gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
 gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
 gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casters §7module
+
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Hypercooler Casing to drain from!
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §25 §7L/s to gain §23 §7Maximum Overclocks when
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Time Dilation System §7module
+
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
