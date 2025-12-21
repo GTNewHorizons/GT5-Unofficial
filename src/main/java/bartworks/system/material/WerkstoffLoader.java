@@ -906,7 +906,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PDRawPowder = new Werkstoff(
         Materials.Palladium.getRGBA(),
         "Reprecipitated Palladium",
-        subscriptNumbers("Pd??"),
+        "Pd??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1603,9 +1603,11 @@ public class WerkstoffLoader {
         new short[] { 80, 90, 80 },
         "Tantalum Hafnium Carbide",
         subscriptNumbers("Ta4HfC5"),
-        new Werkstoff.Stats().setMass(192)
-            .setMass(962)
-            .setMeltingPoint(4263),
+        new Werkstoff.Stats().setMass(962)
+            .setMeltingPoint(4263)
+            .setDurOverride(4608)
+            .setSpeedOverride(12)
+            .setQualityOverride((byte) 7),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMetalItems()
