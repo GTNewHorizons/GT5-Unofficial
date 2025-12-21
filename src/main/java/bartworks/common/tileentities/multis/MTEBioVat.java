@@ -171,13 +171,30 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         tt.addMachineType("Bacterial Vat, Bac Vat")
             .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
             .addSeparator()
-            .addInfo("Some recipes require " +EnumChatFormatting.GREEN + "R" +
-                EnumChatFormatting.DARK_GREEN + "A" +EnumChatFormatting.GREEN + "D"
-                + EnumChatFormatting.DARK_GREEN + "I"
-                + EnumChatFormatting.GREEN + "A" + EnumChatFormatting.DARK_GREEN + "T"
-                + EnumChatFormatting.GREEN + "I" +EnumChatFormatting.DARK_GREEN + "O"
-                + EnumChatFormatting.GREEN
-                + "N" +  EnumChatFormatting.GRAY  + " supplied with a " + EnumChatFormatting.BOLD + EnumChatFormatting.GREEN + "radio hatch"   )
+            .addInfo(
+                "Some recipes require " + EnumChatFormatting.GREEN
+                    + "R"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "A"
+                    + EnumChatFormatting.GREEN
+                    + "D"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "I"
+                    + EnumChatFormatting.GREEN
+                    + "A"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "T"
+                    + EnumChatFormatting.GREEN
+                    + "I"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "O"
+                    + EnumChatFormatting.GREEN
+                    + "N"
+                    + EnumChatFormatting.GRAY
+                    + " supplied with a "
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.GREEN
+                    + "radio hatch")
             .addInfo("Radiation can be either a minimum requirement or an exact value")
             .addInfo("Efficiency scales with Output Hatch fluid level")
             .addInfo("Best Efficiency at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
