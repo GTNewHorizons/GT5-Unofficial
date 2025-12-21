@@ -14,8 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -298,11 +296,6 @@ public class MTEBoilerSolar extends MTEBoiler {
     @Override
     public boolean doesAddAshSlot() {
         return false;
-    }
-
-    @Override
-    protected SlotWidget createAshSlotMui1() {
-        return null;
     }
 
     @Override

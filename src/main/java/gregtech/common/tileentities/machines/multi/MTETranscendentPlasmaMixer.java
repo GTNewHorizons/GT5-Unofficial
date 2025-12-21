@@ -281,8 +281,6 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         }
     }
 
-    private static final int PARALLEL_WINDOW_ID = 10;
-
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTETranscendentPlasmaMixerGui(this);
