@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.enums.GTValues.formattingCodes;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -170,10 +171,17 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .addLine(EnumChatFormatting.DARK_GRAY + "Good for Health, Bad for Education"))));
 
         final int numbers = 100 + XSTR.XSTR_INSTANCE.nextInt(900);
+        final StringBuilder formattedNumbers = new StringBuilder();
+        for (char c : Integer.toString(numbers)
+            .toCharArray()) {
+            int randIndex = XSTR.XSTR_INSTANCE.nextInt(formattingCodes.length);
+            String prepend = formattingCodes[randIndex] + c + EnumChatFormatting.RESET;
+            formattedNumbers.append(prepend);
+        }
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.idea",
-                createContributorEntry("TheEpicGamer" + numbers, 0xFFFD80CF).tooltip(
+                createContributorEntry("TheEpicGamer" + formattedNumbers, 0xFF2BCAD9).tooltip(
                     t -> t.scale(0.8f)
                         .addLine(EnumChatFormatting.DARK_GRAY + "Dyson rework soon™")),
                 createContributorEntry(

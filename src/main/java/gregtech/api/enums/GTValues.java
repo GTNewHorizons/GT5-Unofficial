@@ -664,8 +664,8 @@ public class GTValues {
     public static final Supplier<String> AND_SUPPLIER = () -> EnumChatFormatting.RESET + " & ";
 
     // a list specifically for random selection of formatting codes.
-    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
-        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
+    public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,
+        AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
     public static final Supplier<String> fancyAuthorChrom = chain(
         createChromLetter("C", ORDER),
