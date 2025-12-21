@@ -25,11 +25,11 @@ public class FoundryFakeModuleCostLoader {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 24),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Mellion, 24),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Creon, 24),
-                ItemList.Harmonic_Reinforcement_ExoFoundry.get(44))
-            .itemOutputs(ItemList.Harmonic_Reinforcement_ExoFoundry.get(1))
+                ItemList.Heliocast_Reinforcement_ExoFoundry.get(44))
+            .itemOutputs(ItemList.Heliocast_Reinforcement_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.HARMONIC_REINFORCEMENT)
+            .metadata(FOUNDRY_MODULE, FoundryModules.HELIOCAST_REINFORCEMENT)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
     }

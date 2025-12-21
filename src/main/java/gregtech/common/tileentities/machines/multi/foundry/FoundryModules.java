@@ -62,9 +62,9 @@ public enum FoundryModules {
         EnumChatFormatting.RED,
         10
     ),
-    HARMONIC_REINFORCEMENT(
-        "Harmonic Reinforcement", "H.R", "harmonic_reinforcement",
-        ItemList.Harmonic_Reinforcement_ExoFoundry.get(1),
+    HELIOCAST_REINFORCEMENT(
+        "Heliocast Reinforcement", "H.R", "heliocast_reinforcement",
+        ItemList.Heliocast_Reinforcement_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_HR,
         150f / 255f * 1.5f, 10 / 255f * 1.5f, 150f / 255f * 1.5f,
         EnumChatFormatting.LIGHT_PURPLE,

@@ -462,7 +462,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
 
             }
-            case HARMONIC_REINFORCEMENT -> {
+            case HELIOCAST_REINFORCEMENT -> {
                 t.addLine(
                     "Allows for " + EnumChatFormatting.LIGHT_PURPLE
                         + "UIV+ Recipes"

@@ -862,7 +862,7 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_UNSET)
         .build();
     public static final UITexture EXOFOUNDRY_HR = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/exofoundry_harmonic_reinforcement")
+        .location(GregTech.ID, "gui/picture/exofoundry_heliocast_reinforcement")
         .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_HR)

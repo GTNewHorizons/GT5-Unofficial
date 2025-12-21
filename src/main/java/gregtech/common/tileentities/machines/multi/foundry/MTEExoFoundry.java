@@ -264,7 +264,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
         }))
         .addShape(
-            FoundryModules.HARMONIC_REINFORCEMENT.structureID, transpose(new String[][]{
+            FoundryModules.HELIOCAST_REINFORCEMENT.structureID, transpose(new String[][]{
             {"     24442     ","               ","               ","               ","               ","3             3","4             4","4             4","4             4","3             3","               ","               ","               ","               ","     24442     "},
             {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               ","               ","8             8","               ","               "," 3           3 "," 3           3 ","               ","   22     22   ","       8       "},
             {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
@@ -363,7 +363,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('M', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
         .addElement('N', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
 
-        // harmonic reinforcement
+        // heliocast reinforcement
         .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
         .addElement('2', ofFrame(Materials.Mellion))
         .addElement('3', ofFrame(Materials.Creon))
@@ -562,7 +562,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         addPowerEfficiencyModuleTooltip(tt);
         addEfficientOverclockingModuleTooltip(tt);
         addHypercoolerModuleInformation(tt);
-        addHarmonicReinforcementModuleInformation(tt);
+        addHeliocastReinforcementModuleInformation(tt);
         addTimeDilationSystemModuleInformation(tt);
 
         tt.toolTipFinisher();
@@ -581,8 +581,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addStructureInfoSeparator();
     }
 
-    private void addHarmonicReinforcementModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Harmonic Reinforcement")
+    private void addHeliocastReinforcementModuleInformation(MultiblockTooltipBuilder tt) {
+        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Heliocast Reinforcement")
             .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Block of Spacetime")
             .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Spacetime Frame Box")
             .addStructureInfo(
@@ -599,7 +599,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " Frame Box")
             .addStructureInfo(
-                TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE) + " Harmonic Reinforcement Casing")
+                TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE) + " Heliocast Reinforcement Casing")
             .addStructureInfoSeparator();
     }
 
@@ -839,7 +839,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 case HYPERCOOLER:
                     hypercoolerPresent = true;
                     break;
-                case HARMONIC_REINFORCEMENT:
+                case HELIOCAST_REINFORCEMENT:
                     UIVRecipesEnabled = true;
                     break;
                 case EFFICIENT_OC:
@@ -890,17 +890,17 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             allowEternity = true;
         }
 
-        int numHarmonic = (int) Arrays.stream(modules)
-            .filter(m -> m == FoundryModules.HARMONIC_REINFORCEMENT)
+        int numHelio = (int) Arrays.stream(modules)
+            .filter(m -> m == FoundryModules.HELIOCAST_REINFORCEMENT)
             .count();
-        if (numHarmonic > 1) {
-            speedAdditive += (0.75F * numHarmonic);
-            euEffAdditive -= (0.1F * numHarmonic);
-            if (numHarmonic >= 3) {
+        if (numHelio > 1) {
+            speedAdditive += (0.75F * numHelio);
+            euEffAdditive -= (0.1F * numHelio);
+            if (numHelio >= 3) {
                 ocFactorAdditive += 0.1F;
-                parallelScaleAdditive += (6 * numHarmonic);
+                parallelScaleAdditive += (6 * numHelio);
             }
-            if (numHarmonic == 4) {
+            if (numHelio == 4) {
                 extraOverclocks += 2;
             }
         }

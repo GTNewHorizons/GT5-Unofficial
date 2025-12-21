@@ -300,7 +300,7 @@ public class FoundryRecipes {
                     ItemList.Sensor_UIV.get(1), ItemList.Emitter_UIV.get(1) },
                 new FluidStack[] { GGMaterial.metastableOganesson.getMolten(5760), Materials.Mellion.getMolten(2880),
                     Materials.Creon.getMolten(2880), Materials.SpaceTime.getMolten(576) },
-                ItemList.Harmonic_Reinforcement_ExoFoundry.get(1),
+                ItemList.Heliocast_Reinforcement_ExoFoundry.get(1),
                 60 * SECONDS,
                 (int) TierEU.RECIPE_UIV);
 
