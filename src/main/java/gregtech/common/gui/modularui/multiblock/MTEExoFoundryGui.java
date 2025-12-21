@@ -469,7 +469,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         + EnumChatFormatting.RESET
                         + " to be processed");
             }
-            case ACTIVE_TIME_DILATION_SYSTEM -> {
+            case UNIVERSAL_COLLAPSER -> {
                 t.addLine(moduleLimitText);
                 t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "4x");
                 t.addLine("Multiplies EU Consumption by " + EnumChatFormatting.RED + "8x");

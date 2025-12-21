@@ -38,23 +38,23 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(createModuleLimitText());
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.timedilation.tooltip1",
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1",
                         TooltipHelper.SPEED_COLOR));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip2"));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip3"));
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
-                        "gt.blockmachines.multimachine.foundry.timedilation.tooltip4",
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3"));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4",
                         TooltipHelper.SPEED_COLOR));
                 tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip5"));
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5"));
                 tooltip.add(createTierLine(13));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.timedilation.flavor"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.universalcollapser.flavor"));
             }
             case 5 -> {
                 tooltip.add(createModuleBaseText());
@@ -133,8 +133,8 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector.translateToLocalFormatted(
                         "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10"));
                 tooltip.add(createTierLine(11));
-                tooltip
-                    .add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor"));
+                tooltip.add(
+                    createFoundryFlavorText("gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor"));
             }
             case 8 -> {
                 tooltip.add(createModuleBaseText());

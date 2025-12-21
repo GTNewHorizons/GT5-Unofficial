@@ -1533,7 +1533,7 @@ public enum ItemList implements IItemContainer {
     Heliocast_Reinforcement_ExoFoundry,
     Hypercooler_ExoFoundry,
     Efficient_Overclocking_ExoFoundry,
-    Active_Time_Dilation_System_ExoFoundry,
+    Universal_Collapser_ExoFoundry,
 
     Casing_Reinforced_Wood,
 

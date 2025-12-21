@@ -32,7 +32,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
         register(1, ItemList.Magnetic_Chassis_T1_ExoFoundry, "Infinite Magnetic Chassis");
         register(2, ItemList.Magnetic_Chassis_T2_ExoFoundry, "Eternal Magnetic Chassis");
         register(3, ItemList.Magnetic_Chassis_T3_ExoFoundry, "Celestial Magnetic Chassis");
-        register(4, ItemList.Active_Time_Dilation_System_ExoFoundry, "Time Dilation System Casing");
+        register(4, ItemList.Universal_Collapser_ExoFoundry, "Universal Collapser Casing");
         register(5, ItemList.Efficient_Overclocking_ExoFoundry, "Sentient Overclocker Casing");
         register(6, ItemList.Power_Efficient_Subsystems_ExoFoundry, "Proto-Volt Stabilizer Casing");
         register(7, ItemList.Heliocast_Reinforcement_ExoFoundry, "Heliocast Reinforcement Casing");
@@ -75,7 +75,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
                 return Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS.getIcon();
             }
             case 4 -> {
-                return Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE.getIcon();
+                return Textures.BlockIcons.EXOFOUNDRY_UNIVERSAL_COLLAPSER_ACTIVE.getIcon();
             }
             case 5 -> {
                 return Textures.BlockIcons.EXOFOUNDRY_EFFICIENT_OVERCLOCKING.getIcon();
@@ -136,7 +136,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
             case 1 -> Textures.BlockIcons.EXOFOUNDRY_INFINITE_CHASSIS;
             case 2 -> Textures.BlockIcons.EXOFOUNDRY_ETERNAL_CHASSIS;
             case 3 -> Textures.BlockIcons.EXOFOUNDRY_CELESTIAL_CHASSIS;
-            case 4 -> Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM;
+            case 4 -> Textures.BlockIcons.EXOFOUNDRY_UNIVERSAL_COLLAPSER;
             case 5 -> Textures.BlockIcons.EXOFOUNDRY_EFFICIENT_OVERCLOCKING;
             case 6 -> Textures.BlockIcons.EXOFOUNDRY_POWER_EFFICIENT_SUBSYSTEMS;
             case 7 -> Textures.BlockIcons.EXOFOUNDRY_HELIOCAST_REINFORCEMENT;
@@ -167,7 +167,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
             if (metadata % ACTIVE_OFFSET == 4) {
                 textures.add(
                     TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE)
+                        .addIcon(Textures.BlockIcons.EXOFOUNDRY_UNIVERSAL_COLLAPSER_ACTIVE)
                         .glow()
                         .build());
             }
@@ -185,7 +185,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
     public @Nullable ITexture[][] getInventoryTextures(int meta) {
         if (meta % ACTIVE_OFFSET == 4) {
             ITexture[] standard = new ITexture[] { TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.EXOFOUNDRY_ACTIVE_TIME_DILATION_SYSTEM_ACTIVE)
+                .addIcon(Textures.BlockIcons.EXOFOUNDRY_UNIVERSAL_COLLAPSER_ACTIVE)
                 .build() };
             return new ITexture[][] { standard, standard, standard, standard, standard, standard };
         } else {

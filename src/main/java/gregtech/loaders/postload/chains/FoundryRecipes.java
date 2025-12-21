@@ -319,7 +319,7 @@ public class FoundryRecipes {
                     CustomItemList.eM_dynamoTunnel7_UXV.get(1), new ItemStack(lscLapotronicEnergyUnit, 1, 10) },
                 new FluidStack[] { Materials.Time.getMolten(4_000_000), Materials.Space.getMolten(4_000_000),
                     Materials.PhononMedium.getFluid(1_000_000), Materials.Universium.getMolten(1_000_000) },
-                ItemList.Active_Time_Dilation_System_ExoFoundry.get(1),
+                ItemList.Universal_Collapser_ExoFoundry.get(1),
                 60 * SECONDS,
                 (int) TierEU.RECIPE_UXV); // <-- maybe make this MAX voltage
         }

@@ -2595,12 +2595,12 @@ gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
 
-gt.blockmachines.multimachine.foundry.timedilation.flavor=Fractured Universe
-gt.blockmachines.multimachine.foundry.timedilation.tooltip1=- Multiplies Speed by %s2x
-gt.blockmachines.multimachine.foundry.timedilation.tooltip2=- Multiplies EU Consumption by §c4x
-gt.blockmachines.multimachine.foundry.timedilation.tooltip3=- Reduces Hatch Space by §620
-gt.blockmachines.multimachine.foundry.timedilation.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
-gt.blockmachines.multimachine.foundry.timedilation.tooltip5=   paired with the §bHypercooler§7 module
+gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s2x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §620
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
 
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
@@ -2638,7 +2638,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Hypercooler Casing to drain from!
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Time Dilation System §7module
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%

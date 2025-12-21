@@ -30,9 +30,9 @@ public enum FoundryModules {
         EnumChatFormatting.YELLOW,
         10
     ),
-    ACTIVE_TIME_DILATION_SYSTEM(
-        "Time Dilation System", "T.D.S", "tds",
-        ItemList.Active_Time_Dilation_System_ExoFoundry.get(0),
+    UNIVERSAL_COLLAPSER(
+        "Universal Collapser", "U.C", "uc",
+        ItemList.Universal_Collapser_ExoFoundry.get(0),
         GTGuiTextures.EXOFOUNDRY_TDS,
         10f / 255f * 5, 24f / 255f * 5, 43f / 255f * 5,
         EnumChatFormatting.DARK_PURPLE,

@@ -274,7 +274,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             {"     34443     ","               ","               ","               ","               ","2             2","4             4","4             4","4             4","2             2","               ","               ","               ","               ","     34443     "}
         }))
         .addShape(
-            FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
+            FoundryModules.UNIVERSAL_COLLAPSER.structureID, transpose(new String[][]{
             {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "},
             {"     &@ @^     ","    && ! ^^    ","               ","               "," ^           & ","^^           &&","@             @"," !           ! ","@             @","&&           ^^"," &           ^ ","               ","               ","    ^^ ! &&    ","     ^@ @&     "},
             {"      @!@      ","   &**   XX^   ","   &       ^   "," ^^         && "," X           * "," X           * ","@             @","!             !","@             @"," *           X "," *           X "," &&         ^^ ","   ^       &   ","   ^XX   **&   ","      @!@      "},
@@ -372,7 +372,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('6', ofBlock(GregTechAPI.sBlockMetal9, 3))
         .addElement('7', lazy(() -> ofBlock(GodforgeCasings, 3)))
         .addElement('8', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
-        // Time Dilation System
+        // Universal Collapser
         .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
         .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
         .addElement('#', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
@@ -846,7 +846,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     effOCPresent = true;
                     ocFactorAdditive += 0.35F;
                     break;
-                case ACTIVE_TIME_DILATION_SYSTEM:
+                case UNIVERSAL_COLLAPSER:
                     if (tdsPresent) break;
                     tdsPresent = true;
                     euEffMultiplier *= 4;
@@ -884,7 +884,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         }
 
         if (ArrayUtils.contains(modules, FoundryModules.HYPERCOOLER)
-            && ArrayUtils.contains(modules, FoundryModules.ACTIVE_TIME_DILATION_SYSTEM)) {
+            && ArrayUtils.contains(modules, FoundryModules.UNIVERSAL_COLLAPSER)) {
             euEffMultiplier *= 2;
             speedMultiplier *= 2;
             allowEternity = true;
@@ -1069,7 +1069,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             checkSolidifierModules();
             if (hypercoolerPresent) return;
         }
-        if (moduleToAdd == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
+        if (moduleToAdd == FoundryModules.UNIVERSAL_COLLAPSER) {
             checkSolidifierModules();
             if (tdsPresent) return;
         }
@@ -1224,7 +1224,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 i++;
                 continue;
             }
-            if (module == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
+            if (module == FoundryModules.UNIVERSAL_COLLAPSER) {
                 renderUniversiumRing(i, bloom);
                 ringProgram.use();
                 i++;
@@ -1302,9 +1302,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (bloom) {
             shader
                 .setBackgroundColor(
-                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.red / 2.5f,
-                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.green / 2.5f,
-                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.blue / 2.5f)
+                    FoundryModules.UNIVERSAL_COLLAPSER.red / 2.5f,
+                    FoundryModules.UNIVERSAL_COLLAPSER.green / 2.5f,
+                    FoundryModules.UNIVERSAL_COLLAPSER.blue / 2.5f)
                 .setStarColor(24);
         } else {
             shader.setBackgroundColor(0, 0, 0)
