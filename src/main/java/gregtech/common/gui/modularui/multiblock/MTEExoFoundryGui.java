@@ -35,6 +35,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -168,10 +169,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     t -> t.scale(0.8f)
                         .addLine(EnumChatFormatting.DARK_GRAY + "Good for Health, Bad for Education"))));
 
+        final int numbers = 100 + XSTR.XSTR_INSTANCE.nextInt(900);
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.idea",
-                createContributorEntry("TheEpicGamer", Color.BLUE_ACCENT.main).tooltip(
+                createContributorEntry("TheEpicGamer" + numbers, 0xFFFD80CF).tooltip(
                     t -> t.scale(0.8f)
                         .addLine(EnumChatFormatting.DARK_GRAY + "Dyson rework soon™")),
                 createContributorEntry(
