@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -85,18 +86,27 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                 return true;
             }
         })
-            .tooltip(richTooltip -> StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
+            .tooltip(
+                new RichTooltip().add(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode")))
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.getBaseMetaTileEntity()
                     .isAllowedToWork()) {
                     return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
                 }
+                return GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT;
+
+            })
+
+            )
+            .background(new DynamicDrawable(() -> {
                 if (debugMode.getBoolValue()) {
-                    return GTGuiTextures.OVERLAY_BUTTON_MODE[1];
+                    return GTGuiTextures.BUTTON_STANDARD_PRESSED;
                 } else {
-                    return GTGuiTextures.OVERLAY_BUTTON_MODE[0];
+                    return GTGuiTextures.BUTTON_STANDARD;
                 }
-            })));
+            }))
+
+        );
     }
 
     public Flow machineRow(LinkedPurificationUnit mLinkedUnit) {
