@@ -22,6 +22,7 @@ import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,7 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -136,6 +138,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private int parallelScaleAdditive = 0;
     private float parallelScaleMultiplier = 1.0F;
     private float parallelScaleAdj = parallelScaleBase;
+
+    private int extraOverclocks = 0;
 
     // array of ordinals for nbt saving purposes
     public FoundryModules[] modules = { FoundryModules.UNSET, FoundryModules.UNSET, FoundryModules.UNSET,
@@ -818,13 +822,15 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         UIVRecipesEnabled = false;
         tdsPresent = false;
         effOCPresent = false;
+        extraOverclocks = 0;
     }
 
+    // base stats per module
     public void checkSolidifierModules() {
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
-        for (int i = 0; i < 2 + (tier - 1); i++) {
-            FoundryModules checkedModule = modules[i];
+        FoundryModules[] testModules = Arrays.copyOfRange(modules, 0, 2 + (tier - 1));
+        for (FoundryModules checkedModule : testModules) {
             switch (checkedModule) {
                 case UNSET:
                     break;
@@ -841,8 +847,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 case ACTIVE_TIME_DILATION_SYSTEM:
                     if (tdsPresent) break;
                     tdsPresent = true;
-                    euEffMultiplier *= 8;
-                    speedMultiplier *= 4;
+                    euEffMultiplier *= 4;
+                    speedMultiplier *= 2;
                     break;
                 case STREAMLINED_CASTERS:
                     speedAdditive += 1.5F;
@@ -856,7 +862,45 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     break;
             }
         }
+
+        calculatePairings(testModules);
         calculateNewStats();
+    }
+
+    // pair stat buffs for having 2 specific modules together
+    private void calculatePairings(FoundryModules[] modules) {
+        if (ArrayUtils.contains(modules, FoundryModules.STREAMLINED_CASTERS)
+            && ArrayUtils.contains(modules, FoundryModules.EXTRA_CASTING_BASINS)) {
+            speedAdditive += 0.75F;
+            parallelScaleAdditive += 6;
+        }
+
+        if (ArrayUtils.contains(modules, FoundryModules.POWER_EFFICIENT_SUBSYSTEMS)
+            && ArrayUtils.contains(modules, FoundryModules.EFFICIENT_OC)) {
+            ocFactorAdditive += 0.2F;
+            euEffAdditive -= 0.5F;
+        }
+
+        if (ArrayUtils.contains(modules, FoundryModules.HYPERCOOLER)
+            && ArrayUtils.contains(modules, FoundryModules.ACTIVE_TIME_DILATION_SYSTEM)) {
+            euEffMultiplier *= 2;
+            speedMultiplier *= 2;
+        }
+
+        int numHarmonic = (int) Arrays.stream(modules)
+            .filter(m -> m == FoundryModules.HARMONIC_REINFORCEMENT)
+            .count();
+        if (numHarmonic > 1) {
+            speedAdditive += numHarmonic;
+            euEffAdditive -= (0.15F * numHarmonic);
+            parallelScaleAdditive += (6 * numHarmonic);
+            if (numHarmonic >= 3) {
+                ocFactorAdditive += 0.1F;
+            }
+            if (numHarmonic == 4) {
+                extraOverclocks += 2;
+            }
+        }
     }
 
     private void calculateNewStats() {
@@ -921,6 +965,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     }
                     additionalOverclocks = currentCoolingFluid.grantedOC;
                 }
+
+                additionalOverclocks += extraOverclocks;
 
                 if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UIV && !UIVRecipesEnabled) {
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
@@ -1015,10 +1061,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (index > modules.length - 1) return;
         FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
 
-        if (moduleToAdd == FoundryModules.HARMONIC_REINFORCEMENT) {
-            checkSolidifierModules();
-            if (UIVRecipesEnabled) return;
-        }
         if (moduleToAdd == FoundryModules.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
