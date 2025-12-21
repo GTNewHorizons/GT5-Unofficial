@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import net.minecraft.util.StatCollector;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -83,6 +85,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                 return true;
             }
         })
+            .tooltip(richTooltip -> StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode"))
             .overlay(new DynamicDrawable(() -> {
                 if (multiblock.getBaseMetaTileEntity()
                     .isAllowedToWork()) {
