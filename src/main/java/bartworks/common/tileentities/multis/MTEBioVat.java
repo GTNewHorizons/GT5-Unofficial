@@ -196,8 +196,8 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                     + EnumChatFormatting.GREEN
                     + "Radio Hatch")
             .addInfo("Radiation can be either a minimum requirement or an exact value")
-            .addInfo("Efficiency scales with Output Hatch fluid level")
-            .addInfo("Best Efficiency at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
+            .addInfo("Efficiency depends on Output Hatch fluid level")
+            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
