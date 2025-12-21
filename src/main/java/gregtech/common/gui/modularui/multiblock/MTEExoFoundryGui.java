@@ -171,9 +171,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         contributorColumn.child(
             createContributorSection(
                 "GT5U.gui.text.foundry.idea",
-                createContributorEntry("TheEpicGamer", Color.BLUE_ACCENT.main),
-                createContributorEntry(EnumChatFormatting.DARK_GRAY + "0" + EnumChatFormatting.DARK_AQUA + "Ruling", -1)
-                    .tooltip(
+                createContributorEntry("TheEpicGamer", Color.BLUE_ACCENT.main).tooltip(
+                    t -> t.scale(0.8f)
+                        .addLine(EnumChatFormatting.DARK_GRAY + "Dyson rework soon™")),
+                createContributorEntry(
+                    EnumChatFormatting.DARK_AQUA + "Ruling" + EnumChatFormatting.DARK_GRAY + "_0",
+                    -1).tooltip(
                         t -> t.scale(0.8f)
                             .addLine(EnumChatFormatting.DARK_GRAY + "Spreadsheets..."))));
 
