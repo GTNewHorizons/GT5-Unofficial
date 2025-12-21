@@ -2589,7 +2589,7 @@ achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 # Exo-Foundry
 gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
 gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
-gt.blockmachines.multimachine.foundry.tier=-Tier: %s
+gt.blockmachines.multimachine.foundry.tier=- Tier: %s
 gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
