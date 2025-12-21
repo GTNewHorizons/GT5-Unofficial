@@ -54,9 +54,9 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        ListWidget<IWidget, ?> widget =
-            super.createTerminalTextWidget(syncManager, parent);
-        GenericListSyncHandler linkedPurifications = syncManager.findSyncHandler("linkedPurifierUnits", GenericListSyncHandler.class);
+        ListWidget<IWidget, ?> widget = super.createTerminalTextWidget(syncManager, parent);
+        GenericListSyncHandler linkedPurifications = syncManager
+            .findSyncHandler("linkedPurifierUnits", GenericListSyncHandler.class);
 
         for (Object obj : linkedPurifications.getValue()) {
             if (obj instanceof LinkedPurificationUnit unit) {
@@ -97,38 +97,32 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
     }
 
     public Flow machineRow(LinkedPurificationUnit mLinkedUnit) {
-        return new Row()
-            .paddingBottom(4)
+        return new Row().paddingBottom(4)
             .paddingTop(4)
             .coverChildrenHeight()
-            .child(new ItemDisplayWidget()
-                .background(IDrawable.EMPTY)
-                .disableHoverBackground()
-                .size(14)
-                .item(mLinkedUnit
-                .metaTileEntity()
-                .getBaseMetaTileEntity()
-                .getMetaTileEntity()
-                .getStackForm(1))
-            )
-            .child(new ListWidget<>()
-                .paddingLeft(4)
-                .coverChildrenHeight()
-                // size of the terminal - size of the icon - size of border
-                .width(186-16 - 22)
-                .crossAxisAlignment(Alignment.CrossAxis.START)
-                .child(IKey.str(mLinkedUnit
-                            .metaTileEntity()
-                            .getLocalName().replaceAll("Purification Unit", "")
-                        )
-                        .asWidget()
-                )
-                .child(IKey.str(
-                        mLinkedUnit.
-                            getStatusString())
-                    .asWidget()
-                )
-            )
-      ;
+            .child(
+                new ItemDisplayWidget().background(IDrawable.EMPTY)
+                    .disableHoverBackground()
+                    .size(14)
+                    .item(
+                        mLinkedUnit.metaTileEntity()
+                            .getBaseMetaTileEntity()
+                            .getMetaTileEntity()
+                            .getStackForm(1)))
+            .child(
+                new ListWidget<>().paddingLeft(4)
+                    .coverChildrenHeight()
+                    // size of the terminal - size of the icon - size of border
+                    .width(186 - 16 - 22)
+                    .crossAxisAlignment(Alignment.CrossAxis.START)
+                    .child(
+                        IKey.str(
+                            mLinkedUnit.metaTileEntity()
+                                .getLocalName()
+                                .replaceAll("Purification Unit", ""))
+                            .asWidget())
+                    .child(
+                        IKey.str(mLinkedUnit.getStatusString())
+                            .asWidget()));
     }
 }
