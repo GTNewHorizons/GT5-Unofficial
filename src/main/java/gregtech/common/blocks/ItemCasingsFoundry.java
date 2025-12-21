@@ -23,15 +23,15 @@ public class ItemCasingsFoundry extends ItemCasings {
         switch (aStack.getItemDamage()) {
             case 1 -> {
                 tooltip.add(createTierLine(10));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.chassis1"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.chassis1.flavor"));
             }
             case 2 -> {
                 tooltip.add(createTierLine(11));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.chassis2"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.chassis2.flavor"));
             }
             case 3 -> {
                 tooltip.add(createTierLine(13));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.chassis3"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.chassis3.flavor"));
             }
             case 4 -> {
                 tooltip.add(createModuleBaseText());
@@ -54,7 +54,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector
                         .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.timedilation.tooltip5"));
                 tooltip.add(createTierLine(13));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.timedilation"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.timedilation.flavor"));
             }
             case 5 -> {
                 tooltip.add(createModuleBaseText());
@@ -74,7 +74,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                         .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip4"));
 
                 tooltip.add(createTierLine(12));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.efficientoc"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.efficientoc.flavor"));
             }
             case 6 -> {
                 tooltip.add(createModuleBaseText());
@@ -94,7 +94,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector
                         .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.powerefficient.tooltip4"));
                 tooltip.add(createTierLine(10));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.powerefficient"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.powerefficient.flavor"));
             }
             case 7 -> {
                 tooltip.add(createModuleBaseText());
@@ -134,7 +134,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                         "gt.blockmachines.multimachine.foundry.harmonicreinforcement.tooltip10"));
                 tooltip.add(createTierLine(11));
                 tooltip
-                    .add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.harmonicreinforcement"));
+                    .add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.harmonicreinforcement.flavor"));
             }
             case 8 -> {
                 tooltip.add(createModuleBaseText());
@@ -149,7 +149,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                         TooltipTier.VOLTAGE.getValue()));
                 tooltip.add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip4"));
                 tooltip.add(createTierLine(10));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.parallel"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.parallel.flavor"));
             }
             case 9 -> {
                 tooltip.add(createModuleBaseText());
@@ -171,7 +171,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip
                     .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
                 tooltip.add(createTierLine(11));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.hypercooler"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.hypercooler.flavor"));
             }
             case 10 -> {
                 tooltip.add(createModuleBaseText());
@@ -187,7 +187,7 @@ public class ItemCasingsFoundry extends ItemCasings {
                     StatCollector
                         .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
                 tooltip.add(createTierLine(10));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.streamlinedcasters"));
+                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor"));
             }
         }
     }
