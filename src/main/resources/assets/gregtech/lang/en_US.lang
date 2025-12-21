@@ -2588,6 +2588,8 @@ achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 
 # Exo-Foundry
 gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
+gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
+gt.blockmachines.multimachine.foundry.tier=-Tier: %s
 gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
 gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
 gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
@@ -2596,8 +2598,21 @@ gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
 gt.blockmachines.multimachine.foundry.harmonicreinforcement.flavor=Raised Boundary
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
+gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
+gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
+gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casters §7module
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Hypercooler Casing to drain from!
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §25 §7L/s to gain §23 §7Maximum Overclocks when
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Time Dilation System §7module
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s when
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI

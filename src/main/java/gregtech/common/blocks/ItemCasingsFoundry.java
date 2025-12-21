@@ -117,95 +117,59 @@ public class ItemCasingsFoundry extends ItemCasings {
                 tooltip.add(EnumChatFormatting.WHITE + "- 4 Modules:");
                 tooltip.add("   - Grants 2 extra " + EnumChatFormatting.LIGHT_PURPLE + "overclocks");
                 tooltip.add(createTierLine(11));
-                tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.harmonicreinforcement"));
+                tooltip
+                    .add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.harmonicreinforcement"));
             }
             case 8 -> {
                 tooltip.add(createModuleBaseText());
                 tooltip.add(
-                    "- Adds " + EnumChatFormatting.GOLD
-                        + "12"
-                        + EnumChatFormatting.GRAY
-                        + " Parallels per "
-                        + TooltipTier.VOLTAGE.getValue()
-                        + EnumChatFormatting.GRAY
-                        + " tier");
-                tooltip.add("- Increases Hatch Space by " + EnumChatFormatting.GOLD + "36");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip1",
+                        TooltipTier.VOLTAGE.getValue()));
+                tooltip.add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip2"));
                 tooltip.add(
-                    "- Adds an additional " + EnumChatFormatting.GOLD
-                        + "6"
-                        + EnumChatFormatting.GRAY
-                        + " Parallels per "
-                        + TooltipTier.VOLTAGE.getValue()
-                        + EnumChatFormatting.GRAY
-                        + " tier when");
-                tooltip.add(
-                    "   paired with the " + EnumChatFormatting.RED
-                        + "Streamlined Casters "
-                        + EnumChatFormatting.GRAY
-                        + "module");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip3",
+                        TooltipTier.VOLTAGE.getValue()));
+                tooltip.add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip4"));
                 tooltip.add(createTierLine(10));
-
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.parallel"));
             }
             case 9 -> {
                 tooltip.add(createModuleBaseText());
                 tooltip.add(createModuleLimitText());
+                tooltip
+                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip1"));
                 tooltip.add(
-                    "- Consumes " + EnumChatFormatting.AQUA
-                        + "Cooling Fluid"
-                        + EnumChatFormatting.GRAY
-                        + " for "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + "Extra Overclocks");
-                tooltip.add(
-                    "- Drains " + coolingStrOrder("100", "50")
-                        + " L/s of "
-                        + coolingStrOrder("Super Coolant", "Spacetime")
-                        + " to gain "
-                        + coolingStrOrder("1", "2")
-                        + " Maximum Overclocks");
-                tooltip.add(
-                    "- Only drains " + EnumChatFormatting.AQUA
-                        + "cooling fluid"
-                        + EnumChatFormatting.GRAY
-                        + " when the "
-                        + EnumChatFormatting.GOLD
-                        + "Foundry"
-                        + EnumChatFormatting.GRAY
-                        + " is active");
-                tooltip.add(
-                    EnumChatFormatting.DARK_AQUA
-                        + "- Requires an input hatch on any Hypercooler Casing to drain from!");
-                tooltip.add(
-                    "- Can use " + EnumChatFormatting.GREEN
-                        + "Eternity "
-                        + EnumChatFormatting.GRAY
-                        + "at "
-                        + EnumChatFormatting.GREEN
-                        + "25 "
-                        + EnumChatFormatting.GRAY
-                        + "L/s to gain "
-                        + EnumChatFormatting.GREEN
-                        + "3 "
-                        + EnumChatFormatting.GRAY
-                        + "Maximum Overclocks when");
-                tooltip.add(
-                    "   paired with the " + EnumChatFormatting.DARK_PURPLE
-                        + "Time Dilation System "
-                        + EnumChatFormatting.GRAY
-                        + "module");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
+                        coolingStrOrder("100", "50"),
+                        coolingStrOrder("Super Coolant", "Spacetime"),
+                        coolingStrOrder("1", "2")));
+                tooltip
+                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
+                tooltip
+                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
+                tooltip
+                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                tooltip
+                    .add(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
                 tooltip.add(createTierLine(11));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.hypercooler"));
             }
             case 10 -> {
                 tooltip.add(createModuleBaseText());
-                tooltip.add("- Increases Base Speed by " + TooltipHelper.speedText("150%"));
-                tooltip.add("- Increases Base Speed by an additional " + TooltipHelper.speedText("75%") + " when");
                 tooltip.add(
-                    "   paired with the " + EnumChatFormatting.YELLOW
-                        + "Extra Casing Basins "
-                        + EnumChatFormatting.GRAY
-                        + "module");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1",
+                        TooltipHelper.speedText("150%")));
+                tooltip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2",
+                        TooltipHelper.speedText("75%")));
+                tooltip.add(
+                    StatCollector
+                        .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
                 tooltip.add(createTierLine(10));
                 tooltip.add(createFoundryFlavorText("gt.blockmachines.multimachine.foundry.flavor.streamlinedcasters"));
             }
@@ -213,7 +177,9 @@ public class ItemCasingsFoundry extends ItemCasings {
     }
 
     private String createTierLine(int tier) {
-        return "- Tier: " + GTUtility.getColoredTierNameFromTier((byte) tier);
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.multimachine.foundry.tier",
+            GTUtility.getColoredTierNameFromTier((byte) tier));
     }
 
     // copied methods so I can avoid a public static in MTEExoFoundry class
@@ -232,12 +198,7 @@ public class ItemCasingsFoundry extends ItemCasings {
     }
 
     private String createModuleLimitText() {
-        return "- Limit of " + EnumChatFormatting.WHITE
-            + "1"
-            + EnumChatFormatting.GRAY
-            + " Per "
-            + EnumChatFormatting.GOLD
-            + "Foundry";
+        return StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.modulelimit");
     }
 
     private String createFoundryFlavorText(String key) {
