@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.tileentity.ICoverable;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.covers.Cover;
 import tectech.mechanics.tesla.ITeslaConnectable;
 import tectech.mechanics.tesla.TeslaCoverConnection;
@@ -34,26 +35,24 @@ public class CoverTeslaCoil extends Cover {
     @Override
     public void onCoverUnload() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null && !coverable.isClientSide()) {
-            ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-                new TeslaCoverConnection(
-                    coverable.getIGregTechTileEntityOffset(0, 0, 0),
-                    getTeslaReceptionCapability()));
+        if (coverable instanceof IGregTechTileEntity IGT && !coverable.isClientSide()) {
+            ITeslaConnectable.TeslaUtil
+                .teslaSimpleNodeSetRemove(new TeslaCoverConnection(IGT, getTeslaReceptionCapability()));
         }
     }
 
     @Override
     public void onCoverRemoval() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
+        if (coverable instanceof IGregTechTileEntity IGT) ITeslaConnectable.TeslaUtil
+            .teslaSimpleNodeSetRemove(new TeslaCoverConnection(IGT, getTeslaReceptionCapability()));
     }
 
     @Override
     public void onBaseTEDestroyed() {
         ICoverable coverable = coveredTile.get();
-        if (coverable != null) ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(
-            new TeslaCoverConnection(coverable.getIGregTechTileEntityOffset(0, 0, 0), getTeslaReceptionCapability()));
+        if (coverable instanceof IGregTechTileEntity IGT) ITeslaConnectable.TeslaUtil
+            .teslaSimpleNodeSetRemove(new TeslaCoverConnection(IGT, getTeslaReceptionCapability()));
     }
 
     @Override

@@ -10,6 +10,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.common.items.ItemVolumetricFlask;
@@ -34,7 +36,7 @@ public final class FlaskRenderer implements IItemRenderer {
         IIcon icon = item.getIconIndex();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GTRenderUtil.applyStandardItemTransform(type);
+        ItemRenderUtil.applyStandardItemTransform(type);
 
         FluidStack fs = cell != null ? cell.getFluid(item) : null;
         if (fs != null) {
@@ -45,20 +47,20 @@ public final class FlaskRenderer implements IItemRenderer {
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
             GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
-            GTRenderUtil.renderItem(type, iconWindow);
+            ItemRenderUtil.renderItem(type, iconWindow);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            GTRenderUtil.renderItem(type, fluidIcon);
+            ItemRenderUtil.renderItem(type, fluidIcon);
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
         }
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GTRenderUtil.renderItem(type, icon);
+        ItemRenderUtil.renderItem(type, icon);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
     }
