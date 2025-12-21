@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
@@ -136,6 +137,13 @@ public class BlockOverlayRenderer {
                 && event.player.isSneaking()) {
             if (!((ICoverable) aTileEntity).hasCoverAtSide(ForgeDirection.getOrientation(event.target.sideHit)))
                 drawGrid(event, false, false, event.player.isSneaking());
+            return;
+        }
+
+        if (GTUtility.isStackInList(event.currentItem, GregTechAPI.sScrewdriverList)
+            && aTileEntity instanceof IGregTechTileEntity gtEntity
+            && gtEntity.getMetaTileEntity() instanceof MTEBuffer) {
+            drawGrid(event, false, false, event.player.isSneaking());
             return;
         }
 
