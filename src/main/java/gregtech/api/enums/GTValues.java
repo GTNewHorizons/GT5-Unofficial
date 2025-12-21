@@ -658,9 +658,14 @@ public class GTValues {
         + EnumChatFormatting.DARK_BLUE
         + "ez";
 
+    // for use with the chain
+    public static final Supplier<String> AUTHOR_SUPPLIER = () -> "Author: ";
+    public static final Supplier<String> AUTHORS_SUPPLIER = () -> "Authors: ";
+    public static final Supplier<String> AND_SUPPLIER = () -> EnumChatFormatting.RESET + " & ";
+
     // a list specifically for random selection of formatting codes.
-    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
-        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
+    public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,
+        AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
     public static final Supplier<String> fancyAuthorChrom = chain(
         createChromLetter("C", ORDER),
@@ -704,11 +709,12 @@ public class GTValues {
             }
             colorList[i] = builder.toString();
         }
-        return chromAnimatedText(" ", 1, 1000, colorList);
+        return emptyAnimatedText(1, 1000, colorList);
     }
 
     // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
-    private static Supplier<String> chromAnimatedText(String text, int posstep, int delay, String... formattingArray) {
+    private static Supplier<String> emptyAnimatedText(int posstep, int delay, String... formattingArray) {
+        String text = " ";
         if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
 
         final int finalDelay = Math.max(delay, 1);
@@ -726,6 +732,31 @@ public class GTValues {
             return sb.toString()
                 .replaceAll("\\s", "");
         };
+    }
+
+    public static final Supplier<String> AuthorAuynonymous = chain(
+        createAuynonymousLetter(0),
+        createAuynonymousLetter(1),
+        createAuynonymousLetter(2),
+        createAuynonymousLetter(3),
+        createAuynonymousLetter(4),
+        createAuynonymousLetter(5),
+        createAuynonymousLetter(6),
+        createAuynonymousLetter(7),
+        createAuynonymousLetter(8),
+        createAuynonymousLetter(9),
+        createAuynonymousLetter(10));
+
+    private static Supplier<String> createAuynonymousLetter(int index) {
+        final String[] letters = new String[] { "A", "u", "y", "n", "o", "n", "y", "m", "o", "u", "s" };
+        String[] colorList = new String[letters.length];
+        final String letter = letters[index];
+        for (int i = 0; i < letters.length; i++) {
+            colorList[i] = LIGHT_PURPLE
+                + (i == (letters.length - index - 1) ? EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "<3"
+                    : letter);
+        }
+        return emptyAnimatedText(1, 1000, colorList);
     }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
