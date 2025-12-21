@@ -779,7 +779,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PTConcentrate = new Werkstoff(
         Materials.Platinum.getRGBA(),
         "Platinum Concentrate",
-        subscriptNumbers("Pt?"),
+        "PtPd??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -792,7 +792,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PTSaltCrude = new Werkstoff(
         Materials.Platinum.getRGBA(),
         "Platinum Salt",
-        subscriptNumbers("Pt?"),
+        "Pt??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -805,7 +805,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PTSaltRefined = new Werkstoff(
         Materials.Platinum.getRGBA(),
         "Refined Platinum Salt",
-        subscriptNumbers("Pt?Cl?"),
+        "Pt??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -818,7 +818,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PTMetallicPowder = new Werkstoff(
         Materials.Platinum.getRGBA(),
         "Platinum Metallic Powder",
-        subscriptNumbers("Pt?Pd?Ir?Os?Rh?Ru?"),
+        "PtPdIrOsRhRu??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -842,7 +842,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PTResidue = new Werkstoff(
         new short[] { 0x64, 0x63, 0x2E },
         "Platinum Residue",
-        subscriptNumbers("Ir?Os?Rh?Ru?"),
+        "IrOsRhRu??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -879,6 +879,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PDAmmonia = new Werkstoff(
         Materials.Palladium.getRGBA(),
         "Palladium Enriched Ammonia",
+        "Pd??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -891,7 +892,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PDMetallicPowder = new Werkstoff(
         Materials.Palladium.getRGBA(),
         "Palladium Metallic Powder",
-        subscriptNumbers("Pd?"),
+        "Pd??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -903,7 +904,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PDRawPowder = new Werkstoff(
         Materials.Palladium.getRGBA(),
         "Reprecipitated Palladium",
-        subscriptNumbers("Pd2NH4"),
+        "Pd??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -916,7 +917,7 @@ public class WerkstoffLoader {
     public static final Werkstoff PDSalt = new Werkstoff(
         Materials.Palladium.getRGBA(),
         "Palladium Salt",
-        subscriptNumbers("Pd?"),
+        "Pd??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -984,7 +985,7 @@ public class WerkstoffLoader {
     public static final Werkstoff LeachResidue = new Werkstoff(
         new short[] { 0x64, 0x46, 0x29 },
         "Leach Residue",
-        subscriptNumbers("Ir?Os?Ru?"),
+        "IrOsRu??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -995,7 +996,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RHSulfate = new Werkstoff(
         new short[] { 0xee, 0xaa, 0x55 },
         "Rhodium Sulfate",
-        subscriptNumbers("K2S2O7Rh?"),
+        "Rh??",
         new Werkstoff.Stats().setGas(true),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
@@ -1007,7 +1008,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RHSulfateSolution = new Werkstoff(
         new short[] { 0xff, 0xbb, 0x66 },
         "Rhodium Sulfate Solution",
-        subscriptNumbers("SO4Rh?"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1053,70 +1054,57 @@ public class WerkstoffLoader {
     public static final Werkstoff SodiumRuthenate = new Werkstoff(
         new short[] { 0x3a, 0x40, 0xcb },
         "Sodium Ruthenate",
+        "Ru??",
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         65,
-        TextureSet.SET_SHINY,
-        Pair.of(Materials.Sodium, 2),
-        Pair.of(Ruthenium, 1),
-        Pair.of(Materials.Oxygen, 3)
+        TextureSet.SET_SHINY
     // No Byproducts
     );
     public static final Werkstoff RutheniumTetroxide = new Werkstoff(
         new short[] { 0xc7, 0xc7, 0xc7 },
         "Ruthenium Tetroxide",
+        "Ru??",
         new Werkstoff.Stats().setMeltingPoint(313),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
             .addCells(),
         66,
-        TextureSet.SET_DULL,
-        Pair.of(WerkstoffLoader.Ruthenium, 1),
-        Pair.of(Materials.Oxygen, 4)
+        TextureSet.SET_DULL
     // No Byproducts
     );
     public static final Werkstoff HotRutheniumTetroxideSollution = new Werkstoff(
         new short[] { 0xc7, 0xc7, 0xc7 },
         "Hot Ruthenium Tetroxide Solution",
-        subscriptNumbers("Na2RuO3Cl3"),
+        "Ru??",
         new Werkstoff.Stats().setGas(true)
             .setMeltingPoint(700),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         67,
-        TextureSet.SET_FLUID,
-        Pair.of(WerkstoffLoader.Ruthenium, 1),
-        Pair.of(Materials.Oxygen, 4),
-        Pair.of(Materials.Chlorine, 2),
-        Pair.of(Materials.Sodium, 2),
-        Pair.of(Materials.Water, 2)
+        TextureSet.SET_FLUID
     // No Byproducts
     );
     public static final Werkstoff RutheniumTetroxideSollution = new Werkstoff(
         new short[] { 0xc7, 0xc7, 0xc7 },
         "Ruthenium Tetroxide Solution",
-        subscriptNumbers("Na2RuO3Cl3"),
+        "Ru??",
         new Werkstoff.Stats().setMeltingPoint(313),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         68,
-        TextureSet.SET_FLUID,
-        Pair.of(Ruthenium, 1),
-        Pair.of(Materials.Oxygen, 4),
-        Pair.of(Materials.Chlorine, 2),
-        Pair.of(Materials.Sodium, 2),
-        Pair.of(Materials.Water, 2)
+        TextureSet.SET_FLUID
     // No Byproducts
     );
     public static final Werkstoff IrOsLeachResidue = new Werkstoff(
         new short[] { 0x64, 0x46, 0x29 },
         "Rarest Metal Residue",
-        subscriptNumbers("Os?Ir?"),
+        "OsIr??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -1128,7 +1116,7 @@ public class WerkstoffLoader {
     public static final Werkstoff IrLeachResidue = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Iridium Metal Residue",
-        subscriptNumbers("Ir?"),
+        "Ir??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -1152,62 +1140,53 @@ public class WerkstoffLoader {
     public static final Werkstoff AcidicOsmiumSolution = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Acidic Osmium Solution",
-        subscriptNumbers("HClOs?"),
+        "Os??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         72,
-        TextureSet.SET_FLUID,
-        Pair.of(Materials.Osmium, 1),
-        Pair.of(Materials.HydrochloricAcid, 1));
+        TextureSet.SET_FLUID);
     public static final Werkstoff IridiumDioxide = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Iridium Dioxide",
+        "Ir??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         73,
-        TextureSet.SET_FLUID,
-        Pair.of(Materials.Iridium, 1),
-        Pair.of(Materials.Oxygen, 2));
+        TextureSet.SET_FLUID);
     public static final Werkstoff OsmiumSolution = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Osmium Solution",
-        subscriptNumbers("ClOs?"),
+        "Os??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         74,
-        TextureSet.SET_FLUID,
-        Pair.of(Materials.Osmium, 1),
-        Pair.of(Materials.Hydrogen, 1));
+        TextureSet.SET_FLUID);
     public static final Werkstoff AcidicIridiumSolution = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Acidic Iridium Solution",
-        subscriptNumbers("HClIr?"),
+        "Ir??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         75,
-        TextureSet.SET_FLUID,
-        Pair.of(Materials.Iridium, 1),
-        Pair.of(Materials.Hydrogen, 1));
+        TextureSet.SET_FLUID);
     public static final Werkstoff IridiumChloride = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Iridium Chloride",
-        subscriptNumbers("IrCl3"),
+        "Ir??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         76,
-        TextureSet.SET_LAPIS,
-        Pair.of(Materials.Iridium, 1),
-        Pair.of(Materials.Chlorine, 3));
+        TextureSet.SET_LAPIS);
     public static final Werkstoff PGSDResidue2 = new Werkstoff(
         new short[] { 0x84, 0x66, 0x49 },
         "Metallic Sludge Dust Residue",
@@ -1241,7 +1220,7 @@ public class WerkstoffLoader {
     public static final Werkstoff CrudeRhMetall = new Werkstoff(
         new short[] { 0x66, 0x66, 0x66 },
         "Crude Rhodium Metal",
-        "Rh?",
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures(),
@@ -1252,7 +1231,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RHSalt = new Werkstoff(
         new short[] { 0x84, 0x84, 0x84 },
         "Rhodium Salt",
-        subscriptNumbers("Rh?NaCl2"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1262,7 +1241,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RHSaltSolution = new Werkstoff(
         new short[] { 0x66, 0x77, 0x88 },
         "Rhodium Salt Solution",
-        subscriptNumbers("Rh?NaCl2·H2O"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1285,7 +1264,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RHNitrate = new Werkstoff(
         new short[] { 0x77, 0x66, 0x49 },
         "Rhodium Nitrate",
-        subscriptNumbers("Rh?(NO3)3"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1307,7 +1286,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RhFilterCake = new Werkstoff(
         new short[] { 0x77, 0x66, 0x49 },
         "Rhodium Filter Cake",
-        subscriptNumbers("Rh?N"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1317,7 +1296,7 @@ public class WerkstoffLoader {
     public static final Werkstoff RHFilterCakeSolution = new Werkstoff(
         new short[] { 0x66, 0x77, 0x88 },
         "Rhodium Filter Cake Solution",
-        subscriptNumbers("Rh?N·H2O"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1327,7 +1306,7 @@ public class WerkstoffLoader {
     public static final Werkstoff ReRh = new Werkstoff(
         new short[] { 0x77, 0x66, 0x49 },
         "Reprecipitated Rhodium",
-        subscriptNumbers("Rh2NH4"),
+        "Rh??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1622,9 +1601,11 @@ public class WerkstoffLoader {
         new short[] { 80, 90, 80 },
         "Tantalum Hafnium Carbide",
         subscriptNumbers("Ta4HfC5"),
-        new Werkstoff.Stats().setMass(192)
-            .setMass(962)
-            .setMeltingPoint(4263),
+        new Werkstoff.Stats().setMass(962)
+            .setMeltingPoint(4263)
+            .setDurOverride(4608)
+            .setSpeedOverride(12)
+            .setQualityOverride((byte) 7),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMetalItems()
