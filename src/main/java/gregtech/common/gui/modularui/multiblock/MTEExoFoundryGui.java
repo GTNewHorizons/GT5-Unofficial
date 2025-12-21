@@ -350,7 +350,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager, int index) {
         IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
-        return new ModularPanel("moduleSelectPanel" + index) {
+        ModularPanel panel = new ModularPanel("moduleSelectPanel" + index) {
 
             @Override
             public boolean disablePanelsBelow() {
@@ -361,8 +361,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             public boolean closeOnOutOfBoundsClick() {
                 return true;
             }
-
-        }.relative(parent)
+        };
+        panel.relative(parent)
             .leftRel(1)
             .topRel(0)
             .size(140, 130)
@@ -390,11 +390,13 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);
+                                        panel.closeIfOpen();
                                         return true;
                                     }))
                             .build()
                             .topRel(0.5f)
                             .leftRel(0.4f)));
+        return panel;
     }
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
