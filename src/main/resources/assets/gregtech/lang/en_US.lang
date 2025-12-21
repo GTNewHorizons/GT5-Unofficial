@@ -2597,7 +2597,7 @@ gt.blockmachines.multimachine.foundry.powerefficient=Stable Current
 gt.blockmachines.multimachine.foundry.harmonicreinforcement=Raised Boundary
 gt.blockmachines.multimachine.foundry.parallel=Greater Fate
 gt.blockmachines.multimachine.foundry.hypercooler=Tempered Fury
-gt.blockmachines.multimachine.foundry.speed=Witch Time!
+gt.blockmachines.multimachine.foundry.streamlinedcasters=Witch Time!
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
