@@ -108,7 +108,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                             x -> ofChain(
                                 buildHatchAdder(MTEAirFilterBase.class)
                                     .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, OutputBus, Energy)
-                                    .dot(1)
+                                    .hint(1)
                                     .casingIndex(x.getCasingIndex())
                                     .build(),
                                 ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))
@@ -120,7 +120,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                         lazy(
                             x -> ofChain(
                                 buildHatchAdder(MTEAirFilterBase.class).atLeast(Muffler)
-                                    .dot(2)
+                                    .hint(2)
                                     .casingIndex(x.getCasingIndex())
                                     .build(),
                                 ofBlock(GregTechAPI.sBlockCasingsNH, x.getCasingMeta())))))

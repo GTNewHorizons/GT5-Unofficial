@@ -140,7 +140,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationPlant>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings9, 4))
                         .build()),
                 ofBlock(GregTechAPI.sBlockCasings9, 4)))

@@ -101,7 +101,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(CASING_TEXTURE_INDEX)
-                        .dot(1)
+                        .hint(1)
                         .build()),
                 // Reinforced Sterile Water Plant Casing
                 ofBlock(GregTechAPI.sBlockCasings9, 5)))

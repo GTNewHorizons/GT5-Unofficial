@@ -473,6 +473,7 @@ public class Textures {
         MACHINE_COIL_ETERNAL_FOREGROUND,
 
         BOILER_SOLAR,
+        BOILER_SOLAR_CALCIFIED,
         BOILER_FRONT,
         BOILER_FRONT_GLOW,
 
@@ -597,6 +598,7 @@ public class Textures {
         BLOCK_IRREIN,
         BLOCK_PLASCRETE,
         BLOCK_TSREIN,
+        BLOCK_POWDER,
 
         OVERLAY_LOCKER,
         OVERLAY_LOCKER_000,

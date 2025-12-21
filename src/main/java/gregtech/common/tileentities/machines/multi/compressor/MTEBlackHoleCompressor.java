@@ -137,7 +137,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             buildHatchAdder(MTEBlackHoleCompressor.class)
                 .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, InputHatch, SpecialHatchElement.UtilityHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(12))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEBlackHoleCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 12))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 11))
@@ -147,7 +147,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputHatch)
                 .adder(MTEBlackHoleCompressor::addSpacetimeInput)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(11))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
         .build();
 

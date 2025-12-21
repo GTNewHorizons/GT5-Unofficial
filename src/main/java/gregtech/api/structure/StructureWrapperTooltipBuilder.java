@@ -178,7 +178,8 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
     /**
      * Add a hatch line manually.
      */
-    public StructureWrapperTooltipBuilder<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch, int... dots) {
+    public StructureWrapperTooltipBuilder<MTE> addHatch(ICasing casing, IHatchElement<? super MTE> hatch,
+        int... hintNumbers) {
         String nameOverride = hatchNameOverrides.get(hatch);
 
         String info = hatchInfoOverrides.get(hatch);
@@ -186,51 +187,51 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         // if we were given a hatch info override, use it
         if (info == null) info = GTUtility.translate("GT5U.MBTT.HatchInfo", casing.getLocalizedName());
 
-        // add dots to the info if possible
-        if (dots.length > 0) {
+        // add hintNumbers to the info if possible
+        if (hintNumbers.length > 0) {
             info += GTUtility.translate(
-                "GT5U.MBTT.HatchDots",
-                String.join(", ", GTDataUtils.mapToList(new IntArrayList(dots), Object::toString)));
+                "GT5U.MBTT.HatchHint",
+                String.join(", ", GTDataUtils.mapToList(new IntArrayList(hintNumbers), Object::toString)));
         }
 
         if (nameOverride != null) {
-            addStructurePart(nameOverride, info, dots);
+            addStructurePart(nameOverride, info, hintNumbers);
         } else {
             // try to use an existing addXHatch method if possible
             if (hatch instanceof HatchElement gtHatch) {
                 switch (gtHatch) {
                     case Dynamo:
-                        addDynamoHatch(info, dots);
+                        addDynamoHatch(info, hintNumbers);
                         break;
                     case Energy:
-                        addEnergyHatch(info, dots);
+                        addEnergyHatch(info, hintNumbers);
                         break;
                     case ExoticEnergy:
-                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, dots);
-                        addStructurePart("GT5U.MBTT.LaserTargetHatch", info, dots);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, hintNumbers);
+                        addStructurePart("GT5U.MBTT.LaserTargetHatch", info, hintNumbers);
                         hasExoticHatches = true;
                         break;
                     case MultiAmpEnergy:
-                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, dots);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, hintNumbers);
                         hasMultiAmpHatches = true;
                         break;
                     case InputBus:
-                        addInputBus(info, dots);
+                        addInputBus(info, hintNumbers);
                         break;
                     case InputHatch:
-                        addInputHatch(info, dots);
+                        addInputHatch(info, hintNumbers);
                         break;
                     case Maintenance:
-                        addMaintenanceHatch(info, dots);
+                        addMaintenanceHatch(info, hintNumbers);
                         break;
                     case Muffler:
-                        addMufflerHatch(info, dots);
+                        addMufflerHatch(info, hintNumbers);
                         break;
                     case OutputBus:
-                        addOutputBus(info, dots);
+                        addOutputBus(info, hintNumbers);
                         break;
                     case OutputHatch:
-                        addOutputHatch(info, dots);
+                        addOutputHatch(info, hintNumbers);
                         break;
                     default:
                         break;
@@ -238,20 +239,20 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
             } else if (hatch instanceof TTMultiblockBase.HatchElement ttHatch) {
                 switch (ttHatch) {
                     case EnergyMulti -> {
-                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, dots);
-                        addStructurePart("GT5U.MBTT.LaserTargetHatch", info, dots);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyHatch", info, hintNumbers);
+                        addStructurePart("GT5U.MBTT.LaserTargetHatch", info, hintNumbers);
                         hasExoticHatches = true;
                     }
                     case DynamoMulti -> {
-                        addStructurePart("GT5U.MBTT.MultiampEnergyDynamo", info, dots);
-                        addStructurePart("GT5U.MBTT.LaserSourceHatch", info, dots);
+                        addStructurePart("GT5U.MBTT.MultiampEnergyDynamo", info, hintNumbers);
+                        addStructurePart("GT5U.MBTT.LaserSourceHatch", info, hintNumbers);
                         hasExoticHatches = true;
                     }
-                    default -> addStructurePart(ttHatch.getDisplayName(), info, dots);
+                    default -> addStructurePart(ttHatch.getDisplayName(), info, hintNumbers);
                 }
             } else {
                 // fallback for custom hatches
-                addStructurePart(hatch.getDisplayName(), info, dots);
+                addStructurePart(hatch.getDisplayName(), info, hintNumbers);
             }
         }
 
@@ -312,7 +313,7 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
                 addCasingInfoAuto(casingInfo.casing);
             }
 
-            // keep track of any hatches in this structure element and their dots
+            // keep track of any hatches in this structure element and their hint numbers
             if (casingInfo.hatches != null) {
                 for (var hatch : casingInfo.hatches) {
                     hatches.put(Pair.of(casingInfo.casing, hatch), casingInfo.dot);
@@ -360,12 +361,12 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
         }
 
         for (var hatch : hatchesSorted) {
-            // dedup the dots and sort them
-            IntArrayList dots = new IntArrayList(new IntArraySet(hatches.get(hatch)));
-            dots.sort(null);
+            // dedupe the hint numbers and sort them
+            IntArrayList hintNumbers = new IntArrayList(new IntArraySet(hatches.get(hatch)));
+            hintNumbers.sort(null);
 
             // finally add the hatch
-            addHatch(hatch.left(), hatch.right(), dots.toIntArray());
+            addHatch(hatch.left(), hatch.right(), hintNumbers.toIntArray());
         }
 
         // add the tectech multi amp hatch info line if it should be added

@@ -746,7 +746,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             'H',
             buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
                 .casingIndex(BlockGTCasingsTT.texturePage << 7)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 12))
         .addElement(
             'E',

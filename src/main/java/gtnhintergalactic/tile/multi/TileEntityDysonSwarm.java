@@ -154,7 +154,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             'e',
             buildHatchAdder(TileEntityDysonSwarm.class).atLeast(Dynamo, DynamoMulti)
                 .casingIndex(IGTextures.CASING_INDEX_RECEIVER)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 0))) // Receiver Base Casing
         .addElement('f', ofFrame(Materials.HSSS))
         .addElement('g', ofFrame(Materials.Titanium))
@@ -164,7 +164,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputBus, InputHatch)
                 .casingIndex(IGTextures.CASING_INDEX_LAUNCH)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 2))) // Deployment Unit Base Casing
         .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
         .addElement('k', ofFrame(Materials.SuperconductorUHVBase))
@@ -174,7 +174,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputData)
                 .casingIndex(IGTextures.CASING_INDEX_COMMAND)
-                .dot(4)
+                .hint(4)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 5))) // Command Center Base Casing
         .addElement('p', ofBlock(GregTechAPI.sBlockCasingsDyson, 6)) // Command Center Primary Windings
         .addElement('s', ofBlock(GregTechAPI.sBlockCasingsDyson, 7)) // Command Center Secondary Windings

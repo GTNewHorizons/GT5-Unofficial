@@ -107,7 +107,7 @@ public abstract class GTChunkAssociatedData<T extends GTChunkAssociatedData.IDat
         if (regionLength * regionLength > Short.MAX_VALUE || regionLength <= 0)
             throw new IllegalArgumentException("Region invalid: " + regionLength);
         if (!IData.class.isAssignableFrom(elementType)) throw new IllegalArgumentException("Data type invalid");
-        if (aId.contains(".")) throw new IllegalArgumentException("ID cannot contains dot");
+        if (aId.contains(".")) throw new IllegalArgumentException("ID cannot contain dot");
         this.mId = aId;
         this.elementtype = elementType;
         this.regionLength = regionLength;

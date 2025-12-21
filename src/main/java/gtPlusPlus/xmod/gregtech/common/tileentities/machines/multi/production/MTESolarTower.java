@@ -213,7 +213,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                             .adder(MTESolarTower::addSolarHeater)
                             // Use a positive casing index to make adder builder happy
                             .casingIndex(1)
-                            .dot(1)
+                            .hint(1)
                             .continueIfSuccess()
                             .build()))
                 .addElement(
@@ -233,7 +233,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                     lazy(
                         t -> buildHatchAdder(MTESolarTower.class).atLeast(InputHatch, OutputHatch, Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(
                                 onElementPass(x -> ++x.mCasing1, ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
                 .build();

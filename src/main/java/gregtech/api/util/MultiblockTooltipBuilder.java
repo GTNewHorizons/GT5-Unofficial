@@ -999,7 +999,7 @@ public class MultiblockTooltipBuilder {
             hBlocks.asMap()
                 .entrySet()
                 .stream()
-                // e.getKey() - 1 because 1 dot is meta 0.
+                // e.getKey() - 1 because 1 hint is meta 0.
                 .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
             .toArray(String[]::new);
         // free memory

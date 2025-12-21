@@ -95,7 +95,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("gtplusplus.blockspecialcasings.1.12.name", 20)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.3.2.name", 24)
             .addCasingInfoMin("gtplusplus.blockspecialcasings.3.6.name", 16)
-            .addStructurePart("GTPP.tooltip.structure.data_orb_repository", "<hint>", "1x", 1)
+            .addStructurePart("GTPP.tooltip.structure.data_orb_repository", "<hint>", "x1", 1)
             .addInputHatch("<hint>", 1)
             .addOutputBus("<hint>", 1)
             .addOutputHatch("<hint>", 1)
@@ -154,14 +154,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
                                 .casingIndex(getCasingTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .hatchClass(MTEHatchElementalDataOrbHolder.class)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))))
                 .build();

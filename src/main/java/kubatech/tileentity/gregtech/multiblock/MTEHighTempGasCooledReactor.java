@@ -142,7 +142,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             buildHatchAdder(MTEHighTempGasCooledReactor.class)
                 .atLeast(HTGRHatches.HeliumInputHatch, HatchElement.Maintenance, HatchElement.Energy)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(11))
-                .dot(1)
+                .hint(1)
                 .build())
         .addElement(
             'f',
