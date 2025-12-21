@@ -18,15 +18,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -1730,6 +1734,17 @@ public class Material implements IOreMaterial {
         return tryFindGregtechMaterialEquivalent(this);
     }
 
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return tryFindGregtechMaterialEquivalent();
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        // This is really unreliable but it's also gt++ so there isn't a better solution
+        return getComponentByPrefix(prefix, 1) != null;
+    }
+
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
         String aMaterialName = aMaterial.getLocalizedName();
         Materials aGregtechMaterial = Materials.get(aMaterialName);
@@ -1754,5 +1769,20 @@ public class Material implements IOreMaterial {
 
     public void setWerkstoffID(short werkstoffID) {
         this.werkstoffID = werkstoffID;
+    }
+
+    @Override
+    public boolean contains(SubTag aTag) {
+        return false;
+    }
+
+    @Override
+    public ISubTagContainer add(SubTag... aTags) {
+        throw new UnsupportedOperationException("GT++ does not implement subtags");
+    }
+
+    @Override
+    public boolean remove(SubTag aTag) {
+        return false;
     }
 }
