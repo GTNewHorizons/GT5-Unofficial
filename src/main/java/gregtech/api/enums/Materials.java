@@ -1940,6 +1940,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
+    public @Nullable Materials getGTMaterial() {
+        return this;
+    }
+
+    @Override
     public List<IStoneType> getValidStones() {
         if (contains(SubTag.ICE_ORE)) {
             return StoneType.ICES;
@@ -1965,6 +1970,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             aFormat.replace("%s", "%temp")
                 .replace("%material", "%s"),
             this.mLocalizedName).replace("%temp", "%s");
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        return prefix.doGenerateItem(this);
     }
 
     public boolean hasDustItems() {

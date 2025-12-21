@@ -39,7 +39,7 @@ public class CasingLoader implements IWerkstoffRunnable {
         if (werkstoff == BWGTMaterialReference.Wood /* || werkstoff == BW_GT_MaterialReference.WoodSealed */) {
             addCasingRecipes(werkstoff, plank);
         } else {
-            if (!werkstoff.hasGenerationFeature(blockCasing) || !werkstoff.doesOreDictedItemExists(plate)
+            if (!werkstoff.hasItemType(blockCasing) || !werkstoff.doesOreDictedItemExists(plate)
                 || !werkstoff.doesOreDictedItemExists(screw)
                 || !werkstoff.doesOreDictedItemExists(gearGtSmall)
                 || !werkstoff.doesOreDictedItemExists(gearGt)
