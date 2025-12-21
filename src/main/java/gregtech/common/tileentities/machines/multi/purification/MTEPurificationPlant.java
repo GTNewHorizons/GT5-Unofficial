@@ -100,6 +100,10 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      */
     public static final int CYCLE_TIME_TICKS = 120 * SECONDS;
 
+    public List<LinkedPurificationUnit> getmLinkedUnits() {
+        return mLinkedUnits;
+    }
+
     /**
      * Stores all purification units linked to this controller. Normally all units in this list should be valid and
      * unique, if not then there is a bug where they are not being unlinked properly on block destruction/relinking.
@@ -705,11 +709,6 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEPurificationPlantGui(this);
     }
@@ -810,4 +809,5 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         aNBT.setBoolean("debugMode", debugMode);
 
     }
+
 }

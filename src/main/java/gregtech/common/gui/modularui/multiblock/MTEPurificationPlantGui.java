@@ -1,14 +1,23 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.purification.LinkedPurificationUnit;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
 
 public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificationPlant> {
@@ -20,18 +29,106 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+        BooleanSyncValue debugMode = new BooleanSyncValue(multiblock::isDebugMode, multiblock::setDebugMode);
+
+        GenericListSyncHandler<LinkedPurificationUnit> linkedPurifierUnits = new GenericListSyncHandler.Builder<LinkedPurificationUnit>()
+            .getter(multiblock::getmLinkedUnits)
+            .setter(links -> {
+                multiblock.getmLinkedUnits()
+                    .clear();
+                multiblock.getmLinkedUnits()
+                    .addAll(links);
+            })
+            .serializer((buf, unit) -> {
+                buf.writeNBTTagCompoundToBuffer(unit.writeLinkDataToNBT());
+
+            })
+            .deserializer(buffer -> new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer()))
+            // i think i need this???
+            .copy(unit -> new LinkedPurificationUnit(unit.writeLinkDataToNBT()))
+            .build();
+
+        syncManager.syncValue("debugMode", debugMode);
+        syncManager.syncValue("linkedPurifierUnits", linkedPurifierUnits);
     }
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.createTerminalTextWidget(syncManager, parent);
+        ListWidget<IWidget, ?> widget =
+            super.createTerminalTextWidget(syncManager, parent);
+        GenericListSyncHandler linkedPurifications = syncManager.findSyncHandler("linkedPurifierUnits", GenericListSyncHandler.class);
+
+        for (Object obj : linkedPurifications.getValue()) {
+            if (obj instanceof LinkedPurificationUnit unit) {
+                widget.child(machineRow(unit));
+
+            }
+        }
+        return widget;
     }
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createButtonColumn(panel, syncManager).child(
-            new ToggleButton().value(
-                new BooleanSyncValue(
-                    () -> multiblock.setDebugMode(multiblock.isDebugMode()))));
+        BooleanSyncValue debugMode = syncManager.findSyncHandler("debugMode", BooleanSyncValue.class);
+        return super.createButtonColumn(panel, syncManager).child(new ButtonWidget<>().onMousePressed((a) -> {
+            if (multiblock.getBaseMetaTileEntity()
+                .isActive()) {
+                return false;
+            }
+            if (debugMode.getBoolValue()) {
+                debugMode.setBoolValue(false);
+                return true;
+            } else {
+                debugMode.setBoolValue(true);
+                return true;
+            }
+        })
+            .overlay(new DynamicDrawable(() -> {
+                if (multiblock.getBaseMetaTileEntity()
+                    .isAllowedToWork()) {
+                    return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
+                }
+                if (debugMode.getBoolValue()) {
+                    return GTGuiTextures.OVERLAY_BUTTON_MODE[1];
+                } else {
+                    return GTGuiTextures.OVERLAY_BUTTON_MODE[0];
+                }
+            })));
+    }
+
+    public Flow machineRow(LinkedPurificationUnit mLinkedUnit) {
+        return new Row()
+            .paddingBottom(4)
+            .paddingTop(4)
+            .coverChildrenHeight()
+            .child(new ItemDisplayWidget()
+                .background(IDrawable.EMPTY)
+                .disableHoverBackground()
+                .size(14)
+                .item(mLinkedUnit
+                .metaTileEntity()
+                .getBaseMetaTileEntity()
+                .getMetaTileEntity()
+                .getStackForm(1))
+            )
+            .child(new ListWidget<>()
+                .paddingLeft(4)
+                .coverChildrenHeight()
+                // size of the terminal - size of the icon - size of border
+                .width(186-16 - 22)
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .child(IKey.str(mLinkedUnit
+                            .metaTileEntity()
+                            .getLocalName().replaceAll("Purification Unit", "")
+                        )
+                        .asWidget()
+                )
+                .child(IKey.str(
+                        mLinkedUnit.
+                            getStatusString())
+                    .asWidget()
+                )
+            )
+      ;
     }
 }
