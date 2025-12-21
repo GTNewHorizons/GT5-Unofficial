@@ -34,6 +34,7 @@ gt.component.smallspring=Small %s Spring
 gt.component.finewire=Fine %s Wire
 gt.component.platedense=Dense %s Plate
 gt.component.platesuperdense=Superdense %s Plate
+gt.component.sheetmetal=%s Sheetmetal
 
 # Crops
 gt.crop.argentia.name=Argentia
