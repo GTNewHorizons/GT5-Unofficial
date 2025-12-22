@@ -34,11 +34,9 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 
 public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
-    private final Splitter base;
 
-    public SplitterGui(Splitter base) {
-        super(base);
-        this.base = base;
+    public SplitterGui(Splitter multiblock) {
+        super(multiblock);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         syncManager.syncValue(
             "rules",
             0,
-            new GenericSyncValue<>(() -> base.colorMap, map -> { base.colorMap = map; }, new ColorMapAdapter()));
+            new GenericSyncValue<>(() -> multiblock.colorMap, map -> { multiblock.colorMap = map; }, new ColorMapAdapter()));
     }
 
     @Override
@@ -80,7 +78,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         list.pos(4, 21);
 
         // Add existing rules
-        for (Map.Entry<Integer, Splitter.ColorRule> entry : base.colorMap.entrySet()) {
+        for (Map.Entry<Integer, Splitter.ColorRule> entry : multiblock.colorMap.entrySet()) {
             int id = entry.getKey();
             Splitter.ColorRule rule = entry.getValue();
             if (rule == null) continue;
@@ -197,9 +195,9 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
             super();
             manager = syncManager;
-            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager.getSyncHandler("rules:0");
+            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager.getSyncHandlerFromMapKey("rules");
             if (indexOverride == null) {
-                while (base.colorMap.get(id) != null) {
+                while (multiblock.colorMap.get(id) != null) {
                     id++;
                 }
             } else id = indexOverride;
@@ -230,15 +228,15 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
         private void saveColorData() {
             if (manager.isClient()) {
-                base.colorMap.put(id, thisAsRule());
-                colorMapSyncer.setValue(base.colorMap);
+                multiblock.colorMap.put(id, thisAsRule());
+                colorMapSyncer.setValue(multiblock.colorMap);
             }
         }
 
         private void removeColorData() {
             if (manager.isClient()) {
-                base.colorMap.remove(id);
-                colorMapSyncer.setValue(base.colorMap);
+                multiblock.colorMap.remove(id);
+                colorMapSyncer.setValue(multiblock.colorMap);
             }
             removeSelector();
         }
