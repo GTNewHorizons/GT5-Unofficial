@@ -168,7 +168,6 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
                 textures.add(
                     TextureFactory.builder()
                         .addIcon(Textures.BlockIcons.EXOFOUNDRY_UNIVERSAL_COLLAPSER_ACTIVE)
-                        .glow()
                         .build());
             }
 

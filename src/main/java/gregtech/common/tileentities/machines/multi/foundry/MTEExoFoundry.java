@@ -358,7 +358,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
         .addElement('X',ofBlock(GregTechAPI.sBlockMetal9, 7))
         .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
-        .addElement('Z', ofBlock(GregTechAPI.sBlockCasingsFoundry, 4))
+        .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addShape(
             FoundryModules.UNSET.structureID,
             transpose(
