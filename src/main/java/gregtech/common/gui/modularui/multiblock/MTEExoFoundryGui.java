@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -526,77 +527,138 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         FoundryModules module = FoundryModules.getModule(moduleIndex);
         String name = module.color + module.displayName;
         t.addLine(name);
-        t.textColor(Color.WHITE.main);
+        t.textColor(Color.GREY.main);
         switch (module) {
             case UNSET -> t.addLine("Empty");
             case POWER_EFFICIENT_SUBSYSTEMS -> {
                 t.addLine(
-                    "Subtracts " + TooltipHelper.EFF_COLOR
-                        + "10%"
-                        + EnumChatFormatting.RESET
-                        + " from Initial EU Cost");
-                t.addLine("Multiplies EU cost by " + TooltipHelper.EFF_COLOR + "0.8x");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip1",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip2",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip3",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.powerefficient.tooltip4"));
             }
             case EXTRA_CASTING_BASINS -> {
                 t.addLine(
-                    "Adds " + TooltipHelper.PARALLEL_COLOR
-                        + "12"
-                        + EnumChatFormatting.RESET
-                        + " Parallels per "
-                        + TooltipTier.VOLTAGE.getValue()
-                        + EnumChatFormatting.RESET
-                        + " tier");
-                t.addLine("Increases Hatch Space by " + EnumChatFormatting.GOLD + "36");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip1",
+                        TooltipTier.VOLTAGE.getValue()));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip2"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip3",
+                        TooltipTier.VOLTAGE.getValue()));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip4"));
             }
             case STREAMLINED_CASTERS -> {
-                t.addLine("Increases Base Speed by " + TooltipHelper.SPEED_COLOR + "150%");
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector
+                        .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
             }
             case EFFICIENT_OC -> {
-                t.addLine(moduleLimitText);
-                t.addLine("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.25");
+                t.addLine(createModuleLimitText());
+                t.addLine(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip1"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.efficientoc.tooltip2",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip3"));
+                t.addLine(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip4"));
+
             }
             case HYPERCOOLER -> {
-                t.addLine(moduleLimitText);
+                t.addLine(createModuleLimitText());
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip1"));
                 t.addLine(
-                    "Consumes " + EnumChatFormatting.AQUA
-                        + "Cooling Fluid"
-                        + EnumChatFormatting.RESET
-                        + " for "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + "Extra Overclocks"
-                        + EnumChatFormatting.RESET);
-                t.addLine(
-                    "Drains " + coolingStrOrder("100", "50", "25")
-                        + " L/s of "
-                        + coolingStrOrder("Super Coolant", "Spacetime", "Eternity")
-                        + " to gain "
-                        + coolingStrOrder("1", "2", "3")
-                        + " Maximum Overclocks");
-                t.addLine(
-                    "Only drains " + EnumChatFormatting.AQUA
-                        + "cooling fluid"
-                        + EnumChatFormatting.GRAY
-                        + " when the "
-                        + EnumChatFormatting.GOLD
-                        + "Foundry"
-                        + EnumChatFormatting.GRAY
-                        + " is active");
-                t.addLine(
-                    EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
+                        coolingStrOrder("100", "50"),
+                        coolingStrOrder("Super Coolant", "Spacetime"),
+                        coolingStrOrder("1", "2")));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
 
             }
             case HELIOCAST_REINFORCEMENT -> {
                 t.addLine(
-                    "Allows for " + EnumChatFormatting.LIGHT_PURPLE
-                        + "UIV+ Recipes"
-                        + EnumChatFormatting.RESET
-                        + " to be processed");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7",
+                        TooltipHelper.PARALLEL_COLOR,
+                        TooltipHelper.TIER_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10"));
             }
             case UNIVERSAL_COLLAPSER -> {
-                t.addLine(moduleLimitText);
-                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "4x");
-                t.addLine("Multiplies EU Consumption by " + EnumChatFormatting.RED + "8x");
-                t.addLine("Reduces Hatch Space by " + EnumChatFormatting.GOLD + "20");
+                t.addLine(createModuleLimitText());
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5"));
             }
         }
         if (module != FoundryModules.UNSET) t.addLine(createTierLine(module.voltageTier));
@@ -810,27 +872,22 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     // copied methods so I can avoid a public static in MTEExoFoundry
-    private String coolingStrOrder(String val1, String val2, String val3) {
+    private String coolingStrOrder(String val1, String val2) {
         return EnumChatFormatting.BLUE + val1
             + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.LIGHT_PURPLE
             + val2
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.GREEN
-            + val3
             + EnumChatFormatting.RESET;
     }
 
     private String createTierLine(int tier) {
-        return "Tier: " + GTUtility.getColoredTierNameFromTier((byte) tier);
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.multimachine.foundry.tier",
+            GTUtility.getColoredTierNameFromTier((byte) tier));
     }
 
-    private final static String moduleLimitText = "Limit of " + EnumChatFormatting.WHITE
-        + "1"
-        + EnumChatFormatting.RESET
-        + " Per "
-        + EnumChatFormatting.GOLD
-        + "Foundry";
+    private String createModuleLimitText() {
+        return StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.modulelimit");
+    }
 }
