@@ -272,7 +272,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         return new ModularPanel("statsPanel").relative(parent)
             .rightRel(1)
             .topRel(0)
-            .size(130, 150)
+            .size(150, 150)
             .widgetTheme("backgroundPopup")
             .onCloseAction(() -> {
                 // Reset preview for next time in case the panel is reopened before the GUI is closed
@@ -294,6 +294,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
                     })
                         .asWidget()
+                        .left(4)
                         .size(120, 20)
                         .marginBottom(2))
 
@@ -303,21 +304,24 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     })
                         .asWidget()
                         .size(120, 20)
-                        .marginBottom(2))
+                        .marginBottom(2)
+                        .left(4))
                     .child(IKey.dynamic(() -> {
                         FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
                         return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
                     })
                         .asWidget()
                         .size(120, 20)
-                        .marginBottom(2))
+                        .marginBottom(2)
+                        .left(4))
                     .child(IKey.dynamic(() -> {
                         FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
                         return "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + data.getOCFactorString();
                     })
                         .asWidget()
                         .size(120, 20)
-                        .marginBottom(2))
+                        .marginBottom(2)
+                        .left(4))
                     .child(
                         new Row().size(120, 20)
                             .childPadding(1)
@@ -335,7 +339,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .scale(0.9f)
                         .asWidget()
                         .size(120, 20)
-                        .alignX(0.5f)));
+                        .alignX(0.5f))
+                    .child(
+                        createPairHoldingColumn(calculatorData, true).right(4)
+                            .alignY(0.2f)));
     }
 
     protected IWidget createConfigButton() {
@@ -585,7 +592,145 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3, tierSync, false))
                     .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2, tierSync, false))
                     .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1, tierSync, false))
-                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, tierSync, false)));
+                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, tierSync, false)))
+            .child(createPairHoldingColumn(multiblock.foundryData, false).alignX(0.5f));
+    }
+
+    private Flow createPairHoldingColumn(FoundryData data, boolean hasBackground) {
+        Flow column = Flow.column()
+            .height(80)
+            .width(22)
+            .paddingTop(3)
+            .marginTop(3)
+            .background(hasBackground ? GTGuiTextures.BACKGROUND_GRAY_BORDER : IDrawable.EMPTY);
+        column.child(
+            new DynamicDrawable(
+                () -> data.isProductionPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_ECB_SLC).asWidget()
+                        .marginBottom(1)
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+
+                            t.addLine(EnumChatFormatting.AQUA + "Optimum Production");
+                            t.addLine(
+                                "This pairing is " + (data.isProductionPairPresent ? EnumChatFormatting.GREEN + "active"
+                                    : EnumChatFormatting.RED + "inactive"));
+                            t.addLine("When active, this pairing provides the following bonuses:");
+                            t.addLine(TooltipHelper.SPEED_COLOR + "+75%" + EnumChatFormatting.RESET + " speed");
+                            t.addLine(
+                                TooltipHelper.PARALLEL_COLOR + "+6"
+                                    + EnumChatFormatting.RESET
+                                    + " parallels per "
+                                    + EnumChatFormatting.WHITE
+                                    + "Voltage"
+                                    + EnumChatFormatting.RESET
+                                    + " tier");
+                        }));
+        column.child(
+            new DynamicDrawable(
+                () -> data.isEfficiencyPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_PES_EOC_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_PES_EOC).asWidget()
+                        .marginBottom(1)
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+                            t.addLine(EnumChatFormatting.GREEN + "Harmonic Efficiency");
+                            t.addLine(
+                                "This pairing is " + (data.isEfficiencyPairPresent ? EnumChatFormatting.GREEN + "active"
+                                    : EnumChatFormatting.RED + "inactive"));
+                            t.addLine("When active, this pairing provides the following bonuses:");
+                            t.addLine(
+                                EnumChatFormatting.LIGHT_PURPLE + "+0.1" + EnumChatFormatting.RESET + " OC Factor");
+                            t.addLine(TooltipHelper.EFF_COLOR + "-50%" + EnumChatFormatting.RESET + " Initial EU Cost");
+                        }));
+        column.child(
+            new DynamicDrawable(
+                () -> data.isHRPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_HR_SELF_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_HR_SELF).asWidget()
+                        .marginBottom(1)
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+                            t.addLine(EnumChatFormatting.LIGHT_PURPLE + "Superstable Core");
+                            t.addLine(
+                                "This pairing is " + (data.isHRPairPresent ? EnumChatFormatting.GREEN + "active"
+                                    : EnumChatFormatting.RED + "inactive"));
+                            t.addLine(
+                                "This pairings bonuses scale with the amount of " + EnumChatFormatting.LIGHT_PURPLE
+                                    + "Heliocast Reinforcement"
+                                    + EnumChatFormatting.RESET
+                                    + " Modules");
+                            t.addLine(
+                                EnumChatFormatting.WHITE + "When 2 or more"
+                                    + EnumChatFormatting.LIGHT_PURPLE
+                                    + " Heliocast Reinforcement"
+                                    + EnumChatFormatting.WHITE
+                                    + " modules are present:");
+                            t.addLine(
+                                "Increases Base Speed by " + TooltipHelper.SPEED_COLOR
+                                    + "75%"
+                                    + EnumChatFormatting.RESET
+                                    + " per module");
+                            t.addLine(
+                                "Subtracts " + TooltipHelper.EFF_COLOR
+                                    + "10%"
+                                    + EnumChatFormatting.RESET
+                                    + " from Initial EU Cost per module");
+                            t.addLine(
+                                EnumChatFormatting.WHITE + "When 3 or more "
+                                    + EnumChatFormatting.LIGHT_PURPLE
+                                    + "Heliocast Reinforcement"
+                                    + EnumChatFormatting.WHITE
+                                    + " modules are present:");
+                            t.addLine(
+                                "Adds " + TooltipHelper.PARALLEL_COLOR
+                                    + "6"
+                                    + EnumChatFormatting.RESET
+                                    + " parallels per "
+                                    + TooltipHelper.TIER_COLOR
+                                    + "Voltage"
+                                    + EnumChatFormatting.RESET
+                                    + " Tier per module");
+                            t.addLine("   Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.1");
+                            t.addLine(
+                                EnumChatFormatting.WHITE + "When 4 "
+                                    + EnumChatFormatting.LIGHT_PURPLE
+                                    + "Heliocast Reinforcement"
+                                    + EnumChatFormatting.WHITE
+                                    + " modules are present:");
+                            t.addLine("   Grants 2 maximum " + EnumChatFormatting.LIGHT_PURPLE + "overclocks");
+                        }));
+        column.child(
+            new DynamicDrawable(
+                () -> data.isEndPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_UC_HC_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_UC_HC).asWidget()
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+
+                            t.addLine(
+                                EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.OBFUSCATED
+                                    + "0"
+                                    + EnumChatFormatting.RESET
+                                    + EnumChatFormatting.DARK_RED
+                                    + "Realized Potential"
+                                    + EnumChatFormatting.DARK_PURPLE
+                                    + EnumChatFormatting.OBFUSCATED
+                                    + "0");
+                            t.addLine(
+                                "This pairing is " + (data.isEndPairPresent ? EnumChatFormatting.GREEN + "active!"
+                                    : EnumChatFormatting.RED + "inactive."));
+                            t.addLine("When active, this pairing provides the following bonuses:");
+                            t.addLine(EnumChatFormatting.RED + "2x" + EnumChatFormatting.RESET + " EU Cost");
+                            t.addLine(TooltipHelper.SPEED_COLOR + "2x" + EnumChatFormatting.RESET + " Speed");
+                            t.addLine(
+                                "Allows the " + EnumChatFormatting.AQUA
+                                    + "Hypercooler"
+                                    + EnumChatFormatting.RESET
+                                    + " to utilize Eternity");
+                        }));
+        return column;
     }
 
     private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager) {

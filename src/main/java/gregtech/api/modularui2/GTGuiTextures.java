@@ -145,6 +145,11 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/background/white_glow_half");
     public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
+    public static final UITexture BACKGROUND_GRAY_BORDER = UITexture.builder()
+        .adaptable(1)
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/picture/gray_rectangle")
+        .build();
     // endregion background
 
     // region overlay
@@ -902,6 +907,55 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_PES)
+        .build();
+
+    public static final UITexture EXOFOUNDRY_PAIR_PES_EOC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_pes_eoc_pair")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_PES_EOC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_ECB_SLC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_ecb_slc_pair")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_ECB_SLC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_UC_HC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_uc_hc_pair")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_UC_HC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_HR_SELF = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_hr_self_pair")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_HR_SELF)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_PES_EOC_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_pes_eoc_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_PES_EOC_ACTIVE)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_ecb_slc_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_UC_HC_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_uc_hc_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_UC_HC_ACTIVE)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_HR_SELF_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_hr_self_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_HR_SELF_ACTIVE)
         .build();
 
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture

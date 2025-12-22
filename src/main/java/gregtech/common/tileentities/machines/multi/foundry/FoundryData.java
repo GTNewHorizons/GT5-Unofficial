@@ -36,6 +36,11 @@ public class FoundryData {
     public boolean effOCPresent = false;
     public boolean allowEternity = false;
 
+    public boolean isEfficiencyPairPresent = false;
+    public boolean isHRPairPresent = false;
+    public boolean isProductionPairPresent = false;
+    public boolean isEndPairPresent = false;
+
     public void resetParameters() {
         ocFactorAdditive = 0.0F;
 
@@ -54,6 +59,11 @@ public class FoundryData {
         effOCPresent = false;
         allowEternity = false;
         extraOverclocks = 0;
+
+        isEfficiencyPairPresent = false;
+        isHRPairPresent = false;
+        isProductionPairPresent = false;
+        isEndPairPresent = false;
     }
 
     // base stats per module
@@ -104,12 +114,14 @@ public class FoundryData {
             && ArrayUtils.contains(modules, FoundryModules.EXTRA_CASTING_BASINS)) {
             speedAdditive += 0.75F;
             parallelScaleAdditive += 6;
+            isProductionPairPresent = true;
         }
 
         if (ArrayUtils.contains(modules, FoundryModules.POWER_EFFICIENT_SUBSYSTEMS)
             && ArrayUtils.contains(modules, FoundryModules.EFFICIENT_OC)) {
             ocFactorAdditive += 0.1F;
             euEffAdditive -= 0.5F;
+            isEfficiencyPairPresent = true;
         }
 
         if (ArrayUtils.contains(modules, FoundryModules.HYPERCOOLER)
@@ -117,12 +129,14 @@ public class FoundryData {
             euEffMultiplier *= 2;
             speedMultiplier *= 2;
             allowEternity = true;
+            isEndPairPresent = true;
         }
 
         int numHelio = (int) Arrays.stream(modules)
             .filter(m -> m == FoundryModules.HELIOCAST_REINFORCEMENT)
             .count();
         if (numHelio > 1) {
+            isHRPairPresent = true;
             speedAdditive += (0.75F * numHelio);
             euEffAdditive -= (0.1F * numHelio);
             if (numHelio >= 3) {
@@ -177,6 +191,7 @@ public class FoundryData {
         if (modules[index] == moduleToAdd) return;
 
         modules[index] = moduleToAdd;
+        checkSolidifierModules();
     }
 
     public String getSpeedStr() {
