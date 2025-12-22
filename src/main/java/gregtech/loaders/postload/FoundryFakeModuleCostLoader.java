@@ -21,6 +21,10 @@ import tectech.thing.block.BlockGodforgeGlass;
 public class FoundryFakeModuleCostLoader {
 
     public static void load() {
+        GTOreDictUnificator.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T1_ExoFoundry.get(1));
+        GTOreDictUnificator.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T2_ExoFoundry.get(1));
+        GTOreDictUnificator.registerOre("exoFoundryCasingChassis", ItemList.Magnetic_Chassis_T3_ExoFoundry.get(1));
+
         // ECB
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -85,7 +89,7 @@ public class FoundryFakeModuleCostLoader {
                 ItemRefer.MagneticFluxCasing.get(72),
                 ItemRefer.GravityStabilizationCasing.get(48),
                 ItemRefer.AntimatterContainmentCasing.get(36),
-                ItemList.Magnetic_Chassis_T3_ExoFoundry.get(24), // todo cycle between the 3 somehow
+                new Object[] { "exoFoundryCasingChassis", 24 },
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadria, 16))
             .itemOutputs(ItemList.Efficient_Overclocking_ExoFoundry.get(1))
             .duration(1)

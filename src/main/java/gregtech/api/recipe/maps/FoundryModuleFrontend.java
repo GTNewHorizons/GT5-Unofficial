@@ -13,13 +13,16 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
+import gregtech.api.recipe.NEIRecipeProperties;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 
 @ParametersAreNonnullByDefault
@@ -70,4 +73,20 @@ public class FoundryModuleFrontend extends RecipeMapFrontend {
         super.drawSpecialInfo(recipeInfo);
     }
 
+    @Override
+    protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
+        GTNEIDefaultHandler.FixedPositionedStack pStack) {
+        super.handleNEIItemInputTooltip(currentTip, pStack);
+        if (ItemList.Magnetic_Chassis_T1_ExoFoundry.isStackEqual(pStack.item)
+            || ItemList.Magnetic_Chassis_T2_ExoFoundry.isStackEqual(pStack.item)
+            || ItemList.Magnetic_Chassis_T3_ExoFoundry.isStackEqual(pStack.item)) {
+            currentTip.add(EnumChatFormatting.GOLD + "Chassis must match Foundry Tier!");
+        }
+        return currentTip;
+    }
+
+    @Override
+    public NEIRecipeProperties getNEIProperties() {
+        return super.getNEIProperties();
+    }
 }
