@@ -35,11 +35,11 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         BooleanSyncValue debugMode = new BooleanSyncValue(multiblock::isDebugMode, multiblock::setDebugMode);
 
         GenericListSyncHandler<LinkedPurificationUnit> linkedPurifierUnits = new GenericListSyncHandler.Builder<LinkedPurificationUnit>()
-            .getter(multiblock::getmLinkedUnits)
+            .getter(multiblock::getLinkedUnits)
             .setter(links -> {
-                multiblock.getmLinkedUnits()
+                multiblock.getLinkedUnits()
                     .clear();
-                multiblock.getmLinkedUnits()
+                multiblock.getLinkedUnits()
                     .addAll(links);
             })
             .serializer((buf, unit) -> {

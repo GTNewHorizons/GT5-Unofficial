@@ -73,15 +73,15 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      */
     public static final int CYCLE_TIME_TICKS = 120 * SECONDS;
 
-    public List<LinkedPurificationUnit> getmLinkedUnits() {
-        return mLinkedUnits;
+    public List<LinkedPurificationUnit> getLinkedUnits() {
+        return linkedUnits;
     }
 
     /**
      * Stores all purification units linked to this controller. Normally all units in this list should be valid and
      * unique, if not then there is a bug where they are not being unlinked properly on block destruction/relinking.
      */
-    private final List<LinkedPurificationUnit> mLinkedUnits = new ArrayList<>();
+    private final List<LinkedPurificationUnit> linkedUnits = new ArrayList<>();
 
     /**
      * Debug mode is an operational mode that does not produce output or consume input, but cuts down processing time
@@ -334,9 +334,9 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
 
         if (aBaseMetaTileEntity.isServerSide()) {
             // Trigger structure check of linked units, but never all in the same tick, and at most once per cycle.
-            for (int i = 0; i < mLinkedUnits.size(); ++i) {
+            for (int i = 0; i < linkedUnits.size(); ++i) {
                 if (aTick % CYCLE_TIME_TICKS == i) {
-                    LinkedPurificationUnit unit = mLinkedUnits.get(i);
+                    LinkedPurificationUnit unit = linkedUnits.get(i);
                     boolean structure = unit.metaTileEntity()
                         .checkStructure(true);
                     // If unit was active but deformed, set as inactive
@@ -374,7 +374,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     markDirty();
                     mProgresstime += 1;
                     // Update progress time for active units
-                    for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+                    for (LinkedPurificationUnit unit : this.linkedUnits) {
                         if (unit.isActive()) {
                             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
                             metaTileEntity.mProgresstime = mProgresstime;
@@ -388,7 +388,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     // Power drain failed, shut down all other units due to power loss.
                     // Note that we do not need to shut down self, as this is done in
                     // onRunningTick already
-                    for (LinkedPurificationUnit unit : mLinkedUnits) {
+                    for (LinkedPurificationUnit unit : linkedUnits) {
                         if (unit.isActive()) {
                             unit.metaTileEntity()
                                 .stopMachine(ShutDownReasonRegistry.POWER_LOSS);
@@ -412,7 +412,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 
         // Find active units and notify them that the cycle started
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             PurificationUnitStatus status = metaTileEntity.status();
             // Unit needs to be online to be considered active.
@@ -433,7 +433,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         mMaxProgresstime = 0;
 
         // Mark all units as inactive and reset their progress time
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             // If this unit was active, end the cycle
             if (unit.isActive()) {
@@ -448,7 +448,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      */
     private long calculateEffectivePowerUsage() {
         long euT = 0;
-        for (LinkedPurificationUnit unit : mLinkedUnits) {
+        for (LinkedPurificationUnit unit : linkedUnits) {
             if (unit.isActive()) {
                 euT += unit.metaTileEntity()
                     .getActualPowerUsage();
@@ -462,11 +462,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         // Make sure to mark it as active if it is running a recipe. This happens on server restart and fixes
         // waterline multiblocks not resuming their progress until the next cycle.
         link.setActive(unit.mMaxProgresstime > 0);
-        this.mLinkedUnits.add(link);
+        this.linkedUnits.add(link);
     }
 
     public void unregisterLinkedUnit(MTEPurificationUnitBase<?> unit) {
-        this.mLinkedUnits.removeIf(link -> link.metaTileEntity() == unit);
+        this.linkedUnits.removeIf(link -> link.metaTileEntity() == unit);
     }
 
     @Override
@@ -496,7 +496,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         var ret = new ArrayList<String>();
         // Show linked purification units and their status
         ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
             PurificationUnitStatus status = unit.metaTileEntity()
@@ -523,7 +523,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     public void onBlockDestroyed() {
         // When the controller is destroyed we want to notify all currently linked units
-        for (LinkedPurificationUnit unit : this.mLinkedUnits) {
+        for (LinkedPurificationUnit unit : this.linkedUnits) {
             unit.metaTileEntity()
                 .unlinkController();
         }
