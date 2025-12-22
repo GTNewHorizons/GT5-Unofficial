@@ -115,7 +115,7 @@ public class FoundryRecipes {
                 new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(576),
                     new FluidStack(FluidRegistry.getFluid("oganesson"), 500),
                     GGMaterial.enrichedNaquadahAlloy.getMolten(288) },
-                ItemList.Casing_ExoFoundry.get(1),
+                ItemList.Primary_Casing_ExoFoundry.get(1),
                 15 * SECONDS,
                 (int) TierEU.RECIPE_UEV);
             // ------------------------ Central Chassis ------------------------

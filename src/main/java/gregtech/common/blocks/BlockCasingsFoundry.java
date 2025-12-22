@@ -28,7 +28,7 @@ public class BlockCasingsFoundry extends BlockCasingsAbstract
 
     public BlockCasingsFoundry() {
         super(ItemCasingsFoundry.class, "gt.foundrycasings", MaterialCasings.INSTANCE, 16);
-        register(0, ItemList.Casing_ExoFoundry, "Primary Exo-Foundry Casing");
+        register(0, ItemList.Primary_Casing_ExoFoundry, "Primary Exo-Foundry Casing");
         register(1, ItemList.Magnetic_Chassis_T1_ExoFoundry, "Infinite Magnetic Chassis");
         register(2, ItemList.Magnetic_Chassis_T2_ExoFoundry, "Eternal Magnetic Chassis");
         register(3, ItemList.Magnetic_Chassis_T3_ExoFoundry, "Celestial Magnetic Chassis");
