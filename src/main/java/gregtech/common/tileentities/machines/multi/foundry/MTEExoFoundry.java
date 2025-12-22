@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GL
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
@@ -188,87 +189,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
                     {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "}
                 }))
-        .addShape(
-            FoundryModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
-            {"     aTcTa     ","   caV   Vac   ","  cV       Vc  "," cV         Vc "," a           a ","aV           Va","T             T","c             c","T             T","aV           Va"," a           a "," cV         Vc ","  cV       Vc  ","   caV   Vac   ","     aTcTa     "},
-            {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
-            {"     eddde     ","   fee   eef   ","               "," f           f "," e           e ","ee           ee","d             d","d             d","d             d","ee           ee"," e           e "," f           f ","               ","   fee   eef   ","     eddde     "},
-            {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
-            {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
-            {"     mmlmm     ","   iimHHHmii   ","  h         h  "," i           i "," i           i ","mm           mm","mH           Hm","lH           Hl","mH           Hm","mm           mm"," i           i "," i           i ","  h         h  ","   iimHHHmii   ","     mmlmm     "},
-            {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
-            {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.HYPERCOOLER.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
-            {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
-            {"     ossso     ","   rrr   rrr   ","  o         o  "," r           r "," r           r ","or           ro","s             s","s             s","s             s","or           ro"," r           r "," r           r ","  o         o  ","   rrr   rrr   ","     ossso     "},
-            {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
-            {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.EFFICIENT_OC.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
-            {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
-            {"     utvtu     ","   uuuFNFuuu   ","  uu       uu  "," uu         uu "," u           u ","uu           uu","tF           Ft","vN           Nv","tF           Ft","uu           uu"," u           u "," uu         uu ","  uu       uu  ","   uuuFNFuuu   ","     utvtu     "},
-            {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
-            {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.HELIOCAST_REINFORCEMENT.structureID, transpose(new String[][]{
-            {"     24442     ","               ","               ","               ","               ","3             3","4             4","4             4","4             4","3             3","               ","               ","               ","               ","     24442     "},
-            {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               ","               ","8             8","               ","               "," 3           3 "," 3           3 ","               ","   22     22   ","       8       "},
-            {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
-            {"     16861     ","   111   111   ","  11       11  "," 11         11 "," 1           1 ","11           11","6             6","8             8","6             6","11           11"," 1           1 "," 11         11 ","  11       11  ","   111   111   ","     16861     "},
-            {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
-            {"       8       ","   33     33   ","               "," 2           2 "," 2           2 ","               ","               ","8             8","               ","               "," 2           2 "," 2           2 ","               ","   33     33   ","       8       "},
-            {"     34443     ","               ","               ","               ","               ","2             2","4             4","4             4","4             4","2             2","               ","               ","               ","               ","     34443     "}
-        }))
-        .addShape(
-            FoundryModules.UNIVERSAL_COLLAPSER.structureID, transpose(new String[][]{
-            {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "},
-            {"     &@ @^     ","    && ! ^^    ","               ","               "," ^           & ","^^           &&","@             @"," !           ! ","@             @","&&           ^^"," &           ^ ","               ","               ","    ^^ ! &&    ","     ^@ @&     "},
-            {"      @!@      ","   &**   XX^   ","   &       ^   "," ^^         && "," X           * "," X           * ","@             @","!             !","@             @"," *           X "," *           X "," &&         ^^ ","   ^       &   ","   ^XX   **&   ","      @!@      "},
-            {"      !Z!      ","    $$   $$    ","  %         %  ","               "," $           $ "," $           $ ","!             !","Z             Z","!             !"," $           $ "," $           $ ","               ","  %         %  ","    $$   $$    ","      !Z!      "},
-            {"      @!@      ","   ^XX   **&   ","   ^       &   "," &&         ^^ "," *           X "," *           X ","@             @","!             !","@             @"," X           * "," X           * "," ^^         && ","   &       ^   ","   &**   XX^   ","      @!@      "},
-            {"     ^@ @&     ","    ^^ ! &&    ","               ","               "," &           ^ ","&&           ^^","@             @"," !           ! ","@             @","^^           &&"," ^           & ","               ","               ","    && ! ^^    ","     &@ @^     "},
-            {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "}
-        }))
-        .addShape(
-            FoundryModules.UNSET.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        //spotless:on
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 7)) // Foundry Glass
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 12)))
@@ -294,71 +214,164 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
                     onElementPass(MTEExoFoundry::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
-        // streamlined casters
-        .addElement('a', ofFrame(Materials.SuperconductorUEVBase))
-        .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10))
-        .addElement('c', ofFrame(Materials.Tritanium))
-        .addElement('T', ofBlock(GregTechAPI.sBlockMetal7, 10))
-        .addElement('U', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)))
-        .addElement('V', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
+        .addShape(
+            FoundryModules.STREAMLINED_CASTERS.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","   K       K   ","  K         K  ","               ","               ","               ","               ","               ","               ","               ","  K         K  ","   K       K   ","               ","               "},
+                    {"               ","       L       ","  JK       KJ  ","  K         K  ","               ","               ","               "," L           L ","               ","               ","               ","  K         K  ","  JK       KJ  ","       L       ","               "},
+                    {"       K       ","   K  JIJ  K   ","  MI       IM  "," KI         IK ","               ","               "," J           J ","KI           IK"," J           J ","               ","               "," KI         IK ","  MI       IM  ","   K  JIJ  K   ","       K       "},
+                    {"       M       ","   L  KNK  L   ","  JN       NJ  "," LN         NL ","               ","               "," K           K ","MN           NM"," K           K ","               ","               "," LN         NL ","  JN       NJ  ","   L  KNK  L   ","       M       "},
+                    {"       K       ","   K  JIJ  K   ","  MI       IM  "," KI         IK ","               ","               "," J           J ","KI           IK"," J           J ","               ","               "," KI         IK ","  MI       IM  ","   K  JIJ  K   ","       K       "},
+                    {"               ","       L       ","  JK       KJ  ","  K         K  ","               ","               ","               "," L           L ","               ","               ","               ","  K         K  ","  JK       KJ  ","       L       ","               "},
+                    {"               ","               ","   K       K   ","  K         K  ","               ","               ","               ","               ","               ","               ","               ","  K         K  ","   K       K   ","               ","               "}
+                }
+            ))
+        .addElement('I', ofFrame(Materials.Tritanium))
+        .addElement('J', ofFrame(Materials.SuperconductorUEVBase))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasingsFoundry,10))
+        .addElement('L', ofSheetMetal(Materials.SuperconductorUEVBase))
+        .addElement('M', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)) )
+        .addElement('N', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
+        .addShape(
+            FoundryModules.EXTRA_CASTING_BASINS.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"      eee      ","      beb      ","               ","               ","               ","               ","eb           be","ee           ee","eb           be","               ","               ","               ","               ","      beb      ","      eee      "},
+                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  db       bf  ","   ccbHHHbcc   ","     ebabe     "},
+                    {"     ehghe     ","   ddeHHHedd   ","  dd       dd  "," dd         dd "," d           d ","ee           ee","hH           Hh","gH           Hg","hH           Hh","ee           ee"," d           d "," dd         dd ","  dd       dd  ","   ddeHHHedd   ","     ehghe     "},
+                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  db       bf  ","   ccbHHHbcc   ","     ebabe     "},
+                    {"      eee      ","      beb      ","               ","               ","               ","               ","eb           be","ee           ee","eb           be","               ","               ","               ","               ","      beb      ","      eee      "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }
+            ))
+        .addElement('a', lazy(()->ofSheetMetal(GGMaterial.preciousMetalAlloy)))
+        .addElement('b', ofBlock(GregTechAPI.sBlockCasings10, 13))
+        .addElement('c', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('d', ofFrame(Materials.Erbium))
+        .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
+        .addElement('f', ofSheetMetal(Materials.Erbium))
+        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        .addShape(
+            FoundryModules.POWER_EFFICIENT_SUBSYSTEMS.structureID,
+            transpose(
+                new String[][]{
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"      lll      ","       p       ","               ","               ","               ","               ","l             l","lp           pl","l             l","               ","               ","               ","               ","       p       ","      lll      "},
+                    {"     lmnml     ","      ili      ","  po       op  ","  o         o  ","               ","l             l","mi           im","nl           ln","mi           im","l             l","               ","  o         o  ","  po       op  ","      ili      ","     lmnml     "},
+                    {"     lnpnl     ","   i plklp i   ","  ji       ij  "," ii         ii ","               ","lp           pl","nl           ln","pk           kp","nl           ln","lp           pl","               "," ii         ii ","  ji       ij  ","   i plklp i   ","     lnpnl     "},
+                    {"     lmnml     ","      ili      ","  po       op  ","  o         o  ","               ","l             l","mi           im","nl           ln","mi           im","l             l","               ","  o         o  ","  po       op  ","      ili      ","     lmnml     "},
+                    {"      lll      ","       p       ","               ","               ","               ","               ","l             l","lp           pl","l             l","               ","               ","               ","               ","       p       ","      lll      "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }))
+        .addElement('i', ofFrame(Materials.Dysprosium))
+        .addElement('j', ofBlock(GregTechAPI.sBlockCasings11, 5))
+        .addElement('k', ofFrame(Materials.TengamAttuned))
+        .addElement('l', ofBlock(GregTechAPI.sBlockCasingsFoundry,6))
+        .addElement('m', ofSheetMetal(Materials.Samarium))
+        .addElement('n', ofSheetMetal(Materials.TengamAttuned))
+        .addElement('o', ofSheetMetal(Materials.Quantium))
+        .addElement('p', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF casing after rework)
+        .addShape(
+            FoundryModules.HYPERCOOLER.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"      rqr      ","    rrusurr    ","               ","               "," r           r "," r           r ","ru           ur","qs           sq","ru           ur"," r           r "," r           r ","               ","               ","    rrusurr    ","      rqr      "},
+                    {"     utwtu     ","   tuu v uut   ","               "," t           t "," u           u ","uu           uu","t             t","wv           vw","t             t","uu           uu"," u           u "," t           t ","               ","   tuu v uut   ","     utwtu     "},
+                    {"     qwwwq     ","   sssvtvsss   ","  q         q  "," s           s "," s           s ","qs           sq","wv           vw","wt           tw","wv           vw","qs           sq"," s           s "," s           s ","  q         q  ","   sssvtvsss   ","     qwwwq     "},
+                    {"     utwtu     ","   tuu v uut   ","               "," t           t "," u           u ","uu           uu","t             t","wv           vw","t             t","uu           uu"," u           u "," t           t ","               ","   tuu v uut   ","     utwtu     "},
+                    {"      rqr      ","    rrusurr    ","               ","               "," r           r "," r           r ","ru           ur","qs           sq","ru           ur","rr           r ","             r ","               ","               ","    rrusurr    ","      rqr      "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }))
+        .addElement('q', ofBlock(GregTechAPI.sBlockCasings8,14))
+        .addElement('r', ofFrame(Materials.InfinityCatalyst))
+        .addElement('s', ofBlock(GregTechAPI.sBlockGlass1,3))
+        .addElement('t',  buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
+            .adder(MTEExoFoundry::addCoolantInputToMachineList)
+            .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
+            .hint(2)
+            .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
+        .addElement('u', ofSheetMetal(Materials.CallistoIce))
+        .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
+        .addElement('w',lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))) // TODO: replace with MVF casing after rework
+        .addShape(
+            FoundryModules.HELIOCAST_REINFORCEMENT.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"       4       ","               ","  2         1  ","               ","               ","               ","               ","3             3","               ","               ","               ","               ","  1         2  ","               ","       4       "},
+                    {"     64746     ","   26  0  61   ","  8         8  "," 2           1 "," 6           6 ","6             6","3             3","70           07","3             3","6             6"," 6           6 "," 1           2 ","  8         8  ","   16  0  62   ","     64746     "},
+                    {"      757      ","   8  050  8   ","  50       05  "," 80         08 ","               ","               ","70           07","55           55","70           07","               ","               "," 80         08 ","  50       05  ","   8  050  8   ","      757      "},
+                    {"     64746     ","   26  0  61   ","  8         8  "," 2           1 "," 6           6 ","6             6","3             3","70           07","3             3","6             6"," 6           6 "," 1           2 ","  8         8  ","   16  0  62   ","     64746     "},
+                    {"       4       ","               ","  2         1  ","               ","               ","               ","               ","3             3","               ","               ","               ","               ","  1         2  ","               ","       4       "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }))
+        .addElement('0', ofFrame(Materials.SixPhasedCopper))
+        .addElement('1', ofFrame(Materials.Mellion))
+        .addElement('2', ofFrame(Materials.Creon))
+        .addElement('3', ofFrame(Materials.TranscendentMetal))
+        .addElement('4', ofFrame(Materials.SpaceTime))
+        .addElement('5', ofBlock(GregTechAPI.sBlockCasingsFoundry,7))
+        .addElement('6', lazy(() -> ofBlock(GodforgeCasings, 3)))
+        .addElement('7', ofSheetMetal(Materials.SpaceTime))
+        .addElement('8',  lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
 
-        // power efficient subsystems
-        .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6))
-        .addElement('e', ofFrame(Materials.Samarium))
-        .addElement('f', ofFrame(Materials.TengamPurified))
-        .addElement('g', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF/green
-                                                                                      // casing after rework
-        // casting basins
-        .addElement('h', ofBlock(GregTechAPI.sBlockCasings10, 13))
-        .addElement('i', ofBlock(GregTechAPI.sBlockCasings10, 14))
-        .addElement('j', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8))
-        .addElement('k', ofFrame(Materials.Erbium))
-        .addElement(
-            'l',
-            lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
-        .addElement('m', lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
-        // hypercooler
-        .addElement('n', ofBlock(GregTechAPI.sBlockCasings2, 1))
-        .addElement('o', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .addElement(
-            'p',
-            buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
-                .adder(MTEExoFoundry::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
-                .hint(2)
-                .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
-        .addElement('q', ofFrame(Materials.Netherite))
-        .addElement('r', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('s', lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))) // TODO: replace with MVF casing after
-                                                                               // rework
-        // efficient overclock
-        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
-        .addElement('u', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
-        .addElement('v', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
-        .addElement('M', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
-        .addElement('N', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
-
-        // heliocast reinforcement
-        .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
-        .addElement('2', ofFrame(Materials.Mellion))
-        .addElement('3', ofFrame(Materials.Creon))
-        .addElement('4', ofFrame(Materials.TranscendentMetal))
-        .addElement('5', ofFrame(Materials.SpaceTime))
-        .addElement('6', ofBlock(GregTechAPI.sBlockMetal9, 3))
-        .addElement('7', lazy(() -> ofBlock(GodforgeCasings, 3)))
-        .addElement('8', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
-        // Universal Collapser
-        .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
-        .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
-        .addElement('#', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
-        .addElement('$', ofFrame(Materials.Universium))
-        .addElement('%', ofFrame(Materials.Eternity))
-        .addElement('^', ofFrame(Materials.WhiteDwarfMatter))
-        .addElement('&', ofFrame(Materials.BlackDwarfMatter))
-        .addElement('*', ofBlock(GregTechAPI.sBlockMetal9, 6))
-        .addElement('X', ofBlock(GregTechAPI.sBlockMetal9, 7))
-        .addElement('Z', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
+        .addShape(
+            FoundryModules.EFFICIENT_OC.structureID,
+            transpose(
+                new String[][] {
+                    {"       ^       ","               ","               ","               ","               ","               ","               ","^             ^","               ","               ","               ","               ","               ","               ","       ^       "},
+                    {"      ^@^      ","       #       ","  ^^       ^^  ","  ^         ^  ","               ","               ","^             ^","@#           #@","^             ^","               ","               ","  ^         ^  ","  ^^       ^^  ","       #       ","      ^@^      "},
+                    {"     ^@%@^     ","      %F%      ","  %@       @%  ","  @F       F@  ","               ","^             ^","@%           %@","%F           F%","@%           %@","^             ^","               ","  @F       F@  ","  %@       @%  ","      %F%      ","     ^@%@^     "},
+                    {"    ^@%!%@^    ","   !!#F!F#!!   ","  !!       !!  "," !!         !! ","^!           !^","@#           #@","%F           F%","!!           !!","%F           F%","@#           #@","^!           !^"," !!         !! ","  !!       !!  ","   !!#F!F#!!   ","    ^@%!%@^    "},
+                    {"     ^@%@^     ","      %F%      ","  %@       @%  ","  @F       F@  ","               ","^             ^","@%           %@","%F           F%","@%           %@","^             ^","               ","  @F       F@  ","  %@       @%  ","      %F%      ","     ^@%@^     "},
+                    {"      ^@^      ","       #       ","  ^^       ^^  ","  ^         ^  ","               ","               ","^             ^","@#           #@","^             ^","               ","               ","  ^         ^  ","  ^^       ^^  ","       #       ","      ^@^      "},
+                    {"       ^       ","               ","               ","               ","               ","               ","               ","^             ^","               ","               ","               ","               ","               ","               ","       ^       "}
+                }))
+        .addElement('!', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
+        .addElement('@', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
+        .addElement('#', ofFrame(Materials.Naquadria))
+        .addElement('%', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
+        .addElement('^', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
+        .addShape(
+            FoundryModules.UNIVERSAL_COLLAPSER.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","   Q       Q   ","  RR       RR  "," QR         RQ ","               ","               ","               ","               ","               ","               ","               "," QR         RQ ","  RR       RR  ","   Q       Q   ","               "},
+                    {"      RQR      ","       T       ","  T         T  ","               ","               ","               ","R             R","QT           TQ","R             R","               ","               ","               ","  T         T  ","       T       ","      RQR      "},
+                    {"     RRQRR     ","   UWWSTSXXV   ","  WW       XX  "," UW         XV "," W           X ","RW           XR","RS           SR","QT           TQ","RS           SR","RX           WR"," X           W "," VX         WU ","  XX       WW  ","   VXXSTSWWU   ","     RRQRR     "},
+                    {"     QQZQQ     ","     TTYTT     ","               ","               ","               ","QT           TQ","QT           TQ","ZY           YZ","QT           TQ","QT           TQ","               ","               ","               ","     TTYTT     ","     QQZQQ     "},
+                    {"     RRQRR     ","   VXXSTSWWU   ","  XX       WW  "," VX         WU "," X           W ","RX           WR","RS           SR","QT           TQ","RS           SR","RW           XR"," W           X "," UW         XV ","  WW       XX  ","   UWWSTSXXV   ","     RRQRR     "},
+                    {"      RQR      ","       T       ","  T         T  ","               ","               ","               ","R             R","QT           TQ","R             R","               ","               ","               ","  T         T  ","       T       ","      RQR      "},
+                    {"               ","   Q       Q   ","  RR       RR  "," QR         RQ ","               ","               ","               ","               ","               ","               ","               "," QR         RQ ","  RR       RR  ","   Q       Q   ","               "}
+                }
+            ))
+        .addElement('Q', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
+        .addElement('R', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
+        .addElement('S', ofFrame(Materials.Universium))
+        .addElement('T', ofFrame(Materials.MHDCSM))
+        .addElement('U', ofFrame(Materials.WhiteDwarfMatter))
+        .addElement('V', ofFrame(Materials.BlackDwarfMatter))
+        .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
+        .addElement('X',ofBlock(GregTechAPI.sBlockMetal9, 7))
+        .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
+        .addElement('Z', ofBlock(GregTechAPI.sBlockCasingsFoundry, 4))
+        .addShape(
+            FoundryModules.UNSET.structureID,
+            transpose(
+                new String[][] {
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " } }))
         .build();
+    //spotless:on
 
     public MTEExoFoundry(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
