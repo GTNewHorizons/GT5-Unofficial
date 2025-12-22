@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +32,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 
 public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
-
     public SplitterGui(Splitter multiblock) {
         super(multiblock);
     }
@@ -42,10 +39,11 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        GenericSyncValue rules = new GenericSyncValue<>(() -> multiblock.colorMap,
-            map -> { multiblock.colorMap = map; }, new ColorMapAdapter());
-        syncManager.syncValue(
-            "rules", rules);
+        GenericSyncValue rules = new GenericSyncValue<>(
+            () -> multiblock.colorMap,
+            map -> { multiblock.colorMap = map; },
+            new ColorMapAdapter());
+        syncManager.syncValue("rules", rules);
 
     }
 
@@ -95,7 +93,9 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
                 .size(16, 16)
                 .overlay(GuiTextures.ADD)
                 .tooltip(tooltip -> tooltip.add("Add new Rule")))
-            .posRel(0.75F, 0.5F);
+            .posRel(0.75F, 0.5F)
+            .margin(8)
+            .coverChildren();
     }
 
     public IWidget createColorManager(PanelSyncManager syncManager, List<Byte> inputSelected, List<Byte> outputSelected,
@@ -196,7 +196,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
             super();
             manager = syncManager;
-            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager.findSyncHandler("rules", GenericSyncValue.class);
+            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager
+                .findSyncHandler("rules", GenericSyncValue.class);
             if (indexOverride == null) {
                 while (multiblock.colorMap.get(id) != null) {
                     id++;

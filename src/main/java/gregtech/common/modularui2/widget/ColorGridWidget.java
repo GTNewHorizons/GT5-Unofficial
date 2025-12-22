@@ -115,7 +115,7 @@ public class ColorGridWidget extends Column {
      */
     public ColorGridWidget build() {
         createButtonRows();
-        coverChildren().childPadding(buttonSize);
+        coverChildren().childPadding(buttonPadding);
         return this;
     }
 
