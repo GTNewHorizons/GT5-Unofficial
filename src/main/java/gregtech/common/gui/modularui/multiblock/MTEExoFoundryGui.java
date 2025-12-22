@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -74,6 +75,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         syncManager.syncValue(
             "Module4",
             new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
+        syncManager.syncValue(
+            "Tier",
+            new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
 
         BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
         syncManager.syncValue("UsingPreview", usingPreviewSync);
@@ -263,6 +267,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         IntSyncValue moduleCalc2 = syncManager.findSyncHandler("Module3Calc", IntSyncValue.class);
         IntSyncValue moduleCalc3 = syncManager.findSyncHandler("Module4Calc", IntSyncValue.class);
 
+        IntValue.Dynamic tierDyn = new IntValue.Dynamic(() -> calculatorData.tier, val -> calculatorData.tier = val);
+
         return new ModularPanel("statsPanel").relative(parent)
             .rightRel(1)
             .topRel(0)
@@ -316,10 +322,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         new Row().size(120, 20)
                             .childPadding(1)
                             .marginBottom(2)
-                            .child(createModuleSelectButton(p_syncManager, parent, 0, moduleCalc0, true))
-                            .child(createModuleSelectButton(p_syncManager, parent, 1, moduleCalc1, true))
-                            .child(createModuleSelectButton(p_syncManager, parent, 2, moduleCalc2, true))
-                            .child(createModuleSelectButton(p_syncManager, parent, 3, moduleCalc3, true)))
+                            .child(createModuleSelectButton(p_syncManager, parent, 0, moduleCalc0, tierDyn, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 1, moduleCalc1, tierDyn, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 2, moduleCalc2, tierDyn, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 3, moduleCalc3, tierDyn, true)))
                     .child(IKey.dynamic(() -> {
                         if (usingPreviewSync.getBoolValue()) {
                             return EnumChatFormatting.RED + "Showing Preview Modules";
@@ -368,7 +374,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index,
-        IIntValue<Integer> moduleSync, boolean isStats) {
+        IIntValue<Integer> moduleSync, IIntValue<Integer> tierSync, boolean isStats) {
         IPanelHandler selectPanel = syncManager.panel(
             "moduleSelectPanel" + index + (isStats ? "stats" : ""),
             (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats),
@@ -380,12 +386,19 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 new ButtonWidget<>().size(16, 16)
                     .tooltipBuilder(t -> {
                         t.addLine("Select Module " + (index + 1));
-                        createTooltipForModule(t, moduleSync.getIntValue());
-                        t.addLine(EnumChatFormatting.GRAY + "Shift-click to unset");
+
+                        int reqTier = Math.max(1, index);
+                        if (tierSync.getIntValue() >= reqTier) {
+                            createTooltipForModule(t, moduleSync.getIntValue());
+                            t.addLine(EnumChatFormatting.GRAY + "Shift-click to unset");
+                        } else {
+                            t.addLine(EnumChatFormatting.RED + "Requires Tier " + reqTier + " Chassis");
+                        }
                         t.setAutoUpdate(true);
                     })
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .overlay(new DynamicDrawable(() -> {
+                        // todo make red when required tier is not available
                         if (moduleSync.getIntValue() == FoundryModules.UNSET.ordinal()) {
                             return GuiTextures.ADD;
                         }
@@ -394,6 +407,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 .getItemIcon());
                     }))
                     .onMousePressed(d -> {
+                        int reqTier = Math.max(1, index);
+                        if (tierSync.getIntValue() < reqTier) {
+                            return true;
+                        }
                         if (Interactable.hasShiftDown()) {
                             moduleSync.setIntValue(FoundryModules.UNSET.ordinal());
                         } else {
@@ -553,6 +570,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         IntSyncValue moduleSync1 = syncManager.findSyncHandler("Module2", IntSyncValue.class);
         IntSyncValue moduleSync2 = syncManager.findSyncHandler("Module3", IntSyncValue.class);
         IntSyncValue moduleSync3 = syncManager.findSyncHandler("Module4", IntSyncValue.class);
+        IntSyncValue tierSync = syncManager.findSyncHandler("Tier", IntSyncValue.class);
 
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
@@ -564,10 +582,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     .background(IDrawable.EMPTY)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
-                    .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3, false))
-                    .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2, false))
-                    .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1, false))
-                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, false)));
+                    .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3, tierSync, false))
+                    .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2, tierSync, false))
+                    .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1, tierSync, false))
+                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, tierSync, false)));
     }
 
     private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager) {
