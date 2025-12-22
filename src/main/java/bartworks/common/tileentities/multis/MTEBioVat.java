@@ -169,7 +169,35 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bacterial Vat, Bac Vat")
-            .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
+            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
+            .addSeparator()
+            .addInfo(
+                "Some recipes require " + EnumChatFormatting.GREEN
+                    + "R"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "A"
+                    + EnumChatFormatting.GREEN
+                    + "D"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "I"
+                    + EnumChatFormatting.GREEN
+                    + "A"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "T"
+                    + EnumChatFormatting.GREEN
+                    + "I"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "O"
+                    + EnumChatFormatting.GREEN
+                    + "N"
+                    + EnumChatFormatting.GRAY
+                    + " supplied with a "
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.GREEN
+                    + "Radio Hatch")
+            .addInfo("Radiation can be either a minimum requirement or an exact value")
+            .addInfo("Efficiency depends on Output Hatch fluid level")
+            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
