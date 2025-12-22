@@ -1078,6 +1078,7 @@ public final class GTGuiTextures {
         .imageSize(10, 16)
         .canApplyTheme()
         .build();
+    public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
     // endregion picture
 
     // region machine modes
