@@ -152,7 +152,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     private ModularPanel openContributorsPanel(ModularPanel parent) {
         ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
-            .size(getBasePanelWidth(), getBasePanelHeight())
+            .size(getBasePanelWidth(), getBasePanelHeight() + 20)
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
         panel.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
@@ -171,6 +171,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             createContributorSection(
                 "GT5U.gui.text.foundry.projectlead",
                 createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.foundry.programming",
+                createContributorEntry("Serenibyss", Color.PURPLE.brighterSafe(2))));
 
         contributorColumn.child(
             createContributorSection(

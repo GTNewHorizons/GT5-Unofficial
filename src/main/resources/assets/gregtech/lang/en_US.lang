@@ -1427,6 +1427,7 @@ GT5U.gui.button.max_parallel=Always use maximum
 GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
 GT5U.gui.button.foundry.contributorpanel=Open Contributor List
 GT5U.gui.text.foundry.projectlead=Project Lead
+GT5U.gui.text.foundry.programming=Programming
 GT5U.gui.text.foundry.textures=Textures
 GT5U.gui.text.foundry.rendering=Rendering
 GT5U.gui.text.foundry.structure=Structure Architect
