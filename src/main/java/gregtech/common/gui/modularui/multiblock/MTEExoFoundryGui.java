@@ -5,6 +5,10 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -37,6 +41,7 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.objects.XSTR;
@@ -171,10 +176,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             createContributorSection(
                 "GT5U.gui.text.foundry.projectlead",
                 createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
-        contributorColumn.child(
-            createContributorSection(
-                "GT5U.gui.text.foundry.programming",
-                createContributorEntry("Serenibyss", Color.PURPLE.brighterSafe(2))));
+        contributorColumn.child(createContributorSection("GT5U.gui.text.foundry.programming", createSerenibyssEntry()));
 
         contributorColumn.child(
             createContributorSection(
@@ -256,6 +258,30 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         if (color != -1) key.color(color);
         return key.asWidget()
             .anchorLeft(0);
+    }
+
+    private static Widget<?> createSerenibyssEntry() {
+        IKey key = IKey.dynamic(GTValues.AuthorSerenibyss)
+            .alignment(Alignment.CenterLeft);
+        String url = "https://github.com/Roadhog360/Et-Futurum-Requiem/pull/673#issuecomment-3649833976";
+        return new ButtonWidget<>().background(key)
+            .anchorLeft(0)
+            .size(80, 9)
+            .onMousePressed(d -> {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                        try {
+                            desktop.browse(new URI(url));
+                        } catch (IOException | URISyntaxException ignored) {}
+                    }
+                }
+                return true;
+            })
+            .tooltip(t -> {
+                t.scale(0.8f);
+                t.addLine(EnumChatFormatting.DARK_GRAY + "Click to open a Github link");
+            });
     }
 
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
