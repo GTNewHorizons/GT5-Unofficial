@@ -47,7 +47,6 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
 
             })
             .deserializer(buffer -> new LinkedPurificationUnit(buffer.readNBTTagCompoundFromBuffer()))
-            // i think i need this???
             .copy(unit -> new LinkedPurificationUnit(unit.writeLinkDataToNBT()))
             .build();
 
@@ -78,13 +77,8 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                 .isActive()) {
                 return false;
             }
-            if (debugMode.getBoolValue()) {
-                debugMode.setBoolValue(false);
-                return true;
-            } else {
-                debugMode.setBoolValue(true);
-                return true;
-            }
+            debugMode.setBoolValue(!debugMode.getBoolValue());
+            return true;
         })
             .tooltip(
                 new RichTooltip().add(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode")))
@@ -109,7 +103,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         );
     }
 
-    public Flow machineRow(LinkedPurificationUnit mLinkedUnit) {
+    public Flow machineRow(LinkedPurificationUnit LinkedUnit) {
         return new Row().paddingBottom(4)
             .paddingTop(4)
             .coverChildrenHeight()
@@ -118,9 +112,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                     .disableHoverBackground()
                     .size(14)
                     .item(
-                        mLinkedUnit.metaTileEntity()
-                            .getBaseMetaTileEntity()
-                            .getMetaTileEntity()
+                        LinkedUnit.metaTileEntity()
                             .getStackForm(1)))
             .child(
                 new ListWidget<>().paddingLeft(4)
@@ -130,12 +122,12 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .child(
                         IKey.str(
-                            mLinkedUnit.metaTileEntity()
+                            LinkedUnit.metaTileEntity()
                                 .getLocalName()
                                 .replaceAll("Purification Unit", ""))
                             .asWidget())
                     .child(
-                        IKey.str(mLinkedUnit.getStatusString())
+                        IKey.str(LinkedUnit.getStatusString())
                             .asWidget()));
     }
 }
