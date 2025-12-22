@@ -703,21 +703,25 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .tooltipTextColor(Color.GREY.main)
                         .tooltipAutoUpdate(true)
                         .tooltipDynamic(t -> {
-
-                            t.addLine(EnumChatFormatting.AQUA + "Optimum Production");
                             t.addLine(
-                                "This pairing is " + (data.isProductionPairPresent ? EnumChatFormatting.GREEN + "active"
-                                    : EnumChatFormatting.RED + "inactive"));
-                            t.addLine("When active, this pairing provides the following bonuses:");
-                            t.addLine(TooltipHelper.SPEED_COLOR + "+75%" + EnumChatFormatting.RESET + " speed");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.optimumproduction.title"));
                             t.addLine(
-                                TooltipHelper.PARALLEL_COLOR + "+6"
-                                    + EnumChatFormatting.RESET
-                                    + " parallels per "
-                                    + EnumChatFormatting.WHITE
-                                    + "Voltage"
-                                    + EnumChatFormatting.RESET
-                                    + " tier");
+                                StatCollector.translateToLocalFormatted(
+                                    data.isProductionPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.activity.bonus"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.optimumproduction.tooltip1",
+                                    TooltipHelper.SPEED_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.optimumproduction.tooltip2",
+                                    TooltipHelper.PARALLEL_COLOR,
+                                    TooltipHelper.TIER_COLOR));
                         }));
         column.child(
             new DynamicDrawable(
@@ -727,14 +731,23 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .tooltipTextColor(Color.GREY.main)
                         .tooltipAutoUpdate(true)
                         .tooltipDynamic(t -> {
-                            t.addLine(EnumChatFormatting.GREEN + "Harmonic Efficiency");
                             t.addLine(
-                                "This pairing is " + (data.isEfficiencyPairPresent ? EnumChatFormatting.GREEN + "active"
-                                    : EnumChatFormatting.RED + "inactive"));
-                            t.addLine("When active, this pairing provides the following bonuses:");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.harmonicefficiency.title"));
                             t.addLine(
-                                EnumChatFormatting.LIGHT_PURPLE + "+0.1" + EnumChatFormatting.RESET + " OC Factor");
-                            t.addLine(TooltipHelper.EFF_COLOR + "-50%" + EnumChatFormatting.RESET + " Initial EU Cost");
+                                StatCollector.translateToLocalFormatted(
+                                    data.isEfficiencyPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.activity.bonus"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2",
+                                    TooltipHelper.EFF_COLOR));
                         }));
         column.child(
             new DynamicDrawable(
@@ -744,54 +757,44 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .tooltipTextColor(Color.GREY.main)
                         .tooltipAutoUpdate(true)
                         .tooltipDynamic(t -> {
-                            t.addLine(EnumChatFormatting.LIGHT_PURPLE + "Superstable Core");
                             t.addLine(
-                                "This pairing is " + (data.isHRPairPresent ? EnumChatFormatting.GREEN + "active"
-                                    : EnumChatFormatting.RED + "inactive"));
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.superstablecore.title"));
                             t.addLine(
-                                "This pairings bonuses scale with the amount of " + EnumChatFormatting.LIGHT_PURPLE
-                                    + "Heliocast Reinforcement"
-                                    + EnumChatFormatting.RESET
-                                    + " Modules");
+                                StatCollector.translateToLocalFormatted(
+                                    data.isHRPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
                             t.addLine(
-                                EnumChatFormatting.WHITE + "When 2 or more"
-                                    + EnumChatFormatting.LIGHT_PURPLE
-                                    + " Heliocast Reinforcement"
-                                    + EnumChatFormatting.WHITE
-                                    + " modules are present:");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip1"));
                             t.addLine(
-                                "Increases Base Speed by " + TooltipHelper.SPEED_COLOR
-                                    + "75%"
-                                    + EnumChatFormatting.RESET
-                                    + " per module");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip2"));
                             t.addLine(
-                                "Subtracts " + TooltipHelper.EFF_COLOR
-                                    + "10%"
-                                    + EnumChatFormatting.RESET
-                                    + " from Initial EU Cost per module");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip3",
+                                    TooltipHelper.SPEED_COLOR));
                             t.addLine(
-                                EnumChatFormatting.WHITE + "When 3 or more "
-                                    + EnumChatFormatting.LIGHT_PURPLE
-                                    + "Heliocast Reinforcement"
-                                    + EnumChatFormatting.WHITE
-                                    + " modules are present:");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip4",
+                                    TooltipHelper.EFF_COLOR));
                             t.addLine(
-                                "Adds " + TooltipHelper.PARALLEL_COLOR
-                                    + "6"
-                                    + EnumChatFormatting.RESET
-                                    + " parallels per "
-                                    + TooltipHelper.TIER_COLOR
-                                    + "Voltage"
-                                    + EnumChatFormatting.RESET
-                                    + " Tier per module");
-                            t.addLine("   Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.1");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip5"));
                             t.addLine(
-                                EnumChatFormatting.WHITE + "When 4 "
-                                    + EnumChatFormatting.LIGHT_PURPLE
-                                    + "Heliocast Reinforcement"
-                                    + EnumChatFormatting.WHITE
-                                    + " modules are present:");
-                            t.addLine("   Grants 2 maximum " + EnumChatFormatting.LIGHT_PURPLE + "overclocks");
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip6",
+                                    TooltipHelper.PARALLEL_COLOR,
+                                    TooltipHelper.TIER_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip7"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip8"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip9"));
                         }));
         column.child(
             new DynamicDrawable(
@@ -800,27 +803,27 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .tooltipTextColor(Color.GREY.main)
                         .tooltipAutoUpdate(true)
                         .tooltipDynamic(t -> {
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.title"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    data.isEndPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.activity.bonus"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2",
+                                    TooltipHelper.SPEED_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3"));
 
-                            t.addLine(
-                                EnumChatFormatting.DARK_PURPLE.toString() + EnumChatFormatting.OBFUSCATED
-                                    + "0"
-                                    + EnumChatFormatting.RESET
-                                    + EnumChatFormatting.DARK_RED
-                                    + "Realized Potential"
-                                    + EnumChatFormatting.DARK_PURPLE
-                                    + EnumChatFormatting.OBFUSCATED
-                                    + "0");
-                            t.addLine(
-                                "This pairing is " + (data.isEndPairPresent ? EnumChatFormatting.GREEN + "active!"
-                                    : EnumChatFormatting.RED + "inactive."));
-                            t.addLine("When active, this pairing provides the following bonuses:");
-                            t.addLine(EnumChatFormatting.RED + "2x" + EnumChatFormatting.RESET + " EU Cost");
-                            t.addLine(TooltipHelper.SPEED_COLOR + "2x" + EnumChatFormatting.RESET + " Speed");
-                            t.addLine(
-                                "Allows the " + EnumChatFormatting.AQUA
-                                    + "Hypercooler"
-                                    + EnumChatFormatting.RESET
-                                    + " to utilize Eternity");
                         }));
         return column;
     }

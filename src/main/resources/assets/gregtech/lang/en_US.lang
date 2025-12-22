@@ -1424,15 +1424,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
-GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
-GT5U.gui.button.foundry.contributorpanel=Open Contributor List
-GT5U.gui.text.foundry.projectlead=Project Lead
-GT5U.gui.text.foundry.programming=Programming
-GT5U.gui.text.foundry.textures=Textures
-GT5U.gui.text.foundry.rendering=Rendering
-GT5U.gui.text.foundry.structure=Structure Architect
-GT5U.gui.text.foundry.idea=Original Idea
-GT5U.gui.text.foundry.playtest=Playtesting
+
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
@@ -2645,6 +2637,43 @@ gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
+# Exo-Foundry GUI
+GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
+GT5U.gui.button.foundry.contributorpanel=Open Contributor List
+GT5U.gui.text.foundry.projectlead=Project Lead
+GT5U.gui.text.foundry.programming=Programming
+GT5U.gui.text.foundry.textures=Textures
+GT5U.gui.text.foundry.rendering=Rendering
+GT5U.gui.text.foundry.structure=Structure Architect
+GT5U.gui.text.foundry.idea=Original Idea
+GT5U.gui.text.foundry.playtest=Playtesting
+
+GT5U.gui.text.foundry.pairings.activity.on=This pairing is §aactive
+GT5U.gui.text.foundry.pairings.activity.off=This pairing is §cinactive
+GT5U.gui.text.foundry.pairings.activity.bonus=When active, this pairing provides the following bonuses:
+GT5U.gui.text.foundry.pairings.optimumproduction.title=§bOptimum Production
+GT5U.gui.text.foundry.pairings.optimumproduction.tooltip1=%s+75%%§r Speed
+GT5U.gui.text.foundry.pairings.optimumproduction.tooltip2=%s+6§r parallels per %sVoltage§r tier
+
+GT5U.gui.text.foundry.pairings.harmonicefficiency.title=§aHarmonic Efficiency
+GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1=§d+0.1§r OC Factor
+GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2=%s-50%%§r Initial EU Cost
+
+GT5U.gui.text.foundry.pairings.superstablecore.title=§dSuperstable Core
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip2=When §f2 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by %s75%%§r per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.1
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
+
+GT5U.gui.text.foundry.pairings.realizedpotential.title=§5§k0§r§4Realized Potential§5§k0
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1=§c2x§r EU Cost
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2=%s2x§r Speed
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercooler§r to utilize Eternity
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
