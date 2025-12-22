@@ -42,10 +42,11 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+        GenericSyncValue rules = new GenericSyncValue<>(() -> multiblock.colorMap,
+            map -> { multiblock.colorMap = map; }, new ColorMapAdapter());
         syncManager.syncValue(
-            "rules",
-            0,
-            new GenericSyncValue<>(() -> multiblock.colorMap, map -> { multiblock.colorMap = map; }, new ColorMapAdapter()));
+            "rules", rules);
+
     }
 
     @Override
@@ -70,7 +71,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = createPopUpPanel("gt:splitter:rules_manager", false, false);
+        ModularPanel ui = new ModularPanel("gt:splitter:rules_manager");
 
         ListWidget<IWidget, ?> list = new ListWidget<>();
         list.childSeparator(IIcon.EMPTY_2PX);
@@ -195,7 +196,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
             super();
             manager = syncManager;
-            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager.getSyncHandlerFromMapKey("rules");
+            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager.findSyncHandler("rules", GenericSyncValue.class);
             if (indexOverride == null) {
                 while (multiblock.colorMap.get(id) != null) {
                     id++;
