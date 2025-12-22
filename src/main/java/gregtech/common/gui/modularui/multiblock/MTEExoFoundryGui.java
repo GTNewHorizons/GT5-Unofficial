@@ -266,7 +266,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         return new ModularPanel("statsPanel").relative(parent)
             .rightRel(1)
             .topRel(0)
-            .size(130, 130)
+            .size(130, 150)
             .widgetTheme("backgroundPopup")
             .onCloseAction(() -> {
                 // Reset preview for next time in case the panel is reopened before the GUI is closed
@@ -313,9 +313,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         .size(120, 20)
                         .marginBottom(2))
                     .child(
-                        new Row().size(76, 20)
-                            .childPadding(4)
-                            .alignX(0.5f)
+                        new Row().size(120, 20)
+                            .childPadding(1)
                             .marginBottom(2)
                             .child(createModuleSelectButton(p_syncManager, parent, 0, moduleCalc0, true))
                             .child(createModuleSelectButton(p_syncManager, parent, 1, moduleCalc1, true))
@@ -327,10 +326,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         }
                         return EnumChatFormatting.GREEN + "Showing Installed Modules";
                     })
+                        .scale(0.9f)
                         .asWidget()
                         .size(120, 20)
                         .alignX(0.5f)));
-
     }
 
     protected IWidget createConfigButton() {
@@ -386,7 +385,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         t.setAutoUpdate(true);
                     })
                     .tooltipShowUpTimer(TOOLTIP_DELAY)
-                    .overlay(GuiTextures.ADD)
+                    .overlay(new DynamicDrawable(() -> {
+                        if (moduleSync.getIntValue() == FoundryModules.UNSET.ordinal()) {
+                            return GuiTextures.ADD;
+                        }
+                        return new ItemDrawable(
+                            FoundryModules.getModule(moduleSync.getIntValue())
+                                .getItemIcon());
+                    }))
                     .onMousePressed(d -> {
                         if (Interactable.hasShiftDown()) {
                             moduleSync.setIntValue(FoundryModules.UNSET.ordinal());
