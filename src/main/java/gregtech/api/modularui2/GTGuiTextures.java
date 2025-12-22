@@ -767,6 +767,11 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
     public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
+    public static final UITexture FOUNDRY_CALCULATOR = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/foundry_calculator")
+        .fullImage()
+        .canApplyTheme()
+        .build();
 
     // endregion button overlay
 

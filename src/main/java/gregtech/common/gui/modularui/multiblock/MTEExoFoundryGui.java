@@ -1,7 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.enums.GTValues.formattingCodes;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -24,7 +23,6 @@ import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -121,7 +119,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
-            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .overlay(GTGuiTextures.FOUNDRY_CALCULATOR)
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
                     statsPanel.openPanel();
@@ -434,7 +432,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         }
                         t.setAutoUpdate(true);
                     })
-                    .tooltipShowUpTimer(TOOLTIP_DELAY)
                     .overlay(new DynamicDrawable(() -> {
                         // todo make red when required tier is not available
                         if (moduleSync.getIntValue() == FoundryModules.UNSET.ordinal()) {
