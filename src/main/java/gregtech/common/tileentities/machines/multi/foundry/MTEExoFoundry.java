@@ -23,6 +23,7 @@ import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,7 +89,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -544,130 +544,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
-            .addStructureInfoSeparator();
-        addParallelModuleTooltip(tt);
-        addSpeedModuleTooltip(tt);
-        addPowerEfficiencyModuleTooltip(tt);
-        addEfficientOverclockingModuleTooltip(tt);
-        addHypercoolerModuleInformation(tt);
-        addHeliocastReinforcementModuleInformation(tt);
-        addTimeDilationSystemModuleInformation(tt);
+            .addStructureInfoSeparator()
+            .addStructureInfo("Check NEI for Module structure costs");
 
         tt.toolTipFinisher();
         return tt;
-    }
-
-    private void addHypercoolerModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.AQUA + "Hypercooler Module")
-            .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.AQUA) + " Advanced Cryogenic Casing")
-            .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.AQUA) + " Infinity Cooled Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.AQUA) + " Non-photonic Matter Exclusion Glass")
-            .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.AQUA) + " Hypercooler Casing")
-            .addStructureInfo(TooltipHelper.coloredText("48x", EnumChatFormatting.AQUA) + " Frost Proof Machine Casing")
-            .addStructureInfo(TooltipHelper.coloredText("48x", EnumChatFormatting.AQUA) + " Netherite Frame Box")
-            .addStructureInfoSeparator();
-    }
-
-    private void addHeliocastReinforcementModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Heliocast Reinforcement")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Block of Spacetime")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Spacetime Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("11x", EnumChatFormatting.LIGHT_PURPLE)
-                    + " Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.LIGHT_PURPLE) + " Transcendent Metal & "
-                    + EnumChatFormatting.RED
-                    + "Mellion"
-                    + EnumChatFormatting.GRAY
-                    + " & "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Creon"
-                    + EnumChatFormatting.GRAY
-                    + " Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE) + " Heliocast Reinforcement Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addTimeDilationSystemModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.DARK_PURPLE + "Time Dilation System")
-            .addStructureInfo(
-                TooltipHelper.coloredText("4x", EnumChatFormatting.DARK_PURPLE) + " "
-                    + EnumChatFormatting.WHITE
-                    + EnumChatFormatting.BOLD
-                    + "Gallifreyan"
-                    + EnumChatFormatting.GRAY
-                    + " Time Dilation Field Generator")
-            .addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.DARK_PURPLE) + " Eternity Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("8x", EnumChatFormatting.DARK_PURPLE) + " Time Dilation System Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("16x", EnumChatFormatting.DARK_PURPLE) + " Black & White Dwarf Matter Block")
-            .addStructureInfo(
-                TooltipHelper.coloredText("16x", EnumChatFormatting.DARK_PURPLE) + " Universium Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("20x", EnumChatFormatting.DARK_PURPLE)
-                    + " Black & White Dwarf Matter Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.DARK_PURPLE)
-                    + " Reinforced Temporal Structure Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("32x", EnumChatFormatting.DARK_PURPLE)
-                    + " Reinforced Spatial Structure Casing");
-    }
-
-    private void addEfficientOverclockingModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.DARK_AQUA + "Sentient Overclocker");
-        tt.addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.AQUA) + " Gravity Stabilization Casing")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.AQUA) + " Magnetic Flux Casing")
-            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.AQUA) + " Central Magnetic Chassis")
-            .addStructureInfo(
-                TooltipHelper.coloredText("44x", EnumChatFormatting.AQUA) + " Antimatter Contaiment Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("76x", EnumChatFormatting.AQUA) + " Fusion Machine Casing MK IV")
-            .addStructureInfo(
-                TooltipHelper.coloredText("88x", EnumChatFormatting.AQUA) + " Sentient Overclocker Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addPowerEfficiencyModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.GREEN + "Proto-Volt Stabilizer")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.GREEN) + " Rugged Botmium Machine Casing")
-            .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.GREEN) + " Samarium Frame Box")
-            .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.GREEN) + " Purified Tengam Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("60x", EnumChatFormatting.GREEN) + " Proto-Volt Stabilizer Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addSpeedModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.RED + "Streamlined Casters")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.RED) + " Block of Tritanium")
-            .addStructureInfo(
-                TooltipHelper.coloredText("16x", EnumChatFormatting.RED)
-                    + " Tritanium & Superconductor Base UEV Frame Box")
-            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.RED) + " Particle Containment Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("40x", EnumChatFormatting.RED) + " Elemental Confinement Casing")
-            .addStructureInfo(TooltipHelper.coloredText("40x", EnumChatFormatting.RED) + " Streamlined Casting Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addParallelModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.YELLOW + "Extra Casting Basins")
-            .addStructureInfo(
-                TooltipHelper.coloredText("4x", EnumChatFormatting.YELLOW) + " Rebolted Precious Metals Casing")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.YELLOW) + " Erbium Frame Box")
-            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.YELLOW) + " Solidifier Radiator")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.YELLOW) + " Bolted Precious Metals Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("36x", EnumChatFormatting.YELLOW) + " Primary Exo-Foundry Casing")
-            .addStructureInfo(TooltipHelper.coloredText("64x", EnumChatFormatting.YELLOW) + " Solidifier Casing");
-        tt.addStructureInfoSeparator();
     }
 
     @Override
@@ -891,6 +772,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fluidSolidifierRecipes;
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return ImmutableList.of(RecipeMaps.fluidSolidifierRecipes, RecipeMaps.foundryFakeModuleCostRecipes);
     }
 
     @Override
