@@ -16,9 +16,14 @@ import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.security.PlayerSource;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.*;
+import appeng.api.storage.ICellContainer;
+import appeng.api.storage.ICellHandler;
+import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
+import appeng.api.storage.MEMonitorHandler;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
@@ -73,7 +78,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
@@ -452,7 +463,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) this,
+                    this,
                     "proxy",
                     ItemList.Hatch_Output_ME.get(1),
                     true);
@@ -886,7 +897,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 .getCellInventory(is, this, StorageChannel.FLUIDS);
             if (fluidCell != null) {
                 this.cell = this.wrap(fluidCell, AccessRestriction.READ_WRITE);
-                this.cellRead = this.wrap(fluidCell, AccessRestriction.READ)
+                this.cellRead = this.wrap(fluidCell, AccessRestriction.READ);
                 markDirty();
             }
         }

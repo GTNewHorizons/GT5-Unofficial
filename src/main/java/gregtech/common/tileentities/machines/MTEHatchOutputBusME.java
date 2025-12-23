@@ -9,10 +9,17 @@ import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCellArrayUpdate;
-import appeng.api.networking.security.*;
+import appeng.api.networking.security.BaseActionSource;
+import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.*;
+import appeng.api.storage.ICellContainer;
+import appeng.api.storage.ICellHandler;
+import appeng.api.storage.IMEInventory;
+import appeng.api.storage.IMEInventoryHandler;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
+import appeng.api.storage.MEMonitorHandler;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
@@ -31,7 +38,6 @@ import appeng.me.storage.MEInventoryHandler;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
@@ -69,7 +75,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.*;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
