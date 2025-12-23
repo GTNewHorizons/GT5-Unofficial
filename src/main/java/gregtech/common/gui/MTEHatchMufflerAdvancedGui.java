@@ -23,8 +23,11 @@ public class MTEHatchMufflerAdvancedGui extends MTEHatchBaseGui<MTEHatchMufflerA
             .child(
                 new ItemSlot().slot(
                     new ModularSlot(hatch.inventoryHandler, 0).slotGroup("filter_slot")
-                        .filter((a) -> hatch.isAirFilter(a))))
-            .align(Alignment.CENTER);
+                        .filter((a) -> hatch.isAirFilter(a)
+                        )
+                )            .align(Alignment.CENTER)
+
+            );
 
     }
 }
