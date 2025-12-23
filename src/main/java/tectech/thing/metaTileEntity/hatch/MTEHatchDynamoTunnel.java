@@ -3,18 +3,16 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import gregtech.common.gui.modularui.hatch.MTEHatchDynamoTunnelGui;
-import gregtech.common.gui.modularui.hatch.MTEHatchInputDebugGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -29,6 +27,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchDynamoTunnelGui;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
@@ -239,6 +238,5 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     protected boolean useMui2() {
         return true;
     }
-
 
 }
