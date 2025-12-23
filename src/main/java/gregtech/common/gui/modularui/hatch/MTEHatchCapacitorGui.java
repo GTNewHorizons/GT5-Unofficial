@@ -30,7 +30,7 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
                     'x',
                     i -> new ItemSlot()
                         .slot(new ModularSlot(hatch.inventoryHandler, i).slotGroup("capacitor_inventory"))
-                        .overlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
+                        .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CHARGER))
                 .build()
                 .coverChildren()
                 .align(Alignment.Center));
