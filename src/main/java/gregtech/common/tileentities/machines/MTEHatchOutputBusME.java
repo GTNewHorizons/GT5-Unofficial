@@ -1,50 +1,25 @@
 package gregtech.common.tileentities.machines;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-
 import appeng.api.AEApi;
+import appeng.api.config.AccessRestriction;
+import appeng.api.config.Actionable;
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.security.MachineSource;
-import appeng.api.storage.IMEInventoryHandler;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.StorageChannel;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.events.MENetworkCellArrayUpdate;
+import appeng.api.networking.security.*;
+import appeng.api.networking.storage.IBaseMonitor;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.*;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
+import appeng.helpers.IPriorityHost;
 import appeng.items.contents.CellConfig;
 import appeng.items.storage.ItemBasicStorageCell;
 import appeng.me.GridAccessException;
@@ -52,9 +27,13 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.me.storage.CellInventory;
 import appeng.me.storage.CellInventoryHandler;
+import appeng.me.storage.MEInventoryHandler;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -74,8 +53,28 @@ import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import org.jetbrains.annotations.NotNull;
 
-public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable {
+import javax.annotation.Nullable;
+import java.util.*;
+
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
+
+public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable, ICellContainer, IGridProxyable, IPriorityHost {
 
     protected static final long DEFAULT_CAPACITY = 1_600;
     protected long baseCapacity = DEFAULT_CAPACITY;
@@ -95,6 +94,14 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     boolean hadCell = false;
     boolean blackList = false;
+
+    boolean cacheMode = false;
+    boolean isCached = false;
+
+    @Nullable OutputMonitorHandler<IAEItemStack> cell;
+    @Nullable OutputMonitorHandler<IAEItemStack> cellRead;
+    private ItemStack oldCellStack = null;
+    private int myPriority = 0;
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -132,24 +139,13 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         getProxy().onReady();
+        updateState();
     }
 
     @Override
     public boolean storePartial(ItemStack stack, boolean simulate) {
-        if (!lockedItems.isEmpty()) {
-            boolean isOk = false;
-
-            for (GTUtility.ItemId lockedItem : lockedItems) {
-                if (blackList ^ lockedItem.matches(stack)) {
-                    isOk = true;
-
-                    break;
-                }
-            }
-
-            if (!isOk) {
-                return false;
-            }
+        if (!canStoreItem(stack)) {
+            return false;
         }
 
         if (canAcceptItem()) {
@@ -188,7 +184,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         long capacity = storageCell.getBytesLong(upgradeItemStack) * 8;
 
-        if (inventory instanceof CellInventoryHandler<?>handler) {
+        if (inventory instanceof CellInventoryHandler<?> handler) {
             final CellInventory<?> cellInventory = (CellInventory<?>) handler.getCellInv();
 
             long restriction = (long) cellInventory.getRestriction()
@@ -219,7 +215,25 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public boolean isFilteredToItem(GTUtility.ItemId id) {
+        if (!isFiltered()) {
+            return true;
+        }
         return blackList ^ lockedItems.contains(id);
+    }
+
+    public boolean canStoreItem(@NotNull ItemStack stack) {
+        if (cacheMode && cell != null) {
+            final IAEItemStack returns = cell.injectItems(
+                AEApi.instance().storage().createItemStack(stack),
+                Actionable.SIMULATE,
+                getRequest());
+            return returns.getStackSize() == 0;
+        }
+
+        if (!isFiltered()) {
+            return true;
+        }
+        return lockedItems.stream().anyMatch(lockedItem -> blackList ^ lockedItem.matches(stack));
     }
 
     @Override
@@ -267,7 +281,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (!hasAvailableSpace()) return false;
-            if (!lockedItems.isEmpty() && !(blackList ^ lockedItems.contains(id))) return false;
+            if (!lockedItems.isEmpty() && blackList == lockedItems.contains(id)) return false;
 
             pendingItems.addTo(id, stack.stackSize);
             currentStored += stack.stackSize;
@@ -296,7 +310,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     protected BaseActionSource getRequest() {
-        if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
+        if (requestSource == null) requestSource = new MachineSource(this);
         return requestSource;
     }
 
@@ -329,14 +343,17 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (!getBaseMetaTileEntity().getCoverAtSide(side)
-            .isGUIClickable()) return;
+                                        ItemStack aTool) {
+        cacheMode = !cacheMode;
+        GTUtility.sendChatToPlayer(
+            lastClickedPlayer, "Cache Mode: " + (this.cacheMode ? "On" : "Off"));
+        updateState();
+        markDirty();
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
+                                          float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -360,7 +377,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
+                    this,
                     "proxy",
                     ItemList.Hatch_Output_Bus_ME.get(1),
                     true);
@@ -378,7 +395,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (!isActive() || itemCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
         try {
-            IMEMonitor<IAEItemStack> sg = proxy.getStorage()
+            IMEInventory<IAEItemStack> sg = (cacheMode && cell != null) ? cell : proxy.getStorage()
                 .getItemInventory();
             for (IAEItemStack s : itemCache) {
                 if (s.getStackSize() == 0) continue;
@@ -389,7 +406,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                 }
                 s.setStackSize(0);
             }
-        } catch (final GridAccessException ignored) {}
+        } catch (final GridAccessException ignored) {
+        }
         lastOutputTick = tickCounter;
     }
 
@@ -405,7 +423,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
+                                  ItemStack aStack) {
         return false;
     }
 
@@ -416,8 +434,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        checkItemLock();
-
         if (getBaseMetaTileEntity().isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
@@ -533,7 +549,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             tooltip.add(
                 "Current cache capacity: " + EnumChatFormatting.YELLOW
                     + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
+                    .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
         }
     }
 
@@ -571,6 +587,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
         aNBT.setBoolean("blackList", blackList);
+        aNBT.setBoolean("cacheMode", cacheMode);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -622,6 +639,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
         hadCell = aNBT.getBoolean("hadCell");
         blackList = aNBT.getBoolean("blackList");
+        cacheMode = aNBT.getBoolean("cacheMode");
+        this.isCached = false;
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
     }
@@ -677,7 +696,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+                                int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setLong("cacheCapacity", getCacheCapacity());
         tag.setInteger("stackCount", itemCache.size());
@@ -706,7 +725,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     @SideOnly(Side.CLIENT)
     public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+                             IWailaConfigHandler config) {
         super.getWailaBody(itemStack, ss, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
@@ -728,7 +747,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     @SideOnly(Side.CLIENT)
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+                                     IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
@@ -773,8 +792,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             (getProxy() != null && getProxy().isActive())
                 ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
                 : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()));
+                "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                getAEDiagnostics()));
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_bus_me.cache_capacity",
@@ -807,5 +826,156 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     public boolean acceptsItemLock() {
         return false;
+    }
+
+
+    @Override
+    public void onContentsChanged(int slot) {
+        if (slot != 0) return;
+
+        ItemStack upgradeItemStack = mInventory[0];
+        if (GTUtility.areStacksEqualOrNull(oldCellStack, upgradeItemStack) || (upgradeItemStack != null && !(upgradeItemStack.getItem() instanceof ItemBasicStorageCell))) {
+            return;
+        }
+
+        checkItemLock();
+        if (this.isCached) {
+            this.isCached = false;
+            updateState();
+        }
+
+        if (cacheMode) {
+            try {
+                this.getProxy().getGrid().postEvent(new MENetworkCellArrayUpdate());
+
+                final IStorageGrid gs = this.getProxy().getStorage();
+                Platform.postChanges(gs, oldCellStack, upgradeItemStack, getRequest());
+                oldCellStack = upgradeItemStack;
+            } catch (final GridAccessException ignored) {
+            }
+        }
+
+        markDirty();
+    }
+
+    public void updateState() {
+        if (this.isCached) {
+            return;
+        }
+        this.isCached = true;
+        this.cell = null;
+        this.cellRead = null;
+        final ItemStack is = mInventory[0];
+        if (is == null) {
+            return;
+        }
+        ICellHandler cellHandler = AEApi.instance().registries().cell().getHandler(is);
+        if (cellHandler != null) {
+            final IMEInventoryHandler<IAEItemStack> itemCell = cellHandler
+                .getCellInventory(is, this, StorageChannel.ITEMS);
+            if (itemCell != null) {
+                this.cell = this.wrap(itemCell, AccessRestriction.READ_WRITE);
+                this.cellRead = this.wrap(itemCell, AccessRestriction.READ);
+                markDirty();
+            }
+        }
+    }
+
+    @Override
+    public List<IMEInventoryHandler> getCellArray(final StorageChannel channel) {
+        if (cacheMode && this.getProxy().isActive() && channel == StorageChannel.ITEMS) {
+            if (cellRead != null) return Collections.singletonList(cellRead);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public int getPriority() {
+        return myPriority;
+    }
+
+    @Override
+    public void setPriority(int newValue) {
+        myPriority = newValue;
+    }
+
+    @Override
+    public void saveChanges(IMEInventory cellInventory) {
+        markDirty();
+    }
+
+    @Override
+    public IGridNode getActionableNode() {
+        final AENetworkProxy gp = getProxy();
+        return gp != null ? gp.getNode() : null;
+    }
+
+    @Override
+    public DimensionalCoord getLocation() {
+        IGregTechTileEntity gtm = this.getBaseMetaTileEntity();
+        return new DimensionalCoord(gtm.getWorld(), gtm.getXCoord(), gtm.getYCoord(), gtm.getZCoord());
+    }
+
+    @Override
+    public void securityBreak() {
+    }
+
+    @Override
+    public IGridNode getGridNode(ForgeDirection forgeDirection) {
+        final AENetworkProxy gp = getProxy();
+        return gp != null ? gp.getNode() : null;
+    }
+
+    private class OutputMonitorHandler<T extends IAEStack<T>> extends MEMonitorHandler<T> {
+        public OutputMonitorHandler(final IMEInventoryHandler<T> t) {
+            super(t);
+        }
+    }
+
+    private <StackType extends IAEStack<StackType>> OutputMonitorHandler<StackType> wrap(final IMEInventoryHandler<StackType> h, final AccessRestriction myAccess) {
+        if (h == null) {
+            return null;
+        }
+
+        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getChannel());
+        ih.setPriority(this.myPriority);
+
+        final OutputMonitorHandler<StackType> g = new OutputMonitorHandler<>(ih);
+        g.addListener(new OutputNetNotifier(h.getChannel()), g);
+
+        return g;
+    }
+
+    private class OutputNetNotifier implements IMEMonitorHandlerReceiver<IAEStack<?>> {
+
+        private final StorageChannel chan;
+
+        public OutputNetNotifier(final StorageChannel chan) {
+            this.chan = chan;
+        }
+
+        @Override
+        public boolean isValid(final Object verificationToken) {
+            if (this.chan == StorageChannel.ITEMS) {
+                return verificationToken == MTEHatchOutputBusME.this.cell;
+            }
+            return false;
+        }
+
+        @Override
+        public void postChange(final IBaseMonitor<IAEStack<?>> monitor, final Iterable<IAEStack<?>> change,
+                               final BaseActionSource source) {
+            try {
+                if (MTEHatchOutputBusME.this.getProxy().isActive()) {
+                    MTEHatchOutputBusME.this.getProxy().getStorage()
+                        .postAlterationOfStoredItems(this.chan, change, MTEHatchOutputBusME.this.getRequest());
+                }
+            } catch (final GridAccessException e) {
+                // :(
+            }
+        }
+
+        @Override
+        public void onListUpdate() {}
     }
 }
