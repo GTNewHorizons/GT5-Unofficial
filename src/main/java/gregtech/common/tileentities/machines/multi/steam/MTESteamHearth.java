@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.steam;
+package gregtech.common.tileentities.machines.multi.steam;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -65,23 +65,22 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti> implements ISurvivalConstructable {
+public class MTESteamHearth extends MTESteamMultiBlockBase<MTESteamHearth> implements ISurvivalConstructable {
 
-    public MTESteamFurnaceMulti(String aName) {
+    public MTESteamHearth(String aName) {
         super(aName);
     }
 
-    public MTESteamFurnaceMulti(int aID, String aName, String aNameRegional) {
+    public MTESteamHearth(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
-        return new MTESteamFurnaceMulti(this.mName);
+        return new MTESteamHearth(this.mName);
     }
 
     private static final int HORIZONTAL_OFF_SET = 1;
@@ -103,14 +102,9 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     private static final SoundResource startSound = Railcraft.isModLoaded() ? SoundResource.RAILCRAFT_STEAM_BURST
         : null;
 
-    @Override
-    public String getMachineType() {
-        return "Furnace, Blaster, Smoker";
-    }
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
-    private IStructureDefinition<MTESteamFurnaceMulti> STRUCTURE_DEFINITION = null;
+    private IStructureDefinition<MTESteamHearth> STRUCTURE_DEFINITION = null;
 
     // spotless:off
     private final String[][] shape =new String[][]{
@@ -121,19 +115,20 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     //spotless:on
 
     @Override
-    public IStructureDefinition<MTESteamFurnaceMulti> getStructureDefinition() {
+    public IStructureDefinition<MTESteamHearth> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamFurnaceMulti>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTESteamHearth>builder()
                 .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement(
                     'A',
                     ofChain(
-                        buildSteamInput(MTESteamFurnaceMulti.class).casingIndex(10)
-                            .hint(1)
+                        buildSteamInput(MTESteamHearth.class).hint(1)
+                            .casingIndex(getCasingTextureID())
                             .build(),
-                        buildHatchAdder(MTESteamFurnaceMulti.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam)
-                            .casingIndex(10)
+
+                        buildHatchAdder(MTESteamHearth.class)
+                            .atLeast(SteamHatchElement.SteamInputBus, SteamHatchElement.SteamOutputBus)
+                            .casingIndex(getCasingTextureID())
                             .hint(1)
                             .buildAndChain(),
                         ofBlocksTiered(
@@ -175,7 +170,7 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("Furnace, Blaster, Smoker")
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f);
         if (EtFuturumRequiem.isModLoaded()) {
             tt.addInfo(
@@ -270,14 +265,14 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     }
 
     protected void updateHatchTexture() {
-        int textureID = getCasingTextureId();
-        for (MTEHatch h : mSteamInputs) h.updateTexture(textureID);
-        for (MTEHatch h : mSteamOutputs) h.updateTexture(textureID);
-        for (MTEHatch h : mSteamInputFluids) h.updateTexture(textureID);
+        int textureID = getCasingTextureID();
+        for (MTEHatch h : steamHatchInputs) h.updateTexture(textureID);
+        for (MTEHatch h : steamBusOutputs) h.updateTexture(textureID);
+        for (MTEHatch h : steamBusInputs) h.updateTexture(textureID);
     }
 
     @Override
-    protected int getCasingTextureId() {
+    protected int getCasingTextureID() {
         if (tierMachineCasing == 2) return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
     }
@@ -362,8 +357,8 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     }
 
     private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
+        return !steamHatchInputs.isEmpty() && !steamBusInputs.isEmpty()
+            && !steamBusOutputs.isEmpty()
             && mOutputHatches.isEmpty()
             && mInputHatches.isEmpty();
     }
@@ -443,11 +438,6 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
                     .setDurationModifier(1.6 / tierMachine);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public int getTierRecipes() {
-        return 1;
     }
 
     @Override
@@ -531,15 +521,16 @@ public class MTESteamFurnaceMulti extends MTESteamMultiBase<MTESteamFurnaceMulti
     }
 
     @Override
-    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
             .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        MTEMultiBlockBaseGui gui = super.getGui();
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        MTEMultiBlockBaseGui<?> gui = super.getGui();
         if (EtFuturumRequiem.isModLoaded()) gui.withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL,
