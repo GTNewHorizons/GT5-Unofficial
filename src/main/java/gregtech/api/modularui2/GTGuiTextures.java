@@ -843,6 +843,11 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_BOILER_HEAT)
         .build();
+    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/charger")
+        .build();
     public static final UITexture PROGRESSBAR_FUEL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/fuel")
         .fullImage()
