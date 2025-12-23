@@ -457,12 +457,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             return;
         }
 
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell) {
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ItemBasicStorageCell ibsc) {
             hadCell = true;
 
             if (this.lockedItems.isEmpty()) {
-                IInventory upgrades = ((ItemBasicStorageCell) upgradeItemStack.getItem())
-                    .getUpgradesInventory(upgradeItemStack);
+                IInventory upgrades = ibsc.getUpgradesInventory(upgradeItemStack);
                 for (int i = 0; i < upgrades.getSizeInventory(); i++) {
                     ItemStack is = upgrades.getStackInSlot(i);
                     if (is != null) {
@@ -506,7 +505,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                         if (lastClickedPlayer != null) {
                             GTUtility.sendChatToPlayer(
                                 lastClickedPlayer,
-                                StatCollector.translateToLocalFormatted("GT5U.hatch.item.filter.enable", builder));
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.item.filter.enable", builder) + "\nMode: " + (this.blackList ? "Blacklist" : "Whitelist"));
                         }
 
                         markDirty();
@@ -571,6 +570,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         aNBT.setTag("cachedItems", items);
         aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
+        aNBT.setBoolean("blackList", blackList);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -621,6 +621,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         baseCapacity = aNBT.getLong("baseCapacity");
         if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
         hadCell = aNBT.getBoolean("hadCell");
+        blackList = aNBT.getBoolean("blackList");
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
     }
