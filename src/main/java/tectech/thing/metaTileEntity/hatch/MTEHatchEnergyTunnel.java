@@ -141,6 +141,6 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
     }
 }
