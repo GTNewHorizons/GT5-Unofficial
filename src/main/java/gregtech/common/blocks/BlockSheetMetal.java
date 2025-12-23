@@ -33,7 +33,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures, IFacadeControl {
 
-    private final Int2ObjectFunction<IOreMaterial> materials;
+    final Int2ObjectFunction<IOreMaterial> materials;
     private final int maxMeta;
 
     public BlockSheetMetal(String aName, Int2ObjectFunction<IOreMaterial> materials, int maxMeta) {
@@ -69,11 +69,10 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         Materials gt = material.getGTMaterial();
 
         if (gt != null) {
-            return OrePrefixes.sheetmetal.getDefaultLocalNameForItem(gt);
+            return OrePrefixes.sheetmetal.getLocalizedNameForItem(gt);
         }
 
-        return OrePrefixes.block.getDefaultLocalNameForItem(Materials._NULL)
-            .replace("%material", material.getLocalizedName());
+        return OrePrefixes.block.getDefaultLocalNameForItem(Materials._NULL);
     }
 
     @Override

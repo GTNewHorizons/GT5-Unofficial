@@ -1819,7 +1819,8 @@ public class Material implements IOreMaterial {
         return false;
     }
 
-    public void addTooltip(List<String> list) {
+    @Override
+    public void addTooltips(List<String> list) {
         if (this.vChemicalFormula.contains("?")) {
             list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.vChemicalFormula));
         } else {

@@ -2,8 +2,6 @@ package gtPlusPlus.core.item.base.cell;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.util.Objects;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 

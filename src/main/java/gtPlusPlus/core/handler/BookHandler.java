@@ -1,8 +1,5 @@
 package gtPlusPlus.core.handler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -11,7 +8,6 @@ import com.github.bsideup.jabel.Desugar;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gtPlusPlus.api.objects.Logger;
@@ -242,6 +238,7 @@ public class BookHandler {
 
     @Desugar
     public record BookTemplate(int mMeta, String mMapping, String mTitle, String mAuthor, String[] mPages) {}
+
     public static void addBookTitleLocalization(final String aTitle) {
         GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle);
     }
@@ -251,23 +248,6 @@ public class BookHandler {
             GTLanguageManager.addStringLocalization(
                 "Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : Byte.valueOf(i)),
                 aPages[i].replace("\n", GTSplit.LB));
-        }
-    }
-
-    public static class BookTemplate {
-
-        public final int mMeta;
-        public final String mMapping;
-        public final String mTitle;
-        public final String mAuthor;
-        public final String[] mPages;
-
-        BookTemplate(int aMeta, String aMapping, String aTitle, String aAuthor, String[] aPages) {
-            this.mMeta = aMeta;
-            this.mMapping = aMapping;
-            this.mTitle = aTitle;
-            this.mAuthor = aAuthor;
-            this.mPages = aPages;
         }
     }
 }

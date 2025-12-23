@@ -546,7 +546,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return this.toolTip;
     }
 
-    public void addTooltip(List<String> list) {
+    @Override
+    public void addTooltips(List<String> list) {
         final String formula = getLocalizedFormulaTooltip();
         if (GTUtility.isStringValid(formula)) list.add(formula);
     }

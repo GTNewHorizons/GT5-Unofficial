@@ -172,7 +172,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                this.componentMaterial.addTooltip(list);
+                this.componentMaterial.addTooltips(list);
 
                 if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
                     if (this.unlocalName.toLowerCase()

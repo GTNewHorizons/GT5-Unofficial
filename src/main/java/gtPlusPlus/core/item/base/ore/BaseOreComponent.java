@@ -111,7 +111,7 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                componentMaterial.addTooltip(list);
+                componentMaterial.addTooltips(list);
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                 if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {

@@ -13,7 +13,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTDataUtils;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class BlockMetal extends BlockStorage {
@@ -52,7 +51,7 @@ public class BlockMetal extends BlockStorage {
 
         if (material == null) material = Materials._NULL;
 
-        return OrePrefixes.block.getDefaultLocalNameForItem(material);
+        return OrePrefixes.block.getLocalizedNameForItem(material);
     }
 
     @Override

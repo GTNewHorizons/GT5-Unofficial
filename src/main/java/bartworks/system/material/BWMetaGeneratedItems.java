@@ -125,7 +125,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
         if (werkstoff != null) {
-            werkstoff.addTooltip(aList);
+            werkstoff.addTooltips(aList);
         }
     }
 

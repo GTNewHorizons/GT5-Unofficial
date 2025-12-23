@@ -123,12 +123,12 @@ public class ItemFluidDisplay extends GTGenericItem {
         final Werkstoff w = WerkstoffLoader.fluids.inverse()
             .get(fluid);
         if (w != null) {
-            w.addTooltip(list);
+            w.addTooltips(list);
             return;
         }
         if (fluid instanceof FluidGT6 gtppFluid) {
             final Material material = gtppFluid.getMaterial();
-            if (material != null) material.addTooltip(list);
+            if (material != null) material.addTooltips(list);
             return;
         }
         if (fluid instanceof GTFluid gtFluid) {

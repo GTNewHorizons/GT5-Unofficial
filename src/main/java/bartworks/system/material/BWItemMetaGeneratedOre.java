@@ -62,7 +62,7 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff != null) {
-            werkstoff.addTooltip(desc);
+            werkstoff.addTooltips(desc);
         }
     }
 }

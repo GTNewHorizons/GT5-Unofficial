@@ -1801,6 +1801,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         if (flavorTooltip != null) list.add(flavorTooltip);
     }
 
+    @Override
     public void addTooltips(List<String> list) {
         addTooltips(list, 1);
     }

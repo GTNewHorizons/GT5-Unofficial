@@ -18,7 +18,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -1097,7 +1096,7 @@ public class OrePrefixes {
     /** A decorative sheet metal block. */
     public static final OrePrefixes sheetmetal = new OrePrefixBuilder("sheetmetal")
         .withDefaultLocalName("Sheetmetal Blocks")
-        .withNameKey("gt.component.sheetmetal")
+        .withSuffix(" Sheetmetal")
         .unifiable()
         .recyclable()
         .materialBased()
@@ -2088,7 +2087,6 @@ public class OrePrefixes {
     private final @NotNull String defaultLocalName;
     private final @NotNull String materialPrefix;
     private final @NotNull String materialPostfix;
-    private final @Nullable String nameKey;
     private final boolean isUnifiable;
     private final boolean isMaterialBased;
     private final boolean isSelfReferencing;
@@ -2107,7 +2105,6 @@ public class OrePrefixes {
         @NotNull String defaultLocalName,
         @NotNull String materialPrefix,
         @NotNull String materialPostfix,
-        @Nullable String nameKey,
         boolean isUnifiable,
         boolean isMaterialBased,
         boolean isSelfReferencing,
@@ -2125,7 +2122,6 @@ public class OrePrefixes {
         this.defaultLocalName = defaultLocalName;
         this.materialPrefix = materialPrefix;
         this.materialPostfix = materialPostfix;
-        this.nameKey = nameKey;
         this.isUnifiable = isUnifiable;
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;
@@ -2839,11 +2835,6 @@ public class OrePrefixes {
                 case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
             };
-        }
-
-        if (nameKey != null) {
-            // Replace the %s with %material so that it works with the existing system.
-            return GTUtility.translate(nameKey, "%material");
         }
 
         // Use Standard Localization

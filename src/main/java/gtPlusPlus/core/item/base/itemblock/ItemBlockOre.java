@@ -74,7 +74,7 @@ public class ItemBlockOre extends ItemBlock {
         }
 
         if (this.mThisMaterial != null) {
-            mThisMaterial.addTooltip(list);
+            mThisMaterial.addTooltips(list);
             list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
             if (mThisMaterial.getComposites()
                 .isEmpty()) {

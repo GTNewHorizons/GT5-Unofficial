@@ -565,7 +565,12 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     private static final String PartNotCoverText = "Cannot be used as a Cover";
     private static final String RAText = "Grabs from and inserts into specific slots";
     private static final String FRText1 = "Configurable up to ";
-    private static final String FRText2 = " L/sec (as Cover)" + GTSplit.LB + "Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick" + GTSplit.LB + "to adjust the pump speed by 1/16/256 L/sec per click" + GTSplit.LB + "Can not transfer more than 2.1B L per Operation";
+    private static final String FRText2 = " L/sec (as Cover)" + GTSplit.LB
+        + "Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick"
+        + GTSplit.LB
+        + "to adjust the pump speed by 1/16/256 L/sec per click"
+        + GTSplit.LB
+        + "Can not transfer more than 2.1B L per Operation";
     private static final int[] Spray_Colors = new int[] { Spray_Color_0.ID, Spray_Color_1.ID, Spray_Color_2.ID,
         Spray_Color_3.ID, Spray_Color_4.ID, Spray_Color_5.ID, Spray_Color_6.ID, Spray_Color_7.ID, Spray_Color_8.ID,
         Spray_Color_9.ID, Spray_Color_10.ID, Spray_Color_11.ID, Spray_Color_12.ID, Spray_Color_13.ID, Spray_Color_14.ID,

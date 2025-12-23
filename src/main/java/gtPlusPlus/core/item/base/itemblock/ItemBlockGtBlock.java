@@ -75,7 +75,7 @@ public class ItemBlockGtBlock extends ItemBlock {
             }
             // list.add("Material is Null.");
         }
-        if (this.mMaterial != null) this.mMaterial.addTooltip(list);
+        if (this.mMaterial != null) this.mMaterial.addTooltips(list);
 
         if (this.isOre) {
             if (KeyboardUtils.isCtrlKeyDown()) {

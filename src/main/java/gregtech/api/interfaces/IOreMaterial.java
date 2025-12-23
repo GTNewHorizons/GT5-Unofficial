@@ -24,6 +24,8 @@ public interface IOreMaterial extends ISubTagContainer {
 
     String getLocalizedNameKey();
 
+    void addTooltips(List<String> list);
+
     int getId();
 
     String getInternalName();

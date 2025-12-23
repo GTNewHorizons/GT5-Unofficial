@@ -75,6 +75,6 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
         if (shouldSkipMaterialTooltip()) return;
         if (pipeStats.getMaterial() == null) return;
         pipeStats.getMaterial()
-            .addTooltip(desc);
+            .addTooltips(desc);
     }
 }

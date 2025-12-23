@@ -56,7 +56,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         }
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if (werkstoff != null) {
-            werkstoff.addTooltip(aList);
+            werkstoff.addTooltips(aList);
         }
     }
 
