@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static gregtech.api.modularui2.GTGuis.createPopUpPanel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,28 +33,27 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 
 public class SplitterGui extends MTEMultiBlockBaseGui {
 
-    private final Splitter base;
-
-    public SplitterGui(Splitter base) {
-        super(base);
-        this.base = base;
+    public SplitterGui(Splitter multiblock) {
+        super(multiblock);
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue(
-            "rules",
-            0,
-            new GenericSyncValue<>(() -> base.colorMap, map -> { base.colorMap = map; }, new ColorMapAdapter()));
+        GenericSyncValue rules = new GenericSyncValue<>(
+            () -> multiblock.colorMap,
+            map -> { multiblock.colorMap = map; },
+            new ColorMapAdapter());
+        syncManager.syncValue("rules", rules);
+
     }
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(parent, syncManager));
+        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(syncManager));
     }
 
-    protected ButtonWidget<?> createRulesButton(ModularPanel panel, PanelSyncManager syncManager) {
+    protected ButtonWidget<?> createRulesButton(PanelSyncManager syncManager) {
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
             if (!popupPanel.isPanelOpen()) {
@@ -73,12 +70,13 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = createPopUpPanel("gt:splitter:rules_manager", false, false);
+        ModularPanel ui = new ModularPanel("gt:splitter:rules_manager").child(ButtonWidget.panelCloseButton());
 
         ListWidget<IWidget, ?> list = new ListWidget<>();
         list.childSeparator(IIcon.EMPTY_2PX);
         list.size(168, 138);
-        list.pos(4, 21);
+        // button size + padding
+        list.pos(0, 16 + 5);
 
         // Add existing rules
         for (Map.Entry<Integer, Splitter.ColorRule> entry : base.colorMap.entrySet()) {
@@ -97,7 +95,9 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                 .size(16, 16)
                 .overlay(GuiTextures.ADD)
                 .tooltip(tooltip -> tooltip.add("Add new Rule")))
-            .posRel(0.75F, 0.5F);
+            .posRel(0.75F, 0.5F)
+            .margin(8)
+            .coverChildren();
     }
 
     public IWidget createColorManager(PanelSyncManager syncManager, List<Byte> inputSelected, List<Byte> outputSelected,
@@ -154,7 +154,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .pos(80, 5)
                     .size(8, 8))
-            .size(166, 58)
+            .size(166, 60)
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
     }
 
@@ -198,7 +198,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
         public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
             super();
             manager = syncManager;
-            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager.getSyncHandler("rules:0");
+            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager
+                .findSyncHandler("rules", GenericSyncValue.class);
             if (indexOverride == null) {
                 while (base.colorMap.get(id) != null) {
                     id++;
