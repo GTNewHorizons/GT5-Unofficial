@@ -183,13 +183,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         return retVal;
     }
 
-    // todo put gui here
-
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTESteamMultiBlockBaseGui(this);
