@@ -40,7 +40,6 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.objects.XSTR;
@@ -164,7 +163,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 .style(EnumChatFormatting.GOLD)
                 .marginTop(8)
                 .align(Alignment.TopCenter))
-            .child(ButtonWidget.panelCloseButton());
+            .child(
+                ButtonWidget.panelCloseButton()
+                    .background(GTGuiTextures.BUTTON_FOUNDRY));
 
         Flow contributorColumn = Flow.column()
             .coverChildren()
@@ -260,8 +261,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     private static Widget<?> createSerenibyssEntry() {
-        IKey key = IKey.dynamic(GTValues.AuthorSerenibyss)
-            .alignment(Alignment.CenterLeft);
+        IKey key = IKey.str("serenibyss")
+            .alignment(Alignment.CenterLeft)
+            .color(0xFFFFA3FB);
         String url = "https://github.com/Roadhog360/Et-Futurum-Requiem/pull/673#issuecomment-3649833976";
         return new ButtonWidget<>().background(key)
             .anchorLeft(0)
@@ -433,8 +435,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         t.setAutoUpdate(true);
                     })
                     .overlay(new DynamicDrawable(() -> {
-                        // todo make red when required tier is not available
                         if (moduleSync.getIntValue() == FoundryModules.UNSET.ordinal()) {
+                            int reqTier = Math.max(1, index);
+                            if (tierSync.getIntValue() < reqTier) {
+                                return GTGuiTextures.PICTURE_PLUS_RED;
+                            }
                             return GuiTextures.ADD;
                         }
                         return new ItemDrawable(
@@ -459,12 +464,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         return true;
                     })
                     .marginRight(2))
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + FoundryModules.getModule(moduleSync.getIntValue()).shorthand))
-                            .scale(0.5f)
-                            .size(20, 16));
+            .child(new TextWidget<>(IKey.dynamic(() -> {
+                int reqTier = Math.max(1, index);
+                if (tierSync.getIntValue() < reqTier) {
+                    return EnumChatFormatting.WHITE + "N/A";
+                }
+                return EnumChatFormatting.WHITE + FoundryModules.getModule(moduleSync.getIntValue()).shorthand;
+            })).scale(0.5f)
+                .size(20, 16));
 
     }
 
