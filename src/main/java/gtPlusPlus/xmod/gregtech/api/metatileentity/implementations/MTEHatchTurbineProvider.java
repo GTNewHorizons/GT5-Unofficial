@@ -7,6 +7,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -18,6 +22,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -41,7 +46,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETurbineHousingGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
