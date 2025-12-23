@@ -64,6 +64,11 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     }
 
     @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex == SLOT_FILTER;
+    }
+
+    @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return (aIndex == this.SLOT_FILTER && isAirFilter(aStack));
