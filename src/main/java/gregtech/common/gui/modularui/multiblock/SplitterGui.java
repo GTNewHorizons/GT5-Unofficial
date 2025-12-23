@@ -49,10 +49,10 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton( syncManager));
+        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(syncManager));
     }
 
-    protected ButtonWidget<?> createRulesButton( PanelSyncManager syncManager) {
+    protected ButtonWidget<?> createRulesButton(PanelSyncManager syncManager) {
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
             if (!popupPanel.isPanelOpen()) {
@@ -69,12 +69,12 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = new ModularPanel("gt:splitter:rules_manager");
+        ModularPanel ui = new ModularPanel("gt:splitter:rules_manager").child(ButtonWidget.panelCloseButton());
 
         ListWidget<IWidget, ?> list = new ListWidget<>();
         list.childSeparator(IIcon.EMPTY_2PX);
         list.size(168, 138);
-        //button size + padding
+        // button size + padding
         list.pos(0, 16 + 5);
 
         // Add existing rules
