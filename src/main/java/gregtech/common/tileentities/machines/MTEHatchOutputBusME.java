@@ -112,7 +112,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     boolean hadCell = false;
     boolean blackList = false;
 
-    boolean cacheMode = false;
+    volatile boolean cacheMode = false;
     boolean isCached = false;
 
     @Nullable
