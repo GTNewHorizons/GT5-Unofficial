@@ -6,17 +6,16 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import gregtech.common.gui.modularui.hatch.MTEHatchCapacitorGui;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -31,6 +30,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchCapacitorGui;
 import tectech.Reference;
 import tectech.TecTech;
 import tectech.loader.ConfigHandler;
@@ -124,7 +124,7 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new  MTEHatchCapacitorGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchCapacitorGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -211,7 +211,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
         private final String unlocalizedName;
         private final long tier, current, energyMax;
-
 
         CapacitorComponent(String is, long tier, long current, long energyMax) {
             unlocalizedName = is;
