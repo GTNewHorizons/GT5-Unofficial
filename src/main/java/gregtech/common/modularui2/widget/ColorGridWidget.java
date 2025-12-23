@@ -115,7 +115,7 @@ public class ColorGridWidget extends Column {
      */
     public ColorGridWidget build() {
         createButtonRows();
-        coverChildren().childPadding(buttonSize);
+        coverChildren().childPadding(buttonPadding);
         return this;
     }
 
@@ -127,7 +127,9 @@ public class ColorGridWidget extends Column {
                 short[] colors = dye.getRGBA();
                 row.child(createToggleButton(Color.argb(colors[0], colors[1], colors[2], 255), ((i * 4) + j)));
             }
-            this.child(row.childPadding(buttonPadding));
+            this.child(
+                row.childPadding(buttonPadding)
+                    .coverChildren());
         }
     }
 
