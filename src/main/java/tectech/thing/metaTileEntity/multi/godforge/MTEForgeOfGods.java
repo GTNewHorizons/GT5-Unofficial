@@ -166,7 +166,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
         return HatchElementBuilder.<MTEForgeOfGods>builder()
             .atLeast(ModuleElement.VALUES[moduleIndex])
             .casingIndex(TEXTURE_INDEX)
-            .dot(2)
+            .hint(2)
             .buildAndChain(GodforgeCasings, 0);
     }
 
