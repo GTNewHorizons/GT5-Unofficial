@@ -120,8 +120,7 @@ public class TextureSet {
         SET_PROTOHALKONITE = new TextureSet("protohalkonite", true),
         SET_HOT_EXOHALKONITE = new TextureSet("hotexohalkonite", true),
         SET_EXOHALKONITE = new TextureSet("exohalkonite", true),
-        SET_SG_CRYSTAL_SLURRY = new TextureSet("sgcrystalfluid", true),
-        SET_RHUGNOR = new TextureSet("rhugnor", true),
+        SET_SG_CRYSTAL_SLURRY = new TextureSet("sgcrystalfluid", true), SET_RHUGNOR = new TextureSet("rhugnor", true),
         SET_HYPOGEN = new TextureSet("hypogen", false);
 
     /**
