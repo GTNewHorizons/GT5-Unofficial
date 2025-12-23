@@ -115,7 +115,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             ofChain(
                 buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .build(),
                 onElementPass(it -> it.casing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement(

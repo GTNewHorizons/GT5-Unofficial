@@ -116,7 +116,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
-                    .dot(2)
+                    .hint(2)
                     .cacheHint(() -> "Lens Housing")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
@@ -127,7 +127,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.LensIndicator)
-                        .dot(3)
+                        .hint(3)
                         .cacheHint(() -> "Lens Indicator")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
@@ -139,7 +139,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
-                        .dot(1)
+                        .hint(1)
                         .cacheHint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
