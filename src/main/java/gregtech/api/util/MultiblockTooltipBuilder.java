@@ -1191,7 +1191,7 @@ public class MultiblockTooltipBuilder {
         // create the final arrays
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
-        // e.getKey() - 1 because 1 dot is meta 0.
+        // e.getKey() - 1 because 1 hint is meta 0.
         hArray = Stream.concat(
             hLines.stream(),
             hBlocks.asMap()

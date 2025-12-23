@@ -148,7 +148,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_HEATER)
                         .build()),
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
@@ -173,7 +173,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .hatchClass(MTEHatchInput.class)
-                    .dot(2)
+                    .hint(2)
                     .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Coolant)")
                     .casingIndex(CASING_INDEX_TOWER)
@@ -184,7 +184,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                     .hatchClass(MTEHatchInput.class)
-                    .dot(3)
+                    .hint(3)
                     .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (Plasma)")
                     .casingIndex(CASING_INDEX_HEATER)
