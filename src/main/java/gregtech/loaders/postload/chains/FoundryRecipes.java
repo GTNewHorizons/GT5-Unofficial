@@ -343,7 +343,7 @@ public class FoundryRecipes {
                     Materials.Space.getMolten(4_000_000), Materials.PhononMedium.getFluid(1_000_000) },
                 ItemList.Universal_Collapser_ExoFoundry.get(1),
                 60 * SECONDS,
-                (int) TierEU.RECIPE_UXV); // <-- maybe make this MAX voltage
+                (int) TierEU.RECIPE_UXV);
         }
     }
 }

@@ -2629,7 +2629,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
-gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Hypercooler Casing to drain from!
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
 

@@ -69,6 +69,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -289,14 +290,15 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('q', ofBlock(GregTechAPI.sBlockCasings8,14))
         .addElement('r', ofFrame(Materials.InfinityCatalyst))
         .addElement('s', ofBlock(GregTechAPI.sBlockGlass1,3))
-        .addElement('t',  buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
-            .adder(MTEExoFoundry::addCoolantInputToMachineList)
-            .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
-            .hint(2)
-            .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
+        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
         .addElement('u', ofSheetMetal(Materials.CallistoIce))
         .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
-        .addElement('w',lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))) // TODO: replace with MVF casing after rework
+        // TODO: replace with MVF casing after rework
+        .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
+                .adder(MTEExoFoundry::addCoolantInputToMachineList)
+                .casingIndex(TAE.getIndexFromPage(2, 10))
+                .hint(2)
+                .buildAndChain(lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))))
         .addShape(
             FoundryModules.HELIOCAST_REINFORCEMENT.structureID,
             transpose(
@@ -851,7 +853,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private boolean shouldRender = true;
     private boolean renderInitialized;
     private static IModelCustomExt ring;
-    private static IModelCustomExt uniRing;
     private static ShaderProgram ringProgram;
     private int uGlowColor;
     // -1 -> uninitialized; 0 -> inactive
@@ -860,48 +861,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-        /*
-         * testing unit vectors
-         * GL11.glPushMatrix();
-         * GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-         * GL11.glTranslated(x + 0.5F, y+0.5f, z + 0.5F);
-         * GL11.glDisable(GL11.GL_LIGHTING);
-         * GL11.glDisable(GL11.GL_TEXTURE_2D);
-         * GL11.glColor4f(1F, 1F, 1F, 1F);
-         * Tessellator tessellator = Tessellator.instance;
-         * tessellator.startDrawing(GL11.GL_LINES);
-         * GL11.glLineWidth(15);
-         * // x unit
-         * tessellator.setColorRGBA_F(1, 0, 0, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(4, 0, 0);
-         * // y unit
-         * tessellator.setColorRGBA_F(0, 1, 0, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(0, 4, 0);
-         * // z unit
-         * tessellator.setColorRGBA_F(0, 0, 1, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(0, 0, 4);
-         * tessellator.draw();
-         * applyRotation();
-         * GL11.glColor4f(1F, 1F, 1F, 1F);
-         * tessellator.startDrawing(GL11.GL_LINES);
-         * GL11.glLineWidth(25);
-         * tessellator.setColorRGBA_F(1, 1, 1, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(0, 10, 0);
-         * tessellator.draw();
-         * GL11.glPopAttrib();
-         * GL11.glPopMatrix();
-         */
-
-        // if (!getBaseMetaTileEntity().isActive()) {
-        // lastInactiveTime = 0;
-        // return;
-        // }
-
-        if (!shouldRender) return; // || !getBaseMetaTileEntity().isActive()
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
+            lastInactiveTime = 0;
+            return;
+        }
 
         // Do a cool startup animation
         if (lastInactiveTime <= 0) {
@@ -947,8 +910,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
         // float multiplier = 1 - (1 / (time + 1));
         float multiplier = 1;
-        for (FoundryModules module : foundryData.modules) {// FoundryModules.values()) {
-            // if (i == tier + 1) return;
+        for (FoundryModules module : foundryData.modules) {
+            if (i == foundryData.tier + 1) return;
             if (module == FoundryModules.UNSET) {
                 i++;
                 continue;
@@ -991,13 +954,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 //        );
 
         //ring.setVertexFormat(DefaultVertexFormat.POSITION);
-        //todo: fix all of this lol
-        uniRing = (IModelCustomExt) AdvancedModelLoader.loadModel(
-            new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ringbaby2.obj"
-            )
-        );
 
 
         try {
@@ -1018,15 +974,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private void renderRing(int index, float red, float green, float blue) {
         GL11.glPushMatrix();
         GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1, 1.2f, 1);
+        GL11.glScalef(0.8f, 1.2f, 0.8f);
         GL20.glUniform3f(uGlowColor, red, green, blue);
         ring.renderAllVBO();
         GL11.glPopMatrix();
     }
 
     private void renderUniversiumRing(int index, boolean bloom) {
-        // if (bloom) return;
-        // todo: stars on this render, not showing up for some reason
         final UniversiumShader shader = UniversiumShader.getInstance();
         if (bloom) {
             shader
@@ -1050,7 +1004,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glPushMatrix();
         GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1, 1.2f, 1);
+        GL11.glScalef(0.8f, 1.2f, 0.8f);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -1060,7 +1014,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         UniversiumShader.clear();
 
         GL11.glPopAttrib();
-
     }
 
     @Override
