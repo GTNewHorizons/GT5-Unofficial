@@ -21,6 +21,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
@@ -48,6 +50,8 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTESteamMultiBlockBaseGui;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -184,6 +188,11 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTESteamMultiBlockBaseGui(this);
     }
 
     public int getThemeTier() {
