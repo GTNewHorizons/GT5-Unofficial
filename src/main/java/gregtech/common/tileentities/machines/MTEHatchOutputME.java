@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
@@ -484,27 +483,12 @@ public class MTEHatchOutputME extends MTEHatchOutput
         if (!isActive() || fluidCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
         try {
-            IMEInventory<IAEFluidStack> sg = (cacheMode && cell != null) ? cell.getInternalHandler()
+            IMEInventory<IAEFluidStack> sg = (cacheMode && cell != null) ? cell
                 : proxy.getStorage()
                     .getFluidInventory();
             for (IAEFluidStack s : fluidCache) {
                 if (s.getStackSize() == 0) continue;
                 IAEFluidStack rest = fluidAEInsert(proxy.getEnergy(), sg, s, getRequest());
-                if (this.getProxy()
-                    .isActive()) {
-                    final IAEFluidStack diff = s.copy();
-                    if (rest != null) {
-                        diff.decStackSize(rest.getStackSize());
-                    }
-                    if (diff.getStackSize() != 0) {
-                        this.getProxy()
-                            .getStorage()
-                            .postAlterationOfStoredItems(
-                                StorageChannel.ITEMS,
-                                ImmutableList.of(diff),
-                                this.getRequest());
-                    }
-                }
                 if (rest != null && rest.getStackSize() > 0) {
                     s.setStackSize(rest.getStackSize());
                     continue;
@@ -922,7 +906,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
     public List<IMEInventoryHandler> getCellArray(final StorageChannel channel) {
         if (cacheMode && this.getProxy()
             .isActive() && channel == StorageChannel.FLUIDS) {
-            if (cell != null) return Collections.singletonList(cell);
+            if (cellRead != null) return Collections.singletonList(cellRead);
         }
         return Collections.emptyList();
     }
