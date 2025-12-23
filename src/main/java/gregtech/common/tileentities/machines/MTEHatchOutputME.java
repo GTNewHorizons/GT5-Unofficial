@@ -11,8 +11,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import appeng.api.config.Upgrades;
+import appeng.api.implementations.items.IUpgradeModule;
+import appeng.items.storage.ItemBasicStorageCell;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,6 +98,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     List<String> lockedFluids = new ArrayList<>();
 
     boolean hadCell = false;
+    boolean blackList = false;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
@@ -144,7 +149,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             boolean isOk = false;
 
             for (String lockedFluid : lockedFluids) {
-                if (lockedFluid.equals(
+                if (blackList ^ lockedFluid.equals(
                     aFluid.getFluid()
                         .getName())) {
                     isOk = true;
@@ -173,7 +178,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         for (String lockedFluid : lockedFluids) {
-            if (lockedFluid.equals(
+            if (blackList ^ lockedFluid.equals(
                 fluidStack.getFluid()
                     .getName())) {
                 return true;
@@ -199,6 +204,18 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             hadCell = true;
 
             if (this.mMode == 0) {
+                IInventory upgrades = fcbc.getUpgradesInventory(upgradeItemStack);
+                for (int i = 0; i < upgrades.getSizeInventory(); i++) {
+                    ItemStack is = upgrades.getStackInSlot(i);
+                    if (is != null) {
+                        Upgrades u = ((IUpgradeModule) is.getItem()).getType(is);
+                        if (u == Upgrades.INVERTER) {
+                            blackList = true;
+                            break;
+                        }
+                    }
+                }
+
                 CellConfig cfg = (CellConfig) fcbc.getConfigAEInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
@@ -238,7 +255,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         if (lastClickedPlayer != null) {
                             GTUtility.sendChatToPlayer(
                                 lastClickedPlayer,
-                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder));
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder) + "\nMode: " + (this.blackList ? "Blacklist" : "Whitelist"));
                         }
 
                         this.mMode = 10;
@@ -632,6 +649,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
+        aNBT.setBoolean("blackList", blackList);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -670,6 +688,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         baseCapacity = aNBT.getLong("baseCapacity");
         if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
         hadCell = aNBT.getBoolean("hadCell");
+        blackList = aNBT.getBoolean("blackList");
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
     }
