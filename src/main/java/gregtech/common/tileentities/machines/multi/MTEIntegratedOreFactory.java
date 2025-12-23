@@ -101,25 +101,25 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             'E',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(Energy, Maintenance)
                 .casingIndex(CASING_INDEX1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputBus)
                 .casingIndex(CASING_INDEX1)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'W',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputHatch, Muffler)
                 .casingIndex(CASING_INDEX2)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'O',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
                 .casingIndex(CASING_INDEX2)
-                .dot(4)
+                .hint(4)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .build();
 

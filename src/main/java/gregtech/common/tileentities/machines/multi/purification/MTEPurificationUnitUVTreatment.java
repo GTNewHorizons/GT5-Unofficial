@@ -116,7 +116,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
-                    .dot(2)
+                    .hint(2)
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
         // Lens indicator hatch
@@ -126,7 +126,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.LensIndicator)
-                        .dot(3)
+                        .hint(3)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 ofBlock(GregTechAPI.sBlockCasings9, 12)))
@@ -137,7 +137,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 // Naquadria-reinforced Water Plant Casing

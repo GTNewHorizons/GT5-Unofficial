@@ -76,7 +76,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             buildHatchAdder(MTETranscendentPlasmaMixer.class)
                 .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
                 .casingIndex(DIM_INJECTION_CASING)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
@@ -280,8 +280,6 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             ownerUUID = processInitialSettings(aBaseMetaTileEntity);
         }
     }
-
-    private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {

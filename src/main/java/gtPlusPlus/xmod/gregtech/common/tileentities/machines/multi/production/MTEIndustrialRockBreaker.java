@@ -117,7 +117,7 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
                     buildHatchAdder(MTEIndustrialRockBreaker.class)
                         .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.GTPP_INDEX(16))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0))))
                 .addElement('H', ofBlock(ModBlocks.blockCasings2Misc, 11))
                 .build();

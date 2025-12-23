@@ -23,7 +23,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -197,8 +196,7 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        if (!Configuration.visual.useGregtechTextures || this.blockMaterial == null
-            || this.thisBlock == BlockTypes.ORE) {
+        if (this.blockMaterial == null || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";

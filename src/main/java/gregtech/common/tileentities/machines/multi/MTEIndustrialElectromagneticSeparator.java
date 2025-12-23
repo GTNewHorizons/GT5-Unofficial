@@ -137,7 +137,7 @@ public class MTEIndustrialElectromagneticSeparator
                 buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                     .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(
                             MTEIndustrialElectromagneticSeparator::onCasingAdded,
@@ -149,7 +149,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(MTEHatchMagnet.class)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                .dot(2)
+                .hint(2)
                 .build())
         .build();
 

@@ -196,7 +196,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                                 .negate()
                             : s -> true)
                     .casingIndex(CASING_TEXTURE_ID)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(LSC_PART, CASING_META))))
         .addElement('g', chainAllGlasses(GLASS_TIER_UNSET, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(

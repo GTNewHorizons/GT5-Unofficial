@@ -84,7 +84,7 @@ public class MTEVoidMiners {
             .addElement(
                 'E',
                 buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(Casings.MiningOsmiridiumCasing.getTextureId())
                     .buildAndChain(Casings.MiningOsmiridiumCasing.asElement()))
             // for compatibility with the old structure #TODO remove for 2.9
@@ -98,7 +98,7 @@ public class MTEVoidMiners {
             .addElement(
                 'H',
                 buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(8)
                     .buildAndChain(
                         ItemList.Casing_UV.getBlock(),
@@ -245,7 +245,7 @@ public class MTEVoidMiners {
             .addElement(
                 'F',
                 buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(Casings.MiningBlackPlutoniumCasing.getTextureId())
                     .buildAndChain(Casings.MiningBlackPlutoniumCasing.asElement()))
             // for compatibility with the old structure #TODO remove for 2.9
@@ -259,7 +259,7 @@ public class MTEVoidMiners {
             .addElement(
                 'H',
                 buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(179)
                     .buildAndChain(
                         ItemList.Casing_MiningBlackPlutonium.getBlock(),
@@ -405,7 +405,7 @@ public class MTEVoidMiners {
             .addElement(
                 'F',
                 buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(Casings.MiningNeutroniumCasing.getTextureId())
                     .buildAndChain(Casings.MiningNeutroniumCasing.asElement()))
             // for compatibility with the old structure #TODO remove for 2.9
@@ -419,7 +419,7 @@ public class MTEVoidMiners {
             .addElement(
                 'H',
                 buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(178)
                     .buildAndChain(
                         ItemList.Casing_MiningNeutronium.getBlock(),

@@ -24,7 +24,7 @@ public class TextureSet {
         TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
         TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
         TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
+        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
         TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
@@ -41,7 +41,7 @@ public class TextureSet {
         "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
         "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
         "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
-        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", aTextVoidDir, aTextVoidDir, aTextVoidDir,
+        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", "/sheetmetal", aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
         "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
         aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
@@ -63,7 +63,9 @@ public class TextureSet {
         SET_EMERALD = new TextureSet("EMERALD"), SET_DIAMOND = new TextureSet("DIAMOND"),
         SET_LIGNITE = new TextureSet("LIGNITE"), SET_MAGNETIC = new TextureSet("MAGNETIC"),
         SET_METALLIC = new TextureSet("METALLIC"), SET_NETHERSTAR = new TextureSet("NETHERSTAR"),
-        SET_GEM_VERTICAL = new TextureSet("GEM_VERTICAL"), SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL");
+        SET_GEM_VERTICAL = new TextureSet("GEM_VERTICAL"), SET_GEM_HORIZONTAL = new TextureSet("GEM_HORIZONTAL"),
+        SET_REFINED = new TextureSet("REFINED"), SET_GEM_A = new TextureSet("GEM_A"),
+        SET_NUCLEAR = new TextureSet("NUCLEAR");
 
     /**
      * Custom Texture Sets for more clean code
@@ -77,7 +79,8 @@ public class TextureSet {
         SET_ELECTROTINE = new TextureSet("electrotine", false), SET_REDSTONE = new TextureSet("redstone", false),
         SET_GLOWSTONE = new TextureSet("glowstone", false), SET_PYROTHEUM = new TextureSet("pyrotheum", false),
         SET_CRYOTHEUM = new TextureSet("cryotheum", false), SET_BLAZE = new TextureSet("blaze", false),
-        SET_BLIZZ = new TextureSet("blizz", false);
+        SET_BLIZZ = new TextureSet("blizz", false), SET_RHUGNOR = new TextureSet("rhugnor", true),
+        SET_HYPOGEN = new TextureSet("hypogen", false);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.

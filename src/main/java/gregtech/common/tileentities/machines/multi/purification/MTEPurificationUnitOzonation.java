@@ -85,7 +85,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                     t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
                         .atLeastList(ImmutableList.of(InputHatch, OutputHatch, OutputBus))
                         .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 10))
-                        .dot(1)
+                        .hint(1)
                         .build()),
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 10))))
         // High Pressure Resistant Casing (possibly placeholder name)
@@ -102,7 +102,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                 t -> GTStructureUtility.<MTEPurificationUnitOzonation>buildHatchAdder()
                     .atLeast(InputHatch)
                     .casingIndex(getTextureIndex(GregTechAPI.sBlockCasings9, 9))
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 9))))
         .build();
 

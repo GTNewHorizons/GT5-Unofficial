@@ -19,15 +19,19 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -626,6 +630,8 @@ public class Material implements IOreMaterial {
                 this.vChemicalFormula = "??";
             }
 
+            this.textureSet = setTextureSet(set, vTier);
+
             if (generateFluid) {
                 final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();
                 FluidStack aTest = FluidUtils.getWildcardFluidStack(defaultLocalName, 1);
@@ -664,8 +670,6 @@ public class Material implements IOreMaterial {
                     }
                 }
             }
-
-            this.textureSet = setTextureSet(set, vTier);
 
             if (TinkerConstruct.isModLoaded() && this.materialState == MaterialState.SOLID) {
                 if (this.getProtons() >= 98 || this.getComposites()
@@ -1498,7 +1502,8 @@ public class Material implements IOreMaterial {
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells);
+                this.vGenerateCells,
+                this);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
             return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
@@ -1509,7 +1514,8 @@ public class Material implements IOreMaterial {
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells);
+                this.vGenerateCells,
+                this);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils.generateGas(
                 unlocalizedName,
@@ -1761,6 +1767,17 @@ public class Material implements IOreMaterial {
         return tryFindGregtechMaterialEquivalent(this);
     }
 
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return tryFindGregtechMaterialEquivalent();
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        // This is really unreliable but it's also gt++ so there isn't a better solution
+        return getComponentByPrefix(prefix, 1) != null;
+    }
+
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
         String aMaterialName = aMaterial.getDefaultLocalName();
         Materials aGregtechMaterial = Materials.get(aMaterialName);
@@ -1785,6 +1802,21 @@ public class Material implements IOreMaterial {
 
     public void setWerkstoffID(short werkstoffID) {
         this.werkstoffID = werkstoffID;
+    }
+
+    @Override
+    public boolean contains(SubTag aTag) {
+        return false;
+    }
+
+    @Override
+    public ISubTagContainer add(SubTag... aTags) {
+        throw new UnsupportedOperationException("GT++ does not implement subtags");
+    }
+
+    @Override
+    public boolean remove(SubTag aTag) {
+        return false;
     }
 
     public void addTooltip(List<String> list) {

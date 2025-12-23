@@ -20,7 +20,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
@@ -86,7 +85,7 @@ public class MaterialUtils {
             TextureSet iconSet = null;
             if (aCustomTextures == null) {
                 if (material.isRadioactive()) {
-                    iconSet = TextureSets.NUCLEAR.get();
+                    iconSet = TextureSet.SET_NUCLEAR;
                 } else {
                     iconSet = material.mIconSet;
                 }
