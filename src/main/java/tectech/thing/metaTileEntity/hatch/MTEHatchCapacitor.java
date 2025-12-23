@@ -6,6 +6,11 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import gregtech.common.gui.modularui.hatch.MTEHatchCapacitorGui;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -113,6 +118,16 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new  MTEHatchCapacitorGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
     public int getSizeInventory() {
         return getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
     }
@@ -197,9 +212,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
         private final String unlocalizedName;
         private final long tier, current, energyMax;
 
-        CapacitorComponent(ItemStack is, long tier, long current, long energyMax) {
-            this(TTUtility.getUniqueIdentifier(is), tier, current, energyMax);
-        }
 
         CapacitorComponent(String is, long tier, long current, long energyMax) {
             unlocalizedName = is;
