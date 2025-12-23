@@ -324,6 +324,7 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
         .build();
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = fullImageColorableGT("overlay_slot/int_circuit");
+    public static final UITexture OVERLAY_SLOT_CIRCUIT = fullImage(GregTech.ID, "gui/overlay_slot/circuit");
     public static final UITexture OVERLAY_SLOT_FURNACE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/furnace")
         .fullImage()
