@@ -40,7 +40,7 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
 
     private static Textures.BlockIcons.CustomIcon TM_H;
     private static Textures.BlockIcons.CustomIcon TM_H_ACTIVE;
-    private static final Map<String, MTEHatchCapacitor.CapacitorComponent> componentBinds = new HashMap<>();
+    public static final Map<String, MTEHatchCapacitor.CapacitorComponent> componentBinds = new HashMap<>();
 
     public MTEHatchCapacitor(int aID, String aName, String aNameRegional, int aTier) {
         super(
