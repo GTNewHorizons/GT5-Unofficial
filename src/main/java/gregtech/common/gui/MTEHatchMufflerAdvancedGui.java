@@ -19,15 +19,13 @@ public class MTEHatchMufflerAdvancedGui extends MTEHatchBaseGui<MTEHatchMufflerA
     @Override
     protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
         syncManager.registerSlotGroup("filter_slot", 1);
-        return super.createContentHolderRow(panel, syncManager)
-            .child(
-                new ItemSlot().slot(
-                    new ModularSlot(hatch.inventoryHandler, 0).slotGroup("filter_slot")
-                        .filter((a) -> hatch.isAirFilter(a)
-                        )
-                )            .align(Alignment.CENTER)
+        return super.createContentHolderRow(panel, syncManager).child(
+            new ItemSlot().slot(
+                new ModularSlot(hatch.inventoryHandler, 0).slotGroup("filter_slot")
+                    .filter((a) -> hatch.isAirFilter(a)))
+                .align(Alignment.CENTER)
 
-            );
+        );
 
     }
 }
