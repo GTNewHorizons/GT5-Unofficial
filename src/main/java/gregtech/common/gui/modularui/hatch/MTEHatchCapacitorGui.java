@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 
@@ -28,7 +29,8 @@ public class MTEHatchCapacitorGui extends MTEHatchBaseGui<MTEHatchCapacitor> {
                 .key(
                     'x',
                     i -> new ItemSlot()
-                        .slot(new ModularSlot(hatch.inventoryHandler, i).slotGroup("capacitor_inventory")))
+                        .slot(new ModularSlot(hatch.inventoryHandler, i).slotGroup("capacitor_inventory"))
+                        .overlay(GTGuiTextures.OVERLAY_SLOT_CHARGER))
                 .build()
                 .coverChildren()
                 .align(Alignment.Center));
