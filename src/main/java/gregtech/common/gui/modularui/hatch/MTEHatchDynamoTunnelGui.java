@@ -28,6 +28,10 @@ public class MTEHatchDynamoTunnelGui extends MTEHatchBaseGui<MTEHatchDynamoMulti
                 .child(
                     IKey.str(StatCollector.translateToLocal("GT5U.machines.laser_hatch.amperage"))
                         .asWidget())
-                .child(new TextFieldWidget().value(new IntSyncValue(hatch::getAmperes, hatch::setAmperes))));
+                .child(
+                    new TextFieldWidget().value(new IntSyncValue(hatch::getAmperes, hatch::setAmperes))
+
+                        .setNumbers(() -> 0, () -> hatch.maxAmperes)
+                        .setDefaultNumber(0)));
     }
 }

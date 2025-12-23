@@ -207,7 +207,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
     }
 
 }
