@@ -965,6 +965,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
         final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getChannel());
         ih.setPriority(this.myPriority);
+        ih.setBaseAccess(myAccess);
 
         final OutputMonitorHandler<StackType> g = new OutputMonitorHandler<>(ih);
         g.addListener(new OutputNetNotifier(h.getChannel()), g);
