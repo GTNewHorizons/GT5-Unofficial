@@ -16,10 +16,6 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -165,29 +161,6 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
             }
         }
         return new long[] { tier, tCurrent, tEnergyMax };
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
-
-                    @Override
-                    public int getSlotStackLimit() {
-                        return 1;
-                    }
-
-                    @Override
-                    public boolean isEnabled() {
-                        return !getBaseMetaTileEntity().isActive();
-                    }
-                })
-                .background(getGUITextureSet().getItemSlot())
-                .build()
-                .setPos(52, 7));
     }
 
     public static void run() {
