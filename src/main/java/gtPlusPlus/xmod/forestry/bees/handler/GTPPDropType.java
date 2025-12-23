@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.handler;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.material.Material;
@@ -47,8 +48,12 @@ public enum GTPPDropType {
         this.mShowInList = false;
     }
 
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("gtplusplus.drop." + this.mNameUnlocal);
+    }
+
     public String getName() {
-        return GTLanguageManager.getTranslation("gtplusplus.drop." + this.mNameUnlocal);
+        return this.mName + " Drop";
     }
 
     public int[] getColours() {

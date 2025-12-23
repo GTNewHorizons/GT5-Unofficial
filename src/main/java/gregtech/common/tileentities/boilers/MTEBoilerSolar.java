@@ -19,25 +19,22 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolar extends MTEBoiler {
 
     public static final String LPS_FMT = "%s L/s";
-    private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
-        "gt.blockmachines.boiler.solar.desc.format",
-        "Steam Power by the Sun%n" + "Produces %sL of Steam per second%n"
-            + "Calcifies over time, reducing Steam output to %sL/s%n"
-            + "Break and replace to descale");
     protected int calcificationTicks = MachineStats.bronzeSolarBoiler.calcificationTicks;
     protected int cooldownTicks = MachineStats.bronzeSolarBoiler.cooldownTicks;
     protected int maxOutputPerSecond = MachineStats.bronzeSolarBoiler.maxOutputPerSecond;
@@ -60,12 +57,10 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getDescription() {
-        return String
-            .format(
-                localizedDescFormat,
-                GTUtility.formatNumbers(getMaxOutputPerSecond()),
-                GTUtility.formatNumbers(getMinOutputPerSecond()))
-            .split("\\R");
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.boiler.solar.desc",
+            GTUtility.formatNumbers(getMaxOutputPerSecond()),
+            GTUtility.formatNumbers(getMinOutputPerSecond()));
     }
 
     public int getMinOutputPerSecond() {

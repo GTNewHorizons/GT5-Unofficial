@@ -9,12 +9,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 
@@ -72,7 +72,7 @@ public class DroneConnection {
     }
 
     public String getCustomName(boolean localized) {
-        if (localized) return GTLanguageManager.getTranslation("gt.blockmachines." + unlocalizedName + ".name");
+        if (localized) return StatCollector.translateToLocal("gt.blockmachines." + unlocalizedName + ".name");
         return customName;
     }
 

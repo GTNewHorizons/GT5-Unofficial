@@ -9,12 +9,14 @@ import java.util.Map;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
@@ -63,6 +65,7 @@ public class MaterialUtils {
 
         try {
             String name = material.mName;
+            final String defaultLocalName = material.mDefaultLocalName;
             final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
             final int melting = material.mMeltingPoint;
             final int boiling = material.mBlastFurnaceTemp;
@@ -99,7 +102,7 @@ public class MaterialUtils {
             boolean mGenerateCell = false;
             boolean mGenerateFluid = true;
             MaterialState materialState;
-            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mChemicalFormula));
+            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.getChemicalTooltip()));
             final Element element = material.mElement;
 
             // Weird Blacklist of Bad Chemical Strings
@@ -144,6 +147,7 @@ public class MaterialUtils {
                     || (material == Materials.InfusedWater))) {
                 Material M = new Material(
                     name,
+                    defaultLocalName,
                     materialState,
                     iconSet,
                     durability,
@@ -344,12 +348,12 @@ public class MaterialUtils {
         if (!aFormattedLangName.startsWith(" ")) {
             if (aFormattedLangName.contains("@")) {
                 String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalizedName() + " " + aSplit[1];
+                aFormattedLangName = aSplit[0] + " " + aMaterial.getDefaultLocalName() + " " + aSplit[1];
             }
         }
 
         if (aFormattedLangName.equals(aType.getName())) {
-            aFormattedLangName = aMaterial.getLocalizedName() + aFormattedLangName;
+            aFormattedLangName = aMaterial.getDefaultLocalName() + aFormattedLangName;
         }
 
         Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
@@ -368,5 +372,23 @@ public class MaterialUtils {
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
         return aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL)
             || aGregtechMaterial.mName.equals(Materials._NULL.mName);
+    }
+
+    public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {
+        GTLanguageManager
+            .addStringLocalization(getMaterialLocalizedNameKey(materialNameForKey), materialDefaultLocalName);
+    }
+
+    public static void generateMaterialLocalizedName(String name) {
+        generateMaterialLocalizedName(name, name);
+    }
+
+    public static String getMaterialLocalizedName(String defaultName) {
+        return StatCollector.translateToLocal(getMaterialLocalizedNameKey(defaultName));
+    }
+
+    public static String getMaterialLocalizedNameKey(String materialName) {
+        return "Material." + materialName.toLowerCase()
+            .replaceAll("[^a-zA-Z0-9]", "");
     }
 }

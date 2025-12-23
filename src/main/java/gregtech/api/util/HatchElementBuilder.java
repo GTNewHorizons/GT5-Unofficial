@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -87,9 +88,13 @@ public class HatchElementBuilder<T> {
                         .collect(Collectors.toList()))
                     .cacheHint(
                         () -> Arrays.stream(elements)
-                            .map(IHatchElement::name)
+                            .map(IHatchElement::getDisplayName)
                             .sorted()
-                            .collect(Collectors.joining(" or ", "of type ", "")));
+                            .collect(
+                                Collectors.joining(
+                                    StatCollector.translateToLocal("gt.hatch_element_or"),
+                                    StatCollector.translateToLocal("gt.hatch_element_of_type"),
+                                    "")));
     }
 
     /**
@@ -177,9 +182,13 @@ public class HatchElementBuilder<T> {
                     .cacheHint(
                         () -> elements.keySet()
                             .stream()
-                            .map(IHatchElement::name)
+                            .map(IHatchElement::getDisplayName)
                             .sorted()
-                            .collect(Collectors.joining(" or ", "of type ", "")));
+                            .collect(
+                                Collectors.joining(
+                                    StatCollector.translateToLocal("gt.hatch_element_or"),
+                                    StatCollector.translateToLocal("gt.hatch_element_of_type"),
+                                    "")));
     }
     // endregion
 
@@ -331,7 +340,7 @@ public class HatchElementBuilder<T> {
     // region intermediate
     public HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
         return hatchItemFilter(c -> is -> clazz.isInstance(ItemMachines.getMetaTileEntity(is)))
-            .cacheHint(() -> "of class " + clazz.getSimpleName())
+            .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_class") + clazz.getSimpleName())
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
                     .isInstance(t.getMetaTileEntity()));
@@ -348,7 +357,11 @@ public class HatchElementBuilder<T> {
             () -> list.stream()
                 .map(Class::getSimpleName)
                 .sorted()
-                .collect(Collectors.joining(" or ", "of class ", "")))
+                .collect(
+                    Collectors.joining(
+                        StatCollector.translateToLocal("gt.hatch_element_or"),
+                        StatCollector.translateToLocal("gt.hatch_element_of_class"),
+                        "")))
             .shouldSkip(
                 (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null && list.stream()
                     .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())));
@@ -357,7 +370,7 @@ public class HatchElementBuilder<T> {
     public HatchElementBuilder<T> hatchId(int aId) {
         return hatchItemFilter(
             c -> is -> GTUtility.isStackValid(is) && is.getItem() instanceof ItemMachines && is.getItemDamage() == aId)
-                .cacheHint(() -> "of id " + aId)
+                .cacheHint(() -> StatCollector.translateToLocal("gt.hatch_element_of_id") + aId)
                 .shouldSkip(
                     (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
                         && t.getMetaTileID() == aId);
@@ -373,7 +386,11 @@ public class HatchElementBuilder<T> {
                     () -> Arrays.stream(coll.toArray())
                         .sorted()
                         .mapToObj(String::valueOf)
-                        .collect(Collectors.joining(" or ", "of id ", "")))
+                        .collect(
+                            Collectors.joining(
+                                StatCollector.translateToLocal("gt.hatch_element_or"),
+                                StatCollector.translateToLocal("gt.hatch_element_of_id"),
+                                "")))
                     .shouldSkip(
                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
                             && coll.contains(t.getMetaTileID()));
@@ -467,8 +484,6 @@ public class HatchElementBuilder<T> {
                 if (mHint != null) return mHint;
                 String tHint = mHatchItemType.get();
                 if (tHint == null) return "?";
-                // TODO move this to some .lang instead of half ass it into the crappy gt lang file
-                tHint = GTLanguageManager.addStringLocalization("Hatch_Type_" + tHint.replace(' ', '_'), tHint);
                 if (mCacheHint) {
                     mHint = tHint;
                     if (mHint != null)
