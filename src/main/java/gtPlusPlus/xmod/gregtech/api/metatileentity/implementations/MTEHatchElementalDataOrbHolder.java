@@ -1,9 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-
 import java.util.ArrayList;
 
-import gregtech.common.gui.modularui.hatch.MTEHatchElementalDataOrbHolderGui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchElementalDataOrbHolderGui;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -193,7 +192,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-      return new MTEHatchElementalDataOrbHolderGui(this).build(data, syncManager, uiSettings);
+        return new MTEHatchElementalDataOrbHolderGui(this).build(data, syncManager, uiSettings);
     }
 
 }
