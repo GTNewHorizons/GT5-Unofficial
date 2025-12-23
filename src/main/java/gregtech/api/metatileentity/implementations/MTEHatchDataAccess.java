@@ -134,7 +134,7 @@ public class MTEHatchDataAccess extends MTEHatch implements IAddUIWidgets {
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
     }
 
     @Override

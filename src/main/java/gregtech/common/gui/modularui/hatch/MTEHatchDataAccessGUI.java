@@ -9,9 +9,11 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.items.MetaBaseItem;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.items.behaviors.BehaviourDataStick;
 
 public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
 
@@ -61,7 +63,15 @@ public class MTEHatchDataAccessGUI extends MTEHatchBaseGui<MTEHatchDataAccess> {
             .key(
                 'x',
                 i -> new ItemSlot().background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_CIRCUIT)
-                    .slot(new ModularSlot(hatch.inventoryHandler, i).slotGroup("data")
+                    .slot(
+                        new ModularSlot(hatch.inventoryHandler, i).slotGroup("data")
+                            .filter((item) -> {
+                                if (item == null) return false;
+                                if (item.getItem() instanceof MetaBaseItem item1) {
+                                    return item1.forEachBehavior(item, b -> b instanceof BehaviourDataStick);
+                                }
+                                return false;
+                            })
 
                     ))
             .build()
