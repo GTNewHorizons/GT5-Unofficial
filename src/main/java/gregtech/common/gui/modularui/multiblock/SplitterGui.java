@@ -49,10 +49,10 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(parent, syncManager));
+        return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton( syncManager));
     }
 
-    protected ButtonWidget<?> createRulesButton(ModularPanel panel, PanelSyncManager syncManager) {
+    protected ButtonWidget<?> createRulesButton( PanelSyncManager syncManager) {
         IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
         return new ButtonWidget<>().onMousePressed(mouseButton -> {
             if (!popupPanel.isPanelOpen()) {
@@ -74,7 +74,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         ListWidget<IWidget, ?> list = new ListWidget<>();
         list.childSeparator(IIcon.EMPTY_2PX);
         list.size(168, 138);
-        list.pos(4, 21);
+        //button size + padding
+        list.pos(0, 16 + 5);
 
         // Add existing rules
         for (Map.Entry<Integer, Splitter.ColorRule> entry : multiblock.colorMap.entrySet()) {
@@ -152,7 +153,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .pos(80, 5)
                     .size(8, 8))
-            .size(166, 58)
+            .size(166, 60)
             .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
     }
 
