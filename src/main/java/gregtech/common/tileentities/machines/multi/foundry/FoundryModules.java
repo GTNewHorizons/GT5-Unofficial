@@ -1,15 +1,14 @@
 package gregtech.common.tileentities.machines.multi.foundry;
 
+import java.awt.*;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
-
-import java.awt.*;
 
 public enum FoundryModules {
 
@@ -104,7 +103,7 @@ public enum FoundryModules {
     private static final FoundryModules[] lookupArray = values();
 
     private FoundryModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
-                           Color c, EnumChatFormatting color, int voltageTier) {
+        Color c, EnumChatFormatting color, int voltageTier) {
         this.displayName = display;
         this.shorthand = shortname;
         this.structureID = structid;

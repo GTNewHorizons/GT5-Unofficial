@@ -30,7 +30,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomTonemapShader;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -55,7 +54,6 @@ import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShad
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -943,14 +941,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 // The shader should technically blend the main color + bloom color together, but I probably messed up
                 // somewhere, so the color is too oversaturated if I do that, and I can't be bothered with fixing it
                 // ¯\_(ツ)_/¯
-                renderStandardRing(i,
-                    0,
-                    0,
-                    0
-                );
+                renderStandardRing(i, 0, 0, 0);
             }
-
-
 
             i++;
         }
