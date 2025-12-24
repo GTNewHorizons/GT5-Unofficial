@@ -80,7 +80,7 @@ public class TextureSet {
         SET_GLOWSTONE = new TextureSet("glowstone", false), SET_PYROTHEUM = new TextureSet("pyrotheum", false),
         SET_CRYOTHEUM = new TextureSet("cryotheum", false), SET_BLAZE = new TextureSet("blaze", false),
         SET_BLIZZ = new TextureSet("blizz", false), SET_RHUGNOR = new TextureSet("rhugnor", true),
-        SET_HYPOGEN = new TextureSet("hypogen", false);
+        SET_HYPOGEN = new TextureSet("hypogen", true);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
