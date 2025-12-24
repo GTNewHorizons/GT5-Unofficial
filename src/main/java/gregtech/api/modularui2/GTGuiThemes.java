@@ -322,4 +322,8 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
+    public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
+        .parent(TECTECH_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+        .build();
 }
