@@ -1,5 +1,9 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -346,6 +350,22 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     @Override
     public boolean willExplodeInRain() {
         return false;
+    }
+
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.INTERGALACTIC_STANDARD;
+    }
+
+    @Override
+    protected MTEMultiBlockBaseGui<?> getGui() {
+        return new TileEntityModuleBaseGui<>(this);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     /**
