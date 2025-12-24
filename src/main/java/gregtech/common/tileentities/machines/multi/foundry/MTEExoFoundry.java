@@ -640,6 +640,17 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         return false;
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMTE, long aTick) {
+        super.onPostTick(baseMTE, aTick);
+        if (baseMTE.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates approx every 30 sec as disconnected structure pieces do not send updates on change
+            if (mUpdate <= -550) mUpdate = 50;
+
+        }
+    }
+
     private boolean checkModules() {
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
             FoundryModules m = foundryData.modules[i];
