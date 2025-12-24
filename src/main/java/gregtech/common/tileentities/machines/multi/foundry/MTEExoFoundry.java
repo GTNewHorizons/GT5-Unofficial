@@ -30,6 +30,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomTonemapShader;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -865,25 +866,37 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private boolean renderInitialized;
     private static IModelCustomExt ring;
     private static ShaderProgram ringProgram;
-    private int uGlowColor;
-    // -1 -> uninitialized; 0 -> inactive
-    private long lastInactiveTime = -1;
-    private VertexBuffer starRing;
+    private int uRingColor;
+
+    private void initializeRender() {
+        // spotless:off
+        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
+            new ResourceLocation(
+                GregTech.resourceDomain,
+                "textures/model/foundry_ring.obj"
+            )
+        );
+
+
+        try {
+            ringProgram = new ShaderProgram(
+                GregTech.resourceDomain,
+                "shaders/foundry.vert.glsl",
+                "shaders/foundry.frag.glsl"
+            );
+            uRingColor = ringProgram.getUniformLocation("u_Color");
+        } catch (Exception e) {
+            GTMod.GT_FML_LOGGER.error(e.getMessage());
+            return;
+        }
+        renderInitialized = true;
+        // spotless:on
+    }
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
-            lastInactiveTime = 0;
             return;
-        }
-
-        // Do a cool startup animation
-        if (lastInactiveTime <= 0) {
-            if (lastInactiveTime == 0) {
-                lastInactiveTime = System.currentTimeMillis();
-            } else {
-                lastInactiveTime = System.currentTimeMillis() - 60_000;
-            }
         }
 
         if (!renderInitialized) {
@@ -897,30 +910,20 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     @Override
     public void render(Object none) {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-        ringProgram.use();
-
-        renderRingsDebug(false);
+        renderRings(false);
 
         BloomShader.getInstance()
             .bindFramebuffer();
 
-        renderRingsDebug(true);
+        renderRings(true);
 
         BloomShader.unbind();
         ShaderProgram.clear();
     }
 
-    @Override
-    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x - 10, y - 10, z - 10, x + 10, y + 40, z + 10);
-    }
-
-    private void renderRingsDebug(boolean bloom) {
+    private void renderRings(boolean bloom) {
         int i = 0;
-        float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
-        // float multiplier = 1 - (1 / (time + 1));
-        float multiplier = 1;
+        GL11.glColor4f(1, 1, 1, 1);
         for (FoundryModules module : foundryData.modules) {
             if (i == foundryData.tier + 1) return;
             if (module == FoundryModules.UNSET) {
@@ -929,66 +932,34 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             }
             if (module == FoundryModules.UNIVERSAL_COLLAPSER) {
                 renderUniversiumRing(i, bloom);
-                ringProgram.use();
                 i++;
                 continue;
             }
 
-            if (!bloom) {
-                // renderRing(
-                // i,
-                // FoundryModules.tonemap(module.red), // TODO does this even do anything bor
-                // FoundryModules.tonemap(module.green),
-                // FoundryModules.tonemap(module.blue));
-
-                renderRing(i, 0, 0, 0);
+            if (bloom) {
+                renderStandardRing(i, module.red, module.green, module.blue);
             } else {
-                renderRing(i, module.red * multiplier, module.green * multiplier, module.blue * multiplier);
+                // Render a black color in the non-bloom pass
+                // The shader should technically blend the main color + bloom color together, but I probably messed up
+                // somewhere, so the color is too oversaturated if I do that, and I can't be bothered with fixing it
+                // ¯\_(ツ)_/¯
+                renderStandardRing(i,
+                    0,
+                    0,
+                    0
+                );
             }
+
+
+
             i++;
         }
     }
 
-    private void initializeRender() {
-        // spotless:off
-        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
-            new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ring.obj"
-            )
-        );
-//        starRing = WavefrontVBOBuilder.compileToVBO(
-//            new ResourceLocation(
-//                GregTech.resourceDomain,
-//                "textures/model/foundry_ring.obj"
-//            )
-//        );
-
-        //ring.setVertexFormat(DefaultVertexFormat.POSITION);
-
-
-        try {
-            ringProgram = new ShaderProgram(
-                GregTech.resourceDomain,
-                "shaders/foundry.vert.glsl",
-                "shaders/foundry.frag.glsl"
-            );
-            uGlowColor = ringProgram.getUniformLocation("u_Color");
-        } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(e.getMessage());
-            return;
-        }
-        renderInitialized = true;
-        // spotless:on
-    }
-
-    private void renderRing(int index, float red, float green, float blue) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(0.8f, 1.2f, 0.8f);
-        GL20.glUniform3f(uGlowColor, red, green, blue);
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
+    private void renderStandardRing(int index, float red, float green, float blue) {
+        ringProgram.use();
+        GL20.glUniform3f(uRingColor, red, green, blue);
+        renderRing(index);
     }
 
     private void renderUniversiumRing(int index, boolean bloom) {
@@ -996,35 +967,39 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (bloom) {
             shader
                 .setBackgroundColor(
-                    FoundryModules.UNIVERSAL_COLLAPSER.red / 2.5f,
-                    FoundryModules.UNIVERSAL_COLLAPSER.green / 2.5f,
-                    FoundryModules.UNIVERSAL_COLLAPSER.blue / 2.5f)
+                    FoundryModules.UNIVERSAL_COLLAPSER.red,
+                    FoundryModules.UNIVERSAL_COLLAPSER.green,
+                    FoundryModules.UNIVERSAL_COLLAPSER.blue)
                 .setStarColor(24);
         } else {
+            // Color needs to be enabled here to make the stars not blurry
             shader.setBackgroundColor(0, 0, 0)
-                .setStarColor(0, 0, 0, 4, 4, 4);
+                .setStarColor(3);
         }
-        shader.setLightLevel(1)
-            .use();
-
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        shader.use();
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-
-        GL11.glColor4f(1, 1, 1, 1);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(0.8f, 1.2f, 0.8f);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
-        UniversiumShader.clear();
+        renderRing(index);
 
-        GL11.glPopAttrib();
+        UniversiumShader.clear();
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+    }
+
+    private void renderRing(int index) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
+        GL11.glScalef(0.8f, 1.2f, 0.8f);
+        ring.renderAllVAO();
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x - 10, y + 7, z - 10, x + 10, y + 44, z + 10);
     }
 
     @Override
