@@ -129,11 +129,19 @@ public final class GTTextureIds {
     public static final String PICTURE_RADIATION_SHUTTER_INSIDE = "bartworks:picture_bw_shutter_frame_inside";
     public static final String PICTURE_EXOFOUNDRY_BASE = "gregtech:picture_exofoundry_base";
     public static final String PICTURE_EXOFOUNDRY_UNSET = "gregtech:picture_exofoundry_unset";
-    public static final String PICTURE_EXOFOUNDRY_HR = "gregtech:picture_exofoundry_harmonic_reinforcement";
+    public static final String PICTURE_EXOFOUNDRY_HR = "gregtech:picture_exofoundry_heliocast_reinforcement";
     public static final String PICTURE_EXOFOUNDRY_HC = "gregtech:picture_exofoundry_hyper_cooler";
     public static final String PICTURE_EXOFOUNDRY_TDS = "gregtech:picture_exofoundry_time_dilation_system";
     public static final String PICTURE_EXOFOUNDRY_EOC = "gregtech:picture_exofoundry_efficient_overclock";
     public static final String PICTURE_EXOFOUNDRY_ECB = "gregtech:picture_exofoundry_extra_casting_basins";
     public static final String PICTURE_EXOFOUNDRY_SLC = "gregtech:picture_exofoundry_streamlined_casters";
     public static final String PICTURE_EXOFOUNDRY_PES = "gregtech:picture_exofoundry_power_efficient_subsystems";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_PES_EOC = "gregtech:picture_exofoundry_pair_pes_eoc";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_PES_EOC_ACTIVE = "gregtech:picture_exofoundry_pair_pes_eoc_active";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_ECB_SLC = "gregtech:picture_exofoundry_pair_ecb_slc";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE = "gregtech:picture_exofoundry_pair_ecb_slc_active";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_UC_HC = "gregtech:picture_exofoundry_pair_uc_hc";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_UC_HC_ACTIVE = "gregtech:picture_exofoundry_pair_uc_hc_active";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF = "gregtech:picture_exofoundry_pair_hr_self";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF_ACTIVE = "gregtech:picture_exofoundry_pair_hr_self_active";
 }

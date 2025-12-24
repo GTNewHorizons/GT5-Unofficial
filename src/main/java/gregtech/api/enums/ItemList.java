@@ -1521,7 +1521,7 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_ExoFoundry,
     Glass_ExoFoundry,
-    Casing_ExoFoundry,
+    Primary_Casing_ExoFoundry,
     Secondary_Casing_ExoFoundry,
     Central_Casing_ExoFoundry,
     Magnetic_Chassis_T1_ExoFoundry,
@@ -1530,10 +1530,10 @@ public enum ItemList implements IItemContainer {
     Streamlined_Casters_ExoFoundry,
     Power_Efficient_Subsystems_ExoFoundry,
     Extra_Casting_Basins_ExoFoundry,
-    Harmonic_Reinforcement_ExoFoundry,
+    Heliocast_Reinforcement_ExoFoundry,
     Hypercooler_ExoFoundry,
     Efficient_Overclocking_ExoFoundry,
-    Active_Time_Dilation_System_ExoFoundry,
+    Universal_Collapser_ExoFoundry,
 
     Casing_Reinforced_Wood,
 

@@ -1535,19 +1535,6 @@ public class RecipeLoader2 {
             .eut(1_500_000_000)
             .metadata(COIL_HEAT, 13500)
             .addTo(plasmaForgeRecipes);
-
-        GTValues.RA.stdBuilder() // todo: good recipe, im out of ideas lol
-            .itemInputs(
-                ItemList.Radiator_Fluid_Solidifier.get(4),
-                ItemList.Naquarite_Universal_Insulator_Foil.get(8),
-                ItemList.FluidRegulator_UHV.get(4),
-                ItemList.Field_Generator_UHV.get(1))
-            .fluidInputs(Materials.TungstenCarbide.getMolten(5760), Materials.NaquadahEnriched.getMolten(5760))
-            .itemOutputs(ItemList.Central_Casing_ExoFoundry.get(4))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .addTo(preciseAssemblerRecipes);
     }
 
     public static float EHEEfficiencyMultiplier = 0.9f;

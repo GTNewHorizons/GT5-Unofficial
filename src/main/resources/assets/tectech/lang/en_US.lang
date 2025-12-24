@@ -1268,7 +1268,6 @@ fog.cosmetics.importer.apply.tooltip=Apply imported Star Color to color editor
 fog.cosmetics.importer.reset=Reset
 fog.cosmetics.importer.reset.tooltip=Reset imported Star Color
 
-
 # Optical Circuits
 achievement.gt.metaitem.03.32155=Optical Assembly
 achievement.gt.metaitem.03.32156=Optical Computer

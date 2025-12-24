@@ -1,30 +1,36 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.enums.GTValues.formattingCodes;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.IntValue;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -41,23 +47,25 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryData;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 
 public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
+    private final FoundryData calculatorData;
+    private boolean usingPreview = false;
+
     public MTEExoFoundryGui(MTEExoFoundry base) {
         super(base);
+        calculatorData = base.foundryData.copy();
+        calculatorData.tier = 3; // to allow testing with any module combination regardless of structure
     }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        // values modified include: Parallels, Speed Bonus, Eu EFF, OC Factor.
-        syncManager.syncValue("Speed", new StringSyncValue(multiblock::getSpeedStr));
-        syncManager.syncValue("Parallels", new StringSyncValue(multiblock::getParallelsString));
-        syncManager.syncValue("EuEFF", new StringSyncValue(multiblock::getEuEFFString));
-        syncManager.syncValue("OCFactor", new StringSyncValue(multiblock::getOCFactorString));
+
         syncManager.syncValue(
             "Module1",
             new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
@@ -70,11 +78,33 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         syncManager.syncValue(
             "Module4",
             new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
+        syncManager.syncValue(
+            "Tier",
+            new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
+
+        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
+        syncManager.syncValue("UsingPreview", usingPreviewSync);
+        syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
+            calculatorData.setModule(0, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
+        syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
+            calculatorData.setModule(1, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
+        syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
+            calculatorData.setModule(2, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
+        syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
+            calculatorData.setModule(3, val);
+            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+        }));
     }
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(parent, syncManager).child(createConfigButton(syncManager, parent));
+        return super.createRightPanelGapRow(parent, syncManager).child(createConfigButton());
     }
 
     @Override
@@ -88,7 +118,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
-            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .overlay(GTGuiTextures.FOUNDRY_CALCULATOR)
             .onMousePressed(d -> {
                 if (!statsPanel.isPanelOpen()) {
                     statsPanel.openPanel();
@@ -103,10 +133,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler contribPanel = syncManager.panel(
-            "contributorsPanel",
-            (p_syncManager, syncHandler) -> openContributorsPanel(p_syncManager, parent, syncManager),
-            true);
+        IPanelHandler contribPanel = syncManager
+            .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
         return new ButtonWidget<>().size(18)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
@@ -125,10 +153,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             });
     }
 
-    private ModularPanel openContributorsPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-        PanelSyncManager syncManager) {
+    private ModularPanel openContributorsPanel(ModularPanel parent) {
         ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
-            .size(getBasePanelWidth(), getBasePanelHeight())
+            .size(getBasePanelWidth(), getBasePanelHeight() + 20)
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
         panel.child(
             IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
@@ -136,7 +163,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 .style(EnumChatFormatting.GOLD)
                 .marginTop(8)
                 .align(Alignment.TopCenter))
-            .child(ButtonWidget.panelCloseButton());
+            .child(
+                ButtonWidget.panelCloseButton()
+                    .background(GTGuiTextures.BUTTON_FOUNDRY));
 
         Flow contributorColumn = Flow.column()
             .coverChildren()
@@ -147,6 +176,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             createContributorSection(
                 "GT5U.gui.text.foundry.projectlead",
                 createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
+        contributorColumn.child(createContributorSection("GT5U.gui.text.foundry.programming", createSerenibyssEntry()));
 
         contributorColumn.child(
             createContributorSection(
@@ -230,17 +260,59 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .anchorLeft(0);
     }
 
+    private static Widget<?> createSerenibyssEntry() {
+        IKey key = IKey.str("serenibyss")
+            .alignment(Alignment.CenterLeft)
+            .color(0xFFFFA3FB);
+        String url = "https://github.com/Roadhog360/Et-Futurum-Requiem/pull/673#issuecomment-3649833976";
+        return new ButtonWidget<>().background(key)
+            .anchorLeft(0)
+            .size(80, 9)
+            .onMousePressed(d -> {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                        try {
+                            desktop.browse(new URI(url));
+                        } catch (IOException | URISyntaxException ignored) {}
+                    }
+                }
+                return true;
+            })
+            .tooltip(t -> {
+                t.scale(0.8f);
+                t.addLine(EnumChatFormatting.DARK_GRAY + "Click to open a Github link");
+            });
+    }
+
     private ModularPanel openInfoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
         PanelSyncManager syncManager) {
-        StringSyncValue speedSync = syncManager.findSyncHandler("Speed", StringSyncValue.class);
-        StringSyncValue parallelSync = syncManager.findSyncHandler("Parallels", StringSyncValue.class);
-        StringSyncValue euEffBaseSync = syncManager.findSyncHandler("EuEFF", StringSyncValue.class);
-        StringSyncValue ocFactorSync = syncManager.findSyncHandler("OCFactor", StringSyncValue.class);
+        IntSyncValue moduleSync0 = syncManager.findSyncHandler("Module1", IntSyncValue.class);
+        IntSyncValue moduleSync1 = syncManager.findSyncHandler("Module2", IntSyncValue.class);
+        IntSyncValue moduleSync2 = syncManager.findSyncHandler("Module3", IntSyncValue.class);
+        IntSyncValue moduleSync3 = syncManager.findSyncHandler("Module4", IntSyncValue.class);
+
+        BooleanSyncValue usingPreviewSync = syncManager.findSyncHandler("UsingPreview", BooleanSyncValue.class);
+        IntSyncValue moduleCalc0 = syncManager.findSyncHandler("Module1Calc", IntSyncValue.class);
+        IntSyncValue moduleCalc1 = syncManager.findSyncHandler("Module2Calc", IntSyncValue.class);
+        IntSyncValue moduleCalc2 = syncManager.findSyncHandler("Module3Calc", IntSyncValue.class);
+        IntSyncValue moduleCalc3 = syncManager.findSyncHandler("Module4Calc", IntSyncValue.class);
+
+        IntValue.Dynamic tierDyn = new IntValue.Dynamic(() -> calculatorData.tier, val -> calculatorData.tier = val);
+
         return new ModularPanel("statsPanel").relative(parent)
             .rightRel(1)
             .topRel(0)
-            .size(130, 120)
+            .size(150, 150)
             .widgetTheme("backgroundPopup")
+            .onCloseAction(() -> {
+                // Reset preview for next time in case the panel is reopened before the GUI is closed
+                moduleCalc0.setIntValue(moduleSync0.getIntValue());
+                moduleCalc1.setIntValue(moduleSync1.getIntValue());
+                moduleCalc2.setIntValue(moduleSync2.getIntValue());
+                moduleCalc3.setIntValue(moduleSync3.getIntValue());
+                usingPreviewSync.setBoolValue(false);
+            })
             .child(
                 new Column().sizeRel(1)
                     .paddingTop(4)
@@ -248,32 +320,63 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         new TextWidget<>("Stats").alignment(Alignment.TopCenter)
                             .height(9))
                     .widgetTheme("backgroundPopup")
-                    .child(
-                        IKey.dynamic(() -> "Speed: " + TooltipHelper.SPEED_COLOR + speedSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
+                    })
+                        .asWidget()
+                        .left(4)
+                        .size(120, 20)
+                        .marginBottom(2))
 
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + data.getParallelsString();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2)
+                        .left(4))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2)
+                        .left(4))
+                    .child(IKey.dynamic(() -> {
+                        FoundryData data = usingPreviewSync.getBoolValue() ? calculatorData : multiblock.foundryData;
+                        return "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + data.getOCFactorString();
+                    })
+                        .asWidget()
+                        .size(120, 20)
+                        .marginBottom(2)
+                        .left(4))
                     .child(
-                        IKey.dynamic(
-                            () -> "Parallels Per Tier: " + TooltipHelper.PARALLEL_COLOR + parallelSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
+                        new Row().size(120, 20)
+                            .childPadding(1)
+                            .marginBottom(2)
+                            .child(createModuleSelectButton(p_syncManager, parent, 0, moduleCalc0, tierDyn, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 1, moduleCalc1, tierDyn, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 2, moduleCalc2, tierDyn, true))
+                            .child(createModuleSelectButton(p_syncManager, parent, 3, moduleCalc3, tierDyn, true)))
+                    .child(IKey.dynamic(() -> {
+                        if (usingPreviewSync.getBoolValue()) {
+                            return EnumChatFormatting.RED + "Showing Preview Modules";
+                        }
+                        return EnumChatFormatting.GREEN + "Showing Installed Modules";
+                    })
+                        .scale(0.9f)
+                        .asWidget()
+                        .size(120, 20)
+                        .alignX(0.5f))
                     .child(
-                        IKey.dynamic(() -> "EU Consumption: " + TooltipHelper.EFF_COLOR + euEffBaseSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2))
-                    .child(
-                        IKey.dynamic(() -> "OC Factor: " + EnumChatFormatting.LIGHT_PURPLE + ocFactorSync.getValue())
-                            .asWidget()
-                            .size(120, 20)
-                            .marginBottom(2)));
-
+                        createPairHoldingColumn(calculatorData, true).right(4)
+                            .alignY(0.2f)));
     }
 
-    protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
+    protected IWidget createConfigButton() {
         return new ButtonWidget<>().size(18, 18)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
@@ -305,52 +408,76 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .collapseDisabledChild())
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager))
-
-            );
+                        createTerminalRightCornerColumn(panel, syncManager)));
     }
 
-    protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index) {
+    protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index,
+        IIntValue<Integer> moduleSync, IIntValue<Integer> tierSync, boolean isStats) {
         IPanelHandler selectPanel = syncManager.panel(
-            "moduleSelectPanel" + index,
-            (p_syncManager, syncHandler) -> openModuleConfigPanel(p_syncManager, parent, syncManager, index),
+            "moduleSelectPanel" + index + (isStats ? "stats" : ""),
+            (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats),
             true);
 
-        IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
         return new Row().size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)
             .child(
                 new ButtonWidget<>().size(16, 16)
                     .tooltipBuilder(t -> {
                         t.addLine("Select Module " + (index + 1));
-                        createTooltipForModule(t, moduleSync.getIntValue());
+
+                        int reqTier = Math.max(1, index);
+                        if (tierSync.getIntValue() >= reqTier) {
+                            createTooltipForModule(t, moduleSync.getIntValue());
+                            t.addLine(EnumChatFormatting.GRAY + "Shift-click to unset");
+                        } else {
+                            t.addLine(EnumChatFormatting.RED + "Requires Tier " + reqTier + " Chassis");
+                        }
                         t.setAutoUpdate(true);
                     })
-                    .tooltipShowUpTimer(TOOLTIP_DELAY)
-                    .overlay(GuiTextures.ADD)
+                    .overlay(new DynamicDrawable(() -> {
+                        if (moduleSync.getIntValue() == FoundryModules.UNSET.ordinal()) {
+                            int reqTier = Math.max(1, index);
+                            if (tierSync.getIntValue() < reqTier) {
+                                return GTGuiTextures.PICTURE_PLUS_RED;
+                            }
+                            return GuiTextures.ADD;
+                        }
+                        return new ItemDrawable(
+                            FoundryModules.getModule(moduleSync.getIntValue())
+                                .getItemIcon());
+                    }))
                     .onMousePressed(d -> {
-                        if (!selectPanel.isPanelOpen()) {
-                            selectPanel.openPanel();
+                        int reqTier = Math.max(1, index);
+                        if (tierSync.getIntValue() < reqTier) {
+                            return true;
+                        }
+                        if (Interactable.hasShiftDown()) {
+                            moduleSync.setIntValue(FoundryModules.UNSET.ordinal());
                         } else {
-                            selectPanel.closePanel();
-                            selectPanel.closeSubPanels();
+                            if (!selectPanel.isPanelOpen()) {
+                                selectPanel.openPanel();
+                            } else {
+                                selectPanel.closePanel();
+                                selectPanel.closeSubPanels();
+                            }
                         }
                         return true;
                     })
                     .marginRight(2))
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + FoundryModules.getModule(moduleSync.getIntValue()).shorthand))
-                            .scale(0.5f)
-                            .size(20, 16));
+            .child(new TextWidget<>(IKey.dynamic(() -> {
+                int reqTier = Math.max(1, index);
+                if (tierSync.getIntValue() < reqTier) {
+                    return EnumChatFormatting.WHITE + "N/A";
+                }
+                return EnumChatFormatting.WHITE + FoundryModules.getModule(moduleSync.getIntValue()).shorthand;
+            })).scale(0.5f)
+                .size(20, 16));
 
     }
 
-    private ModularPanel openModuleConfigPanel(PanelSyncManager p_syncManager, ModularPanel parent,
-        PanelSyncManager syncManager, int index) {
-        IntSyncValue moduleSync = syncManager.findSyncHandler("Module" + (index + 1), IntSyncValue.class);
-        return new ModularPanel("moduleSelectPanel" + index) {
+    private ModularPanel openModuleConfigPanel(ModularPanel parent, int index, IIntValue<Integer> moduleSync,
+        boolean isStats) {
+        ModularPanel panel = new ModularPanel("moduleSelectPanel" + index + (isStats ? "stats" : "")) {
 
             @Override
             public boolean disablePanelsBelow() {
@@ -361,8 +488,9 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             public boolean closeOnOutOfBoundsClick() {
                 return true;
             }
+        };
 
-        }.relative(parent)
+        panel.relative(parent)
             .leftRel(1)
             .topRel(0)
             .size(140, 130)
@@ -390,115 +518,321 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);
+                                        panel.closeIfOpen();
                                         return true;
                                     }))
                             .build()
                             .topRel(0.5f)
                             .leftRel(0.4f)));
+        return panel;
     }
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
         FoundryModules module = FoundryModules.getModule(moduleIndex);
         String name = module.color + module.displayName;
         t.addLine(name);
-        t.textColor(Color.WHITE.main);
+        t.textColor(Color.GREY.main);
         switch (module) {
             case UNSET -> t.addLine("Empty");
             case POWER_EFFICIENT_SUBSYSTEMS -> {
                 t.addLine(
-                    "Subtracts " + TooltipHelper.EFF_COLOR
-                        + "10%"
-                        + EnumChatFormatting.RESET
-                        + " from Initial EU Cost");
-                t.addLine("Multiplies EU cost by " + TooltipHelper.EFF_COLOR + "0.8x");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip1",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip2",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.powerefficient.tooltip3",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.powerefficient.tooltip4"));
             }
             case EXTRA_CASTING_BASINS -> {
                 t.addLine(
-                    "Adds " + TooltipHelper.PARALLEL_COLOR
-                        + "12"
-                        + EnumChatFormatting.RESET
-                        + " Parallels per "
-                        + TooltipTier.VOLTAGE.getValue()
-                        + EnumChatFormatting.RESET
-                        + " tier");
-                t.addLine("Increases Hatch Space by " + EnumChatFormatting.GOLD + "36");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip1",
+                        TooltipTier.VOLTAGE.getValue()));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip2"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.parallel.tooltip3",
+                        TooltipTier.VOLTAGE.getValue()));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.parallel.tooltip4"));
             }
             case STREAMLINED_CASTERS -> {
-                t.addLine("Increases Base Speed by " + TooltipHelper.SPEED_COLOR + "150%");
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector
+                        .translateToLocal("gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3"));
             }
             case EFFICIENT_OC -> {
-                t.addLine(moduleLimitText);
-                t.addLine("Increases Overclock Factor by " + EnumChatFormatting.LIGHT_PURPLE + "0.25");
-            }
-            case HYPERCOOLER -> {
-                t.addLine(moduleLimitText);
+                t.addLine(createModuleLimitText());
                 t.addLine(
-                    "Consumes " + EnumChatFormatting.AQUA
-                        + "Cooling Fluid"
-                        + EnumChatFormatting.RESET
-                        + " for "
-                        + EnumChatFormatting.LIGHT_PURPLE
-                        + "Extra Overclocks"
-                        + EnumChatFormatting.RESET);
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip1"));
                 t.addLine(
-                    "Drains " + coolingStrOrder("100", "50", "25")
-                        + " L/s of "
-                        + coolingStrOrder("Super Coolant", "Spacetime", "Eternity")
-                        + " to gain "
-                        + coolingStrOrder("1", "2", "3")
-                        + " Maximum Overclocks");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.efficientoc.tooltip2",
+                        TooltipHelper.SPEED_COLOR));
                 t.addLine(
-                    "Only drains " + EnumChatFormatting.AQUA
-                        + "cooling fluid"
-                        + EnumChatFormatting.GRAY
-                        + " when the "
-                        + EnumChatFormatting.GOLD
-                        + "Foundry"
-                        + EnumChatFormatting.GRAY
-                        + " is active");
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip3"));
                 t.addLine(
-                    EnumChatFormatting.DARK_AQUA + "Requires an input hatch on any Hypercooler Casing to drain from!");
+                    StatCollector
+                        .translateToLocalFormatted("gt.blockmachines.multimachine.foundry.efficientoc.tooltip4"));
 
             }
-            case HARMONIC_REINFORCEMENT -> {
+            case HYPERCOOLER -> {
+                t.addLine(createModuleLimitText());
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip1"));
                 t.addLine(
-                    "Allows for " + EnumChatFormatting.LIGHT_PURPLE
-                        + "UIV+ Recipes"
-                        + EnumChatFormatting.RESET
-                        + " to be processed");
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.hypercooler.tooltip2",
+                        coolingStrOrder("100", "50"),
+                        coolingStrOrder("Super Coolant", "Spacetime"),
+                        coolingStrOrder("1", "2")));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip3"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip4"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip5"));
+                t.addLine(StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.hypercooler.tooltip6"));
+
             }
-            case ACTIVE_TIME_DILATION_SYSTEM -> {
-                t.addLine(moduleLimitText);
-                t.addLine("Multiplies Speed by " + TooltipHelper.SPEED_COLOR + "4x");
-                t.addLine("Multiplies EU Consumption by " + EnumChatFormatting.RED + "8x");
-                t.addLine("Reduces Hatch Space by " + EnumChatFormatting.GOLD + "20");
+            case HELIOCAST_REINFORCEMENT -> {
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5",
+                        TooltipHelper.EFF_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7",
+                        TooltipHelper.PARALLEL_COLOR,
+                        TooltipHelper.TIER_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10"));
+            }
+            case UNIVERSAL_COLLAPSER -> {
+                t.addLine(createModuleLimitText());
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3"));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4",
+                        TooltipHelper.SPEED_COLOR));
+                t.addLine(
+                    StatCollector.translateToLocalFormatted(
+                        "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5"));
             }
         }
         if (module != FoundryModules.UNSET) t.addLine(createTierLine(module.voltageTier));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        IntSyncValue moduleSync0 = syncManager.findSyncHandler("Module1", IntSyncValue.class);
+        IntSyncValue moduleSync1 = syncManager.findSyncHandler("Module2", IntSyncValue.class);
+        IntSyncValue moduleSync2 = syncManager.findSyncHandler("Module3", IntSyncValue.class);
+        IntSyncValue moduleSync3 = syncManager.findSyncHandler("Module4", IntSyncValue.class);
+        IntSyncValue tierSync = syncManager.findSyncHandler("Tier", IntSyncValue.class);
 
         return new Row().sizeRel(1)
             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
             .background(IDrawable.EMPTY)
-            .child(createFoundryDisplay(syncManager, parent))
+            .child(createFoundryDisplay(syncManager))
             // module selecting
             .child(
                 new Column().size(40, 80)
                     .background(IDrawable.EMPTY)
                     .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
                     .padding(4, 4, 5, 5)
-                    .child(createModuleSelectButton(syncManager, parent, 3))
-                    .child(createModuleSelectButton(syncManager, parent, 2))
-                    .child(createModuleSelectButton(syncManager, parent, 1))
-                    .child(createModuleSelectButton(syncManager, parent, 0)))
-
-        ;
-
+                    .child(createModuleSelectButton(syncManager, parent, 3, moduleSync3, tierSync, false))
+                    .child(createModuleSelectButton(syncManager, parent, 2, moduleSync2, tierSync, false))
+                    .child(createModuleSelectButton(syncManager, parent, 1, moduleSync1, tierSync, false))
+                    .child(createModuleSelectButton(syncManager, parent, 0, moduleSync0, tierSync, false)))
+            .child(createPairHoldingColumn(multiblock.foundryData, false).alignX(0.5f));
     }
 
-    private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager, ModularPanel parent) {
+    private Flow createPairHoldingColumn(FoundryData data, boolean hasBackground) {
+        Flow column = Flow.column()
+            .height(80)
+            .width(22)
+            .paddingTop(3)
+            .marginTop(3)
+            .background(hasBackground ? GTGuiTextures.BACKGROUND_GRAY_BORDER : IDrawable.EMPTY);
+        column.child(
+            new DynamicDrawable(
+                () -> data.isProductionPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_ECB_SLC).asWidget()
+                        .marginBottom(1)
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.optimumproduction.title"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    data.isProductionPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.activity.bonus"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.optimumproduction.tooltip1",
+                                    TooltipHelper.SPEED_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.optimumproduction.tooltip2",
+                                    TooltipHelper.PARALLEL_COLOR,
+                                    TooltipHelper.TIER_COLOR));
+                        }));
+        column.child(
+            new DynamicDrawable(
+                () -> data.isEfficiencyPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_PES_EOC_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_PES_EOC).asWidget()
+                        .marginBottom(1)
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.harmonicefficiency.title"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    data.isEfficiencyPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.activity.bonus"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2",
+                                    TooltipHelper.EFF_COLOR));
+                        }));
+        column.child(
+            new DynamicDrawable(
+                () -> data.isHRPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_HR_SELF_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_HR_SELF).asWidget()
+                        .marginBottom(1)
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.superstablecore.title"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    data.isHRPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip1"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip2"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip3",
+                                    TooltipHelper.SPEED_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip4",
+                                    TooltipHelper.EFF_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip5"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip6",
+                                    TooltipHelper.PARALLEL_COLOR,
+                                    TooltipHelper.TIER_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip7"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip8"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.superstablecore.tooltip9"));
+                        }));
+        column.child(
+            new DynamicDrawable(
+                () -> data.isEndPairPresent ? GTGuiTextures.EXOFOUNDRY_PAIR_UC_HC_ACTIVE
+                    : GTGuiTextures.EXOFOUNDRY_PAIR_UC_HC).asWidget()
+                        .tooltipTextColor(Color.GREY.main)
+                        .tooltipAutoUpdate(true)
+                        .tooltipDynamic(t -> {
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.title"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    data.isEndPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
+                                        : "GT5U.gui.text.foundry.pairings.activity.off"));
+                            t.addLine(
+                                StatCollector
+                                    .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.activity.bonus"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1"));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2",
+                                    TooltipHelper.SPEED_COLOR));
+                            t.addLine(
+                                StatCollector.translateToLocalFormatted(
+                                    "GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3"));
+
+                        }));
+        return column;
+    }
+
+    private ParentWidget<?> createFoundryDisplay(PanelSyncManager syncManager) {
         ParentWidget<?> parentWidget = new ParentWidget<>().coverChildren();
         IntSyncValue module1Sync = syncManager.findSyncHandler("Module1", IntSyncValue.class);
         IntSyncValue module2Sync = syncManager.findSyncHandler("Module2", IntSyncValue.class);
@@ -511,7 +845,6 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .child(
                 new Column().size(59, 80)
                     .pos(0, 0)
-
                     .child(
                         new Column().size(59, 40)
                             .paddingTop(8)
@@ -526,10 +859,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture)))
-
-                    )
-
+                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture))))
                     .child(
                         new Column().size(59, 40)
                             .paddingTop(7)
@@ -544,35 +874,27 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture))))
-
-            );
+                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture)))));
         return parentWidget;
     }
 
     // copied methods so I can avoid a public static in MTEExoFoundry
-    private String coolingStrOrder(String val1, String val2, String val3) {
+    private String coolingStrOrder(String val1, String val2) {
         return EnumChatFormatting.BLUE + val1
             + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.LIGHT_PURPLE
             + val2
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.GREEN
-            + val3
             + EnumChatFormatting.RESET;
     }
 
     private String createTierLine(int tier) {
-        return "Tier: " + GTUtility.getColoredTierNameFromTier((byte) tier);
+        return StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.multimachine.foundry.tier",
+            GTUtility.getColoredTierNameFromTier((byte) tier));
     }
 
-    private final static String moduleLimitText = "Limit of " + EnumChatFormatting.WHITE
-        + "1"
-        + EnumChatFormatting.RESET
-        + " Per "
-        + EnumChatFormatting.GOLD
-        + "Foundry";
-
+    private String createModuleLimitText() {
+        return StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.modulelimit");
+    }
 }

@@ -18,11 +18,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EXOFOUNDRY_GL
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.api.util.GTUtility.getTier;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,6 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -54,7 +54,6 @@ import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.BloomShad
 import com.gtnewhorizon.gtnhlib.client.renderer.postprocessing.shaders.UniversiumShader;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -69,6 +68,7 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -89,7 +89,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.gui.modularui.multiblock.MTEExoFoundryGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -114,37 +113,14 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private static final int depthOffset = 0;
 
     public boolean terminalSwitch = false;
-    private int tier = 0; // 1 - UEV , 2 - ~UIV, 3 - ~UXV
-    private final float speedModifierBase = 1.5F;
-    private final float euEffBase = 1.0F;
-    private final int parallelScaleBase = 16;
-    private final float ocFactorBase = 2.0F;
+
     private int additionalOverclocks = 0;
-    private boolean UIVRecipesEnabled = false;
-    private boolean hypercoolerPresent = false;
-    private boolean tdsPresent = false;
-    private boolean effOCPresent = false;
-    private boolean allowEternity = false;
+
+    public final FoundryData foundryData = new FoundryData();
 
     // modified values for display and calculations
-    private float ocFactorAdditive = 0.0F;
-    private float speedAdditive = 0.0F;
-    private float speedMultiplier = 1.0F;
-    private float speedModifierAdj = speedModifierBase;
-
-    private float euEffAdditive = 0.0F;
-    private float euEffMultiplier = 1.0F;
-    private float euEffAdj = euEffBase;
-
-    private int parallelScaleAdditive = 0;
-    private float parallelScaleMultiplier = 1.0F;
-    private float parallelScaleAdj = parallelScaleBase;
-
-    private int extraOverclocks = 0;
 
     // array of ordinals for nbt saving purposes
-    public FoundryModules[] modules = { FoundryModules.UNSET, FoundryModules.UNSET, FoundryModules.UNSET,
-        FoundryModules.UNSET };
     private final int[] moduleHorizontalOffsets = { 7, 7, 7, 7 };
     private final int[] moduleVerticalOffsets = { 12, 20, 38, 46 };
     private final int[] moduleDepthOffsets = { 0, 0, 0, 0 };
@@ -213,87 +189,6 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     {"      H~H      ","       D       ","       D       ","       D       ","       D       ","               ","H             H","BDDDD     DDDDB","H             H","               ","       D       ","       D       ","       D       ","       D       ","      HBH      "},
                     {"     HHHHH     ","   DDHHBHHDD   ","  D  HHBHH  D  "," D  HHHBHHH  D "," D HHHBHBHHH D ","HHHHHHBHBHHHHHH","HHHHBBHHHBBHHHH","HBBBHHHBHHHBBBH","HHHHBBHHHBBHHHH","HHHHHHBHBHHHHHH"," D HHHBHBHHH D "," D  HHHBHHH  D ","  D  HHBHH  D  ","   DDHHBHHDD   ","     HHHHH     "}
                 }))
-        .addShape(
-            FoundryModules.STREAMLINED_CASTERS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
-            {"     aTcTa     ","   caV   Vac   ","  cV       Vc  "," cV         Vc "," a           a ","aV           Va","T             T","c             c","T             T","aV           Va"," a           a "," cV         Vc ","  cV       Vc  ","   caV   Vac   ","     aTcTa     "},
-            {"     UUbUU     ","   bbb   bbb   ","  Ub       bU  "," bb         bb "," b           b ","Ub           bU","U             U","b             b","U             U","Ub           bU"," b           b "," bb         bb ","  Ub       bU  ","   bbb   bbb   ","     UUbUU     "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.POWER_EFFICIENT_SUBSYSTEMS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
-            {"     eddde     ","   fee   eef   ","               "," f           f "," e           e ","ee           ee","d             d","d             d","d             d","ee           ee"," e           e "," f           f ","               ","   fee   eef   ","     eddde     "},
-            {"     gfffg     ","   ddd   ddd   ","  gd       dg  "," dd         dd "," d           d ","gd           dg","f             f","f             f","f             f","gd           dg"," d           d "," dd         dd ","  gd       dg  ","   ddd   ddd   ","     gfffg     "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.EXTRA_CASTING_BASINS.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
-            {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
-            {"     mmlmm     ","   iimHHHmii   ","  h         h  "," i           i "," i           i ","mm           mm","mH           Hm","lH           Hl","mH           Hm","mm           mm"," i           i "," i           i ","  h         h  ","   iimHHHmii   ","     mmlmm     "},
-            {"     jhmhj     ","   jjhHHHhjj   ","  k         k  "," j           j "," j           j ","jh           hj","hH           Hh","mH           Hm","hH           Hh","jh           hj"," j           j "," j           j ","  k         k  ","   jjhHHHhjj   ","     jhmhj     "},
-            {"      jjj      ","      hhh      ","               ","               ","               ","               ","jh           hj","jh           hj","jh           hj","               ","               ","               ","               ","      hhh      ","      jjj      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.HYPERCOOLER.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
-            {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
-            {"     ossso     ","   rrr   rrr   ","  o         o  "," r           r "," r           r ","or           ro","s             s","s             s","s             s","or           ro"," r           r "," r           r ","  o         o  ","   rrr   rrr   ","     ossso     "},
-            {"     npspn     ","   pnn   nnp   ","               "," p           p "," n           n ","nn           nn","p             p","s             s","p             p","nn           nn"," n           n "," p           p ","               ","   pnn   nnp   ","     npspn     "},
-            {"      qoq      ","    qq   qq    ","               ","               "," q           q "," q           q ","q             q","o             o","q             q"," q           q "," q           q ","               ","               ","    qq   qq    ","      qoq      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.EFFICIENT_OC.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
-            {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
-            {"     utvtu     ","   uuuFNFuuu   ","  uu       uu  "," uu         uu "," u           u ","uu           uu","tF           Ft","vN           Nv","tF           Ft","uu           uu"," u           u "," uu         uu ","  uu       uu  ","   uuuFNFuuu   ","     utvtu     "},
-            {"     vvtvv     ","   tvv F vvt   ","  Mv       vM  "," tv         vt "," v           v ","vv           vv","v             v","tF           Ft","v             v","vv           vv"," v           v "," tv         vt ","  Mv       vM  ","   tvv F vvt   ","     vvtvv     "},
-            {"      ttt      ","    tt   tt    ","               ","               "," t           t "," t           t ","t             t","t             t","t             t"," t           t "," t           t ","               ","               ","    tt   tt    ","      ttt      "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        .addShape(
-            FoundryModules.HARMONIC_REINFORCEMENT.structureID, transpose(new String[][]{
-            {"     24442     ","               ","               ","               ","               ","3             3","4             4","4             4","4             4","3             3","               ","               ","               ","               ","     24442     "},
-            {"       8       ","   22     22   ","               "," 3           3 "," 3           3 ","               ","               ","8             8","               ","               "," 3           3 "," 3           3 ","               ","   22     22   ","       8       "},
-            {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
-            {"     16861     ","   111   111   ","  11       11  "," 11         11 "," 1           1 ","11           11","6             6","8             8","6             6","11           11"," 1           1 "," 11         11 ","  11       11  ","   111   111   ","     16861     "},
-            {"      777      ","    88   88    ","  5         5  ","               "," 8           8 "," 8           8 ","7             7","7             7","7             7"," 8           8 "," 8           8 ","               ","  5         5  ","    88   88    ","      777      "},
-            {"       8       ","   33     33   ","               "," 2           2 "," 2           2 ","               ","               ","8             8","               ","               "," 2           2 "," 2           2 ","               ","   33     33   ","       8       "},
-            {"     34443     ","               ","               ","               ","               ","2             2","4             4","4             4","4             4","2             2","               ","               ","               ","               ","     34443     "}
-        }))
-        .addShape(
-            FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.structureID, transpose(new String[][]{
-            {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "},
-            {"     &@ @^     ","    && ! ^^    ","               ","               "," ^           & ","^^           &&","@             @"," !           ! ","@             @","&&           ^^"," &           ^ ","               ","               ","    ^^ ! &&    ","     ^@ @&     "},
-            {"      @!@      ","   &**   XX^   ","   &       ^   "," ^^         && "," X           * "," X           * ","@             @","!             !","@             @"," *           X "," *           X "," &&         ^^ ","   ^       &   ","   ^XX   **&   ","      @!@      "},
-            {"      !Z!      ","    $$   $$    ","  %         %  ","               "," $           $ "," $           $ ","!             !","Z             Z","!             !"," $           $ "," $           $ ","               ","  %         %  ","    $$   $$    ","      !Z!      "},
-            {"      @!@      ","   ^XX   **&   ","   ^       &   "," &&         ^^ "," *           X "," *           X ","@             @","!             !","@             @"," X           * "," X           * "," ^^         && ","   &       ^   ","   &**   XX^   ","      @!@      "},
-            {"     ^@ @&     ","    ^^ ! &&    ","               ","               "," &           ^ ","&&           ^^","@             @"," !           ! ","@             @","^^           &&"," ^           & ","               ","               ","    && ! ^^    ","     &@ @^     "},
-            {"               ","       #       ","               ","               ","               ","               ","               "," #           # ","               ","               ","               ","               ","               ","       #       ","               "}
-        }))
-        .addShape(
-            FoundryModules.UNSET.structureID, transpose(new String[][]{
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
-            {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
-        }))
-        //spotless:on
         .addElement('A', ofBlock(GregTechAPI.sBlockGlass1, 7)) // Foundry Glass
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings11, 7))
         .addElement('C', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 12)))
@@ -319,71 +214,165 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 .casingIndex(((BlockCasingsFoundry) GregTechAPI.sBlockCasingsFoundry).getTextureIndex(0))
                 .buildAndChain(
                     onElementPass(MTEExoFoundry::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
-        // streamlined casters
-        .addElement('a', ofFrame(Materials.SuperconductorUEVBase))
-        .addElement('b', ofBlock(GregTechAPI.sBlockCasingsFoundry, 10))
-        .addElement('c', ofFrame(Materials.Tritanium))
-        .addElement('T', ofBlock(GregTechAPI.sBlockMetal7, 10))
-        .addElement('U', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)))
-        .addElement('V', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
-
-        // power efficient subsystems
-        .addElement('d', ofBlock(GregTechAPI.sBlockCasingsFoundry, 6))
-        .addElement('e', ofFrame(Materials.Samarium))
-        .addElement('f', ofFrame(Materials.TengamPurified))
-        .addElement('g', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF/green
-                                                                                      // casing after rework
-        // casting basins
-        .addElement('h', ofBlock(GregTechAPI.sBlockCasings10, 13))
-        .addElement('i', ofBlock(GregTechAPI.sBlockCasings10, 14))
-        .addElement('j', ofBlock(GregTechAPI.sBlockCasingsFoundry, 8))
-        .addElement('k', ofFrame(Materials.Erbium))
-        .addElement(
-            'l',
-            lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
-        .addElement('m', lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
-        // hypercooler
-        .addElement('n', ofBlock(GregTechAPI.sBlockCasings2, 1))
-        .addElement('o', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        .addElement(
-            'p',
-            buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
+        .addShape(
+            FoundryModules.STREAMLINED_CASTERS.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","   K       K   ","  K         K  ","               ","               ","               ","               ","               ","               ","               ","  K         K  ","   K       K   ","               ","               "},
+                    {"               ","       L       ","  JK       KJ  ","  K         K  ","               ","               ","               "," L           L ","               ","               ","               ","  K         K  ","  JK       KJ  ","       L       ","               "},
+                    {"       K       ","   K  JIJ  K   ","  MI       IM  "," KI         IK ","               ","               "," J           J ","KI           IK"," J           J ","               ","               "," KI         IK ","  MI       IM  ","   K  JIJ  K   ","       K       "},
+                    {"       M       ","   L  KNK  L   ","  JN       NJ  "," LN         NL ","               ","               "," K           K ","MN           NM"," K           K ","               ","               "," LN         NL ","  JN       NJ  ","   L  KNK  L   ","       M       "},
+                    {"       K       ","   K  JIJ  K   ","  MI       IM  "," KI         IK ","               ","               "," J           J ","KI           IK"," J           J ","               ","               "," KI         IK ","  MI       IM  ","   K  JIJ  K   ","       K       "},
+                    {"               ","       L       ","  JK       KJ  ","  K         K  ","               ","               ","               "," L           L ","               ","               ","               ","  K         K  ","  JK       KJ  ","       L       ","               "},
+                    {"               ","               ","   K       K   ","  K         K  ","               ","               ","               ","               ","               ","               ","               ","  K         K  ","   K       K   ","               ","               "}
+                }
+            ))
+        .addElement('I', ofFrame(Materials.Tritanium))
+        .addElement('J', ofFrame(Materials.SuperconductorUEVBase))
+        .addElement('K', ofBlock(GregTechAPI.sBlockCasingsFoundry,10))
+        .addElement('L', ofSheetMetal(Materials.SuperconductorUEVBase))
+        .addElement('M', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)) )
+        .addElement('N', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
+        .addShape(
+            FoundryModules.EXTRA_CASTING_BASINS.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"      eee      ","      beb      ","               ","               ","               ","               ","eb           be","ee           ee","eb           be","               ","               ","               ","               ","      beb      ","      eee      "},
+                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  db       bf  ","   ccbHHHbcc   ","     ebabe     "},
+                    {"     ehghe     ","   ddeHHHedd   ","  dd       dd  "," dd         dd "," d           d ","ee           ee","hH           Hh","gH           Hg","hH           Hh","ee           ee"," d           d "," dd         dd ","  dd       dd  ","   ddeHHHedd   ","     ehghe     "},
+                    {"     ebabe     ","   ccbHHHbcc   ","  fb       bf  "," cb         bc "," c           c ","eb           be","bH           Hb","aH           Ha","bH           Hb","eb           be"," c           c "," cb         bc ","  db       bf  ","   ccbHHHbcc   ","     ebabe     "},
+                    {"      eee      ","      beb      ","               ","               ","               ","               ","eb           be","ee           ee","eb           be","               ","               ","               ","               ","      beb      ","      eee      "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }
+            ))
+        .addElement('a', lazy(()->ofSheetMetal(GGMaterial.preciousMetalAlloy)))
+        .addElement('b', ofBlock(GregTechAPI.sBlockCasings10, 13))
+        .addElement('c', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('d', ofFrame(Materials.Erbium))
+        .addElement('e', ofBlock(GregTechAPI.sBlockCasingsFoundry,8))
+        .addElement('f', ofSheetMetal(Materials.Erbium))
+        .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
+        .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
+        .addShape(
+            FoundryModules.POWER_EFFICIENT_SUBSYSTEMS.structureID,
+            transpose(
+                new String[][]{
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"      lll      ","       p       ","               ","               ","               ","               ","l             l","lp           pl","l             l","               ","               ","               ","               ","       p       ","      lll      "},
+                    {"     lmnml     ","      ili      ","  po       op  ","  o         o  ","               ","l             l","mi           im","nl           ln","mi           im","l             l","               ","  o         o  ","  po       op  ","      ili      ","     lmnml     "},
+                    {"     lnpnl     ","   i plklp i   ","  ji       ij  "," ii         ii ","               ","lp           pl","nl           ln","pk           kp","nl           ln","lp           pl","               "," ii         ii ","  ji       ij  ","   i plklp i   ","     lnpnl     "},
+                    {"     lmnml     ","      ili      ","  po       op  ","  o         o  ","               ","l             l","mi           im","nl           ln","mi           im","l             l","               ","  o         o  ","  po       op  ","      ili      ","     lmnml     "},
+                    {"      lll      ","       p       ","               ","               ","               ","               ","l             l","lp           pl","l             l","               ","               ","               ","               ","       p       ","      lll      "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }))
+        .addElement('i', ofFrame(Materials.Dysprosium))
+        .addElement('j', ofBlock(GregTechAPI.sBlockCasings11, 5))
+        .addElement('k', ofFrame(Materials.TengamAttuned))
+        .addElement('l', ofBlock(GregTechAPI.sBlockCasingsFoundry,6))
+        .addElement('m', ofSheetMetal(Materials.Samarium))
+        .addElement('n', ofSheetMetal(Materials.TengamAttuned))
+        .addElement('o', ofSheetMetal(Materials.Quantium))
+        .addElement('p', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF casing after rework)
+        .addShape(
+            FoundryModules.HYPERCOOLER.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"      rqr      ","    rrusurr    ","               ","               "," r           r "," r           r ","ru           ur","qs           sq","ru           ur"," r           r "," r           r ","               ","               ","    rrusurr    ","      rqr      "},
+                    {"     utwtu     ","   tuu v uut   ","               "," t           t "," u           u ","uu           uu","t             t","wv           vw","t             t","uu           uu"," u           u "," t           t ","               ","   tuu v uut   ","     utwtu     "},
+                    {"     qwwwq     ","   sssvtvsss   ","  q         q  "," s           s "," s           s ","qs           sq","wv           vw","wt           tw","wv           vw","qs           sq"," s           s "," s           s ","  q         q  ","   sssvtvsss   ","     qwwwq     "},
+                    {"     utwtu     ","   tuu v uut   ","               "," t           t "," u           u ","uu           uu","t             t","wv           vw","t             t","uu           uu"," u           u "," t           t ","               ","   tuu v uut   ","     utwtu     "},
+                    {"      rqr      ","    rrusurr    ","               ","               "," r           r "," r           r ","ru           ur","qs           sq","ru           ur","rr           r ","             r ","               ","               ","    rrusurr    ","      rqr      "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }))
+        .addElement('q', ofBlock(GregTechAPI.sBlockCasings8,14))
+        .addElement('r', ofFrame(Materials.InfinityCatalyst))
+        .addElement('s', ofBlock(GregTechAPI.sBlockGlass1,3))
+        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 9))
+        .addElement('u', ofSheetMetal(Materials.CallistoIce))
+        .addElement('v', ofSheetMetal(Materials.SuperconductorUHVBase))
+        // TODO: replace with MVF casing after rework
+        .addElement('w', buildHatchAdder(MTEExoFoundry.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEExoFoundry::addCoolantInputToMachineList)
-                .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 9))
+                .casingIndex(TAE.getIndexFromPage(2, 10))
                 .hint(2)
-                .buildAndChain(GregTechAPI.sBlockCasingsFoundry, 9))
-        .addElement('q', ofFrame(Materials.Netherite))
-        .addElement('r', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('s', lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))) // TODO: replace with MVF casing after
-                                                                               // rework
-        // efficient overclock
-        .addElement('t', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
-        .addElement('u', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
-        .addElement('v', lazy(() -> ofBlock(ModBlocks.blockCasings6Misc, 0)))
-        .addElement('M', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
-        .addElement('N', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
+                .buildAndChain(lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))))
+        .addShape(
+            FoundryModules.HELIOCAST_REINFORCEMENT.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
+                    {"       4       ","               ","  2         1  ","               ","               ","               ","               ","3             3","               ","               ","               ","               ","  1         2  ","               ","       4       "},
+                    {"     64746     ","   26  0  61   ","  8         8  "," 2           1 "," 6           6 ","6             6","3             3","70           07","3             3","6             6"," 6           6 "," 1           2 ","  8         8  ","   16  0  62   ","     64746     "},
+                    {"      757      ","   8  050  8   ","  50       05  "," 80         08 ","               ","               ","70           07","55           55","70           07","               ","               "," 80         08 ","  50       05  ","   8  050  8   ","      757      "},
+                    {"     64746     ","   26  0  61   ","  8         8  "," 2           1 "," 6           6 ","6             6","3             3","70           07","3             3","6             6"," 6           6 "," 1           2 ","  8         8  ","   16  0  62   ","     64746     "},
+                    {"       4       ","               ","  2         1  ","               ","               ","               ","               ","3             3","               ","               ","               ","               ","  1         2  ","               ","       4       "},
+                    {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "}
+                }))
+        .addElement('0', ofFrame(Materials.SixPhasedCopper))
+        .addElement('1', ofFrame(Materials.Mellion))
+        .addElement('2', ofFrame(Materials.Creon))
+        .addElement('3', ofFrame(Materials.TranscendentMetal))
+        .addElement('4', ofFrame(Materials.SpaceTime))
+        .addElement('5', ofBlock(GregTechAPI.sBlockCasingsFoundry,7))
+        .addElement('6', lazy(() -> ofBlock(GodforgeCasings, 3)))
+        .addElement('7', ofSheetMetal(Materials.SpaceTime))
+        .addElement('8',  lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
 
-        // harmonic reinforcement
-        .addElement('1', ofBlock(GregTechAPI.sBlockCasingsFoundry, 7))
-        .addElement('2', ofFrame(Materials.Mellion))
-        .addElement('3', ofFrame(Materials.Creon))
-        .addElement('4', ofFrame(Materials.TranscendentMetal))
-        .addElement('5', ofFrame(Materials.SpaceTime))
-        .addElement('6', ofBlock(GregTechAPI.sBlockMetal9, 3))
-        .addElement('7', lazy(() -> ofBlock(GodforgeCasings, 3)))
-        .addElement('8', lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
-        // Time Dilation System
-        .addElement('!', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
-        .addElement('@', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
-        .addElement('#', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
-        .addElement('$', ofFrame(Materials.Universium))
-        .addElement('%', ofFrame(Materials.Eternity))
-        .addElement('^', ofFrame(Materials.WhiteDwarfMatter))
-        .addElement('&', ofFrame(Materials.BlackDwarfMatter))
-        .addElement('*', ofBlock(GregTechAPI.sBlockMetal9, 6))
-        .addElement('X', ofBlock(GregTechAPI.sBlockMetal9, 7))
-        .addElement('Z', lazy(() -> ofBlock(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)))
+        .addShape(
+            FoundryModules.EFFICIENT_OC.structureID,
+            transpose(
+                new String[][] {
+                    {"       ^       ","               ","               ","               ","               ","               ","               ","^             ^","               ","               ","               ","               ","               ","               ","       ^       "},
+                    {"      ^@^      ","       #       ","  ^^       ^^  ","  ^         ^  ","               ","               ","^             ^","@#           #@","^             ^","               ","               ","  ^         ^  ","  ^^       ^^  ","       #       ","      ^@^      "},
+                    {"     ^@%@^     ","      %F%      ","  %@       @%  ","  @F       F@  ","               ","^             ^","@%           %@","%F           F%","@%           %@","^             ^","               ","  @F       F@  ","  %@       @%  ","      %F%      ","     ^@%@^     "},
+                    {"    ^@%!%@^    ","   !!#F!F#!!   ","  !!       !!  "," !!         !! ","^!           !^","@#           #@","%F           F%","!!           !!","%F           F%","@#           #@","^!           !^"," !!         !! ","  !!       !!  ","   !!#F!F#!!   ","    ^@%!%@^    "},
+                    {"     ^@%@^     ","      %F%      ","  %@       @%  ","  @F       F@  ","               ","^             ^","@%           %@","%F           F%","@%           %@","^             ^","               ","  @F       F@  ","  %@       @%  ","      %F%      ","     ^@%@^     "},
+                    {"      ^@^      ","       #       ","  ^^       ^^  ","  ^         ^  ","               ","               ","^             ^","@#           #@","^             ^","               ","               ","  ^         ^  ","  ^^       ^^  ","       #       ","      ^@^      "},
+                    {"       ^       ","               ","               ","               ","               ","               ","               ","^             ^","               ","               ","               ","               ","               ","               ","       ^       "}
+                }))
+        .addElement('!', lazy(() -> ofBlock(Loaders.antimatterContainmentCasing, 0)))
+        .addElement('@', lazy(() -> ofBlock(Loaders.gravityStabilizationCasing, 0)))
+        .addElement('#', ofFrame(Materials.Naquadria))
+        .addElement('%', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
+        .addElement('^', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
+        .addShape(
+            FoundryModules.UNIVERSAL_COLLAPSER.structureID,
+            transpose(
+                new String[][] {
+                    {"               ","   Q       Q   ","  RR       RR  "," QR         RQ ","               ","               ","               ","               ","               ","               ","               "," QR         RQ ","  RR       RR  ","   Q       Q   ","               "},
+                    {"      RQR      ","       T       ","  T         T  ","               ","               ","               ","R             R","QT           TQ","R             R","               ","               ","               ","  T         T  ","       T       ","      RQR      "},
+                    {"     RRQRR     ","   UWWSTSXXV   ","  WW       XX  "," UW         XV "," W           X ","RW           XR","RS           SR","QT           TQ","RS           SR","RX           WR"," X           W "," VX         WU ","  XX       WW  ","   VXXSTSWWU   ","     RRQRR     "},
+                    {"     QQZQQ     ","     TTYTT     ","               ","               ","               ","QT           TQ","QT           TQ","ZY           YZ","QT           TQ","QT           TQ","               ","               ","               ","     TTYTT     ","     QQZQQ     "},
+                    {"     RRQRR     ","   VXXSTSWWU   ","  XX       WW  "," VX         WU "," X           W ","RX           WR","RS           SR","QT           TQ","RS           SR","RW           XR"," W           X "," UW         XV ","  WW       XX  ","   UWWSTSXXV   ","     RRQRR     "},
+                    {"      RQR      ","       T       ","  T         T  ","               ","               ","               ","R             R","QT           TQ","R             R","               ","               ","               ","  T         T  ","       T       ","      RQR      "},
+                    {"               ","   Q       Q   ","  RR       RR  "," QR         RQ ","               ","               ","               ","               ","               ","               ","               "," QR         RQ ","  RR       RR  ","   Q       Q   ","               "}
+                }
+            ))
+        .addElement('Q', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10)))
+        .addElement('R', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsBA0, 11)))
+        .addElement('S', ofFrame(Materials.Universium))
+        .addElement('T', ofFrame(Materials.MHDCSM))
+        .addElement('U', ofFrame(Materials.WhiteDwarfMatter))
+        .addElement('V', ofFrame(Materials.BlackDwarfMatter))
+        .addElement('W', ofBlock(GregTechAPI.sBlockMetal9, 6))
+        .addElement('X',ofBlock(GregTechAPI.sBlockMetal9, 7))
+        .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
+        .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
+        .addShape(
+            FoundryModules.UNSET.structureID,
+            transpose(
+                new String[][] {
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
+                    { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " } }))
         .build();
+    //spotless:on
 
     public MTEExoFoundry(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -396,22 +385,22 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        tier = aNBT.getInteger("multiTier");
-        modules[0] = FoundryModules.getModule(aNBT.getInteger("module1OR"));
-        modules[1] = FoundryModules.getModule(aNBT.getInteger("module2OR"));
-        modules[2] = FoundryModules.getModule(aNBT.getInteger("module3OR"));
-        modules[3] = FoundryModules.getModule(aNBT.getInteger("module4OR"));
+        foundryData.tier = aNBT.getInteger("multiTier");
+        foundryData.modules[0] = FoundryModules.getModule(aNBT.getInteger("module1OR"));
+        foundryData.modules[1] = FoundryModules.getModule(aNBT.getInteger("module2OR"));
+        foundryData.modules[2] = FoundryModules.getModule(aNBT.getInteger("module3OR"));
+        foundryData.modules[3] = FoundryModules.getModule(aNBT.getInteger("module4OR"));
         shouldRender = aNBT.getBoolean("shouldRender");
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("multiTier", tier);
-        aNBT.setInteger("module1OR", modules[0].ordinal());
-        aNBT.setInteger("module2OR", modules[1].ordinal());
-        aNBT.setInteger("module3OR", modules[2].ordinal());
-        aNBT.setInteger("module4OR", modules[3].ordinal());
+        aNBT.setInteger("multiTier", foundryData.tier);
+        aNBT.setInteger("module1OR", foundryData.modules[0].ordinal());
+        aNBT.setInteger("module2OR", foundryData.modules[1].ordinal());
+        aNBT.setInteger("module3OR", foundryData.modules[2].ordinal());
+        aNBT.setInteger("module4OR", foundryData.modules[3].ordinal());
         aNBT.setBoolean("shouldRender", shouldRender);
     }
 
@@ -473,7 +462,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier, Foundry")
-            .addBulkMachineInfo(parallelScaleBase, speedModifierBase, euEffBase)
+            .addBulkMachineInfo(foundryData.parallelScaleBase, foundryData.speedModifierBase, foundryData.euEffBase)
             .addInfo(
                 "Will " + EnumChatFormatting.BOLD
                     + "not"
@@ -556,137 +545,18 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addOutputBus("Any Foundry Casing", 1)
             .addInputHatch("Any Foundry Casing", 1)
             .addEnergyHatch("Any Foundry Casing", 1)
-            .addStructureInfoSeparator();
-        addParallelModuleTooltip(tt);
-        addSpeedModuleTooltip(tt);
-        addPowerEfficiencyModuleTooltip(tt);
-        addEfficientOverclockingModuleTooltip(tt);
-        addHypercoolerModuleInformation(tt);
-        addHarmonicReinforcementModuleInformation(tt);
-        addTimeDilationSystemModuleInformation(tt);
+            .addStructureInfoSeparator()
+            .addStructureInfo("Check NEI for Module structure costs");
 
         tt.toolTipFinisher();
         return tt;
     }
 
-    private void addHypercoolerModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.AQUA + "Hypercooler Module")
-            .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.AQUA) + " Advanced Cryogenic Casing")
-            .addStructureInfo(TooltipHelper.coloredText("20x", EnumChatFormatting.AQUA) + " Infinity Cooled Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.AQUA) + " Non-photonic Matter Exclusion Glass")
-            .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.AQUA) + " Hypercooler Casing")
-            .addStructureInfo(TooltipHelper.coloredText("48x", EnumChatFormatting.AQUA) + " Frost Proof Machine Casing")
-            .addStructureInfo(TooltipHelper.coloredText("48x", EnumChatFormatting.AQUA) + " Netherite Frame Box")
-            .addStructureInfoSeparator();
-    }
-
-    private void addHarmonicReinforcementModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.LIGHT_PURPLE + "Harmonic Reinforcement")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Block of Spacetime")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.LIGHT_PURPLE) + " Spacetime Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("11x", EnumChatFormatting.LIGHT_PURPLE)
-                    + " Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.LIGHT_PURPLE) + " Transcendent Metal & "
-                    + EnumChatFormatting.RED
-                    + "Mellion"
-                    + EnumChatFormatting.GRAY
-                    + " & "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Creon"
-                    + EnumChatFormatting.GRAY
-                    + " Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("44x", EnumChatFormatting.LIGHT_PURPLE) + " Harmonic Reinforcement Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addTimeDilationSystemModuleInformation(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.DARK_PURPLE + "Time Dilation System")
-            .addStructureInfo(
-                TooltipHelper.coloredText("4x", EnumChatFormatting.DARK_PURPLE) + " "
-                    + EnumChatFormatting.WHITE
-                    + EnumChatFormatting.BOLD
-                    + "Gallifreyan"
-                    + EnumChatFormatting.GRAY
-                    + " Time Dilation Field Generator")
-            .addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.DARK_PURPLE) + " Eternity Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("8x", EnumChatFormatting.DARK_PURPLE) + " Time Dilation System Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("16x", EnumChatFormatting.DARK_PURPLE) + " Black & White Dwarf Matter Block")
-            .addStructureInfo(
-                TooltipHelper.coloredText("16x", EnumChatFormatting.DARK_PURPLE) + " Universium Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("20x", EnumChatFormatting.DARK_PURPLE)
-                    + " Black & White Dwarf Matter Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.DARK_PURPLE)
-                    + " Reinforced Temporal Structure Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("32x", EnumChatFormatting.DARK_PURPLE)
-                    + " Reinforced Spatial Structure Casing");
-    }
-
-    private void addEfficientOverclockingModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.DARK_AQUA + "Sentient Overclocker");
-        tt.addStructureInfo(TooltipHelper.coloredText("4x", EnumChatFormatting.AQUA) + " Gravity Stabilization Casing")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.AQUA) + " Magnetic Flux Casing")
-            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.AQUA) + " Central Magnetic Chassis")
-            .addStructureInfo(
-                TooltipHelper.coloredText("44x", EnumChatFormatting.AQUA) + " Antimatter Contaiment Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("76x", EnumChatFormatting.AQUA) + " Fusion Machine Casing MK IV")
-            .addStructureInfo(
-                TooltipHelper.coloredText("88x", EnumChatFormatting.AQUA) + " Sentient Overclocker Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addPowerEfficiencyModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.GREEN + "Proto-Volt Stabilizer")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.GREEN) + " Rugged Botmium Machine Casing")
-            .addStructureInfo(TooltipHelper.coloredText("24x", EnumChatFormatting.GREEN) + " Samarium Frame Box")
-            .addStructureInfo(TooltipHelper.coloredText("32x", EnumChatFormatting.GREEN) + " Purified Tengam Frame Box")
-            .addStructureInfo(
-                TooltipHelper.coloredText("60x", EnumChatFormatting.GREEN) + " Proto-Volt Stabilizer Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addSpeedModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.RED + "Streamlined Casters")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.RED) + " Block of Tritanium")
-            .addStructureInfo(
-                TooltipHelper.coloredText("16x", EnumChatFormatting.RED)
-                    + " Tritanium & Superconductor Base UEV Frame Box")
-            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.RED) + " Particle Containment Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("40x", EnumChatFormatting.RED) + " Elemental Confinement Casing")
-            .addStructureInfo(TooltipHelper.coloredText("40x", EnumChatFormatting.RED) + " Streamlined Casting Casing")
-            .addStructureInfoSeparator();
-    }
-
-    private void addParallelModuleTooltip(MultiblockTooltipBuilder tt) {
-        tt.addStructureInfo(EnumChatFormatting.YELLOW + "Extra Casting Basins")
-            .addStructureInfo(
-                TooltipHelper.coloredText("4x", EnumChatFormatting.YELLOW) + " Rebolted Precious Metals Casing")
-            .addStructureInfo(TooltipHelper.coloredText("8x", EnumChatFormatting.YELLOW) + " Erbium Frame Box")
-            .addStructureInfo(TooltipHelper.coloredText("16x", EnumChatFormatting.YELLOW) + " Solidifier Radiator")
-            .addStructureInfo(
-                TooltipHelper.coloredText("24x", EnumChatFormatting.YELLOW) + " Bolted Precious Metals Casing")
-            .addStructureInfo(
-                TooltipHelper.coloredText("36x", EnumChatFormatting.YELLOW) + " Primary Exo-Foundry Casing")
-            .addStructureInfo(TooltipHelper.coloredText("64x", EnumChatFormatting.YELLOW) + " Solidifier Casing");
-        tt.addStructureInfoSeparator();
-    }
-
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
-        for (int i = 0; i < 2 + (tier - 1); i++) {
-            FoundryModules m = modules[i];
+        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+            FoundryModules m = foundryData.modules[i];
             if (m != FoundryModules.UNSET) {
                 buildPiece(
                     m.structureID,
@@ -704,8 +574,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (mMachine) return -1;
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = 0;
-        for (int i = 0; i < 2 + (tier - 1); i++) {
-            FoundryModules m = modules[i];
+        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+            FoundryModules m = foundryData.modules[i];
             if (m != FoundryModules.UNSET) {
                 built += survivalBuildPiece(
                     m.structureID,
@@ -740,11 +610,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     private void setMachineTier(int tier) {
-        this.tier = tier;
+        foundryData.tier = tier;
     }
 
     private int getMachineTier() {
-        return tier;
+        return foundryData.tier;
     }
 
     @Nullable
@@ -757,21 +627,32 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingAmount = 0;
-        tier = -1;
+        foundryData.tier = -1;
         coolantHatches.clear();
         // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            return checkModules() && casingAmount >= 462 + (tdsPresent ? 20 : 0);
+            return checkModules() && casingAmount >= 462 + (foundryData.tdsPresent ? 20 : 0);
         }
         getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         return false;
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMTE, long aTick) {
+        super.onPostTick(baseMTE, aTick);
+        if (baseMTE.isServerSide()) {
+            // TODO: Look for proper fix
+            // Updates approx every 30 sec as disconnected structure pieces do not send updates on change
+            if (mUpdate <= -550) mUpdate = 50;
+
+        }
+    }
+
     private boolean checkModules() {
-        for (int i = 0; i < 2 + (tier - 1); i++) {
-            FoundryModules m = modules[i];
+        for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
+            FoundryModules m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
                 moduleHorizontalOffsets[i],
@@ -807,119 +688,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         return null;
     }
 
-    private void resetParameters() {
-        ocFactorAdditive = 0.0F;
-
-        speedAdditive = 0.0F;
-        speedMultiplier = 1.0F;
-
-        euEffAdditive = 0.0F;
-        euEffMultiplier = 1.0F;
-
-        parallelScaleAdditive = 0;
-        parallelScaleMultiplier = 1.0F;
-
-        hypercoolerPresent = false;
-        UIVRecipesEnabled = false;
-        tdsPresent = false;
-        effOCPresent = false;
-        allowEternity = false;
-        extraOverclocks = 0;
-    }
-
-    // base stats per module
-    public void checkSolidifierModules() {
-        resetParameters();
-        // loop through each module. based on tier. 2 - 4 modules.
-        FoundryModules[] testModules = Arrays.copyOfRange(modules, 0, 2 + (tier - 1));
-        for (FoundryModules checkedModule : testModules) {
-            switch (checkedModule) {
-                case UNSET:
-                    break;
-                case HYPERCOOLER:
-                    hypercoolerPresent = true;
-                    break;
-                case HARMONIC_REINFORCEMENT:
-                    UIVRecipesEnabled = true;
-                    break;
-                case EFFICIENT_OC:
-                    effOCPresent = true;
-                    ocFactorAdditive += 0.35F;
-                    break;
-                case ACTIVE_TIME_DILATION_SYSTEM:
-                    if (tdsPresent) break;
-                    tdsPresent = true;
-                    euEffMultiplier *= 4;
-                    speedMultiplier *= 2;
-                    break;
-                case STREAMLINED_CASTERS:
-                    speedAdditive += 1.5F;
-                    break;
-                case EXTRA_CASTING_BASINS:
-                    parallelScaleAdditive += 12;
-                    break;
-                case POWER_EFFICIENT_SUBSYSTEMS:
-                    euEffAdditive -= 0.1f;
-                    euEffMultiplier *= 0.8f;
-                    break;
-            }
-        }
-
-        calculatePairings(testModules);
-        calculateNewStats();
-    }
-
-    // pair stat buffs for having 2 specific modules together
-    private void calculatePairings(FoundryModules[] modules) {
-        if (ArrayUtils.contains(modules, FoundryModules.STREAMLINED_CASTERS)
-            && ArrayUtils.contains(modules, FoundryModules.EXTRA_CASTING_BASINS)) {
-            speedAdditive += 0.75F;
-            parallelScaleAdditive += 6;
-        }
-
-        if (ArrayUtils.contains(modules, FoundryModules.POWER_EFFICIENT_SUBSYSTEMS)
-            && ArrayUtils.contains(modules, FoundryModules.EFFICIENT_OC)) {
-            ocFactorAdditive += 0.1F;
-            euEffAdditive -= 0.5F;
-        }
-
-        if (ArrayUtils.contains(modules, FoundryModules.HYPERCOOLER)
-            && ArrayUtils.contains(modules, FoundryModules.ACTIVE_TIME_DILATION_SYSTEM)) {
-            euEffMultiplier *= 2;
-            speedMultiplier *= 2;
-            allowEternity = true;
-        }
-
-        int numHarmonic = (int) Arrays.stream(modules)
-            .filter(m -> m == FoundryModules.HARMONIC_REINFORCEMENT)
-            .count();
-        if (numHarmonic > 1) {
-            speedAdditive += (0.75F * numHarmonic);
-            euEffAdditive -= (0.1F * numHarmonic);
-            if (numHarmonic >= 3) {
-                ocFactorAdditive += 0.1F;
-                parallelScaleAdditive += (6 * numHarmonic);
-            }
-            if (numHarmonic == 4) {
-                extraOverclocks += 2;
-            }
-        }
-    }
-
-    private void calculateNewStats() {
-
-        parallelScaleAdj = (parallelScaleBase + parallelScaleAdditive) * parallelScaleMultiplier;
-        speedModifierAdj = (speedModifierBase + speedAdditive) * speedMultiplier;
-        euEffAdj = (euEffBase + euEffAdditive) * euEffMultiplier;
-
-    }
-
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        checkSolidifierModules();
-        logic.setSpeedBonus(1F / speedModifierAdj);
-        logic.setMaxParallel((int) (Math.floor(parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
-        logic.setEuModifier(euEffAdj);
+        foundryData.checkSolidifierModules();
+        logic.setSpeedBonus(1F / foundryData.speedModifierAdj);
+        logic.setMaxParallel(
+            (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage())));
+        logic.setEuModifier(foundryData.euEffAdj);
         logic.setAvailableVoltage(getMaxInputEu());
         logic.setAvailableAmperage(1);
         logic.setUnlimitedTierSkips();
@@ -961,18 +736,18 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 additionalOverclocks = 0;
 
-                if (hypercoolerPresent) {
+                if (foundryData.hypercoolerPresent) {
                     currentCoolingFluid = findCoolingFluid();
                     if (currentCoolingFluid == null
-                        || (currentCoolingFluid.material == Materials.Eternity && !allowEternity)) {
+                        || (currentCoolingFluid.material == Materials.Eternity && !foundryData.allowEternity)) {
                         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
                     }
                     additionalOverclocks = currentCoolingFluid.grantedOC;
                 }
 
-                additionalOverclocks += extraOverclocks;
+                additionalOverclocks += foundryData.extraOverclocks;
 
-                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UIV && !UIVRecipesEnabled) {
+                if (GTUtility.getTier(recipe.mEUt) >= VoltageIndex.UIV && !foundryData.UIVRecipesEnabled) {
                     return CheckRecipeResultRegistry.insufficientVoltage(recipe.mEUt);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -982,7 +757,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe)
                     .setMaxOverclocks(additionalOverclocks + (getTier(getAverageInputVoltage()) - getTier(recipe.mEUt)))
-                    .setDurationDecreasePerOC(ocFactorBase + ocFactorAdditive);
+                    .setDurationDecreasePerOC(foundryData.ocFactorBase + foundryData.ocFactorAdditive);
 
             }
 
@@ -992,7 +767,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.runMachine(aBaseMetaTileEntity, aTick);
-        if (mMaxProgresstime > 0 && aTick % 20 == 0 && hypercoolerPresent) {
+        if (mMaxProgresstime > 0 && aTick % 20 == 0 && foundryData.hypercoolerPresent) {
             if (this.currentCoolingFluid != null) {
                 FluidStack fluid = this.currentCoolingFluid.getStack();
                 for (MTEHatchInput hatch : coolantHatches) {
@@ -1009,6 +784,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fluidSolidifierRecipes;
+    }
+
+    @Override
+    public @NotNull Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return ImmutableList.of(RecipeMaps.fluidSolidifierRecipes, RecipeMaps.foundryFakeModuleCostRecipes);
     }
 
     @Override
@@ -1040,7 +820,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public int getMaxParallelRecipes() {
         checkModules();
-        return (int) (Math.floor(parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
+        return (int) (Math.floor(foundryData.parallelScaleAdj) * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
@@ -1057,53 +837,14 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public int getModuleSynced(int index) {
         if (index > FoundryModules.values().length - 1) index = 0;
 
-        return modules[index].ordinal();
+        return foundryData.modules[index].ordinal();
     }
 
     public void setModule(int index, int ordinal) {
-        // just in case, shouldn't be possible
-        if (index > modules.length - 1) return;
-        FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
-
-        if (moduleToAdd == FoundryModules.HYPERCOOLER) {
-            checkSolidifierModules();
-            if (hypercoolerPresent) return;
-        }
-        if (moduleToAdd == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
-            checkSolidifierModules();
-            if (tdsPresent) return;
-        }
-        if (moduleToAdd == FoundryModules.EFFICIENT_OC) {
-            checkSolidifierModules();
-            if (effOCPresent) return;
-        }
-
-        if (modules[index] == moduleToAdd) return;
-
-        modules[index] = moduleToAdd;
+        foundryData.setModule(index, ordinal);
         // structure check on module set, to prevent cheesing
         getBaseMetaTileEntity().issueTileUpdate(); // tile update to sync to client
         this.setStructureUpdateTime(1);
-    }
-
-    public String getSpeedStr() {
-        checkSolidifierModules();
-        return (speedModifierAdj) * 100 + "%";
-    }
-
-    public String getParallelsString() {
-        checkSolidifierModules();
-        return (int) parallelScaleAdj + "";
-    }
-
-    public String getEuEFFString() {
-        checkSolidifierModules();
-        return ((int) (euEffAdj * 100)) + "%";
-    }
-
-    public String getOCFactorString() {
-        checkSolidifierModules();
-        return 2 + ocFactorAdditive + " : 4";
     }
 
     @Override
@@ -1122,65 +863,38 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private boolean shouldRender = true;
     private boolean renderInitialized;
     private static IModelCustomExt ring;
-    private static IModelCustomExt uniRing;
     private static ShaderProgram ringProgram;
-    private int uGlowColor;
-    // -1 -> uninitialized; 0 -> inactive
-    private long lastInactiveTime = -1;
-    private VertexBuffer starRing;
+    private int uRingColor;
+
+    private void initializeRender() {
+        // spotless:off
+        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
+            new ResourceLocation(
+                GregTech.resourceDomain,
+                "textures/model/foundry_ring.obj"
+            )
+        );
+
+
+        try {
+            ringProgram = new ShaderProgram(
+                GregTech.resourceDomain,
+                "shaders/foundry.vert.glsl",
+                "shaders/foundry.frag.glsl"
+            );
+            uRingColor = ringProgram.getUniformLocation("u_Color");
+        } catch (Exception e) {
+            GTMod.GT_FML_LOGGER.error(e.getMessage());
+            return;
+        }
+        renderInitialized = true;
+        // spotless:on
+    }
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-        /*
-         * testing unit vectors
-         * GL11.glPushMatrix();
-         * GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-         * GL11.glTranslated(x + 0.5F, y+0.5f, z + 0.5F);
-         * GL11.glDisable(GL11.GL_LIGHTING);
-         * GL11.glDisable(GL11.GL_TEXTURE_2D);
-         * GL11.glColor4f(1F, 1F, 1F, 1F);
-         * Tessellator tessellator = Tessellator.instance;
-         * tessellator.startDrawing(GL11.GL_LINES);
-         * GL11.glLineWidth(15);
-         * // x unit
-         * tessellator.setColorRGBA_F(1, 0, 0, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(4, 0, 0);
-         * // y unit
-         * tessellator.setColorRGBA_F(0, 1, 0, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(0, 4, 0);
-         * // z unit
-         * tessellator.setColorRGBA_F(0, 0, 1, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(0, 0, 4);
-         * tessellator.draw();
-         * applyRotation();
-         * GL11.glColor4f(1F, 1F, 1F, 1F);
-         * tessellator.startDrawing(GL11.GL_LINES);
-         * GL11.glLineWidth(25);
-         * tessellator.setColorRGBA_F(1, 1, 1, 1);
-         * tessellator.addVertex(0, 0, 0);
-         * tessellator.addVertex(0, 10, 0);
-         * tessellator.draw();
-         * GL11.glPopAttrib();
-         * GL11.glPopMatrix();
-         */
-
-        // if (!getBaseMetaTileEntity().isActive()) {
-        // lastInactiveTime = 0;
-        // return;
-        // }
-
-        if (!shouldRender) return; // || !getBaseMetaTileEntity().isActive()
-
-        // Do a cool startup animation
-        if (lastInactiveTime <= 0) {
-            if (lastInactiveTime == 0) {
-                lastInactiveTime = System.currentTimeMillis();
-            } else {
-                lastInactiveTime = System.currentTimeMillis() - 60_000;
-            }
+        if (!shouldRender || !getBaseMetaTileEntity().isActive()) {
+            return;
         }
 
         if (!renderInitialized) {
@@ -1194,144 +908,90 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     @Override
     public void render(Object none) {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-        ringProgram.use();
-
-        renderRingsDebug(false);
+        renderRings(false);
 
         BloomShader.getInstance()
             .bindFramebuffer();
 
-        renderRingsDebug(true);
+        renderRings(true);
 
         BloomShader.unbind();
         ShaderProgram.clear();
     }
 
-    @Override
-    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
-        return AxisAlignedBB.getBoundingBox(x - 10, y - 10, z - 10, x + 10, y + 40, z + 10);
-    }
-
-    private void renderRingsDebug(boolean bloom) {
+    private void renderRings(boolean bloom) {
         int i = 0;
-        float time = (System.currentTimeMillis() - lastInactiveTime) / 2000f;
-        // float multiplier = 1 - (1 / (time + 1));
-        float multiplier = 1;
-        for (FoundryModules module : modules) {// FoundryModules.values()) {
-            // if (i == tier + 1) return;
+        GL11.glColor4f(1, 1, 1, 1);
+        for (FoundryModules module : foundryData.modules) {
+            if (i == foundryData.tier + 1) return;
             if (module == FoundryModules.UNSET) {
                 i++;
                 continue;
             }
-            if (module == FoundryModules.ACTIVE_TIME_DILATION_SYSTEM) {
+            if (module == FoundryModules.UNIVERSAL_COLLAPSER) {
                 renderUniversiumRing(i, bloom);
-                ringProgram.use();
                 i++;
                 continue;
             }
 
-            if (!bloom) {
-                // renderRing(
-                // i,
-                // FoundryModules.tonemap(module.red), // TODO does this even do anything bor
-                // FoundryModules.tonemap(module.green),
-                // FoundryModules.tonemap(module.blue));
-
-                renderRing(i, 0, 0, 0);
+            if (bloom) {
+                renderStandardRing(i, module.red, module.green, module.blue);
             } else {
-                renderRing(i, module.red * multiplier, module.green * multiplier, module.blue * multiplier);
+                // Render a black color in the non-bloom pass
+                // The shader should technically blend the main color + bloom color together, but I probably messed up
+                // somewhere, so the color is too oversaturated if I do that, and I can't be bothered with fixing it
+                // ¯\_(ツ)_/¯
+                renderStandardRing(i, 0, 0, 0);
             }
+
             i++;
         }
     }
 
-    private void initializeRender() {
-        // spotless:off
-        ring = (IModelCustomExt) AdvancedModelLoader.loadModel(
-            new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ring.obj"
-            )
-        );
-//        starRing = WavefrontVBOBuilder.compileToVBO(
-//            new ResourceLocation(
-//                GregTech.resourceDomain,
-//                "textures/model/foundry_ring.obj"
-//            )
-//        );
-
-        //ring.setVertexFormat(DefaultVertexFormat.POSITION);
-        //todo: fix all of this lol
-        uniRing = (IModelCustomExt) AdvancedModelLoader.loadModel(
-            new ResourceLocation(
-                GregTech.resourceDomain,
-                "textures/model/foundry_ringbaby2.obj"
-            )
-        );
-
-
-        try {
-            ringProgram = new ShaderProgram(
-                GregTech.resourceDomain,
-                "shaders/foundry.vert.glsl",
-                "shaders/foundry.frag.glsl"
-            );
-            uGlowColor = ringProgram.getUniformLocation("u_Color");
-        } catch (Exception e) {
-            GTMod.GT_FML_LOGGER.error(e.getMessage());
-            return;
-        }
-        renderInitialized = true;
-        // spotless:on
-    }
-
-    private void renderRing(int index, float red, float green, float blue) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1, 1.2f, 1);
-        GL20.glUniform3f(uGlowColor, red, green, blue);
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
+    private void renderStandardRing(int index, float red, float green, float blue) {
+        ringProgram.use();
+        GL20.glUniform3f(uRingColor, red, green, blue);
+        renderRing(index);
     }
 
     private void renderUniversiumRing(int index, boolean bloom) {
-        // if (bloom) return;
-        // todo: stars on this render, not showing up for some reason
         final UniversiumShader shader = UniversiumShader.getInstance();
         if (bloom) {
             shader
                 .setBackgroundColor(
-                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.red / 2.5f,
-                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.green / 2.5f,
-                    FoundryModules.ACTIVE_TIME_DILATION_SYSTEM.blue / 2.5f)
+                    FoundryModules.UNIVERSAL_COLLAPSER.red,
+                    FoundryModules.UNIVERSAL_COLLAPSER.green,
+                    FoundryModules.UNIVERSAL_COLLAPSER.blue)
                 .setStarColor(24);
         } else {
+            // Color needs to be enabled here to make the stars not blurry
             shader.setBackgroundColor(0, 0, 0)
-                .setStarColor(0, 0, 0, 4, 4, 4);
+                .setStarColor(3);
         }
-        shader.setLightLevel(1)
-            .use();
-
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        shader.use();
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-
-        GL11.glColor4f(1, 1, 1, 1);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glPushMatrix();
-        GL11.glTranslated(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
-        GL11.glScalef(1, 1.2f, 1);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-        ring.renderAllVBO();
-        GL11.glPopMatrix();
+        renderRing(index);
+
         UniversiumShader.clear();
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+    }
 
-        GL11.glPopAttrib();
+    private void renderRing(int index) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0, 9 + index * 8 + (index > 1 ? 10 : 0), 0);
+        GL11.glScalef(0.8f, 1.2f, 0.8f);
+        ring.renderAllVAO();
+        GL11.glPopMatrix();
+    }
 
+    @Override
+    public AxisAlignedBB getRenderBoundingBox(int x, int y, int z) {
+        return AxisAlignedBB.getBoundingBox(x - 10, y + 7, z - 10, x + 10, y + 44, z + 10);
     }
 
     @Override
@@ -1351,11 +1011,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("multiTier", tier);
-        tag.setInteger("module1OR", modules[0].ordinal());
-        tag.setInteger("module2OR", modules[1].ordinal());
-        tag.setInteger("module3OR", modules[2].ordinal());
-        tag.setInteger("module4OR", modules[3].ordinal());
+        tag.setInteger("multiTier", foundryData.tier);
+        tag.setInteger("module1OR", foundryData.modules[0].ordinal());
+        tag.setInteger("module2OR", foundryData.modules[1].ordinal());
+        tag.setInteger("module3OR", foundryData.modules[2].ordinal());
+        tag.setInteger("module4OR", foundryData.modules[3].ordinal());
         tag.setBoolean("shouldRender", shouldRender);
         return tag;
     }
@@ -1363,11 +1023,11 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     @Override
     public void onDescriptionPacket(NBTTagCompound data) {
         super.onDescriptionPacket(data);
-        tier = data.getInteger("multiTier");
-        modules[0] = FoundryModules.getModule(data.getInteger("module1OR"));
-        modules[1] = FoundryModules.getModule(data.getInteger("module2OR"));
-        modules[2] = FoundryModules.getModule(data.getInteger("module3OR"));
-        modules[3] = FoundryModules.getModule(data.getInteger("module4OR"));
+        foundryData.tier = data.getInteger("multiTier");
+        foundryData.modules[0] = FoundryModules.getModule(data.getInteger("module1OR"));
+        foundryData.modules[1] = FoundryModules.getModule(data.getInteger("module2OR"));
+        foundryData.modules[2] = FoundryModules.getModule(data.getInteger("module3OR"));
+        foundryData.modules[3] = FoundryModules.getModule(data.getInteger("module4OR"));
         shouldRender = data.getBoolean("shouldRender");
     }
 
