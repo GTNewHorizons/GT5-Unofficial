@@ -2,6 +2,10 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
@@ -12,6 +16,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.common.gui.modularui.hatch.MTEHatchChiselBusGui;
 
 public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets {
 
@@ -25,7 +30,12 @@ public class MTEHatchChiselBus extends MTEHatchInputBus implements IAddUIWidgets
 
     @Override
     protected boolean useMui2() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchChiselBusGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
