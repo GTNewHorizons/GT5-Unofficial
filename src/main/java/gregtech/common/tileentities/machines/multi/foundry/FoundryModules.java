@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.multi.foundry;
 
-import java.awt.*;
+import java.awt.Color;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
