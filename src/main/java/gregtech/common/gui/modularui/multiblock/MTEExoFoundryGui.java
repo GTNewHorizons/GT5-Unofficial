@@ -710,6 +710,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     "GT5U.gui.text.foundry.pairings.optimumproduction.title"));
+                            t.addLine(StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.foundry.pairings.optimumproduction.required"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     data.isProductionPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
@@ -738,6 +740,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     "GT5U.gui.text.foundry.pairings.harmonicefficiency.title"));
+                            t.addLine(StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.foundry.pairings.harmonicefficiency.required"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     data.isEfficiencyPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
@@ -764,6 +768,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             t.addLine(
                                 StatCollector
                                     .translateToLocalFormatted("GT5U.gui.text.foundry.pairings.superstablecore.title"));
+                            t.addLine(StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.foundry.pairings.superstablecore.required"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     data.isHRPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
@@ -810,6 +816,8 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     "GT5U.gui.text.foundry.pairings.realizedpotential.title"));
+                            t.addLine(StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.foundry.pairings.realizedpotential.required"));
                             t.addLine(
                                 StatCollector.translateToLocalFormatted(
                                     data.isEndPairPresent ? "GT5U.gui.text.foundry.pairings.activity.on"
