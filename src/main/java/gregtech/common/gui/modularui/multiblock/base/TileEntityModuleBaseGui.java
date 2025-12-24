@@ -1,11 +1,9 @@
 package gregtech.common.gui.modularui.multiblock.base;
 
-
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.numberFormat;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -31,7 +29,7 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
                     w -> multiblock.getBaseMetaTileEntity()
                         .isAllowedToWork()
                         || multiblock.getBaseMetaTileEntity()
-                        .isActive())
+                            .isActive())
                 .color(Color.WHITE.main)
                 .widthRel(1)
                 .marginBottom(2));
