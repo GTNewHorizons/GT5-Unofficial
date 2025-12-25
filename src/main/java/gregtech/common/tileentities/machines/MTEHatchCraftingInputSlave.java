@@ -330,4 +330,15 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     public void setProcessingLogic(ProcessingLogic pl) {
         if (getMaster() != null) getMaster().setProcessingLogic(pl);
     }
+
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        if (getMaster() != null) getMaster().resetCraftingInputRecipeMap(pl);
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
+        if (getMaster() != null) getMaster().resetCraftingInputRecipeMap();
+    }
 }

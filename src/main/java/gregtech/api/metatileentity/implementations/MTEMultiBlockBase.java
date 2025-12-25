@@ -2076,8 +2076,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             if (!supportsCraftingMEBuffer()) return false;
-            hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                withPattern.setProcessingLogic(processingLogic);
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
@@ -2824,6 +2826,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public void setMachineMode(int index) {
+        if (machineMode != index) {
+            // recipe map changed, reset CRIB recipe cache
+            for (IDualInputHatch dualInput : mDualInputHatches) {
+                if (dualInput instanceof IDualInputHatchWithPattern crib) {
+                    crib.resetCraftingInputRecipeMap(this.processingLogic);
+                }
+            }
+        }
         machineMode = index;
     }
 
