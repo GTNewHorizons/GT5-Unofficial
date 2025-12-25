@@ -344,7 +344,7 @@ public class GregTechAPI {
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         try {
             return new BaseMetaTileEntity();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GTLog.err);
             throw new RuntimeException(e);

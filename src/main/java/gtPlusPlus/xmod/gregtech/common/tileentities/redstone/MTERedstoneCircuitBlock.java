@@ -136,7 +136,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
             while (tIndex >= tList.size()) tIndex -= tList.size();
             mGate = tList.get(tIndex);
             switchGate();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.print(e);
         }
     }
@@ -153,7 +153,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
             while (tIndex < 0) tIndex += tList.size();
             mGate = tList.get(tIndex);
             switchGate();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.print(e);
         }
     }
@@ -188,7 +188,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         CircuitryBehavior tBehaviour = GregTechAPI.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.initParameters(mGateData, this);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.print(e);
         }
         validateGateData();
@@ -198,7 +198,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
         CircuitryBehavior tBehaviour = GregTechAPI.sCircuitryBehaviors.get(mGate);
         if (tBehaviour != null) try {
             tBehaviour.validateParameters(mGateData, this);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.print(e);
         }
     }
@@ -236,7 +236,7 @@ public class MTERedstoneCircuitBlock extends MTERedstoneBase implements IRedston
                     if (tBehaviour != null) {
                         try {
                             tBehaviour.onTick(mGateData, this);
-                        } catch (Throwable e) {
+                        } catch (Exception e) {
                             GTLog.err.print(e);
                         }
                     }

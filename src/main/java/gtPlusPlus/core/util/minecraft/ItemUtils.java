@@ -105,7 +105,7 @@ public class ItemUtils {
 
             Logger.RECIPE(oredictName + " was not valid.");
             return null;
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             return null;
         }
     }
@@ -320,14 +320,14 @@ public class ItemUtils {
                 final String modname = (id.modId == null ? id.name : id.modId);
                 value = (id.modId.isEmpty()) ? Minecraft.ID : modname;
             }
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             try {
                 final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
                 if (t2 != null) {
                     final String modname = (t2.modId == null ? t2.name : t2.modId);
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
-            } catch (final Throwable t3) {
+            } catch (final Exception t3) {
                 t3.printStackTrace();
                 value = "bad modid";
             }
@@ -443,7 +443,7 @@ public class ItemUtils {
                     }
                 }
             }
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
         if (aDisplay == null || aDisplay.length() == 0) {

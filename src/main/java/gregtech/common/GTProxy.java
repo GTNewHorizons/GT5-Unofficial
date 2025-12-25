@@ -1093,7 +1093,7 @@ public class GTProxy implements IFuelHandler {
             if (GregTechAPI.METATILEENTITIES[i] != null) {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onConfigLoad();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GT_FML_LOGGER.error("Could not load config for MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
@@ -1203,7 +1203,7 @@ public class GTProxy implements IFuelHandler {
             if (GregTechAPI.METATILEENTITIES[i] != null) {
                 try {
                     GregTechAPI.METATILEENTITIES[i].onServerStart();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     throw new RuntimeException("Could not call onServerStart MTE " + GregTechAPI.METATILEENTITIES[i], e);
                 }
             }
@@ -1467,7 +1467,7 @@ public class GTProxy implements IFuelHandler {
                         GTUtility.setStack(tDrop, tSmeltingOutput);
                     }
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 e.printStackTrace(GTLog.err);
             }
         }
@@ -1926,7 +1926,7 @@ public class GTProxy implements IFuelHandler {
             if (this.mOreDictActivated) {
                 OreDictEventContainer.registerRecipes(tOre);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER
                 .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
         }

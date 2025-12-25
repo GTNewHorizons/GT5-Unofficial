@@ -226,7 +226,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
                 try {
                     tRunnable.run();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GTMod.GT_FML_LOGGER.error("Error registering icons", e);
                 }
             }

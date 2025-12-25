@@ -76,7 +76,7 @@ public class GTPPIntegratedCircuitItem extends Item implements INetworkUpdatable
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName() + ".tooltip.1",
                     "Needs a screwdriver or circuit programming tool"));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
