@@ -276,3 +276,9 @@ BW.gui.text.lesu.max=MAX: %s
 BW.gui.text.lesu.max_in=MAX EU/t IN: %s
 BW.gui.text.lesu.eu_out=EU/t OUT: %s
 BW.gui.text.lesu.amp_io=AMP/t IN/OUT: %s
+
+# chat
+BW.chat.thtr.cannot_change_mode=THTR mode cannot be changed while the machine is running.
+BW.chat.thtr.running_in.emptying=THTR is now running in emptying mode.
+BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
+BW.chat.diode.max_amps=Max Amps: %s
