@@ -362,10 +362,11 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .child(createModuleSelectButton(p_syncManager, parent, 2, moduleCalc2, tierDyn, true))
                             .child(createModuleSelectButton(p_syncManager, parent, 3, moduleCalc3, tierDyn, true)))
                     .child(IKey.dynamic(() -> {
-                        if (usingPreviewSync.getBoolValue()) {
-                            return EnumChatFormatting.RED + "Showing Preview Modules";
-                        }
-                        return EnumChatFormatting.GREEN + "Showing Installed Modules";
+                        boolean isPreview = usingPreviewSync.getBoolValue();
+                        EnumChatFormatting color = isPreview ? EnumChatFormatting.RED : EnumChatFormatting.GREEN;
+                        String key = isPreview ? "GT5U.gui.text.foundry.modules.preview"
+                            : "GT5U.gui.text.foundry.modules.installed";
+                        return color + StatCollector.translateToLocal(key);
                     })
                         .scale(0.9f)
                         .asWidget()
