@@ -125,16 +125,16 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE
-                            + StatCollector.translateToLocal("GT5U.gui.text.LHC.beamenergykeV")
-                            + ": "
-                            + (cachedOutputBeamEnergy.getDoubleValue() * 1000
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.LHC.beamenergykeV",
+                            (cachedOutputBeamEnergy.getDoubleValue() * 1000
                                 > (playerTargetBeamEnergyeV.getDoubleValue()) ? EnumChatFormatting.GREEN
                                     : EnumChatFormatting.RED)
-                            + format((long) cachedOutputBeamEnergy.getDoubleValue() * 1000) // *1000 because cached is
-                                                                                            // in keV, but formatting
-                                                                                            // expects eV
-                            + "eV")).marginBottom(9))
+                                + format((long) cachedOutputBeamEnergy.getDoubleValue() * 1000))) // *1000 because
+                                                                                                  // cached is in keV,
+                                                                                                  // but formatting
+                                                                                                  // expects eV
+                ).marginBottom(9))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -145,13 +145,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.LHC.powercost")
-                            + ": "
-                            + EnumChatFormatting.GOLD
-                            + ((cachedOutputBeamEnergy.getDoubleValue() > 0) ? standardFormat.format(EUt.getLongValue())
-                                : "0")
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")).marginBottom(9))
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.LHC.powercost",
+                            ((cachedOutputBeamEnergy.getDoubleValue() > 0)
+                                ? EnumChatFormatting.GOLD + standardFormat.format(EUt.getLongValue())
+                                : EnumChatFormatting.GOLD + "0") + EnumChatFormatting.WHITE))).marginBottom(9))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
@@ -163,10 +161,12 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
-                        () -> "Status: " + ((cachedOutputBeamEnergy.getDoubleValue() > 0)
-                            ? EnumChatFormatting.AQUA
-                                + StatCollector.translateToLocal(getMachineModeText(machineMode.getIntValue()))
-                            : EnumChatFormatting.GRAY + "Off"))));
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.LHC.status",
+                            (cachedOutputBeamEnergy.getDoubleValue() > 0)
+                                ? EnumChatFormatting.AQUA
+                                    + StatCollector.translateToLocal(getMachineModeText(machineMode.getIntValue()))
+                                : EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.LHC.off")))));
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {

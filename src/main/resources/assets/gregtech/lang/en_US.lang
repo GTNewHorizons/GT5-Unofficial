@@ -1747,9 +1747,11 @@ GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
 GT5U.gui.text.BeamlineHatch.emptylist=No List to choose from :(
 
-GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy
+GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
 GT5U.gui.text.LHC.beamrate=Current Beam Rate
-GT5U.gui.text.LHC.powercost=Current Power Draw
+GT5U.gui.text.LHC.powercost=Current Power Draw %s EU/t
+GT5U.gui.text.LHC.status=Status: %s
+GT5U.gui.text.LHC.off=Off
 GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
 GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
