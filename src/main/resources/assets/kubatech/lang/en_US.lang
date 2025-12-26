@@ -77,6 +77,7 @@ kubatech.gui.text.status=Status
 kubatech.gui.text.operating=Operating
 kubatech.gui.text.input=Input
 kubatech.gui.text.output=Output
+kubatech.gui.text.running_button=Can't change mode when running!
 kubatech.gui.text.eig.setup_mode=Setup mode
 kubatech.gui.text.eig.disabled=Disabled
 kubatech.gui.text.eig.enabled=Enabled
@@ -145,6 +146,7 @@ kubatech.infodata.eig.too_many_seeds=There are too many seeds inside to run!
 ## Mega Industrial Apiary
 kubatech.infodata.mia.running_mode.input=Input mode
 kubatech.infodata.mia.running_mode.output=Output mode
+kubatech.infodata.mia.running_mode.operating=Operating mode
 kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
