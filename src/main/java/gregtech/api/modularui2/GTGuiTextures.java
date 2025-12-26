@@ -237,7 +237,7 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
         .build();
-    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImageColorableGT("overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImage(GregTech.ID, "gui/overlay_slot/data_orb");
     public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/dust")
         .fullImage()
@@ -445,6 +445,11 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_BOILER_HEAT)
+        .build();
+    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/charger")
         .build();
     public static final UITexture PROGRESSBAR_FUEL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/fuel")
