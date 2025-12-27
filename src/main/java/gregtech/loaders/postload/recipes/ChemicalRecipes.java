@@ -4150,7 +4150,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(9)
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(Materials.Air.getGas(14_000))
-            .fluidOutputs(new FluidStack(aPolymer, 1_000))
+            .fluidOutputs(new FluidStack(aPolymer, 8 * INGOTS))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4160,7 +4160,7 @@ public class ChemicalRecipes implements Runnable {
             .circuit(9)
             .itemOutputs(Materials.Empty.getCells(1))
             .fluidInputs(Materials.Oxygen.getGas(7_000))
-            .fluidOutputs(new FluidStack(aPolymer, 1_500))
+            .fluidOutputs(new FluidStack(aPolymer, 12 * INGOTS))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);

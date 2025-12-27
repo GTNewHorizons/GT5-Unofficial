@@ -219,7 +219,7 @@ public class BioRecipes {
             .itemInputs(GregtechItemList.CellulosePulp.get(4))
             .circuit(16)
             .fluidInputs(Materials.AceticAcid.getFluid(500), new FluidStack(GTPPFluids.PropionicAcid, 500))
-            .fluidOutputs(Materials.Polyethylene.getMolten(1_000))
+            .fluidOutputs(Materials.Polyethylene.getMolten(8 * INGOTS))
             .duration(10 * SECONDS)
             .eut(240)
             .metadata(CHEMPLANT_CASING_TIER, 2)
