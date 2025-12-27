@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -204,6 +205,10 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return this.mMode == 10;
     }
 
+    public boolean getCacheMode() {
+        return cacheMode;
+    }
+
     private void checkFluidLock() {
         ItemStack upgradeItemStack = mInventory[0];
 
@@ -350,7 +355,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return mMode == 0;
+        return mMode == 0 && !cacheMode;
     }
 
     public int tryFillAE(final FluidStack aFluid, boolean doFill) {
@@ -444,7 +449,10 @@ public class MTEHatchOutputME extends MTEHatchOutput
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         cacheMode = !cacheMode;
-        GTUtility.sendChatToPlayer(lastClickedPlayer, "Cache Mode: " + (this.cacheMode ? "On" : "Off"));
+        aPlayer.addChatComponentMessage(
+            new ChatComponentText(
+                "Cache Mode: " + (this.cacheMode ? "On" : "Off")
+                    + "\nNOTE: Cache Mode checks whether there is enough space for the output, resulting in more lag."));
         updateState();
         markDirty();
     }

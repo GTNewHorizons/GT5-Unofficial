@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -165,6 +166,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         super.onFirstTick(aBaseMetaTileEntity);
         getProxy().onReady();
         updateState();
+    }
+
+    public boolean getCacheMode() {
+        return cacheMode;
     }
 
     @Override
@@ -373,7 +378,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         cacheMode = !cacheMode;
-        GTUtility.sendChatToPlayer(lastClickedPlayer, "Cache Mode: " + (this.cacheMode ? "On" : "Off"));
+        aPlayer.addChatComponentMessage(
+            new ChatComponentText(
+                "Cache Mode: " + (this.cacheMode ? "On" : "Off")
+                    + "\nNOTE: Cache Mode checks whether there is enough space for the output, resulting in more lag."));
         updateState();
         markDirty();
     }

@@ -409,7 +409,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
 
             for (IFluidStore tHatch : tLayerOutputHatches) {
                 if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canFillFluid()) {
+                    if (tMEHatch.canFillFluid() && !tMEHatch.getCacheMode()) {
                         foundMEHatch = true;
                         break;
                     }
