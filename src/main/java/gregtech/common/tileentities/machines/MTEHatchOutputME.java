@@ -180,7 +180,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
         if (cacheMode && cell != null) {
             final IAEFluidStack returns = cell
                 .injectItems(AEFluidStack.create(fluidStack), Actionable.SIMULATE, getRequest());
-            return returns.getStackSize() == 0;
+            return returns == null || returns.getStackSize() == 0;
         }
 
         if (!isFluidLocked()) {
@@ -989,7 +989,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
         @Override
         public boolean isValid(final Object verificationToken) {
-            if (this.chan == StorageChannel.ITEMS) {
+            if (this.chan == StorageChannel.FLUIDS) {
                 return verificationToken == MTEHatchOutputME.this.cell;
             }
             return false;

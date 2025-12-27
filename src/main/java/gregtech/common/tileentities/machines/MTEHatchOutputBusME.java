@@ -248,7 +248,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
                     .createItemStack(stack),
                 Actionable.SIMULATE,
                 getRequest());
-            return returns.getStackSize() == 0;
+            return returns == null || returns.getStackSize() == 0;
         }
 
         if (!isFiltered()) {
