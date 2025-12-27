@@ -2189,7 +2189,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.SodiumHydroxide.getDust(6), Materials.Epichlorohydrin.getCells(2))
             .itemOutputs(Materials.SaltWater.getCells(2))
-            .fluidInputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidInputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .fluidOutputs(Materials.Epoxid.getMolten(8 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -4507,7 +4507,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Acetone.getCells(1), Materials.Phenol.getCells(2))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -4516,7 +4516,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.HydrochloricAcid.getCells(1), Materials.Acetone.getCells(1))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Phenol.getFluid(2_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -4525,7 +4525,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Phenol.getCells(2), Materials.HydrochloricAcid.getCells(1))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Acetone.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -5422,7 +5422,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Acetone.getFluid(1_000),
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000), Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS), Materials.Water.getFluid(1_000))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
