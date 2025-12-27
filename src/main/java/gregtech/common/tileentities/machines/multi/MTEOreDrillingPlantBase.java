@@ -247,6 +247,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         LongIterator iter = oreBlockPositions.iterator();
 
+        if (!tryConsumeDrillingFluid(simulate)) {
+            setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
+            return false;
+        }
+
         while (iter.hasNext()) {
             long pos = iter.nextLong();
 
@@ -270,10 +275,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 continue;
             }
 
-            if (!tryConsumeDrillingFluid(simulate)) {
-                setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
-                return false;
-            }
 
             List<ItemStack> oreBlockDrops = OreManager
                 .mineBlock(random, world, x, y, z, false, mTier + 3, simulate, replaceWithCobblestone);
