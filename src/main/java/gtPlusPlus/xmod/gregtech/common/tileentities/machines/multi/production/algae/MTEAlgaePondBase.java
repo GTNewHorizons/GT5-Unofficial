@@ -467,6 +467,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         int redAlgaeBiomassQuantity = 0;
 
         switch (aTier){
+            case 15: // MAX tier is 14, but with the mechanic of uptiering with compost, 15 is reachable
             case 14:
             case 13:
             case 12:
