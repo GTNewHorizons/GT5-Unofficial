@@ -15,8 +15,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -74,16 +72,12 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
-            .addInfo("Turns coal into coke and produces creosote oil")
+        return new MultiblockTooltipBuilder().addMachineType("gt.recipe.cokeoven")
+            .addInfo("gt.mb_coke_oven.tips.1")
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoRange("Coke Oven Casing", 0, 26, false)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch")
-                    + ": "
-                    + EnumChatFormatting.GRAY
-                    + "Any Coke Oven Casing")
+            .addController("front_center")
+            .addCasingInfoRange("gt.blockcasings12.0.name", 0, 26, false)
+            .addStructurePart("gt.blockmachines.hatch.cokeoven.name", "gt.mb_coke_oven.info.1")
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher(AuthorJulia);
     }
