@@ -1062,12 +1062,19 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
     }
 
-    private void resetCraftingInputRecipeMap() {
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
+            if (sl == null) continue;
+            pl.removeInventoryRecipeCache(sl);
+        }
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
         for (ProcessingLogic pl : processingLogics) {
-            for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
-                if (sl == null) continue;
-                pl.removeInventoryRecipeCache(sl);
-            }
+            resetCraftingInputRecipeMap(pl);
         }
     }
 
@@ -1290,7 +1297,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(this::resetCraftingInputRecipeMap))
+                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> resetCraftingInputRecipeMap()))
                 .build()
                 .setPos(7, 7));
         return builder.build();
