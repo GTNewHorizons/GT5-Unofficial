@@ -53,8 +53,6 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
-import gregtech.common.tools.ToolScrewdriverHV;
-import gregtech.common.tools.ToolScrewdriverMV;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -70,7 +68,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
-import gregtech.common.tools.ToolBuzzSaw;
+import gregtech.common.tools.ToolBuzzSawHV;
+import gregtech.common.tools.ToolBuzzSawLV;
+import gregtech.common.tools.ToolBuzzSawMV;
 import gregtech.common.tools.ToolChainsawHV;
 import gregtech.common.tools.ToolChainsawLV;
 import gregtech.common.tools.ToolChainsawMV;
@@ -91,7 +91,9 @@ import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolScrewdriver;
+import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
+import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
@@ -367,7 +369,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_LV.ID,
             "Buzzsaw (LV)",
             "Not suitable for harvesting Blocks",
-            new ToolBuzzSaw(),
+            new ToolBuzzSawLV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -376,7 +378,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_MV.ID,
             "Buzzsaw (MV)",
             "Not suitable for harvesting Blocks",
-            new ToolBuzzSaw(),
+            new ToolBuzzSawMV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -385,7 +387,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_HV.ID,
             "Buzzsaw (HV)",
             "Not suitable for harvesting Blocks",
-            new ToolBuzzSaw(),
+            new ToolBuzzSawHV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolScrewdriverMV extends ToolScrewdriverLV {
+public class ToolBuzzSawMV extends ToolBuzzSawLV {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {

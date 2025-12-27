@@ -5,11 +5,11 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolScrewdriverMV extends ToolScrewdriverLV {
+public class ToolBuzzSawHV extends ToolBuzzSawLV {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Aluminium.mRGBa;
+        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.StainlessSteel.mRGBa;
     }
 
 }
