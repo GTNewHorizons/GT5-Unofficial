@@ -612,8 +612,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                 ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'L',
                 OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()), 'P',
-                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.Aluminium), 'B',
-                ItemList.Battery_RE_MV_Lithium.get(1L) });
+                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.Aluminium),
+                'B', ItemList.Battery_RE_MV_Lithium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_MV.ID,
@@ -626,8 +626,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                 ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'L',
                 OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()), 'P',
-                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.Aluminium), 'B',
-                ItemList.Battery_RE_MV_Cadmium.get(1L) });
+                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.Aluminium),
+                'B', ItemList.Battery_RE_MV_Cadmium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_MV.ID,
@@ -640,8 +640,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Diamond.get(1), 'M',
                 ItemList.Electric_Motor_MV.get(1L), 'S', OrePrefixes.screw.get(Materials.Aluminium), 'L',
                 OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()), 'P',
-                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.Aluminium), 'B',
-                ItemList.Battery_RE_MV_Sodium.get(1L) });
+                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.Aluminium),
+                'B', ItemList.Battery_RE_MV_Sodium.get(1L) });
         // HV Electric File
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
@@ -655,8 +655,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                 ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'L',
                 OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()), 'P',
-                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.StainlessSteel), 'B',
-                ItemList.Battery_RE_HV_Lithium.get(1L) });
+                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G',
+                OrePrefixes.gearGt.get(Materials.StainlessSteel), 'B', ItemList.Battery_RE_HV_Lithium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_HV.ID,
@@ -669,8 +669,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                 ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'L',
                 OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()), 'P',
-                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.StainlessSteel), 'B',
-                ItemList.Battery_RE_HV_Cadmium.get(1L) });
+                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G',
+                OrePrefixes.gearGt.get(Materials.StainlessSteel), 'B', ItemList.Battery_RE_HV_Cadmium.get(1L) });
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.FILE_HV.ID,
@@ -683,8 +683,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
                 ItemList.Electric_Motor_HV.get(1L), 'S', OrePrefixes.screw.get(Materials.StainlessSteel), 'L',
                 OrePrefixes.stickLong.get(werkstoff.getBridgeMaterial()), 'P',
-                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G', OrePrefixes.gearGt.get(Materials.StainlessSteel), 'B',
-                ItemList.Battery_RE_HV_Sodium.get(1L) });
+                OrePrefixes.plate.get(werkstoff.getBridgeMaterial()), 'G',
+                OrePrefixes.gearGt.get(Materials.StainlessSteel), 'B', ItemList.Battery_RE_HV_Sodium.get(1L) });
 
         GTModHandler.addCraftingRecipe(
             MetaGeneratedTool01.INSTANCE.getToolWithStats(

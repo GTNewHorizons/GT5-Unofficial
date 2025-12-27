@@ -53,6 +53,11 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
+import gregtech.common.tools.ToolFileHV;
+import gregtech.common.tools.ToolFileLV;
+import gregtech.common.tools.ToolFileMV;
+import gregtech.common.tools.ToolWireCutterHV;
+import gregtech.common.tools.ToolWireCutterMV;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -96,6 +101,7 @@ import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
 import gregtech.common.tools.ToolVajra;
 import gregtech.common.tools.ToolWireCutter;
+import gregtech.common.tools.ToolWireCutterLV;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
 import gregtech.common.tools.ToolWrenchLV;
@@ -455,7 +461,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 WIRECUTTER_LV.ID,
                 "Wire Cutter (LV)",
                 "Hand-held electric wire cutter",
-                new ToolWireCutter(),
+                new ToolWireCutterLV(),
                 ToolDictNames.craftingToolWireCutter,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
@@ -466,7 +472,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 WIRECUTTER_MV.ID,
                 "Wire Cutter (MV)",
                 "Hand-held electric wire cutter",
-                new ToolWireCutter(),
+                new ToolWireCutterMV(),
                 ToolDictNames.craftingToolWireCutter,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
@@ -477,7 +483,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 WIRECUTTER_HV.ID,
                 "Wire Cutter (HV)",
                 "Hand-held electric wire cutter",
-                new ToolWireCutter(),
+                new ToolWireCutterHV(),
                 ToolDictNames.craftingToolWireCutter,
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
@@ -489,7 +495,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             FILE_LV.ID,
             "File (LV)",
             "Hand-held electric filing device",
-            new ToolFile(),
+            new ToolFileLV(),
             ToolDictNames.craftingToolFile,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -498,7 +504,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             FILE_MV.ID,
             "File (MV)",
             "Hand-held electric filing device",
-            new ToolFile(),
+            new ToolFileMV(),
             ToolDictNames.craftingToolFile,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -507,7 +513,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             FILE_HV.ID,
             "File (HV)",
             "Hand-held electric filing device",
-            new ToolFile(),
+            new ToolFileHV(),
             ToolDictNames.craftingToolFile,
             new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
