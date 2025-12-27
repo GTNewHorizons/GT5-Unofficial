@@ -621,6 +621,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         aNBT.setBoolean("hadCell", hadCell);
         aNBT.setBoolean("blackList", blackList);
         aNBT.setBoolean("cacheMode", cacheMode);
+        aNBT.setInteger("myPriority", myPriority);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -673,6 +674,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         hadCell = aNBT.getBoolean("hadCell");
         blackList = aNBT.getBoolean("blackList");
         cacheMode = aNBT.getBoolean("cacheMode");
+        myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
