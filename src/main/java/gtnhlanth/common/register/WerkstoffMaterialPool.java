@@ -113,19 +113,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID + 6,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff Zirconium = new Werkstoff(
-        new short[] { 225, 230, 225 },
-        "Zirconium",
-        subscriptNumbers("Zr"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems(),
-        // .enforceUnification(),
-        offsetID + 7,
-        TextureSet.SET_METALLIC);
-
     public static final Werkstoff Zirconia = new Werkstoff(
         new short[] { 177, 152, 101 },
         "Zirconia",

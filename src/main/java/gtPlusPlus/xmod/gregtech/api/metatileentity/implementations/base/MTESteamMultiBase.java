@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,12 +36,10 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.StructureError;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IOutputBus;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
@@ -89,30 +86,17 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
         this.overclockDescriber = createOverclockDescriber();
     }
 
+    @Override
+    protected int getCasingTextureId() {
+        return 10;
+    }
+
     public MTESteamMultiBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         this.overclockDescriber = createOverclockDescriber();
     }
 
-    @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                aActive ? getFrontOverlayActive() : getFrontOverlay() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
-    }
-
-    protected abstract ITexture getFrontOverlay();
-
-    protected abstract ITexture getFrontOverlayActive();
-
     public abstract int getTierRecipes();
-
-    private int getCasingTextureIndex() {
-        return 10;
-    }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {

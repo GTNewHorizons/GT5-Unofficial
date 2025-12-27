@@ -131,7 +131,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_UEV.get(16),
                 ItemList.Field_Generator_UIV.get(4),
                 new ItemStack(huiCircuit, 8, 4),
-                GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
+                GTModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 5),
                 GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1))
             .fluidInputs(Materials.StellarAlloy.getMolten(50 * INGOTS), Materials.RadoxPolymer.getMolten(32 * INGOTS))
             .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 10))
