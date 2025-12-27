@@ -13,6 +13,9 @@ import static gregtech.common.items.IDMetaTool01.DRILL_HV;
 import static gregtech.common.items.IDMetaTool01.DRILL_LV;
 import static gregtech.common.items.IDMetaTool01.DRILL_MV;
 import static gregtech.common.items.IDMetaTool01.FILE;
+import static gregtech.common.items.IDMetaTool01.FILE_HV;
+import static gregtech.common.items.IDMetaTool01.FILE_LV;
+import static gregtech.common.items.IDMetaTool01.FILE_MV;
 import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
 import static gregtech.common.items.IDMetaTool01.JACKHAMMER;
 import static gregtech.common.items.IDMetaTool01.KNIFE;
@@ -42,6 +45,9 @@ import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_SMALL;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
 import static gregtech.common.items.IDMetaTool01.WRENCH;
 import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
@@ -442,6 +448,70 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
             GregTechAPI.sSolderingToolList);
+
+        // Register Electric Wirecutters
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER_LV.ID,
+                "Wire Cutter (LV)",
+                "Hand-held electric wire cutter",
+                new ToolWireCutter(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER_MV.ID,
+                "Wire Cutter (MV)",
+                "Hand-held electric wire cutter",
+                new ToolWireCutter(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER_HV.ID,
+                "Wire Cutter (HV)",
+                "Hand-held electric wire cutter",
+                new ToolWireCutter(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+
+        // Register Electric Files
+        addTool(
+            FILE_LV.ID,
+            "File (LV)",
+            "Hand-held electric filing device",
+            new ToolFile(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+        addTool(
+            FILE_MV.ID,
+            "File (MV)",
+            "Hand-held electric filing device",
+            new ToolFile(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+        addTool(
+            FILE_HV.ID,
+            "File (HV)",
+            "Hand-held electric filing device",
+            new ToolFile(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
 
         addTool(TURBINE_SMALL.ID, "Small Turbine", "Turbine Rotors for your power station", new ToolTurbineSmall());
         addTool(TURBINE.ID, "Turbine", "Turbine Rotors for your power station", new ToolTurbineNormal());
