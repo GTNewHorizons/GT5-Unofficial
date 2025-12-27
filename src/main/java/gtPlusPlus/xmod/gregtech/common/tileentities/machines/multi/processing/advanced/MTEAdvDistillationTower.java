@@ -408,7 +408,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
                     .anyMatch(
                         tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())
-                            && (!tMEHatch.getCacheMode())));
+                            && (!tMEHatch.getCheckMode())));
     }
 
     private enum Mode {

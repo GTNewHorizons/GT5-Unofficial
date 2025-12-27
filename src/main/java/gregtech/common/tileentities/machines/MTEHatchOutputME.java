@@ -122,6 +122,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     boolean cacheMode = false;
     boolean isCached = false;
+    boolean checkMode = false;
 
     @Nullable
     OutputMonitorHandler<IAEFluidStack> cell;
@@ -205,8 +206,8 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return this.mMode == 10;
     }
 
-    public boolean getCacheMode() {
-        return cacheMode;
+    public boolean getCheckMode() {
+        return checkMode;
     }
 
     private void checkFluidLock() {
@@ -355,7 +356,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return mMode == 0 && !cacheMode;
+        return mMode == 0 && !checkMode;
     }
 
     public int tryFillAE(final FluidStack aFluid, boolean doFill) {
@@ -448,13 +449,20 @@ public class MTEHatchOutputME extends MTEHatchOutput
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        cacheMode = !cacheMode;
-        aPlayer.addChatComponentMessage(
-            new ChatComponentText(
-                "Cache Mode: " + (this.cacheMode ? "On" : "Off")
-                    + "\nNOTE: Cache Mode checks whether there is enough space for the output, resulting in more lag."));
-        updateState();
-        markDirty();
+        if (aPlayer.isSneaking()) {
+            checkMode = !checkMode;
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(
+                    "Check Mode: " + (this.checkMode
+                        ? "On\nNOTE: Check Mode checks whether there is enough space for the output, resulting in more lag."
+                        : "Off")));
+            markDirty();
+        } else {
+            cacheMode = !cacheMode;
+            aPlayer.addChatComponentMessage(new ChatComponentText("Cache Mode: " + (this.cacheMode ? "On" : "Off")));
+            updateState();
+            markDirty();
+        }
     }
 
     @Override
@@ -675,6 +683,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
         aNBT.setBoolean("hadCell", hadCell);
         aNBT.setBoolean("blackList", blackList);
         aNBT.setBoolean("cacheMode", cacheMode);
+        aNBT.setBoolean("checkMode", checkMode);
         aNBT.setInteger("myPriority", myPriority);
         getProxy().writeToNBT(aNBT);
     }
@@ -716,6 +725,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
         hadCell = aNBT.getBoolean("hadCell");
         blackList = aNBT.getBoolean("blackList");
         cacheMode = aNBT.getBoolean("cacheMode");
+        checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
         getProxy().readFromNBT(aNBT);

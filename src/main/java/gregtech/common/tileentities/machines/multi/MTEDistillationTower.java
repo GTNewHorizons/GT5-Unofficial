@@ -285,7 +285,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
                     .anyMatch(
                         tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())
-                            && (!tMEHatch.getCacheMode())));
+                            && (!tMEHatch.getCheckMode())));
     }
 
     @Override

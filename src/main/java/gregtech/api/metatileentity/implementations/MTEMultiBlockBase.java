@@ -2712,7 +2712,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             boolean handled = false;
 
             for (MTEHatchOutputBusME busME : meBusses) {
-                if (busME.getCacheMode()) continue;
+                if (busME.getCheckMode()) continue;
 
                 // If the bus has reached its max capacity, it can't accept anything
                 if (!busME.canAcceptItem()) continue;
@@ -2739,7 +2739,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).getCacheMode()) {
+                if (((MTEHatchOutputME) tHatch).getCheckMode()) {
                     return false;
                 }
 

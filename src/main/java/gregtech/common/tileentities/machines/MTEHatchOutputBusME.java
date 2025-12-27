@@ -121,6 +121,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     volatile boolean cacheMode = false;
     boolean isCached = false;
+    boolean checkMode = false;
 
     @Nullable
     OutputMonitorHandler<IAEItemStack> cell;
@@ -168,8 +169,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         updateState();
     }
 
-    public boolean getCacheMode() {
-        return cacheMode;
+    public boolean getCheckMode() {
+        return checkMode;
     }
 
     @Override
@@ -377,13 +378,20 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        cacheMode = !cacheMode;
-        aPlayer.addChatComponentMessage(
-            new ChatComponentText(
-                "Cache Mode: " + (this.cacheMode ? "On" : "Off")
-                    + "\nNOTE: Cache Mode checks whether there is enough space for the output, resulting in more lag."));
-        updateState();
-        markDirty();
+        if (aPlayer.isSneaking()) {
+            checkMode = !checkMode;
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(
+                    "Check Mode: " + (this.checkMode
+                        ? "On\nNOTE: Check Mode checks whether there is enough space for the output, resulting in more lag."
+                        : "Off")));
+            markDirty();
+        } else {
+            cacheMode = !cacheMode;
+            aPlayer.addChatComponentMessage(new ChatComponentText("Cache Mode: " + (this.cacheMode ? "On" : "Off")));
+            updateState();
+            markDirty();
+        }
     }
 
     @Override
@@ -621,6 +629,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         aNBT.setBoolean("hadCell", hadCell);
         aNBT.setBoolean("blackList", blackList);
         aNBT.setBoolean("cacheMode", cacheMode);
+        aNBT.setBoolean("checkMode", checkMode);
         aNBT.setInteger("myPriority", myPriority);
         getProxy().writeToNBT(aNBT);
     }
@@ -674,6 +683,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         hadCell = aNBT.getBoolean("hadCell");
         blackList = aNBT.getBoolean("blackList");
         cacheMode = aNBT.getBoolean("cacheMode");
+        checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
         getProxy().readFromNBT(aNBT);
