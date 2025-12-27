@@ -4,6 +4,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IItemContainer;
+import gregtech.loaders.postload.FoundryFakeModuleCostLoader;
 import tectech.TecTech;
 
 /**
@@ -47,5 +48,6 @@ public class BaseRecipeLoader {
             Godforge.runDevEnvironmentRecipes();
         }
         Godforge.addFakeUpgradeCostRecipes();
+        FoundryFakeModuleCostLoader.load();
     }
 }
