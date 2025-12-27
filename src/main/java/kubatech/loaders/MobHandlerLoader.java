@@ -238,8 +238,12 @@ public class MobHandlerLoader {
         if (recipe != null) {
             event.additionalInformation.addAll(
                 Arrays.asList(
-                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+                    StatCollector.translateToLocalFormatted(
+                        "kubatech.gui.text.usage_line",
+                        GTUtility.formatNumbers(recipe.mEUt)),
+                    StatCollector.translateToLocalFormatted(
+                        "kubatech.gui.text.time_line",
+                        GTUtility.formatNumbers(recipe.mDuration / 20d))));
         }
     }
 }
