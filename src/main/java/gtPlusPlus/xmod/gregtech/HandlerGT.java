@@ -7,8 +7,6 @@ import gtPlusPlus.recipes.CokeAndPyrolyseOven;
 import gtPlusPlus.xmod.gregtech.common.MetaGTProxy;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.GTPPBlocks;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingAngleGrinder;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingElectricSnips;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderMolecularTransformer;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
@@ -33,10 +31,6 @@ public class HandlerGT {
     }
 
     public static void postInit() {
-
-        // Only loads if the config option is true (default: true)
-        new ProcessingAngleGrinder().run();
-        new ProcessingElectricSnips().run();
 
         // Add recipes
         CokeAndPyrolyseOven.postInit();
