@@ -53,6 +53,8 @@ import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_MV;
 
+import gregtech.common.tools.ToolScrewdriverHV;
+import gregtech.common.tools.ToolScrewdriverMV;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -404,7 +406,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 SCREWDRIVER_MV.ID,
                 "Screwdriver (MV)",
                 "Adjusts Covers and Machines",
-                new ToolScrewdriverLV(),
+                new ToolScrewdriverMV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -415,7 +417,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 SCREWDRIVER_HV.ID,
                 "Screwdriver (HV)",
                 "Adjusts Covers and Machines",
-                new ToolScrewdriverLV(),
+                new ToolScrewdriverHV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
