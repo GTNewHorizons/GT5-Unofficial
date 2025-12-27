@@ -2190,7 +2190,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.SodiumHydroxide.getDust(6), Materials.Epichlorohydrin.getCells(2))
             .itemOutputs(Materials.SaltWater.getCells(2))
             .fluidInputs(Materials.BisphenolA.getFluid(1_000))
-            .fluidOutputs(Materials.Epoxid.getMolten(1_000))
+            .fluidOutputs(Materials.Epoxid.getMolten(8 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -3553,7 +3553,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.SodiumSulfide.getDust(3), ItemList.Cell_Air.get(8))
             .itemOutputs(Materials.Salt.getDust(4), Materials.Empty.getCells(8))
             .fluidInputs(Materials.Dichlorobenzene.getFluid(1_000))
-            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(1_000))
+            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(8 * INGOTS))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -3562,7 +3562,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.SodiumSulfide.getDust(3), Materials.Oxygen.getCells(8))
             .itemOutputs(Materials.Salt.getDust(4), Materials.Empty.getCells(8))
             .fluidInputs(Materials.Dichlorobenzene.getFluid(1_000))
-            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(1_500))
+            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(12 * INGOTS))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -5448,7 +5448,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000),
                 Materials.Epichlorohydrin.getFluid(2_000))
-            .fluidOutputs(Materials.Epoxid.getMolten(1_000), Materials.SaltWater.getFluid(2_000))
+            .fluidOutputs(Materials.Epoxid.getMolten(8 * INGOTS), Materials.SaltWater.getFluid(2_000))
             .duration(24 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
