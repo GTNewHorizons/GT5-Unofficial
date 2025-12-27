@@ -3715,7 +3715,7 @@ machtype.ece=Combustion Generator, ECE
 machtype.entropic_processor=Entropic Processor
 machtype.distillation_tower=Distillery, DT
 machtype.assline=Assembly Line, Assline, AL
-machtype.mb_air_filter=Air Filter
+machtype.mb_air_filter=Air Filter, EAF
 machtype.completer=Research Completer
 
 # Used in addController. These are some commonly used shared ones
