@@ -464,7 +464,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         int greenAlgaeBiomassQuantity = 0;
         int brownAlgaeBiomassQuantity = 0;
         int goldenAlgaeBiomassQuantity = 0;
-        int redAlgaeBiomass = 0;
+        int redAlgaeBiomassQuantity = 0;
 
         switch (aTier){
             case 14:
@@ -477,28 +477,24 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             case 7:
             case 6:
                 goldenAlgaeBiomassQuantity+=4;
-                redAlgaeBiomass+=2;
+                redAlgaeBiomassQuantity+=2;
 
                 if (MathUtils.randInt(0, 10) > 9) {
-                    redAlgaeBiomass+=8;
+                    redAlgaeBiomassQuantity+=8;
                 }
-                // Iterate a special loop at higher tiers to provide more Red/Gold Algae.
-                for (int i = 0; i < 15; i++) {
-                    if (aTier >= (6 + i)) {
-                        int aMulti = i + 1;
-                        greenAlgaeBiomassQuantity+=aMulti*4;
-                        brownAlgaeBiomassQuantity+=aMulti*3;
-                        goldenAlgaeBiomassQuantity+=aMulti*2;
-                        redAlgaeBiomass+=aMulti;
-                    } else {
-                        break;
-                    }
-                }
+                // this logic allows for more Red/Gold Algae at higher tiers.
+                int delta = aTier-6;
+                int multiplier = (delta+1)*(delta+2)/2;
+                greenAlgaeBiomassQuantity+= multiplier*4;
+                brownAlgaeBiomassQuantity+= multiplier*3;
+                goldenAlgaeBiomassQuantity+= multiplier*2;
+                redAlgaeBiomassQuantity+= multiplier;
+
             case 5: { // IV
                 brownAlgaeBiomassQuantity+=4;
                 goldenAlgaeBiomassQuantity+=2;
                 if (MathUtils.randInt(0, 10) > 9) {
-                    redAlgaeBiomass+=4;
+                    redAlgaeBiomassQuantity+=4;
                 }
             }
             case 4: { // EV
@@ -540,7 +536,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         }
 
         int[] quantities = new int[]{algaeBiomassQuantity, greenAlgaeBiomassQuantity, brownAlgaeBiomassQuantity,
-            goldenAlgaeBiomassQuantity, redAlgaeBiomass};
+            goldenAlgaeBiomassQuantity, redAlgaeBiomassQuantity};
 
         GregtechItemList[] itemList = new GregtechItemList[]{GregtechItemList.AlgaeBiomass,
             GregtechItemList.GreenAlgaeBiomass, GregtechItemList.BrownAlgaeBiomass,
