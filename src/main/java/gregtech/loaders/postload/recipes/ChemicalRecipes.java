@@ -4190,25 +4190,17 @@ public class ChemicalRecipes implements Runnable {
     }
 
     public void polymerizationRecipes() {
-        addDefaultPolymerizationRecipes(
-            Materials.VinylAcetate.mFluid,
-            Materials.PolyvinylAcetate.mFluid);
+        addDefaultPolymerizationRecipes(Materials.VinylAcetate.mFluid, Materials.PolyvinylAcetate.mFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.Ethylene.mGas,
-            Materials.Polyethylene.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.Ethylene.mGas, Materials.Polyethylene.mStandardMoltenFluid);
 
         addDefaultPolymerizationRecipes(
             Materials.Tetrafluoroethylene.mGas,
             Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.VinylChloride.mGas,
-            Materials.PolyvinylChloride.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.VinylChloride.mGas, Materials.PolyvinylChloride.mStandardMoltenFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.Styrene.mFluid,
-            Materials.Polystyrene.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.Styrene.mFluid, Materials.Polystyrene.mStandardMoltenFluid);
     }
 
     public void singleBlockOnly() {
