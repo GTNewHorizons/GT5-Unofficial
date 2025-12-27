@@ -192,6 +192,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             if (master != null) master.removeProxyHatch(this);
             master = newMaster;
             master.addProxyHatch(this);
+            for (int index = 0; index < pendingProcessingLogics.size(); index++) {
+                master.setProcessingLogic(pendingProcessingLogics.get(index));
+            }
         }
         masterX = x;
         masterY = y;
@@ -326,9 +329,17 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
     }
 
+    private List<ProcessingLogic> pendingProcessingLogics = new ArrayList<>();
+
     @Override
     public void setProcessingLogic(ProcessingLogic pl) {
-        if (getMaster() != null) getMaster().setProcessingLogic(pl);
+        if (getMaster() != null) {
+            getMaster().setProcessingLogic(pl);
+        } else {
+            // when a controller accepts a proxy without a master, store its ProcessingLogic here,
+            // then set them to the master when linking to one
+            pendingProcessingLogics.add(pl);
+        }
     }
 
     @Override
