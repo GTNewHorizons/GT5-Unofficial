@@ -29,8 +29,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -58,6 +62,7 @@ import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
+import appeng.core.localization.GuiText;
 import appeng.helpers.IPriorityHost;
 import appeng.items.contents.CellConfig;
 import appeng.items.storage.ItemBasicStorageCell;
@@ -76,6 +81,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
@@ -840,6 +846,20 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add1by1Slot(builder);
+        builder.widget(
+            new TextFieldWidget().setSynced(true, true)
+                .setNumbers(1, Integer.MAX_VALUE)
+                .setGetterInt(this::getPriority)
+                .setSetterInt(this::setPriority)
+                .setTextAlignment(Alignment.Center)
+                .setTextColor(Color.WHITE.dark(1))
+                .setFocusOnGuiOpen(false)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .addTooltip(GuiText.Priority.getLocal())
+                .setEnabled(widget -> cacheMode)
+                .setPos(7, 63)
+                .setSize(40, 14))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> cacheMode, val -> cacheMode = val));
     }
 
     @Override
@@ -922,6 +942,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public void setPriority(int newValue) {
         myPriority = newValue;
+        isCached = false;
+        updateState();
+        markDirty();
     }
 
     @Override
