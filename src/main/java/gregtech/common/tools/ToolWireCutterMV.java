@@ -7,17 +7,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolWireCutterMV extends ToolWireCutter {
-
-    @Override
-    public float getBaseDamage() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier() {
-        return 2.0F;
-    }
+public class ToolWireCutterMV extends ToolWireCutterLV {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {

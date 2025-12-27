@@ -7,7 +7,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolFileLV extends ToolWireCutter {
+public class ToolFileLV extends ToolFile {
 
     @Override
     public float getBaseDamage() {
