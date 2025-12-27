@@ -460,66 +460,100 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     private static ItemStack[] getOutputsForTier(int aTier) {
         ArrayList<ItemStack> outputList = new ArrayList<>();
+        int algaeBiomassQuantity = 0;
+        int greenAlgaeBiomassQuantity = 0;
+        int brownAlgaeBiomassQuantity = 0;
+        int goldenAlgaeBiomassQuantity = 0;
+        int redAlgaeBiomass = 0;
 
-        if (aTier >= 0) {
-            outputList.add(GregtechItemList.AlgaeBiomass.get(2));
-            outputList.add(GregtechItemList.AlgaeBiomass.get(4));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
-            }
-        }
-        if (aTier >= 1) {
-            outputList.add(GregtechItemList.AlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 2) {
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(3));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(8));
-            }
-        }
-        if (aTier >= 3) {
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(1));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.BrownAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 4) {
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(2));
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(3));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 5) {
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(2));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.RedAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 6) {
-            outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.RedAlgaeBiomass.get(2));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.RedAlgaeBiomass.get(8));
-            }
-            // Iterate a special loop at higher tiers to provide more Red/Gold Algae.
-            for (int i = 0; i < 20; i++) {
-                if (aTier >= (6 + i)) {
-                    int aMulti = i + 1;
-                    outputList.add(GregtechItemList.GreenAlgaeBiomass.get(aMulti * 4));
-                    outputList.add(GregtechItemList.BrownAlgaeBiomass.get(aMulti * 3));
-                    outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(aMulti * 2));
-                    outputList.add(GregtechItemList.RedAlgaeBiomass.get(aMulti));
-                } else {
-                    break;
+        switch (aTier){
+            case 14:
+            case 13:
+            case 12:
+            case 11:
+            case 10:
+            case 9:
+            case 8:
+            case 7:
+            case 6:
+                goldenAlgaeBiomassQuantity+=4;
+                redAlgaeBiomass+=2;
+
+                if (MathUtils.randInt(0, 10) > 9) {
+                    redAlgaeBiomass+=8;
                 }
+                // Iterate a special loop at higher tiers to provide more Red/Gold Algae.
+                for (int i = 0; i < 15; i++) {
+                    if (aTier >= (6 + i)) {
+                        int aMulti = i + 1;
+                        greenAlgaeBiomassQuantity+=aMulti*4;
+                        brownAlgaeBiomassQuantity+=aMulti*3;
+                        goldenAlgaeBiomassQuantity+=aMulti*2;
+                        redAlgaeBiomass+=aMulti;
+                    } else {
+                        break;
+                    }
+                }
+            case 5: { // IV
+                brownAlgaeBiomassQuantity+=4;
+                goldenAlgaeBiomassQuantity+=2;
+                if (MathUtils.randInt(0, 10) > 9) {
+                    redAlgaeBiomass+=4;
+                }
+            }
+            case 4: { // EV
+                brownAlgaeBiomassQuantity+=5;
+
+                if (MathUtils.randInt(0, 10) > 9) {
+                    goldenAlgaeBiomassQuantity+=4;
+                }
+            }
+            case 3: { // HV
+                greenAlgaeBiomassQuantity+=4;
+                brownAlgaeBiomassQuantity+=1;
+
+                if (MathUtils.randInt(0, 10) > 9) {
+                    brownAlgaeBiomassQuantity+=4;
+                }
+            }
+            case 2: { // MV
+                greenAlgaeBiomassQuantity+=5;
+                if (MathUtils.randInt(0, 10) > 9) {
+                   greenAlgaeBiomassQuantity+=8;
+                }
+            }
+            case 1: { // LV
+                algaeBiomassQuantity += 4;
+                greenAlgaeBiomassQuantity+=2;
+
+                if (MathUtils.randInt(0, 10) > 9) {
+                    greenAlgaeBiomassQuantity+=4;
+                }
+            }
+            case 0: { // ULV
+                algaeBiomassQuantity += 6;
+                if (MathUtils.randInt(0, 10) > 9) {
+                    greenAlgaeBiomassQuantity+=2;
+                }
+                break;
+            }
+        }
+
+        int[] quantities = new int[]{algaeBiomassQuantity, greenAlgaeBiomassQuantity, brownAlgaeBiomassQuantity,
+            goldenAlgaeBiomassQuantity, redAlgaeBiomass};
+
+        GregtechItemList[] itemList = new GregtechItemList[]{GregtechItemList.AlgaeBiomass,
+            GregtechItemList.GreenAlgaeBiomass, GregtechItemList.BrownAlgaeBiomass,
+            GregtechItemList.GoldenBrownAlgaeBiomass, GregtechItemList.RedAlgaeBiomass};
+
+        for (int i = 0; i<5;i++){
+            int stacks = quantities[i] / 64;
+            int reminder = quantities[i] % 64;
+            for (int j = 0; j < stacks; j++){
+                outputList.add(itemList[i].get(64));
+            }
+            if (reminder > 0){
+                outputList.add(itemList[i].get(reminder));
             }
         }
 
