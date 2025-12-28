@@ -15,6 +15,9 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -49,17 +52,13 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
@@ -69,11 +68,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     private int mCasing;
     private static IStructureDefinition<MTEAlgaePondBase> STRUCTURE_DEFINITION = null;
     private int checkMeta;
-    private static final Class<?> cofhWater;
 
-    static {
-        cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
-    }
 
     public MTEAlgaePondBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -250,7 +245,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         // Get Facing direction
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        int mDirectionX = aBaseMetaTileEntity.getBackFacing().offsetX;
         int mCurrentDirectionX;
         int mCurrentDirectionZ;
         int mOffsetX_Lower = 0;
@@ -266,59 +260,54 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         mOffsetZ_Lower = -4;
         mOffsetZ_Upper = 4;
 
-        // if (aBaseMetaTileEntity.fac)
-
         final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
         final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
+        boolean success = true;
 
-        int tAmount = 0;
         for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
                 for (int h = 0; h < 2; h++) {
-                    Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    int tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-                    if (isNotStaticWater(tBlock, tMeta)) {
-                        if (this.getStoredFluids() != null) {
-                            for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
-                                    if (stored.amount >= 1000) {
-                                        // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
-                                        stored.amount -= 1000;
-                                        Block fluidUsed = Blocks.water;
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
-                                                aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                                aBaseMetaTileEntity.getYCoord() + h,
-                                                aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                                fluidUsed);
-                                    }
-                                }
-                            }
-                        }
+                    Block block = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+
+                    boolean isCOFHCoreWater = Mods.COFHCore.isModLoaded() && (block instanceof BlockWater);
+                    boolean isWater = (block == Blocks.water) || isCOFHCoreWater;
+                    boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
+                    if (isWater) continue;
+
+                    if (!isAir) { // invalid block to process
+                        success = false;
+                        continue;
                     }
-                    tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water
-                        || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
-                        ++tAmount;
-                        // Logger.INFO("Found Water");
+                    // no fluids to fill a non static water block
+                    // we return directly here because we cannot fill water so there is no point into processing next blocks
+                    if (this.getStoredFluids() == null) return false;
+
+                    boolean hasBeenFilled = false;
+
+                    // trying to fill with water
+                    for (FluidStack stored : this.getStoredFluids()) {
+                        if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+
+                        if (stored.amount < 1000) continue;
+
+                        stored.amount -= 1000;
+                        Block fluidUsed = Blocks.water;
+                        aBaseMetaTileEntity.getWorld()
+                            .setBlock(
+                                aBaseMetaTileEntity.getXCoord() + xDir + i,
+                                aBaseMetaTileEntity.getYCoord() + h,
+                                aBaseMetaTileEntity.getZCoord() + zDir + j,
+                                fluidUsed);
+                        hasBeenFilled = true;
+
+                        break; // don't deplete other water sources
                     }
+
+                    if (!hasBeenFilled) success=false; // did not get filled with water
                 }
             }
         }
-
-        boolean isValidWater = tAmount >= 49;
-
-        if (isValidWater) {
-            Logger.INFO("Filled structure.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isNotStaticWater(Block block, int meta) {
-        return block == Blocks.air || block == Blocks.flowing_water
-            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+        return success;
     }
 
     @Override
