@@ -10,8 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import gregtech.api.util.GTRecipe;
-import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -25,6 +23,7 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;

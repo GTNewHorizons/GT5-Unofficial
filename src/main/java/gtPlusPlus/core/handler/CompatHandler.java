@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaePond;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
@@ -36,6 +35,7 @@ import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
+import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderAlgaePond;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderChemicalSkips;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderGlueLine;

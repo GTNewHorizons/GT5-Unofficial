@@ -15,9 +15,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cofh.asmhooks.block.BlockWater;
-import gregtech.api.enums.Mods;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -32,11 +29,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
@@ -52,6 +51,7 @@ import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -285,7 +285,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     break; // don't deplete other water sources
                 }
 
-                if (!hasBeenFilled) success=false; // did not get filled with water
+                if (!hasBeenFilled) success = false; // did not get filled with water
 
             }
         }
@@ -375,11 +375,10 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         final ItemStack[] inputs;
 
-        if (isUsingCompost(tier, itemInputs)){
-            inputs = new ItemStack[]{GregtechItemList.Compost.get(compostForTier(tier))};
+        if (isUsingCompost(tier, itemInputs)) {
+            inputs = new ItemStack[] { GregtechItemList.Compost.get(compostForTier(tier)) };
             tier++;
-        }
-        else{
+        } else {
             inputs = GTValues.emptyItemStackArray;
         }
 
@@ -395,7 +394,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         return matchingRecipe;
     }
 
-    private static boolean isUsingCompost( int tier, ItemStack[] itemInputs) {
+    private static boolean isUsingCompost(int tier, ItemStack[] itemInputs) {
         ItemStack aCompost = GregtechItemList.Compost.get(1);
         final int compostForTier = compostForTier(tier);
         int compostFound = 0;

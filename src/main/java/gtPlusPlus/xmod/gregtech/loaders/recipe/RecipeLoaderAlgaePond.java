@@ -1,26 +1,24 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
-import gregtech.api.enums.GTValues;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ALGAE_POND_TIER;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.algaePondRecipes;
 
+import gregtech.api.enums.GTValues;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+
 public class RecipeLoaderAlgaePond {
-    public static void generate(){
+
+    public static void generate() {
 
         // Tier 0
         GTValues.RA.stdBuilder()
-            .itemOutputs(
-                GregtechItemList.AlgaeBiomass.get(6),
-                GregtechItemList.GreenAlgaeBiomass.get(2)
-            )
+            .itemOutputs(GregtechItemList.AlgaeBiomass.get(6), GregtechItemList.GreenAlgaeBiomass.get(2))
             .outputChances(100_00, 90_00)
             .metadata(ALGAE_POND_TIER, 0)
-            .duration(1* MINUTES+40*SECONDS)
+            .duration(1 * MINUTES + 40 * SECONDS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -29,11 +27,10 @@ public class RecipeLoaderAlgaePond {
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
                 GregtechItemList.GreenAlgaeBiomass.get(2),
-                GregtechItemList.GreenAlgaeBiomass.get(6)
-            )
+                GregtechItemList.GreenAlgaeBiomass.get(6))
             .outputChances(100_00, 100_00, 90_00)
             .metadata(ALGAE_POND_TIER, 1)
-            .duration(1* MINUTES+30*SECONDS)
+            .duration(1 * MINUTES + 30 * SECONDS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -42,11 +39,10 @@ public class RecipeLoaderAlgaePond {
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
                 GregtechItemList.GreenAlgaeBiomass.get(7),
-                GregtechItemList.GreenAlgaeBiomass.get(14)
-            )
+                GregtechItemList.GreenAlgaeBiomass.get(14))
             .outputChances(100_00, 100_00, 90_00)
             .metadata(ALGAE_POND_TIER, 2)
-            .duration(1* MINUTES+20*SECONDS)
+            .duration(1 * MINUTES + 20 * SECONDS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -57,11 +53,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(11),
                 GregtechItemList.BrownAlgaeBiomass.get(1),
                 GregtechItemList.GreenAlgaeBiomass.get(14),
-                GregtechItemList.BrownAlgaeBiomass.get(4)
-            )
+                GregtechItemList.BrownAlgaeBiomass.get(4))
             .outputChances(100_00, 100_00, 100_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 3)
-            .duration(1* MINUTES+10*SECONDS)
+            .duration(1 * MINUTES + 10 * SECONDS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -73,11 +68,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.BrownAlgaeBiomass.get(6),
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(4)
-            )
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(4))
             .outputChances(100_00, 100_00, 100_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 4)
-            .duration(1* MINUTES)
+            .duration(1 * MINUTES)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -91,11 +85,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(4)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(4))
             .outputChances(100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 5)
-            .duration(50*SECONDS)
+            .duration(50 * SECONDS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -110,11 +103,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 6)
-            .duration(25*SECONDS+12*TICKS)
+            .duration(25 * SECONDS + 12 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -129,11 +121,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 7)
-            .duration(12*SECONDS+16*TICKS)
+            .duration(12 * SECONDS + 16 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -148,11 +139,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 8)
-            .duration(6*SECONDS+8*TICKS)
+            .duration(6 * SECONDS + 8 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -167,11 +157,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 9)
-            .duration(3*SECONDS+4*TICKS)
+            .duration(3 * SECONDS + 4 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -187,11 +176,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 10)
-            .duration(1*SECONDS+12*TICKS)
+            .duration(1 * SECONDS + 12 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -208,11 +196,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 11)
-            .duration(16*TICKS)
+            .duration(16 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -229,11 +216,10 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
+                GregtechItemList.RedAlgaeBiomass.get(12))
             .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 12)
-            .duration(8*TICKS)
+            .duration(8 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -252,11 +238,23 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
+                GregtechItemList.RedAlgaeBiomass.get(12))
+            .outputChances(
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                90_00,
+                90_00,
+                90_00,
+                90_00)
             .metadata(ALGAE_POND_TIER, 13)
-            .duration(4*TICKS)
+            .duration(4 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -276,11 +274,24 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
+                GregtechItemList.RedAlgaeBiomass.get(12))
+            .outputChances(
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                90_00,
+                90_00,
+                90_00,
+                90_00)
             .metadata(ALGAE_POND_TIER, 14)
-            .duration(2*TICKS)
+            .duration(2 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
 
@@ -301,11 +312,25 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.GreenAlgaeBiomass.get(14),
                 GregtechItemList.BrownAlgaeBiomass.get(4),
                 GregtechItemList.GoldenBrownAlgaeBiomass.get(4),
-                GregtechItemList.RedAlgaeBiomass.get(12)
-            )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00)
+                GregtechItemList.RedAlgaeBiomass.get(12))
+            .outputChances(
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                100_00,
+                90_00,
+                90_00,
+                90_00,
+                90_00)
             .metadata(ALGAE_POND_TIER, 15)
-            .duration(1*TICKS)
+            .duration(1 * TICKS)
             .eut(0)
             .addTo(algaePondRecipes);
     }

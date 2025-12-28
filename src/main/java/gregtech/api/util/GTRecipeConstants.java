@@ -166,7 +166,8 @@ public class GTRecipeConstants {
     /**
      * Algae Pond tier.
      */
-    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey.create(Integer.class, "algae_pond_tier");
+    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "algae_pond_tier");
 
     /**
      * QFT Focus tier.
