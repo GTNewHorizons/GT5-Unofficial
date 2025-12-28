@@ -228,11 +228,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         return TAE.getIndexFromPage(1, 15);
     }
 
-    @Override
-    public int getMaxParallelRecipes() {
-        return 2;
-    }
-
     public boolean checkForWater() {
 
         // Get Facing direction
