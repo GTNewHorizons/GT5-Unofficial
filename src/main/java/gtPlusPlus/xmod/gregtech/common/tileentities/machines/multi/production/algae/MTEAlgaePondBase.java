@@ -225,11 +225,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @Override
     protected int getCasingTextureId() {
-        int aID = TAE.getIndexFromPage(1, 15);
-        if (tier > -1) {
-            aID = tier;
-        }
-        return aID;
+        return TAE.getIndexFromPage(1, 15);
     }
 
     @Override
