@@ -542,7 +542,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             xyz[0] + tile.getXCoord(),
             xyz[1] + tile.getYCoord(),
             xyz[2] + tile.getZCoord(),
-            getExtendedFacing(),
+            getExtendedFacing().with(ForgeDirection.UP),
             tTextures,
             overlayTickets);
     }
