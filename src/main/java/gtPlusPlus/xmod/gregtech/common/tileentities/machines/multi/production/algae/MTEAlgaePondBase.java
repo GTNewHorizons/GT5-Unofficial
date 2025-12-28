@@ -174,7 +174,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        tier = 0;
+        tier = -1;
         checkMeta = 0;
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= MINIMUM_CASINGS
@@ -335,7 +335,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     private int getCasingTier() {
         if (this.getBaseMetaTileEntity()
             .getWorld() == null) {
-            return 0;
+            return -1;
         }
         try {
             Block aInitStructureCheck;
@@ -347,12 +347,12 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTechAPI.sBlockCasings1
                 || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
-                return aInitStructureCheckMeta;
+                return aInitStructureCheckMeta - 1;
             }
-            return 0;
+            return -1;
         } catch (Throwable t) {
             t.printStackTrace();
-            return 0;
+            return -1;
         }
     }
 
