@@ -9,10 +9,11 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.GTMod;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.GTClient;
-import gregtech.common.render.GTRenderUtil;
 
 public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
@@ -63,7 +64,7 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
                 // Multiply base color with modifier
                 GL11.glColor3f(baseR * modR, baseG * modG, baseB * modB);
 
-                GTRenderUtil.renderItem(type, icons[0]);
+                ItemRenderUtil.renderItem(type, icons[0]);
 
             }
         }
