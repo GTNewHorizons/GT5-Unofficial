@@ -266,45 +266,45 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
         for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
-                for (int h = 0; h < 2; h++) {
-                    Block block = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 
-                    boolean isCOFHCoreWater = Mods.COFHCore.isModLoaded() && (block instanceof BlockWater);
-                    boolean isWater = (block == Blocks.water) || isCOFHCoreWater;
-                    boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
-                    if (isWater) continue;
+                Block block = aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j);
 
-                    if (!isAir) { // invalid block to process
-                        success = false;
-                        continue;
-                    }
-                    // no fluids to fill a non static water block
-                    // we return directly here because we cannot fill water so there is no point into processing next blocks
-                    if (this.getStoredFluids() == null) return false;
+                boolean isCOFHCoreWater = Mods.COFHCore.isModLoaded() && (block instanceof BlockWater);
+                boolean isWater = (block == Blocks.water) || isCOFHCoreWater;
+                boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
+                if (isWater) continue;
 
-                    boolean hasBeenFilled = false;
-
-                    // trying to fill with water
-                    for (FluidStack stored : this.getStoredFluids()) {
-                        if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
-
-                        if (stored.amount < 1000) continue;
-
-                        stored.amount -= 1000;
-                        Block fluidUsed = Blocks.water;
-                        aBaseMetaTileEntity.getWorld()
-                            .setBlock(
-                                aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                aBaseMetaTileEntity.getYCoord() + h,
-                                aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                fluidUsed);
-                        hasBeenFilled = true;
-
-                        break; // don't deplete other water sources
-                    }
-
-                    if (!hasBeenFilled) success=false; // did not get filled with water
+                if (!isAir) { // invalid block to process
+                    success = false;
+                    continue;
                 }
+                // no fluids to fill a non static water block
+                // we return directly here because we cannot fill water so there is no point into processing next blocks
+                if (this.getStoredFluids() == null) return false;
+
+                boolean hasBeenFilled = false;
+
+                // trying to fill with water
+                for (FluidStack stored : this.getStoredFluids()) {
+                    if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+
+                    if (stored.amount < 1000) continue;
+
+                    stored.amount -= 1000;
+                    Block fluidUsed = Blocks.water;
+                    aBaseMetaTileEntity.getWorld()
+                        .setBlock(
+                            aBaseMetaTileEntity.getXCoord() + xDir + i,
+                            aBaseMetaTileEntity.getYCoord() + 1,
+                            aBaseMetaTileEntity.getZCoord() + zDir + j,
+                            fluidUsed);
+                    hasBeenFilled = true;
+
+                    break; // don't deplete other water sources
+                }
+
+                if (!hasBeenFilled) success=false; // did not get filled with water
+
             }
         }
         return success;
