@@ -7,8 +7,11 @@ import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import gregtech.api.util.GTRecipe;
+import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -232,6 +235,10 @@ public class GTPPRecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.UP)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("gtpp.nei.ap.tier"))
         .frontend(AlgaePondFrontend::new)
+        .neiRecipeComparator(
+            (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mSpecialValue)
+                .thenComparing(GTRecipe::compareTo)
+                .compare(a, b))
         .build();
 
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorNonCellRecipes = RecipeMapBuilder
