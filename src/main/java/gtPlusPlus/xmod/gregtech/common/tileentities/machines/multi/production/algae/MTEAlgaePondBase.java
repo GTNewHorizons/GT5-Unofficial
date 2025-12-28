@@ -58,13 +58,12 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
-    // TODO add a NEI handler for this machine
-
     private int tier = -1;
     private int mCasing;
     private static IStructureDefinition<MTEAlgaePondBase> STRUCTURE_DEFINITION = null;
     private int checkMeta;
 
+    private static final int MINIMUM_CASINGS = 64;
 
     public MTEAlgaePondBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -102,8 +101,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front Center")
-            .addCasingInfoMin("Machine Casings", 64, true)
-            .addCasingInfoMin("Sterile Farm Casings", 64, false)
+            .addCasingInfoMin("Machine Casings", MINIMUM_CASINGS, true)
+            .addCasingInfoExactly("Sterile Farm Casings", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -178,7 +177,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         tier = 0;
         checkMeta = 0;
 
-        if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
+        if (checkPiece(mName, 4, 2, 0) && mCasing >= MINIMUM_CASINGS
             && checkMeta > 0
             && !mInputHatches.isEmpty()
             && !mOutputBusses.isEmpty()) {
