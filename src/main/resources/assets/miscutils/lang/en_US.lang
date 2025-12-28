@@ -137,6 +137,7 @@ gtpp.nei.tgs.info-1=Output is further boosted
 gtpp.nei.tgs.info-2=by machine energy tier
 gtpp.nei.tgs.info-3=and tool type
 
+gtpp.nei.ap.tier=Algae Pond Tier: %s
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket

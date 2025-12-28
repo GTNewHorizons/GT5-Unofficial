@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -381,6 +382,11 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
+    public RecipeMap<?> getRecipeMap() {
+        return GTPPRecipeMaps.algaePondRecipes;
+    }
+
+    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
@@ -491,6 +497,13 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 goldenAlgaeBiomassQuantity+= multiplier*2;
                 redAlgaeBiomassQuantity+= multiplier;
 
+                /*
+        algaeBiomass 10
+        greenBiomass 11 + 2 + 4 + 8
+        brownBiomass 10 + 4
+        goldenBiomass 2 +4
+        redBiomass 0 + 4
+         */
             case 5: { // IV
                 brownAlgaeBiomassQuantity+=4;
                 goldenAlgaeBiomassQuantity+=2;
@@ -498,6 +511,13 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     redAlgaeBiomassQuantity+=4;
                 }
             }
+        /*
+        algaeBiomass 10
+        greenBiomass 11 + 2 + 4 + 8
+        brownBiomass 6 + 4
+        goldenBiomass 0 +4
+        redBiomass 0
+         */
             case 4: { // EV
                 brownAlgaeBiomassQuantity+=5;
 
@@ -505,6 +525,13 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     goldenAlgaeBiomassQuantity+=4;
                 }
             }
+        /*
+        algaeBiomass 10
+        greenBiomass 11 + 2 + 4 + 8
+        brownBiomass 1 + 4
+        goldenBiomass 0
+        redBiomass 0
+         */
             case 3: { // HV
                 greenAlgaeBiomassQuantity+=4;
                 brownAlgaeBiomassQuantity+=1;
@@ -513,12 +540,26 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     brownAlgaeBiomassQuantity+=4;
                 }
             }
+        /*
+        algaeBiomass 10
+        greenBiomass 7 + 2 + 4 + 8
+        brownBiomass 0
+        goldenBiomass 0
+        redBiomass 0
+         */
             case 2: { // MV
                 greenAlgaeBiomassQuantity+=5;
                 if (MathUtils.randInt(0, 10) > 9) {
                    greenAlgaeBiomassQuantity+=8;
                 }
             }
+        /*
+        algaeBiomass 10
+        greenBiomass 2 + 2 + 4
+        brownBiomass 0
+        goldenBiomass 0
+        redBiomass 0
+         */
             case 1: { // LV
                 algaeBiomassQuantity += 4;
                 greenAlgaeBiomassQuantity+=2;
@@ -527,6 +568,13 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                     greenAlgaeBiomassQuantity+=4;
                 }
             }
+        /*
+        algaeBiomass 6
+        greenBiomass 0 + 2
+        brownBiomass 0
+        goldenBiomass 0
+        redBiomass 0
+         */
             case 0: { // ULV
                 algaeBiomassQuantity += 6;
                 if (MathUtils.randInt(0, 10) > 9) {

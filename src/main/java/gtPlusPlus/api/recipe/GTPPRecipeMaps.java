@@ -227,6 +227,12 @@ public class GTPPRecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
         .frontend(LargeNEIFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> algaePondRecipes = RecipeMapBuilder.of("gtpp.recipe.algaepond")
+        .maxIO(0, 16, 0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.UP)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("gtpp.nei.ap.tier"))
+        .build();
+
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorNonCellRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multidehydrator")
         .maxIO(6, 9, 3, 3)
