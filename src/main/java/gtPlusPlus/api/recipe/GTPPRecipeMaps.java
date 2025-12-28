@@ -228,9 +228,10 @@ public class GTPPRecipeMaps {
         .frontend(LargeNEIFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> algaePondRecipes = RecipeMapBuilder.of("gtpp.recipe.algaepond")
-        .maxIO(0, 16, 0, 0)
+        .maxIO(0, 15, 0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.UP)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("gtpp.nei.ap.tier"))
+        .frontend(AlgaePondFrontend::new)
         .build();
 
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorNonCellRecipes = RecipeMapBuilder
