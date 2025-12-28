@@ -3281,7 +3281,7 @@ GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
 GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), fluid extractor (circuit 21) and extractor (circuit 22).
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
-
+GTPP.multiblock.ap.tier=Tier: %s
 
 GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
