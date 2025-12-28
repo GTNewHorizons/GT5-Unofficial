@@ -122,10 +122,10 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+1*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+1*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+1*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+1),
+                GregtechItemList.GreenAlgaeBiomass.get(15),
+                GregtechItemList.BrownAlgaeBiomass.get(13),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(8),
+                GregtechItemList.RedAlgaeBiomass.get(3),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -148,10 +148,10 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+3*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+3*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+3*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+3),
+                GregtechItemList.GreenAlgaeBiomass.get(23),
+                GregtechItemList.BrownAlgaeBiomass.get(19),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(12),
+                GregtechItemList.RedAlgaeBiomass.get(5),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -174,10 +174,10 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+6*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+6*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+6*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+6),
+                GregtechItemList.GreenAlgaeBiomass.get(35),
+                GregtechItemList.BrownAlgaeBiomass.get(28),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(18),
+                GregtechItemList.RedAlgaeBiomass.get(8),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -200,10 +200,10 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+10*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+10*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+10*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+10),
+                GregtechItemList.GreenAlgaeBiomass.get(51),
+                GregtechItemList.BrownAlgaeBiomass.get(40),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(26),
+                GregtechItemList.RedAlgaeBiomass.get(12),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -226,10 +226,11 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+15*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+15*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+15*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+15),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(7),
+                GregtechItemList.BrownAlgaeBiomass.get(55),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(36),
+                GregtechItemList.RedAlgaeBiomass.get(17),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -242,7 +243,7 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.RedAlgaeBiomass.get(4),
                 GregtechItemList.RedAlgaeBiomass.get(8)
             )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
+            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 10)
             .duration(1*SECONDS+12*TICKS)
             .eut(0)
@@ -252,10 +253,12 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+21*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+21*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+21*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+21),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(31),
+                GregtechItemList.BrownAlgaeBiomass.get(64),
+                GregtechItemList.BrownAlgaeBiomass.get(9),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(48),
+                GregtechItemList.RedAlgaeBiomass.get(23),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -268,7 +271,7 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.RedAlgaeBiomass.get(4),
                 GregtechItemList.RedAlgaeBiomass.get(8)
             )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
+            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 11)
             .duration(16*TICKS)
             .eut(0)
@@ -278,10 +281,12 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+28*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+28*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+28*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+28),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(59),
+                GregtechItemList.BrownAlgaeBiomass.get(64),
+                GregtechItemList.BrownAlgaeBiomass.get(30),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(62),
+                GregtechItemList.RedAlgaeBiomass.get(30),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -294,7 +299,7 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.RedAlgaeBiomass.get(4),
                 GregtechItemList.RedAlgaeBiomass.get(8)
             )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
+            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 12)
             .duration(8*TICKS)
             .eut(0)
@@ -304,10 +309,14 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+36*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+36*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+36*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+36),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(27),
+                GregtechItemList.BrownAlgaeBiomass.get(64),
+                GregtechItemList.BrownAlgaeBiomass.get(54),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(64),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(14),
+                GregtechItemList.RedAlgaeBiomass.get(38),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -320,7 +329,7 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.RedAlgaeBiomass.get(4),
                 GregtechItemList.RedAlgaeBiomass.get(8)
             )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
+            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 13)
             .duration(4*TICKS)
             .eut(0)
@@ -330,10 +339,15 @@ public class RecipeLoaderAlgaePond {
         GTValues.RA.stdBuilder()
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(10),
-                GregtechItemList.GreenAlgaeBiomass.get(11+45*4),
-                GregtechItemList.BrownAlgaeBiomass.get(10+45*3),
-                GregtechItemList.GoldenBrownAlgaeBiomass.get(6+45*2),
-                GregtechItemList.RedAlgaeBiomass.get(2+45),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(63),
+                GregtechItemList.BrownAlgaeBiomass.get(64),
+                GregtechItemList.BrownAlgaeBiomass.get(64),
+                GregtechItemList.BrownAlgaeBiomass.get(17),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(64),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(32),
+                GregtechItemList.RedAlgaeBiomass.get(47),
                 //
                 GregtechItemList.GreenAlgaeBiomass.get(2),
                 GregtechItemList.GreenAlgaeBiomass.get(4),
@@ -346,7 +360,7 @@ public class RecipeLoaderAlgaePond {
                 GregtechItemList.RedAlgaeBiomass.get(4),
                 GregtechItemList.RedAlgaeBiomass.get(8)
             )
-            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
+            .outputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00, 90_00)
             .metadata(ALGAE_POND_TIER, 14)
             .duration(2*TICKS)
             .eut(0)
