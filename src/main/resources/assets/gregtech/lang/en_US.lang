@@ -2698,8 +2698,11 @@ gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Ba
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
 # Exo-Foundry GUI
+GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
+GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
 GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
 GT5U.gui.button.foundry.contributorpanel=Open Contributor List
+
 GT5U.gui.text.foundry.projectlead=Project Lead
 GT5U.gui.text.foundry.programming=Programming
 GT5U.gui.text.foundry.textures=Textures

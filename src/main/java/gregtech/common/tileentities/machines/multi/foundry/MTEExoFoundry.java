@@ -492,7 +492,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addInfo(
                 EnumChatFormatting.GOLD + "Module"
                     + EnumChatFormatting.GRAY
-                    + " stats are show in NEI and the Controller")
+                    + " stats are shown in NEI and the Controller")
             .addInfo("Toggle Render with Screwdriver")
             .addTecTechHatchInfo()
             .addSeparator()
