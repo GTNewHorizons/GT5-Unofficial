@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -463,7 +465,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    public Set<ProcessingLogic> processingLogics = Collections.newSetFromMap(new WeakHashMap<>());
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
