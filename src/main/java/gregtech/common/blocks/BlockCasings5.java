@@ -203,11 +203,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
         return GTRendererBlock.RENDER_ID;
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
     /*--------------- COIL CHECK IMPL. ------------*/
 
     public static HeatingCoilLevel getCoilHeatFromDamage(int meta) {
