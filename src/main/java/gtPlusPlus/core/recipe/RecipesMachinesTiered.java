@@ -991,7 +991,7 @@ public class RecipesMachinesTiered {
         // Basic Auto-Chisel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_LV,
+                ItemList.Casing_LV.get(1),
                 MaterialsAlloy.TUMBAGA.getPlate(4),
                 ItemList.Electric_Motor_LV.get(2),
                 ItemList.Conveyor_Module_LV.get(2),
@@ -1006,7 +1006,7 @@ public class RecipesMachinesTiered {
         // Advanced Auto-Chisel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_MV,
+                ItemList.Casing_MV.get(1),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(4),
                 ItemList.Electric_Motor_MV.get(2),
                 ItemList.Conveyor_Module_MV.get(2),
@@ -1021,7 +1021,7 @@ public class RecipesMachinesTiered {
         // Precision Auto-Chisel
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_HV,
+                ItemList.Casing_HV.get(1),
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(4),
                 ItemList.Electric_Motor_HV.get(2),
                 ItemList.Conveyor_Module_HV.get(2),
@@ -1156,7 +1156,7 @@ public class RecipesMachinesTiered {
         // LV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_LV,
+                ItemList.Hull_LV.get(1),
                 MaterialsAlloy.TUMBAGA.getScrew(4),
                 MaterialsAlloy.POTIN.getPlate(2),
                 MaterialsAlloy.TUMBAGA.getRod(1),
@@ -1170,7 +1170,7 @@ public class RecipesMachinesTiered {
         // MV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_MV,
+                ItemList.Hull_MV.get(1),
                 MaterialsAlloy.EGLIN_STEEL.getScrew(8),
                 MaterialsAlloy.TUMBAGA.getPlate(4),
                 MaterialsAlloy.EGLIN_STEEL.getRod(2),
@@ -1184,7 +1184,7 @@ public class RecipesMachinesTiered {
         // HV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_HV,
+                ItemList.Hull_HV.get(1),
                 MaterialsAlloy.TANTALUM_CARBIDE.getScrew(12),
                 MaterialsAlloy.EGLIN_STEEL.getPlate(6),
                 MaterialsAlloy.TANTALUM_CARBIDE.getRod(3),
@@ -1198,7 +1198,7 @@ public class RecipesMachinesTiered {
         // EV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_EV,
+                ItemList.Hull_EV.get(1),
                 MaterialsAlloy.INCOLOY_DS.getScrew(16),
                 MaterialsAlloy.TANTALUM_CARBIDE.getPlate(8),
                 MaterialsAlloy.INCOLOY_DS.getRod(4),
@@ -1212,7 +1212,7 @@ public class RecipesMachinesTiered {
         // IV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_IV,
+                ItemList.Hull_IV.get(1),
                 MaterialsAlloy.INCONEL_625.getScrew(20),
                 MaterialsAlloy.INCOLOY_DS.getPlate(10),
                 MaterialsAlloy.INCONEL_625.getRod(5),
@@ -1226,7 +1226,7 @@ public class RecipesMachinesTiered {
         // LuV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_LuV,
+                ItemList.Hull_LuV.get(1),
                 MaterialsAlloy.ZERON_100.getScrew(24),
                 MaterialsAlloy.INCONEL_625.getPlate(12),
                 MaterialsAlloy.ZERON_100.getRod(6),
@@ -1240,7 +1240,7 @@ public class RecipesMachinesTiered {
         // ZPM
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_ZPM,
+                ItemList.Hull_ZPM.get(1),
                 MaterialsAlloy.PIKYONIUM.getScrew(28),
                 MaterialsAlloy.ZERON_100.getPlate(14),
                 MaterialsAlloy.PIKYONIUM.getRod(7),
@@ -1254,7 +1254,7 @@ public class RecipesMachinesTiered {
         // UV
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Hull_UV,
+                ItemList.Hull_UV.get(1),
                 MaterialsAlloy.TITANSTEEL.getScrew(32),
                 MaterialsAlloy.PIKYONIUM.getPlate(16),
                 MaterialsAlloy.TITANSTEEL.getRod(8),
