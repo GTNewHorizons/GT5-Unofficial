@@ -30,7 +30,8 @@ public class MTEHatchEnergyTunnelGui extends MTEHatchBaseGui<MTEHatchEnergyTunne
                         .asWidget())
                 .child(
                     new TextFieldWidget().value(new IntSyncValue(hatch::getAmperes, hatch::setAmperes))
-                        .setNumbers(() -> 0, () -> hatch.maxAmperes)
+                        .setNumbers(0, hatch.maxAmperes)
+                        .setFormatAsInteger(true)
                         .setDefaultNumber(0)));
     }
 }

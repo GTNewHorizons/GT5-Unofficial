@@ -31,7 +31,8 @@ public class MTEHatchDynamoTunnelGui extends MTEHatchBaseGui<MTEHatchDynamoMulti
                 .child(
                     new TextFieldWidget().value(new IntSyncValue(hatch::getAmperes, hatch::setAmperes))
 
-                        .setNumbers(() -> 0, () -> hatch.maxAmperes)
-                        .setDefaultNumber(0)));
+                        .setNumbers(0, hatch.maxAmperes)
+                        .setDefaultNumber(0)
+                        .setFormatAsInteger(true)));
     }
 }
