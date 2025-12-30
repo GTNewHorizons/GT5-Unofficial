@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.algae;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -10,7 +9,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllCasings;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -18,7 +16,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.util.GTStructureUtility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -54,7 +51,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -147,10 +143,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                             .build(),
                         onElementPass(
                             x -> ++x.mCasing,
-                            chainAllCasings(-1, MTEAlgaePondBase::setMeta, MTEAlgaePondBase::getMeta)
-                        )
-                    )
-                )
+                            chainAllCasings(-1, MTEAlgaePondBase::setMeta, MTEAlgaePondBase::getMeta))))
                 .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
                 .build();
         }

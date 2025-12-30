@@ -9,7 +9,6 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
-import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -23,6 +22,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.common.misc.GTStructureChannels;
 
 public class CasingTier {
 
@@ -32,7 +32,8 @@ public class CasingTier {
 
     @Nullable
     public static Integer getCasingBlockTier(Block block, int meta) {
-        return casingToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultCasingTier).getLeft();
+        return casingToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultCasingTier)
+            .getLeft();
     }
 
     public static List<Pair<Block, Integer>> getCasingList() {
@@ -44,8 +45,7 @@ public class CasingTier {
         casingToTierAndIndex.put(Pair.of(block, meta), Pair.of(tier, -1));
         casingList.add(Pair.of(block, meta));
 
-        GTStructureChannels.TIER_CASING
-            .registerAsIndicator(new ItemStack(block, 1, meta), meta + 1);
+        GTStructureChannels.TIER_CASING.registerAsIndicator(new ItemStack(block, 1, meta), meta + 1);
     }
 
     // Register all your casings here.
@@ -53,10 +53,10 @@ public class CasingTier {
 
         public static void run() {
             for (int meta = 0; meta < 10; ++meta) { // from ulv to uhv
-                addCasing(GregTechAPI.sBlockCasings1, meta, meta+1);
+                addCasing(GregTechAPI.sBlockCasings1, meta, meta + 1);
             }
             for (int meta = 10; meta < 15; ++meta) { // from uhv to max
-                addCasing(GregTechAPI.sBlockCasingsNH, meta, meta+1);
+                addCasing(GregTechAPI.sBlockCasingsNH, meta, meta + 1);
             }
 
         }
