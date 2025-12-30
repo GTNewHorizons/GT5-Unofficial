@@ -1389,6 +1389,13 @@ public class RecipesGregTech {
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(distillationTowerRecipes);
+
+        RA.stdBuilder()
+            .itemInputs(GregtechItemList.AlgaeBiomass.get(32))
+            .itemOutputs(GregtechItemList.GreenAlgaeBiomass.get(4))
+            .duration(15 * SECONDS)
+            .eut(16)
+            .addTo(distilleryRecipes);
     }
 
     private static void thermalBoilerRecipes() {

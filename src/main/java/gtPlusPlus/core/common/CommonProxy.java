@@ -73,7 +73,6 @@ public class CommonProxy implements IFuelHandler {
         ModBlocks.init();
         GTPPFluids.init();
 
-        CI.preInit();
         CompatIntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
