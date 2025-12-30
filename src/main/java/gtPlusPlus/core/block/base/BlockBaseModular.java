@@ -101,7 +101,7 @@ public class BlockBaseModular extends BasicBlock {
         // Register Component
         final Map<String, ItemStack> map = Material.mComponentMap.computeIfAbsent(name, x -> new HashMap<>());
 
-        final String key = getKey(this.blockType.ordinal());
+        final String key = getKey(this.blockType);
 
         if (map.containsKey(key)) {
             Logger.MATERIALS("Tried to double register a material component.");
@@ -112,9 +112,15 @@ public class BlockBaseModular extends BasicBlock {
         map.put(key, new ItemStack(this));
     }
 
-    private static @NotNull String getKey(int fx) {
-        if (fx == 0) return OrePrefixes.block.getName();
-        if (fx == 1) return OrePrefixes.frameGt.getName();
+    private static @NotNull String getKey(BlockTypes blockType) {
+        switch (blockType) {
+            case STANDARD -> {
+                return OrePrefixes.block.getName();
+            }
+            case FRAME, ORE -> {
+                return OrePrefixes.frameGt.getName();
+            }
+        }
         return OrePrefixes.ore.getName();
     }
 
@@ -130,15 +136,12 @@ public class BlockBaseModular extends BasicBlock {
         return 0;
     }
 
-
-
     @Override
     public String getLocalizedName() {
         return String.format(
             GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name"),
-            this.material.getTranslatedName()        );
+            this.material.getTranslatedName());
     }
-
 
     @Override
     public String getUnlocalizedName() {
