@@ -133,10 +133,11 @@ public class MaterialGenerator {
                 FluidUtils.generateGas(unlocalizedName, materialName, matInfo.getMeltingPointK(), C, true);
             } else if (matInfo.getState() == MaterialState.PURE_GAS) {
                 FluidUtils.generateGas(unlocalizedName, materialName, matInfo.getMeltingPointK(), C, true);
+                return;
             } else if (matInfo.getState() == MaterialState.PURE_LIQUID) {
                 FluidUtils.generateFluidNoPrefix(unlocalizedName, materialName, matInfo.getMeltingPointK(), C);
+                return;
             }
-
             // Add A jillion Recipes - old code
             new RecipeGenAlloySmelter(matInfo);
             new RecipeGenAssembler(matInfo);
@@ -255,16 +256,15 @@ public class MaterialGenerator {
     }
 
     public static void generateOreMaterial(final Material matInfo) {
-        generateOreMaterial(matInfo, true, true, true, matInfo.getRGBA());
+        generateOreMaterial(matInfo, true, true, true);
     }
 
     public static void generateOreMaterial(final Material matInfo, boolean generateOre, boolean generateDust,
-        boolean generateSmallTinyDusts, short[] customRGB) {
+        boolean generateSmallTinyDusts) {
         try {
 
             if (matInfo == null) {
                 Logger.DEBUG_MATERIALS("Invalid Material while constructing null material.");
-                return;
             }
 
             int sRadiation = 0;
