@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllCasings;
 
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -142,19 +143,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                             .build(),
                         onElementPass(
                             x -> ++x.mCasing,
-                            addTieredBlock(
-                                GregTechAPI.sBlockCasings1,
-                                MTEAlgaePondBase::setMeta,
-                                MTEAlgaePondBase::getMeta,
-                                10)),
-                        onElementPass(
-                            x -> ++x.mCasing,
-                            addTieredBlock(
-                                GregTechAPI.sBlockCasingsNH,
-                                MTEAlgaePondBase::setMeta,
-                                MTEAlgaePondBase::getMeta,
-                                10,
-                                15))))
+                            chainAllCasings(-1, MTEAlgaePondBase::setMeta, MTEAlgaePondBase::getMeta))))
                 .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
                 .build();
         }
@@ -176,7 +165,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
         tier = -1;
-        checkMeta = 0;
+        checkMeta = -1;
 
         if (checkPiece(mName, 4, 2, 0) && mCasing >= MINIMUM_CASINGS
             && checkMeta > 0
