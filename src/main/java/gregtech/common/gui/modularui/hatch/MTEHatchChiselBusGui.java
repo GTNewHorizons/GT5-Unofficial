@@ -46,17 +46,7 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
         Arrays.fill(matrix, "xxxx");
 
         // Target slot
-        content.child(
-            SlotGroupWidget.builder()
-                .matrix("x")
-                .key(
-                    'x',
-                    index -> new ItemSlot()
-                        .slot(new ModularSlot(hatch.inventoryHandler, normalSlots).slotGroup("target")))
-                .build()
-
-        );
-
+        content.child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, normalSlots).slotGroup("target")));
         inputList.child(
             SlotGroupWidget.builder()
                 .matrix(matrix)
