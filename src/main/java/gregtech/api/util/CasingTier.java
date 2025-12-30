@@ -61,25 +61,4 @@ public class CasingTier {
 
         }
     }
-
-    @SideOnly(Side.CLIENT)
-    public static class GlassTooltipHandler {
-
-        @SideOnly(Side.CLIENT)
-        @SubscribeEvent(priority = EventPriority.HIGHEST)
-        public void getTooltip(ItemTooltipEvent event) {
-
-            if (event == null || event.itemStack == null || event.itemStack.getItem() == null) return;
-
-            final Block block = Block.getBlockFromItem(event.itemStack.getItem());
-            final int meta = event.itemStack.getItemDamage();
-
-            Integer tier = getCasingBlockTier(block, meta);
-            if (tier == null) return;
-
-            event.toolTip.add(
-                StatCollector.translateToLocal("tooltip.casing_tier.0.name") + " "
-                    + getColoredTierNameFromTier(tier.byteValue()));
-        }
-    }
 }
