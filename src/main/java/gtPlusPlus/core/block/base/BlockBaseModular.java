@@ -43,7 +43,7 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType) {
-        this(material, blockType, material.getRgbAsHex());
+        this(material, blockType, material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex());
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {

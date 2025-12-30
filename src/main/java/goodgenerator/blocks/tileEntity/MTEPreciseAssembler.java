@@ -573,7 +573,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             + "/"
             + EnumChatFormatting.GOLD
             + mk3
-            + EnumChatFormatting.LIGHT_PURPLE
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.RED
             + mk4
