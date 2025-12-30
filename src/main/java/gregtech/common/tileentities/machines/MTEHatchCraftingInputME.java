@@ -713,6 +713,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public ItemStack getSelfRep() {
+        return this.getStackForm(1);
+    }
+
+    @Override
     public void gridChanged() {
         needPatternSync = true;
     }
