@@ -1,7 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,16 +9,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.common.misc.GTStructureChannels;
 
