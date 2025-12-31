@@ -2,11 +2,13 @@ package gtPlusPlus.core.recipe;
 
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
+import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BITSD;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
@@ -27,7 +29,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -533,6 +537,46 @@ public class RecipesMachinesMulti {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(16)
             .addTo(assemblerRecipes);
+
+        // Research on Containment Fields
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Field_Generator_LuV.get(1), ItemList.Emitter_ZPM.get(2))
+            .itemOutputs(
+                ItemDummyResearch.getResearchStack(ItemDummyResearch.ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1))
+            .duration(5 * MINUTES)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(laserEngraverRecipes);
+
+        // Containment Casing
+        GTValues.RA.stdBuilder()
+            .metadata(
+                RESEARCH_ITEM,
+                ItemDummyResearch.getResearchStack(ItemDummyResearch.ASSEMBLY_LINE_RESEARCH.RESEARCH_1_CONTAINMENT, 1))
+            .metadata(SCANNING, new Scanning(50 * SECONDS, TierEU.RECIPE_IV))
+            .itemInputs(
+                ItemList.Field_Generator_IV.get(32),
+                ItemList.Electric_Motor_EV.get(64),
+                ItemList.Energy_LapotronicOrb.get(32),
+                GTOreDictUnificator.get(OrePrefixes.cableGt12, Materials.YttriumBariumCuprate, 32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Platinum, 64),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadria, 64),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, 32),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Samarium, 16),
+                MaterialsAlloy.ARCANITE.getGear(8),
+                new Object[] { "circuitElite", 64 },
+                new Object[] { "circuitMaster", 32 },
+                new Object[] { "circuitUltimate", 16 },
+                GregtechItemList.Laser_Lens_Special.get(1),
+                GregtechItemList.DehydratorCoilWireZPM.get(64))
+            .fluidInputs(
+                MaterialsAlloy.NITINOL_60.getFluidStack(36 * INGOTS),
+                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(1 * STACKS + 8 * INGOTS),
+                MaterialsAlloy.TUMBAGA.getFluidStack(4 * STACKS + 32 * INGOTS),
+                Materials.Nichrome.getMolten(16 * INGOTS))
+            .itemOutputs(new ItemStack(ModBlocks.blockCasings3Misc, 32, 15))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(20 * MINUTES)
+            .addTo(AssemblyLine);
     }
 
     private static void multiSifter() {

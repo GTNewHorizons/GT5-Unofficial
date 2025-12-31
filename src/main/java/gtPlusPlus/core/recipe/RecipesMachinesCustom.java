@@ -34,6 +34,7 @@ import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
@@ -638,6 +639,84 @@ public class RecipesMachinesCustom {
             new Object[] { "ABA", "CDC", "EAE", 'A', MaterialsAlloy.INCOLOY_MA956.getPlate(1), 'B',
                 new ItemStack(ModItems.itemCircuitLFTR), 'C', GregtechItemList.Casing_Power_SubStation, 'D',
                 GregtechItemList.Casing_Vanadium_Redox, 'E', MaterialsAlloy.INCOLOY_020.getPlate(1) });
+
+        // Vanadium Redox Power Cell (EV)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(ModItems.itemHalfCompleteCasings, 1, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox.get(1))
+            .fluidInputs(Materials.Oxygen.getGas(16_000))
+            .duration(3 * SECONDS + 4 * TICKS)
+            .eut(TierEU.RECIPE_HV / 2)
+            .addTo(assemblerRecipes);
+
+        // Vanadium Redox Power Cell (IV)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Casing_Vanadium_Redox.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_IV.get(1))
+            .fluidInputs(Materials.Nitrogen.getGas(16_000))
+            .duration(6 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        // Vanadium Redox Power Cell (LuV)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Casing_Vanadium_Redox_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_LuV.get(1))
+            .fluidInputs(Materials.Helium.getGas(8_000))
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        // Vanadium Redox Power Cell (ZPM)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Casing_Vanadium_Redox_LuV.get(1),
+                ItemUtils.getItemStackOfAmountFromOreDict("plateAlloyIridium", 16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 2))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1))
+            .fluidInputs(Materials.Argon.getGas(4_000))
+            .duration(25 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        // Vanadium Redox Power Cell (UV)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Casing_Vanadium_Redox_ZPM.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 2))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_UV.get(1))
+            .fluidInputs(Materials.Radon.getGas(4_000))
+            .duration(50 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Vanadium Redox Power Cell (UHV)
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.Casing_Vanadium_Redox_UV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Americium, 4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 2))
+            .itemOutputs(GregtechItemList.Casing_Vanadium_Redox_MAX.get(1))
+            .fluidInputs(WerkstoffLoader.Krypton.getFluidOrGas(500))
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
     }
 
     private static void zhuhai() {
