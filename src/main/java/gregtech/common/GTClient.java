@@ -26,6 +26,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -36,6 +37,8 @@ import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
@@ -78,6 +81,7 @@ import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
 import gregtech.api.net.cape.GTPacketSetCape;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.render.RenderOverlay;
 import gregtech.api.util.ColorsMetadataSection;
 import gregtech.api.util.ColorsMetadataSectionSerializer;
 import gregtech.api.util.GTClientPreference;
@@ -133,6 +137,7 @@ public class GTClient extends GTProxy {
     public final PollutionRenderer mPollutionRenderer = new PollutionRenderer();
     public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
+    public final boolean fixedBottomFaceUV;
     private final List<Materials> mPosR;
     private final List<Materials> mPosG;
     private final List<Materials> mPosB;
@@ -265,6 +270,8 @@ public class GTClient extends GTProxy {
         mMoltenNegR = Collections.singletonList(Materials.InfusedEntropy);
         mMoltenNegG = Collections.singletonList(Materials.InfusedEntropy);
         mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
+        fixedBottomFaceUV = (boolean) Launch.blackboard
+            .getOrDefault("hodgepodge.FixesConfig.fixBottomFaceUV", Boolean.FALSE);
     }
 
     @Override
@@ -427,6 +434,7 @@ public class GTClient extends GTProxy {
         mFirstTick = true;
         mReloadCount++;
         GTMusicSystem.ClientSystem.reset();
+        RenderOverlay.reset();
     }
 
     @Override
@@ -720,5 +728,19 @@ public class GTClient extends GTProxy {
 
     public void processChunkPollutionPacket(ChunkCoordIntPair chunk, int pollution) {
         mPollutionRenderer.processPacket(chunk, pollution);
+    }
+
+    @Override
+    public void onWorldUnload(WorldEvent.Unload event) {
+        super.onWorldUnload(event);
+        RenderOverlay.onWorldUnload(event.world);
+    }
+
+    @SubscribeEvent
+    public void onChunkUnload(ChunkEvent.Unload event) {
+        RenderOverlay.onChunkUnload(
+            event.world,
+            event.getChunk()
+                .getChunkCoordIntPair());
     }
 }

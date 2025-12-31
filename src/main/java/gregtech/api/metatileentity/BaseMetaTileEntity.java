@@ -1446,7 +1446,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                             if (mWorks) disableWorking();
-                            else enableWorking();
+                            else {
+                                if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                }
+                                enableWorking();
+                            }
                             {
                                 String tChat = GTUtility.trans("090", "Machine Processing: ")
                                     + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")

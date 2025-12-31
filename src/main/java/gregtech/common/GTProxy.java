@@ -2298,7 +2298,7 @@ public class GTProxy implements IFuelHandler {
 
             int hydrogenAmount = 2 * i + 2;
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(i + 1))
+                .circuit(i + 1)
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 800))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
@@ -2306,7 +2306,8 @@ public class GTProxy implements IFuelHandler {
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount))
+                .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(hydrogenAmount))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
@@ -2315,7 +2316,8 @@ public class GTProxy implements IFuelHandler {
                 .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(aMaterial.getCells(1), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(aMaterial.getCells(1))
+                .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(Materials.Hydrogen.getGas(hydrogenAmount * 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
@@ -2324,7 +2326,7 @@ public class GTProxy implements IFuelHandler {
                 .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(i + 1))
+                .circuit(i + 1)
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)
@@ -2358,7 +2360,7 @@ public class GTProxy implements IFuelHandler {
                 .asFluid();
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(i + 1))
+                .circuit(i + 1)
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1_200))
                 .duration((1 + i) * SECONDS)
@@ -2366,7 +2368,8 @@ public class GTProxy implements IFuelHandler {
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTModHandler.getIC2Item("steamCell", 1L), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(GTModHandler.getIC2Item("steamCell", 1L))
+                .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
@@ -2375,7 +2378,8 @@ public class GTProxy implements IFuelHandler {
                 .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(aMaterial.getCells(1), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(aMaterial.getCells(1))
+                .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
@@ -2384,7 +2388,8 @@ public class GTProxy implements IFuelHandler {
                 .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(aMaterial.getCells(1), GTUtility.getIntegratedCircuit(i + 1))
+                .itemInputs(aMaterial.getCells(1))
+                .circuit(i + 1)
                 .itemOutputs(Materials.Empty.getCells(1))
                 .fluidInputs(getFluidStack("ic2steam", 1000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
@@ -2393,7 +2398,7 @@ public class GTProxy implements IFuelHandler {
                 .addTo(RecipeMaps.chemicalReactorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(i + 1))
+                .circuit(i + 1)
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 800))
                 .duration((4 + 2 * i) * SECONDS)
