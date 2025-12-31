@@ -28,7 +28,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -246,7 +245,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 2))
             .circuit(4)
@@ -260,7 +259,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tungsten, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4))
             .circuit(12)
@@ -274,7 +273,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cobalt, 3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 3))
             .circuit(8)
@@ -288,7 +287,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Vanadium, 5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 5))
             .circuit(8)
@@ -302,7 +301,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 6),
                 WerkstoffLoader.Ruthenium.get(OrePrefixes.dust, 6))
             .circuit(16)
@@ -316,7 +315,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 4))
             .circuit(4)
@@ -330,7 +329,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(10),
+                GregtechItemList.EmptyCatalystCarrier.get(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4),
                 WerkstoffLoader.Rhodium.get(OrePrefixes.dust, 4))
             .circuit(12)
@@ -343,7 +342,7 @@ public class RecipeLoaderGenericChem {
     private static void recipeCatalystFormaldehyde() {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getEmptyCatalyst(4), GregtechItemList.FormaldehydeCatalystDust.get(8))
+            .itemInputs(GregtechItemList.EmptyCatalystCarrier.get(4), GregtechItemList.FormaldehydeCatalystDust.get(8))
             .circuit(12)
             .itemOutputs(GregtechItemList.FormaldehydeCatalyst.get(4))
             .duration(30 * SECONDS)
@@ -354,7 +353,9 @@ public class RecipeLoaderGenericChem {
     private static void recipeCatalystSolidAcid() {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
-            .itemInputs(CI.getEmptyCatalyst(5), GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2))
+            .itemInputs(
+                GregtechItemList.EmptyCatalystCarrier.get(5),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lapis, 2))
             .circuit(12)
             .itemOutputs(GregtechItemList.SolidAcidCatalyst.get(5))
             .fluidInputs(MaterialMisc.SOLID_ACID_MIXTURE.getFluidStack(1_000))
@@ -367,7 +368,7 @@ public class RecipeLoaderGenericChem {
         // Assembler Recipe
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CI.getEmptyCatalyst(5),
+                GregtechItemList.EmptyCatalystCarrier.get(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 10))
             .circuit(12)
