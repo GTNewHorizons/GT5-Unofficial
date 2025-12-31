@@ -500,8 +500,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     private ModularPanel getSpaceMinerUtilityPanel(ModularPanel parent, PanelSyncManager syncManager,
         IPanelHandler thisPanel) {
-
-        Area parentArea = parent.getArea();
         ModularPanel panel = new ModularPanel("asteroidList") {
 
             @Override
@@ -509,8 +507,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 return false;
             }
         };
-        panel.size(175, ((uniqueAsteroidList.size() / 8) + 1 + 6) * 18 - 10)
-            .pos(parentArea.x, parentArea.y)
+        panel.coverChildren()
+            .relative(parent)
+            .topRel(0)
+            .leftRel(0)
             .padding(5);
         AtomicReference<String> search = new AtomicReference<>("");
         StringSyncValue textFieldSyncer = new StringSyncValue(search::get, search::set);
@@ -524,14 +524,14 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
 
-        Flow asteroidColumn = new Column().sizeRel(1);
+        Flow asteroidColumn = new Column().coverChildren();
         Flow asteroidRow = new Row().widthRel(1)
             .height(18)
             .marginBottom(4);
 
         for (int i = 0; i < uniqueAsteroidList.size(); i++) {
             int finalI = i;
-
+            boolean lastButtonInRow = (i + 1) % 8 == 0 || i == uniqueAsteroidList.size() - 1;
             AsteroidData data = uniqueAsteroidList.get(i);
             IPanelHandler asteroidInfoPanel = (IPanelHandler) syncManager
                 .getSyncHandlerFromMapKey("asteroidInfoPanel" + finalI);
@@ -570,9 +570,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     }
                     return true;
                 });
-            asteroidButton.marginRight(2);
+            asteroidButton.marginRight(lastButtonInRow ? 0 : 2);
             asteroidRow.child(asteroidButton);
-            if ((i + 1) % 8 == 0 || i == uniqueAsteroidList.size() - 1) {
+            if (lastButtonInRow) {
                 asteroidColumn.child(asteroidRow);
                 asteroidRow = new Row().widthRel(1)
                     .height(18)
@@ -585,8 +585,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         asteroidColumn.child(
             new Column().widthRel(1)
-                .height(18 * 4)
-                // Text fields
+                .coverChildrenHeight()
                 .child(
                     new Row().widthRel(1)
                         .coverChildrenHeight()
@@ -626,18 +625,16 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                                 .color(Color.WHITE.main))
                         .child(
                             new TextFieldWidget().size(60, 9)
-                                .marginBottom(9)
+                                .marginBottom(4)
                                 .value(moduleTierFilterSyncer)
                                 .setDefaultNumber(0)
                                 .setNumbers(0, 3)))
-                // Drone selection button
                 .child(
                     new Row().widthRel(1)
                         .height(18)
+                        .marginBottom(5)
                         .child(
                             droneSelectorButtonUtilityPanel.size(18, 18)
-                                .marginBottom(4)
-                                .alignX(0)
                                 .onMousePressed(mouseData -> {
                                     if (!droneSelectorPanel.isPanelOpen()) {
                                         isDroneSelectorForOptimizer = false;
@@ -646,8 +643,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                                         droneSelectorPanel.closePanel();
                                     }
                                     return true;
-                                })
-                                .align(Alignment.CenterLeft))));
+                                }))));
         panel.child(asteroidColumn);
         return panel;
     }
