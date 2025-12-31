@@ -204,7 +204,7 @@ public class MTETeslaTower extends TTMultiblockBase
                     InputHatch,
                     OutputHatch,
                     Maintenance)
-                .dot(1)
+                .hint(1)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 16 + 6)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 6))
         .addElement('F', ofFrame(Materials.Titanium))
