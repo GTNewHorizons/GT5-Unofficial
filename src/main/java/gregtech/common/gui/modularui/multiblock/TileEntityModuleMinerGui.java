@@ -770,13 +770,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 new ItemDrawable(droneItem).asWidget()
                     .tooltipBuilder(
                         t -> t.addLine(IKey.str(droneItem.getDisplayName()))
-                            .add(IKey.lang("tt.spaceminer.asteroidutilitypanel.uses"))
-                            .add(IKey.str(" 4"))
+                            .add(IKey.lang("tt.spaceminer.asteroidutilitypanel.itemUsage"))
                             .add(new ItemDrawable(droneRodItem))
-                            .add(IKey.lang("tt.spaceminer.asteroidutilitypanel.and"))
-                            .add(IKey.str(" 4"))
                             .add(new ItemDrawable(droneDrillItem))
-                            .addLine(IKey.lang("tt.spaceminer.asteroidutilitypanel.parallelInfo"))
                             .addLine(
                                 IKey.lang(
                                     "tt.spaceminer.asteroidutilitypanel.sizeForDrone",
