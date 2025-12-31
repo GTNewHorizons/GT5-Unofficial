@@ -60,6 +60,7 @@ import akka.japi.Pair;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
 import gtnhintergalactic.GTNHIntergalactic;
@@ -97,7 +98,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         BooleanSyncValue cycleSyncer = syncManager.findSyncHandler("cycleParameter", BooleanSyncValue.class);
         ListWidget<IWidget, ?> minerInfo = new ListWidget<>().child(
             IKey.dynamic(
-                () -> EnumChatFormatting.WHITE + "Distance: "
+                () -> EnumChatFormatting.WHITE + GTUtility.translate("tt.spaceminer.textFieldDistance")
+                    + ": "
                     + EnumChatFormatting.GREEN
                     + (cycleSyncer.getValue() ? cycleDistanceSyncer.getValue() : distanceSyncer.getValue()))
                 .asWidget()
@@ -124,7 +126,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
         IPanelHandler filterConfigurationPanel = panelMap.get("filterConfiguration");
         IPanelHandler minerCalculator = panelMap.get("spaceMinerCalculator");
-
         return new Row().widthRel(1)
             .height(this.getTextBoxToInventoryGap())
             .mainAxisAlignment(Alignment.MainAxis.END)
@@ -145,7 +146,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     }))
             .child(
                 new ButtonWidget<>().size(18, 18)
-                    .overlay(calculatorTexture)
+                    .overlay(
+                        calculatorTexture.asIcon()
+                            .size(16))
                     .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculatorButtonTooltip")))
                     .onMousePressed(mouseData -> {
                         if (!minerCalculator.isPanelOpen()) {
@@ -350,14 +353,15 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 new Row().widthRel(1)
                     .coverChildrenHeight()
                     .child(
-                        IKey.str("Currently minable asteroids for ")
+                        IKey.lang("tt.spaceminer.filter.minableAsteroids")
                             .asWidget())
                     .child(new DynamicDrawable(() -> {
                         if (droneTierSyncer.getValue() < 0) return disabled;
                         return new ItemDrawable(MINING_DRONES[droneTierSyncer.getValue()]);
                     }).asWidget()
                         .tooltipBuilder(t -> {
-                            if (droneTierSyncer.getValue() < 0) t.addLine(IKey.str("No valid inputs!"));
+                            if (droneTierSyncer.getValue() < 0)
+                                t.addLine(IKey.lang("tt.spaceminer.filter.noValidInputs"));
                             else t.addFromItem(MINING_DRONES[droneTierSyncer.getValue()]);
                         })));
 
@@ -848,8 +852,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             dropRow.child(new SlotLikeButtonWidget(ore).tooltipBuilder(t -> {
                 t.addLine(IKey.str(ore.getDisplayName()))
                     .addLine(IKey.str(String.format("%.2f%%", ((double) data.chances[finalI] / totalWeight) * 100)));
-                if (isAsteroidPanelForFilter)
-                    t.addLine(IKey.str(EnumChatFormatting.DARK_GREEN + "Click to add this ore to the filter"));
+                if (isAsteroidPanelForFilter) t.addLine(
+                    IKey.str(EnumChatFormatting.DARK_GREEN + GTUtility.translate("tt.spaceminer.filter.addOre")));
             })
                 .onMousePressed(mouseData -> {
                     if (!isAsteroidPanelForFilter) return true;
