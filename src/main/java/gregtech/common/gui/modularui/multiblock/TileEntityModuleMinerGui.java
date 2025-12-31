@@ -500,18 +500,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     private ModularPanel getSpaceMinerUtilityPanel(ModularPanel parent, PanelSyncManager syncManager,
         IPanelHandler thisPanel) {
-        ModularPanel panel = new ModularPanel("asteroidList") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        };
-        panel.coverChildren()
-            .relative(parent)
-            .topRel(0)
-            .leftRel(0)
-            .padding(5);
         AtomicReference<String> search = new AtomicReference<>("");
         StringSyncValue textFieldSyncer = new StringSyncValue(search::get, search::set);
 
@@ -524,6 +512,36 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
 
+        return new ModularPanel("asteroidList") {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        }.coverChildren()
+            .relative(parent)
+            .topRel(0)
+            .leftRel(0)
+            .padding(5)
+            .child(
+                new Column().coverChildren()
+                    .child(
+                        createAsteroidInfoGrid(
+                            syncManager,
+                            textFieldSyncer,
+                            distanceSyncer,
+                            droneFilterSyncer,
+                            moduleTierFilterSyncer,
+                            selectedAsteroidSyncer))
+                    .child(createOreInputRow(textFieldSyncer))
+                    .child(createDistanceInputRow(distanceSyncer))
+                    .child(createTierInputRow(moduleTierFilterSyncer))
+                    .child(createDroneSelector(droneFilterSyncer)));
+    }
+
+    private Flow createAsteroidInfoGrid(PanelSyncManager syncManager, StringSyncValue textFieldSyncer,
+        IntSyncValue distanceSyncer, IntSyncValue droneFilterSyncer, IntSyncValue moduleTierFilterSyncer,
+        IntSyncValue selectedAsteroidSyncer) {
         Flow asteroidColumn = new Column().coverChildren();
         Flow asteroidRow = new Row().widthRel(1)
             .height(18)
@@ -579,73 +597,77 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     .marginBottom(4);
             } ;
         }
-        droneSelectorButtonUtilityPanel = new SlotLikeButtonWidget(
-            () -> droneFilterSyncer.getValue() >= 0 ? MINING_DRONES[droneFilterSyncer.getValue()] : null);
+        return asteroidColumn;
+    }
+
+    private Flow createOreInputRow(StringSyncValue textFieldSyncer) {
+        return new Row().widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.lang("tt.spaceminer.textFieldOre")
+                    .asWidget()
+                    .marginBottom(4)
+                    .width(50)
+                    .color(Color.WHITE.main))
+            .child(
+                new TextFieldWidget().size(60, 9)
+                    .marginBottom(4)
+                    .value(textFieldSyncer));
+    }
+
+    private Flow createDistanceInputRow(IntSyncValue distanceSyncer) {
+        return new Row().widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.lang("tt.spaceminer.textFieldDistance")
+                    .asWidget()
+                    .marginBottom(4)
+                    .width(50)
+                    .color(Color.WHITE.main))
+            .child(
+                new TextFieldWidget().size(60, 9)
+                    .marginBottom(4)
+                    .value(distanceSyncer)
+                    .setDefaultNumber(0)
+                    .setNumbers(0, Integer.MAX_VALUE));
+    }
+
+    private Flow createTierInputRow(IntSyncValue moduleTierFilterSyncer) {
+
+        return new Row().widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.lang("tt.spaceminer.textFieldTier")
+                    .asWidget()
+                    .marginBottom(4)
+                    .width(50)
+                    .color(Color.WHITE.main))
+            .child(
+                new TextFieldWidget().size(60, 9)
+                    .marginBottom(4)
+                    .value(moduleTierFilterSyncer)
+                    .setDefaultNumber(0)
+                    .setNumbers(0, 3));
+    }
+
+    private SlotLikeButtonWidget createDroneSelector(IntSyncValue droneFilterSyncer) {
         IPanelHandler droneSelectorPanel = panelMap.get("droneSelectorUtilityPanel");
 
-        asteroidColumn.child(
-            new Column().widthRel(1)
-                .coverChildrenHeight()
-                .child(
-                    new Row().widthRel(1)
-                        .coverChildrenHeight()
-                        .child(
-                            IKey.lang("tt.spaceminer.textFieldOre")
-                                .asWidget()
-                                .marginBottom(4)
-                                .width(50)
-                                .color(Color.WHITE.main))
-                        .child(
-                            new TextFieldWidget().size(60, 9)
-                                .marginBottom(4)
-                                .value(textFieldSyncer)))
-                .child(
-                    new Row().widthRel(1)
-                        .coverChildrenHeight()
-                        .child(
-                            IKey.lang("tt.spaceminer.textFieldDistance")
-                                .asWidget()
-                                .marginBottom(4)
-                                .width(50)
-                                .color(Color.WHITE.main))
-                        .child(
-                            new TextFieldWidget().size(60, 9)
-                                .marginBottom(4)
-                                .value(distanceSyncer)
-                                .setDefaultNumber(0)
-                                .setNumbers(0, Integer.MAX_VALUE)))
-                .child(
-                    new Row().widthRel(1)
-                        .coverChildrenHeight()
-                        .child(
-                            IKey.lang("tt.spaceminer.textFieldTier")
-                                .asWidget()
-                                .marginBottom(4)
-                                .width(50)
-                                .color(Color.WHITE.main))
-                        .child(
-                            new TextFieldWidget().size(60, 9)
-                                .marginBottom(4)
-                                .value(moduleTierFilterSyncer)
-                                .setDefaultNumber(0)
-                                .setNumbers(0, 3)))
-                .child(
-                    new Row().widthRel(1)
-                        .height(18)
-                        .marginBottom(5)
-                        .child(
-                            droneSelectorButtonUtilityPanel.size(18, 18)
-                                .onMousePressed(mouseData -> {
-                                    if (!droneSelectorPanel.isPanelOpen()) {
-                                        isDroneSelectorForOptimizer = false;
-                                        droneSelectorPanel.openPanel();
-                                    } else {
-                                        droneSelectorPanel.closePanel();
-                                    }
-                                    return true;
-                                }))));
-        panel.child(asteroidColumn);
-        return panel;
+        droneSelectorButtonUtilityPanel = new SlotLikeButtonWidget(
+            () -> droneFilterSyncer.getValue() >= 0 ? MINING_DRONES[droneFilterSyncer.getValue()] : null).size(18)
+                .marginBottom(5)
+                .alignX(0)
+                .onMousePressed(mouseData -> {
+                    if (!droneSelectorPanel.isPanelOpen()) {
+                        isDroneSelectorForOptimizer = false;
+                        droneSelectorPanel.openPanel();
+                    } else {
+                        droneSelectorPanel.closePanel();
+                    }
+                    return true;
+                });
+
+        return droneSelectorButtonUtilityPanel;
     }
 
     private boolean matchesFilters(AsteroidData data, String oreFilter, int distanceFilter, int droneFilter,
