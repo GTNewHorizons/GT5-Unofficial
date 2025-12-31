@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe.common;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -16,7 +15,6 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import ic2.core.Ic2Items;
 
 public class CI {
 
@@ -25,51 +23,12 @@ public class CI {
         | GTModHandler.RecipeBits.REVERSIBLE
         | GTModHandler.RecipeBits.BUFFERED;
 
-    // Explosives
-    public static ItemStack explosiveTNT;
-    public static ItemStack explosiveITNT;
-
-    public static final String[] circuits = new String[] { "circuitPrimitive", // ULV
-        "circuitBasic", // LV
-        "circuitGood", // MV
-        "circuitAdvanced", // HV
-        "circuitData", // EV
-        "circuitElite", // IV
-        "circuitMaster", // LUV
-        "circuitUltimate", // ZPM
-        "circuitSuperconductor", // UV
-        "circuitInfinite", // UHV
-        "circuitQuantum"// UEV
-    };
-
     public static ItemStack getDataOrb() {
         return ItemList.Tool_DataOrb.get(1);
     }
 
     public static ItemStack getDataStick() {
         return ItemList.Tool_DataStick.get(1);
-    }
-
-    public static ItemStack getTieredMachineCasing(int tier) {
-        return switch (tier) {
-            case 0 -> ItemList.Casing_ULV.get(1);
-            case 1 -> ItemList.Casing_LV.get(1);
-            case 2 -> ItemList.Casing_MV.get(1);
-            case 3 -> ItemList.Casing_HV.get(1);
-            case 4 -> ItemList.Casing_EV.get(1);
-            case 5 -> ItemList.Casing_IV.get(1);
-            case 6 -> ItemList.Casing_LuV.get(1);
-            case 7 -> ItemList.Casing_ZPM.get(1);
-            case 8 -> ItemList.Casing_UV.get(1);
-            case 9 -> ItemList.Casing_MAX.get(1);
-            default -> GregtechItemList.Casing_Multi_Use.get(1);
-        };
-    }
-
-    public static void init() {
-        // Set Explosives
-        explosiveTNT = new ItemStack(Blocks.tnt).copy();
-        explosiveITNT = Ic2Items.industrialTnt.copy();
     }
 
     private static final Material[] aMaterial_Main = new Material[] { MaterialsAlloy.POTIN, MaterialsAlloy.TUMBAGA,
@@ -103,19 +62,7 @@ public class CI {
         aMaterial_Tertiary };
 
     public static FluidStack getTieredFluid(int aTier, int aAmount) {
-        return getTieredFluid(aTier, aAmount, 0);
-    }
-
-    public static FluidStack getAlternativeTieredFluid(int aTier, int aAmount) {
-        return getTieredFluid(aTier, aAmount, 1);
-    }
-
-    public static FluidStack getTertiaryTieredFluid(int aTier, int aAmount) {
-        return getTieredFluid(aTier, aAmount, 2);
-    }
-
-    public static FluidStack getTieredFluid(int aTier, int aAmount, int aType) {
-        FluidStack a = aMaster[aType][aTier].getFluidStack(aAmount);
+        FluidStack a = aMaster[0][aTier].getFluidStack(aAmount);
         if (a == null) {
             ItemStack aCell = getTieredComponent(OrePrefixes.liquid, aTier, 1);
             if (aCell != null) {
@@ -134,18 +81,6 @@ public class CI {
             GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
             GregtechItemList.Energy_Core_UHV.get(1), };
         return GTUtility.copyAmount(aAmount, aOutput[MathUtils.balance(aTier, 0, 9)]);
-    }
-
-    public static ItemStack getPlate(int aTier, int aAmount) {
-        return getTieredComponent(OrePrefixes.plate, aTier, aAmount);
-    }
-
-    public static ItemStack getGear(int aTier, int aAmount) {
-        return getTieredComponent(OrePrefixes.gearGt, aTier, aAmount);
-    }
-
-    public static ItemStack getBolt(int aTier, int aAmount) {
-        return getTieredComponent(OrePrefixes.bolt, aTier, aAmount);
     }
 
     public static ItemStack getTieredComponent(OrePrefixes aPrefix, int aTier, int aAmount) {
@@ -271,21 +206,6 @@ public class CI {
         };
     }
 
-    public static ItemStack getElectricPiston(int tier, int size) {
-        return switch (tier) {
-            case 1 -> ItemList.Electric_Piston_LV.get(size);
-            case 2 -> ItemList.Electric_Piston_MV.get(size);
-            case 3 -> ItemList.Electric_Piston_HV.get(size);
-            case 4 -> ItemList.Electric_Piston_EV.get(size);
-            case 5 -> ItemList.Electric_Piston_IV.get(size);
-            case 6 -> ItemList.Electric_Piston_LuV.get(size);
-            case 7 -> ItemList.Electric_Piston_ZPM.get(size);
-            case 8 -> ItemList.Electric_Piston_UV.get(size);
-            case 9 -> ItemList.Electric_Piston_UHV.get(size);
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
     public static ItemStack getConveyor(int tier, int size) {
         return switch (tier) {
             case 1 -> ItemList.Conveyor_Module_LV.get(size);
@@ -301,88 +221,7 @@ public class CI {
         };
     }
 
-    public static ItemStack getEmitter(int tier, int size) {
-        return switch (tier) {
-            case 1 -> ItemList.Emitter_LV.get(size);
-            case 2 -> ItemList.Emitter_MV.get(size);
-            case 3 -> ItemList.Emitter_HV.get(size);
-            case 4 -> ItemList.Emitter_EV.get(size);
-            case 5 -> ItemList.Emitter_IV.get(size);
-            case 6 -> ItemList.Emitter_LuV.get(size);
-            case 7 -> ItemList.Emitter_ZPM.get(size);
-            case 8 -> ItemList.Emitter_UV.get(size);
-            case 9 -> ItemList.Emitter_UHV.get(size);
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
-    public static ItemStack getSensor(int tier, int size) {
-        return switch (tier) {
-            case 1 -> ItemList.Sensor_LV.get(size);
-            case 2 -> ItemList.Sensor_MV.get(size);
-            case 3 -> ItemList.Sensor_HV.get(size);
-            case 4 -> ItemList.Sensor_EV.get(size);
-            case 5 -> ItemList.Sensor_IV.get(size);
-            case 6 -> ItemList.Sensor_LuV.get(size);
-            case 7 -> ItemList.Sensor_ZPM.get(size);
-            case 8 -> ItemList.Sensor_UV.get(size);
-            case 9 -> ItemList.Sensor_UHV.get(size);
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
-    public static ItemStack getFieldGenerator(int tier, int size) {
-        return switch (tier) {
-            case 1 -> ItemList.Field_Generator_LV.get(size);
-            case 2 -> ItemList.Field_Generator_MV.get(size);
-            case 3 -> ItemList.Field_Generator_HV.get(size);
-            case 4 -> ItemList.Field_Generator_EV.get(size);
-            case 5 -> ItemList.Field_Generator_IV.get(size);
-            case 6 -> ItemList.Field_Generator_LuV.get(size);
-            case 7 -> ItemList.Field_Generator_ZPM.get(size);
-            case 8 -> ItemList.Field_Generator_UV.get(size);
-            case 9 -> ItemList.Field_Generator_UHV.get(size);
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
-    public static ItemStack getTieredMachineHull(int tier, int size) {
-        return switch (tier) {
-            case 0 -> GTUtility.copyAmount(size, ItemList.Hull_ULV.get(1));
-            case 1 -> GTUtility.copyAmount(size, ItemList.Hull_LV.get(1));
-            case 2 -> GTUtility.copyAmount(size, ItemList.Hull_MV.get(1));
-            case 3 -> GTUtility.copyAmount(size, ItemList.Hull_HV.get(1));
-            case 4 -> GTUtility.copyAmount(size, ItemList.Hull_EV.get(1));
-            case 5 -> GTUtility.copyAmount(size, ItemList.Hull_IV.get(1));
-            case 6 -> GTUtility.copyAmount(size, ItemList.Hull_LuV.get(1));
-            case 7 -> GTUtility.copyAmount(size, ItemList.Hull_ZPM.get(1));
-            case 8 -> GTUtility.copyAmount(size, ItemList.Hull_UV.get(1));
-            case 9 -> GTUtility.copyAmount(size, ItemList.Hull_MAX.get(1));
-            default -> throw new IllegalArgumentException();
-        };
-    }
-
     public static ItemStack getEmptyCatalyst(int aAmount) {
         return GregtechItemList.EmptyCatalystCarrier.get(aAmount);
-    }
-
-    /**
-     * Iridium + Ruthenium Catalyst
-     *
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getPurpleCatalyst(int aAmount) {
-        return GregtechItemList.PurpleMetalCatalyst.get(aAmount);
-    }
-
-    /**
-     * Platinum + Rhodium Catalyst
-     *
-     * @param aAmount - Stacksize
-     * @return - A Catalyst stack of given size
-     */
-    public static ItemStack getPinkCatalyst(int aAmount) {
-        return GregtechItemList.PinkMetalCatalyst.get(aAmount);
     }
 }
