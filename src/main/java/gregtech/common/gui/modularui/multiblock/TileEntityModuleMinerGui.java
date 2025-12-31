@@ -1080,9 +1080,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             }
         }.size(200, 164)
             .pos(parentArea.x, parentArea.y)
-            .paddingTop(3)
-            .paddingLeft(5)
-            .paddingRight(5);
+            .paddingTop(4)
+            .paddingLeft(4)
+            .paddingRight(4);
         UITexture nerdTexture = UITexture.fullImage(MODID, "gui/overlay_button/nerd");
 
         AtomicInteger distance = new AtomicInteger(0);
@@ -1099,6 +1099,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .widthRel(1)
             .height(100)
             .marginBottom(4)
+            .padding(2)
             .child(
                 new Column().widthRel(1)
                     .child(
@@ -1248,13 +1249,13 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             listResult.add(
                 new Row().widthRel(1)
                     .height(18)
+                    .child(asteroidButton)
                     .child(
                         IKey.lang(
                             "tt.spaceminer.calculator.asteroidChance",
                             String.format("%.3f%%", ((double) data.recipeWeight / weightSum.get() * 100)))
                             .asWidget()
-                            .marginRight(4))
-                    .child(asteroidButton));
+                            .marginLeft(4)));
         }
         return listResult;
     }
