@@ -2036,6 +2036,9 @@ tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
 tt.spaceminer.calculator.missing.drone=Missing drone!
 tt.spaceminer.calculator.calculate=Calculate
 tt.spaceminer.calculator.asteroidChance= %s Chance for:
+tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
+tt.spaceminer.filter.noValidInputs=No valid inputs!
+tt.spaceminer.filter.addOre=Click to add this ore to the filter
 
 # Gui
 tt.gui.tooltip.power_pass=Power Pass
