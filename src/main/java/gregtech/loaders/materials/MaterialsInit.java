@@ -12844,7 +12844,7 @@ public class MaterialsInit {
     private static Materials loadClayCompound() {
         return new MaterialBuilder().setName("CrudeSteel")
             .setDefaultLocalName("Clay Compound")
-            .setIconSet(TextureSet.SET_VIVID)
+            .setIconSet(TextureSet.SET_CRUDE_STEEL)
             .setColor(Dyes.dyeGray)
             .setARGB(0x009e9087)
             .setTool(64, 2, 2.0f)
