@@ -66,6 +66,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.CasingTier;
 import gregtech.api.util.GlassTier;
 import tectech.loader.recipe.Godforge;
 
@@ -150,6 +151,7 @@ public final class MainMod {
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
+        CasingTier.RegisterCasingTiers.run();
     }
 
     @Mod.EventHandler
