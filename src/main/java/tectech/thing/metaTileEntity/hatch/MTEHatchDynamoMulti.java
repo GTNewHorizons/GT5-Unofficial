@@ -29,6 +29,15 @@ import tectech.util.CommonValues;
 public class MTEHatchDynamoMulti extends MTEHatch {
 
     public final int maxAmperes;
+
+    public int getAmperes() {
+        return Amperes;
+    }
+
+    public void setAmperes(int amperes) {
+        Amperes = amperes;
+    }
+
     public int Amperes;
 
     public MTEHatchDynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
