@@ -14,9 +14,9 @@ import gregtech.common.GTClient;
 
 public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
 
-    private float baseR = 1;
-    private float baseG = 1;
-    private float baseB = 1;
+    private final float baseR;
+    private final float baseG;
+    private final float baseB;
 
     public RainbowOverlayRenderer(short[] rgba) {
         baseR = rgba[0] / 255.0F;
@@ -27,11 +27,10 @@ public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
     @Override
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor) {
         final GTClient clientProxy = GTMod.clientProxy();
-        long animationTicks = clientProxy.getAnimationTicks();
-        float partialTicks = clientProxy.getPartialRenderTicks();
+        float animationTicks = clientProxy.getAnimationRenderTicks();
 
         if (shouldModulateColor) {
-            Color color = Color.getHSBColor((animationTicks % 180 + partialTicks) % 90 / 90f, 0.4f, 0.9f);
+            Color color = Color.getHSBColor((animationTicks % 90) / 90f, 0.4f, 0.9f);
 
             float modR = color.getRed() / 255.0F;
             float modG = color.getGreen() / 255.0F;
