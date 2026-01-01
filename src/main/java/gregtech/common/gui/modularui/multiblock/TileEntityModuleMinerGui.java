@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
@@ -498,20 +499,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         }
     }
 
-    private ModularPanel getSpaceMinerUtilityPanel(ModularPanel parent, PanelSyncManager syncManager,
-        IPanelHandler thisPanel) {
-        AtomicReference<String> search = new AtomicReference<>("");
-        StringSyncValue textFieldSyncer = new StringSyncValue(search::get, search::set);
-
-        AtomicInteger distanceFilter = new AtomicInteger(0);
-        IntSyncValue distanceSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set);
-
-        AtomicInteger moduleTierFilter = new AtomicInteger(0);
-        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set);
-
-        IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
-        IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
-
+    private ModularPanel getSpaceMinerUtilityPanel(ModularPanel parent, PanelSyncManager syncManager) {
         return new ModularPanel("asteroidList") {
 
             @Override
@@ -525,70 +513,23 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .padding(5)
             .child(
                 new Column().coverChildren()
-                    .child(
-                        createAsteroidInfoGrid(
-                            syncManager,
-                            textFieldSyncer,
-                            distanceSyncer,
-                            droneFilterSyncer,
-                            moduleTierFilterSyncer,
-                            selectedAsteroidSyncer))
-                    .child(createOreInputRow(textFieldSyncer))
-                    .child(createDistanceInputRow(distanceSyncer))
-                    .child(createTierInputRow(moduleTierFilterSyncer))
-                    .child(createDroneSelector(droneFilterSyncer)));
+                    .child(createUtilityPanelAsteroidGrid(syncManager))
+                    .child(createOreInputRow(syncManager))
+                    .child(createDistanceInputRow(syncManager))
+                    .child(createTierInputRow(syncManager))
+                    .child(createUtilityPanelDroneSelector(syncManager)));
     }
 
-    private Flow createAsteroidInfoGrid(PanelSyncManager syncManager, StringSyncValue textFieldSyncer,
-        IntSyncValue distanceSyncer, IntSyncValue droneFilterSyncer, IntSyncValue moduleTierFilterSyncer,
-        IntSyncValue selectedAsteroidSyncer) {
+    private Flow createUtilityPanelAsteroidGrid(PanelSyncManager syncManager) {
         Flow asteroidColumn = new Column().coverChildren();
         Flow asteroidRow = new Row().widthRel(1)
             .height(18)
             .marginBottom(4);
 
         for (int i = 0; i < uniqueAsteroidList.size(); i++) {
-            int finalI = i;
             boolean lastButtonInRow = (i + 1) % 8 == 0 || i == uniqueAsteroidList.size() - 1;
-            AsteroidData data = uniqueAsteroidList.get(i);
-            IPanelHandler asteroidInfoPanel = (IPanelHandler) syncManager
-                .getSyncHandlerFromMapKey("asteroidInfoPanel" + finalI);
 
-            ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
-                : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
-            ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
-                .overlay(new DynamicDrawable(() -> {
-                    if (matchesFilters(
-                        data,
-                        textFieldSyncer.getValue(),
-                        distanceSyncer.getValue(),
-                        droneFilterSyncer.getValue(),
-                        moduleTierFilterSyncer.getValue())) {
-                        return new DrawableStack(
-                            new Rectangle().setColor(Color.rgb(0, 255, 0))
-                                .asIcon()
-                                .size(16, 16),
-                            new ItemDrawable(oreItem).asIcon()
-                                .size(16, 16));
-                    } else {
-                        return new ItemDrawable(oreItem).asIcon()
-                            .size(16, 16);
-                    }
-                }))
-                .tooltipBuilder(
-                    t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
-                        .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo")))
-                .onMousePressed(mouseData -> {
-                    if (!asteroidInfoPanel.isPanelOpen()) {
-                        selectedAsteroidSyncer.setValue(finalI);
-                        isAsteroidPanelForFilter = false;
-                        asteroidInfoPanel.openPanel();
-                    } else {
-                        asteroidInfoPanel.closePanel();
-                    }
-                    return true;
-                });
-            asteroidButton.marginRight(lastButtonInRow ? 0 : 2);
+            ButtonWidget<?> asteroidButton = createUtilityPanelAsteroidButton(i, lastButtonInRow, syncManager);
             asteroidRow.child(asteroidButton);
             if (lastButtonInRow) {
                 asteroidColumn.child(asteroidRow);
@@ -600,7 +541,61 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         return asteroidColumn;
     }
 
-    private Flow createOreInputRow(StringSyncValue textFieldSyncer) {
+    private ButtonWidget<?> createUtilityPanelAsteroidButton(int i, boolean lastButtonInRow,
+        PanelSyncManager syncManager) {
+        IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
+        AsteroidData data = uniqueAsteroidList.get(i);
+        IPanelHandler asteroidInfoPanel = (IPanelHandler) syncManager.getSyncHandlerFromMapKey("asteroidInfoPanel" + i);
+
+        return new ButtonWidget<>().size(18, 18)
+            .marginRight(lastButtonInRow ? 0 : 2)
+            .overlay(createUtilityPanelAsteroidButtonOverlay(data, syncManager))
+            .tooltipBuilder(
+                t -> t.addLine(IKey.str(EnumChatFormatting.RED + data.getAsteroidNameLocalized()))
+                    .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo")))
+            .onMousePressed(mouseData -> {
+                if (!asteroidInfoPanel.isPanelOpen()) {
+                    selectedAsteroidSyncer.setValue(i);
+                    isAsteroidPanelForFilter = false;
+                    asteroidInfoPanel.openPanel();
+                } else {
+                    asteroidInfoPanel.closePanel();
+                }
+                return true;
+            });
+    }
+
+    private IDrawable createUtilityPanelAsteroidButtonOverlay(AsteroidData data, PanelSyncManager syncManager) {
+        StringSyncValue oreFilterSyncer = syncManager.findSyncHandler("oreFilter", StringSyncValue.class);
+        IntSyncValue distanceSyncer = syncManager.findSyncHandler("distanceFilter", IntSyncValue.class);
+        IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
+        IntSyncValue moduleTierFilterSyncer = syncManager.findSyncHandler("moduleTierFilter", IntSyncValue.class);
+
+        ItemStack oreItem = data.outputItems != null ? data.outputItems[0]
+            : GTOreDictUnificator.get(data.orePrefixes, data.output[0], 1);
+
+        return new DynamicDrawable(() -> {
+            if (matchesFilters(
+                data,
+                oreFilterSyncer.getValue(),
+                distanceSyncer.getValue(),
+                droneFilterSyncer.getValue(),
+                moduleTierFilterSyncer.getValue())) {
+                return new DrawableStack(
+                    new Rectangle().setColor(Color.rgb(0, 255, 0))
+                        .asIcon()
+                        .size(16, 16),
+                    new ItemDrawable(oreItem).asIcon()
+                        .size(16, 16));
+            } else {
+                return new ItemDrawable(oreItem).asIcon()
+                    .size(16, 16);
+            }
+        });
+    }
+
+    private Flow createOreInputRow(PanelSyncManager syncManager) {
+        StringSyncValue oreFilterSyncer = syncManager.findSyncHandler("oreFilter", StringSyncValue.class);
         return new Row().widthRel(1)
             .coverChildrenHeight()
             .child(
@@ -612,10 +607,11 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .marginBottom(4)
-                    .value(textFieldSyncer));
+                    .value(oreFilterSyncer));
     }
 
-    private Flow createDistanceInputRow(IntSyncValue distanceSyncer) {
+    private Flow createDistanceInputRow(PanelSyncManager syncManager) {
+        IntSyncValue distanceSyncer = syncManager.findSyncHandler("distanceFilter", IntSyncValue.class);
         return new Row().widthRel(1)
             .coverChildrenHeight()
             .child(
@@ -632,8 +628,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     .setNumbers(0, Integer.MAX_VALUE));
     }
 
-    private Flow createTierInputRow(IntSyncValue moduleTierFilterSyncer) {
-
+    private Flow createTierInputRow(PanelSyncManager syncManager) {
+        IntSyncValue moduleTierFilterSyncer = syncManager.findSyncHandler("moduleTierFilter", IntSyncValue.class);
         return new Row().widthRel(1)
             .coverChildrenHeight()
             .child(
@@ -650,8 +646,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     .setNumbers(0, 3));
     }
 
-    private SlotLikeButtonWidget createDroneSelector(IntSyncValue droneFilterSyncer) {
+    private SlotLikeButtonWidget createUtilityPanelDroneSelector(PanelSyncManager syncManager) {
         IPanelHandler droneSelectorPanel = panelMap.get("droneSelectorUtilityPanel");
+        IntSyncValue droneFilterSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
 
         droneSelectorButtonUtilityPanel = new SlotLikeButtonWidget(
             () -> droneFilterSyncer.getValue() >= 0 ? MINING_DRONES[droneFilterSyncer.getValue()] : null).size(18)
@@ -666,7 +663,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     }
                     return true;
                 });
-
         return droneSelectorButtonUtilityPanel;
     }
 
@@ -1334,6 +1330,19 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         AtomicInteger selectedAsteroid = new AtomicInteger(0);
         IntSyncValue selectedAsteroidSyncer = new IntSyncValue(selectedAsteroid::get, selectedAsteroid::set);
         syncManager.syncValue("selectedAsteroid", selectedAsteroidSyncer);
+
+        AtomicReference<String> oreFilter = new AtomicReference<>("");
+        StringSyncValue oreFilterSyncer = new StringSyncValue(oreFilter::get, oreFilter::set);
+        syncManager.syncValue("oreFilter", oreFilterSyncer);
+
+        AtomicInteger distanceFilter = new AtomicInteger(0);
+        IntSyncValue distanceFilterSyncer = new IntSyncValue(distanceFilter::get, distanceFilter::set);
+        syncManager.syncValue("distanceFilter", distanceFilterSyncer);
+
+        AtomicInteger moduleTierFilter = new AtomicInteger(0);
+        IntSyncValue moduleTierFilterSyncer = new IntSyncValue(moduleTierFilter::get, moduleTierFilter::set);
+        syncManager.syncValue("moduleTierFilter", moduleTierFilterSyncer);
+
     }
 
     @Override
@@ -1342,7 +1351,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             "spaceMinerUtility",
             syncManager.panel(
                 "spaceMinerUtility",
-                (p_syncManager, syncHandler) -> getSpaceMinerUtilityPanel(parent, syncManager, syncHandler),
+                (p_syncManager, syncHandler) -> getSpaceMinerUtilityPanel(parent, syncManager),
                 true));
         panelMap.put(
             "filterConfiguration",
