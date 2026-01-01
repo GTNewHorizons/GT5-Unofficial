@@ -1125,6 +1125,7 @@ public class MTETeslaTower extends TTMultiblockBase
     public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
     protected boolean useMui2() {
         return true;
     }
