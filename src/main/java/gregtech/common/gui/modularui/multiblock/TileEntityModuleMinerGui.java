@@ -97,6 +97,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue distanceSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
         IntSyncValue cycleDistanceSyncer = syncManager.findSyncHandler("cycleDistanceParameter", IntSyncValue.class);
         BooleanSyncValue cycleSyncer = syncManager.findSyncHandler("cycleParameter", BooleanSyncValue.class);
+
         ListWidget<IWidget, ?> minerInfo = new ListWidget<>().child(
             IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + GTUtility.translate("tt.spaceminer.textFieldDistance")
@@ -104,12 +105,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     + EnumChatFormatting.GREEN
                     + (cycleSyncer.getValue() ? cycleDistanceSyncer.getValue() : distanceSyncer.getValue()))
                 .asWidget()
-                .marginBottom(2));
-        minerInfo.onUpdateListener((unused) -> {
-            if (com.gtnewhorizons.modularui.common.internal.network.NetworkUtils.isClient()) {
-                WidgetTree.resize(minerInfo);
-            }
-        });
+                .marginBottom(2)
+                .alignX(0));
         return minerInfo.children(super.createTerminalTextWidget(syncManager, parent).getChildren());
     }
 
