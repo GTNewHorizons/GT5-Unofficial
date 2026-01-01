@@ -97,7 +97,7 @@ public class MTEPurificationUnitBaryonicPerfection
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 onElementPass(t -> t.numCasings++, ofBlock(GregTechAPI.sBlockCasings10, 2))))
