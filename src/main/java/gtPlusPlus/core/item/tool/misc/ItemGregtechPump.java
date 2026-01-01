@@ -894,7 +894,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                     }
                 }
             }
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
         return false;
     }
 
@@ -1007,7 +1007,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             aTileEntity.mFluid = aSetFluid;
             Logger.INFO("Trying to set Tile's tank. - Behaviour Class. [3] success.");
             return true;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.INFO("Trying to clear Tile's tank. FAILED - Behaviour Class. [x]");
             return false;
         }

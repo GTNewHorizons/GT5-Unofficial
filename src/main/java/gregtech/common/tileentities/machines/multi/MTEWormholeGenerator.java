@@ -707,7 +707,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 aNBT.setTag("mLink", link);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
@@ -758,7 +758,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         0,
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
