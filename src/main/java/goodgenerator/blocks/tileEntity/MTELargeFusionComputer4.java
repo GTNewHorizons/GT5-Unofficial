@@ -65,9 +65,9 @@ public class MTELargeFusionComputer4 extends MTELargeFusionComputerPP {
             .addCasingInfoMin("Compact Fusion Coil MK-II Prototype", 560, false)
             .addCasingInfoMin("Infinity Catalyst Frame Box", 128, false)
             .addCasingInfoMin("Neutronium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block with dot 2", 2)
-            .addInputHatch("1-16, Hint block with dot 1", 1)
-            .addOutputHatch("1-16, Hint block with dot 1", 1)
+            .addEnergyHatch("1-32, Hint Block Number 2", 2)
+            .addInputHatch("1-16, Hint Block Number 1", 1)
+            .addOutputHatch("1-16, Hint Block Number 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
                 "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())

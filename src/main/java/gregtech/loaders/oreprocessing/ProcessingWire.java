@@ -589,10 +589,10 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 .duration(5 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 8))
                 .addTo(unpackagerRecipes);
-        }
 
-        if (GTOreDictUnificator.get(correspondingCable, aMaterial, 1L) != null) {
             AE2AddNetAttunementCable(aStack, correspondingCable, aMaterial);
+        } else {
+            AE2addNewAttunement(aStack);
         }
     }
 
