@@ -2,7 +2,6 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
-import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
@@ -170,7 +169,7 @@ public final class MaterialMisc {
     public static final Material WOODS_GLASS = new Material(
         "Wood's Glass", // Material Name
         MaterialState.SOLID, // State
-        TextureSets.GEM_A.get(), // Texture Set
+        TextureSet.SET_GEM_A, // Texture Set
         new short[] { 220, 60, 255 }, // Material Colour
         -1,
         -1,
@@ -192,7 +191,7 @@ public final class MaterialMisc {
     public static final Material RARE_EARTH_LOW = new Material(
         "Rare Earth (I)", // Material Name
         MaterialState.ORE, // State
-        TextureSets.GEM_A.get(), // Texture Set
+        TextureSet.SET_GEM_A, // Texture Set
         null, // Material Colour
         1200,
         2500,
@@ -211,7 +210,7 @@ public final class MaterialMisc {
     public static final Material RARE_EARTH_MID = new Material(
         "Rare Earth (II)", // Material Name
         MaterialState.ORE, // State
-        TextureSets.ENRICHED.get(), // Texture Set
+        TextureSet.SET_FIERY, // Texture Set
         null, // Material Colour
         3500,
         5000,
@@ -228,7 +227,7 @@ public final class MaterialMisc {
     public static final Material RARE_EARTH_HIGH = new Material(
         "Rare Earth (III)", // Material Name
         MaterialState.ORE, // State
-        TextureSets.REFINED.get(), // Texture Set
+        TextureSet.SET_REFINED, // Texture Set
         null, // Material Colour
         5200,
         7500,

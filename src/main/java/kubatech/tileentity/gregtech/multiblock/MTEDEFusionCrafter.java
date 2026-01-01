@@ -106,7 +106,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             buildHatchAdder(MTEDEFusionCrafter.class)
                 .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7))))
         .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
         .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 7))

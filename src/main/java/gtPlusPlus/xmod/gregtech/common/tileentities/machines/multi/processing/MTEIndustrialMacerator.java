@@ -142,7 +142,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                             .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
                             .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2))
                             .allowOnly(ForgeDirection.NORTH)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(
                             m -> m.mCasing++,

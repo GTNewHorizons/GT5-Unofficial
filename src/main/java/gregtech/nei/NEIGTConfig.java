@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -112,6 +115,8 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addRecipeCatalyst(
             GTModHandler.getIC2Item("nuclearReactor", 1, null),
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
+
+        API.addRecipeCatalyst(new ItemStack(Items.cauldron), RecipeMaps.cauldronRecipe.unlocalizedName);
     }
 
     private void registerItemEntries() {
