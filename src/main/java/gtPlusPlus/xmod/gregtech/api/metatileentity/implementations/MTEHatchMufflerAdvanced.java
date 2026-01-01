@@ -6,9 +6,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.GTMod;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -21,6 +22,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.MTEHatchMufflerAdvancedGui;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -337,10 +339,12 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler implements IAddGreg
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
-                .setBackground(getGUITextureSet().getItemSlot())
-                .setPos(79, 34));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchMufflerAdvancedGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

@@ -164,6 +164,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "chemplant_casing_tier");
 
     /**
+     * Algae Pond tier.
+     */
+    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "algae_pond_tier");
+
+    /**
      * QFT Focus tier.
      */
     public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
@@ -745,6 +751,7 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(ALGAE_POND_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);

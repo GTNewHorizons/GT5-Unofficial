@@ -71,7 +71,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             buildHatchAdder(MTELargeChemicalReactor.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTELargeChemicalReactor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
         .addElement(
@@ -79,7 +79,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
             buildHatchAdder(MTELargeChemicalReactor.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     activeCoils(CoilStructureElement.INSTANCE),
                     onElementPass(MTELargeChemicalReactor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))

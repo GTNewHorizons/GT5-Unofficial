@@ -10,8 +10,9 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.common.render.GTRenderUtil;
 
 public class GlitchEffectMetaItemRenderer implements IItemRenderer {
 
@@ -64,7 +65,7 @@ public class GlitchEffectMetaItemRenderer implements IItemRenderer {
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-                GTRenderUtil.renderItem(type, icons[0]);
+                ItemRenderUtil.renderItem(type, icons[0]);
 
                 if (type == ItemRenderType.INVENTORY && timing) {
                     GL11.glDisable(GL11.GL_DEPTH_TEST);

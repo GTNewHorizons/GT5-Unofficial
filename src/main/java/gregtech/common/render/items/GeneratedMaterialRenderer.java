@@ -11,12 +11,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.GTRenderUtil;
 
 public class GeneratedMaterialRenderer implements IItemRenderer {
 
@@ -104,7 +104,7 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
         }
 
-        GTRenderUtil.renderItem(type, icon);
+        ItemRenderUtil.renderItem(type, icon);
     }
 
     protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
@@ -114,12 +114,12 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
         TextureUtils.bindAtlas(aFluid.getSpriteNumber());
 
         GL11.glDepthFunc(GL11.GL_EQUAL);
-        GTRenderUtil.renderItem(type, fluidIcon);
+        ItemRenderUtil.renderItem(type, fluidIcon);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
     }
 
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
-        GTRenderUtil.renderItem(type, overlay);
+        ItemRenderUtil.renderItem(type, overlay);
     }
 
     protected void markNeedsAnimationUpdate(IIcon icon) {

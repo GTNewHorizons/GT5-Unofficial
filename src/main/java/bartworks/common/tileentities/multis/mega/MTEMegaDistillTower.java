@@ -132,7 +132,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
                 buildHatchAdder(MTEMegaDistillTower.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(MTEMegaDistillTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
             .addElement(
@@ -140,7 +140,7 @@ public class MTEMegaDistillTower extends MegaMultiBlockBase<MTEMegaDistillTower>
                 buildHatchAdder(MTEMegaDistillTower.class)
                     .atLeast(layeredOutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(MTEMegaDistillTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
             .addElement('c', (IStructureElementCheckOnly<MTEMegaDistillTower>) (t, world, x, y, z) -> {

@@ -1,10 +1,10 @@
 package gregtech.api.recipe.maps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -35,23 +35,17 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(6, 7));
-        return positions;
+        return ImmutableList.of(new Pos2d(6, 7));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(154, 7));
-        return positions;
+        return ImmutableList.of(new Pos2d(154, 7));
     }
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(79, 43));
-        return positions;
+        return ImmutableList.of(new Pos2d(79, 43));
     }
 
     @Override
