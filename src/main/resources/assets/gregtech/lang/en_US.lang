@@ -34,6 +34,7 @@ gt.component.smallspring=Small %s Spring
 gt.component.finewire=Fine %s Wire
 gt.component.platedense=Dense %s Plate
 gt.component.platesuperdense=Superdense %s Plate
+gt.component.sheetmetal=%s Sheetmetal
 
 # Crops
 gt.crop.argentia.name=Argentia
@@ -826,7 +827,6 @@ GT5U.MBTT.Tiers.Turbine=Sum of Turbine
 GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
-GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
 GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
@@ -836,7 +836,7 @@ GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its a
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
 GT5U.MBTT.HatchInfo=Any %s
-GT5U.MBTT.HatchDots= (dots: %s)
+GT5U.MBTT.HatchHint= (Hint: %s)
 GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
@@ -1078,6 +1078,7 @@ gt.recipe.largeboilerfakefuels=Large Boiler
 gt.recipe.nanoforge=Nano Forge
 gt.recipe.pcbfactory=PCB Factory
 gt.recipe.ic2nuke=Nuclear Fission
+gt.recipe.cauldron=Cauldron
 gt.recipe.entropic-processing=Entropic Processing
 gt.recipe.isotope-decay=Isotope Decay
 gt.recipe.purificationplantclarifier=Clarifier
@@ -1864,6 +1865,13 @@ GT5U.nei.nuclear.breeder.neutron_reflecting=Neutron reflecting Breeder
 GT5U.nei.nuclear.breeder.heat_neutral=Heat neutral Breeder
 GT5U.nei.nuclear.breeder.reactor_hull_heat=Every %d reactor hull heat\nincrease speed by %d00%%
 GT5U.nei.nuclear.breeder.required_pulse=Required pulses: %d
+GT5U.nei.purified_water.base_chance=Base success chance: %s%%
+GT5U.nei.purified_water.grade_3.0=Consumed during operation
+GT5U.nei.purified_water.grade_3.1=+%s%%/%dL
+GT5U.nei.purified_water.grade_3.2=Returned in amount equivalent to consumed flocculant.
+GT5U.nei.purified_water.grade_4.0=+%s pH/stack
+GT5U.nei.purified_water.grade_4.1=%s pH/1000L
+GT5U.nei.cauldron.consumed=Consumed per operation
 
 
 GT5U.config.colormodulation=Color Modulator
@@ -2143,7 +2151,7 @@ GT5U.waila.status.insufficient_energy=Status: Insufficient energy
 GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
 GT5U.waila.machine.working_disabled=Working Disabled
 GT5U.waila.machine.idle=Idle
-GT5U.waila.machine.in_progress=In progress: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
 GT5U.waila.machine_facing=Machine Facing: %s
 GT5U.waila.output_facing=Output Facing: %s
 GT5U.waila.facing=Facing: %s
@@ -3115,7 +3123,7 @@ GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
 GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), fluid extractor (circuit 21) and extractor (circuit 22).
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
-
+GTPP.multiblock.ap.tier=Tier: %s
 
 GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
@@ -3252,6 +3260,14 @@ GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
 
+GT5U.tooltip.typefilter.set_to=Filter set to %s
+GT5U.tooltip.typefilter.ore_prefix=Ore prefix: %s
+GT5U.tooltip.typefilter.size=Filter size: %s
+
+GT5U.die.frozen=%s froze to death
+GT5U.die.boiled=%s was boiled alive
+GT5U.die.exploded=%s exploded
+
 gt.coilheattooltip=Base Heating Capacity =
 gt.coilunittooltip= Kelvin
 
@@ -3307,6 +3323,8 @@ GT5U.infodata.hatch.me.diagnostics.booting=(booting)
 GT5U.infodata.hatch.me.diagnostics.power=(power)s
 GT5U.infodata.hatch.crafting_input_me.bus.online=The bus is §aonline§r
 GT5U.infodata.hatch.crafting_input_me.bus.offline=The bus is §coffline%s§r
+GT5U.infodata.hatch.crafting_input_me.show_pattern.enable=§aShow on Interface Terminal
+GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled=§cHide on Interface Terminal
 GT5U.infodata.hatch.internal_inventory=Internal Inventory:
 GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
 GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
