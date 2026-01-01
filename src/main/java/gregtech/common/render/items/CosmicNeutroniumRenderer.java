@@ -11,10 +11,10 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.enums.Textures;
-import gregtech.common.render.GTRenderUtil;
 
 public class CosmicNeutroniumRenderer extends GeneratedMaterialRenderer {
 
@@ -90,10 +90,10 @@ public class CosmicNeutroniumRenderer extends GeneratedMaterialRenderer {
             colorGTItem(item);
 
             if (type.equals(IItemRenderer.ItemRenderType.INVENTORY)) {
-                GTRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GTRenderUtil.renderItem(type, icon);
+                ItemRenderUtil.renderItem(type, icon);
             }
             GL11.glPopMatrix();
         }

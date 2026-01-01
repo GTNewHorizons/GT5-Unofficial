@@ -31,15 +31,12 @@ public class ItemStorage extends ItemBlock implements IItemFirestoneBurning {
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        if (this.field_150939_a instanceof BlockMetal) {
-            int aDamage = aStack.getItemDamage();
-            if (aDamage >= 0 && aDamage < ((BlockMetal) this.field_150939_a).mMats.length) {
-                aName = ((BlockMetal) this.field_150939_a).mMats[aDamage].getLocalizedNameForItem(aName);
-            }
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (this.field_150939_a instanceof BlockStorage storage) {
+            return storage.getLocalizedName(stack.getItemDamage());
         }
-        return aName;
+
+        return super.getItemStackDisplayName(stack);
     }
 
     @Override

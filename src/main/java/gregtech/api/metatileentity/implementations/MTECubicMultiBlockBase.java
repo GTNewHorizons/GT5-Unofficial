@@ -61,7 +61,7 @@ public abstract class MTECubicMultiBlockBase<T extends MTECubicMultiBlockBase<T>
                             t -> GTStructureUtility.<MTECubicMultiBlockBase<?>>buildHatchAdder()
                                 .atLeastList(t.getAllowedHatches())
                                 .casingIndex(t.getHatchTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build()),
                         onElementPass(
                             MTECubicMultiBlockBase::onCorrectCasingAdded,

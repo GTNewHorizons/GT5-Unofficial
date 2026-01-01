@@ -79,7 +79,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
                     HatchElement.InputHatch.withAdder(MTEOilCracker::addLeftHatchToMachineList),
                     HatchElement.Energy,
                     HatchElement.Maintenance)
-                .dot(2)
+                .hint(2)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement(
@@ -89,7 +89,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
                     HatchElement.OutputHatch.withAdder(MTEOilCracker::addRightHatchToMachineList),
                     HatchElement.Energy,
                     HatchElement.Maintenance)
-                .dot(3)
+                .hint(3)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement(
@@ -101,7 +101,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
                     HatchElement.InputBus,
                     HatchElement.Energy,
                     HatchElement.Maintenance)
-                .dot(1)
+                .hint(1)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .build();
