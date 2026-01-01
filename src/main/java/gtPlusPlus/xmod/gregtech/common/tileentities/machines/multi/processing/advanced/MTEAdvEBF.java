@@ -143,12 +143,12 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                             .hatchId(968)
                             .shouldReject(x -> !x.mPyrotheumHatches.isEmpty())
                             .casingIndex(CASING_TEXTURE_ID)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEAdvEBF.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                             .casingIndex(CASING_TEXTURE_ID)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 11))))
                 .addElement(

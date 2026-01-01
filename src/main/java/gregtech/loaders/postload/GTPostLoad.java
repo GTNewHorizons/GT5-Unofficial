@@ -446,6 +446,26 @@ public class GTPostLoad {
         }
     }
 
+    public static void addCauldronRecipe() {
+        for (Materials material : Materials.getAll()) {
+            ItemStack dustImpure = GTOreDictUnificator.get(OrePrefixes.dustImpure, material, 1);
+            ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, material, 1);
+
+            if (dust == null || dustImpure == null) {
+                continue;
+            }
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(dustImpure)
+                .fluidInputs(Materials.Water.getFluid(333))
+                .itemOutputs(dust)
+                .duration(0)
+                .eut(0)
+                .fake()
+                .addTo(RecipeMaps.cauldronRecipe);
+        }
+    }
+
     public static void identifyAnySteam() {
         final String[] steamCandidates = { "steam", "ic2steam" };
         final String[] superHeatedSteamCandidates = { "ic2superheatedsteam" };
