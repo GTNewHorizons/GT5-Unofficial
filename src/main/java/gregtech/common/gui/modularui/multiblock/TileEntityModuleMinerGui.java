@@ -109,42 +109,48 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     @Override
     public Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        IPanelHandler filterConfigurationPanel = panelMap.get("filterConfiguration");
-        IPanelHandler minerCalculator = panelMap.get("spaceMinerCalculator");
         return new Row().widthRel(1)
             .height(this.getTextBoxToInventoryGap())
             .mainAxisAlignment(Alignment.MainAxis.END)
-            .child(
-                new ButtonWidget<>().size(18, 18)
-                    .overlay(new DynamicDrawable(() -> {
-                        if (multiblock.isWhitelisted) return GTGuiTextures.TT_OVERLAY_BUTTON_WHITELIST;
-                        return GTGuiTextures.TT_OVERLAY_BUTTON_BLACKLIST;
-                    }))
-                    .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.filterButtonTooltip")))
-                    .onMousePressed(mouseData -> {
-                        if (!filterConfigurationPanel.isPanelOpen()) {
-                            filterConfigurationPanel.openPanel();
-                        } else {
-                            filterConfigurationPanel.closePanel();
-                        }
-                        return true;
-                    }))
-            .child(
-                new ButtonWidget<>().size(18, 18)
-                    .overlay(
-                        GTGuiTextures.TT_OVERLAY_BUTTON_CALCULATOR.asIcon()
-                            .size(16))
-                    .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculatorButtonTooltip")))
-                    .onMousePressed(mouseData -> {
-                        if (!minerCalculator.isPanelOpen()) {
-                            minerCalculator.openPanel();
-                        } else {
-                            minerCalculator.closePanel();
-                        }
-                        return true;
-                    }))
+            .child(createFilterButton())
+            .child(createCalculatorButton())
             .child(createSpaceMinerUtilityButton(parent, syncManager));
 
+    }
+
+    private IWidget createFilterButton() {
+        IPanelHandler filterConfigurationPanel = panelMap.get("filterConfiguration");
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(new DynamicDrawable(() -> {
+                if (multiblock.isWhitelisted) return GTGuiTextures.TT_OVERLAY_BUTTON_WHITELIST;
+                return GTGuiTextures.TT_OVERLAY_BUTTON_BLACKLIST;
+            }))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.filterButtonTooltip")))
+            .onMousePressed(mouseData -> {
+                if (!filterConfigurationPanel.isPanelOpen()) {
+                    filterConfigurationPanel.openPanel();
+                } else {
+                    filterConfigurationPanel.closePanel();
+                }
+                return true;
+            });
+    }
+
+    private IWidget createCalculatorButton() {
+        IPanelHandler minerCalculator = panelMap.get("spaceMinerCalculator");
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(
+                GTGuiTextures.TT_OVERLAY_BUTTON_CALCULATOR.asIcon()
+                    .size(16))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculatorButtonTooltip")))
+            .onMousePressed(mouseData -> {
+                if (!minerCalculator.isPanelOpen()) {
+                    minerCalculator.openPanel();
+                } else {
+                    minerCalculator.closePanel();
+                }
+                return true;
+            });
     }
 
     private IWidget createSpaceMinerUtilityButton(ModularPanel parent, PanelSyncManager syncManager) {
