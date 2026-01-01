@@ -88,8 +88,14 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     @Override
     public short[] getRGBa(final ItemStack aStack) {
+        if (this.getDamage(aStack) < 0 || this.getDamage(aStack) >= 32000) {
+            return Materials._NULL.mRGBa;
+        }
         final Materials tMaterial = GregTechAPI.sGeneratedMaterials[this.getDamage(aStack) % 1000];
-        return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+        if (tMaterial == null) {
+            return Materials._NULL.mRGBa;
+        }
+        return tMaterial.mRGBa;
     }
 
     /**
@@ -159,6 +165,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     public final IIconContainer getIconContainer(final int aMetaData) {
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
             : this.getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
     }
