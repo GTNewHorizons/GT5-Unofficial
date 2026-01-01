@@ -776,7 +776,6 @@ GT5U.MBTT.Display=чтобы отобразить рекомендации по 
 GT5U.MBTT.StructureHint=Некоторые блоки имеют несколько кандидатов или могут использовать любой тир
 GT5U.MBTT.Mod=Добавлено
 GT5U.MBTT.Air=Обязательный воздух
-GT5U.MBTT.Structure.Complex=Эта структура слишком комплексная!
 GT5U.MBTT.Structure.SeeStructure1=Чтобы увидеть структуру, используйте
 GT5U.MBTT.Structure.SeeStructure2=голограммный проект на контроллере!
 GT5U.MBTT.Structure.MinGlassForLaser=-тировое стекло требуется для §9Tec§1Tech§7 лазеров.
