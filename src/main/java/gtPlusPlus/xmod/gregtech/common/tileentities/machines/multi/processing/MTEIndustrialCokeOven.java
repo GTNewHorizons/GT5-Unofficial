@@ -110,7 +110,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
                     buildHatchAdder(MTEIndustrialCokeOven.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.GTPP_INDEX(1))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 1))))
                 .addElement(
                     'H',

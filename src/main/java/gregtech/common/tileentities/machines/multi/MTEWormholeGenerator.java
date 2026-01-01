@@ -224,7 +224,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             buildHatchAdder(MTEWormholeGenerator.class)
                 .atLeast(Maintenance, InputBus)
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(1)
+                .hint(1)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -235,28 +235,28 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('b',
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('l',
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('r',
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .build();
@@ -988,10 +988,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (dot 1)")
-            .addInputBus("§61§r (dot 1)")
-            .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
-            .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
+            .addMaintenanceHatch("§61§r (Hint Block Number 1)")
+            .addInputBus("§61§r (Hint Block Number 1)")
+            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
+            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on

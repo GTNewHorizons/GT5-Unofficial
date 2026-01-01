@@ -116,7 +116,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
                                 gregtech.api.enums.HatchElement.OutputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(44)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         ofBlock(GregTechAPI.sBlockCasings3, 12)))
                 .addElement('A', ofBlock(GregTechAPI.sBlockCasings3, 12))
