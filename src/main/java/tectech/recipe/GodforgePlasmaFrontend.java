@@ -83,16 +83,11 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
         }
 
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.kv",
-                StatCollector.translateToLocal("GT5U.gui.text.plasma_multistep"),
-                multistep));
+            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.FOG.plasmamultistep", multistep));
 
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.kv",
-                StatCollector.translateToLocal("GT5U.gui.text.plasma_recipe_tier"),
-                requiredUpgrade));
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.multimachine.FOG.plasmarecipetier", requiredUpgrade));
 
     }
 
