@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static gregtech.api.enums.Mods.GregTech;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRILLS;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_DRONES;
 import static gtnhintergalactic.recipe.SpaceMiningRecipes.MINING_RODS;
@@ -12,7 +11,6 @@ import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner
 import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.RANGE_PARAMETER;
 import static gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner.STEP_PARAMETER;
 import static java.util.stream.Collectors.toList;
-import static tectech.Reference.MODID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +34,6 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -59,12 +56,12 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import akka.japi.Pair;
 import gregtech.api.enums.Materials;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gregtech.common.modularui2.widget.SlotLikeButtonWidget;
-import gtnhintergalactic.GTNHIntergalactic;
 import gtnhintergalactic.recipe.AsteroidData;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import gtnhintergalactic.recipe.SpaceMiningData;
@@ -112,16 +109,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     @Override
     public Flow createPanelGap(ModularPanel parent, PanelSyncManager syncManager) {
-        UITexture whitelist = UITexture.builder()
-            .location(GTNHIntergalactic.MODID, "gui/overlay_button/whitelist")
-            .imageSize(16, 16)
-            .build();
-        UITexture blacklist = UITexture.builder()
-            .location(GTNHIntergalactic.MODID, "gui/overlay_button/blacklist")
-            .imageSize(16, 16)
-            .build();
-        UITexture calculatorTexture = UITexture.fullImage(MODID, "gui/overlay_button/calculator");
-
         IPanelHandler filterConfigurationPanel = panelMap.get("filterConfiguration");
         IPanelHandler minerCalculator = panelMap.get("spaceMinerCalculator");
         return new Row().widthRel(1)
@@ -130,8 +117,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new ButtonWidget<>().size(18, 18)
                     .overlay(new DynamicDrawable(() -> {
-                        if (multiblock.isWhitelisted) return whitelist;
-                        return blacklist;
+                        if (multiblock.isWhitelisted) return GTGuiTextures.TT_OVERLAY_BUTTON_WHITELIST;
+                        return GTGuiTextures.TT_OVERLAY_BUTTON_BLACKLIST;
                     }))
                     .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.filterButtonTooltip")))
                     .onMousePressed(mouseData -> {
@@ -145,7 +132,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new ButtonWidget<>().size(18, 18)
                     .overlay(
-                        calculatorTexture.asIcon()
+                        GTGuiTextures.TT_OVERLAY_BUTTON_CALCULATOR.asIcon()
                             .size(16))
                     .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculatorButtonTooltip")))
                     .onMousePressed(mouseData -> {
@@ -161,13 +148,12 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createSpaceMinerUtilityButton(ModularPanel parent, PanelSyncManager syncManager) {
-        UITexture spaceMinerConfigTexture = UITexture.fullImage(MODID, "gui/overlay_button/asteroid");
         IPanelHandler spaceMinerUtilityPanel = panelMap.get("spaceMinerUtility");
 
         return new ButtonWidget<>()
             .tooltipBuilder(t -> t.add(IKey.lang("tt.spaceminer.asteroidutilitypanelButtonTooltip")))
             .overlay(
-                spaceMinerConfigTexture.asIcon()
+                GTGuiTextures.TT_OVERLAY_BUTTON_UTILITY_PANEL.asIcon()
                     .size(16, 16))
             .size(18, 18)
             .marginLeft(4)
@@ -202,15 +188,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     }
 
     private IWidget createFilterSlotsAndButtons(PanelSyncManager syncManager) {
-        UITexture whitelist = UITexture.builder()
-            .location(GTNHIntergalactic.MODID, "gui/overlay_button/whitelist")
-            .imageSize(16, 16)
-            .build();
-        UITexture blacklist = UITexture.builder()
-            .location(GTNHIntergalactic.MODID, "gui/overlay_button/blacklist")
-            .imageSize(16, 16)
-            .build();
-
         IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
         BooleanSyncValue isWhiteListedSyncer = syncManager.findSyncHandler("isWhiteListed", BooleanSyncValue.class);
@@ -261,9 +238,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                             .marginBottom(4)
                             .overlay(new DynamicDrawable(() -> {
                                 if (isWhiteListedSyncer.getValue()) {
-                                    return whitelist;
+                                    return GTGuiTextures.TT_OVERLAY_BUTTON_WHITELIST;
                                 } else {
-                                    return blacklist;
+                                    return GTGuiTextures.TT_OVERLAY_BUTTON_BLACKLIST;
                                 }
                             }))
                             .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.togglefilter")))
@@ -337,10 +314,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
 
     private IWidget createFilterConfiguration(PanelSyncManager syncManager, ModularPanel panel) {
 
-        UITexture disabled = UITexture.builder()
-            .location(GregTech.ID, "gui/overlay_button/disable")
-            .imageSize(16, 16)
-            .build();
         IntSyncValue distanceParameterSyncer = syncManager.findSyncHandler("distanceParameter", IntSyncValue.class);
         IntSyncValue droneTierSyncer = syncManager.findSyncHandler("droneTier", IntSyncValue.class);
 
@@ -354,7 +327,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                         IKey.lang("tt.spaceminer.filter.minableAsteroids")
                             .asWidget())
                     .child(new DynamicDrawable(() -> {
-                        if (droneTierSyncer.getValue() < 0) return disabled;
+                        if (droneTierSyncer.getValue() < 0) return GTGuiTextures.TT_OVERLAY_BUTTON_FILTER_NO_DRONE;
                         return new ItemDrawable(MINING_DRONES[droneTierSyncer.getValue()]);
                     }).asWidget()
                         .tooltipBuilder(t -> {
@@ -729,10 +702,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             }
         };
         AsteroidData data = uniqueAsteroidList.get(asteroidIndex);
-        UITexture targetAsteroidTexture = UITexture.builder()
-            .location(MODID, "gui/overlay_button/target_asteroid")
-            .imageSize(16, 16)
-            .build();
 
         int outputLength = data.output != null ? data.output.length : data.outputItems.length;
         panel
@@ -905,7 +874,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                 .marginBottom(4)
                 .alignX(0)
                 .overlay(
-                    targetAsteroidTexture.asIcon()
+                    GTGuiTextures.TT_OVERLAY_BUTTON_TARGET_ASTEROID.asIcon()
                         .size(16, 16))
                 .tooltipBuilder(
                     t -> t.addLine(IKey.lang("tt.spaceminer.asteroidutilitypanel.targetAsteroidButtonTooltip")))
@@ -1090,7 +1059,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .paddingTop(4)
             .paddingLeft(4)
             .paddingRight(4);
-        UITexture nerdTexture = UITexture.fullImage(MODID, "gui/overlay_button/nerd");
 
         AtomicInteger distance = new AtomicInteger(0);
         IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set);
@@ -1184,7 +1152,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                         .child(
                             new ButtonWidget<>().size(18, 18)
                                 .overlay(
-                                    nerdTexture.asIcon()
+                                    GTGuiTextures.TT_OVERLAY_BUTTON_CALCULATE.asIcon()
                                         .size(16, 16))
                                 .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculator.calculate")))
                                 .align(Alignment.CenterRight)
