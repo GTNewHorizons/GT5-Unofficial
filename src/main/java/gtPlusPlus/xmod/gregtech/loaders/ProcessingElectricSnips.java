@@ -12,7 +12,6 @@ import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -100,12 +99,22 @@ public class ProcessingElectricSnips implements Runnable {
                     + aDura);
             return false;
         }
+
+        ItemStack motor;
+        if (aVoltageTier == 1) {
+            motor = ItemList.Electric_Motor_LV.get(1);
+        } else if (aVoltageTier == 2) {
+            motor = ItemList.Electric_Motor_MV.get(1);
+        } else {
+            motor = ItemList.Electric_Motor_HV.get(1);
+        }
+
         return RecipeUtils.addShapedRecipe(
             OrePrefixes.wireFine.get(Materials.Electrum),
             aInputCutter,
             OrePrefixes.wireFine.get(Materials.Electrum),
             MaterialsElements.STANDALONE.WHITE_METAL.getGear(1),
-            CI.getElectricMotor(aVoltageTier, 1),
+            motor,
             MaterialsElements.STANDALONE.WHITE_METAL.getGear(1),
             OrePrefixes.plate.get(aMaterial),
             aBattery,

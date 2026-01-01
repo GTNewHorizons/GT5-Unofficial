@@ -32,6 +32,14 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     public final int maxAmperes;
     public int Amperes;
 
+    public int getAmperes() {
+        return Amperes;
+    }
+
+    public void setAmperes(int amperes) {
+        Amperes = amperes;
+    }
+
     public MTEHatchEnergyMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(
             aID,
