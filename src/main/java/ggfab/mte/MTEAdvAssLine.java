@@ -153,14 +153,14 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         .addElement(
             'e',
             buildHatchAdder(MTEAdvAssLine.class).anyOf(Energy, ExoticEnergy)
-                .dot(1)
+                .hint(1)
                 .casingIndex(16)
                 .allowOnly(ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
             buildHatchAdder(MTEAdvAssLine.class).atLeast(DataHatchElement.DataAccess)
-                .dot(2)
+                .hint(2)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
@@ -168,7 +168,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             'b',
             buildHatchAdder(MTEAdvAssLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                 .casingIndex(16)
-                .dot(3)
+                .hint(3)
                 .allowOnly(ForgeDirection.DOWN)
                 .buildAndChain(
                     ofBlock(GregTechAPI.sBlockCasings2, 0),
@@ -747,12 +747,17 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
+            int maxRegularOverclock = getTier(inputVoltage) - getTier(recipe.mEUt);
+
+            // Delete this one before enable overclocking under one tick.
+            int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
+
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
                 .setLaserOC(true)
-                .setMaxRegularOverclocks(getTier(inputVoltage) - getTier(recipe.mEUt));
+                .setMaxRegularOverclocks(Math.min(maxRegularOverclock, maxOverclockTo1Tick));
 
             // Disabled to disable overclocking under one tick.
             /*
@@ -813,9 +818,10 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 batchMultiplierMax = Math
                     .min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
             }
-            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMax);
+            int batchMultiplierMaxInt = (int) batchMultiplierMax;
+            currentRecipeParallel = (int) (currentParallelBeforeBatchMode * batchMultiplierMaxInt);
             lEUt = calculator.getConsumption();
-            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax) * recipe.mInputs.length;
+            mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMaxInt) * recipe.mInputs.length;
             setCurrentRecipe(recipe);
             result = CheckRecipeResultRegistry.SUCCESSFUL;
             break;

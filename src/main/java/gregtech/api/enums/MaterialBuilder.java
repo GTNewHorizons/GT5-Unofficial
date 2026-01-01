@@ -34,6 +34,7 @@ public class MaterialBuilder {
     private String name;
     private String defaultLocalName;
     private Element element;
+    private String flavorText;
     private String chemicalFormula;
     private boolean unifiable = true;
     private TextureSet iconSet = TextureSet.SET_NONE;
@@ -95,6 +96,7 @@ public class MaterialBuilder {
             defaultLocalName,
             element,
             chemicalFormula,
+            flavorText,
             unifiable,
             iconSet,
             color,
@@ -164,6 +166,11 @@ public class MaterialBuilder {
     /** Set the chemical formula of the material. This overrides auto-generated formulas. */
     public MaterialBuilder setChemicalFormula(String chemicalFormula) {
         this.chemicalFormula = chemicalFormula;
+        return this;
+    }
+
+    public MaterialBuilder setFlavorText(String flavorText) {
+        this.flavorText = flavorText;
         return this;
     }
 

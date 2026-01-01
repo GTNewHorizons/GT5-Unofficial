@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -65,7 +66,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.getMaterialAmount() / M));
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
                 if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
@@ -88,8 +89,14 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     @Override
     public short[] getRGBa(ItemStack aStack) {
+        if (getDamage(aStack) < 0 || getDamage(aStack) >= 32000) {
+            return Materials._NULL.mRGBa;
+        }
         Materials tMaterial = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
-        return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+        if (tMaterial == null) {
+            return Materials._NULL.mRGBa;
+        }
+        return tMaterial.mRGBa;
     }
 
     /**
@@ -174,12 +181,14 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
             : getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
     }
 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
             : GregTechAPI.sGeneratedMaterials[aMetaData % 1000].renderer;
     }
@@ -225,5 +234,17 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         if (prefix == null) return stackSize;
 
         return Math.min(stackSize, prefix.getDefaultStackSize());
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (getDamage(aStack) < 0 || getDamage(aStack) >= 32000) return;
+        Materials material = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
+        if (material == null) return;
+        String flavorText = material.getFlavorText();
+        if (flavorText == null) return;
+        if (!flavorText.isEmpty()) {
+            aList.add("§8§o" + flavorText);
+        }
     }
 }

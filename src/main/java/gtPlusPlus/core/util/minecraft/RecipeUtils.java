@@ -1,6 +1,5 @@
 package gtPlusPlus.core.util.minecraft;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +18,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ShapedRecipe;
@@ -82,36 +80,6 @@ public class RecipeUtils {
                 LateRegistrationHandler.recipesFailed++;
             }
         }
-    }
-
-    public static boolean addShapedGregtechRecipe(final Object InputItem1, final Object InputItem2,
-        final Object InputItem3, final Object InputItem4, final Object InputItem5, final Object InputItem6,
-        final Object InputItem7, final Object InputItem8, final Object InputItem9, final ItemStack OutputItem) {
-
-        Object[] o = { InputItem1, InputItem2, InputItem3, InputItem4, InputItem5, InputItem6, InputItem7, InputItem8,
-            InputItem9 };
-
-        if (gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE != GTplusplus.INIT_PHASE.POST_INIT) {
-            Logger.ERROR(
-                "Load Phase " + gtPlusPlus.GTplusplus.CURRENT_LOAD_PHASE
-                    + " should be "
-                    + GTplusplus.INIT_PHASE.POST_INIT
-                    + ". Unable to register recipe.");
-            throw new IllegalStateException();
-        }
-
-        int size = CompatHandler.mGtRecipesToGenerate.size();
-        CompatHandler.mGtRecipesToGenerate.add(new InternalRecipeObject(o, OutputItem, true));
-
-        if (CompatHandler.mGtRecipesToGenerate.size() > size) {
-            if (!CompatHandler.areInitItemsLoaded) {
-                RegistrationHandler.recipesSuccess++;
-            } else {
-                LateRegistrationHandler.recipesSuccess++;
-            }
-            return true;
-        }
-        return false;
     }
 
     public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem) {
@@ -210,31 +178,30 @@ public class RecipeUtils {
             return false;
         } else {
             boolean rReturn = false;
-            ArrayList<IRecipe> tList = (ArrayList) CraftingManager.getInstance()
+            final List<IRecipe> allRecipes = CraftingManager.getInstance()
                 .getRecipeList();
             aOutput = GTOreDictUnificator.get(aOutput);
-            int tList_sS = tList.size();
-
-            for (int i = 0; i < tList_sS; ++i) {
-                IRecipe tRecipe = tList.get(i);
+            int size = allRecipes.size();
+            for (int i = 0; i < size; ++i) {
+                IRecipe recipe = allRecipes.get(i);
                 if (!aNotRemoveShapelessRecipes
-                    || !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)) {
+                    || !(recipe instanceof ShapelessRecipes) && !(recipe instanceof ShapelessOreRecipe)) {
                     if (aOnlyRemoveNativeHandlers) {
                         if (!GTModHandler.sNativeRecipeClasses.contains(
-                            tRecipe.getClass()
+                            recipe.getClass()
                                 .getName())) {
                             continue;
                         }
                     } else if (GTModHandler.sSpecialRecipeClasses.contains(
-                        tRecipe.getClass()
+                        recipe.getClass()
                             .getName())) {
                                 continue;
                             }
 
-                    ItemStack tStack = tRecipe.getRecipeOutput();
-                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
-                        tList.remove(i--);
-                        tList_sS = tList.size();
+                    final ItemStack output = recipe.getRecipeOutput();
+                    if (GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(output), aOutput, aIgnoreNBT)) {
+                        allRecipes.remove(i--);
+                        size = allRecipes.size();
                         rReturn = true;
                     }
                 }
@@ -245,7 +212,6 @@ public class RecipeUtils {
     }
 
     public static void addSmeltingRecipe(ItemStack aStackInput, ItemStack aStackOutput, float aXpGained) {
-
         GameRegistry.addSmelting(aStackInput, aStackOutput, aXpGained);
     }
 

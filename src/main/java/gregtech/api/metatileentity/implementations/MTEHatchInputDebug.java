@@ -139,12 +139,16 @@ public class MTEHatchInputDebug extends MTEHatchInput {
             EnumChatFormatting.ITALIC + "Who knew it was this easy???", "Author: " + GREEN + BOLD + "Chrom" };
     }
 
-    // ignores if the parameter fluid is in the hatch, just works instead.
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
-        FluidStack copiedInput = aFluid.copy();
-        copiedInput.amount = Integer.MAX_VALUE;
-        return copiedInput;
+
+        if (aFluid == null) return null;
+        for (FluidStack stack : fluidList) {
+            if (stack != null && stack.getFluid() == aFluid.getFluid()) {
+                return aFluid.copy();
+            }
+        }
+        return null;
     }
 
     @Override

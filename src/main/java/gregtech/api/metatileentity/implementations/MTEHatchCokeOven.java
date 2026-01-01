@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -28,6 +27,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -174,25 +174,16 @@ public class MTEHatchCokeOven extends MTEHatch {
         switch (mode) {
             case Input -> {}
             case OutputItem -> {
-                final IInventory target = baseMetaTileEntity.getIInventoryAtSide(sideFront);
-                if (target == null) return;
-                GTUtility.moveMultipleItemStacks(
-                    baseMetaTileEntity,
-                    target,
-                    sideFront,
-                    sideBack,
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    getSizeInventory());
+                GTItemTransfer transfer = new GTItemTransfer();
+
+                transfer.outOfMachine(this, sideFront);
+
+                transfer.transfer();
             }
             case OutputFluid -> {
                 final IFluidHandler target = baseMetaTileEntity.getITankContainerAtSide(sideFront);
                 if (target == null) return;
-                GTUtility.moveFluid(activeController, target, sideFront, FLUID_TRANSFER_RATE, null);
+                GTUtility.moveFluid(activeController, target, ForgeDirection.UNKNOWN, FLUID_TRANSFER_RATE, null);
             }
         }
     }

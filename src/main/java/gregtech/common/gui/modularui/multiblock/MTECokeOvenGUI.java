@@ -58,8 +58,8 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui<MTECokeOven> {
 
         return GTGuis.mteTemplatePanelBuilder(multiblock, guiData, syncManager, uiSettings)
             .moveGregtechLogoPos(8, 63)
-            .setMufflerPosFromRightOutwards(15)
             .build()
+            .child(createMuffleButton())
             .child(
                 new Row().alignX(Alignment.CENTER)
                     .alignY(0.25f)
@@ -68,5 +68,10 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui<MTECokeOven> {
                     .child(progressArrow.marginRight(8))
                     .child(outputSlot.marginRight(18))
                     .child(fluidSlot));
+    }
+
+    @Override
+    protected int getMufflerPosFromRightOutwards() {
+        return 15;
     }
 }

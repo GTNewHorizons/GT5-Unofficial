@@ -49,8 +49,9 @@ public class IsotopeDecayFrontend extends RecipeMapFrontend {
                 .toLowerCase();
         }
 
-        recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.half-life", String.format("%.2f", halflife), unit));
-        recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.isotope-prod-per-s", perStackSecond));
+        recipeInfo.drawText(GTUtility.translate("GT5U.gui.text.half-life", GTUtility.formatNumbers(halflife), unit));
+        recipeInfo
+            .drawText(GTUtility.translate("GT5U.gui.text.isotope-prod-per-s", GTUtility.formatNumbers(perStackSecond)));
 
         drawRecipeOwnerInfo(recipeInfo);
     }

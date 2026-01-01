@@ -185,11 +185,11 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             .addCasingInfoExactly("Titanium Gear Box Casing", 14, false)
             .addCasingInfoExactly("Engine Intake Casing", 14, false)
             .addCasingInfoExactly("Titanium Plated Cylinder", 14, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 93, false)
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 2 (fill all slots with mufflers)")
-            .addInputHatch("Hint block with dot 3 (fill all slots with input hatches)")
-            .addDynamoHatch("Hint block with dot 4")
+            .addCasingInfoExactly("Titanium Pipe Casing", 14, false)
+            .addMaintenanceHatch("Hint Block Number 1")
+            .addMufflerHatch("Hint Block Number 2 (fill all slots with mufflers)")
+            .addInputHatch("Hint Block Number 3 (fill all slots with input hatches)")
+            .addDynamoHatch("Hint Block Number 4")
             .toolTipFinisher();
         return tt;
     }

@@ -42,7 +42,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // Quadruples the cost of everything except for Metastable and Celestial, which are only doubled,
             // but gives 4x the output.
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(8_000),
                     GGMaterial.metastableOganesson.getMolten(4 * INGOTS),
@@ -61,7 +60,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // Doubles the cost across the board, but outputs 3x more.
             // Switches to Heavy Radox, which can be mass-produced with the QFT.
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(2_000),
                     GGMaterial.metastableOganesson.getMolten(2 * INGOTS),
@@ -81,7 +79,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // POC
             // over the original recipe. Only increases the cost of baryonic and water, making the ratio much cheaper.
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(1_000),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),
@@ -98,7 +95,6 @@ public class PlasmaForgeRecipes implements Runnable {
             // Tier 2
             // First recipe using AwDr coil and super heavy radox
             GTValues.RA.stdBuilder()
-                .itemInputs()
                 .fluidInputs(
                     Materials.StableBaryonicMatter.getFluid(250),
                     GGMaterial.metastableOganesson.getMolten(1 * INGOTS),

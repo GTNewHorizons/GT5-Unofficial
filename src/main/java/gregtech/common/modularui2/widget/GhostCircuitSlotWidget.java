@@ -75,7 +75,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
     @Override
     public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
-        MouseData mouseData = MouseData.create(scrollDirection.modifier);
+        MouseData mouseData = MouseData.create(-scrollDirection.modifier);
         getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
@@ -141,7 +141,7 @@ public class GhostCircuitSlotWidget extends PhantomItemSlot {
                         buffer.writeShort(circuitConfig);
                     });
                     if (mouseData.shift) {
-                        panel.animateClose();
+                        panel.closeIfOpen();
                     }
                 })
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)

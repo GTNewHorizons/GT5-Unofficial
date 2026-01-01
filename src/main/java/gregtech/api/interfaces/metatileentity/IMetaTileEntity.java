@@ -103,7 +103,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void loadNBTData(NBTTagCompound aNBT);
 
     /**
-     * Adds the NBT-Information to the ItemStack, when being dismanteled properly Used to store Machine specific Upgrade
+     * Adds the NBT-Information to the ItemStack, when being dismantled properly Used to store Machine specific Upgrade
      * Data.
      */
     void setItemNBT(NBTTagCompound aNBT);
@@ -207,6 +207,22 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *         upon Block destruction and for Inventory Access Management
      */
     boolean isValidSlot(int aIndex);
+
+    /// Checks if the slot is an I/O slot that contributes to [GTItemSink#getStoredItemsInSink(ItemStackPredicate)].
+    /// Also controls which slots block AE pattern pushes for blocking mode.
+    default boolean isIOSlot(int slot) {
+        return true;
+    }
+
+    /**
+     * Gets the max stack size limit for a slot and a stack.
+     *
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
+     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
+     */
+    default int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
+    }
 
     /**
      * Check if the item at the specified index should be dropped

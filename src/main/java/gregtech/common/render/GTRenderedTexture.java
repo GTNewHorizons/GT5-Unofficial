@@ -362,7 +362,7 @@ public class GTRenderedTexture extends GTTextureBase implements ITexture, IColor
         }
         // spotless:on
 
-        if (side == ForgeDirection.DOWN) {
+        if (side == ForgeDirection.DOWN && !GTMod.clientProxy().fixedBottomFaceUV) {
             flipU ^= true;
         }
 

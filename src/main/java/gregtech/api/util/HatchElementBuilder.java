@@ -50,7 +50,7 @@ public class HatchElementBuilder<T> {
 
     private IGTHatchAdder<? super T> mAdder;
     private int mCasingIndex = -1;
-    private int mDot = -1;
+    private int mHint = -1;
     private BiPredicate<? super T, ? super IGregTechTileEntity> mShouldSkip;
     private BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> mHatchItemFilter;
     private Supplier<String> mHatchItemType;
@@ -209,9 +209,9 @@ public class HatchElementBuilder<T> {
         return this;
     }
 
-    public HatchElementBuilder<T> dot(int aDot) {
-        if (aDot <= 0) throw new IllegalArgumentException();
-        mDot = aDot;
+    public HatchElementBuilder<T> hint(int aHint) {
+        if (aHint <= 0) throw new IllegalArgumentException();
+        mHint = aHint;
         return this;
     }
 
@@ -398,7 +398,7 @@ public class HatchElementBuilder<T> {
     }
 
     public IStructureElement<T> build() {
-        if (mAdder == null || mCasingIndex == -1 || mDot == -1) {
+        if (mAdder == null || mCasingIndex == -1 || mHint == -1) {
             throw new IllegalArgumentException();
         }
         if (mHatchItemFilter == null) {
@@ -421,7 +421,7 @@ public class HatchElementBuilder<T> {
 
                 @Override
                 public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot - 1);
+                    StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mHint - 1);
                     return true;
                 }
             };
@@ -452,7 +452,8 @@ public class HatchElementBuilder<T> {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                StructureLibAPI.hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), mDot - 1);
+                StructureLibAPI
+                    .hintParticle(world, x, y, z, StructureLibAPI.getBlockHint(), HatchElementBuilder.this.mHint - 1);
                 return true;
             }
 
