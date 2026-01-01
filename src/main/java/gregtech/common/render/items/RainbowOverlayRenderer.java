@@ -7,9 +7,10 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.GTMod;
 import gregtech.common.GTClient;
-import gregtech.common.render.GTRenderUtil;
 
 public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
 
@@ -40,6 +41,6 @@ public class RainbowOverlayRenderer extends GeneratedMaterialRenderer {
             GL11.glColor3f(baseR * modR, baseG * modG, baseB * modB);
         }
 
-        GTRenderUtil.renderItem(type, icon);
+        ItemRenderUtil.renderItem(type, icon);
     }
 }

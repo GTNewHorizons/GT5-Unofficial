@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import bartworks.system.material.Werkstoff;
 import codechicken.nei.api.API;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -45,6 +46,7 @@ import gregtech.api.items.ItemCoolantCellIC;
 import gregtech.api.items.ItemRadioactiveCellIC;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -75,6 +77,7 @@ import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockNanoForgeRenderer;
 import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockReinforced;
+import gregtech.common.blocks.BlockSheetMetal;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
 import gregtech.common.blocks.BlockWormholeRender;
@@ -860,6 +863,16 @@ public class LoaderGTBlockFluid implements Runnable {
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS12);
 
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
+
+        GregTechAPI.sBlockSheetmetalGT = new BlockSheetMetal(
+            "gt.sheetmetal",
+            meta -> GTDataUtils.getIndexSafe(GregTechAPI.sGeneratedMaterials, meta),
+            1000);
+
+        GregTechAPI.sBlockSheetmetalBW = new BlockSheetMetal(
+            "bw.sheetmetal",
+            meta -> Werkstoff.werkstoffHashMap.get((short) meta),
+            Short.MAX_VALUE);
 
         GTLog.out.println("GTMod: Register TileEntities.");
 

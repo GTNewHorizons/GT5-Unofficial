@@ -168,12 +168,12 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver, Object o) {
+    public void addListener(IMEMonitorHandlerReceiver meMonitorHandlerReceiver, Object o) {
         meInventoryHandler.addListener(meMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver meMonitorHandlerReceiver) {
         meInventoryHandler.removeListener(meMonitorHandlerReceiver);
     }
 

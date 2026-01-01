@@ -138,7 +138,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 Muffler,
                                 ExoticEnergy.or(Energy))
                             .casingIndex(CASING_INDEX)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(
                                 onElementPass(
                                     x -> x.casingAmount++,
@@ -573,7 +573,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             + "/"
             + EnumChatFormatting.GOLD
             + mk3
-            + EnumChatFormatting.LIGHT_PURPLE
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.RED
             + mk4

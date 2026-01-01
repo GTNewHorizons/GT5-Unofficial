@@ -99,7 +99,8 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
             {
                 if (GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
+                        .itemInputs(GTUtility.copyAmount(1, aStack))
+                        .circuit(1)
                         .itemOutputs(GTOreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L))
                         .duration(10 * SECONDS)
                         .eut(calculateRecipeEU(aMaterial, 16))

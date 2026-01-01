@@ -91,7 +91,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
@@ -245,7 +244,8 @@ public class RecipeLoader {
                 .addTo(chemicalDehydratorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(TeaLeafDehydrated.get(1), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(TeaLeafDehydrated.get(1))
+                .circuit(1)
                 .itemOutputs(RolledTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
@@ -259,7 +259,8 @@ public class RecipeLoader {
                 .addTo(chemicalDehydratorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(RolledTeaLeaf.get(1), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(RolledTeaLeaf.get(1))
+                .circuit(1)
                 .itemOutputs(OxidizedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
@@ -273,7 +274,8 @@ public class RecipeLoader {
                 .addTo(chemicalDehydratorRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(RolledTeaLeaf.get(1), GTUtility.getIntegratedCircuit(2))
+                .itemInputs(RolledTeaLeaf.get(1))
+                .circuit(2)
                 .itemOutputs(FermentedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(10 * SECONDS)
@@ -294,7 +296,8 @@ public class RecipeLoader {
                 .addTo(cutterRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BruisedTeaLeaf.get(1), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(BruisedTeaLeaf.get(1))
+                .circuit(1)
                 .itemOutputs(PartiallyOxidizedTeaLeaf.get(1))
                 .eut(TierEU.RECIPE_LV)
                 .duration(2 * SECONDS + 10 * TICKS)
