@@ -261,7 +261,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(397, Materials.Infinity);
         r(398, Materials.MysteriousCrystal);
         r(399, Materials.SamariumMagnetic);
-        r(400, Materials.Alumite);
+        r(400, Materials.Obzinite);
         r(401, Materials.EndSteel);
         r(402, Materials.ClayCompound);
         r(403, Materials.CrystallineAlloy);
