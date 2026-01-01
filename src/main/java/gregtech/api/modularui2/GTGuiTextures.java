@@ -712,6 +712,28 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
     public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
+    public static final UITexture TT_OVERLAY_BUTTON_WHITELIST = UITexture.builder()
+        .location(gtnhintergalactic.GTNHIntergalactic.MODID, "gui/overlay_button/whitelist")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_BLACKLIST = UITexture.builder()
+        .location(gtnhintergalactic.GTNHIntergalactic.MODID, "gui/overlay_button/blacklist")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_CALCULATOR = UITexture
+        .fullImage(MODID, "gui/overlay_button/calculator");
+    public static final UITexture TT_OVERLAY_BUTTON_UTILITY_PANEL = UITexture
+        .fullImage(MODID, "gui/overlay_button/asteroid");
+    public static final UITexture TT_OVERLAY_BUTTON_FILTER_NO_DRONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/disable")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_TARGET_ASTEROID = UITexture.builder()
+        .location(MODID, "gui/overlay_button/target_asteroid")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_CALCULATE = UITexture
+        .fullImage(MODID, "gui/overlay_button/calculate");
 
     // endregion button overlay
 
