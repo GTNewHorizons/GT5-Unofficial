@@ -239,7 +239,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 HatchElementBuilder.<TileEntitySpaceElevator>builder()
                     .atLeast(ElevatorUtil.ProjectModuleElement.ProjectModule)
                     .casingIndex(CASING_INDEX_BASE)
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing or project module
             .build();
     // spotless:on
@@ -657,7 +657,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .beginStructureBlock(35, 43, 35, false)
             .addOtherStructurePart(
                 GTUtility.translate("ig.elevator.structure.ProjectModule"),
-                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith2Dot"),
+                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber2"),
                 2)
             .addCasingInfoExactly(GTUtility.translate("tile.DysonSwarmFloor.name"), 800, false)
             .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 593, 785, false)
@@ -666,7 +666,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.cable.name"), 1, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
-            .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+            .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
             .toolTipFinisher(GTValues.Authorminecraft7771);
         return tt;
     }

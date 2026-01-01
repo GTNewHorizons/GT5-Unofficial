@@ -247,7 +247,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .casingIndex(TAE.GTPP_INDEX(24))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'B',
@@ -255,7 +255,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.UP)
                         .casingIndex(TAE.GTPP_INDEX(24))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'T',
@@ -263,7 +263,7 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
                         .atLeast(Energy.or(TTEnergy), Dynamo.or(TTDynamo), Maintenance)
                         .disallowOnly(ForgeDirection.DOWN)
                         .casingIndex(TAE.GTPP_INDEX(24))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 8))))
                 .addElement(
                     'I',

@@ -107,7 +107,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(MTEActiveTransformer.class)
                 .atLeast(Energy, HatchElement.EnergyMulti, Dynamo, HatchElement.DynamoMulti)
                 .casingIndex(BlockGTCasingsTT.textureOffset)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(t -> t.casingCount++, ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))))
         .build();
     private int casingCount = 0;

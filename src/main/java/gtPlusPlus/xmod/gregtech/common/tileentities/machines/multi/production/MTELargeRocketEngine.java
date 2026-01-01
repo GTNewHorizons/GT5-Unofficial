@@ -157,7 +157,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     buildHatchAdder(MTELargeRocketEngine.class)
                         .atLeast(ImmutableMap.of(AirIntake, 8, InputBus, 1, InputHatch, 3, Maintenance, 1))
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 // top
                 .addElement(
@@ -165,7 +165,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                     buildHatchAdder(MTELargeRocketEngine.class)
                         .atLeast(ImmutableMap.of(AirIntake, 8, Dynamo.or(TTDynamo), 1, Maintenance, 1))
                         .casingIndex(getCasingTextureIndex())
-                        .dot(2)
+                        .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('M', Muffler.newAny(getCasingTextureIndex(), 3))
                 .build();

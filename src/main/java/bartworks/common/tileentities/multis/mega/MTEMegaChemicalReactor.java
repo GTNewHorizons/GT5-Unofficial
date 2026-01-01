@@ -238,7 +238,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             'd',
             buildHatchAdder(MTEMegaChemicalReactor.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('r', Maintenance.newAny(CASING_INDEX, 2))
         .addElement(
@@ -246,7 +246,7 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
             buildHatchAdder(MTEMegaChemicalReactor.class)
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus)
                 .casingIndex(CASING_INDEX)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 0))
         .addElement('c', ofChain(ofBlock(GregTechAPI.sBlockCasings4, 7), ofBlock(GregTechAPI.sBlockCasings5, 13)))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))

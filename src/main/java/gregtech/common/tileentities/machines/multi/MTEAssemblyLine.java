@@ -94,7 +94,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement(
             'd',
             buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataAccess)
-                .dot(2)
+                .hint(2)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
@@ -102,7 +102,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             'b',
             buildHatchAdder(MTEAssemblyLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                 .casingIndex(16)
-                .dot(3)
+                .hint(3)
                 .allowOnly(ForgeDirection.DOWN)
                 .buildAndChain(
                     ofBlock(GregTechAPI.sBlockCasings2, 0),

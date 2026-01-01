@@ -87,7 +87,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphon.class)
                 .atLeast(Maintenance, InputBus, OutputHatch, Energy)
-                .dot(1)
+                .hint(1)
                 .casingIndex(IGTextures.CASING_INDEX_SIPHON)
                 .buildAndChain(GregTechAPI.sBlockCasingsSiphon, 0))
         .build();

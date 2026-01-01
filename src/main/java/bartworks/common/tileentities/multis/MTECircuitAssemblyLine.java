@@ -125,7 +125,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembly line casings
@@ -133,7 +133,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'b',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(2)
+                .hint(2)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
                 .buildAndChain(GregTechAPI.sBlockCasings2, 0))
         .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
@@ -141,7 +141,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'I',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, InputBus, OutputBus)
                 .casingIndex(CASING_INDEX)
-                .dot(2)
+                .hint(2)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
                 .buildAndChain(GregTechAPI.sBlockCasings2, 0))
         .addElement('o', OutputBus.newAny(CASING_INDEX, 2, ForgeDirection.DOWN))

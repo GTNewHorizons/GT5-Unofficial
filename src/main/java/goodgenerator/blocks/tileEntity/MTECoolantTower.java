@@ -90,7 +90,7 @@ public class MTECoolantTower extends MTETooltipMultiBlockBaseEM implements ICons
                             gregtech.api.enums.HatchElement.InputHatch,
                             gregtech.api.enums.HatchElement.OutputHatch)
                         .casingIndex(CASING_INDEX)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(ofBlockAnyMeta(GregTechAPI.sBlockConcretes, 8)))
                 .build();
         }

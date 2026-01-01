@@ -12,7 +12,6 @@ import gregtech.api.util.GTModHandler.RecipeBits;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
@@ -99,12 +98,21 @@ public class ProcessingAngleGrinder implements Runnable {
             return false;
         }
 
+        ItemStack motor;
+        if (aVoltageTier == 1) {
+            motor = ItemList.Electric_Motor_LV.get(1);
+        } else if (aVoltageTier == 2) {
+            motor = ItemList.Electric_Motor_MV.get(1);
+        } else {
+            motor = ItemList.Electric_Motor_HV.get(1);
+        }
+
         return GTModHandler.addCraftingRecipe(
             aOutputStack,
             RecipeBits.DISMANTLEABLE | RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
-            new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M',
-                CI.getElectricMotor(aVoltageTier, 1), 'S', OrePrefixes.screw.get(Materials.Titanium), 'L',
-                OrePrefixes.stickLong.get(aMaterial), 'P', OrePrefixes.plate.get(aMaterial), 'G',
-                MaterialsElements.STANDALONE.BLACK_METAL.getGear(1), 'B', aBattery });
+            new Object[] { "SXL", "GMG", "PBP", 'X', ItemList.Component_Grinder_Tungsten.get(1), 'M', motor, 'S',
+                OrePrefixes.screw.get(Materials.Titanium), 'L', OrePrefixes.stickLong.get(aMaterial), 'P',
+                OrePrefixes.plate.get(aMaterial), 'G', MaterialsElements.STANDALONE.BLACK_METAL.getGear(1), 'B',
+                aBattery });
     }
 }

@@ -82,7 +82,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                     lazy(
                         t -> buildHatchAdder(MTELargeTurbine.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }

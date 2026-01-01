@@ -1103,12 +1103,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOtherStructurePart(
                     GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
                     1)
                 .toolTipFinisher();
             return tt;
@@ -1202,12 +1202,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOtherStructurePart(
                     GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
                     1)
                 .toolTipFinisher();
             return tt;
@@ -1301,12 +1301,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOtherStructurePart(
                     GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
                     1)
                 .toolTipFinisher();
             return tt;

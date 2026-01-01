@@ -84,7 +84,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             'c',
             ofChain(
                 buildHatchAdder(MTESOFuelCellMK1.class).atLeast(InputHatch, InputHatch, OutputHatch, Maintenance)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_TEXTURE_ID)
                     .build(),
                 onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))

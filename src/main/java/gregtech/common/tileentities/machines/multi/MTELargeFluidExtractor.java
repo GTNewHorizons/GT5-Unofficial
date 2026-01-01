@@ -94,7 +94,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
             buildHatchAdder(MTELargeFluidExtractor.class)
                 .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX) // Robust Tungstensteel Machine Casing
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(
                         MTELargeFluidExtractor::onCasingAdded,

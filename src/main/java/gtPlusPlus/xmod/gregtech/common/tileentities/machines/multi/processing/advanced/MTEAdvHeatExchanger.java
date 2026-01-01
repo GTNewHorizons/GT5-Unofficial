@@ -79,7 +79,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'C',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.ColdOutputHatch)
-                    .dot(2)
+                    .hint(2)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -87,7 +87,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'H',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.HotInputHatch)
-                    .dot(3)
+                    .hint(3)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -95,7 +95,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'h',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(InputHatch, OutputHatch, Maintenance)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))

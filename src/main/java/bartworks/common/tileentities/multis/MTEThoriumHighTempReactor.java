@@ -113,7 +113,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             'b',
             ofChain(
                 buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(Energy, OutputHatch, OutputBus, Maintenance)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(BASECASINGINDEX)
                     .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
@@ -121,7 +121,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             'B',
             ofChain(
                 buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(InputHatch, InputBus)
-                    .dot(2)
+                    .hint(2)
                     .casingIndex(BASECASINGINDEX)
                     .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))

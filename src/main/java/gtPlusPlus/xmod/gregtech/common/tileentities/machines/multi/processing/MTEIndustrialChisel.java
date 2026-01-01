@@ -113,7 +113,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     buildHatchAdder(MTEIndustrialChisel.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(90)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
                 .build();
         }

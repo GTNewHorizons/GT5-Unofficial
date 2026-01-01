@@ -58,7 +58,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 import tectech.recipe.TTRecipeAdder;
@@ -1347,7 +1346,10 @@ public class RecipeLoader2 {
 
         // Compact MK4 Fusion Coil
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(3, 1))
+            .itemInputs(
+                GregtechItemList.Casing_Fusion_Internal.get(3),
+                ItemRefer.HiC_T5.get(1),
+                GregtechItemList.Energy_Core_HV.get(1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 8 * INGOTS),
@@ -1389,7 +1391,7 @@ public class RecipeLoader2 {
                 GregtechItemList.Casing_Fusion_Internal2.get(3),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1),
                 ItemRefer.HiC_T5.get(4),
-                CI.getEnergyCore(5, 1))
+                GregtechItemList.Energy_Core_IV.get(1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
             .fluidInputs(
                 MaterialsAlloy.BLACK_TITANIUM.getFluidStack(8 * INGOTS),

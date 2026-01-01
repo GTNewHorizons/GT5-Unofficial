@@ -125,7 +125,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .anyOf(HatchElement.InputHatch)
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex(2))
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
                     'E',
@@ -133,7 +133,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
                             .hatchClass(AntimatterOutputHatch.class)
                             .casingIndex(x.textureIndex(1))
-                            .dot(3)
+                            .hint(3)
                             .build()))
                 .addElement(
                     'H',
@@ -142,7 +142,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .build();
         }
@@ -315,11 +315,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint block with dot 1", 1)
-            .addEnergyHatch("1-9, Hint block with dot 2", 2)
+            .addInputHatch("1-6, Hint Block Number 1", 1)
+            .addEnergyHatch("1-9, Hint Block Number 2", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block with dot 3",
+                "16, Hint Block Number 3",
                 3)
             .toolTipFinisher();
         return tt;
