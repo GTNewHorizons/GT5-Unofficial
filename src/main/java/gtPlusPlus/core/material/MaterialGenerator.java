@@ -155,8 +155,6 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
 
-            return true;
-
         } catch (final Exception t) {
             Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
 
@@ -356,7 +354,6 @@ public class MaterialGenerator {
             new RecipeGenDustGeneration(matInfo);
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
-            return true;
         } catch (final Exception t) {
             Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
             t.printStackTrace();
