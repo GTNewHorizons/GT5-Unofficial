@@ -621,12 +621,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (eff <= 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        double toReduce = this.fuelsupply * CONVERSION_FACTOR * eff;
+        double totalFuel = this.fuelsupply;
+        double toReduce = totalFuel * CONVERSION_FACTOR * eff;
 
         double sum = 0;
         fuelBase = 0;
-        fuelMultiplier = 0;
-        fuelExponent = 0;
+        fuelMultiplier = 1d;
+        fuelExponent = 1d;
 
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
             Materials m = entry.getKey();
@@ -634,18 +635,20 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (amount > 0) {
                 sum += amount;
                 Triple<Double, Double, Double> prop = HTGR_ITEM.getFuelProperties(m);
-                fuelBase += prop.getLeft();
-                fuelMultiplier += prop.getMiddle();
-                fuelExponent += prop.getRight();
+                fuelBase += prop.getLeft() * amount;
+                fuelMultiplier += prop.getMiddle() * amount;
+                fuelExponent += prop.getRight() * amount;
 
-                double toUse = (amount / fuelsupply) * toReduce;
+                double toUse = (amount / totalFuel) * toReduce;
                 mStoredBurnedFuels.merge(m, toUse, Double::sum);
                 entry.setValue(amount - toUse);
-                this.fuelsupply -= toUse;
             }
         }
 
-        fuelBase /= sum;
+        if (sum > 0) {
+            fuelBase /= sum;
+        }
+        this.fuelsupply = Math.max(0d, this.fuelsupply - toReduce);
 
         ArrayList<ItemStack> toOutput = new ArrayList<>();
 
