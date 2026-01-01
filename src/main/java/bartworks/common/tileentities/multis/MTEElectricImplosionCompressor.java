@@ -494,6 +494,11 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    @Override
     public void onPreviewStructureComplete(@NotNull ItemStack trigger) {
         resetPiston(this.mBlockTier);
     }
