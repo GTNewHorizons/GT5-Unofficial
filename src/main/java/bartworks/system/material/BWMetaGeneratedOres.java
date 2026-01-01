@@ -82,7 +82,6 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     protected void doRegistrationStuff(Werkstoff w) {
         if (w == null) return;
         if (!w.hasItemType(OrePrefixes.ore)) return;
-        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return;
 
         ItemStack self = new ItemStack(this, 1, w.getmID());
         OrePrefixes prefix = isSmall ? OrePrefixes.oreSmall : OrePrefixes.ore;
@@ -119,8 +118,7 @@ public class BWMetaGeneratedOres extends Block implements IBlockWithTextures {
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         if (!isNatural) {
             for (Werkstoff tMaterial : Werkstoff.werkstoffHashSet) {
-                if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)
-                    && (tMaterial.getGenerationFeatures().blacklist & 0x8) == 0) {
+                if (tMaterial != null && tMaterial.hasItemType(OrePrefixes.ore)) {
                     aList.add(new ItemStack(aItem, 1, tMaterial.getmID()));
                 }
             }

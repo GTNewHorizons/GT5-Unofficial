@@ -34,6 +34,7 @@ gt.component.smallspring=Small %s Spring
 gt.component.finewire=Fine %s Wire
 gt.component.platedense=Dense %s Plate
 gt.component.platesuperdense=Superdense %s Plate
+gt.component.sheetmetal=%s Sheetmetal
 
 # Crops
 gt.crop.argentia.name=Argentia
@@ -826,7 +827,6 @@ GT5U.MBTT.Tiers.Turbine=Sum of Turbine
 GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
-GT5U.MBTT.Structure.Complex=Structure is too complex!
 GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
 GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
 GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
@@ -2149,7 +2149,7 @@ GT5U.waila.status.insufficient_energy=Status: Insufficient energy
 GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
 GT5U.waila.machine.working_disabled=Working Disabled
 GT5U.waila.machine.idle=Idle
-GT5U.waila.machine.in_progress=In progress: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
 GT5U.waila.machine_facing=Machine Facing: %s
 GT5U.waila.output_facing=Output Facing: %s
 GT5U.waila.facing=Facing: %s
@@ -3121,7 +3121,7 @@ GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
 GTPP.multiblock.multimachine.fluid=Fluid Mode. Does fermenter (circuit 20), fluid extractor (circuit 21) and extractor (circuit 22).
 GTPP.multiblock.multimachine.misc=Misc. Mode. Does precision laser engraver (circuit 20), autoclave (circuit 21) and fluid solidifier (circuit 22).
-
+GTPP.multiblock.ap.tier=Tier: %s
 
 GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
@@ -3257,6 +3257,14 @@ GT5U.tooltip.mega_apiary.only_producer=Will only be produced in mega Apiary
 
 GT5U.tooltip.electric.tier=Tier: %d
 GT5U.tooltip.electric.tier.s=Tier: %s
+
+GT5U.tooltip.typefilter.set_to=Filter set to %s
+GT5U.tooltip.typefilter.ore_prefix=Ore prefix: %s
+GT5U.tooltip.typefilter.size=Filter size: %s
+
+GT5U.die.frozen=%s froze to death
+GT5U.die.boiled=%s was boiled alive
+GT5U.die.exploded=%s exploded
 
 gt.coilheattooltip=Base Heating Capacity =
 gt.coilunittooltip= Kelvin

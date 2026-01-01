@@ -344,21 +344,6 @@ public class RecipesGeneral {
     }
 
     private static void migratedRecipes() {
-        // Cryotheum Cooling Hatch
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Hatch_Input_Cryotheum.get(1L),
-            new Object[] { "MGM", "CBC", "PHP", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING250.getGear(1), 'C', "circuitData", 'B',
-                GregtechItemList.Casing_AdvancedVacuum.get(1), 'P', Materials.Aluminium.getPlates(1), 'H',
-                ItemList.Hatch_Input_IV.get(1) });
-
-        // Pyrotheum Heating Vent
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Hatch_Input_Pyrotheum.get(1L),
-            new Object[] { "MGM", "CBC", "MHM", 'M', MaterialsAlloy.MARAGING250.getPlate(1), 'G',
-                MaterialsAlloy.MARAGING300.getGear(1), 'C', "circuitElite", 'B',
-                GregtechItemList.Casing_Adv_BlastFurnace.get(1), 'H', ItemList.Hatch_Input_IV.get(1) });
-
         if (GTMod.proxy.mPollution) {
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Hatch_Muffler_Adv_LV.get(1L),
