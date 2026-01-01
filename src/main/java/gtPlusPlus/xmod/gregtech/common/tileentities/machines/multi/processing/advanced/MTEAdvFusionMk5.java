@@ -23,6 +23,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvFusionMk5 extends MTEFusionComputer {
@@ -49,9 +50,15 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             .addInfo("gt.fusion.tips.overclock")
             .beginStructureBlock(15, 3, 15, false)
             .addController("gt.fusion.info.1")
-            .addCasingInfoMin("gtplusplus.blockcasings.6.0.name", 79)
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Fusion_External2.get(1)
+                    .getDisplayName(),
+                79)
             .addStructureInfo("gt.fusion.info.2")
-            .addStructurePart("gtplusplus.blockcasings.6.1.name", "gt.fusion.info.3")
+            .addStructurePart(
+                GregtechItemList.Casing_Fusion_Internal2.get(1)
+                    .getDisplayName(),
+                "gt.fusion.info.3")
             .addEnergyHatch("gt.fusion.info.4", 2)
             .addInputHatch("gt.fusion.info.5", 1)
             .addOutputHatch("gt.fusion.info.4", 3)
