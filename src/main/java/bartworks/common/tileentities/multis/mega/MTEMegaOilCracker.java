@@ -105,27 +105,27 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             'l',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
-                .dot(2)
+                .hint(2)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'r',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
-                .dot(3)
+                .hint(3)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'm',
             buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
-                .dot(4)
+                .hint(4)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))

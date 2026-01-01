@@ -45,7 +45,6 @@ import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
@@ -73,7 +72,6 @@ public class CommonProxy implements IFuelHandler {
         ModBlocks.init();
         GTPPFluids.init();
 
-        CI.preInit();
         CompatIntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
@@ -89,8 +87,6 @@ public class CommonProxy implements IFuelHandler {
     }
 
     public void init(final FMLInitializationEvent e) {
-        CI.init();
-
         if (e.getSide()
             .isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());

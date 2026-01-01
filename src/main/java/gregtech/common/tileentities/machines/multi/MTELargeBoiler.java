@@ -91,7 +91,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     lazy(
                         t -> buildHatchAdder(MTELargeBoiler.class).atLeast(OutputHatch)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(
                                 onElementPass(
                                     MTELargeBoiler::onCasingAdded,
@@ -101,7 +101,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     lazy(
                         t -> buildHatchAdder(MTELargeBoiler.class).atLeast(Maintenance, InputHatch, InputBus, Muffler)
                             .casingIndex(t.getFireboxTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(
                                 onElementPass(
                                     MTELargeBoiler::onFireboxAdded,

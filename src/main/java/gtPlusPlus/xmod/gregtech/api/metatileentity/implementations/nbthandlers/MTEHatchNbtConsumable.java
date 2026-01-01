@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -21,7 +20,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchNbtConsumableGui;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
-public abstract class MTEHatchNbtConsumable extends MTEHatch implements IAddGregtechLogo {
+public abstract class MTEHatchNbtConsumable extends MTEHatch {
 
     private final int inputSlotCount;
     private final int totalSlotCount;

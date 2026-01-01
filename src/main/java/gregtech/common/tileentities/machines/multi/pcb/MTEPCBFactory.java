@@ -46,7 +46,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -202,7 +201,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     Maintenance,
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.NaniteBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
@@ -211,7 +210,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEPCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 12))
         .addElement(
             'P',
@@ -223,7 +222,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     Maintenance,
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.NaniteBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 11))
         .build();
@@ -451,10 +450,15 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                         .setDurationModifier(getDurationMultiplierFromRoughness())
                         .setDurationDecreasePerOC(compatMode.OCTier == 2 ? 4.0 : 2.0);
                 }
+                if (mCoolingTower != null) {
+                    return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
+                        .setEUtDiscount(Math.sqrt(structures))
+                        .setDurationModifier(getDurationMultiplierFromRoughness())
+                        .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
+                }
                 return super.createOverclockCalculator(recipe).setNoOverclock(!isOC())
                     .setEUtDiscount(Math.sqrt(structures))
-                    .setDurationModifier(getDurationMultiplierFromRoughness())
-                    .setDurationDecreasePerOC(!mCoolingTower.isTier1 ? 4.0 : 2.0);
+                    .setDurationModifier(getDurationMultiplierFromRoughness());
             }
 
             @Nonnull
@@ -976,11 +980,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     @Override
     protected SoundResource getProcessStartSound() {
         return SoundResource.GTCEU_LOOP_ASSEMBLER;
-    }
-
-    @Override
-    public Pos2d getStructureUpdateButtonPos() {
-        return new Pos2d(80, 91);
     }
 
     public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {

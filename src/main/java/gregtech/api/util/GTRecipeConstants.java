@@ -164,6 +164,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "chemplant_casing_tier");
 
     /**
+     * Algae Pond tier.
+     */
+    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "algae_pond_tier");
+
+    /**
      * QFT Focus tier.
      */
     public static final RecipeMetadataKey<Integer> QFT_FOCUS_TIER = SimpleRecipeMetadataKey
@@ -593,7 +599,7 @@ public class GTRecipeConstants {
             GTValues.RA.stdBuilder()
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
-                .special(tRecipe.newDataStickForNEI("Writes Research result"))
+                .special(tRecipe.newDataStickForNEI("Writes Research result", 1))
                 .duration(scanningData.time)
                 .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
@@ -606,7 +612,7 @@ public class GTRecipeConstants {
                 false,
                 r.mInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result") },
+                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result", 0) },
                 r.mFluidInputs,
                 null,
                 r.mDuration,
@@ -662,10 +668,10 @@ public class GTRecipeConstants {
                         .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
             } else {
-                items.add(GTUtility.getIntegratedCircuit(circuitConfig));
                 ret.addAll(
                     builder.copy()
                         .itemInputs(items.toArray(new ItemStack[0]))
+                        .circuit(circuitConfig)
                         .fluidInputs()
                         .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
@@ -745,6 +751,7 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(ALGAE_POND_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);
