@@ -791,6 +791,22 @@ public class GTStructureUtility {
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
     }
 
+    public static <T> IStructureElement<T> chainAllCasings() {
+        return chainAllCasings(-1, (te, t) -> {}, te -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.TIER_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    CasingTier::getCasingBlockTier,
+                    CasingTier.getCasingList(),
+                    notSet,
+                    setter,
+                    getter)));
+    }
+
     public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {
         return new ProxyStructureElement<>(element) {
 
