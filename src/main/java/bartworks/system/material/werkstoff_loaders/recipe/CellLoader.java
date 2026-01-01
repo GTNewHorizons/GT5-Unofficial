@@ -77,8 +77,8 @@ public class CellLoader implements IWerkstoffRunnable {
                     .getValue()
                     .toArray(new Pair[0])) {
                     if (container.getKey() instanceof Materials) {
-                        if ((((Materials) container.getKey()).hasCorrespondingGas()
-                            || ((Materials) container.getKey()).hasCorrespondingFluid()
+                        if ((((Materials) container.getKey()).getGas(1) != null
+                            || ((Materials) container.getKey()).getFluid(1) != null
                             || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID)
                             && ((Materials) container.getKey()).getDust(0) == null) {
                             FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000L * container.getValue());
@@ -264,7 +264,7 @@ public class CellLoader implements IWerkstoffRunnable {
                 .addTo(fluidExtractionRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(1))
+                .circuit(1)
                 .itemOutputs(werkstoff.get(dust))
                 .fluidInputs(werkstoff.getFluidOrGas(1_000))
                 .duration(
