@@ -1414,7 +1414,6 @@ GT5U.gui.text.total_line=Total: %s EU
 GT5U.gui.text.usage_line=Usage: %s EU/t
 GT5U.gui.text.time_line=Time: %s secs
 GT5U.gui.text.time_line_with_ticks=Time: %s secs (%d ticks)
-GT5U.gui.text.kv=%s: %s
 
 # RecipeMaps
 gt.recipe.eyeofharmony=Eye of Harmony
