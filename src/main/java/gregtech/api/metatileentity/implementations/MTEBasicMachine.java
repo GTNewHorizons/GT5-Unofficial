@@ -1505,8 +1505,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     () -> Collections.singletonList(
                         translateToLocalFormatted(
                             STEAM_AMOUNT_LANGKEY,
-                            numberFormat.format(getSteamVar),
-                            numberFormat.format(maxSteamStore()))))
+                            numberFormat.format(getSteamVar * 2), // internal steam storage is done at a 2:1 ratio
+                            numberFormat.format(maxSteamStore() * 2))))// internal steam storage is done at a 2:1 ratio
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(48, 42)
