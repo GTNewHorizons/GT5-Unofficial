@@ -1,6 +1,5 @@
 package tectech.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Collections;
@@ -8,6 +7,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -51,14 +52,19 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         int computation = recipeInfo.recipe.mDuration;
         short ampere = (short) (recipeInfo.recipe.mSpecialValue & 0xFFFF);
         short minComputationPerSec = (short) (recipeInfo.recipe.mSpecialValue >>> 16);
+
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
                 GTUtility.formatNumbers(
                     (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut * ampere) + " EU/t");
+
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", GTUtility.formatNumbers(eut * ampere)));
+
         recipeInfo
             .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
+
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.min_computation",
