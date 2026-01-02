@@ -1379,20 +1379,20 @@ public class RecipesMachinesTiered {
             GregtechItemList.GTFluidTank_LV.get(1),
             new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.get(Materials.Steel), 'I',
                 OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.plate.get(Materials.Bronze), 'P',
-                OrePrefixes.pipeHuge.get(Materials.Clay), 'U', ItemList.Pump_LV });
+                OrePrefixes.pipeHuge.get(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
 
         // MV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
             new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'B',
                 OrePrefixes.plate.get(Materials.Bronze), 'S', OrePrefixes.plate.get(Materials.Steel), 'P',
-                OrePrefixes.pipeMedium.get(Materials.Bronze), 'U', ItemList.Pump_LV });
+                OrePrefixes.pipeMedium.get(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
 
         // HV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
             new Object[] { "CAC", "DPD", "CUC", 'C', "circuitPrimitive", 'A',
                 OrePrefixes.plate.get(Materials.Aluminium), 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'P',
-                OrePrefixes.pipeMedium.get(Materials.Steel), 'U', ItemList.Pump_MV });
+                OrePrefixes.pipeMedium.get(Materials.Steel), 'U', ItemList.Electric_Pump_MV });
     }
 }
