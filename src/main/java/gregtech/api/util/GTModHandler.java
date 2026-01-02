@@ -70,6 +70,7 @@ import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
+import gtPlusPlus.xmod.gregtech.api.interfaces.IGregtechItemContainer;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -918,7 +919,8 @@ public class GTModHandler {
         boolean tThereWasARecipe = false;
 
         for (byte i = 0; i < aRecipe.length; i++) {
-            if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
+            if (aRecipe[i] instanceof IItemContainer ic) aRecipe[i] = ic.get(1);
+            else if (aRecipe[i] instanceof IGregtechItemContainer ic) aRecipe[i] = ic.get(1);
             else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                 || aRecipe[i] instanceof ItemData
@@ -1176,7 +1178,8 @@ public class GTModHandler {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
-            if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
+            if (aRecipe[i] instanceof IItemContainer ic) aRecipe[i] = ic.get(1);
+            else if (aRecipe[i] instanceof IGregtechItemContainer ic) aRecipe[i] = ic.get(1);
             else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                 || aRecipe[i] instanceof String

@@ -155,14 +155,14 @@ public class RecipesMachines {
         // Extreme Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
-            new Object[] { "PCP", "PRP", "IHI", 'I', MaterialsAlloy.PIKYONIUM.getPlate(1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'C',
                 GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
                 ItemList.Hatch_Input_ZPM });
 
         // Atmospheric Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
-            new Object[] { "PCP", "PRP", "IHI", 'I', MaterialsAlloy.OCTIRON.getPlate(1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.OCTIRON.getPlate(1), 'C',
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
 
