@@ -166,7 +166,6 @@ public class RecipesMachines {
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
 
-        // todo
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
             BITSD,
