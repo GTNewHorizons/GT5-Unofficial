@@ -13752,6 +13752,7 @@ public class MaterialsInit {
         Materials.RichNetherWaste = loadRichNetherWaste();
         Materials.HellishMetal = loadHellishMetal();
         Materials.Netherite = loadNetherite();
+        Materials.Netherite.remove(SubTag.SMELTING_TO_FLUID);
         Materials.ActivatedNetherite = loadActivatedNetherite();
     }
 
