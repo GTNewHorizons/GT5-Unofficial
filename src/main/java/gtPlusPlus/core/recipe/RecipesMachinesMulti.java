@@ -289,8 +289,16 @@ public class RecipesMachinesMulti {
                 OreDictNames.craftingPiston, 'G', MaterialsAlloy.TUMBAGA.getGear(1), 'F',
                 MaterialsAlloy.TUMBAGA.getFrameBox(1) });
 
-        // Steam Hearth
         if (EtFuturumRequiem.isModLoaded()) {
+            // Steam Fuser
+            GTModHandler.addCraftingRecipe(
+                GregtechItemList.Controller_SteamAlloySmelterMulti.get(1),
+                new Object[] { "BTB", "FUF", "BLB", 'B', ItemList.Casing_BronzePlatedBricks.get(1L), 'T',
+                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 1L), 'F',
+                    getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'U', MaterialsAlloy.TUMBAGA.getFrameBox(1),
+                    'L', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1L) });
+
+            // Steam Hearth
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamFurnaceMulti.get(1),
                 new Object[] { "RGR", "YBZ", "WFW", 'R', OrePrefixes.plateDouble.get(Materials.Bronze), 'G',
