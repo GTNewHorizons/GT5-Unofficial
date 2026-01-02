@@ -2189,8 +2189,8 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.SodiumHydroxide.getDust(6), Materials.Epichlorohydrin.getCells(2))
             .itemOutputs(Materials.SaltWater.getCells(2))
-            .fluidInputs(Materials.BisphenolA.getFluid(1_000))
-            .fluidOutputs(Materials.Epoxid.getMolten(1_000))
+            .fluidInputs(Materials.BisphenolA.getFluid(8 * INGOTS))
+            .fluidOutputs(Materials.Epoxid.getMolten(8 * INGOTS))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -3553,7 +3553,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.SodiumSulfide.getDust(3), ItemList.Cell_Air.get(8))
             .itemOutputs(Materials.Salt.getDust(4), Materials.Empty.getCells(8))
             .fluidInputs(Materials.Dichlorobenzene.getFluid(1_000))
-            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(1_000))
+            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(8 * INGOTS))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -3562,7 +3562,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.SodiumSulfide.getDust(3), Materials.Oxygen.getCells(8))
             .itemOutputs(Materials.Salt.getDust(4), Materials.Empty.getCells(8))
             .fluidInputs(Materials.Dichlorobenzene.getFluid(1_000))
-            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(1_500))
+            .fluidOutputs(Materials.PolyphenyleneSulfide.getMolten(12 * INGOTS))
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(UniversalChemical);
@@ -4123,7 +4123,7 @@ public class ChemicalRecipes implements Runnable {
         }
     }
 
-    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
+    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, Fluid aPolymer) {
         // Oxygen/Titaniumtetrafluoride -> +50% Output each
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1))
@@ -4146,21 +4146,21 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(aBasicMaterialCell)
+            .itemInputs(ItemList.Cell_Air.get(8))
             .circuit(9)
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Air.getGas(14_000))
-            .fluidOutputs(new FluidStack(aPolymer, 1_000))
+            .itemOutputs(Materials.Empty.getCells(8))
+            .fluidInputs(new FluidStack(aBasicMaterial, 8 * INGOTS))
+            .fluidOutputs(new FluidStack(aPolymer, 8 * INGOTS))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(aBasicMaterialCell)
+            .itemInputs(Materials.Oxygen.getCells(8))
             .circuit(9)
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Oxygen.getGas(7_000))
-            .fluidOutputs(new FluidStack(aPolymer, 1_500))
+            .itemOutputs(Materials.Empty.getCells(8))
+            .fluidInputs(new FluidStack(aBasicMaterial, 8 * INGOTS))
+            .fluidOutputs(new FluidStack(aPolymer, 12 * INGOTS))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4190,30 +4190,17 @@ public class ChemicalRecipes implements Runnable {
     }
 
     public void polymerizationRecipes() {
-        addDefaultPolymerizationRecipes(
-            Materials.VinylAcetate.mFluid,
-            Materials.VinylAcetate.getCells(1),
-            Materials.PolyvinylAcetate.mFluid);
+        addDefaultPolymerizationRecipes(Materials.VinylAcetate.mFluid, Materials.PolyvinylAcetate.mFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.Ethylene.mGas,
-            Materials.Ethylene.getCells(1),
-            Materials.Polyethylene.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.Ethylene.mGas, Materials.Polyethylene.mStandardMoltenFluid);
 
         addDefaultPolymerizationRecipes(
             Materials.Tetrafluoroethylene.mGas,
-            Materials.Tetrafluoroethylene.getCells(1),
             Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.VinylChloride.mGas,
-            Materials.VinylChloride.getCells(1),
-            Materials.PolyvinylChloride.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.VinylChloride.mGas, Materials.PolyvinylChloride.mStandardMoltenFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.Styrene.mFluid,
-            Materials.Styrene.getCells(1),
-            Materials.Polystyrene.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.Styrene.mFluid, Materials.Polystyrene.mStandardMoltenFluid);
     }
 
     public void singleBlockOnly() {
@@ -4520,7 +4507,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Acetone.getCells(1), Materials.Phenol.getCells(2))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -4529,7 +4516,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.HydrochloricAcid.getCells(1), Materials.Acetone.getCells(1))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Phenol.getFluid(2_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -4538,7 +4525,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(Materials.Phenol.getCells(2), Materials.HydrochloricAcid.getCells(1))
             .itemOutputs(Materials.Water.getCells(1), Materials.Empty.getCells(2))
             .fluidInputs(Materials.Acetone.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(chemicalReactorRecipes);
@@ -5435,7 +5422,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Acetone.getFluid(1_000),
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000))
-            .fluidOutputs(Materials.BisphenolA.getFluid(1_000), Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.BisphenolA.getFluid(8 * INGOTS), Materials.Water.getFluid(1_000))
             .duration(8 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);
@@ -5448,7 +5435,7 @@ public class ChemicalRecipes implements Runnable {
                 Materials.Phenol.getFluid(2_000),
                 Materials.HydrochloricAcid.getFluid(1_000),
                 Materials.Epichlorohydrin.getFluid(2_000))
-            .fluidOutputs(Materials.Epoxid.getMolten(1_000), Materials.SaltWater.getFluid(2_000))
+            .fluidOutputs(Materials.Epoxid.getMolten(8 * INGOTS), Materials.SaltWater.getFluid(2_000))
             .duration(24 * SECONDS)
             .eut(30)
             .addTo(multiblockChemicalReactorRecipes);

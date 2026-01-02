@@ -7832,7 +7832,6 @@ public class MaterialsInit {
             .addMaterial(Materials.Carbon, 15)
             .addMaterial(Materials.Hydrogen, 16)
             .addMaterial(Materials.Oxygen, 2)
-            .addElectrolyzerRecipe()
             .constructMaterial();
     }
 
