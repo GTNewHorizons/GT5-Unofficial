@@ -38,7 +38,7 @@ public class CoverToggleVisual extends CoverLegacyData {
 
                 return coverable.getInventoryName() + "." + aPos.getUniqueIdentifier() + side.name();
             }
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         XSTR x = new XSTR();
         return "ERROR." + x.getSeed() + x.hashCode() + x.nextDouble() + ".ID";
     }
@@ -95,7 +95,7 @@ public class CoverToggleVisual extends CoverLegacyData {
                 // Try set cover state directly
                 this.coverData = b == VALUE_ON ? VALUE_ON : VALUE_OFF;
             }
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
     }

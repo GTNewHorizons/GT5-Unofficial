@@ -338,7 +338,7 @@ public class ForgeOfGodsStarColor {
                     .addColors(colorSettings);
             }
             return null;
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             return null;
         }
     }

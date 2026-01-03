@@ -174,7 +174,7 @@ public class ItemMagicFeather extends CoreItem {
                     Logger.INFO("Ticking feather " + hasItem);
                     return;
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 t.printStackTrace();
             }
 

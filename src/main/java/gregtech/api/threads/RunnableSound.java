@@ -35,7 +35,7 @@ public class RunnableSound implements Runnable {
                 return;
             mWorld.playSound(mX, mY, mZ, mSoundResourceLocation.toString(), mSoundStrength, mSoundModulation, false);
             GTUtility.sPlayedSoundMap.put(tSound, mTimeUntilNextSound);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Could not play RunnableSound", e);
         }
     }

@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import buildcraft.api.tools.IToolWrench;
+import buildcraft.factory.BlockTank;
+import cpw.mods.fml.common.ModAPIManager;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -134,6 +136,9 @@ public class GTItemIterator implements Runnable {
 
         GTLog.out.println("GTMod: Scanning ItemList.");
 
+        final boolean rcItems = ModAPIManager.INSTANCE.hasAPI("RailcraftAPI|items");
+        final boolean bcTools = ModAPIManager.INSTANCE.hasAPI("BuildCraftAPI|tools");
+
         try {
             /* (tName.equals("tile.sedimentaryStone")) || **/
             for (Object o : Item.itemRegistry) {
@@ -149,14 +154,14 @@ public class GTItemIterator implements Runnable {
                     continue;
                 }
 
-                if ((tItem instanceof IToolCrowbar)) {
+                if (rcItems && tItem instanceof IToolCrowbar) {
                     if ((tItem.isDamageable()) || (GTModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                         if (GregTechAPI.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
                             GTLog.out.println("GTMod: Registered valid RC Crowbar: " + tName);
                         }
                     }
                 }
-                if ((tItem instanceof IToolWrench)) {
+                if (bcTools && tItem instanceof IToolWrench) {
                     if ((tItem.isDamageable()) || (GTModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                         if (GregTechAPI.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
                             GTLog.out.println("GTMod: Registered valid BC Wrench: " + tName);
@@ -176,7 +181,7 @@ public class GTItemIterator implements Runnable {
                             tItem.setMaxStackSize(OrePrefixes.stone.getDefaultStackSize());
                         }
                     }
-                    if (tName.equals("tile.tankBlock") && tBlock instanceof buildcraft.factory.BlockTank) {
+                    if (tName.equals("tile.tankBlock") && tBlock instanceof BlockTank) {
                         GTOreDictUnificator.registerOre(OreDictNames.craftingTank, new ItemStack(tItem, 1, 0));
                     }
                 }
@@ -274,7 +279,7 @@ public class GTItemIterator implements Runnable {
 
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             /**/
         }
     }

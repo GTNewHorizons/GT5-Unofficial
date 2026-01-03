@@ -75,7 +75,7 @@ public class GTPreLoad {
             }
             Objects.requireNonNull(GTUtility.getField(tLoadController, "activeModList", true, true))
                 .set(tLoadController, tNewModsList);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.logStackTrace(e);
         }
     }
@@ -144,7 +144,7 @@ public class GTPreLoad {
         if (!GTLog.mLogFile.exists()) {
             try {
                 GTLog.mLogFile.createNewFile();
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
         try {
             GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
@@ -155,12 +155,12 @@ public class GTPreLoad {
             if (!GTLog.mOreDictLogFile.exists()) {
                 try {
                     GTLog.mOreDictLogFile.createNewFile();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
             List<String> tList = ((GTLog.LogBuffer) GTLog.ore).mBufferedOreDictLog;
             try {
                 GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
             GTLog.ore.println("******************************************************************************");
             GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
             GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
@@ -174,11 +174,11 @@ public class GTPreLoad {
             if (!GTLog.mExplosionLog.exists()) {
                 try {
                     GTLog.mExplosionLog.createNewFile();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
             try {
                 GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
     }
 
@@ -335,7 +335,7 @@ public class GTPreLoad {
             ((List<?>) Objects
                 .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
                     .clear();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
             }

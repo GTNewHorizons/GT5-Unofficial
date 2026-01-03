@@ -135,7 +135,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             aList.add("§cAn exception was thrown while getting this item's info.§r");
             aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);
