@@ -890,6 +890,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private enum HTGRHatches implements IHatchElement<MTEHighTempGasCooledReactor> {
 
         CoolantInputHatch(MTEHighTempGasCooledReactor::addCoolantInputToMachineList, MTEHatchInput.class) {

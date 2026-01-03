@@ -1352,4 +1352,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MEGA_INDUSTRIAL_APIARY_LOOP;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

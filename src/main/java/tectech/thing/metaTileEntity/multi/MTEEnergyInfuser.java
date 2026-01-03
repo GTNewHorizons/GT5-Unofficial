@@ -385,4 +385,8 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
