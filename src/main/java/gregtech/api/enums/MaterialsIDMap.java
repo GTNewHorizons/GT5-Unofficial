@@ -383,6 +383,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(597, Materials.Diaminobenzidin);
         r(598, Materials.Diphenylisophthalate);
         r(599, Materials.Polybenzimidazole);
+        r(600, Materials.SoulInfusedMedium);
         r(602, Materials.ReinforcedGlass);
         r(603, Materials.BioMediumRaw);
         r(604, Materials.BioMediumSterilized);
