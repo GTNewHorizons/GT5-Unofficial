@@ -3,29 +3,25 @@ package gregtech.common.tools;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolScrewdriverLV extends ToolScrewdriver {
+public class ToolFileMV extends ToolFileLV {
 
     @Override
     public int getToolDamagePerContainerCraft() {
-        return 200;
+        return 3200;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Aluminium.mRGBa;
     }
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver
-                .getTextureIndex()]
-            : Textures.ItemIcons.HANDLE_ELECTRIC_SCREWDRIVER;
+        return aIsToolHead ? Textures.ItemIcons.ELECTRIC_FILE : Textures.ItemIcons.POWER_UNIT_MV;
     }
 
 }

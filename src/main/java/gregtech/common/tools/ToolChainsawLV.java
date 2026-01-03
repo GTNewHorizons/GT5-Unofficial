@@ -17,6 +17,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -126,6 +127,11 @@ public class ToolChainsawLV extends ToolSaw {
         return (aBlock.getMaterial() == Material.leaves) || (aBlock.getMaterial() == Material.vine)
             || (aBlock.getMaterial() == Material.plants)
             || (aBlock.getMaterial() == Material.gourd) ? aDefault / 4.0F : aDefault;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
     }
 
     @Override
