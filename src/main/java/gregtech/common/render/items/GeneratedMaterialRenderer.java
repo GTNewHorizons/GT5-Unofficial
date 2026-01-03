@@ -1,7 +1,5 @@
 package gregtech.common.render.items;
 
-import static gregtech.api.enums.Mods.HodgePodge;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -12,7 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
-import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
@@ -66,7 +63,6 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             if (tIcon != null) {
-                markNeedsAnimationUpdate(tIcon);
                 renderRegularItem(type, aStack, tIcon, aFluid == null, pass, data);
             }
 
@@ -74,7 +70,6 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
                 IIcon fluidIcon = aFluid.getFluid()
                     .getIcon(aFluid);
                 if (fluidIcon != null) {
-                    markNeedsAnimationUpdate(fluidIcon);
                     // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
                     renderContainedFluid(type, aFluid, fluidIcon);
                 }
@@ -83,7 +78,6 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             if (tOverlay != null) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                markNeedsAnimationUpdate(tOverlay);
                 renderItemOverlay(type, tOverlay);
             }
 
@@ -120,11 +114,5 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
 
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
         ItemRenderUtil.renderItem(type, overlay);
-    }
-
-    protected void markNeedsAnimationUpdate(IIcon icon) {
-        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite) {
-            ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
-        }
     }
 }
