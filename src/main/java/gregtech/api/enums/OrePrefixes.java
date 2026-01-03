@@ -199,6 +199,17 @@ public class OrePrefixes {
         .defaultStackSize(ORE_STACK_SIZE)
         .build();
 
+    /** Prefix of EFR */
+    public static final OrePrefixes oreDeepslate = new OrePrefixBuilder("oreDeepslate")
+        .withDefaultLocalName("Deepslate Ores")
+        .withPrefix("Deepslate ")
+        .withSuffix(" Ore")
+        .unifiable()
+        .materialBased()
+        .materialGenerationBits(ORE)
+        .defaultStackSize(ORE_STACK_SIZE)
+        .build();
+
     /** Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam */
     public static final OrePrefixes ore = new OrePrefixBuilder("ore").withDefaultLocalName("Ores")
         .withSuffix(" Ore")
