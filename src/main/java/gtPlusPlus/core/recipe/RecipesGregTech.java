@@ -220,15 +220,12 @@ public class RecipesGregTech {
 
         // Produce Th232
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 16))
-            .circuit(22)
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4))
             .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 32),
-                MaterialsElements.getInstance().THORIUM232.getDust(2),
-                MaterialsElements.getInstance().THORIUM232.getSmallDust(2),
-                MaterialsElements.getInstance().URANIUM232.getDust(1))
-            .fluidInputs(GTModHandler.getDistilledWater(2_000), new FluidStack(GTPPFluids.BoricAcid, 1_500))
-            .duration(5 * MINUTES)
+                WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 3),
+                MaterialsElements.getInstance().THORIUM232.getDust(1))
+            .fluidInputs(GTModHandler.getDistilledWater(2_000), new FluidStack(GTPPFluids.BoricAcid, 500))
+            .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
