@@ -1,7 +1,5 @@
 package gregtech.common.tools;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
