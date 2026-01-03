@@ -180,26 +180,16 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
-            if (info == null) return new ArrayList<>();
-
-            EntityPlayer harvester = this.harvesters.get();
-
-            boolean doFortune = GTUtility.isRealPlayer(harvester);
-            boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
-
-            return GTOreAdapter.INSTANCE
-                .getOreDrops(ThreadLocalRandom.current(), info, doSilktouch, doFortune ? fortune : 0);
-        }
+        return getDropsForPlayer(world, x, y, z, metadata, fortune, this.harvesters.get());
     }
 
     /**
      * Functions as getDrops(), but the player entity can be specified directly in cases where the action is done by
      * player, but gets called without harvest method.
-     * 
+     *
      * @implNote Requires extra casting to GTBlockOre and mod load checks.
      */
-    public ArrayList<ItemStack> getDropsFortune(World world, int x, int y, int z, int metadata, int fortune,
+    public ArrayList<ItemStack> getDropsForPlayer(World world, int x, int y, int z, int metadata, int fortune,
         EntityPlayer harvester) {
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
