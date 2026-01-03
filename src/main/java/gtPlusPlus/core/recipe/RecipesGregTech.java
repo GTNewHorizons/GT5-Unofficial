@@ -1364,7 +1364,7 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        // Low tier Charge Packs todo
+        // Low tier Charge Packs
 
         // LV
         GTValues.RA.stdBuilder()
@@ -1788,7 +1788,7 @@ public class RecipesGregTech {
             .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_SR90.get(1))
             .outputChances(660)
-            .fluidInputs(MaterialsElements.getInstance().URANIUM233.getFluidStack(10)) // todo check
+            .fluidInputs(MaterialsElements.getInstance().URANIUM233.getFluidStack(10))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
@@ -1808,7 +1808,7 @@ public class RecipesGregTech {
             .circuit(1)
             .itemOutputs(GregtechItemList.Pellet_RTG_PU238.get(2))
             .outputChances(780)
-            .fluidInputs(MaterialsElements.getInstance().PLUTONIUM238.getFluidStack(1)) // todo check
+            .fluidInputs(MaterialsElements.getInstance().PLUTONIUM238.getFluidStack(1))
             .duration(8 * HOURS + 20 * MINUTES)
             .eut(4080)
             .addTo(cyclotronRecipes);
