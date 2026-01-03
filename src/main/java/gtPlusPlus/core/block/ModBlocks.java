@@ -53,8 +53,6 @@ public final class ModBlocks {
     public static Block blockInfiniteFLuidTank;
     public static Block blockProjectTable;
 
-    public static Block blockCustomJukebox;
-
     public static Block blockPooCollector;
 
     public static void init() {
