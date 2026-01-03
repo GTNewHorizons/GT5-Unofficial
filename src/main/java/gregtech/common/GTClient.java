@@ -116,6 +116,7 @@ import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
+import gregtech.common.render.items.MechanicalArmorRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
@@ -348,6 +349,13 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
         MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());
         MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Spray_Color_Infinite, new InfiniteSprayCanRenderer());
+
+        final MechanicalArmorRenderer mechanicalArmorRenderer = new MechanicalArmorRenderer();
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Helmet.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Chestplate.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Leggings.getItem(), mechanicalArmorRenderer);
+        MinecraftForgeClient.registerItemRenderer(ItemList.Mechanical_Boots.getItem(), mechanicalArmorRenderer);
+
         MinecraftForge.EVENT_BUS.register(new NEIGTConfig());
         MinecraftForge.EVENT_BUS.register(mPollutionRenderer);
         FMLCommonHandler.instance().bus().register(mPollutionRenderer);
