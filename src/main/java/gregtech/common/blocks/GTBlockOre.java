@@ -196,6 +196,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     /**
      * Functions as getDrops(), but the player entity can be specified directly in cases where the action is done by
      * player, but gets called without harvest method.
+     * 
      * @implNote Requires extra casting to GTBlockOre and mod load checks.
      */
     public ArrayList<ItemStack> getDropsFortune(World world, int x, int y, int z, int metadata, int fortune,
