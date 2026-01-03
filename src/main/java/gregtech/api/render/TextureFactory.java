@@ -6,6 +6,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
+import gregtech.common.render.GTBlockTextureBuilder;
+import gregtech.common.render.GTMultiTextureRender;
+import gregtech.common.render.GTSidedTextureRender;
 import gregtech.common.render.GTTextureBuilder;
 
 /**
@@ -28,13 +31,19 @@ import gregtech.common.render.GTTextureBuilder;
  *     TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).glow().build());
  *
  *     // Texture with same bottom flipped orientation as vanilla
- *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).stdOrient().build();
+ *     TextureFactory.builder().addIcon(GRANITE_RED_STONE).extFacing().build();
  * }
  * </pre>
  *
+ * <br>
+ * <p>
+ * The {@link #blockBuilder()} is used to copy the texture of another block onto a new {@link ITexture} instance. <br>
+ * For more details, check out the documentation inside of {@link GTBlockTextureBuilder}
+ * </p>
+ * <br>
+ *
  * See: the {@link ITextureBuilder} interface
  */
-@SuppressWarnings("unused")
 public final class TextureFactory {
 
     private TextureFactory() {
@@ -42,14 +51,11 @@ public final class TextureFactory {
     }
 
     /**
-     * Multi-layered {@link ITexture} factory
-     *
-     * @param texture The layer of {@link ITexture} from bottom to top
-     * @return The instance of an {@link ITexture} implementation
+     * @Deprecated This method is a no-op. There's no reason to call this.
      */
+    @Deprecated
     public static ITexture of(final ITexture texture) {
-        return builder().addLayer(texture)
-            .build();
+        return texture;
     }
 
     /**
@@ -59,8 +65,7 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final ITexture... textures) {
-        return builder().addLayer(textures)
-            .build();
+        return new GTMultiTextureRender(textures);
     }
 
     /**
@@ -77,10 +82,7 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer north,
         final IIconContainer south, final IIconContainer west, final IIconContainer east, final short[] rgba) {
-        return builder().addIcon(bottom, top, north, south, west, east)
-            .setRGBA(rgba)
-            .setAllowAlpha(true)
-            .build();
+        return new GTSidedTextureRender(bottom, top, north, south, west, east, rgba);
     }
 
     /**
@@ -94,25 +96,7 @@ public final class TextureFactory {
      */
     public static ITexture of(final IIconContainer bottom, final IIconContainer top, final IIconContainer sides,
         final short[] rgba) {
-        return builder().addIcon(bottom, top, sides, sides, sides, sides)
-            .setRGBA(rgba)
-            .setAllowAlpha(true)
-            .build();
-    }
-
-    /**
-     * Rendered {@link ITexture} factory
-     *
-     * @param iconContainer The {@link IIconContainer} to render
-     * @param rgba          The {@code short[]} RGBA tint for the texture.
-     * @param allowAlpha    Determine if texture will use alpha blending (Not yet implemented)
-     * @return The instance of an {@link ITexture} implementation
-     */
-    public static ITexture of(final IIconContainer iconContainer, final short[] rgba, final boolean allowAlpha) {
-        return builder().addIcon(iconContainer)
-            .setRGBA(rgba)
-            .setAllowAlpha(allowAlpha)
-            .build();
+        return new GTSidedTextureRender(bottom, top, sides, sides, sides, sides, rgba);
     }
 
     public static ITexture of(final IIconContainer iconContainer, final short[] rgba) {
@@ -136,20 +120,20 @@ public final class TextureFactory {
      * @return The instance of an {@link ITexture} implementation
      */
     public static ITexture of(final Block block, final int meta, final ForgeDirection side, final short[] rgba) {
-        return builder().setFromBlock(block, meta)
+        return blockBuilder().setFromBlock(block, meta)
             .setFromSide(side)
             .setRGBA(rgba)
             .build();
     }
 
     public static ITexture of(final Block block, final int meta, final ForgeDirection side) {
-        return builder().setFromBlock(block, meta)
+        return blockBuilder().setFromBlock(block, meta)
             .setFromSide(side)
             .build();
     }
 
     public static ITexture of(final Block block, final int meta) {
-        return builder().setFromBlock(block, meta)
+        return blockBuilder().setFromBlock(block, meta)
             .build();
     }
 
@@ -164,5 +148,9 @@ public final class TextureFactory {
      */
     public static ITextureBuilder builder() {
         return new GTTextureBuilder();
+    }
+
+    public static GTBlockTextureBuilder blockBuilder() {
+        return new GTBlockTextureBuilder();
     }
 }
