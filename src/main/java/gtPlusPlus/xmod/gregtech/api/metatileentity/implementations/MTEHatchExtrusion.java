@@ -1,17 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.function.IntFunction;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.layout.Grid;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -26,6 +22,9 @@ import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus {
+
+    public boolean disableFilter = false;
+    public boolean disableLimited = false;
 
     public static final int shapeSlot = 2;
     public static final int circuitSlot = 3;
@@ -186,24 +185,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     @Override
     protected boolean forceUseMui2() {
         return true;
-    }
-
-    // TODO move this method to CommonGuiComponents.java
-    public static Grid gridTemplate(int cols, int rows, IntFunction<IWidget> widgetCreator) {
-        final int baseX = 79;
-        final int baseY = 34;
-        final int step = 18;
-
-        int posX = baseX - step * (cols - 1) / 2;
-        int posY = baseY - step * (rows - 1) / 2;
-
-        int total = cols * rows;
-        return new Grid().coverChildren()
-            .pos(posX, posY)
-            .mapTo(cols, total, i -> {
-                if (i >= total) return null;
-                return widgetCreator.apply(i);
-            });
     }
 
     @Override
