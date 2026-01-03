@@ -36,6 +36,7 @@ public class RecipesMachinesTiered {
         overflowValveCovers();
         chiselBuses();
         solidifierHatches();
+        extruderHatches();
         cropManagers();
         autoWorkbenches();
         autoChisels();
@@ -922,6 +923,72 @@ public class RecipesMachinesTiered {
                 new ItemStack(Blocks.chest))
             .circuit(17)
             .itemOutputs(GregtechItemList.Hatch_Solidifier_IV.get(1))
+            .fluidInputs(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+    }
+
+    private static void extruderHatches() {
+        // Extruder Hatch I
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_IV.get(1),
+                ItemList.Sensor_IV.get(1),
+                ItemList.Robot_Arm_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_I.get(1))
+            .fluidInputs(MaterialsAlloy.INCONEL_625.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        // Extruder Hatch II
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_LuV.get(1),
+                ItemList.Sensor_LuV.get(1),
+                ItemList.Robot_Arm_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_II.get(1))
+            .fluidInputs(MaterialsAlloy.ZERON_100.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        // Extruder Hatch III
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_ZPM.get(1),
+                ItemList.Sensor_ZPM.get(1),
+                ItemList.Robot_Arm_ZPM.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_III.get(1))
+            .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Extruder Hatch IV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_UV.get(1),
+                ItemList.Sensor_UV.get(1),
+                ItemList.Robot_Arm_UV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_IV.get(1))
             .fluidInputs(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(2 * INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UV)
