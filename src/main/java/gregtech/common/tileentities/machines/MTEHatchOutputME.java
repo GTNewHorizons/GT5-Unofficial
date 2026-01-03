@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTI
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -13,11 +14,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -28,42 +31,62 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.glodblock.github.common.item.FCBaseItemCell;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import appeng.api.AEApi;
+import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.config.Upgrades;
 import appeng.api.implementations.IPowerChannelState;
+import appeng.api.implementations.items.IUpgradeModule;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergySource;
+import appeng.api.networking.events.MENetworkCellArrayUpdate;
 import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.networking.security.PlayerSource;
+import appeng.api.networking.storage.IBaseMonitor;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.ICellContainer;
+import appeng.api.storage.ICellHandler;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEInventoryHandler;
-import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
+import appeng.api.storage.MEMonitorHandler;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
+import appeng.core.localization.GuiText;
 import appeng.core.stats.Stats;
+import appeng.helpers.IPriorityHost;
 import appeng.items.contents.CellConfig;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.me.storage.CellInventory;
 import appeng.me.storage.CellInventoryHandler;
+import appeng.me.storage.MEInventoryHandler;
+import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
@@ -75,7 +98,8 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable {
+public class MTEHatchOutputME extends MTEHatchOutput
+    implements IPowerChannelState, IMEConnectable, IDataCopyable, ICellContainer, IGridProxyable, IPriorityHost {
 
     private static final long DEFAULT_CAPACITY = 128_000;
     private long baseCapacity = DEFAULT_CAPACITY;
@@ -94,6 +118,18 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     List<String> lockedFluids = new ArrayList<>();
 
     boolean hadCell = false;
+    boolean blackList = false;
+
+    boolean cacheMode = false;
+    boolean isCached = false;
+    boolean checkMode = false;
+
+    @Nullable
+    OutputMonitorHandler<IAEFluidStack> cell;
+    @Nullable
+    OutputMonitorHandler<IAEFluidStack> cellRead;
+    private ItemStack oldCellStack = null;
+    private int myPriority = 0;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
@@ -136,56 +172,42 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         getProxy().onReady();
+        updateState();
     }
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (!lockedFluids.isEmpty()) {
-            boolean isOk = false;
-
-            for (String lockedFluid : lockedFluids) {
-                if (lockedFluid.equals(
-                    aFluid.getFluid()
-                        .getName())) {
-                    isOk = true;
-
-                    break;
-                }
-            }
-
-            if (!isOk) {
-                return 0;
-            }
+        if (!canStoreFluid(aFluid)) {
+            return 0;
         }
-
-        if (doFill) {
-            return tryFillAE(aFluid);
-        } else {
-            if (aFluid == null) return 0;
-            return aFluid.amount;
-        }
+        return tryFillAE(aFluid, doFill);
     }
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
+        if (cacheMode && cell != null) {
+            final IAEFluidStack returns = cell
+                .injectItems(AEFluidStack.create(fluidStack), Actionable.SIMULATE, getRequest());
+            return returns == null || returns.getStackSize() == 0;
+        }
+
         if (!isFluidLocked()) {
             return true;
         }
 
-        for (String lockedFluid : lockedFluids) {
-            if (lockedFluid.equals(
-                fluidStack.getFluid()
-                    .getName())) {
-                return true;
-            }
-        }
-
-        return false;
+        String fluidName = fluidStack.getFluid()
+            .getName();
+        return lockedFluids.stream()
+            .anyMatch(lockedFluid -> blackList ^ lockedFluid.equals(fluidName));
     }
 
     @Override
     public boolean isFluidLocked() {
         return this.mMode == 10;
+    }
+
+    public boolean getCheckMode() {
+        return checkMode;
     }
 
     private void checkFluidLock() {
@@ -199,6 +221,18 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             hadCell = true;
 
             if (this.mMode == 0) {
+                IInventory upgrades = fcbc.getUpgradesInventory(upgradeItemStack);
+                for (int i = 0; i < upgrades.getSizeInventory(); i++) {
+                    ItemStack is = upgrades.getStackInSlot(i);
+                    if (is != null) {
+                        Upgrades u = ((IUpgradeModule) is.getItem()).getType(is);
+                        if (u == Upgrades.INVERTER) {
+                            blackList = true;
+                            break;
+                        }
+                    }
+                }
+
                 CellConfig cfg = (CellConfig) fcbc.getConfigAEInventory(upgradeItemStack);
 
                 if (!cfg.isEmpty()) {
@@ -238,7 +272,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         if (lastClickedPlayer != null) {
                             GTUtility.sendChatToPlayer(
                                 lastClickedPlayer,
-                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder));
+                                StatCollector.translateToLocalFormatted("GT5U.hatch.fluid.filter.enable", builder)
+                                    + "\nMode: "
+                                    + (this.blackList ? "Blacklist" : "Whitelist"));
                         }
 
                         this.mMode = 10;
@@ -308,19 +344,35 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
      * Check if the internal cache can still fit more fluids in it for a recipe check
      */
     public boolean canAcceptFluid() {
-        return getCachedAmount() < getCacheCapacity();
+        return lastInputTick == tickCounter || getCachedAmount() < getCacheCapacity();
     }
 
     /**
      * Check if there is space for fluids or if we can overfill.
      */
     public boolean canFillFluid() {
-        return canAcceptFluid() || lastInputTick == tickCounter;
+        return canAcceptFluid();
     }
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return mMode == 0;
+        return mMode == 0 && !checkMode;
+    }
+
+    public int tryFillAE(final FluidStack aFluid, boolean doFill) {
+        if (aFluid == null) return 0;
+        // Always allow insertion on the same tick so we can output the entire recipe
+        if (canAcceptFluid()) {
+            if (doFill) {
+                fluidCache.add(
+                    AEApi.instance()
+                        .storage()
+                        .createFluidStack(aFluid));
+                lastInputTick = tickCounter;
+            }
+            return aFluid.amount;
+        }
+        return 0;
     }
 
     /**
@@ -330,21 +382,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
      * @return amount of fluid filled
      */
     public int tryFillAE(final FluidStack aFluid) {
-        if (aFluid == null) return 0;
-        // Always allow insertion on the same tick so we can output the entire recipe
-        if (canAcceptFluid() || (lastInputTick == tickCounter)) {
-            fluidCache.add(
-                AEApi.instance()
-                    .storage()
-                    .createFluidStack(aFluid));
-            lastInputTick = tickCounter;
-            return aFluid.amount;
-        }
-        return 0;
+        return tryFillAE(aFluid, true);
     }
 
     private BaseActionSource getRequest() {
-        if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
+        if (requestSource == null) requestSource = new MachineSource(this);
         return requestSource;
     }
 
@@ -407,8 +449,20 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (!getBaseMetaTileEntity().getCoverAtSide(side)
-            .isGUIClickable()) return;
+        if (aPlayer.isSneaking()) {
+            checkMode = !checkMode;
+            aPlayer.addChatComponentMessage(
+                new ChatComponentText(
+                    "Check Mode: " + (this.checkMode
+                        ? "On\nNOTE: Check Mode checks whether there is enough space for the output, resulting in more lag."
+                        : "Off")));
+            markDirty();
+        } else {
+            cacheMode = !cacheMode;
+            aPlayer.addChatComponentMessage(new ChatComponentText("Cache Mode: " + (this.cacheMode ? "On" : "Off")));
+            updateState();
+            markDirty();
+        }
     }
 
     @Override
@@ -436,11 +490,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
-                gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
-                    "proxy",
-                    ItemList.Hatch_Output_ME.get(1),
-                    true);
+                gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_Output_ME.get(1), true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
@@ -455,8 +505,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         if (!isActive() || fluidCache.isEmpty()) return;
         AENetworkProxy proxy = getProxy();
         try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                .getFluidInventory();
+            IMEInventory<IAEFluidStack> sg = (cacheMode && cell != null) ? cell
+                : proxy.getStorage()
+                    .getFluidInventory();
             for (IAEFluidStack s : fluidCache) {
                 if (s.getStackSize() == 0) continue;
                 IAEFluidStack rest = fluidAEInsert(proxy.getEnergy(), sg, s, getRequest());
@@ -487,8 +538,6 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
             if (tickCounter % 20 == 0) getBaseMetaTileEntity().setActive(isActive());
         }
-
-        checkFluidLock();
 
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -632,6 +681,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setLong("baseCapacity", baseCapacity);
         aNBT.setBoolean("hadCell", hadCell);
+        aNBT.setBoolean("blackList", blackList);
+        aNBT.setBoolean("cacheMode", cacheMode);
+        aNBT.setBoolean("checkMode", checkMode);
+        aNBT.setInteger("myPriority", myPriority);
         getProxy().writeToNBT(aNBT);
     }
 
@@ -670,6 +723,11 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         baseCapacity = aNBT.getLong("baseCapacity");
         if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
         hadCell = aNBT.getBoolean("hadCell");
+        blackList = aNBT.getBoolean("blackList");
+        cacheMode = aNBT.getBoolean("cacheMode");
+        checkMode = aNBT.getBoolean("checkMode");
+        myPriority = aNBT.getInteger("myPriority");
+        this.isCached = false;
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
     }
@@ -808,5 +866,183 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         getBaseMetaTileEntity().add1by1Slot(builder);
+        builder.widget(
+            new TextFieldWidget().setSynced(true, true)
+                .setNumbers(1, Integer.MAX_VALUE)
+                .setGetterInt(this::getPriority)
+                .setSetterInt(this::setPriority)
+                .setTextAlignment(Alignment.Center)
+                .setTextColor(Color.WHITE.dark(1))
+                .setFocusOnGuiOpen(false)
+                .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                .addTooltip(GuiText.Priority.getLocal())
+                .setEnabled(widget -> cacheMode)
+                .setPos(7, 63)
+                .setSize(40, 14))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> cacheMode, val -> cacheMode = val));
+    }
+
+    @Override
+    public void onContentsChanged(int slot) {
+        if (slot != 0) return;
+
+        ItemStack upgradeItemStack = mInventory[0];
+        if (GTUtility.areStacksEqualOrNull(oldCellStack, upgradeItemStack)
+            || (upgradeItemStack != null && !(upgradeItemStack.getItem() instanceof FCBaseItemCell))) {
+            return;
+        }
+
+        checkFluidLock();
+        if (this.isCached) {
+            this.isCached = false;
+            updateState();
+        }
+
+        if (cacheMode) {
+            try {
+                this.getProxy()
+                    .getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+
+                final IStorageGrid gs = this.getProxy()
+                    .getStorage();
+                Platform.postChanges(gs, oldCellStack, upgradeItemStack, getRequest());
+                oldCellStack = upgradeItemStack;
+            } catch (final GridAccessException ignored) {}
+        }
+
+        markDirty();
+    }
+
+    public void updateState() {
+        if (this.isCached) {
+            return;
+        }
+        this.isCached = true;
+        this.cell = null;
+        this.cellRead = null;
+        final ItemStack is = mInventory[0];
+        if (is == null) {
+            return;
+        }
+        ICellHandler cellHandler = AEApi.instance()
+            .registries()
+            .cell()
+            .getHandler(is);
+        if (cellHandler != null) {
+            final IMEInventoryHandler<IAEFluidStack> fluidCell = cellHandler
+                .getCellInventory(is, this, StorageChannel.FLUIDS);
+            if (fluidCell != null) {
+                this.cell = this.wrap(fluidCell, AccessRestriction.READ_WRITE);
+                this.cellRead = this.wrap(fluidCell, AccessRestriction.READ);
+                markDirty();
+            }
+        }
+    }
+
+    @Override
+    public List<IMEInventoryHandler> getCellArray(final StorageChannel channel) {
+        if (cacheMode && this.getProxy()
+            .isActive() && channel == StorageChannel.FLUIDS) {
+            if (cellRead != null) return Collections.singletonList(cellRead);
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public int getPriority() {
+        return myPriority;
+    }
+
+    @Override
+    public void setPriority(int newValue) {
+        myPriority = newValue;
+        isCached = false;
+        updateState();
+        markDirty();
+    }
+
+    @Override
+    public void saveChanges(IMEInventory cellInventory) {
+        markDirty();
+    }
+
+    @Override
+    public IGridNode getActionableNode() {
+        final AENetworkProxy gp = getProxy();
+        return gp != null ? gp.getNode() : null;
+    }
+
+    @Override
+    public DimensionalCoord getLocation() {
+        IGregTechTileEntity gtm = this.getBaseMetaTileEntity();
+        return new DimensionalCoord(gtm.getWorld(), gtm.getXCoord(), gtm.getYCoord(), gtm.getZCoord());
+    }
+
+    @Override
+    public void securityBreak() {}
+
+    @Override
+    public IGridNode getGridNode(ForgeDirection forgeDirection) {
+        final AENetworkProxy gp = getProxy();
+        return gp != null ? gp.getNode() : null;
+    }
+
+    private class OutputMonitorHandler<T extends IAEStack<T>> extends MEMonitorHandler<T> {
+
+        public OutputMonitorHandler(final IMEInventoryHandler<T> t) {
+            super(t);
+        }
+    }
+
+    private <StackType extends IAEStack<StackType>> OutputMonitorHandler<StackType> wrap(
+        final IMEInventoryHandler<StackType> h, final AccessRestriction myAccess) {
+        if (h == null) {
+            return null;
+        }
+
+        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getChannel());
+        ih.setPriority(this.myPriority);
+        ih.setBaseAccess(myAccess);
+
+        final OutputMonitorHandler<StackType> g = new OutputMonitorHandler<>(ih);
+        g.addListener(new OutputNetNotifier(h.getChannel()), g);
+
+        return g;
+    }
+
+    private class OutputNetNotifier implements IMEMonitorHandlerReceiver<IAEStack<?>> {
+
+        private final StorageChannel chan;
+
+        public OutputNetNotifier(final StorageChannel chan) {
+            this.chan = chan;
+        }
+
+        @Override
+        public boolean isValid(final Object verificationToken) {
+            if (this.chan == StorageChannel.FLUIDS) {
+                return verificationToken == MTEHatchOutputME.this.cell;
+            }
+            return false;
+        }
+
+        @Override
+        public void postChange(final IBaseMonitor<IAEStack<?>> monitor, final Iterable<IAEStack<?>> change,
+            final BaseActionSource source) {
+            try {
+                if (MTEHatchOutputME.this.getProxy()
+                    .isActive()) {
+                    MTEHatchOutputME.this.getProxy()
+                        .getStorage()
+                        .postAlterationOfStoredItems(this.chan, change, MTEHatchOutputME.this.getRequest());
+                }
+            } catch (final GridAccessException e) {
+                // :(
+            }
+        }
+
+        @Override
+        public void onListUpdate() {}
     }
 }
