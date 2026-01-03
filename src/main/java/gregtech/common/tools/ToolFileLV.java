@@ -10,13 +10,8 @@ import gregtech.api.items.MetaGeneratedTool;
 public class ToolFileLV extends ToolFile {
 
     @Override
-    public float getBaseDamage() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier() {
-        return 2.0F;
+    public int getToolDamagePerContainerCraft() {
+        return 200;
     }
 
     @Override

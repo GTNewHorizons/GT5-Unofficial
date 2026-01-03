@@ -10,6 +10,11 @@ import gregtech.api.items.MetaGeneratedTool;
 public class ToolFileHV extends ToolFileLV {
 
     @Override
+    public int getToolDamagePerContainerCraft() {
+        return 12800;
+    }
+
+    @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.StainlessSteel.mRGBa;
     }
