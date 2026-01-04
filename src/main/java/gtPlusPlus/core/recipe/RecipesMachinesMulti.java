@@ -443,6 +443,11 @@ public class RecipesMachinesMulti {
             GregtechItemList.Industrial_PlatePress.get(1),
             new Object[] { "PCP", "HMH", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitData", 'H',
                 ItemList.Casing_EV, 'M', ItemList.Machine_EV_Bender });
+
+        GTModHandler.addCraftingRecipe(
+            GregtechItemList.Industrial_PlatePress.get(1),
+            new Object[] { "PCP", "HMH", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitData", 'H',
+                ItemList.Casing_EV, 'M', ItemList.Machine_EV_Press });
     }
 
     private static void multiMacerator() {
