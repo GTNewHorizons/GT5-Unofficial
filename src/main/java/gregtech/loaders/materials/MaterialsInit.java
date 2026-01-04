@@ -12147,7 +12147,7 @@ public class MaterialsInit {
     private static Materials loadCrystallinePinkSlime() {
         return new MaterialBuilder().setName("CrystallinePinkSlime")
             .setDefaultLocalName("Crystalline Pink Slime")
-            .setIconSet(TextureSet.SET_CRYSTALLINE)
+            .setIconSet(TextureSet.SET_CRYSTALLINE_PINK_SLIME)
             .setColor(Dyes.dyePink)
             .setARGB(0x00e236cb)
             .setTool(128, 3, 6.0f)
