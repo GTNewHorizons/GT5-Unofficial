@@ -143,7 +143,7 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Terminal.get(1),
             new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitElite",
-                'E', new ItemStack(Blocks.ender_chest), 'X', ItemList.Hull_EV });
+                'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
 
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
