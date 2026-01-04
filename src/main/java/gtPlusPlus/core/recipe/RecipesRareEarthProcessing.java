@@ -28,8 +28,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -96,33 +94,6 @@ public class RecipesRareEarthProcessing {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(laserEngraverRecipes);
-
-        // Set Material Tiers correctly
-        MaterialsOres.GREENOCKITE.vTier = 1;
-        RARE_EARTH_LOW.vTier = 1;
-        RARE_EARTH_MID.vTier = 3;
-        RARE_EARTH_HIGH.vTier = 5;
-
-        // Set Material Voltages correctly
-        MaterialsOres.GREENOCKITE.vVoltageMultiplier = 30;
-        RARE_EARTH_LOW.vVoltageMultiplier = 30;
-        RARE_EARTH_MID.vVoltageMultiplier = 480;
-        RARE_EARTH_HIGH.vVoltageMultiplier = 7680;
-
-        // Set Material Tooltips to be shorter
-        RARE_EARTH_LOW.vChemicalFormula = "??????";
-        RARE_EARTH_MID.vChemicalFormula = "??????";
-        RARE_EARTH_HIGH.vChemicalFormula = "??????";
-
-        // Set Material Tooltips to be shorter
-        RARE_EARTH_LOW.vChemicalSymbol = "??";
-        RARE_EARTH_MID.vChemicalSymbol = "??";
-        RARE_EARTH_HIGH.vChemicalSymbol = "??";
-
-        // Generate Ore Materials
-        MaterialGenerator.generateOreMaterial(RARE_EARTH_LOW);
-        MaterialGenerator.generateOreMaterial(RARE_EARTH_MID);
-        MaterialGenerator.generateOreMaterial(RARE_EARTH_HIGH);
 
         // industrial strength HCl
         Fluid aHydrochloric = FluidUtils.getFluidStack("hydrogenchloride", 1)

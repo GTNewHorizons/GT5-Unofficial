@@ -904,6 +904,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
+    public static Materials SoulInfusedMedium;
 
     // Botania Materials
     public static Materials Manasteel;
