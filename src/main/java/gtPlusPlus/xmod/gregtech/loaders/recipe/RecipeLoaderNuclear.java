@@ -176,7 +176,7 @@ public class RecipeLoaderNuclear {
             .fluidOutputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getFluidStack(3 * INGOTS))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(multiblockChemicalReactorRecipes);
 
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
