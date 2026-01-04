@@ -30,7 +30,7 @@ public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
         this.addTool(
             ANGLE_GRINDER,
             "Angle Grinder",
-            EnumChatFormatting.RED + "DEPRECIATED, Removal In Next Major Update",
+            EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
             new ToolAngleGrinder(),
             ToolDictNames.craftingToolAngleGrinder,
             ToolDictNames.craftingToolFile,
@@ -43,7 +43,7 @@ public class MetaGeneratedGregtechTools extends MetaGeneratedTool {
             this.addTool(
                 ELECTRIC_SNIPS,
                 "Automatic Snips",
-                EnumChatFormatting.RED + "DEPRECIATED, Removal In Next Major Update",
+                EnumChatFormatting.RED + "DEPRECATED, Removal In Next Major Update",
                 new ToolElectricSnips(),
                 ToolDictNames.craftingToolElectricSnips,
                 ToolDictNames.craftingToolWireCutter,
