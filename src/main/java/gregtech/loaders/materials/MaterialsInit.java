@@ -12093,9 +12093,9 @@ public class MaterialsInit {
     private static Materials loadEnergeticSilver() {
         return new MaterialBuilder().setName("EnergeticSilver")
             .setDefaultLocalName("Energetic Silver")
-            .setIconSet(TextureSet.SET_VIVID)
+            .setIconSet(TextureSet.SET_ENERGETIC_SILVER)
             .setColor(Dyes.dyeLightBlue)
-            .setARGB(0x003887b5)
+            .setARGB(0x0063a2c7)
             .setTool(512, 3, 8.0f)
             .addDustItems()
             .addMetalItems()
