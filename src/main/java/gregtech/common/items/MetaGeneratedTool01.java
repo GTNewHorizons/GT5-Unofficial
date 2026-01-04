@@ -17,7 +17,9 @@ import static gregtech.common.items.IDMetaTool01.FILE_HV;
 import static gregtech.common.items.IDMetaTool01.FILE_LV;
 import static gregtech.common.items.IDMetaTool01.FILE_MV;
 import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
-import static gregtech.common.items.IDMetaTool01.JACKHAMMER;
+import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
+import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
+import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
 import static gregtech.common.items.IDMetaTool01.KNIFE;
 import static gregtech.common.items.IDMetaTool01.MORTAR;
 import static gregtech.common.items.IDMetaTool01.PLUNGER;
@@ -83,7 +85,9 @@ import gregtech.common.tools.ToolFileHV;
 import gregtech.common.tools.ToolFileLV;
 import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolHardHammer;
-import gregtech.common.tools.ToolJackHammer;
+import gregtech.common.tools.ToolJackHammerHV;
+import gregtech.common.tools.ToolJackHammerLV;
+import gregtech.common.tools.ToolJackHammerMV;
 import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolPlunger;
@@ -356,11 +360,36 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             GregTechAPI.sWrenchList);
         GregTechAPI.registerTool(
             addTool(
-                JACKHAMMER.ID,
+                JACKHAMMER_LV.ID,
+                "JackHammer (LV)",
+                "Breaks Rocks into pieces",
+                new ToolJackHammerLV(),
+                ToolDictNames.craftingToolJackHammer,
+                ToolDictNames.craftingToolHardHammer,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
+            GregTechAPI.sJackhammerList);
+        GregTechAPI.registerTool(
+            addTool(
+                JACKHAMMER_MV.ID,
+                "JackHammer (MV)",
+                "Breaks Rocks into pieces",
+                new ToolJackHammerMV(),
+                ToolDictNames.craftingToolJackHammer,
+                ToolDictNames.craftingToolHardHammer,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
+            GregTechAPI.sJackhammerList);
+        GregTechAPI.registerTool(
+            addTool(
+                JACKHAMMER_HV.ID,
                 "JackHammer (HV)",
                 "Breaks Rocks into pieces",
-                new ToolJackHammer(),
+                new ToolJackHammerHV(),
                 ToolDictNames.craftingToolJackHammer,
+                ToolDictNames.craftingToolHardHammer,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),

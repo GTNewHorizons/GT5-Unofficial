@@ -20,47 +20,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTToolHarvestHelper;
 import gregtech.api.util.GTUtility;
 
-public class ToolJackHammer extends ToolDrillLV {
-
-    @Override
-    public int getToolDamagePerBlockBreak() {
-        return 400;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 400;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 3200;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 800;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 1;
-    }
-
-    @Override
-    public float getBaseDamage() {
-        return 3.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier() {
-        return 12.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 2.0F;
-    }
+public class ToolJackHammerLV extends ToolDrillLV {
 
     @Override
     public boolean isMinableBlock(Block aBlock, int aMetaData) {
@@ -116,7 +76,7 @@ public class ToolJackHammer extends ToolDrillLV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.JACKHAMMER : null;
+        return aIsToolHead ? Textures.ItemIcons.JACKHAMMER : Textures.ItemIcons.JACKHAMMER_BASE;
     }
 
     @Override
