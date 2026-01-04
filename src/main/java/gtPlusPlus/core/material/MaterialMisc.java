@@ -246,20 +246,6 @@ public final class MaterialMisc {
         new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2),
         new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1));
 
-    // OH
-    public static final Material HYDROXIDE = new Material(
-        "Hydroxide", // Material Name
-        MaterialState.PURE_LIQUID, // State
-        null, // Material Colour
-        -1, // Melting Point in C
-        -1, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1),
-        new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 1));
-
     // NH3
     public static final Material AMMONIA = new Material(
         "Ammonia", // Material Name
@@ -335,11 +321,12 @@ public final class MaterialMisc {
         -1,
         -1,
         false,
-        "Sr(OH)2",
+        "Sr(OH)\u2082",
         0,
         false,
         new MaterialStack(MaterialsElements.getInstance().STRONTIUM, 1),
-        new MaterialStack(MaterialMisc.HYDROXIDE, 2));
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2),
+        new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2));
 
     // Glue Chemicals
 
