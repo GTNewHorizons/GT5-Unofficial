@@ -13971,6 +13971,7 @@ public class MaterialsInit {
     private static void loadMagicMaterials() {
         Materials.ComplexityCatalyst = loadComplexityCatalyst();
         Materials.EntropicCatalyst = loadEntropicCatalyst();
+        Materials.SoulInfusedMedium = loadSoulInfusedMedium();
     }
 
     private static Materials loadComplexityCatalyst() {
@@ -13990,6 +13991,16 @@ public class MaterialsInit {
             .setARGB(0x00a99da5)
             .addFluid()
             .addCell()
+            .constructMaterial();
+    }
+
+    private static Materials loadSoulInfusedMedium() {
+        return new MaterialBuilder().setName("SoulInfusedMedium")
+            .setDefaultLocalName("Soul Infused Medium")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setARGB(0xff32cd32)
+            .addCell()
+            .addFluid()
             .constructMaterial();
     }
 
