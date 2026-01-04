@@ -148,7 +148,7 @@ public class RecipesMachines {
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake.get(1),
-            new Object[] { "PCP", "PRP", "IHI", 'I', OrePrefixes.plate.get(Materials.Redstone), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.get(Materials.Redstone), 'C',
                 ItemList.Casing_Grate, 'R', ItemList.FluidRegulator_IV, 'I', "circuitElite", 'H',
                 ItemList.Hatch_Input_IV });
 
