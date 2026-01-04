@@ -501,6 +501,12 @@ public enum GregtechItemList implements IItemContainer {
     Hatch_Solidifier_III,
     Hatch_Solidifier_IV,
 
+    // Extrusion Hatches for Industrial Extruder
+    Hatch_Extrusion_I,
+    Hatch_Extrusion_II,
+    Hatch_Extrusion_III,
+    Hatch_Extrusion_IV,
+
     // ----------------------------------------------------------------------------
 
     /**
