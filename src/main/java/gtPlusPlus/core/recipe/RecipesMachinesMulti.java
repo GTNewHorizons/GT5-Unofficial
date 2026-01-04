@@ -441,8 +441,10 @@ public class RecipesMachinesMulti {
         // Industrial Material Press
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_PlatePress.get(1),
-            new Object[] { "PCP", "HMH", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitData", 'H',
-                ItemList.Casing_EV, 'M', ItemList.Machine_EV_Bender });
+            new Object[] { "PGP", "MFN", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'F',
+                OrePrefixes.frameGt.get(Materials.Titanium), 'M', ItemList.Machine_EV_Press, 'N',
+                ItemList.Machine_EV_Bender });
     }
 
     private static void multiMacerator() {
