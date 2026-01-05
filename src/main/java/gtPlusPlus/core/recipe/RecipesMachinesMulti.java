@@ -42,7 +42,7 @@ public class RecipesMachinesMulti {
         advHeatExchanger();
         distillus();
         cryoFreezer();
-        vulcanus();
+        volcanus();
         steamMultis();
 
         multiArcFurnace();
@@ -322,7 +322,7 @@ public class RecipesMachinesMulti {
 
         // Steam Output Bus
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Hatch_Input_Bus_Steam.get(1),
+            GregtechItemList.Hatch_Output_Bus_Steam.get(1),
             new Object[] { "BSB", "THT", "BSB", 'B', OrePrefixes.plate.get(Materials.Bronze), 'T',
                 MaterialsAlloy.TUMBAGA.getPlate(1), 'S', OrePrefixes.plate.get(Materials.Tin), 'H',
                 new ItemStack(Blocks.hopper) });
@@ -752,7 +752,7 @@ public class RecipesMachinesMulti {
                 ItemList.Hatch_Input_IV.get(1) });
     }
 
-    private static void vulcanus() {
+    private static void volcanus() {
         // Volcanus Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Adv_BlastFurnace.get(1),
