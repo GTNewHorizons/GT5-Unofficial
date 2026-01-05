@@ -70,7 +70,7 @@ public enum Mods implements IMod {
     CreativeCore(ModIDs.CREATIVE_CORE),
     CropLoadCore(ModIDs.CROP_LOAD_CORE),
     CropsPlusPlus(ModIDs.CROPS_PLUS_PLUS),
-    CropsNH(ModIDs.CropsNH),
+    CropsNH(ModIDs.CROPS_NH),
     CustomMainMenu(ModIDs.CUSTOM_MAIN_MENU),
     Darkerer(ModIDs.DARKERER),
     DefaultConfigs(ModIDs.DEFAULT_CONFIGS),
@@ -413,7 +413,7 @@ public enum Mods implements IMod {
         public static final String CREATIVE_CORE = "creativecore";
         public static final String CROP_LOAD_CORE = "croploadcore";
         public static final String CROPS_PLUS_PLUS = "berriespp";
-        public static final String CropsNH = "CropsNH";
+        public static final String CROPS_NH = "CropsNH";
         public static final String CUSTOM_MAIN_MENU = "custommainmenu";
         public static final String DARKERER = "darkerer";
         public static final String DEFAULT_CONFIGS = "defaultkeys";
