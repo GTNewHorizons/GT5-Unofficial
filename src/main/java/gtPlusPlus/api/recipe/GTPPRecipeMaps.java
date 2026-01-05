@@ -12,10 +12,12 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -293,8 +295,10 @@ public class GTPPRecipeMaps {
         .frontend(TGSFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
-        .of("gt.recipe.multiblockrockbreaker")
-        .maxIO(2, 1, 0, 0)
-        .disableRegisterNEI()
+        .of("gtpp.recipe.multiblockrockbreaker")
+        .maxIO(3, 1, 2, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
+        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .frontend(MultiblockRockBreakerFrontend::new)
         .build();
 }
