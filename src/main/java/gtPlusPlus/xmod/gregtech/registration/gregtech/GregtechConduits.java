@@ -11,6 +11,7 @@ import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -682,7 +683,7 @@ public class GregtechConduits {
 
         int eut = (int) (8 * vMulti);
 
-        if (material != null && material.vVoltageMultiplier <= 7680) {
+        if (material != null && material.vVoltageMultiplier <= TierEU.RECIPE_IV) {
             // Add the Four Shaped Recipes First
             GTModHandler.addCraftingRecipe(
                 ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
