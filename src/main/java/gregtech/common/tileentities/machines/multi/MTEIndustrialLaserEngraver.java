@@ -230,7 +230,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addStaticEuEffInfo(0.8F)
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
-            .addInfo("With UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)")
+            .addInfo("With UEV+ laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo(
