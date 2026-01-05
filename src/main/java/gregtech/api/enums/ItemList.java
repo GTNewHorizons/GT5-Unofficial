@@ -2750,6 +2750,25 @@ public enum ItemList implements IItemContainer {
 
     MagLevHarness,
 
+    LargeHadronCollider,
+    ColliderCasing,
+    CMSCasing,
+    ATLASCasing,
+    ALICECasing,
+    LHCbCasing,
+    AdvancedBeamlineOutputHatch,
+
+    BeamCrafter,
+    BeamMirror,
+    BeamSplitter,
+    BeamStabilizer,
+
+    StableBaryonContainmentUnit,
+    StableLeptonContainmentUnit,
+    StableMesonContainmentUnit,
+    StableBosonContainmentUnit,
+    StableEmptyContainmentUnit,
+
     ManaFly,
     DebugEnergyHatch,
 
