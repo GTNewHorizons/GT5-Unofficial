@@ -1,5 +1,3 @@
-ggfab.recipe.toolcast=Литейная машина для инструментов
-
 ggfab.waila.advassline.slice=Срез #%s: %s с / %s с
 ggfab.waila.advassline.slice.small=Срез #%s: %s тик(ов) / %s тик(ов)
 ggfab.waila.advassline.slice.idle=Срез #%s: Бездействует

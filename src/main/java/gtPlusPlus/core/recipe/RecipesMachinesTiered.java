@@ -36,6 +36,7 @@ public class RecipesMachinesTiered {
         overflowValveCovers();
         chiselBuses();
         solidifierHatches();
+        extruderHatches();
         cropManagers();
         autoWorkbenches();
         autoChisels();
@@ -928,6 +929,72 @@ public class RecipesMachinesTiered {
             .addTo(assemblerRecipes);
     }
 
+    private static void extruderHatches() {
+        // Extruder Hatch I
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_IV.get(1),
+                ItemList.Sensor_IV.get(1),
+                ItemList.Robot_Arm_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_I.get(1))
+            .fluidInputs(MaterialsAlloy.INCONEL_625.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        // Extruder Hatch II
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_LuV.get(1),
+                ItemList.Sensor_LuV.get(1),
+                ItemList.Robot_Arm_LuV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_II.get(1))
+            .fluidInputs(MaterialsAlloy.ZERON_100.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        // Extruder Hatch III
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_ZPM.get(1),
+                ItemList.Sensor_ZPM.get(1),
+                ItemList.Robot_Arm_ZPM.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_III.get(1))
+            .fluidInputs(MaterialsAlloy.PIKYONIUM.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Extruder Hatch IV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_UV.get(1),
+                ItemList.Sensor_UV.get(1),
+                ItemList.Robot_Arm_UV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 4),
+                new ItemStack(Blocks.chest),
+                ItemList.Shape_Empty.get(24))
+            .circuit(17)
+            .itemOutputs(GregtechItemList.Hatch_Extrusion_IV.get(1))
+            .fluidInputs(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(2 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+    }
+
     private static void chiselBuses() {
         // Chisel Bus I
         GTValues.RA.stdBuilder()
@@ -1379,20 +1446,20 @@ public class RecipesMachinesTiered {
             GregtechItemList.GTFluidTank_LV.get(1),
             new Object[] { "SIS", "BPB", "BUB", 'S', OrePrefixes.plate.get(Materials.Steel), 'I',
                 OrePrefixes.plate.get(Materials.Iron), 'B', OrePrefixes.plate.get(Materials.Bronze), 'P',
-                OrePrefixes.pipeHuge.get(Materials.Clay), 'U', ItemList.Pump_LV });
+                OrePrefixes.pipeHuge.get(Materials.Clay), 'U', ItemList.Electric_Pump_LV });
 
         // MV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_MV.get(1),
             new Object[] { "DBD", "SPS", "SUS", 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'B',
                 OrePrefixes.plate.get(Materials.Bronze), 'S', OrePrefixes.plate.get(Materials.Steel), 'P',
-                OrePrefixes.pipeMedium.get(Materials.Bronze), 'U', ItemList.Pump_LV });
+                OrePrefixes.pipeMedium.get(Materials.Bronze), 'U', ItemList.Electric_Pump_LV });
 
         // HV Fluid Tank
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GTFluidTank_HV.get(1),
             new Object[] { "CAC", "DPD", "CUC", 'C', "circuitPrimitive", 'A',
                 OrePrefixes.plate.get(Materials.Aluminium), 'D', OrePrefixes.plate.get(Materials.DarkSteel), 'P',
-                OrePrefixes.pipeMedium.get(Materials.Steel), 'U', ItemList.Pump_MV });
+                OrePrefixes.pipeMedium.get(Materials.Steel), 'U', ItemList.Electric_Pump_MV });
     }
 }
