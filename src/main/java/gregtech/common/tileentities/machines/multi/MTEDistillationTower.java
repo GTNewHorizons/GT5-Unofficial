@@ -283,9 +283,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         return this.mOutputHatchesByLayer.stream()
             .allMatch(
                 tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(
-                        tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())
-                            && (!tMEHatch.getCheckMode())));
+                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
     @Override
