@@ -3,12 +3,9 @@ package gregtech.common.tools;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolWrenchHV extends ToolWrenchLV {
+public class ToolJackHammerHV extends ToolJackHammerLV {
 
     @Override
     public int getToolDamagePerBlockBreak() {
@@ -31,18 +28,8 @@ public class ToolWrenchHV extends ToolWrenchLV {
     }
 
     @Override
-    public int getBaseQuality() {
-        return 1;
-    }
-
-    @Override
-    public float getBaseDamage() {
-        return 2.0F;
-    }
-
-    @Override
     public float getSpeedMultiplier() {
-        return 4.0F;
+        return 9.0F;
     }
 
     @Override
@@ -53,12 +40,6 @@ public class ToolWrenchHV extends ToolWrenchLV {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.StainlessSteel.mRGBa;
-    }
-
-    @Override
-    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadWrench
-            .getTextureIndex()] : Textures.ItemIcons.POWER_UNIT_HV;
     }
 
 }
