@@ -356,19 +356,6 @@ public class RecipeLoaderAgriculturalChem {
             addMiscForestryRecipes();
         }
 
-        // IC2 Fertilizer
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.OrganicFertilizerDust.get(4))
-            .circuit(12)
-            .itemOutputs(
-                ItemList.IC2_Fertilizer.get(3),
-                GregtechItemList.ManureByproductsDust.get(1),
-                GregtechItemList.ManureByproductsDust.get(1))
-            .outputChances(10000, 2000, 2000)
-            .eut(240)
-            .duration(20 * SECONDS)
-            .addTo(chemicalDehydratorRecipes);
-
         // Dirt Production
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.DriedEarthDust.get(9))

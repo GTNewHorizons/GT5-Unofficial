@@ -274,7 +274,6 @@ public enum GTBeeDefinition implements IBeeDefinition {
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
         beeSpecies.addSpecialty(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.AshDark, 1), 0.2f);
         beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
-        beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(WARM);
     }, template -> {

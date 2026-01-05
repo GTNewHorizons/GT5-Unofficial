@@ -584,8 +584,7 @@ public class CropLoader implements Runnable {
                 8,
                 new String[] { "Growth", "Healing", "Flower" },
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L),
-                new ItemStack[] { ItemList.IC2_Fertilizer.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1L),
+                new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Apatite, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Phosphate, 1L) },
                 "gt.crop.fertilia.name");
             new GTBaseCrop(

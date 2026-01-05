@@ -583,51 +583,6 @@ public class MixerRecipes implements Runnable {
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fertilizer.get(1), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.FR_Fertilizer.get(1), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.FR_Compost.get(1), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.FR_Mulch.get(8), new ItemStack(Blocks.dirt, 8, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.sand, 1, 32767), new ItemStack(Blocks.dirt, 1, 32767))
-            .circuit(1)
-            .itemOutputs(getModItem(Forestry.ID, "soil", 2L, 1))
-            .fluidInputs(Materials.Water.getFluid(250))
-            .duration(16 * TICKS)
-            .eut(16)
-            .addTo(mixerRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.LightFuel, 5),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.HeavyFuel, 1))

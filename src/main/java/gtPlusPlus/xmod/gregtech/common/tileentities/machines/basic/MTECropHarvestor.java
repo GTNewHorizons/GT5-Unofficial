@@ -459,13 +459,6 @@ public class MTECropHarvestor extends MTEBasicTank {
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (aStack != null) {
-            if (ItemList.IC2_Fertilizer.isStackEqual(aStack)) {
-                return aIndex >= SLOT_FERT_1 && aIndex <= SLOT_FERT_4;
-            } else if (ItemList.IC2_Spray_WeedEx.isStackEqual(aStack, true, true)) {
-                return aIndex >= SLOT_WEEDEX_1 && aIndex <= SLOT_WEEDEX_2;
-            }
-        }
         return false;
     }
 
@@ -624,7 +617,7 @@ public class MTECropHarvestor extends MTEBasicTank {
                     .startFromSlot(SLOT_FERT_1)
                     .endAtSlot(SLOT_FERT_4)
                     .applyForWidget(
-                        widget -> widget.setFilter(ItemList.IC2_Fertilizer::isStackEqual)
+                        widget -> widget.setFilter((is) -> false)
                             .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_FERTILIZER))
                     .build()
                     .setPos(7, 31))
