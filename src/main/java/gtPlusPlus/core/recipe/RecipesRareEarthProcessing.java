@@ -15,7 +15,6 @@ import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_HIGH;
 import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_LOW;
 import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_MID;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -27,7 +26,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -82,7 +80,7 @@ public class RecipesRareEarthProcessing {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1L),
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L))
             .circuit(2)
-            .itemOutputs(new ItemStack(ModItems.cellHydrogenChlorideMix, 2))
+            .itemOutputs(HYDROGEN_CHLORIDE_MIX.getCell(2))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(mixerRecipes);
