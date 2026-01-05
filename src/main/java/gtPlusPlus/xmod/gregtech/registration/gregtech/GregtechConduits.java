@@ -11,7 +11,6 @@ import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -20,6 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
