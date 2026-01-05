@@ -2,13 +2,10 @@ package gtPlusPlus.core.item;
 
 import static codechicken.nei.api.API.hideItem;
 import static gregtech.api.enums.Mods.Baubles;
-import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import net.minecraft.init.Blocks;
@@ -18,11 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -132,8 +127,6 @@ public final class ModItems {
 
     public static Item dustCalciumSulfate;
 
-    public static Item dustFertUN18;
-    public static Item dustFertUN32;
     public static Fluid fluidNuclearWaste;
 
     // Possibly missing base items that GT may be missing.
@@ -176,9 +169,6 @@ public final class ModItems {
     public static ItemStack itemHotTitaniumIngot;
 
     public static Fluid fluidZrF4;
-    public static Fluid fluidFertBasic;
-    public static Fluid fluidFertUN32;
-    public static Fluid fluidFertUN18;
 
     public static IonParticles itemIonParticleBase;
     public static StandardBaseParticles itemStandarParticleBase;
@@ -610,50 +600,6 @@ public final class ModItems {
         // NaBF4 - NaF - 621C
         // dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0];
         // //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-
-        // Load Tree Farmer
-        // https://en.wikipedia.org/wiki/UAN
-        dustFertUN18 = ItemUtils
-            .generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
-        dustFertUN32 = ItemUtils
-            .generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
-
-        if (Forestry.isModLoaded()) {
-            ItemStack temp1 = ItemList.IC2_Fertilizer.get(1);
-            ItemStack temp2 = ItemList.FR_Fertilizer.get(1);
-            if (temp1 != null && temp2 != null) {
-                fluidFertBasic = FluidUtils.generateFluidNonMolten(
-                    "Fertiliser",
-                    "Fertiliser",
-                    32,
-                    new short[] { 45, 170, 45, 100 },
-                    temp1,
-                    null,
-                    true);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(temp2)
-                    .fluidOutputs(new FluidStack(fluidFertBasic, 36))
-                    .duration(5 * TICKS)
-                    .eut(16)
-                    .addTo(fluidExtractionRecipes);
-            }
-        }
-        fluidFertUN32 = FluidUtils.generateFluidNonMolten(
-            "UN32Fertiliser",
-            "UN-32 Fertiliser",
-            24,
-            new short[] { 55, 190, 55, 100 },
-            null,
-            null,
-            true);
-        fluidFertUN18 = FluidUtils.generateFluidNonMolten(
-            "UN18Fertiliser",
-            "UN-18 Fertiliser",
-            22,
-            new short[] { 60, 155, 60, 100 },
-            null,
-            null,
-            true);
 
         /*
          * GT_Values.RA.addMixerRecipe( arg0, //Item In arg1, arg2, arg3, arg4, //Fluid in arg5, //Fluid Out arg6,
