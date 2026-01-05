@@ -75,7 +75,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
-import gregtech.api.metatileentity.implementations.MTEWirelessDynamo;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
@@ -10392,99 +10391,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 14).getStackForm(1L));
     }
 
-    private static void registerWirelessDynamoHatch() {
-        ItemList.Wireless_Dynamo_Energy_ULV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_ULV.ID,
-                "hatch.wireless.transmitter.tier.00",
-                "ULV Wireless Energy Dynamo",
-                0).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_LV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_LV.ID,
-                "hatch.wireless.transmitter.tier.01",
-                "LV Wireless Energy Dynamo",
-                1).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_MV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_MV.ID,
-                "hatch.wireless.transmitter.tier.02",
-                "MV Wireless Energy Dynamo",
-                2).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_HV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_HV.ID,
-                "hatch.wireless.transmitter.tier.03",
-                "HV Wireless Energy Dynamo",
-                3).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_EV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_EV.ID,
-                "hatch.wireless.transmitter.tier.04",
-                "EV Wireless Energy Dynamo",
-                4).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_IV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_IV.ID,
-                "hatch.wireless.transmitter.tier.05",
-                "IV Wireless Energy Dynamo",
-                5).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_LuV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_LuV.ID,
-                "hatch.wireless.transmitter.tier.06",
-                "LuV Wireless Energy Dynamo",
-                6).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_ZPM.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_ZPM.ID,
-                "hatch.wireless.transmitter.tier.07",
-                "ZPM Wireless Energy Dynamo",
-                7).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UV.ID,
-                "hatch.wireless.transmitter.tier.08",
-                "UV Wireless Energy Dynamo",
-                8).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UHV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UHV.ID,
-                "hatch.wireless.transmitter.tier.09",
-                "UHV Wireless Energy Dynamo",
-                9).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UEV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UEV.ID,
-                "hatch.wireless.transmitter.tier.10",
-                "UEV Wireless Energy Dynamo",
-                10).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UIV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UIV.ID,
-                "hatch.wireless.transmitter.tier.11",
-                "UIV Wireless Energy Dynamo",
-                11).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UMV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UMV.ID,
-                "hatch.wireless.transmitter.tier.12",
-                "UMV Wireless Energy Dynamo",
-                12).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UXV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UXV.ID,
-                "hatch.wireless.transmitter.tier.13",
-                "UXV Wireless Energy Dynamo",
-                13).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_MAX.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_MAX.ID,
-                "hatch.wireless.transmitter.tier.14",
-                "MAX Wireless Energy Dynamo",
-                14).getStackForm(1L));
-    }
-
     private static void registerLightningRods() {
         ItemList.Machine_HV_LightningRod.set(
             new MTELightningRod(LIGHTNING_ROD_HV.ID, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
@@ -10746,7 +10652,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerBatteryBuffer4x4();
         registerCharger4x4();
         registerWirelessEnergyHatch();
-        registerWirelessDynamoHatch();
         registerSteamMachines();
         registerHPSteamMachines();
         registerLocker();
