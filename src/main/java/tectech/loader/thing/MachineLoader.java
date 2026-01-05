@@ -89,6 +89,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.LuV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.LuV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV262144AtLaserSourceHatch;
@@ -131,6 +132,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.UEV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UEV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UEV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UEV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.UEV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UEV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UEV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UEV262144AtLaserSourceHatch;
@@ -154,6 +156,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.UHV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UHV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UHV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UHV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.UHV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UHV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UHV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UHV262144AtLaserSourceHatch;
@@ -177,6 +180,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.UIV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UIV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UIV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UIV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.UIV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UIV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UIV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UIV262144AtLaserSourceHatch;
@@ -200,6 +204,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.UMV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UMV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UMV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UMV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.UMV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UMV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UMV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UMV262144AtLaserSourceHatch;
@@ -223,6 +228,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.UV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.UV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UV262144AtLaserSourceHatch;
@@ -249,6 +255,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.UXV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UXV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UXV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UXV16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.UXV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UXV256AWirelessEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UXV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.UXV256AtLaserTargetHatch;
@@ -286,6 +293,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPM16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM16AWirelessEnergyHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.ZPM256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM262144AtLaserSourceHatch;
@@ -378,6 +386,14 @@ import static tectech.thing.CustomItemList.eM_dynamoMulti16_UMV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti16_UV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti16_UXV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti16_ZPM;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_LuV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_UEV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_UHV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_UIV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_UMV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_UV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_UXV;
+import static tectech.thing.CustomItemList.eM_dynamoMulti256_ZPM;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_EV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_IV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_LuV;
@@ -1633,6 +1649,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_LuV.set(
             new MTEHatchDynamoMulti(LuV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.06", "LuV 64A Dynamo Hatch", 6, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_LuV.set(
+            new MTEHatchDynamoMulti(
+                LuV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.06",
+                "LuV 256A Dynamo Hatch",
+                6,
+                256).getStackForm(1L));
         eM_dynamoMulti4_ZPM.set(
             new MTEHatchDynamoMulti(ZPM4ADynamoHatch.ID, "hatch.dynamomulti04.tier.07", "ZPM 4A Dynamo Hatch", 7, 4)
                 .getStackForm(1L));
@@ -1642,6 +1665,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_ZPM.set(
             new MTEHatchDynamoMulti(ZPM64ADynamoHatch.ID, "hatch.dynamomulti64.tier.07", "ZPM 64A Dynamo Hatch", 7, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_ZPM.set(
+            new MTEHatchDynamoMulti(
+                ZPM256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.07",
+                "ZPM 256A Dynamo Hatch",
+                7,
+                256).getStackForm(1L));
         eM_dynamoMulti4_UV.set(
             new MTEHatchDynamoMulti(UV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.08", "UV 4A Dynamo Hatch", 8, 4)
                 .getStackForm(1L));
@@ -1651,6 +1681,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_UV.set(
             new MTEHatchDynamoMulti(UV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.08", "UV 64A Dynamo Hatch", 8, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_UV.set(
+            new MTEHatchDynamoMulti(
+                UV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.08",
+                "UV 256A Dynamo Hatch",
+                8,
+                256).getStackForm(1L));
         eM_dynamoMulti4_UHV.set(
             new MTEHatchDynamoMulti(UHV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.09", "UHV 4A Dynamo Hatch", 9, 4)
                 .getStackForm(1L));
@@ -1660,6 +1697,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_UHV.set(
             new MTEHatchDynamoMulti(UHV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.09", "UHV 64A Dynamo Hatch", 9, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_UHV.set(
+            new MTEHatchDynamoMulti(
+                UHV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.09",
+                "UHV 256A Dynamo Hatch",
+                9,
+                256).getStackForm(1L));
         eM_dynamoMulti4_UEV.set(
             new MTEHatchDynamoMulti(UEV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.10", "UEV 4A Dynamo Hatch", 10, 4)
                 .getStackForm(1L));
@@ -1669,6 +1713,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_UEV.set(
             new MTEHatchDynamoMulti(UEV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.10", "UEV 64A Dynamo Hatch", 10, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_UEV.set(
+            new MTEHatchDynamoMulti(
+                UEV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.10",
+                "UEV 256A Dynamo Hatch",
+                10,
+                256).getStackForm(1L));
         eM_dynamoMulti4_UIV.set(
             new MTEHatchDynamoMulti(UIV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.11", "UIV 4A Dynamo Hatch", 11, 4)
                 .getStackForm(1L));
@@ -1678,6 +1729,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_UIV.set(
             new MTEHatchDynamoMulti(UIV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.11", "UIV 64A Dynamo Hatch", 11, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_UIV.set(
+            new MTEHatchDynamoMulti(
+                UIV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.11",
+                "UIV 256A Dynamo Hatch",
+                11,
+                256).getStackForm(1L));
         eM_dynamoMulti4_UMV.set(
             new MTEHatchDynamoMulti(UMV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.12", "UMV 4A Dynamo Hatch", 12, 4)
                 .getStackForm(1L));
@@ -1687,6 +1745,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_UMV.set(
             new MTEHatchDynamoMulti(UMV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.12", "UMV 64A Dynamo Hatch", 12, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_UMV.set(
+            new MTEHatchDynamoMulti(
+                UMV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.12",
+                "UMV 256A Dynamo Hatch",
+                12,
+                256).getStackForm(1L));
         eM_dynamoMulti4_UXV.set(
             new MTEHatchDynamoMulti(UXV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.13", "UXV 4A Dynamo Hatch", 13, 4)
                 .getStackForm(1L));
@@ -1696,6 +1761,13 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_UXV.set(
             new MTEHatchDynamoMulti(UXV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.13", "UXV 64A Dynamo Hatch", 13, 64)
                 .getStackForm(1L));
+        eM_dynamoMulti256_UXV.set(
+            new MTEHatchDynamoMulti(
+                UXV256ADynamoHatch.ID,
+                "hatch.dynamomulti256.tier.13",
+                "UXV 256A Dynamo Hatch",
+                13,
+                256).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Laser OUTPUTS
