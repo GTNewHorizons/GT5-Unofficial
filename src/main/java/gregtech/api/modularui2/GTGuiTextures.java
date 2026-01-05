@@ -277,7 +277,7 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
         .build();
-    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImageColorableGT("overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImage(GregTech.ID, "gui/overlay_slot/data_orb");
     public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/dust")
         .fullImage()
@@ -309,6 +309,7 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
         .build();
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = fullImageColorableGT("overlay_slot/int_circuit");
+    public static final UITexture OVERLAY_SLOT_CIRCUIT = fullImage(GregTech.ID, "gui/overlay_slot/circuit");
     public static final UITexture OVERLAY_SLOT_FURNACE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/furnace")
         .fullImage()
@@ -365,6 +366,12 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EXTRUDER_SHAPE)
         .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_BLOCK_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/block_%s")
@@ -485,6 +492,11 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_BOILER_HEAT)
+        .build();
+    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_slot/charger")
         .build();
     public static final UITexture PROGRESSBAR_FUEL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/fuel")
@@ -1127,12 +1139,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_cutting");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_compressing");
