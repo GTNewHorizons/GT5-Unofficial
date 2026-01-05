@@ -28,6 +28,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
     }
 
     private void generateRecipes(final Material material) {
+        if (material.vVoltageMultiplier > 7680) {
+            return;
+        }
         Logger.WARNING("Generating Shaped Crafting recipes for " + material.getLocalizedName()); // TODO
 
         // Single Plate Shaped/Shapeless
