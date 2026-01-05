@@ -556,12 +556,6 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/explosive")
         .build();
 
-    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
-        .canApplyTheme()
-        .fullImage()
-        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
-        .build();
-
     public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.builder()
         .canApplyTheme()
         .fullImage()
