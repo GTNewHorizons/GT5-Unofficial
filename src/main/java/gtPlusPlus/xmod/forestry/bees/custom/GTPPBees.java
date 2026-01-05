@@ -51,7 +51,7 @@ public class GTPPBees {
                 combs = new ItemCustomComb();
                 combs.initCombsRecipes();
                 GTPPBeeDefinition.initBees();
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 Logger.BEES("Failed to load bees, probably due to an ancient forestry version");
                 t.printStackTrace();
             }

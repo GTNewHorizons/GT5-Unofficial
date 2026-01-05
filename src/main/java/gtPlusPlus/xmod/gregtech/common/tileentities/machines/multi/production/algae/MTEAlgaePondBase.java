@@ -334,8 +334,8 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                 || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
                 return aInitStructureCheckMeta - 1;
             }
-            return -1;
-        } catch (Throwable t) {
+            return 0;
+        } catch (Exception t) {
             t.printStackTrace();
             return -1;
         }
