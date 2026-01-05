@@ -207,6 +207,7 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
@@ -526,6 +527,16 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Solidifier.set(
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
+        ItemList.Machine_Multi_ExoFoundry.set(
+            new MTEExoFoundry(MULTI_EXOFOUNDRY_CONTROLLER.ID, "multimachine.exofoundry", "Exo-Foundry")
+                .getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_ExoFoundry.get(1),
+            chain(
+                GTValues.AUTHORS_SUPPLIER,
+                GTValues.fancyAuthorChrom,
+                GTValues.AND_SUPPLIER,
+                GTValues.AuthorAuynonymous));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -581,11 +592,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
-            chain(
-                () -> "Authors: ",
-                GTValues.fancyAuthorChrom,
-                () -> EnumChatFormatting.GRAY + " & ",
-                GTValues.AuthorNoc));
+            chain(GTValues.AUTHORS_SUPPLIER, GTValues.fancyAuthorChrom, GTValues.AND_SUPPLIER, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")

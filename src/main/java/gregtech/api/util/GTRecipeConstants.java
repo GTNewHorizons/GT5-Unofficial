@@ -29,6 +29,7 @@ import gregtech.api.util.recipe.Scanning;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -150,6 +151,9 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<String> FOG_UPGRADE_NAME_SHORT = SimpleRecipeMetadataKey
         .create(String.class, "fog_plasma_upgrade_name_short");
+
+    public static final RecipeMetadataKey<FoundryModules> FOUNDRY_MODULE = SimpleRecipeMetadataKey
+        .create(FoundryModules.class, "foundry_module");
 
     /**
      * DEFC Casing tier.
