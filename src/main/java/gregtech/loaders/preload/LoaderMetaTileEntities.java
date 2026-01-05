@@ -41,13 +41,10 @@ import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.recyclerRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -7669,219 +7666,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
-    @Deprecated
-    private void registerSlicingMachine() {
-        ItemList.Machine_LV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_LV.ID,
-                "basicmachine.slicer.tier.01",
-                "Basic Slicing Machine",
-                1,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_MV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_MV.ID,
-                "basicmachine.slicer.tier.02",
-                "Advanced Slicing Machine",
-                2,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_HV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_HV.ID,
-                "basicmachine.slicer.tier.03",
-                "Advanced Slicing Machine II",
-                3,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_EV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_EV.ID,
-                "basicmachine.slicer.tier.04",
-                "Advanced Slicing Machine III",
-                4,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_IV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_IV.ID,
-                "basicmachine.slicer.tier.05",
-                "Advanced Slicing Machine IV",
-                5,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_LuV.ID,
-                "basicmachine.slicer.tier.06",
-                "Elite Slicing Machine",
-                6,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_ZPM.ID,
-                "basicmachine.slicer.tier.07",
-                "Elite Slicing Machine II",
-                7,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UV.ID,
-                "basicmachine.slicer.tier.08",
-                "Ultimate Quantum Slicer",
-                8,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UHV.ID,
-                "basicmachine.slicer.tier.09",
-                "Epic Quantum Slicer",
-                9,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UEV.ID,
-                "basicmachine.slicer.tier.10",
-                "Epic Quantum Slicer II",
-                10,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UIV.ID,
-                "basicmachine.slicer.tier.11",
-                "Epic Quantum Slicer III",
-                11,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UMV.ID,
-                "basicmachine.slicer.tier.12",
-                "Epic Quantum Slicer IV",
-                12,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-    }
-
     private void registerThermalCentrifuge() {
         ItemList.Machine_LV_ThermalCentrifuge.set(
             new MTEBasicMachineWithRecipe(
@@ -10936,7 +10720,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPolarizer();
         registerRecycler();
         registerSiftingMachine();
-        registerSlicingMachine();
         registerThermalCentrifuge();
         registerWiremill();
         registerArcFurnace();
