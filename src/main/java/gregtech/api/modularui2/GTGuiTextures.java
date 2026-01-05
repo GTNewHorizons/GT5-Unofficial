@@ -326,6 +326,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
         .build();
+    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EXTRUDER_SHAPE)
+        .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_BLOCK_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/block_%s")
         .fullImage()
@@ -1461,12 +1467,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
-        GregTech.ID,
-        "gui/overlay_button/machine_mode_cutting");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_compressing");

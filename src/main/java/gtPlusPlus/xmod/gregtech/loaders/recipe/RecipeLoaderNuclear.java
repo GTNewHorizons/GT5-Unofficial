@@ -168,26 +168,15 @@ public class RecipeLoaderNuclear {
             .addTo(UniversalChemical);
 
         // LFTR Fuel Related Compounds
-        // Hydroxide
-        GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.getInstance().OXYGEN.getCell(1))
-            .circuit(3)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(MaterialsElements.getInstance().HYDROGEN.getFluidStack(1_000))
-            .fluidOutputs(MaterialMisc.HYDROXIDE.getFluidStack(1_000))
-            .duration(8 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
         // Beryllium Hydroxide
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().BERYLLIUM.getDust(1))
             .circuit(3)
-            .fluidInputs(MaterialMisc.HYDROXIDE.getFluidStack(2_000))
+            .fluidInputs(Materials.Oxygen.getGas(1_000), Materials.Hydrogen.getGas(1_000))
             .fluidOutputs(MaterialsFluorides.BERYLLIUM_HYDROXIDE.getFluidStack(3 * INGOTS))
-            .duration(4 * SECONDS)
+            .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
+            .addTo(multiblockChemicalReactorRecipes);
 
         // Ammonium Bifluoride
         GTValues.RA.stdBuilder()
