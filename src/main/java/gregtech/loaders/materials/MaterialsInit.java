@@ -1434,6 +1434,7 @@ public class MaterialsInit {
             .addDustItems()
             .addMetalItems()
             .addOreItems()
+            .addPlasma()
             .setMeltingPoint(1_315)
             .setBlastFurnaceTemp(1_315)
             .setBlastFurnaceRequired(true)
