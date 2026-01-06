@@ -26,28 +26,25 @@ public abstract class MixinGalacticraftRocketPollution extends EntityAutoRocket 
         if (worldObj.isRemote) {
             return;
         }
-    
+
         if ((worldObj.getTotalWorldTime() % 20) != 0) {
             return;
         }
-    
+
         int pollutionAmount = 0;
         int tierFactor = PollutionConfig.rocketPollutionAmount * getRocketTier();
-    
+
         if (launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()) {
             pollutionAmount = tierFactor;
         } else if (launchPhase == EnumLaunchPhase.IGNITED.ordinal()) {
             pollutionAmount = tierFactor / 100;
         }
-    
+
         if (pollutionAmount <= 0) {
             return;
         }
-    
-        Pollution.addPollution(
-            worldObj.getChunkFromBlockCoords((int) posX, (int) posZ),
-            pollutionAmount
-        );
+
+        Pollution.addPollution(worldObj.getChunkFromBlockCoords((int) posX, (int) posZ), pollutionAmount);
     }
 
 }
