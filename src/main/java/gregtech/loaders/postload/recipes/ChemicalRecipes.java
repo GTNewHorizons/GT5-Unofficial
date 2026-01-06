@@ -5756,8 +5756,8 @@ public class ChemicalRecipes implements Runnable {
             .circuit(3)
             .itemOutputs(Materials.RawStyreneButadieneRubber.getDust(3))
             .fluidInputs(
-                Materials.Styrene.getFluid(36),
-                Materials.Butadiene.getGas(108),
+                Materials.Styrene.getFluid(72),
+                Materials.Butadiene.getGas(216),
                 Materials.Oxygen.getGas(2_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
