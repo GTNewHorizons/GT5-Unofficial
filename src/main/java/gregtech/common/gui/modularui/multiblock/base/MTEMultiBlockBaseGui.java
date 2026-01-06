@@ -65,6 +65,7 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.gtnewhorizon.gtnhlib.util.GuiText;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.enums.StructureError;
@@ -259,7 +260,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .widthRel(1))
             .childIf(
                 multiblock.hasRunningText(),
-                new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
+                new TextWidget<>(StatCollector.translateToLocal("gt.interact.desc.mb.running")).color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
@@ -509,7 +510,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
 
-        String amountString = EnumChatFormatting.WHITE + " x "
+        String amountString = EnumChatFormatting.WHITE + " "
+            + GuiText.format(GuiText.Keys.SYMBOL_X, "x")
+            + " "
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
@@ -544,7 +547,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
-        String amountString = EnumChatFormatting.WHITE + " x "
+        String amountString = EnumChatFormatting.WHITE + " "
+            + GuiText.format(GuiText.Keys.SYMBOL_X, "x")
+            + " "
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + "L"

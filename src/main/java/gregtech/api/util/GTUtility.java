@@ -132,6 +132,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.util.GuiText;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -151,6 +152,7 @@ import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.damagesources.GTDamageSources.DamageSourceHotItem;
 import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTValues.NBT;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
@@ -4555,7 +4557,8 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(" (");
+            ret.append(" ");
+            ret.append(GuiText.format(GuiText.Keys.BRACKET_OPEN, "("));
             ret.append(EnumChatFormatting.GRAY);
             if (perSecond <= 1) {
                 ret.append(df.format(progressTime / amount));
@@ -4565,7 +4568,8 @@ public class GTUtility {
                 ret.append("/s");
             }
             ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
+            ret.append(" ");
+            ret.append(GuiText.format(GuiText.Keys.BRACKET_CLOSE, ")"));
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
