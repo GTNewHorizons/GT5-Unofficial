@@ -31,7 +31,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
@@ -299,7 +298,7 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.reeds, 32), new ItemStack(ModItems.dustCalciumCarbonate, 2))
+            .itemInputs(new ItemStack(Items.reeds, 32), GregtechItemList.CalciumCarbonateDust.get(2))
             .circuit(5)
             .fluidInputs(FluidUtils.getHotWater(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
@@ -323,9 +322,7 @@ public class RecipeLoaderAgriculturalChem {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get("cropSugarbeet", 4),
-                    new ItemStack(ModItems.dustCalciumCarbonate, 2))
+                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4), GregtechItemList.CalciumCarbonateDust.get(2))
                 .circuit(5)
                 .fluidInputs(FluidUtils.getHotWater(2_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))

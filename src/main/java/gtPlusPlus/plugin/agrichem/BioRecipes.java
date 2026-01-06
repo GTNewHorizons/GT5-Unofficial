@@ -41,7 +41,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -380,7 +379,7 @@ public class BioRecipes {
     private static void recipeRedCelluloseFiber() {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.RedCelluloseFiber.get(3))
-            .itemOutputs(new ItemStack(ModItems.dustCalciumCarbonate, 5))
+            .itemOutputs(GregtechItemList.CalciumCarbonateDust.get(5))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(extractorRecipes);

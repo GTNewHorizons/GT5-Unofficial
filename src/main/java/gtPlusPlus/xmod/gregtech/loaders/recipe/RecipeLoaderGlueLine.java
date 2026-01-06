@@ -31,7 +31,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -170,7 +169,7 @@ public class RecipeLoaderGlueLine {
 
         // CaCO3 + 2HCl = CaCl2 + CO2 + H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.dustCalciumCarbonate, 5))
+            .itemInputs(GregtechItemList.CalciumCarbonateDust.get(5))
             .circuit(8)
             .itemOutputs(WerkstoffLoader.CalciumChloride.get(OrePrefixes.dust, 3))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(2_000))

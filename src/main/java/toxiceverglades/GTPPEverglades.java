@@ -1,6 +1,9 @@
 package toxiceverglades;
 
 import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
+import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_HIGH;
+import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_LOW;
+import static gtPlusPlus.core.material.MaterialMisc.RARE_EARTH_MID;
 
 import net.minecraftforge.common.DimensionManager;
 
@@ -108,6 +111,37 @@ public class GTPPEverglades {
         MaterialGenerator.generateOreMaterial(MaterialsOres.RADIOBARITE);
         MaterialGenerator.generateOreMaterial(MaterialsOres.DEEP_EARTH_REACTOR_FUEL_DEPOSIT);
 
+        GenerateRareEarthOreMaterials();
+    }
+
+    public static synchronized void GenerateRareEarthOreMaterials() {
+
+        // Set Material Tiers correctly
+        MaterialsOres.GREENOCKITE.vTier = 1;
+        RARE_EARTH_LOW.vTier = 1;
+        RARE_EARTH_MID.vTier = 3;
+        RARE_EARTH_HIGH.vTier = 5;
+
+        // Set Material Voltages correctly
+        MaterialsOres.GREENOCKITE.vVoltageMultiplier = 30;
+        RARE_EARTH_LOW.vVoltageMultiplier = 30;
+        RARE_EARTH_MID.vVoltageMultiplier = 480;
+        RARE_EARTH_HIGH.vVoltageMultiplier = 7680;
+
+        // Set Material Tooltips to be shorter
+        RARE_EARTH_LOW.vChemicalFormula = "??????";
+        RARE_EARTH_MID.vChemicalFormula = "??????";
+        RARE_EARTH_HIGH.vChemicalFormula = "??????";
+
+        // Set Material Tooltips to be shorter
+        RARE_EARTH_LOW.vChemicalSymbol = "??";
+        RARE_EARTH_MID.vChemicalSymbol = "??";
+        RARE_EARTH_HIGH.vChemicalSymbol = "??";
+
+        // Generate Ore Materials
+        MaterialGenerator.generateOreMaterial(RARE_EARTH_LOW);
+        MaterialGenerator.generateOreMaterial(RARE_EARTH_MID);
+        MaterialGenerator.generateOreMaterial(RARE_EARTH_HIGH);
     }
 
     protected synchronized void setVars(FMLPreInitializationEvent event) {
