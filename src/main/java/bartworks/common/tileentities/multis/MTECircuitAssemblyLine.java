@@ -331,7 +331,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             switchMode();
-            GTUtility.sendChatToPlayerTrans(aPlayer, "chat.cal.mode." + mode.index);
+            GTUtility.sendChatTrans(aPlayer, "chat.cal.mode." + mode.index);
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -618,13 +618,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (!aPlayer.isSneaking()) {
             if (mode == Mode.CircuitAssemblyLine) return false;
             inputSeparation = !inputSeparation;
-            GTUtility.sendChatToPlayerTrans(aPlayer, "GT5U.machines.separatebus", inputSeparation);
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.separatebus", inputSeparation);
         } else {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayerTrans(aPlayer, "misc.BatchModeTextOn");
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayerTrans(aPlayer, "misc.BatchModeTextOff");
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
         }
         return true;

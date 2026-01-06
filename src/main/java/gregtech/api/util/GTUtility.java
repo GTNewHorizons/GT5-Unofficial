@@ -510,7 +510,7 @@ public class GTUtility {
     }
 
     /**
-     * @deprecated Use {@link #sendChatToPlayerTrans} instead.
+     * @deprecated Use {@link #sendChatTrans} instead.
      */
     @Deprecated
     public static void sendChatToPlayer(EntityPlayer player, String message) {
@@ -520,7 +520,13 @@ public class GTUtility {
         }
     }
 
-    public static void sendChatToPlayerTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
+    /**
+     *
+     * @param player     the player
+     * @param messageKey the key
+     * @param args       `IChatComponent` will be handled properly, others will be converted to String
+     */
+    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
         player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
