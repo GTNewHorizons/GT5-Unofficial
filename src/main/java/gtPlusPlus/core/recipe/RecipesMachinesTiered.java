@@ -19,7 +19,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -1338,13 +1337,13 @@ public class RecipesMachinesTiered {
 
         // Air Filter [Tier 1]
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemAirFilter, 1, 0),
+            GregtechItemList.AirFilter_Tier1.get(1),
             new Object[] { "PPP", "DDD", "PPP", 'P', OrePrefixes.plate.get(Materials.Carbon), 'D',
                 OrePrefixes.dust.get(Materials.Carbon) });
 
         // Air Filter [Tier 2]
         GTModHandler.addCraftingRecipe(
-            new ItemStack(ModItems.itemAirFilter, 1, 1),
+            GregtechItemList.AirFilter_Tier2.get(1),
             new Object[] { "PPP", "CDC", "PPP", 'P', OrePrefixes.plate.get(Materials.Carbon), 'C',
                 "cellLithiumPeroxide", 'D', OrePrefixes.dust.get(Materials.Carbon) });
 
@@ -1358,63 +1357,63 @@ public class RecipesMachinesTiered {
         // LV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Tin), 'M', ItemList.Electric_Motor_LV, 'C', "circuitBasic", 'H',
                 ItemList.Hull_LV });
 
         // MV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Copper), 'M', ItemList.Electric_Motor_MV, 'C', "circuitGood", 'H',
                 ItemList.Hull_MV });
 
         // HV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_HV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Bronze), 'M', ItemList.Electric_Motor_HV, 'C', "circuitAdvanced", 'H',
                 ItemList.Hull_HV });
 
         // EV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_EV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier1, 'F',
                 OrePrefixes.plate.get(Materials.Iron), 'M', ItemList.Electric_Motor_EV, 'C', "circuitData", 'H',
                 ItemList.Hull_EV });
 
         // IV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_IV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.Steel), 'M', ItemList.Electric_Motor_IV, 'C', "circuitElite", 'H',
                 ItemList.Hull_IV });
 
         // LuV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_LuV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.Redstone), 'M', ItemList.Electric_Motor_LuV, 'C', "circuitMaster", 'H',
                 ItemList.Hull_LuV });
 
         // ZPM
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_ZPM.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.Aluminium), 'M', ItemList.Electric_Motor_ZPM, 'C', "circuitUltimate",
                 'H', ItemList.Hull_ZPM });
 
         // UV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_UV.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 OrePrefixes.plate.get(Materials.DarkSteel), 'M', ItemList.Electric_Motor_UV, 'C',
                 "circuitSuperconductor", 'H', ItemList.Hull_UV });
 
         // UHV
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Pollution_Cleaner_MAX.get(1),
-            new Object[] { "PFP", "PMP", "CHC", 'P', new ItemStack(ModItems.itemAirFilter, 1, 1), 'F',
+            new Object[] { "PFP", "PMP", "CHC", 'P', GregtechItemList.AirFilter_Tier2, 'F',
                 MaterialsAlloy.ZERON_100.getPlate(1), 'M', ItemList.Electric_Motor_UHV, 'C', "circuitInfinite", 'H',
                 ItemList.Hull_MAX });
     }
