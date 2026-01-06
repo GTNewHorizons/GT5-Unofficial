@@ -129,6 +129,22 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return proxy;
     }
 
+    private boolean wasActive = false;
+
+    public void updateCell() {
+        final boolean currentActive = getProxy().isActive();
+        if (this.wasActive != currentActive) {
+            this.wasActive = currentActive;
+            try {
+                this.getProxy()
+                    .getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+            } catch (final GridAccessException e) {
+                // :P
+            }
+        }
+    }
+
     public List<IMEInventoryHandler> getCellArray(final StorageChannel channel) {
         if (cacheMode && this.getProxy()
             .isActive() && channel == env.getChannel()) {

@@ -24,6 +24,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.events.MENetworkChannelsChanged;
+import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.ICellContainer;
@@ -561,6 +563,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     public void onContentsChanged(int slot) {
         provider.onContentsChanged(slot);
+    }
+
+    @MENetworkEventSubscribe
+    public void updateCell(final MENetworkChannelsChanged c) {
+        provider.updateCell();
     }
 
     @Override
