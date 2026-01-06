@@ -23,17 +23,16 @@ public abstract class MixinGalacticraftRocketPollution extends EntityAutoRocket 
 
     @Inject(method = "onUpdate", at = @At("HEAD"))
     private void gt5u$addRocketPollution(CallbackInfo ci) {
-        if (this.worldObj.isRemote || !(launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()
-            || launchPhase == EnumLaunchPhase.IGNITED.ordinal())) {
-            return;
+        if (!this.worldObj.isRemote
+            && (launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() || launchPhase == EnumLaunchPhase.IGNITED.ordinal())
+            && (this.worldObj.getTotalWorldTime() % 20) == 0) {
+            int pollutionAmount = 0;
+            if (launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()) {
+                pollutionAmount = PollutionConfig.rocketPollutionAmount * this.getRocketTier();
+            } else if (launchPhase == EnumLaunchPhase.IGNITED.ordinal()) {
+                pollutionAmount = PollutionConfig.rocketPollutionAmount * this.getRocketTier() / 100;
+            }
+            Pollution.addPollution(worldObj.getChunkFromBlockCoords((int) posX, (int) posZ), pollutionAmount);
         }
-
-        int pollutionAmount = 0;
-        if (launchPhase == EnumLaunchPhase.LAUNCHED.ordinal()) {
-            pollutionAmount = PollutionConfig.rocketPollutionAmount * this.getRocketTier();
-        } else if (launchPhase == EnumLaunchPhase.IGNITED.ordinal()) {
-            pollutionAmount = PollutionConfig.rocketPollutionAmount * this.getRocketTier() / 100;
-        }
-        Pollution.addPollution(worldObj.getChunkFromBlockCoords((int) posX, (int) posZ), pollutionAmount);
     }
 }
