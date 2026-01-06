@@ -5,8 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
+import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +48,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import bartworks.system.material.Werkstoff;
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.FMLLaunchHandler;
@@ -129,6 +133,16 @@ public class GTStructureUtility {
                 return IStructureElement.BlocksToPlace.create(Blocks.water, 0);
             }
         };
+    }
+
+    public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
+        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        return ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID);
+    }
+
+    public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
+        return ofBlock(sBlockSheetmetalBW, werkstoff.getmID());
     }
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
@@ -775,6 +789,22 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings() {
+        return chainAllCasings(-1, (te, t) -> {}, te -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.TIER_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    CasingTier::getCasingBlockTier,
+                    CasingTier.getCasingList(),
+                    notSet,
+                    setter,
+                    getter)));
     }
 
     public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {

@@ -48,7 +48,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import ic2.api.item.ElectricItem;
@@ -89,7 +88,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
     public final HashMap<Short, Long[]> mElectricStats = new LinkedHashMap<>();
 
     public void registerPumpType(final int aID, final String aPumpName, final int aEuMax, final int aTier) {
-        ModItems.toolGregtechPump.registerItem(
+        registerItem(
             aID, // ID
             aPumpName, // Name
             aEuMax, // Eu Storage

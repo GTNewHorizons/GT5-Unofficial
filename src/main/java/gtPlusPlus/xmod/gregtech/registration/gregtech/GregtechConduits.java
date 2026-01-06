@@ -19,6 +19,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
@@ -682,26 +683,28 @@ public class GregtechConduits {
 
         int eut = (int) (8 * vMulti);
 
-        // Add the Four Shaped Recipes First
-        GTModHandler.addCraftingRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
-            GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
+        if (material != null && material.vVoltageMultiplier <= TierEU.RECIPE_IV) {
+            // Add the Four Shaped Recipes First
+            GTModHandler.addCraftingRecipe(
+                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Tiny" + output, 8),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PPP", "h w", "PPP", 'P', pipePlate });
 
-        GTModHandler.addCraftingRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
-            GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
+            GTModHandler.addCraftingRecipe(
+                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Small" + output, 6),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PwP", "P P", "PhP", 'P', pipePlate });
 
-        GTModHandler.addCraftingRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
-            GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
+            GTModHandler.addCraftingRecipe(
+                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Medium" + output, 2),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PPP", "w h", "PPP", 'P', pipePlate });
 
-        GTModHandler.addCraftingRecipe(
-            ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
-            GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
+            GTModHandler.addCraftingRecipe(
+                ItemUtils.getItemStackOfAmountFromOreDict("pipe" + "Large" + output, 1),
+                GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PhP", "P P", "PwP", 'P', pipePlate });
+        }
 
         if (pipeIngot != null) {
             // 1 Clay Plate = 1 Clay Dust = 2 Clay Ball
@@ -847,7 +850,8 @@ public class GregtechConduits {
         ItemStack aFineWire = aMaterial.getFineWire(1);
 
         // Adds manual crafting recipe
-        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })) {
+        if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlate, aWire01 })
+            && aMaterial.vVoltageMultiplier < 7680) {
             RecipeUtils.addShapedRecipe(
                 aPlate,
                 ToolDictNames.craftingToolWireCutter.name(),
