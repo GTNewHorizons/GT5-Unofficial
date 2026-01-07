@@ -389,10 +389,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         foundryData.tier = aNBT.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.getModule(aNBT.getInteger("module1OR"));
-        foundryData.modules[1] = FoundryModule.getModule(aNBT.getInteger("module2OR"));
-        foundryData.modules[2] = FoundryModule.getModule(aNBT.getInteger("module3OR"));
-        foundryData.modules[3] = FoundryModule.getModule(aNBT.getInteger("module4OR"));
+        foundryData.modules[0] = FoundryModule.values()[aNBT.getInteger("module1OR")];
+        foundryData.modules[1] = FoundryModule.values()[aNBT.getInteger("module2OR")];
+        foundryData.modules[2] = FoundryModule.values()[aNBT.getInteger("module3OR")];
+        foundryData.modules[3] = FoundryModule.values()[aNBT.getInteger("module4OR")];
         shouldRender = aNBT.getBoolean("shouldRender");
     }
 
@@ -1027,10 +1027,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public void onDescriptionPacket(NBTTagCompound data) {
         super.onDescriptionPacket(data);
         foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModule.getModule(data.getInteger("module1OR"));
-        foundryData.modules[1] = FoundryModule.getModule(data.getInteger("module2OR"));
-        foundryData.modules[2] = FoundryModule.getModule(data.getInteger("module3OR"));
-        foundryData.modules[3] = FoundryModule.getModule(data.getInteger("module4OR"));
+        foundryData.modules[0] = FoundryModule.values()[data.getInteger("module1OR")];
+        foundryData.modules[1] = FoundryModule.values()[data.getInteger("module2OR")];
+        foundryData.modules[2] = FoundryModule.values()[data.getInteger("module3OR")];
+        foundryData.modules[3] = FoundryModule.values()[data.getInteger("module4OR")];
         shouldRender = data.getBoolean("shouldRender");
     }
 

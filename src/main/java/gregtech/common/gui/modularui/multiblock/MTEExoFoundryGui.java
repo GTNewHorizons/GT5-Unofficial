@@ -445,9 +445,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             }
                             return GuiTextures.ADD;
                         }
-                        return new ItemDrawable(
-                            FoundryModule.getModule(moduleSync.getIntValue())
-                                .getItemIcon());
+                        return new ItemDrawable(FoundryModule.values()[moduleSync.getIntValue()].getItemIcon());
                     }))
                     .onMousePressed(d -> {
                         int reqTier = Math.max(1, index);
@@ -472,7 +470,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 if (tierSync.getIntValue() < reqTier) {
                     return EnumChatFormatting.WHITE + "N/A";
                 }
-                return EnumChatFormatting.WHITE + FoundryModule.getModule(moduleSync.getIntValue()).shorthand;
+                return EnumChatFormatting.WHITE + FoundryModule.values()[moduleSync.getIntValue()].shorthand;
             })).scale(0.5f)
                 .size(20, 16));
 
@@ -531,7 +529,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
-        FoundryModule module = FoundryModule.getModule(moduleIndex);
+        FoundryModule module = FoundryModule.values()[moduleIndex];
         String name = module.color + module.displayName;
         t.addLine(name);
         t.textColor(Color.GREY.main);
@@ -869,12 +867,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     .marginBottom(3)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModule.getModule(module4Sync.getIntValue()).texture)))
+                                            () -> FoundryModule.values()[module4Sync.getIntValue()].texture)))
                             .child(
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModule.getModule(module3Sync.getIntValue()).texture))))
+                                            () -> FoundryModule.values()[module3Sync.getIntValue()].texture))))
                     .child(
                         new Column().size(59, 40)
                             .paddingTop(7)
@@ -884,12 +882,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     .marginBottom(3)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModule.getModule(module2Sync.getIntValue()).texture)))
+                                            () -> FoundryModule.values()[module2Sync.getIntValue()].texture)))
                             .child(
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModule.getModule(module1Sync.getIntValue()).texture)))));
+                                            () -> FoundryModule.values()[module1Sync.getIntValue()].texture)))));
         return parentWidget;
     }
 }

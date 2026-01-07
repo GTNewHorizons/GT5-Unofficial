@@ -173,7 +173,7 @@ public class FoundryData {
     public void setModule(int index, int ordinal) {
         // just in case, shouldn't be possible
         if (index > modules.length - 1) return;
-        FoundryModule moduleToAdd = FoundryModule.getModule(ordinal);
+        FoundryModule moduleToAdd = FoundryModule.values()[ordinal];
 
         if (moduleToAdd == FoundryModule.HYPERCOOLER) {
             checkSolidifierModules();

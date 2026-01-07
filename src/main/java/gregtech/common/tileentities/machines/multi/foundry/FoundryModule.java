@@ -98,9 +98,6 @@ public enum FoundryModule {
     // This value changes the brightness of all rings
     private static final int HDR_MULTIPLIER = 12;
 
-    // declaring it once here, instead of on every call
-    private static final FoundryModule[] lookupArray = values();
-
     private FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
         EnumChatFormatting color, int voltageTier) {
         this.displayName = display;
@@ -116,12 +113,8 @@ public enum FoundryModule {
         this.blue = c.getBlue() * multiplier;
     }
 
-    public static FoundryModule getModule(int ordinal) {
-        return lookupArray[ordinal];
-    }
-
     public static int size() {
-        return lookupArray.length;
+        return FoundryModule.values().length;
     }
 
     public ItemStack getItemIcon() {
