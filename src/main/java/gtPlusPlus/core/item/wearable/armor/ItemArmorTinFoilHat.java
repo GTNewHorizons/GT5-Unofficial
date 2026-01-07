@@ -36,12 +36,12 @@ import gtPlusPlus.core.item.wearable.base.BaseItemWearable;
 
 public class ItemArmorTinFoilHat extends BaseItemWearable {
 
-    public static ArmorMaterial TinFoilArmour = EnumHelper.addArmorMaterial("TINFOIL", 5, new int[] { 1, 1, 1, 1 }, 50);
+    public static ArmorMaterial tinFoilArmor = EnumHelper.addArmorMaterial("TINFOIL", 5, new int[] { 1, 1, 1, 1 }, 50);
 
     public IIcon iconHelm;
 
     public ItemArmorTinFoilHat() {
-        super(TinFoilArmour, 0, 0);
+        super(tinFoilArmor, 0, 0);
     }
 
     @Override
