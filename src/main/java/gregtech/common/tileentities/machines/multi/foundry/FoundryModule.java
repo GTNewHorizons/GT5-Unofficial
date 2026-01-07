@@ -113,7 +113,7 @@ public enum FoundryModule {
     public final float blue;
     public final EnumChatFormatting color;
     public final int voltageTier;
-    public Consumer<FoundryData> statFunction;
+    public final Consumer<FoundryData> statFunction;
 
     // This value changes the brightness of all rings
     private static final int HDR_MULTIPLIER = 12;
