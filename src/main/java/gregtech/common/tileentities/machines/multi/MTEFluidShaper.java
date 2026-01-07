@@ -67,8 +67,10 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolid
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper>
-    implements ISurvivalConstructable {
+/**
+ * DEPRECATED! Will be removed after 2.9 is released. see {@link } instead
+ */
+public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper> implements ISurvivalConstructable {
 
     private static final String MS_LEFT_MID = "leftmid";
     private static final String MS_RIGHT_MID = "rightmid";
@@ -116,8 +118,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             buildHatchAdder(MTEFluidShaper.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
-                .buildAndChain(
-                    onElementPass(MTEFluidShaper::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+                .buildAndChain(onElementPass(MTEFluidShaper::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
 
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings1, 11))
@@ -180,6 +181,10 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
+            .addInfo(
+                EnumChatFormatting.YELLOW + "DEPRECATED!"
+                    + EnumChatFormatting.GRAY
+                    + " Will be removed in next major version. Use the Mass Solidifier instead")
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
