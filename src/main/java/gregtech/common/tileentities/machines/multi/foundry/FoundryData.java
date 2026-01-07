@@ -74,36 +74,7 @@ public class FoundryData {
         int numValidModules = 2 + tier - 1;
         for (int i = 0; i < numValidModules; i++) {
             FoundryModule checkedModule = modules[i];
-            switch (checkedModule) {
-                case UNSET:
-                    break;
-                case HYPERCOOLER:
-                    hypercoolerPresent = true;
-                    break;
-                case HELIOCAST_REINFORCEMENT:
-                    UIVRecipesEnabled = true;
-                    break;
-                case EFFICIENT_OC:
-                    effOCPresent = true;
-                    ocFactorAdditive += 0.35F;
-                    break;
-                case UNIVERSAL_COLLAPSER:
-                    if (tdsPresent) break;
-                    tdsPresent = true;
-                    euEffMultiplier *= 4;
-                    speedMultiplier *= 2;
-                    break;
-                case STREAMLINED_CASTERS:
-                    speedAdditive += 1.5F;
-                    break;
-                case EXTRA_CASTING_BASINS:
-                    parallelScaleAdditive += 12;
-                    break;
-                case POWER_EFFICIENT_SUBSYSTEMS:
-                    euEffAdditive -= 0.1f;
-                    euEffMultiplier *= 0.8f;
-                    break;
-            }
+            checkedModule.statFunction.accept(this);
         }
 
         FoundryModule[] testModules = Arrays.copyOfRange(modules, 0, numValidModules);

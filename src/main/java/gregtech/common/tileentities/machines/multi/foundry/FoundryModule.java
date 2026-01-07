@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.foundry;
 
 import java.awt.Color;
+import java.util.function.Consumer;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -21,14 +22,15 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_UNSET,
         new Color(0),
         EnumChatFormatting.GRAY,
-        0
-    ),
+        0, foundryData -> {}),
     EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_ECB,
         new Color(174, 174, 102),
         EnumChatFormatting.YELLOW,
-        10
+        10, foundryData -> {
+            foundryData.parallelScaleAdditive+=12;
+    }
     ),
     UNIVERSAL_COLLAPSER(
         "Universal Collapser", "U.C", "uc",
@@ -36,7 +38,12 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_TDS,
         new Color(20, 48, 86),
         EnumChatFormatting.DARK_PURPLE,
-        13
+        13, foundryData -> {
+            if(foundryData.tdsPresent) return;
+            foundryData.tdsPresent = true;
+            foundryData.euEffMultiplier*=4;
+            foundryData.speedMultiplier *= 2;
+        }
     ),
     POWER_EFFICIENT_SUBSYSTEMS(
         "Power Efficient Subsystems", "P.E.S", "power_efficient_subsystems",
@@ -44,7 +51,10 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_PES,
         new Color(10, 143, 38),
         EnumChatFormatting.GREEN,
-        10
+        10, foundryData -> {
+            foundryData.euEffAdditive-=0.1f;
+            foundryData.euEffMultiplier *= 0.8f;
+        }
     ),
     EFFICIENT_OC(
         "Efficient Overclocking System", "E.O.C", "eff_oc",
@@ -52,7 +62,10 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_EFF_OC,
         new Color(107, 33, 196),
         EnumChatFormatting.DARK_AQUA,
-        12
+        12, foundryData -> {
+            foundryData.effOCPresent = true;
+            foundryData.ocFactorAdditive += 0.35f;
+    }
     ),
     STREAMLINED_CASTERS(
         "Streamlined Casters", "S.L.C", "streamlined_casters",
@@ -60,7 +73,9 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_SLC,
         new Color(250, 60, 60),
         EnumChatFormatting.RED,
-        10
+        10, foundryData -> {
+            foundryData.speedAdditive += 1.5f;
+        }
     ),
     HELIOCAST_REINFORCEMENT(
         "Heliocast Reinforcement", "H.R", "heliocast_reinforcement",
@@ -68,7 +83,9 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_HR,
         new Color(225, 45, 225),
         EnumChatFormatting.LIGHT_PURPLE,
-        11
+        11, foundryData -> {
+            foundryData.UIVRecipesEnabled=true;
+        }
     ),
     HYPERCOOLER(
         "Hypercooler", "H.C", "hypercooler",
@@ -76,7 +93,9 @@ public enum FoundryModule {
         GTGuiTextures.EXOFOUNDRY_HC,
         new Color(40, 128, 153),
         EnumChatFormatting.AQUA,
-        11
+        11, foundryData -> {
+            foundryData.hypercoolerPresent = true;
+        }
     ),
 
     ;
@@ -94,12 +113,13 @@ public enum FoundryModule {
     public final float blue;
     public final EnumChatFormatting color;
     public final int voltageTier;
+    public Consumer<FoundryData> statFunction;
 
     // This value changes the brightness of all rings
     private static final int HDR_MULTIPLIER = 12;
 
     private FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
-        EnumChatFormatting color, int voltageTier) {
+        EnumChatFormatting color, int voltageTier, Consumer<FoundryData> statFunction) {
         this.displayName = display;
         this.shorthand = shortname;
         this.structureID = structid;
@@ -107,6 +127,7 @@ public enum FoundryModule {
         this.texture = texture;
         this.color = color;
         this.voltageTier = voltageTier;
+        this.statFunction = statFunction;
         final float multiplier = HDR_MULTIPLIER / 255f;
         this.red = c.getRed() * multiplier;
         this.green = c.getGreen() * multiplier;
