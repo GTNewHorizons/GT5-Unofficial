@@ -92,6 +92,11 @@ public class ItemArmourTinFoilHat extends BaseItemWearable {
     }
 
     @Override
+    public boolean isDamageable() {
+        return false;
+    }
+
+    @Override
     public boolean itemInteractionForEntity(ItemStack p_111207_1_, EntityPlayer p_111207_2_,
         EntityLivingBase p_111207_3_) {
         return super.itemInteractionForEntity(p_111207_1_, p_111207_2_, p_111207_3_);
