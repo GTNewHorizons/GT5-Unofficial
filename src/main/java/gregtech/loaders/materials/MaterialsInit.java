@@ -12149,7 +12149,7 @@ public class MaterialsInit {
             .setDefaultLocalName("Crystalline Pink Slime")
             .setIconSet(TextureSet.SET_CRYSTALLINE_PINK_SLIME)
             .setColor(Dyes.dyePink)
-            .setARGB(0x00e236cb)
+            .setARGB(0x00E56BDB)
             .setTool(128, 3, 6.0f)
             .addDustItems()
             .addMetalItems()
