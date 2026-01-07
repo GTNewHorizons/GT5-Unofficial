@@ -28,7 +28,6 @@ import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -116,13 +115,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        return Flow.row()
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .align(Alignment.CenterRight)
-            .coverChildrenWidth()
-            .heightRel(1)
-            .child(createTeslaVisualEffectButton())
-            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+        return super.createRightPanelGapRow(parent, syncManager).child(createTeslaVisualEffectButton());
     }
 
     @Override
