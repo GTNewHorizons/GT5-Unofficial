@@ -65,7 +65,7 @@ public class InventoryProjectMain implements IInventory {
                 return null;
             }
             return this.inventory[slot];
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return null;
         }

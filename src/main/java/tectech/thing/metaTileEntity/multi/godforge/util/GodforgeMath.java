@@ -1,6 +1,7 @@
 package tectech.thing.metaTileEntity.multi.godforge.util;
 
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
+import static tectech.thing.metaTileEntity.multi.godforge.util.ForgeOfGodsData.*;
 
 import java.math.BigInteger;
 
@@ -35,7 +36,8 @@ public class GodforgeMath {
 
     public static int calculateStartupFuelConsumption(ForgeOfGodsData data) {
         int fuelFactor = data.getFuelConsumptionFactor();
-        return (int) Math.max(fuelFactor * 25 * GTUtility.powInt(1.2, fuelFactor), 1);
+        double value = Math.max(fuelFactor * 25 * GTUtility.powInt(1.2, fuelFactor), 1);
+        return (int) Math.min(value, Integer.MAX_VALUE);
     }
 
     public static int calculateMaxFuelFactor(ForgeOfGodsData data) {
@@ -112,9 +114,9 @@ public class GodforgeMath {
 
         if (data.isUpgradeActive(DOR)) {
             if (module instanceof MTEPlasmaModule) {
-                speedBonus /= Math.pow(module.getMaxParallel(), 0.02);
+                speedBonus /= Math.pow(module.getCalculatedMaxParallel(), 0.02);
             } else {
-                speedBonus /= Math.pow(module.getMaxParallel(), 0.012);
+                speedBonus /= Math.pow(module.getCalculatedMaxParallel(), 0.012);
             }
         }
 
@@ -203,7 +205,7 @@ public class GodforgeMath {
 
         int maxParallel = (int) (baseParallel * totalBonuses);
 
-        module.setMaxParallel(maxParallel);
+        module.setCalculatedMaxParallel(maxParallel);
     }
 
     public static void calculateEnergyDiscountForModules(MTEBaseModule module, ForgeOfGodsData data) {
@@ -327,5 +329,99 @@ public class GodforgeMath {
         data.setTotalRecipesProcessed(data.getTotalRecipesProcessed() + module.getRecipeTally());
         module.setRecipeTally(0);
         module.setInversionConfig(data.isInversion());
+    }
+
+    public static void determineChargeMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            float charge = (float) Math.max(
+                (Math.log(
+                    (data.getTotalPowerConsumed()
+                        .divide(BigInteger.valueOf(POWER_MILESTONE_CONSTANT))).longValue())
+                    / POWER_LOG_CONSTANT + 1),
+                0) / 7;
+            data.setPowerMilestonePercentage(charge);
+            data.setMilestoneProgress(0, (int) Math.floor(data.getPowerMilestonePercentage() * 7));
+            return;
+        }
+
+        float rawProgress = (data.getTotalPowerConsumed()
+            .divide(POWER_MILESTONE_T7_CONSTANT)
+            .floatValue() - 1) / 7;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+        data.setMilestoneProgress(0, 7 + (int) Math.floor(rawProgress * 7));
+
+        if (closestRelevantSeven % 2 == 0) {
+            data.setInvertedPowerMilestonePercentage(actualProgress);
+            data.setPowerMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setPowerMilestonePercentage(actualProgress);
+            data.setInvertedPowerMilestonePercentage(1 - actualProgress);
+        }
+    }
+
+    public static void determineConversionMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            long total = data.getTotalRecipesProcessed();
+            double raw = Math.log(total * 1f / RECIPE_MILESTONE_CONSTANT) / RECIPE_LOG_CONSTANT + 1;
+            data.setRecipeMilestonePercentage((float) Math.max(raw, 0) / 7);
+            data.setMilestoneProgress(1, (int) Math.floor(data.getRecipeMilestonePercentage() * 7));
+            return;
+        }
+
+        float rawProgress = (((float) data.getTotalRecipesProcessed() / RECIPE_MILESTONE_T7_CONSTANT) - 1) / 7;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+        data.setMilestoneProgress(1, 7 + (int) Math.floor(rawProgress * 7));
+
+        if (closestRelevantSeven % 2 == 0) {
+            data.setInvertedRecipeMilestonePercentage(actualProgress);
+            data.setRecipeMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setRecipeMilestonePercentage(actualProgress);
+            data.setInvertedRecipeMilestonePercentage(1 - actualProgress);
+        }
+    }
+
+    public static void determineCatalystMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            long total = data.getTotalFuelConsumed();
+            double raw = Math.log(total * 1f / FUEL_MILESTONE_CONSTANT) / FUEL_LOG_CONSTANT + 1;
+            data.setFuelMilestonePercentage((float) Math.max(raw, 0) / 7);
+            data.setMilestoneProgress(2, (int) Math.floor(data.getFuelMilestonePercentage() * 7));
+            return;
+        }
+
+        float rawProgress = (((float) data.getTotalFuelConsumed() / FUEL_MILESTONE_T7_CONSTANT) - 1) / 7;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+        data.setMilestoneProgress(2, 7 + (int) Math.floor(rawProgress * 7));
+
+        if ((closestRelevantSeven % 2) == 0) {
+            data.setInvertedFuelMilestonePercentage(actualProgress);
+            data.setFuelMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setFuelMilestonePercentage(actualProgress);
+            data.setInvertedFuelMilestonePercentage(1 - actualProgress);
+        }
+    }
+
+    public static void determineCompositionMilestone(ForgeOfGodsData data) {
+        if (!data.isInversion()) {
+            data.setStructureMilestonePercentage(data.getTotalExtensionsBuilt() / 7.0f);
+            return;
+        }
+
+        float rawProgress = (data.getTotalExtensionsBuilt() - 7) / 7f;
+        int closestRelevantSeven = (int) Math.floor(rawProgress);
+        float actualProgress = rawProgress - closestRelevantSeven;
+
+        if ((closestRelevantSeven % 2) == 0) {
+            data.setInvertedStructureMilestonePercentage(actualProgress);
+            data.setStructureMilestonePercentage(1 - actualProgress);
+        } else {
+            data.setStructureMilestonePercentage(actualProgress);
+            data.setInvertedStructureMilestonePercentage(1 - actualProgress);
+        }
     }
 }

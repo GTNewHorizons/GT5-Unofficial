@@ -28,7 +28,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class FluidSolidifierRecipes implements Runnable {
@@ -161,7 +160,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(Materials.Boron.getDust(1))
             .fluidInputs(Materials.Boron.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 10 * TICKS)
@@ -376,14 +375,6 @@ public class FluidSolidifierRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Ingot.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Ingot.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Wire.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Wire.get(1))
                 .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
                 .duration(whiteDwarfShapeSolidifierTime)
                 .eut(TierEU.RECIPE_UMV)

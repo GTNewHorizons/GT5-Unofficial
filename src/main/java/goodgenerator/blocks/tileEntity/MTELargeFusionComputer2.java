@@ -67,9 +67,9 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
             .addCasingInfoMin("Compact Fusion Coil", 560, false)
             .addCasingInfoMin("Duranium Frame Box", 128, false)
             .addCasingInfoMin("Iridium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block with dot 2", 2)
-            .addInputHatch("1-16, Hint block with dot 1", 1)
-            .addOutputHatch("1-16, Hint block with dot 1", 1)
+            .addEnergyHatch("1-32, Hint Block Number 2", 2)
+            .addInputHatch("1-16, Hint Block Number 1", 1)
+            .addOutputHatch("1-16, Hint Block Number 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
                 "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())

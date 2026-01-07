@@ -40,7 +40,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import ggfab.api.GGFabRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -116,7 +115,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
             'B',
             buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEMultiSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
 
@@ -186,9 +185,14 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold different molds")
-            .addStaticParallelInfo(BASE_PARALLELS)
+            .addVoltageParallelInfo(BASE_PARALLELS)
             .addInfo(
-                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH) + " Parallels per tier per width expansion")
+                "Gains " + TooltipHelper.parallelText(PARALLELS_PER_WIDTH)
+                    + " Parallels per "
+                    + EnumChatFormatting.WHITE
+                    + "Voltage "
+                    + EnumChatFormatting.GRAY
+                    + "Tier per width expansion")
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
@@ -297,9 +301,6 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
                 setInputFluids(inputs.inputFluid);
                 Set<GTRecipe> recipes = findRecipeMatches(RecipeMaps.fluidSolidifierRecipes)
                     .collect(Collectors.toSet());
-                // this might be able to be safely removed. Ill keep it in. REMOVE IN NEXT MAJOR UPDATE
-                if (recipes.isEmpty())
-                    recipes = findRecipeMatches(GGFabRecipeMaps.toolCastRecipes).collect(Collectors.toSet());
                 if (!recipes.isEmpty()) {
                     dualInvWithPatternToRecipeCache.put(inv, recipes);
                     activeDualInv = inv;
