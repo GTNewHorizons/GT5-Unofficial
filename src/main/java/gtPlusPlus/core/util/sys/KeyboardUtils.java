@@ -19,7 +19,7 @@ public class KeyboardUtils {
                 isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA);
 
             return isCtrlKeyDown;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return false;
         }
     }
@@ -30,7 +30,7 @@ public class KeyboardUtils {
                 return false;
             }
             return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return false;
         }
     }
