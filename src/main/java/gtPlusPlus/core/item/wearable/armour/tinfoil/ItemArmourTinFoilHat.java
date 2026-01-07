@@ -27,30 +27,27 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
-import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
+import gtPlusPlus.core.item.wearable.base.BaseItemWearable;
 
-public class ItemArmourTinFoilHat extends BaseArmourHelm {
+public class ItemArmourTinFoilHat extends BaseItemWearable {
+
+    public static ArmorMaterial TinFoilArmour = EnumHelper.addArmorMaterial("TINFOIL", 5, new int[] { 1, 1, 1, 1 }, 50);
 
     public IIcon iconHelm;
 
     public ItemArmourTinFoilHat() {
-        super(ArmourLoader.TinFoilArmour, 0);
+        super(TinFoilArmour, 0, 0);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         this.iconHelm = ir.registerIcon(GTPlusPlus.ID + ":itemHatTinFoil");
-    }
-
-    @Override
-    public int getRenderIndex() {
-        return 0;
     }
 
     @Override
@@ -92,11 +89,6 @@ public class ItemArmourTinFoilHat extends BaseArmourHelm {
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
         return new ArmorProperties(0, 0, 0);
-    }
-
-    @Override
-    public boolean isDamageable() {
-        return false;
     }
 
     @Override
