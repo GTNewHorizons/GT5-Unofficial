@@ -522,8 +522,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
         ItemList.Machine_Multi_ExoFoundry.set(
-            new MTEExoFoundry(MULTI_EXOFOUNDRY_CONTROLLER.ID, "multimachine.exofoundry", "Exo-Foundry")
-                .getStackForm(1));
+            new MTEExoFoundry(MultiExoFoundryController.ID, "multimachine.exofoundry", "Exo-Foundry").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_ExoFoundry.get(1),
             chain(
