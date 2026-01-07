@@ -2,6 +2,9 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.enums.GTValues.formattingCodes;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.coolingStrOrder;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleLimitText;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createTierLine;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.awt.Desktop;
@@ -43,7 +46,6 @@ import com.cleanroommc.modularui.widgets.layout.Row;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -889,25 +891,5 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                         new DynamicDrawable(
                                             () -> FoundryModules.getModule(module1Sync.getIntValue()).texture)))));
         return parentWidget;
-    }
-
-    // copied methods so I can avoid a public static in MTEExoFoundry
-    private String coolingStrOrder(String val1, String val2) {
-        return EnumChatFormatting.BLUE + val1
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + val2
-            + EnumChatFormatting.RESET;
-    }
-
-    private String createTierLine(int tier) {
-        return StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.multimachine.foundry.tier",
-            GTUtility.getColoredTierNameFromTier((byte) tier));
-    }
-
-    private String createModuleLimitText() {
-        return StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.modulelimit");
     }
 }

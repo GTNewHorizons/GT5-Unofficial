@@ -1,14 +1,18 @@
 package gregtech.common.blocks;
 
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.coolingStrOrder;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createFoundryFlavorText;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleBaseText;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createModuleLimitText;
+import static gregtech.common.tileentities.machines.multi.foundry.FoundryTooltipValues.createTierLine;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 
@@ -192,32 +196,6 @@ public class ItemCasingsFoundry extends ItemCasings {
         }
     }
 
-    private String createTierLine(int tier) {
-        return StatCollector.translateToLocalFormatted(
-            "gt.blockmachines.multimachine.foundry.tier",
-            GTUtility.getColoredTierNameFromTier((byte) tier));
-    }
-
     // copied methods so I can avoid a public static in MTEExoFoundry class
-    private String coolingStrOrder(String val1, String val2) {
-        return EnumChatFormatting.BLUE + val1
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + val2
-            + EnumChatFormatting.GRAY;
-    }
 
-    private String createModuleBaseText() {
-        return EnumChatFormatting.GOLD
-            + StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.basemodule");
-    }
-
-    private String createModuleLimitText() {
-        return StatCollector.translateToLocal("gt.blockmachines.multimachine.foundry.modulelimit");
-    }
-
-    private String createFoundryFlavorText(String key) {
-        return EnumChatFormatting.RED + StatCollector.translateToLocal(key);
-    }
 }
