@@ -6,8 +6,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class FoundryData {
 
-    public FoundryModules[] modules = { FoundryModules.UNSET, FoundryModules.UNSET, FoundryModules.UNSET,
-        FoundryModules.UNSET };
+    public FoundryModule[] modules = { FoundryModule.UNSET, FoundryModule.UNSET, FoundryModule.UNSET,
+        FoundryModule.UNSET };
     public int tier = 0; // 1 - UEV , 2 - ~UIV, 3 - ~UXV
 
     public final float speedModifierBase = 1.5F;
@@ -70,8 +70,8 @@ public class FoundryData {
     public void checkSolidifierModules() {
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
-        FoundryModules[] testModules = Arrays.copyOfRange(modules, 0, 2 + (tier - 1));
-        for (FoundryModules checkedModule : testModules) {
+        FoundryModule[] testModules = Arrays.copyOfRange(modules, 0, 2 + (tier - 1));
+        for (FoundryModule checkedModule : testModules) {
             switch (checkedModule) {
                 case UNSET:
                     break;
@@ -109,23 +109,23 @@ public class FoundryData {
     }
 
     // pair stat buffs for having 2 specific modules together
-    private void calculatePairings(FoundryModules[] modules) {
-        if (ArrayUtils.contains(modules, FoundryModules.STREAMLINED_CASTERS)
-            && ArrayUtils.contains(modules, FoundryModules.EXTRA_CASTING_BASINS)) {
+    private void calculatePairings(FoundryModule[] modules) {
+        if (ArrayUtils.contains(modules, FoundryModule.STREAMLINED_CASTERS)
+            && ArrayUtils.contains(modules, FoundryModule.EXTRA_CASTING_BASINS)) {
             speedAdditive += 0.75F;
             parallelScaleAdditive += 6;
             isProductionPairPresent = true;
         }
 
-        if (ArrayUtils.contains(modules, FoundryModules.POWER_EFFICIENT_SUBSYSTEMS)
-            && ArrayUtils.contains(modules, FoundryModules.EFFICIENT_OC)) {
+        if (ArrayUtils.contains(modules, FoundryModule.POWER_EFFICIENT_SUBSYSTEMS)
+            && ArrayUtils.contains(modules, FoundryModule.EFFICIENT_OC)) {
             ocFactorAdditive += 0.1F;
             euEffAdditive -= 0.5F;
             isEfficiencyPairPresent = true;
         }
 
-        if (ArrayUtils.contains(modules, FoundryModules.HYPERCOOLER)
-            && ArrayUtils.contains(modules, FoundryModules.UNIVERSAL_COLLAPSER)) {
+        if (ArrayUtils.contains(modules, FoundryModule.HYPERCOOLER)
+            && ArrayUtils.contains(modules, FoundryModule.UNIVERSAL_COLLAPSER)) {
             euEffMultiplier *= 2;
             speedMultiplier *= 2;
             allowEternity = true;
@@ -133,7 +133,7 @@ public class FoundryData {
         }
 
         int numHelio = (int) Arrays.stream(modules)
-            .filter(m -> m == FoundryModules.HELIOCAST_REINFORCEMENT)
+            .filter(m -> m == FoundryModule.HELIOCAST_REINFORCEMENT)
             .count();
         if (numHelio > 1) {
             isHRPairPresent = true;
@@ -173,17 +173,17 @@ public class FoundryData {
     public void setModule(int index, int ordinal) {
         // just in case, shouldn't be possible
         if (index > modules.length - 1) return;
-        FoundryModules moduleToAdd = FoundryModules.getModule(ordinal);
+        FoundryModule moduleToAdd = FoundryModule.getModule(ordinal);
 
-        if (moduleToAdd == FoundryModules.HYPERCOOLER) {
+        if (moduleToAdd == FoundryModule.HYPERCOOLER) {
             checkSolidifierModules();
             if (hypercoolerPresent) return;
         }
-        if (moduleToAdd == FoundryModules.UNIVERSAL_COLLAPSER) {
+        if (moduleToAdd == FoundryModule.UNIVERSAL_COLLAPSER) {
             checkSolidifierModules();
             if (tdsPresent) return;
         }
-        if (moduleToAdd == FoundryModules.EFFICIENT_OC) {
+        if (moduleToAdd == FoundryModule.EFFICIENT_OC) {
             checkSolidifierModules();
             if (effOCPresent) return;
         }

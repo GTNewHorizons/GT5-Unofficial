@@ -13,7 +13,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.CustomItemList;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -40,7 +40,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Extra_Casting_Basins_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.EXTRA_CASTING_BASINS)
+            .metadata(FOUNDRY_MODULE, FoundryModule.EXTRA_CASTING_BASINS)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
 
@@ -60,7 +60,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Universal_Collapser_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.UNIVERSAL_COLLAPSER)
+            .metadata(FOUNDRY_MODULE, FoundryModule.UNIVERSAL_COLLAPSER)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
 
@@ -78,7 +78,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.POWER_EFFICIENT_SUBSYSTEMS)
+            .metadata(FOUNDRY_MODULE, FoundryModule.POWER_EFFICIENT_SUBSYSTEMS)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
 
@@ -94,7 +94,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Efficient_Overclocking_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.EFFICIENT_OC)
+            .metadata(FOUNDRY_MODULE, FoundryModule.EFFICIENT_OC)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
 
@@ -110,7 +110,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Streamlined_Casters_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.STREAMLINED_CASTERS)
+            .metadata(FOUNDRY_MODULE, FoundryModule.STREAMLINED_CASTERS)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
 
@@ -129,7 +129,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Heliocast_Reinforcement_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.HELIOCAST_REINFORCEMENT)
+            .metadata(FOUNDRY_MODULE, FoundryModule.HELIOCAST_REINFORCEMENT)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
 
@@ -146,7 +146,7 @@ public class FoundryFakeModuleCostLoader {
             .itemOutputs(ItemList.Hypercooler_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
-            .metadata(FOUNDRY_MODULE, FoundryModules.HYPERCOOLER)
+            .metadata(FOUNDRY_MODULE, FoundryModule.HYPERCOOLER)
             .fake()
             .addTo(RecipeMaps.foundryFakeModuleCostRecipes);
     }

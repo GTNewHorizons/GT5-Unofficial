@@ -21,7 +21,7 @@ import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -60,7 +60,7 @@ public class FoundryModuleFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawSpecialInfo(RecipeDisplayInfo recipeInfo) {
-        FoundryModules module = recipeInfo.recipe.getMetadataOrDefault(FOUNDRY_MODULE, null);
+        FoundryModule module = recipeInfo.recipe.getMetadataOrDefault(FOUNDRY_MODULE, null);
         if (module == null) return;
         int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(module.shorthand);
         if (width % 2 == 1) width -= 1;

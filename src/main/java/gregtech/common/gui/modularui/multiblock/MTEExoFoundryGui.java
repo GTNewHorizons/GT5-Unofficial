@@ -50,7 +50,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.foundry.FoundryData;
-import gregtech.common.tileentities.machines.multi.foundry.FoundryModules;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 
 public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
@@ -438,7 +438,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         t.setAutoUpdate(true);
                     })
                     .overlay(new DynamicDrawable(() -> {
-                        if (moduleSync.getIntValue() == FoundryModules.UNSET.ordinal()) {
+                        if (moduleSync.getIntValue() == FoundryModule.UNSET.ordinal()) {
                             int reqTier = Math.max(1, index);
                             if (tierSync.getIntValue() < reqTier) {
                                 return GTGuiTextures.PICTURE_PLUS_RED;
@@ -446,7 +446,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             return GuiTextures.ADD;
                         }
                         return new ItemDrawable(
-                            FoundryModules.getModule(moduleSync.getIntValue())
+                            FoundryModule.getModule(moduleSync.getIntValue())
                                 .getItemIcon());
                     }))
                     .onMousePressed(d -> {
@@ -455,7 +455,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             return true;
                         }
                         if (Interactable.hasShiftDown()) {
-                            moduleSync.setIntValue(FoundryModules.UNSET.ordinal());
+                            moduleSync.setIntValue(FoundryModule.UNSET.ordinal());
                         } else {
                             if (!selectPanel.isPanelOpen()) {
                                 selectPanel.openPanel();
@@ -472,7 +472,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                 if (tierSync.getIntValue() < reqTier) {
                     return EnumChatFormatting.WHITE + "N/A";
                 }
-                return EnumChatFormatting.WHITE + FoundryModules.getModule(moduleSync.getIntValue()).shorthand;
+                return EnumChatFormatting.WHITE + FoundryModule.getModule(moduleSync.getIntValue()).shorthand;
             })).scale(0.5f)
                 .size(20, 16));
 
@@ -517,7 +517,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                 i -> new ButtonWidget<>().size(18)
                                     .overlay(
                                         new ItemDrawable(
-                                            Objects.requireNonNull(FoundryModules.values()[i].getItemIcon())))
+                                            Objects.requireNonNull(FoundryModule.values()[i].getItemIcon())))
                                     .tooltipBuilder(t -> createTooltipForModule(t, i))
                                     .onMouseTapped(mouseButton -> {
                                         moduleSync.setIntValue(i);
@@ -531,7 +531,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     private void createTooltipForModule(RichTooltip t, int moduleIndex) {
-        FoundryModules module = FoundryModules.getModule(moduleIndex);
+        FoundryModule module = FoundryModule.getModule(moduleIndex);
         String name = module.color + module.displayName;
         t.addLine(name);
         t.textColor(Color.GREY.main);
@@ -668,7 +668,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                         "gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5"));
             }
         }
-        if (module != FoundryModules.UNSET) t.addLine(createTierLine(module.voltageTier));
+        if (module != FoundryModule.UNSET) t.addLine(createTierLine(module.voltageTier));
     }
 
     protected Flow createModuleTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
@@ -869,12 +869,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     .marginBottom(3)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module4Sync.getIntValue()).texture)))
+                                            () -> FoundryModule.getModule(module4Sync.getIntValue()).texture)))
                             .child(
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module3Sync.getIntValue()).texture))))
+                                            () -> FoundryModule.getModule(module3Sync.getIntValue()).texture))))
                     .child(
                         new Column().size(59, 40)
                             .paddingTop(7)
@@ -884,12 +884,12 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                     .marginBottom(3)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module2Sync.getIntValue()).texture)))
+                                            () -> FoundryModule.getModule(module2Sync.getIntValue()).texture)))
                             .child(
                                 new Widget<>().size(27, 11)
                                     .overlay(
                                         new DynamicDrawable(
-                                            () -> FoundryModules.getModule(module1Sync.getIntValue()).texture)))));
+                                            () -> FoundryModule.getModule(module1Sync.getIntValue()).texture)))));
         return parentWidget;
     }
 }

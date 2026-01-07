@@ -10,7 +10,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import gregtech.api.enums.ItemList;
 import gregtech.api.modularui2.GTGuiTextures;
 
-public enum FoundryModules {
+public enum FoundryModule {
 
     // please dont hate me for the arbitrary transparent rectangle image
     // The colors are in HDR, higher values will result in a higher brightness.
@@ -99,9 +99,9 @@ public enum FoundryModules {
     private static final int HDR_MULTIPLIER = 12;
 
     // declaring it once here, instead of on every call
-    private static final FoundryModules[] lookupArray = values();
+    private static final FoundryModule[] lookupArray = values();
 
-    private FoundryModules(String display, String shortname, String structid, ItemStack icon, UITexture texture,
+    private FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture,
         Color c, EnumChatFormatting color, int voltageTier) {
         this.displayName = display;
         this.shorthand = shortname;
@@ -116,7 +116,7 @@ public enum FoundryModules {
         this.blue = c.getBlue() * multiplier;
     }
 
-    public static FoundryModules getModule(int ordinal) {
+    public static FoundryModule getModule(int ordinal) {
         return lookupArray[ordinal];
     }
 

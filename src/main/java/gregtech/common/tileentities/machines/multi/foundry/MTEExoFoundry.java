@@ -215,7 +215,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 .buildAndChain(
                     onElementPass(MTEExoFoundry::onCasingAdded, ofBlock(GregTechAPI.sBlockCasingsFoundry, 0))))
         .addShape(
-            FoundryModules.STREAMLINED_CASTERS.structureID,
+            FoundryModule.STREAMLINED_CASTERS.structureID,
             transpose(
                 new String[][] {
                     {"               ","               ","   K       K   ","  K         K  ","               ","               ","               ","               ","               ","               ","               ","  K         K  ","   K       K   ","               ","               "},
@@ -234,7 +234,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('M', lazy(() -> ofBlock(ModBlocks.blockCasings5Misc, 3)) )
         .addElement('N', lazy(() -> ofBlock(ModBlocks.blockSpecialMultiCasings, 13)))
         .addShape(
-            FoundryModules.EXTRA_CASTING_BASINS.structureID,
+            FoundryModule.EXTRA_CASTING_BASINS.structureID,
             transpose(
                 new String[][] {
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -255,7 +255,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('g',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, GGMaterial.preciousMetalAlloy.getmID())))
         .addElement('h',  lazy(() -> ofBlock(WerkstoffLoader.BWBlockCasings, GGMaterial.preciousMetalAlloy.getmID())))
         .addShape(
-            FoundryModules.POWER_EFFICIENT_SUBSYSTEMS.structureID,
+            FoundryModule.POWER_EFFICIENT_SUBSYSTEMS.structureID,
             transpose(
                 new String[][]{
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -275,7 +275,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('o', ofSheetMetal(Materials.Quantium))
         .addElement('p', lazy(() -> ofBlock(ModBlocks.blockCustomMachineCasings, 3))) // TODO: replace with MEBF casing after rework)
         .addShape(
-            FoundryModules.HYPERCOOLER.structureID,
+            FoundryModule.HYPERCOOLER.structureID,
             transpose(
                 new String[][] {
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -299,7 +299,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(ModBlocks.blockCasings3Misc, 10))))
         .addShape(
-            FoundryModules.HELIOCAST_REINFORCEMENT.structureID,
+            FoundryModule.HELIOCAST_REINFORCEMENT.structureID,
             transpose(
                 new String[][] {
                     {"               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               ","               "},
@@ -321,7 +321,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('8',  lazy(() -> ofBlock(BlockGodforgeGlass.INSTANCE, 0)))
 
         .addShape(
-            FoundryModules.EFFICIENT_OC.structureID,
+            FoundryModule.EFFICIENT_OC.structureID,
             transpose(
                 new String[][] {
                     {"       ^       ","               ","               ","               ","               ","               ","               ","^             ^","               ","               ","               ","               ","               ","               ","       ^       "},
@@ -338,7 +338,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('%', ofBlock(GregTechAPI.sBlockCasingsFoundry, 5))
         .addElement('^', lazy(() -> ofBlock(Loaders.magneticFluxCasing, 0)))
         .addShape(
-            FoundryModules.UNIVERSAL_COLLAPSER.structureID,
+            FoundryModule.UNIVERSAL_COLLAPSER.structureID,
             transpose(
                 new String[][] {
                     {"               ","   Q       Q   ","  RR       RR  "," QR         RQ ","               ","               ","               ","               ","               ","               ","               "," QR         RQ ","  RR       RR  ","   Q       Q   ","               "},
@@ -361,7 +361,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         .addElement('Y',ofBlock(GregTechAPI.sBlockMetal9, 13))
         .addElement('Z', activeCoils(ofBlock(GregTechAPI.sBlockCasingsFoundry, 4)))
         .addShape(
-            FoundryModules.UNSET.structureID,
+            FoundryModule.UNSET.structureID,
             transpose(
                 new String[][] {
                     { "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               ", "               " },
@@ -386,10 +386,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         foundryData.tier = aNBT.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModules.getModule(aNBT.getInteger("module1OR"));
-        foundryData.modules[1] = FoundryModules.getModule(aNBT.getInteger("module2OR"));
-        foundryData.modules[2] = FoundryModules.getModule(aNBT.getInteger("module3OR"));
-        foundryData.modules[3] = FoundryModules.getModule(aNBT.getInteger("module4OR"));
+        foundryData.modules[0] = FoundryModule.getModule(aNBT.getInteger("module1OR"));
+        foundryData.modules[1] = FoundryModule.getModule(aNBT.getInteger("module2OR"));
+        foundryData.modules[2] = FoundryModule.getModule(aNBT.getInteger("module3OR"));
+        foundryData.modules[3] = FoundryModule.getModule(aNBT.getInteger("module4OR"));
         shouldRender = aNBT.getBoolean("shouldRender");
     }
 
@@ -556,8 +556,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffset, verticalOffset, depthOffset);
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
-            FoundryModules m = foundryData.modules[i];
-            if (m != FoundryModules.UNSET) {
+            FoundryModule m = foundryData.modules[i];
+            if (m != FoundryModule.UNSET) {
                 buildPiece(
                     m.structureID,
                     stackSize,
@@ -575,8 +575,8 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
         int built = 0;
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
-            FoundryModules m = foundryData.modules[i];
-            if (m != FoundryModules.UNSET) {
+            FoundryModule m = foundryData.modules[i];
+            if (m != FoundryModule.UNSET) {
                 built += survivalBuildPiece(
                     m.structureID,
                     stackSize,
@@ -652,7 +652,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     private boolean checkModules() {
         for (int i = 0; i < 2 + (foundryData.tier - 1); i++) {
-            FoundryModules m = foundryData.modules[i];
+            FoundryModule m = foundryData.modules[i];
             if (!checkPiece(
                 m.structureID,
                 moduleHorizontalOffsets[i],
@@ -660,7 +660,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                 moduleDepthOffsets[i])) {
                 return false;
             }
-            if (m == FoundryModules.HYPERCOOLER && coolantHatches.size() != 1) return false;
+            if (m == FoundryModule.HYPERCOOLER && coolantHatches.size() != 1) return false;
         }
         return true;
 
@@ -835,7 +835,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     // getters/setters for mui syncing
     public int getModuleSynced(int index) {
-        if (index > FoundryModules.values().length - 1) index = 0;
+        if (index > FoundryModule.values().length - 1) index = 0;
 
         return foundryData.modules[index].ordinal();
     }
@@ -922,13 +922,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private void renderRings(boolean bloom) {
         int i = 0;
         GL11.glColor4f(1, 1, 1, 1);
-        for (FoundryModules module : foundryData.modules) {
+        for (FoundryModule module : foundryData.modules) {
             if (i == foundryData.tier + 1) return;
-            if (module == FoundryModules.UNSET) {
+            if (module == FoundryModule.UNSET) {
                 i++;
                 continue;
             }
-            if (module == FoundryModules.UNIVERSAL_COLLAPSER) {
+            if (module == FoundryModule.UNIVERSAL_COLLAPSER) {
                 renderUniversiumRing(i, bloom);
                 i++;
                 continue;
@@ -959,9 +959,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         if (bloom) {
             shader
                 .setBackgroundColor(
-                    FoundryModules.UNIVERSAL_COLLAPSER.red,
-                    FoundryModules.UNIVERSAL_COLLAPSER.green,
-                    FoundryModules.UNIVERSAL_COLLAPSER.blue)
+                    FoundryModule.UNIVERSAL_COLLAPSER.red,
+                    FoundryModule.UNIVERSAL_COLLAPSER.green,
+                    FoundryModule.UNIVERSAL_COLLAPSER.blue)
                 .setStarColor(24);
         } else {
             // Color needs to be enabled here to make the stars not blurry
@@ -1024,10 +1024,10 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public void onDescriptionPacket(NBTTagCompound data) {
         super.onDescriptionPacket(data);
         foundryData.tier = data.getInteger("multiTier");
-        foundryData.modules[0] = FoundryModules.getModule(data.getInteger("module1OR"));
-        foundryData.modules[1] = FoundryModules.getModule(data.getInteger("module2OR"));
-        foundryData.modules[2] = FoundryModules.getModule(data.getInteger("module3OR"));
-        foundryData.modules[3] = FoundryModules.getModule(data.getInteger("module4OR"));
+        foundryData.modules[0] = FoundryModule.getModule(data.getInteger("module1OR"));
+        foundryData.modules[1] = FoundryModule.getModule(data.getInteger("module2OR"));
+        foundryData.modules[2] = FoundryModule.getModule(data.getInteger("module3OR"));
+        foundryData.modules[3] = FoundryModule.getModule(data.getInteger("module4OR"));
         shouldRender = data.getBoolean("shouldRender");
     }
 
