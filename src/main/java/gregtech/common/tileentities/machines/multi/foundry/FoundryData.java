@@ -71,8 +71,8 @@ public class FoundryData {
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
 
-        int numValidModules = 2+tier-1;
-        for (int i = 0; i < numValidModules;i++) {
+        int numValidModules = 2 + tier - 1;
+        for (int i = 0; i < numValidModules; i++) {
             FoundryModule checkedModule = modules[i];
             switch (checkedModule) {
                 case UNSET:
@@ -199,22 +199,18 @@ public class FoundryData {
     }
 
     public String getSpeedStr() {
-        checkSolidifierModules();
         return (speedModifierAdj) * 100 + "%";
     }
 
     public String getParallelsString() {
-        checkSolidifierModules();
         return (int) parallelScaleAdj + "";
     }
 
     public String getEuEFFString() {
-        checkSolidifierModules();
         return ((int) (euEffAdj * 100)) + "%";
     }
 
     public String getOCFactorString() {
-        checkSolidifierModules();
         return 2 + ocFactorAdditive + " : 4";
     }
 }
