@@ -81,7 +81,6 @@ public enum ItemList implements IItemContainer {
     IC2_CoffeeBeans,
     IC2_CoffeePowder,
     IC2_Crop_Seeds,
-    IC2_Grin_Powder,
     IC2_Energium_Dust,
     IC2_Compressed_Coal_Ball,
     IC2_Compressed_Coal_Chunk,

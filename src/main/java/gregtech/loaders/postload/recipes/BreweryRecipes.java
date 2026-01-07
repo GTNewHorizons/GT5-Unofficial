@@ -255,14 +255,6 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(ItemList.IC2_Grin_Powder.get(1L))
-                    .fluidInputs(new FluidStack(tFluid, 750))
-                    .fluidOutputs(getFluidStack("potion.poison.strong", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(brewingRecipes);
-
-                GTValues.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.apple, 1, 0))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.applejuice", 750))
