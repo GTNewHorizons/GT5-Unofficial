@@ -18,7 +18,6 @@ import gtPlusPlus.core.item.base.ingots.BaseItemIngotOld;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class GTPPBees {
@@ -77,7 +76,7 @@ public class GTPPBees {
 
     private void addRecipes() {
         addExtractorRecipe(new ItemStack(dropBiomassBlob), Materials.Biomass.getFluid(30));
-        addExtractorRecipe(new ItemStack(dropEthanolBlob), FluidUtils.getFluidStack("ethanol", 6));
+        addExtractorRecipe(new ItemStack(dropEthanolBlob), Materials.Ethanol.getFluid(6));
         addExtractorRecipe(new ItemStack(dropFluorineBlob), Materials.Fluorine.getGas(4));
     }
 

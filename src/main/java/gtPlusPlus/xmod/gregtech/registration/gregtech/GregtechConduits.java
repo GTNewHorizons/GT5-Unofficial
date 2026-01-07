@@ -29,7 +29,6 @@ import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
@@ -1087,7 +1086,7 @@ public class GregtechConduits {
                 .itemInputs(aWire01)
                 .circuit(24)
                 .itemOutputs(aCable01)
-                .fluidInputs(FluidUtils.getFluidStack("molten.rubber", 144))
+                .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(8)
                 .addTo(assemblerRecipes);
@@ -1100,7 +1099,7 @@ public class GregtechConduits {
                 .itemInputs(aWire02)
                 .circuit(24)
                 .itemOutputs(aCable02)
-                .fluidInputs(FluidUtils.getFluidStack("molten.rubber", 144))
+                .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(8)
                 .addTo(assemblerRecipes);
@@ -1113,7 +1112,7 @@ public class GregtechConduits {
                 .itemInputs(aWire04)
                 .circuit(24)
                 .itemOutputs(aCable04)
-                .fluidInputs(FluidUtils.getFluidStack("molten.rubber", 288))
+                .fluidInputs(Materials.Rubber.getMolten(2 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(8)
                 .addTo(assemblerRecipes);
@@ -1126,7 +1125,7 @@ public class GregtechConduits {
                 .itemInputs(aWire08)
                 .circuit(24)
                 .itemOutputs(aCable08)
-                .fluidInputs(FluidUtils.getFluidStack("molten.rubber", 432))
+                .fluidInputs(Materials.Rubber.getMolten(3 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(8)
                 .addTo(assemblerRecipes);
@@ -1139,7 +1138,7 @@ public class GregtechConduits {
                 .itemInputs(aWire12)
                 .circuit(24)
                 .itemOutputs(aCable12)
-                .fluidInputs(FluidUtils.getFluidStack("molten.rubber", 576))
+                .fluidInputs(Materials.Rubber.getMolten(4 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(8)
                 .addTo(assemblerRecipes);
@@ -1152,7 +1151,7 @@ public class GregtechConduits {
                 .itemInputs(aWire16)
                 .circuit(24)
                 .itemOutputs(aCable16)
-                .fluidInputs(FluidUtils.getFluidStack("molten.rubber", 720))
+                .fluidInputs(Materials.Rubber.getMolten(5 * INGOTS))
                 .duration(5 * SECONDS)
                 .eut(8)
                 .addTo(assemblerRecipes);
