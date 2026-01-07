@@ -646,8 +646,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     public void onPostTick(IGregTechTileEntity baseMTE, long aTick) {
         super.onPostTick(baseMTE, aTick);
         if (baseMTE.isServerSide()) {
-            // TODO: Look for proper fix
             // Updates approx every 30 sec as disconnected structure pieces do not send updates on change
+            // if this is not checked, people could theoretically cheese the modules
+            // if structure lib ever gets proper support for disconnected substructures, this can be changed.
             if (mUpdate <= -550) mUpdate = 50;
 
         }
