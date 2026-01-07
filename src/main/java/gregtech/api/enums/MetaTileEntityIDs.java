@@ -1753,8 +1753,6 @@ public enum MetaTileEntityIDs {
     LASER_TARGET_UXV9(16025),
     WIRELESS_LASER_UXV8(16026),
     WIRELESS_LASER_UXV9(16027),
-    LuV256ADynamoHatch(16028),
-    ZPM256ADynamoHatch(16029),
     UV256ADynamoHatch(16030),
     UHV256ADynamoHatch(16031),
     UEV256ADynamoHatch(16032),

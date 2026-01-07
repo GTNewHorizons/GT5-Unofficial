@@ -89,7 +89,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.LuV16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16AWirelessEnergyHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.LuV256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV262144AtLaserSourceHatch;
@@ -293,7 +292,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.ZPM16384AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM16ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM16AEnergyHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM16AWirelessEnergyHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.ZPM256ADynamoHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM256AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM256AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ZPM262144AtLaserSourceHatch;
@@ -386,14 +384,12 @@ import static tectech.thing.CustomItemList.eM_dynamoMulti16_UMV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti16_UV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti16_UXV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti16_ZPM;
-import static tectech.thing.CustomItemList.eM_dynamoMulti256_LuV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UEV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UHV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UIV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UMV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti256_UXV;
-import static tectech.thing.CustomItemList.eM_dynamoMulti256_ZPM;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_EV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_IV;
 import static tectech.thing.CustomItemList.eM_dynamoMulti4_LuV;
@@ -1649,13 +1645,6 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_LuV.set(
             new MTEHatchDynamoMulti(LuV64ADynamoHatch.ID, "hatch.dynamomulti64.tier.06", "LuV 64A Dynamo Hatch", 6, 64)
                 .getStackForm(1L));
-        eM_dynamoMulti256_LuV.set(
-            new MTEHatchDynamoMulti(
-                LuV256ADynamoHatch.ID,
-                "hatch.dynamomulti256.tier.06",
-                "LuV 256A Dynamo Hatch",
-                6,
-                256).getStackForm(1L));
         eM_dynamoMulti4_ZPM.set(
             new MTEHatchDynamoMulti(ZPM4ADynamoHatch.ID, "hatch.dynamomulti04.tier.07", "ZPM 4A Dynamo Hatch", 7, 4)
                 .getStackForm(1L));
@@ -1665,13 +1654,6 @@ public class MachineLoader implements Runnable {
         eM_dynamoMulti64_ZPM.set(
             new MTEHatchDynamoMulti(ZPM64ADynamoHatch.ID, "hatch.dynamomulti64.tier.07", "ZPM 64A Dynamo Hatch", 7, 64)
                 .getStackForm(1L));
-        eM_dynamoMulti256_ZPM.set(
-            new MTEHatchDynamoMulti(
-                ZPM256ADynamoHatch.ID,
-                "hatch.dynamomulti256.tier.07",
-                "ZPM 256A Dynamo Hatch",
-                7,
-                256).getStackForm(1L));
         eM_dynamoMulti4_UV.set(
             new MTEHatchDynamoMulti(UV4ADynamoHatch.ID, "hatch.dynamomulti04.tier.08", "UV 4A Dynamo Hatch", 8, 4)
                 .getStackForm(1L));
