@@ -172,7 +172,7 @@ public class FoundryData {
 
     public void setModule(int index, int ordinal) {
         // just in case, shouldn't be possible
-        if (index > modules.length - 1 || index < 0)
+        if (index >= modules.length || index < 0)
             throw new IndexOutOfBoundsException("Index of Module to add must be in bounds.");
         FoundryModule moduleToAdd = FoundryModule.values()[ordinal];
 
