@@ -57,7 +57,7 @@ public class RecipeRemover implements Runnable {
                 new ItemStack(Blocks.gravel),
                 Recipes.oreWashing.getRecipes(),
                 GTValues.NI);
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         GTUtility.removeIC2BottleRecipe(
             ItemList.IC2_Fuel_Rod_Empty.get(1),
             ItemList.IC2_Uranium_Fuel.get(1),
@@ -126,7 +126,7 @@ public class RecipeRemover implements Runnable {
                     Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             /* Do nothing */
         }
 
@@ -144,7 +144,7 @@ public class RecipeRemover implements Runnable {
                     Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             /* Do nothing */
         }
 
