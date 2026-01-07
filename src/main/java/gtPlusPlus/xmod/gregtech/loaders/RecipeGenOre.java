@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GTModHandler;
@@ -432,7 +433,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);
                     Logger.MATERIALS("[Electrolyzer] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
@@ -546,7 +547,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);;
                     Logger.MATERIALS("[Dehydrator] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 

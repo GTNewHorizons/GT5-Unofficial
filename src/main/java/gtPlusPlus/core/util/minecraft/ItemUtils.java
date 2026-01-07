@@ -105,7 +105,7 @@ public class ItemUtils {
 
             Logger.RECIPE(oredictName + " was not valid.");
             return null;
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             return null;
         }
     }
@@ -320,14 +320,14 @@ public class ItemUtils {
                 final String modname = (id.modId == null ? id.name : id.modId);
                 value = (id.modId.isEmpty()) ? Minecraft.ID : modname;
             }
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             try {
                 final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
                 if (t2 != null) {
                     final String modname = (t2.modId == null ? t2.name : t2.modId);
                     value = (t2.modId.isEmpty()) ? Minecraft.ID : modname;
                 }
-            } catch (final Throwable t3) {
+            } catch (final Exception t3) {
                 t3.printStackTrace();
                 value = "bad modid";
             }
@@ -377,14 +377,6 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
-
-        String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
-
-        String mItemName = mPrefix.getName() + mName;
-        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
-    }
-
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
@@ -420,11 +412,6 @@ public class ItemUtils {
         return aInputInventory;
     }
 
-    public static String getFluidName(FluidStack aFluid) {
-        return aFluid != null ? aFluid.getFluid()
-            .getLocalizedName(aFluid) : "NULL";
-    }
-
     public static String getItemName(ItemStack aStack) {
         if (aStack == null) {
             return "ERROR - Empty Stack";
@@ -443,7 +430,7 @@ public class ItemUtils {
                     }
                 }
             }
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
         if (aDisplay == null || aDisplay.length() == 0) {
