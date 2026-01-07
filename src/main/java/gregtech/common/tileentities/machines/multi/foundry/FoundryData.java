@@ -166,11 +166,11 @@ public class FoundryData {
         euEffAdj = (euEffBase + euEffAdditive) * euEffMultiplier;
     }
 
-    public boolean areModulesEqual(FoundryData other) {
-        if (this.modules[0] != other.modules[0]) return false;
-        if (this.modules[1] != other.modules[1]) return false;
-        if (this.modules[2] != other.modules[2]) return false;
-        return this.modules[3] == other.modules[3];
+    public boolean shouldUsePreview(FoundryData other) {
+        if (this.modules[0] != other.modules[0]) return true;
+        if (this.modules[1] != other.modules[1]) return true;
+        if (this.modules[2] != other.modules[2]) return true;
+        return this.modules[3] != other.modules[3];
     }
 
     public void setModule(int index, int ordinal) {

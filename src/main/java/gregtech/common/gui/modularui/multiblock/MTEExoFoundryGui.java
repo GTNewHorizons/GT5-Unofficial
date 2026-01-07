@@ -88,19 +88,19 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
         syncManager.syncValue("UsingPreview", usingPreviewSync);
         syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
             calculatorData.setModule(0, val);
-            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
         }));
         syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
             calculatorData.setModule(1, val);
-            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
         }));
         syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
             calculatorData.setModule(2, val);
-            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
         }));
         syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
             calculatorData.setModule(3, val);
-            usingPreviewSync.setBoolValue(!calculatorData.areModulesEqual(multiblock.foundryData));
+            usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
         }));
     }
 
