@@ -27,6 +27,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -151,72 +152,17 @@ public class ItemUtils {
             .eut(4)
             .addTo(packagerRecipes);
 
-        if (tinyDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                normalDust)) {
-                Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + materialName + " - Failed");
-            }
+        // Tiny Dusts
+        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+        GTModHandler.addCraftingRecipe(
+            GTUtility.copyAmount(9, tinyDust),
+            new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
-            if (RecipeUtils.addShapedRecipe(
-                normalDust,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                GTUtility.copyAmount(9, tinyDust))) {
-                Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("9 Tiny dust from 1 Recipe: " + materialName + " - Failed");
-            }
-        }
-
-        if (smallDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                smallDust,
-                smallDust,
-                null,
-                smallDust,
-                smallDust,
-                null,
-                null,
-                null,
-                null,
-                normalDust)) {
-                Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("4 Small dust to 1 Dust Recipe: " + materialName + " - Failed");
-            }
-            if (RecipeUtils.addShapedRecipe(
-                null,
-                normalDust,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                GTUtility.copyAmount(4, smallDust))) {
-                Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Success");
-            } else {
-                Logger.WARNING("4 Small dust from 1 Dust Recipe: " + materialName + " - Failed");
-            }
-        }
+        // Small Dusts
+        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+        GTModHandler.addCraftingRecipe(
+            GTUtility.copyAmount(4, smallDust),
+            new Object[] { " D ", "   ", "   ", 'D', normalDust });
 
         return output;
     }

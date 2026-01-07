@@ -17,12 +17,11 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.ToolDictNames;
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class RecipeGenFluorite extends RecipeGenBase {
 
@@ -36,66 +35,27 @@ public class RecipeGenFluorite extends RecipeGenBase {
         this.toGenerate = material;
         mRecipeGenMap.add(this);
 
-        RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer.name(),
-            null,
-            null,
-            material.getCrushedPurified(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            material.getDustPurified(1));
+        GTModHandler.addCraftingRecipe(
+            material.getDustPurified(1),
+            new Object[] { "h  ", "P  ", "   ", 'P', material.getCrushedPurified(1) });
 
-        RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer.name(),
-            null,
-            null,
-            material.getCrushed(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            material.getDustImpure(1));
+        GTModHandler.addCraftingRecipe(
+            material.getDustImpure(1),
+            new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushed(1) });
 
-        RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer.name(),
-            null,
-            null,
-            material.getCrushedCentrifuged(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            material.getDust(1));
+        GTModHandler.addCraftingRecipe(
+            material.getDust(1),
+            new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
         final ItemStack normalDust = material.getDust(1);
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
-        RecipeUtils.addShapedRecipe(
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            normalDust);
+        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+        GTModHandler.addCraftingRecipe(material.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', normalDust });
 
-        RecipeUtils
-            .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, material.getTinyDust(9));
-
-        RecipeUtils
-            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, normalDust);
-
-        RecipeUtils
-            .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, material.getSmallDust(4));
+        GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+        GTModHandler.addCraftingRecipe(material.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', normalDust });
     }
 
     @Override

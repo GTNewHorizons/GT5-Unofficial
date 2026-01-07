@@ -435,11 +435,18 @@ public class GTModHandler {
     /**
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
-    public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
-        aOutput = GTOreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null) return false;
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output) {
+        return addSmeltingRecipe(input, output, 0.0F);
+    }
+
+    /**
+     * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
+     */
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output, float xp) {
+        output = GTOreDictUnificator.get(true, output);
+        if (input == null || output == null) return false;
         FurnaceRecipes.smelting()
-            .func_151394_a(aInput, GTUtility.copyOrNull(aOutput), 0.0F);
+            .func_151394_a(input, GTUtility.copyOrNull(output), xp);
         return true;
     }
 
