@@ -109,7 +109,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     private final ArrayList<MTEHatchInput> coolantHatches = new ArrayList<>();
     private CoolingFluid currentCoolingFluid = null;
     private static final int horizontalOffset = 7;
-    private static final int verticalOffset = 43 + 10;
+    private static final int verticalOffset = 53;
     private static final int depthOffset = 0;
 
     public boolean terminalSwitch = false;
