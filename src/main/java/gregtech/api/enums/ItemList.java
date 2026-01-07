@@ -75,7 +75,6 @@ public enum ItemList implements IItemContainer {
     IC2_Scrap,
     IC2_Scrapbox,
     IC2_Mixed_Metal_Ingot,
-    IC2_Hops,
     IC2_Resin,
     IC2_Plantball,
     IC2_PlantballCompressed,
