@@ -154,7 +154,7 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rod,
     Shape_Extruder_Bolt,
     Shape_Extruder_Ingot,
-    Shape_Extruder_Wire,
+    Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     Shape_Extruder_Casing,
     Shape_Extruder_Pipe_Tiny,
     Shape_Extruder_Pipe_Small,
@@ -183,7 +183,7 @@ public enum ItemList implements IItemContainer {
     White_Dwarf_Shape_Extruder_Rod,
     White_Dwarf_Shape_Extruder_Bolt,
     White_Dwarf_Shape_Extruder_Ingot,
-    White_Dwarf_Shape_Extruder_Wire,
+    White_Dwarf_Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     White_Dwarf_Shape_Extruder_Casing,
     White_Dwarf_Shape_Extruder_Pipe_Tiny,
     White_Dwarf_Shape_Extruder_Pipe_Small,
