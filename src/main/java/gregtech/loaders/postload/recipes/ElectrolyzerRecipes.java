@@ -112,17 +112,6 @@ public class ElectrolyzerRecipes implements Runnable {
             .duration(10 * SECONDS)
             .eut(30)
             .addTo(electrolyzerRecipes);
-        // IC2 Fertilizer = H2O + CaCO3 + C
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Fertilizer.get(1L))
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L))
-            .fluidOutputs(Materials.Water.getFluid(1_000))
-            .duration(5 * SECONDS)
-            .eut(30)
-            .addTo(electrolyzerRecipes);
         // NaOH = Na + O + H
 
         GTValues.RA.stdBuilder()

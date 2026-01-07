@@ -30,9 +30,6 @@ public class GTPPUITextures {
     public static final UITexture BUTTON_STANDARD_BRONZE = UITexture
         .fullImage(GTPlusPlus.ID, "gui/button/standard_bronze");
 
-    public static final UITexture OVERLAY_SLOT_WEED_EX = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/weed_ex");
-    public static final UITexture OVERLAY_SLOT_FERTILIZER = UITexture
-        .fullImage(GTPlusPlus.ID, "gui/overlay_slot/fertilizer");
     public static final UITexture OVERLAY_SLOT_ELECTRIC_TOOL = UITexture
         .fullImage(GTPlusPlus.ID, "gui/overlay_slot/electric_tool");
     public static final UITexture OVERLAY_SLOT_PAGE_PRINTED_BRONZE = UITexture

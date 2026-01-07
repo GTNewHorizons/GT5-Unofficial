@@ -24,7 +24,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -327,14 +326,6 @@ public class CentrifugeRecipes implements Runnable {
             .circuit(1)
             .fluidOutputs(Materials.Methane.getGas(18))
             .duration(7 * SECONDS + 4 * TICKS)
-            .eut(5)
-            .addTo(centrifugeRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("terraWart", 1))
-            .circuit(1)
-            .fluidOutputs(Materials.Methane.getGas(36))
-            .duration(14 * SECONDS + 8 * TICKS)
             .eut(5)
             .addTo(centrifugeRecipes);
 

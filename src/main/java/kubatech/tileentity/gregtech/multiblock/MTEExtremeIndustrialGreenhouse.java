@@ -361,8 +361,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             if (this.mode == EIGModes.IC2) {
                 for (EIGMigrationHolder holder : toMigrate) {
                     // We will have to revalidate the seeds on the next cycle.
-                    this.buckets
-                        .add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock, holder.useNoHumidity));
+                    this.buckets.add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock));
                 }
             } else {
                 this.mode = EIGModes.Normal;

@@ -2435,8 +2435,6 @@ public class GTUtility {
             addOwnerInfo(tList, tTileEntity);
             addDeviceInfo(tList, tTileEntity);
 
-            rEUAmount += addIC2CropInfo(tList, tTileEntity);
-
             rEUAmount += addForestryLeavesInfo(tList, tTileEntity);
         }
 
@@ -2613,58 +2611,6 @@ public class GTUtility {
             }
         } catch (Throwable e) {
             tList.add("§cAn exception was thrown while fetching this leaves' info.§r");
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-        return rEUAmount;
-    }
-
-    private static int addIC2CropInfo(ArrayList<String> tList, TileEntity tTileEntity) {
-        int rEUAmount = 0;
-        try {
-            if (tTileEntity instanceof ic2.api.crops.ICropTile crop) {
-                rEUAmount += 1000;
-                if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
-                if (crop.getCrop() != null) {
-                    tList.add(
-                        GTUtility.trans("187", "Type -- Crop-Name: ") + crop.getCrop()
-                            .name()
-                            + GTUtility.trans("188", "  Growth: ")
-                            + crop.getGrowth()
-                            + GTUtility.trans("189", "  Gain: ")
-                            + crop.getGain()
-                            + GTUtility.trans("190", "  Resistance: ")
-                            + crop.getResistance());
-                }
-                tList.add(
-                    GTUtility.trans("191", "Plant -- Fertilizer: ") + crop.getNutrientStorage()
-                        + GTUtility.trans("192", "  Water: ")
-                        + crop.getHydrationStorage()
-                        + GTUtility.trans("193", "  Weed-Ex: ")
-                        + crop.getWeedExStorage()
-                        + GTUtility.trans("194", "  Scan-Level: ")
-                        + crop.getScanLevel());
-                tList.add(
-                    GTUtility.trans("195", "Environment -- Nutrients: ") + crop.getNutrients()
-                        + GTUtility.trans("196", "  Humidity: ")
-                        + crop.getHumidity()
-                        + GTUtility.trans("197", "  Air-Quality: ")
-                        + crop.getAirQuality());
-                if (crop.getCrop() != null) {
-                    final StringBuilder tStringB = new StringBuilder();
-                    for (final String tAttribute : crop.getCrop()
-                        .attributes()) {
-                        tStringB.append(", ")
-                            .append(tAttribute);
-                    }
-                    final String tString = tStringB.toString();
-                    tList.add(GTUtility.trans("198", "Attributes:") + tString.replaceFirst(",", E));
-                    tList.add(
-                        GTUtility.trans("199", "Discovered by: ") + crop.getCrop()
-                            .discoveredBy());
-                }
-            }
-        } catch (Throwable e) {
-            tList.add("§cAn exception was thrown while fetching this crop's info.§r");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return rEUAmount;

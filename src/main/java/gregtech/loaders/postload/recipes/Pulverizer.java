@@ -635,27 +635,6 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 32767))
-            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
-            .duration(20 * SECONDS)
-            .eut(2)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.poisonous_potato, 1))
-            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.spider_eye, 1))
-            .itemOutputs(ItemList.IC2_Grin_Powder.get(1L))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(maceratorRecipes);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.bone, 1))
             .itemOutputs(new ItemStack(Items.dye, 4, 15))
             .duration(15 * SECONDS)

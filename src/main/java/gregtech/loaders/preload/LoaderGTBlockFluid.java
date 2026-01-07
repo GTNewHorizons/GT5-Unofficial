@@ -2290,12 +2290,6 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Sodium, 1L),
                 ItemList.Cell_Empty.get(1L));
 
-        FluidContainerRegistry.registerFluidContainer(
-            new FluidContainerRegistry.FluidContainerData(
-                FluidRegistry.getFluidStack("potion.poison.strong", 750),
-                ItemList.IC2_Spray_WeedEx.get(1L),
-                ItemList.Spray_Empty.get(1L)));
-
         if (!GTValues.D1) {
             if (Mods.NotEnoughItems.isModLoaded()) {
                 GTLog.out.println("GTMod: Hiding certain Items from NEI.");

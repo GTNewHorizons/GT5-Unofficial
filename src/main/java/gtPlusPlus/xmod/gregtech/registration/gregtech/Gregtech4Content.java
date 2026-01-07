@@ -1,13 +1,5 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.GT4_Crop_Harvester_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Electric_Auto_Workbench_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Electric_Auto_Workbench_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.GT4_Electric_Auto_Workbench_IV;
@@ -27,7 +19,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTETesseractTerminal;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTECropHarvestor;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEAutoCrafter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEThermalBoiler;
 
@@ -40,7 +31,6 @@ public class Gregtech4Content {
         thermalBoiler();
         multiCrafter();
         tesseracts();
-        basic();
         automation();
     }
 
@@ -71,34 +61,6 @@ public class Gregtech4Content {
             new MTEElectricAutoWorkbench(GT4_Electric_Auto_Workbench_UV.ID, 8, "Automatic crafting machine")
                 .getStackForm(1L));
 
-    }
-
-    private static void basic() {
-        Logger.INFO("Gregtech 4 Content | Registering Crop Managers.");
-        GregtechItemList.GT4_Crop_Harvester_LV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_LV.ID, 1, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_MV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_MV.ID, 2, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_HV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_HV.ID, 3, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_EV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_EV.ID, 4, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_IV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_IV.ID, 5, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_LuV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_LuV.ID, 6, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_ZPM.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_ZPM.ID, 7, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
-        GregtechItemList.GT4_Crop_Harvester_UV.set(
-            new MTECropHarvestor(GT4_Crop_Harvester_UV.ID, 8, "Harvests the Cropsticks in front of it")
-                .getStackForm(1L));
     }
 
     private static void tesseracts() {
