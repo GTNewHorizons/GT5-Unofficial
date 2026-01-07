@@ -760,8 +760,16 @@ public final class ModItems {
         GTOreDictUnificator.registerOre("pelletZirconium", GregtechItemList.ZirconiumPellet.get(1));
 
         // Zirconium Chloride
-        ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180));
-        ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180));
+        Item[] ZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180));
+        GregtechItemList.ZrCl4Dust.set(ZrCl4[0]);
+        GregtechItemList.SmallZrCl4Dust.set(ZrCl4[1]);
+        GregtechItemList.TinyZrCl4Dust.set(ZrCl4[2]);
+
+        Item[] cookedZrCl4 = ItemUtils
+            .generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180));
+        GregtechItemList.CookedZrCl4Dust.set(cookedZrCl4[0]);
+        GregtechItemList.SmallCookedZrCl4Dust.set(cookedZrCl4[1]);
+        GregtechItemList.TinyCookedZrCl4Dust.set(cookedZrCl4[2]);
 
         // Load Tree Farmer
         ItemUtils.generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60));

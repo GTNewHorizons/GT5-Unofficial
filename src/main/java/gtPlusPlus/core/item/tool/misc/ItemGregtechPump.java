@@ -25,6 +25,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -48,7 +49,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -677,7 +677,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             fluidname = NBTUtils.getString(container, "mFluid");
             amount = NBTUtils.getInteger(container, "mFluidAmount");
             if (fluidname != null && amount > 0) {
-                return FluidUtils.getFluidStack(fluidname, amount);
+                return FluidRegistry.getFluidStack(fluidname, amount);
             } else {
                 return null;
             }
@@ -738,7 +738,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 Logger.INFO("Pump is empty, filling with tank fluids.");
                 FluidStack toConsume;
                 int amountToConsume = Math.min(resource.amount, aCapacity);
-                toConsume = FluidUtils.getFluidStack(resource, amountToConsume);
+                toConsume = new FluidStack(resource, amountToConsume);
                 if (toConsume != null && amountToConsume > 0) {
                     storeFluid(container, toConsume);
                     return amountToConsume;
@@ -760,7 +760,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         Logger.INFO("Less fluid than container space");
                     }
                     Logger.INFO("Amount to consume: " + amountToConsume);
-                    toConsume = FluidUtils.getFluidStack(resource, (aStoredAmount + amountToConsume));
+                    toConsume = new FluidStack(resource, (aStoredAmount + amountToConsume));
                     if (toConsume != null && amountToConsume > 0) {
                         Logger.INFO("Storing Fluid");
                         storeFluid(container, toConsume);
@@ -808,8 +808,8 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             } else {
                 // Handle Partial removal
                 int amountRemaining = (aStoredAmount - maxDrain);
-                FluidStack newAmount = FluidUtils.getFluidStack(aStoredFluid, amountRemaining);
-                FluidStack drained = FluidUtils.getFluidStack(aStoredFluid, maxDrain);
+                FluidStack newAmount = new FluidStack(aStoredFluid, amountRemaining);
+                FluidStack drained = new FluidStack(aStoredFluid, maxDrain);
                 storeFluid(container, newAmount);
                 return drained;
             }
@@ -925,8 +925,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                             if (mAmountInserted == aStored.amount) {
                                 newStackRemainingInTank = null;
                             } else {
-                                newStackRemainingInTank = FluidUtils
-                                    .getFluidStack(aStored, (aStored.amount - mAmountInserted));
+                                newStackRemainingInTank = new FluidStack(aStored, (aStored.amount - mAmountInserted));
                             }
                             boolean b = setStoredFluidOfGTMachine(
                                 (IGregTechTileEntity) tTileEntity,

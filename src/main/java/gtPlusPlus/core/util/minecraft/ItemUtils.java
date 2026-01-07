@@ -377,14 +377,6 @@ public class ItemUtils {
         return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
     }
 
-    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Material mMat, int mAmount) {
-
-        String mName = StringUtils.sanitizeString(mMat.getLocalizedName());
-
-        String mItemName = mPrefix.getName() + mName;
-        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(mItemName, mAmount);
-    }
-
     public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
         if (mPrefix == OrePrefixes.rod) {
             mPrefix = OrePrefixes.stick;
@@ -418,11 +410,6 @@ public class ItemUtils {
         GTUtility.compactStandardInventory(aInputInventory);
 
         return aInputInventory;
-    }
-
-    public static String getFluidName(FluidStack aFluid) {
-        return aFluid != null ? aFluid.getFluid()
-            .getLocalizedName(aFluid) : "NULL";
     }
 
     public static String getItemName(ItemStack aStack) {
