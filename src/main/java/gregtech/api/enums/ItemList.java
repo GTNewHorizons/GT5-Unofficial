@@ -72,7 +72,6 @@ public enum ItemList implements IItemContainer {
     IC2_Item_Casing_Lead,
     IC2_Item_Casing_Bronze,
     IC2_Item_Casing_Gold,
-    IC2_Spray_WeedEx,
     IC2_Scrap,
     IC2_Scrapbox,
     IC2_Mixed_Metal_Ingot,

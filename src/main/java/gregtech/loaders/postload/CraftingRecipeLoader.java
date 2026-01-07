@@ -126,7 +126,6 @@ public class CraftingRecipeLoader implements Runnable {
             }
         }
         GTModHandler.removeRecipeByOutputDelayed(ItemList.Bottle_Empty.get(1L));
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.IC2_Spray_WeedEx.get(1L));
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("reBattery", 1L));
         GTModHandler.removeRecipeByOutputDelayed(new ItemStack(Blocks.tnt));
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("dynamite", 1L));
