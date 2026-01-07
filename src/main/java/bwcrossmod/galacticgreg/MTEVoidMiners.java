@@ -114,7 +114,7 @@ public class MTEVoidMiners {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType("Miner")
+            tt.addMachineType("Miner, VM")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
                     "Can be supplied with " + EnumChatFormatting.AQUA
