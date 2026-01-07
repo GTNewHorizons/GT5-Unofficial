@@ -28,7 +28,9 @@ import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -37,6 +39,7 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
@@ -51,6 +54,7 @@ import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeListSyncHandler;
 import gregtech.common.gui.modularui.widget.LineChartWidget;
+import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.MTETeslaTower;
 
 public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
@@ -111,6 +115,17 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     @Override
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        return Flow.row()
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .align(Alignment.CenterRight)
+            .coverChildrenWidth()
+            .heightRel(1)
+            .child(createTeslaVisualEffectButton())
+            .childIf(multiblock.supportsPowerPanel(), createPowerPanelButton(syncManager, parent));
+    }
+
+    @Override
     protected boolean shouldDisplayVoidExcess() {
         return false;
     }
@@ -144,6 +159,14 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .overlay(
                 GTGuiTextures.OVERLAY_BUTTON_TESLA_TOWER_CHART.asIcon()
                     .size(16));
+    }
+
+    private Widget<?> createTeslaVisualEffectButton() {
+        return new ToggleButton().size(18, 18)
+            .syncHandler("teslaVisualEffect")
+            .overlay(true, GTGuiTextures.TESLA_VISUAL_EFFECT_ON)
+            .overlay(false, GTGuiTextures.TESLA_VISUAL_EFFECT_OFF)
+            .tooltip(t -> t.addLine(IKey.lang("gt.blockmachines.multimachine.tm.teslaCoil.toggleEffectTooltip")));
     }
 
     private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager, ModularPanel parent) {
@@ -390,6 +413,11 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
+        syncManager.syncValue(
+            "teslaVisualEffect",
+            new BooleanSyncValue(
+                () -> ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT,
+                value -> ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT = value));
         TeslaNodeListSyncHandler teslaNodeSyncer = new TeslaNodeListSyncHandler(
             this::getTeslaNodes,
             this::setTeslaNodes);
