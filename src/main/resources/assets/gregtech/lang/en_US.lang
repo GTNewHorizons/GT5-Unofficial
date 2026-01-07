@@ -1089,6 +1089,7 @@ gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
+gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1422,6 +1423,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
@@ -2576,6 +2578,108 @@ achievement.gt.blockcasings5.12=Hypogen Coil
 achievement.gt.blockcasings5.12.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockcasings5.13=Eternal Coil
 achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
+
+# Exo-Foundry
+gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
+gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
+gt.blockmachines.multimachine.foundry.tier=- Tier: %s
+gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
+gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
+gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
+
+gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s2x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §620
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
+
+gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s35%%§7 speed
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aPower Efficient Subsystems§7 module
+
+gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Efficient Overclocking System§7 module
+
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §dUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants benefits when paired with other §dHeliocast Reinforcement§7 modules
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- §f2+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
+
+gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
+gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
+gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
+gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casters §7module
+
+gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
+
+gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
+# Exo-Foundry GUI
+GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
+GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
+GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
+GT5U.gui.button.foundry.contributorpanel=Open Contributor List
+
+GT5U.gui.text.foundry.projectlead=Project Lead
+GT5U.gui.text.foundry.programming=Programming
+GT5U.gui.text.foundry.textures=Textures
+GT5U.gui.text.foundry.rendering=Rendering
+GT5U.gui.text.foundry.structure=Structure Architect
+GT5U.gui.text.foundry.idea=Original Idea
+GT5U.gui.text.foundry.playtest=Playtesting
+
+GT5U.gui.text.foundry.pairings.activity.on=This pairing is §aactive
+GT5U.gui.text.foundry.pairings.activity.off=This pairing is §cinactive
+GT5U.gui.text.foundry.pairings.activity.bonus=When active, this pairing provides the following bonuses:
+GT5U.gui.text.foundry.pairings.optimumproduction.title=§bOptimum Production
+GT5U.gui.text.foundry.pairings.optimumproduction.required=Requires §eSuperdense Casting Basins§r and §cStreamlined Casting§r Modules
+GT5U.gui.text.foundry.pairings.optimumproduction.tooltip1=%s+75%%§r Speed
+GT5U.gui.text.foundry.pairings.optimumproduction.tooltip2=%s+6§r parallels per %sVoltage§r tier
+
+GT5U.gui.text.foundry.pairings.harmonicefficiency.title=§aHarmonic Efficiency
+GT5U.gui.text.foundry.pairings.harmonicefficiency.required=Requires §aProto-Volt Stabilizer§r and §3Sentient Overclocker§r Modules
+GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1=§d+0.1§r OC Factor
+GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2=%s-50%%§r Initial EU Cost
+
+GT5U.gui.text.foundry.pairings.superstablecore.title=§dSuperstable Core
+GT5U.gui.text.foundry.pairings.superstablecore.required=Requires 2+ §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip2=When §f2 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by %s75%%§r per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.1
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
+
+GT5U.gui.text.foundry.pairings.realizedpotential.title=§5§k0§r§4Realized Potential§5§k0
+GT5U.gui.text.foundry.pairings.realizedpotential.required=Requires §bHypercooler§r and §5Universal Collapser§r Modules
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1=§c2x§r EU Cost
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2=%s2x§r Speed
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercooler§r to utilize Eternity
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
