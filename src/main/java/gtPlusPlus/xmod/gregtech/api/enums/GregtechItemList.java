@@ -544,16 +544,6 @@ public enum GregtechItemList implements IItemContainer {
     GT4_Electric_Auto_Workbench_ZPM,
     GT4_Electric_Auto_Workbench_UV,
 
-    // GT4 Crop Harvester
-    GT4_Crop_Harvester_LV,
-    GT4_Crop_Harvester_MV,
-    GT4_Crop_Harvester_HV,
-    GT4_Crop_Harvester_EV,
-    GT4_Crop_Harvester_IV,
-    GT4_Crop_Harvester_LuV,
-    GT4_Crop_Harvester_ZPM,
-    GT4_Crop_Harvester_UV,
-
     // Geothermal Engines
     Geothermal_Engine_EV,
     Geothermal_Engine_IV,
