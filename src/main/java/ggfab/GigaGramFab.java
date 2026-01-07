@@ -2,9 +2,6 @@ package ggfab;
 
 import static gregtech.api.enums.MetaTileEntityIDs.AdvancedAssline;
 import static gregtech.api.enums.MetaTileEntityIDs.LinkedInputBus;
-import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.ToolCast_MV;
 import static gregtech.api.enums.ToolDictNames.craftingToolCrowbar;
 import static gregtech.api.enums.ToolDictNames.craftingToolFile;
 import static gregtech.api.enums.ToolDictNames.craftingToolHardHammer;
@@ -23,8 +20,6 @@ import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
 import static gregtech.common.items.IDMetaTool01.WRENCH;
 import static gregtech.common.items.MetaGeneratedTool01.INSTANCE;
 
-import net.minecraft.util.EnumChatFormatting;
-
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -32,7 +27,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import ggfab.api.GGFabRecipeMaps;
 import ggfab.api.GigaGramFabAPI;
 import ggfab.items.GGMetaItemDumbItems;
 import ggfab.items.SingleUseTool;
@@ -41,8 +35,6 @@ import ggfab.mte.MTELinkedInputBus;
 import ggfab.util.GGUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 
 @Mod(
     modid = GGConstants.MODID,
@@ -77,54 +69,6 @@ public class GigaGramFab {
             GGItemList.LinkedInputBus.set(
                 new MTELinkedInputBus(LinkedInputBus.ID, "ggfab.machine.linked_input_bus", "Linked Input Bus", 5)
                     .getStackForm(1));
-
-            GGItemList.ToolCast_MV.set(
-                new MTEBasicMachineWithRecipe(
-                    ToolCast_MV.ID,
-                    "ggfab.toolcast.tier.mv",
-                    "Basic Tool Casting Machine",
-                    2,
-                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
-                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
-                    GGFabRecipeMaps.toolCastRecipes,
-                    1,
-                    4,
-                    32000,
-                    SoundResource.NONE,
-                    MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                    "TOOL_CAST").getStackForm(1L));
-
-            GGItemList.ToolCast_HV.set(
-                new MTEBasicMachineWithRecipe(
-                    ToolCast_HV.ID,
-                    "ggfab.toolcast.tier.hv",
-                    "Advanced Tool Casting Machine",
-                    3,
-                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
-                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
-                    GGFabRecipeMaps.toolCastRecipes,
-                    1,
-                    4,
-                    64000,
-                    SoundResource.NONE,
-                    MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                    "TOOL_CAST").getStackForm(1L));
-
-            GGItemList.ToolCast_EV.set(
-                new MTEBasicMachineWithRecipe(
-                    ToolCast_EV.ID,
-                    "ggfab.toolcast.tier.ev",
-                    "Master Tool Casting Machine",
-                    4,
-                    new String[] { EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update.",
-                        EnumChatFormatting.GRAY + "Cheap Crafting Tool for you!" },
-                    GGFabRecipeMaps.toolCastRecipes,
-                    1,
-                    4,
-                    128000,
-                    SoundResource.NONE,
-                    MTEBasicMachineWithRecipe.SpecialEffects.MAIN_RANDOM_SPARKS,
-                    "TOOL_CAST").getStackForm(1L));
 
             long plate = OrePrefixes.plate.getMaterialAmount(), ingot = OrePrefixes.ingot.getMaterialAmount(),
                 screw = OrePrefixes.screw.getMaterialAmount(), rod = OrePrefixes.stick.getMaterialAmount();
