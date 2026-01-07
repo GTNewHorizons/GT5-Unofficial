@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.wearable.armour.tinfoil;
+package gtPlusPlus.core.item.wearable.armor;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 

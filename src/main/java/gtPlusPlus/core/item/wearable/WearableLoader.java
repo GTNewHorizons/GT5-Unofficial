@@ -5,7 +5,7 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 import net.minecraft.item.Item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.item.wearable.armour.tinfoil.ItemArmourTinFoilHat;
+import gtPlusPlus.core.item.wearable.armor.ItemArmourTinFoilHat;
 
 public class WearableLoader {
 
