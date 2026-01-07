@@ -101,8 +101,8 @@ public enum FoundryModule {
     // declaring it once here, instead of on every call
     private static final FoundryModule[] lookupArray = values();
 
-    private FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture,
-        Color c, EnumChatFormatting color, int voltageTier) {
+    private FoundryModule(String display, String shortname, String structid, ItemStack icon, UITexture texture, Color c,
+        EnumChatFormatting color, int voltageTier) {
         this.displayName = display;
         this.shorthand = shortname;
         this.structureID = structid;

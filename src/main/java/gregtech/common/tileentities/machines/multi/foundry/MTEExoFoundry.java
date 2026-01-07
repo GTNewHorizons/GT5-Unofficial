@@ -118,6 +118,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
 
     public final FoundryData foundryData = new FoundryData();
 
+    public static final int MIN_CASINGS = 462; // 462 is the total casings (489) - 1 casing for ehatch - 1 casing for
+                                               // output
+                                               // bus - 25 casings to hold recipes
     // modified values for display and calculations
 
     // array of ordinals for nbt saving purposes
@@ -502,7 +505,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             .addCasingInfoMinColored(
                 "Primary Exo-Foundry Casing",
                 EnumChatFormatting.GRAY,
-                489 - 27, // balance around having 25 recipe hatches on a foundry.
+                MIN_CASINGS,
                 EnumChatFormatting.GOLD,
                 false)
             .addCasingInfoExactlyColored(
@@ -633,7 +636,7 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
-            return checkModules() && casingAmount >= 462 + (foundryData.tdsPresent ? 20 : 0);
+            return checkModules() && casingAmount >= MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
         }
         getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         return false;
