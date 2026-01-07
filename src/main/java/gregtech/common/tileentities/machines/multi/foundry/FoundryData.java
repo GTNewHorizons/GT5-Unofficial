@@ -70,8 +70,10 @@ public class FoundryData {
     public void checkSolidifierModules() {
         resetParameters();
         // loop through each module. based on tier. 2 - 4 modules.
-        FoundryModule[] testModules = Arrays.copyOfRange(modules, 0, 2 + (tier - 1));
-        for (FoundryModule checkedModule : testModules) {
+
+        int numValidModules = 2+tier-1;
+        for (int i = 0; i < numValidModules;i++) {
+            FoundryModule checkedModule = modules[i];
             switch (checkedModule) {
                 case UNSET:
                     break;
@@ -104,6 +106,7 @@ public class FoundryData {
             }
         }
 
+        FoundryModule[] testModules = Arrays.copyOfRange(modules, 0, numValidModules);
         calculatePairings(testModules);
         calculateNewStats();
     }
