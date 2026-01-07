@@ -1,4 +1,4 @@
-id,name,meltingKelvin:I
+id:I,name:Ljava/lang/String;,meltingKelvin:I
 0,copper,1300
 1,iron,1800
 2,water,300
