@@ -34,13 +34,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.wearable.base.BaseItemWearable;
 
-public class ItemArmourTinFoilHat extends BaseItemWearable {
+public class ItemArmorTinFoilHat extends BaseItemWearable {
 
     public static ArmorMaterial TinFoilArmour = EnumHelper.addArmorMaterial("TINFOIL", 5, new int[] { 1, 1, 1, 1 }, 50);
 
     public IIcon iconHelm;
 
-    public ItemArmourTinFoilHat() {
+    public ItemArmorTinFoilHat() {
         super(TinFoilArmour, 0, 0);
     }
 
