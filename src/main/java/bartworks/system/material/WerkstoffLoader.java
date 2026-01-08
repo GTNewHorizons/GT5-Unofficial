@@ -828,6 +828,9 @@ public class WerkstoffLoader {
         // No Byproducts
         Pair.of(Materials.Platinum, 1),
         Pair.of(Materials.Stone, 2));
+    // TODO: If there is a moment where we are happy with breaking everyone's platline, change Aqua Regia recipes to
+    // satisfy Chem
+    // TODO: Balance with formula (HCl)3(HNO3) and then add the correct formula to the material
     public static final Werkstoff AquaRegia = new Werkstoff(
         new short[] { 0xff, 0xb1, 0x32 },
         "Aqua Regia",
@@ -836,10 +839,7 @@ public class WerkstoffLoader {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         48,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.HydrochloricAcid, 3),
-        Pair.of(Materials.NitricAcid, 1));
+        TextureSet.SET_FLUID);
     public static final Werkstoff PTResidue = new Werkstoff(
         new short[] { 0x64, 0x63, 0x2E },
         "Platinum Residue",
