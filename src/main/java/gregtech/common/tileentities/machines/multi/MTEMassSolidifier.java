@@ -173,6 +173,11 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addInfo(
+                "Can use " + EnumChatFormatting.YELLOW
+                    + "Solidifier Hatches"
+                    + EnumChatFormatting.GRAY
+                    + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginStructureBlock(5, 6, 9, false)
             .addController("Front Center Bottom")
