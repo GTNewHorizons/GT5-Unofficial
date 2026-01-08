@@ -119,19 +119,19 @@ public class BaseItemMilledOre extends BaseOreComponent {
 
     }
 
-    public static Item generate(Materials aMat, int aMaterialEU) {
+    public static Item generate(Materials aMat, long aMaterialEU) {
         return generate(MaterialUtils.generateMaterialFromGtENUM(aMat), aMaterialEU);
     }
 
-    public static Item generate(Materials aMat, int aMaterialEU, ItemStack custom) {
+    public static Item generate(Materials aMat, long aMaterialEU, ItemStack custom) {
         return generate(MaterialUtils.generateMaterialFromGtENUM(aMat), aMaterialEU, custom);
     }
 
-    public static Item generate(Material aMat, int aMaterialEU) {
-        return new BaseItemMilledOre(aMat, aMaterialEU);
+    public static Item generate(Material aMat, long aMaterialEU) {
+        return new BaseItemMilledOre(aMat, (int) aMaterialEU);
     }
 
-    public static Item generate(Material aMat, int aMaterialEU, ItemStack custom) {
-        return new BaseItemMilledOre(aMat, aMaterialEU, custom);
+    public static Item generate(Material aMat, long aMaterialEU, ItemStack custom) {
+        return new BaseItemMilledOre(aMat, (int) aMaterialEU, custom);
     }
 }

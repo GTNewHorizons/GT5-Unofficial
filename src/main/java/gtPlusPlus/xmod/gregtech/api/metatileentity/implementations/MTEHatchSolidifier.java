@@ -117,7 +117,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         }
         try {
             this.setInventorySlotContents(moldSlot, phantom);
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         markDirty();
         GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
     }

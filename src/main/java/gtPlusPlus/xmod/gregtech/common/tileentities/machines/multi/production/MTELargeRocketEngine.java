@@ -46,8 +46,6 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -348,7 +346,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
         int value = aFuel.mSpecialValue * 3;
         int energy = value * amount;
         if (amount < 5) return false;
-        FluidStack tLiquid = FluidUtils.getFluidStack(aFuel.mFluidInputs[0], (this.boostEu ? amount * 3 : amount));
+        FluidStack tLiquid = new FluidStack(aFuel.mFluidInputs[0], (this.boostEu ? amount * 3 : amount));
         if (!this.depleteInput(tLiquid)) {
             return false;
         } else {
@@ -378,8 +376,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     public boolean consumeCO2() {
-        return this.depleteInput(MaterialMisc.CARBON_DIOXIDE.getFluidStack(this.boostEu ? 3 : 1))
-            || this.depleteInput(FluidUtils.getFluidStack("carbondioxide", (this.boostEu ? 3 : 1)));
+        return this.depleteInput(Materials.CarbonDioxide.getGas(this.boostEu ? 3 : 1));
     }
 
     public boolean consumeLOH() {

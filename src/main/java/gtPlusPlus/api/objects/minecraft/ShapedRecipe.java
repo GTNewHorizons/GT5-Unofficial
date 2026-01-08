@@ -225,7 +225,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                 ShapedOreRecipe testRecipe = null;
                 try {
                     testRecipe = new ShapedOreRecipe(aOutput, mVarags2);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     Logger.RECIPE("[Fix][0] Error thrown when making a ShapedOreRecipe object.");
                     t.printStackTrace();
                 }
@@ -244,7 +244,7 @@ public class ShapedRecipe implements IRecipeMutableAccess {
                 Logger.RECIPE("[Fix] Failed to generate a shaped recipe. Output was not valid.");
             }
 
-        } catch (Throwable t) {
+        } catch (Exception t) {
             this.mRecipe = null;
             Logger.RECIPE("[Fix][1] Error thrown when making a ShapedOreRecipe object.");
             t.printStackTrace();
