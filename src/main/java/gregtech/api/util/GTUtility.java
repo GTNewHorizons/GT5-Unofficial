@@ -524,10 +524,16 @@ public class GTUtility {
      * Send a translated chat message to the player.
      *
      * @param player     The player who will receive the message.
-     * @param messageKey The lang key of the translation
-     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others will be converted to String
+     * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
+     *                   placeholder '%s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
+     *                   will be converted to String
      */
     public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
+        // FIXME：
+        // should have a better translation component to:
+        // 1. process format stacks;
+        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
         player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
