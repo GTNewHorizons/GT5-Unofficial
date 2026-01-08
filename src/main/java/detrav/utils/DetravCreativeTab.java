@@ -5,23 +5,26 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import detrav.items.DetravMetaGeneratedTool01;
+import gregtech.api.enums.ItemList;
+import gregtech.api.util.GTCreativeTab;
 
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class DetravCreativeTab extends CreativeTabs {
+public class DetravCreativeTab extends GTCreativeTab {
 
     public DetravCreativeTab() {
-        super("Detrav Scanner");
+        super("GT_DETRAV_TAB", "Detrav Scanner");
     }
 
     @Override
-    public Item getTabIconItem() {
-        return Items.stick;
+    public ItemStack getIconItemStack() {
+        return ItemList.Tool_Scanner.get(1, new ItemStack(Items.stick, 1));
     }
 
     @Override

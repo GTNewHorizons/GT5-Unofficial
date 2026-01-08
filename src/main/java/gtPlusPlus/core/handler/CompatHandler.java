@@ -6,8 +6,6 @@ import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.util.GTModHandler.getModItem;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -18,7 +16,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.RecipeLoaderAgriculturalChem;
@@ -31,7 +28,6 @@ import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.recipe.RecipesGregTech;
 import gtPlusPlus.core.recipe.RecipesLaserEngraver;
-import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluidCanning;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenRecycling;
@@ -105,7 +101,6 @@ import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 
 public class CompatHandler {
 
-    public static Queue<ShapedRecipeObject> AddRecipeQueue = new LinkedList<>();
     public static Boolean areInitItemsLoaded = false;
 
     public static void registerMyModsOreDictEntries() {
@@ -221,10 +216,6 @@ public class CompatHandler {
 
     public static void InitialiseHandlerThenAddRecipes() {
         RegistrationHandler.run();
-    }
-
-    public static void InitialiseLateHandlerThenAddRecipes() {
-        LateRegistrationHandler.run();
     }
 
     public static void startLoadingGregAPIBasedRecipes() {
