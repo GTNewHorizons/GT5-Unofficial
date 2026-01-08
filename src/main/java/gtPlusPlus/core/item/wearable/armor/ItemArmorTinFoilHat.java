@@ -8,16 +8,9 @@ import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.item.EntityEnderEye;
-import net.minecraft.entity.item.EntityEnderPearl;
-import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityEgg;
-import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -114,42 +107,34 @@ public class ItemArmorTinFoilHat extends BaseItemWearable {
 
     @Override
     public void onArmorTick(World world, EntityPlayer player, ItemStack itemStack) {
-        if (itemStack != null && player != null && world != null && !world.isRemote) {
-            // Apply Slow
-            if (!player.isPotionActive(Potion.moveSlowdown.id)) {
-                player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 1, true));
-            }
-            // Move Xp orbs away
-            final AxisAlignedBB box = player.getBoundingBox();
-            if (box != null) {
-                List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(
-                    player,
-                    box.expand(5, 5, 5),
-                    e -> e instanceof EntityXPOrb || e instanceof EntityBoat
-                        || e instanceof EntitySnowball
-                        || e instanceof EntityFireball
-                        || e instanceof EntityEgg
-                        || e instanceof EntityExpBottle
-                        || e instanceof EntityEnderEye
-                        || e instanceof EntityEnderPearl);
-                for (Entity e : list) {
-                    final float dist = e.getDistanceToEntity(player);
-                    if (dist == 0) continue;
-                    double distX = player.posX - e.posX;
-                    double distZ = player.posZ - e.posZ;
-                    double distY = e.posY + 1.5D - player.posY;
-                    double dir = Math.atan2(distZ, distX);
-                    double speed = 1F / dist * 0.5;
-                    speed = -speed;
-                    if (distY < 0) {
-                        e.motionY += speed;
-                    }
-                    e.motionX = Math.cos(dir) * speed;
-                    e.motionZ = Math.sin(dir) * speed;
-                }
-            }
+        if (itemStack == null && player == null && world == null && world.isRemote) {
+            super.onArmorTick(world, null, null);
         }
-        super.onArmorTick(world, player, itemStack);
+
+        // Apply Slow
+        if (!player.isPotionActive(Potion.moveSlowdown.id)) {
+            player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 2, 1, true));
+        }
+
+        // Move Xp orbs away
+        AxisAlignedBB box = player.boundingBox.expand(2.5D, 2.5D, 2.5D);
+        List<Entity> list = world
+            .getEntitiesWithinAABBExcludingEntity(player, box, entity -> entity instanceof EntityXPOrb);
+        for (Entity e : list) {
+            final float dist = e.getDistanceToEntity(player);
+            if (dist == 0) continue;
+            double distX = player.posX - e.posX;
+            double distZ = player.posZ - e.posZ;
+            double distY = e.posY + 1.5D - player.posY;
+            double dir = Math.atan2(distZ, distX);
+            double speed = 1F / dist * 0.5;
+            speed = -speed;
+            if (distY < 0) {
+                e.motionY += speed;
+            }
+            e.motionX = Math.cos(dir) * speed;
+            e.motionZ = Math.sin(dir) * speed;
+        }
     }
 
     @Override
