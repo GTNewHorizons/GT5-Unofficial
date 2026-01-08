@@ -2,20 +2,19 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorOmdaCZ;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_CANNER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 import java.util.Set;
@@ -41,7 +40,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -49,6 +47,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.recipe.RecipeMap;
@@ -71,75 +70,40 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSolidifier>
     implements ISurvivalConstructable {
 
-    private static final String STRUCTURE_PIECE_T1 = "t1";
-    private static final String STRUCTURE_PIECE_T2 = "t2";
+    private static final String STRUCTURE_PIECE_MAIN = "t1";
     private static final double DECAY_RATE = 0.025;
-    private static final int HORIZONTAL_OFFSET = 1;
-    private static final int VERTICAL_OFFSET = 2;
+    private static final int HORIZONTAL_OFFSET = 2;
+    private static final int VERTICAL_OFFSET = 5;
     private static final int DEPTH_OFFSET = 0;
 
-    private int tier = 1;
     private float speedup = 1;
     private int runningTickCounter = 0;
+    private int glassTier = -1;
 
     private static final IStructureDefinition<MTEMassSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMassSolidifier>builder()
         .addShape(
-            STRUCTURE_PIECE_T1,
-            // spotless:off
-            new String[][]{{
-                "BBB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "C C"
-            },{
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
-            },{
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "C C"
-            }})
-        .addShape(
-            STRUCTURE_PIECE_T2,
-            // spotless:off
-            new String[][]{{
-                "BBB",
-                "BBB",
-                "B~B",
-                "BBB",
-                "D D"
-            },{
-                "BBB",
-                "A A",
-                "A A",
-                "BBB",
-                "   "
-            },{
-                "BBB",
-                "BAB",
-                "BAB",
-                "BBB",
-                "D D"
-            }})
-        //spotless:on
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] { { " bbb ", "  b  ", "  b  ", "  b  ", "  b  ", "  b  ", "  b  ", "  b  ", " bbb " },
+                    { "bdddb", " dfd ", " dfd ", " dfd ", " dfd ", " dfd ", " dfd ", " dfd ", "bdddb" },
+                    { "bbbbb", "a   a", "a e a", "a   a", "a e a", "a   a", "a e a", "a   a", "bbbbb" },
+                    { "bbbbb", "a   a", "a   a", "a   a", "a   a", "a   a", "a   a", "a   a", "bbbbb" },
+                    { "bdddb", "a c a", "accca", "a c a", "accca", "a c a", "accca", "a c a", "bdddb" },
+                    { "bb~bb", "bdbdb", "bbbbb", "bdbdb", "bbbbb", "bdbdb", "bbbbb", "bdbdb", "bbbbb" } }))
+        // spotless:off
+        .addElement('a', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
-            'B',
-            buildHatchAdder(MTEMassSolidifier.class)
-                .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(15))
+            'b',
+            buildHatchAdder(MTEMassSolidifier.class).atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy)
+                .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
                 .buildAndChain(
-                    onElementPass(MTEMassSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 15))))
-        .addElement('A', chainAllGlasses())
-        .addElement('C', ofFrame(Materials.Steel))
-        .addElement('D', ofFrame(Materials.Naquadah))
+                    onElementPass(MTEMassSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+        .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, 11))
+        .addElement('d', ofBlock(GregTechAPI.sBlockCasings10, 14))
+        .addElement('e', ofBlock(GregTechAPI.sBlockCasings2, 13))
+        .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .build();
 
     public MTEMassSolidifier(final int aID, final String aName, final String aNameRegional) {
@@ -204,11 +168,10 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier, MS")
             .addInfo(
-                "Gains " + TooltipHelper.parallelText(8)
+                "Gains " + TooltipHelper.parallelText(10)
                     + " parallels per "
                     + TooltipHelper.tierText(TooltipTier.VOLTAGE)
                     + " tier")
-            .addInfo("Structure can be upgraded to " + TooltipHelper.parallelText("double") + " parallels per tier")
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
@@ -224,14 +187,12 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("multiTier", tier);
         aNBT.setFloat("speedup", speedup);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        tier = aNBT.getInteger("multiTier");
         if (aNBT.hasKey("speedup")) speedup = aNBT.getFloat("speedup");
     }
 
@@ -258,42 +219,22 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     public void construct(ItemStack holoStack, boolean hintsOnly) {
-        if (holoStack.stackSize == 1) {
-            buildPiece(STRUCTURE_PIECE_T1, holoStack, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
-        }
-        if (holoStack.stackSize >= 2) {
-            buildPiece(STRUCTURE_PIECE_T2, holoStack, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
-        }
+        buildPiece(STRUCTURE_PIECE_MAIN, holoStack, hintsOnly, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET);
     }
 
     @Override
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        if (holoStack.stackSize == 1) {
-            return survivalBuildPiece(
-                STRUCTURE_PIECE_T1,
-                holoStack,
-                HORIZONTAL_OFFSET,
-                VERTICAL_OFFSET,
-                DEPTH_OFFSET,
-                elementBudget,
-                env,
-                false,
-                true);
-        }
-        if (holoStack.stackSize >= 2) {
-            return survivalBuildPiece(
-                STRUCTURE_PIECE_T2,
-                holoStack,
-                HORIZONTAL_OFFSET,
-                VERTICAL_OFFSET,
-                DEPTH_OFFSET,
-                elementBudget,
-                env,
-                false,
-                true);
-        }
-        return 0;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            holoStack,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     private int casingAmount;
@@ -304,26 +245,18 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tier = 1;
         casingAmount = 0;
-        // check tier
-        if (checkPiece(STRUCTURE_PIECE_T2, 1, 2, 0)) {
-            tier = 2;
-            return casingAmount >= 14;
+        glassTier = -1;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
+            return false;
         }
-
-        resetParameters();
-
-        if (checkPiece(STRUCTURE_PIECE_T1, 1, 2, 0)) {
-            return casingAmount >= 14;
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
+                return false;
+            }
         }
-
-        return false;
-    }
-
-    private void resetParameters() {
-        clearHatches();
-        casingAmount = 0;
+        return casingAmount >= 20;
     }
 
     @Override
@@ -393,7 +326,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
 
     @Override
     public int getMaxParallelRecipes() {
-        return (tier * 8 * GTUtility.getTier(this.getMaxInputVoltage()));
+        return 10 * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
