@@ -59,7 +59,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
@@ -79,6 +78,8 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     private float speedup = 1;
     private int runningTickCounter = 0;
     private int glassTier = -1;
+    private final static int MAX_CASINGS = 77;
+    private final static int MIN_CASINGS = MAX_CASINGS - 53;// = 24. Allow for 53 hatch space to match Fluid Shaper max.
 
     private static final IStructureDefinition<MTEMassSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMassSolidifier>builder()
@@ -166,20 +167,27 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Solidifier, MS")
-            .addInfo(
-                "Gains " + TooltipHelper.parallelText(10)
-                    + " parallels per "
-                    + TooltipHelper.tierText(TooltipTier.VOLTAGE)
-                    + " tier")
+        tt.addMachineType("Fluid Solidifier")
+            .addVoltageParallelInfo(10)
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UMV)
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginStructureBlock(3, 5, 3, true)
-            .addController("Front Center")
+            .beginStructureBlock(5, 6, 9, false)
+            .addController("Front Center Bottom")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
+            .addCasingInfoExactly("Solidifier Radiator", 34, false)
+            .addCasingInfoExactly("Heat Proof Machine Casing", 13, false)
+            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 7, false)
+            .addCasingInfoExactly("Steel Pipe Casing", 3, false)
+            .addCasingInfoExactly("Any Tiered Glass", 42, true)
+            .addInputBus("Any Solidifier Casing", 1)
+            .addOutputBus("Any Solidifier Casing", 1)
+            .addInputHatch("Any Solidifier Casing", 1)
+            .addEnergyHatch("Any Solidifier Casing", 1)
+            .addMaintenanceHatch("Any Solidifier Casing", 1)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -256,7 +264,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 return false;
             }
         }
-        return casingAmount >= 20;
+        return casingAmount >= MIN_CASINGS;
     }
 
     @Override
@@ -293,8 +301,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                 setSpeedBonus(1F / speedup);
                 return super.validateRecipe(recipe);
             }
-        }.setSpeedBonus(1F / 1.5F)
-            .setMaxParallelSupplier(this::getTrueParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Nonnull
