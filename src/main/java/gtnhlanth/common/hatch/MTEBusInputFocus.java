@@ -41,11 +41,6 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public boolean areUsageStacksUnique() {
-        return false;
-    }
-
-    @Override
     public void tryFillUsageSlots() {
         Item focus = null;
 

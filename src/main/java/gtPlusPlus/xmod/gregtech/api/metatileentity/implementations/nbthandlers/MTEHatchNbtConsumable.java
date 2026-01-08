@@ -60,12 +60,6 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
 
     public abstract int getInputSlotCount();
 
-    /// There should only be one stack per item (ignoring its durability) in the usage slots, because duplicates don't
-    /// matter.
-    public boolean areUsageStacksUnique() {
-        return true;
-    }
-
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return true;
@@ -139,8 +133,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
 
     public void tryFillUsageSlots() {
         ItemSource source = getItemSource(ForgeDirection.UNKNOWN);
-        ItemSink sink = areUsageStacksUnique() ? new LimitingItemSink(ForgeDirection.UNKNOWN)
-            : new GTItemSink(this, ForgeDirection.UNKNOWN);
+        ItemSink sink = new LimitingItemSink(ForgeDirection.UNKNOWN);
 
         ItemTransfer transfer = new ItemTransfer();
 
