@@ -69,7 +69,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSolidifier>
     implements ISurvivalConstructable {
 
-    private static final String STRUCTURE_PIECE_MAIN = "t1";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final double DECAY_RATE = 0.025;
     private static final int HORIZONTAL_OFFSET = 2;
     private static final int VERTICAL_OFFSET = 5;
@@ -79,7 +79,8 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     private int runningTickCounter = 0;
     private int glassTier = -1;
     private final static int MAX_CASINGS = 77;
-    private final static int MIN_CASINGS = MAX_CASINGS - 53;// = 24. Allow for 53 hatch space to match Fluid Shaper max.
+    private final static int MIN_CASINGS = MAX_CASINGS - 53; // = 24. Allow for 53 hatch space to match Fluid Shaper
+                                                             // max.
 
     private static final IStructureDefinition<MTEMassSolidifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMassSolidifier>builder()

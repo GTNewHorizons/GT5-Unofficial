@@ -68,7 +68,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
- * DEPRECATED! Will be removed after 2.9 is released. see {@link } instead
+ * DEPRECATED! Will be removed after 2.9 is released. see
+ * {@link gregtech.common.tileentities.machines.multi.MTEMassSolidifier} instead
  */
 public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper> implements ISurvivalConstructable {
 
