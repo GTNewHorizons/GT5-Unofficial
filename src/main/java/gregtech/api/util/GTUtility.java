@@ -521,10 +521,11 @@ public class GTUtility {
     }
 
     /**
+     * Send a translated chat message to the player.
      *
-     * @param player     the player
-     * @param messageKey the key
-     * @param args       `IChatComponent` will be handled properly, others will be converted to String
+     * @param player     The player who will receive the message.
+     * @param messageKey The lang key of the translation
+     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others will be converted to String
      */
     public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
         player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
