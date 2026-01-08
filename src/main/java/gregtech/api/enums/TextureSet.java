@@ -99,7 +99,7 @@ public class TextureSet {
         SET_CRUDE_STEEL = new TextureSet("crudesteel", false),
         SET_CRYSTALLINE_PINK_SLIME = new TextureSet("crystallinepinkslime", true),
         SET_ENERGETIC_SILVER = new TextureSet("energeticsilver", false),
-        SET_DRACONIUM = new TextureSet("draconium", false),
+        SET_END_STEEL = new TextureSet("endsteel", false), SET_DRACONIUM = new TextureSet("draconium", false),
         SET_AWOKEN_DRACONIUM = new TextureSet("awakeneddraconium", false),
         SET_ELECTROTINE = new TextureSet("electrotine", false), SET_REDSTONE = new TextureSet("redstone", false),
         SET_GLOWSTONE = new TextureSet("glowstone", false), SET_PYROTHEUM = new TextureSet("pyrotheum", false),

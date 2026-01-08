@@ -11942,7 +11942,7 @@ public class MaterialsInit {
     private static Materials loadEndSteel() {
         return new MaterialBuilder().setName("EndSteel")
             .setDefaultLocalName("End Steel")
-            .setIconSet(TextureSet.SET_VIVID)
+            .setIconSet(TextureSet.SET_END_STEEL)
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00dbce7d)
             .setTool(2_000, 4, 12.0f)
