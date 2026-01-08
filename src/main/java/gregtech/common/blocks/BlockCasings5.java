@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
@@ -47,12 +48,10 @@ import gregtech.common.render.GTRendererBlock;
  * 16 subtypes at most.
  */
 public class BlockCasings5 extends BlockCasingsAbstract
-    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset {
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
-
-    public static final int ACTIVE_OFFSET = 16;
 
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
@@ -201,11 +200,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
     @Override
     public int getRenderType() {
         return GTRendererBlock.RENDER_ID;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
     }
 
     /*--------------- COIL CHECK IMPL. ------------*/
