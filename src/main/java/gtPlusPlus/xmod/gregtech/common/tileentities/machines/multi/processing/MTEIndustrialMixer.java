@@ -194,7 +194,9 @@ public class MTEIndustrialMixer extends GTPPMultiBlockBase<MTEIndustrialMixer> i
     @Override
     public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
-        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.separatebus", inputSeparation);
+        GTUtility.sendChatTrans(
+            aPlayer,
+            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
     }
 
     @Override

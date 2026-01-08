@@ -618,7 +618,9 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         if (!aPlayer.isSneaking()) {
             if (mode == Mode.CircuitAssemblyLine) return false;
             inputSeparation = !inputSeparation;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.separatebus", inputSeparation);
+            GTUtility.sendChatTrans(
+                aPlayer,
+                inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
         } else {
             batchMode = !batchMode;
             if (batchMode) {

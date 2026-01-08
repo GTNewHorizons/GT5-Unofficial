@@ -439,7 +439,9 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         } else {
             inputSeparation = !inputSeparation;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.separatebus", inputSeparation);
+            GTUtility.sendChatTrans(
+                aPlayer,
+                inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
         }
     }
 

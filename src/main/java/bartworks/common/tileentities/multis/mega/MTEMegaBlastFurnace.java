@@ -222,7 +222,9 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
         float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             this.inputSeparation = !this.inputSeparation;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.separatebus", this.inputSeparation);
+            GTUtility.sendChatTrans(
+                aPlayer,
+                this.inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
             return true;
         }
         this.batchMode = !this.batchMode;
