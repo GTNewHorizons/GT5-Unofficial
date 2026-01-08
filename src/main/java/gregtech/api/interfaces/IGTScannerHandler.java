@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.util.GTScannerResult;
 import gregtech.common.tileentities.machines.basic.MTEScanner;
 
+@FunctionalInterface
 public interface IGTScannerHandler {
 
     @Nullable

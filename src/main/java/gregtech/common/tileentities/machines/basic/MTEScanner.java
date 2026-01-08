@@ -110,6 +110,8 @@ public class MTEScanner extends MTEBasicMachine {
         return new MTEScanner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
+    private IGTScannerHandler mLastSuccesfulHandler = null;
+
     @Override
     public int checkRecipe() {
         // too full to do anything
@@ -133,29 +135,42 @@ public class MTEScanner extends MTEBasicMachine {
             fluid = null;
         }
 
-        for (IGTScannerHandler handler : HANDLERS) {
-            GTScannerResult result = handler.apply(this, input, specialSlot, fluid);
-            // check next if not handled
-            if (result == null) continue;
-            // abort if req were not met internally.
-            if (result.eut() <= 0 || result.duration() <= 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-            // check if oc fails
-            calculateOverclockedNess(result.eut(), result.duration());
-            boolean success = mMaxProgresstime != Integer.MAX_VALUE - 1 && mEUt != Integer.MAX_VALUE - 1;
-            // consume
-            if (success || result.consumeInputsIfOCFail()) {
-                input.stackSize -= result.inputConsume();
-                if (specialSlot != null) specialSlot.stackSize -= result.specialConsume();
-                if (fluid != null) fluid.amount -= result.fluidConsume();
+        // run last handler that found something first.
+        GTScannerResult result = mLastSuccesfulHandler != null
+            ? mLastSuccesfulHandler.apply(this, input, specialSlot, fluid)
+            : null;
+        // check other handlers
+        if (result == null) {
+            for (IGTScannerHandler handler : HANDLERS) {
+                if (handler == mLastSuccesfulHandler) continue;
+                result = handler.apply(this, input, specialSlot, fluid);
+                // check next if not handled
+                if (result == null) continue;
+                // cache the last handler for faster lookups
+                mLastSuccesfulHandler = handler;
+                break;
             }
-            if (success) {
-                this.mOutputItems[0] = result.output();
-            }
-            // return code
-            return success ? FOUND_AND_SUCCESSFULLY_USED_RECIPE : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
-
-        return DID_NOT_FIND_RECIPE;
+        // abort if no recipe found
+        if (result == null) {
+            return DID_NOT_FIND_RECIPE;
+        }
+        // abort if req were not met internally.
+        if (result.eut() <= 0 || result.duration() <= 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        // check if oc fails
+        calculateOverclockedNess(result.eut(), result.duration());
+        boolean success = mMaxProgresstime != Integer.MAX_VALUE - 1 && mEUt != Integer.MAX_VALUE - 1;
+        // consume
+        if (success || result.consumeInputsIfOCFail()) {
+            input.stackSize -= result.inputConsume();
+            if (specialSlot != null) specialSlot.stackSize -= result.specialConsume();
+            if (fluid != null) fluid.amount -= result.fluidConsume();
+        }
+        if (success) {
+            this.mOutputItems[0] = result.output();
+        }
+        // return code
+        return success ? FOUND_AND_SUCCESSFULLY_USED_RECIPE : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
     }
 
     @Override
