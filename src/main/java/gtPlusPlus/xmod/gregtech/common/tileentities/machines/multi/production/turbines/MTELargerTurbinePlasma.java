@@ -196,7 +196,7 @@ public class MTELargerTurbinePlasma extends MTELargerTurbineBase {
                 enableAllTurbineHatches();
                 return CheckRecipeResultRegistry.GENERATING;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;

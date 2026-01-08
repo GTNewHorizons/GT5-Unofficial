@@ -63,7 +63,7 @@ public class BehaviourWrench extends BehaviourNone {
 
         try {
             return handler.handle() && !aWorld.isRemote;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error wrenching", e);
         }
         return false;

@@ -25,7 +25,6 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class RecipeGenBlastSmelter extends RecipeGenBase {
 
@@ -183,12 +182,10 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
                     .getDustStack(r)) == null) {
                 if (r > 0 && r <= 100) {
                     final int mathmatics = (r * 1000);
-                    componentsFluid = FluidUtils.getFluidStack(
-                        M.getComposites()
-                            .get(irc)
-                            .getStackMaterial()
-                            .getFluidStack(mathmatics),
-                        mathmatics);
+                    componentsFluid = M.getComposites()
+                        .get(irc)
+                        .getStackMaterial()
+                        .getFluidStack(mathmatics);
                 }
             } else {
                 components[irc] = M.getComposites()

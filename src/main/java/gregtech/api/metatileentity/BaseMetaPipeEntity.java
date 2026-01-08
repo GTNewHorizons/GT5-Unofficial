@@ -120,7 +120,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void writeToNBT(NBTTagCompound nbt) {
         try {
             super.writeToNBT(nbt);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
         try {
@@ -129,7 +129,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
             nbt.setByte("mConnections", mConnections);
             nbt.setByte("mColor", mColor);
             nbt.setBoolean("mWorks", !mWorks);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity", e);
         }
         saveMetaTileNBT(nbt);
@@ -351,7 +351,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
         if (hasValidMetaTileEntity()) {
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while receiving Data from the Server", e);
             }
         }
@@ -902,7 +902,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                 mMetaTileEntity.markDirty();
                 return value;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered Exception while right clicking TileEntity", e);
         }
 
@@ -913,7 +913,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     public void onLeftclick(EntityPlayer aPlayer) {
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered Exception while left clicking TileEntity", e);
         }
     }
