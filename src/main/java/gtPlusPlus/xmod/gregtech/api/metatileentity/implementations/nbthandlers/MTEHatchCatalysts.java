@@ -59,7 +59,7 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
         return MTEChemicalPlant.isCatalyst(aStack);
     }
 

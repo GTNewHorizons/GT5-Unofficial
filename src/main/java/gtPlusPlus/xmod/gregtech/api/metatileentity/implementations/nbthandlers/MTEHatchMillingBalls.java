@@ -43,7 +43,7 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
         return MTEIsaMill.isMillingBall(aStack);
     }
 

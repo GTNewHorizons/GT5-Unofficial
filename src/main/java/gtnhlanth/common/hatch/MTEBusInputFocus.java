@@ -2,11 +2,16 @@ package gtnhlanth.common.hatch;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,12 +21,11 @@ import gregtech.common.gui.modularui.hatch.MTEBusInputFocusGui;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchNbtConsumable;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtnhlanth.common.item.ICanFocus;
+import it.unimi.dsi.fastutil.ints.IntIterators;
 
 public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
     private static final int INPUT_SLOTS = 64;
-
-    private Item currentFocus;
 
     public MTEBusInputFocus(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", true);
@@ -42,37 +46,59 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     }
 
     @Override
-    protected void validateUsageSlots() {
-        // Reset the current focus each tick
-        currentFocus = null;
+    public void tryFillUsageSlots() {
+        Item focus = null;
 
-        // Loop through the inventory to find the first focus in the right group of slots
-        for (int i = inputSlotCount; i < totalSlotCount; i++) {
-            ItemStack slot = mInventory[i];
+        // Try to find the first focus in the usage slots
+        for (int i = getFirstUsageSlot(); i < getLastUsageSlot(); i++) {
+            ItemStack stack = mInventory[i];
 
-            if (slot != null) {
-                currentFocus = slot.getItem();
+            if (ItemUtil.isStackEmpty(stack)) continue;
+
+            focus = stack.getItem();
+            break;
+        }
+
+        // No focus in the usage slots, try to find one in the input slots
+        if (focus == null) {
+            for (int i = getFirstInputSlot(); i < getLastInputSlot(); i++) {
+                ItemStack stack = mInventory[i];
+
+                if (ItemUtil.isStackEmpty(stack)) continue;
+
+                focus = stack.getItem();
                 break;
+            }
+
+            // No focus in the input slots either, no reason to transfer anything so we can bail here
+            if (focus == null) {
+                return;
             }
         }
 
-        super.validateUsageSlots();
+        ItemSource source = getItemSource(ForgeDirection.UNKNOWN);
+        ItemSink sink = getItemSink(ForgeDirection.UNKNOWN);
+
+        ItemTransfer transfer = new ItemTransfer();
+
+        transfer.source(source);
+        transfer.sink(sink);
+
+        transfer.setSourceSlots(IntIterators.unwrap(IntIterators.fromTo(getFirstInputSlot(), getLastInputSlot())));
+        transfer.setSinkSlots(IntIterators.unwrap(IntIterators.fromTo(getFirstUsageSlot(), getLastUsageSlot())));
+
+        final Item focus2 = focus;
+        transfer.setFilter(stack -> stack.getItem() == focus2);
+
+        transfer.setStacksToTransfer(getLastUsageSlot() - getFirstUsageSlot());
+
+        transfer.transfer();
     }
 
     @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        if (currentFocus != null) {
-            return currentFocus == aStack.getItem();
-        }
-
-        if (aStack.getItem() instanceof ICanFocus) {
-            // Awful hack so that you can't insert different types of foci in the same tick
-            // This will be corrected in the next tick if this item is never actually inserted
-            currentFocus = aStack.getItem();
-            return true;
-        } else {
-            return false;
-        }
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
+        // Always allow focuses into the input slots, regardless of what type they are
+        return aStack != null && aStack.getItem() instanceof ICanFocus;
     }
 
     @Override

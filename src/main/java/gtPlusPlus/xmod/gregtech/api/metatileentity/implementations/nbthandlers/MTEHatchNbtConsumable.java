@@ -115,14 +115,14 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         GTUtility.cleanInventory(this);
 
         // Compact the input slots
-        GTUtility.compactInventory(this, 0, getSlotID_LastInput() + 1);
+        GTUtility.compactInventory(this, 0, getLastInputSlot());
 
         // Compact the usage slots
-        GTUtility.compactInventory(this, getSlotID_FirstUsage(), getSlotID_LastUsage() + 1);
+        GTUtility.compactInventory(this, getFirstUsageSlot(), getLastUsageSlot());
     }
 
     protected void validateUsageSlots() {
-        for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
+        for (int i = getFirstUsageSlot(); i < getLastUsageSlot(); i++) {
             ItemStack stack = mInventory[i];
 
             if (stack != null && mInventory[i].stackSize < 1) {
@@ -134,7 +134,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
 
     @Override
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
-        return slot >= getSlotID_FirstUsage() ? 1 : super.getStackSizeLimit(slot, stack);
+        return slot >= getFirstUsageSlot() ? 1 : super.getStackSizeLimit(slot, stack);
     }
 
     public void tryFillUsageSlots() {
@@ -147,30 +147,28 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         transfer.source(source);
         transfer.sink(sink);
 
-        transfer.setSourceSlots(
-            IntIterators.unwrap(IntIterators.fromTo(getSlotID_FirstInput(), getSlotID_LastInput() + 1)));
-        transfer
-            .setSinkSlots(IntIterators.unwrap(IntIterators.fromTo(getSlotID_FirstUsage(), getSlotID_LastUsage() + 1)));
+        transfer.setSourceSlots(IntIterators.unwrap(IntIterators.fromTo(getFirstInputSlot(), getLastInputSlot())));
+        transfer.setSinkSlots(IntIterators.unwrap(IntIterators.fromTo(getFirstUsageSlot(), getLastUsageSlot())));
 
-        transfer.setStacksToTransfer(getSlotID_LastUsage() - getSlotID_FirstUsage() + 1);
+        transfer.setStacksToTransfer(getLastUsageSlot() - getFirstUsageSlot());
 
         transfer.transfer();
     }
 
-    private int getSlotID_FirstInput() {
+    protected int getFirstInputSlot() {
         return 0;
     }
 
-    private int getSlotID_LastInput() {
-        return inputSlotCount - 1;
-    }
-
-    private int getSlotID_FirstUsage() {
+    protected int getLastInputSlot() {
         return inputSlotCount;
     }
 
-    private int getSlotID_LastUsage() {
-        return totalSlotCount - 1;
+    protected int getFirstUsageSlot() {
+        return inputSlotCount;
+    }
+
+    protected int getLastUsageSlot() {
+        return totalSlotCount;
     }
 
     public final ArrayList<ItemStack> getContentUsageSlots() {
@@ -193,17 +191,16 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         if (side != aBaseMetaTileEntity.getFrontFacing()) return false;
-        if (aIndex >= getSlotID_FirstUsage()) return false;
-        if (!isItemValidForUsageSlot(aStack)) return false;
+        if (aIndex >= getFirstUsageSlot()) return false;
+        if (!isItemValidForInputSlot(aStack)) return false;
 
         return true;
     }
 
     /**
-     * Checks if the given item is valid for Usage Slots. Can be overridden for easier handling if you already have
-     * methods to check this.
+     * Checks if the given item is valid for the input slots.
      */
-    public abstract boolean isItemValidForUsageSlot(ItemStack aStack);
+    public abstract boolean isItemValidForInputSlot(ItemStack aStack);
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -240,7 +237,7 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         public @NotNull StandardInventoryIterator sinkIterator() {
             Set<ItemStack> stored = new ObjectOpenCustomHashSet<>(ItemId.STACK_ITEM_META_STRATEGY);
 
-            for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
+            for (int i = getFirstUsageSlot(); i < getLastUsageSlot(); i++) {
                 if (mInventory[i] != null) {
                     stored.add(mInventory[i]);
                 }
