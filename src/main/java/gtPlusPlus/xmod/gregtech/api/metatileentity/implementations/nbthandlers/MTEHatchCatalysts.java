@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -58,16 +56,6 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchCatalysts(mName, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public String getNameGUI() {
-        return "Catalyst Container";
-    }
-
-    @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
     }
 
     @Override

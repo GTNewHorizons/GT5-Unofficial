@@ -658,8 +658,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public void updateSlots() {
         super.updateSlots();
         for (MTEHatchCatalysts h : mCatalystBuses) {
-            h.updateSlots();
             h.tryFillUsageSlots();
+            h.updateSlots();
         }
     }
 

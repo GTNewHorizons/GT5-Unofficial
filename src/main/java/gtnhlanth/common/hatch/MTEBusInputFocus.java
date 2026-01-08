@@ -1,7 +1,6 @@
 package gtnhlanth.common.hatch;
 
-import java.util.ArrayList;
-
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -20,7 +19,9 @@ import gtnhlanth.common.item.ICanFocus;
 
 public class MTEBusInputFocus extends MTEHatchNbtConsumable {
 
-    private static final int INPUT_SLOTS = 256;
+    private static final int INPUT_SLOTS = 64;
+
+    private Item currentFocus;
 
     public MTEBusInputFocus(int id, String name, String nameRegional) {
         super(id, name, nameRegional, 0, INPUT_SLOTS, "Input Bus for Foci", true);
@@ -36,30 +37,47 @@ public class MTEBusInputFocus extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
+    public boolean areUsageStacksUnique() {
+        return false;
+    }
+
+    @Override
+    protected void validateUsageSlots() {
+        // Reset the current focus each tick
+        currentFocus = null;
+
+        // Loop through the inventory to find the first focus in the right group of slots
+        for (int i = inputSlotCount; i < totalSlotCount; i++) {
+            ItemStack slot = mInventory[i];
+
+            if (slot != null) {
+                currentFocus = slot.getItem();
+                break;
+            }
+        }
+
+        super.validateUsageSlots();
     }
 
     @Override
     public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        ArrayList<ItemStack> usageSlots = this.getContentUsageSlots();
-
-        if (usageSlots.isEmpty()) {
-            return aStack.getItem() instanceof ICanFocus;
+        if (currentFocus != null) {
+            return currentFocus == aStack.getItem();
         }
 
-        return aStack.getItem() == usageSlots.get(0)
-            .getItem();
+        if (aStack.getItem() instanceof ICanFocus) {
+            // Awful hack so that you can't insert different types of foci in the same tick
+            // This will be corrected in the next tick if this item is never actually inserted
+            currentFocus = aStack.getItem();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEBusInputFocusGui(this).build(data, syncManager, uiSettings);
-    }
-
-    @Override
-    public String getNameGUI() {
-        return "Focus Input Bus";
     }
 
     @Override
