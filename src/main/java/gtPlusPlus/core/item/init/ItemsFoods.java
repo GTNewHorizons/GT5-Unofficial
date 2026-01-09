@@ -6,9 +6,9 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 
+import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.item.food.BaseItemMetaFood;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ItemsFoods {
@@ -22,13 +22,13 @@ public class ItemsFoods {
     }
 
     private static void addCookingRecipes() {
-        RecipeUtils
+        GTModHandler
             .addSmeltingRecipe(GregtechItemList.RawHumanMeat.get(1), GregtechItemList.CookedHumanMeat.get(1), 0.4F);
-        RecipeUtils
+        GTModHandler
             .addSmeltingRecipe(GregtechItemList.RawHorseMeat.get(1), GregtechItemList.CookedHorseMeat.get(1), 0.35F);
-        RecipeUtils
+        GTModHandler
             .addSmeltingRecipe(GregtechItemList.RawWolfMeat.get(1), GregtechItemList.CookedWolfMeat.get(1), 0.35F);
-        RecipeUtils
+        GTModHandler
             .addSmeltingRecipe(GregtechItemList.RawOcelotMeat.get(1), GregtechItemList.CookedOcelotMeat.get(1), 0.35F);
     }
 
