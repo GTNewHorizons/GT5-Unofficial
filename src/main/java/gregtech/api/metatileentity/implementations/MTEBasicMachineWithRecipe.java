@@ -75,12 +75,33 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
 
     }
 
+    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
+        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+        this(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            aDescription,
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            1,
+            1,
+            aTankCapacity,
+            aSound,
+            aSpecialEffect,
+            aOverlays,
+            aRecipe);
+    }
+
     /**
      * Registers machine with multi-line descriptions, specific tank capacity, and sound specified by SoundResource.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
-        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int aTankCapacity, SoundResource aSound,
-        SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int inputFluidSlotCount, int outputFluidSlotCount,
+        int aTankCapacity, SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays, Object[] aRecipe) {
         super(
             aID,
             aName,
@@ -90,6 +111,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aDescription,
             aInputSlots,
             aOutputSlots,
+            inputFluidSlotCount,
+            outputFluidSlotCount,
             TextureFactory.of(
                 TextureFactory.of(
                     new CustomIcon("basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE_ACTIVE")),
@@ -178,6 +201,31 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * no recipe.
      */
     public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
+        RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, int inputFluidSlotCount, int outputFluidSlotCount,
+        boolean usesFluids, SoundResource aSound, SpecialEffects aSpecialEffect, String aOverlays) {
+        this(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            aDescription,
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            inputFluidSlotCount,
+            outputFluidSlotCount,
+            usesFluids ? getCapacityForTier(aTier) : 0,
+            aSound,
+            aSpecialEffect,
+            aOverlays,
+            null);
+    }
+
+    /**
+     * Registers machine with multi-line descriptions, auto-scaled fluid tank, and sound specified by SoundResource. Has
+     * no recipe.
+     */
+    public MTEBasicMachineWithRecipe(int aID, String aName, String aNameRegional, int aTier, String[] aDescription,
         RecipeMap<?> aRecipes, int aInputSlots, int aOutputSlots, boolean usesFluids, SoundResource aSound,
         SpecialEffects aSpecialEffect, String aOverlays) {
         this(
@@ -189,11 +237,12 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aRecipes,
             aInputSlots,
             aOutputSlots,
-            usesFluids ? getCapacityForTier(aTier) : 0,
+            1,
+            1,
+            usesFluids,
             aSound,
             aSpecialEffect,
-            aOverlays,
-            null);
+            aOverlays);
     }
 
     /**
@@ -246,13 +295,60 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
      * For {@link #newMetaEntity}.
      */
     public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
-        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
-        SoundResource aSound, SpecialEffects aSpecialEffect) {
-        super(aName, aTier, aAmperage, aDescription, aTextures, aInputSlots, aOutputSlots);
+        int aInputSlots, int aOutputSlots, int inputFluidSlotCount, int outputFluidSlotCount, int aTankCapacity,
+        int aAmperage, ITexture[][][] aTextures, SoundResource aSound, SpecialEffects aSpecialEffect) {
+        super(
+            aName,
+            aTier,
+            aAmperage,
+            aDescription,
+            aTextures,
+            aInputSlots,
+            aOutputSlots,
+            inputFluidSlotCount,
+            outputFluidSlotCount);
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
         this.mRecipes = aRecipes;
         this.mSoundResource = aSound;
+    }
+
+    public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
+        int aInputSlots, int aOutputSlots, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
+        SoundResource aSound, SpecialEffects aSpecialEffect) {
+        this(
+            aName,
+            aTier,
+            aDescription,
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            1,
+            1,
+            aTankCapacity,
+            aAmperage,
+            aTextures,
+            aSound,
+            aSpecialEffect);
+    }
+
+    public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
+        int aInputSlots, int aOutputSlots, int inputFluidSlotCount, int outputFluidSlotCount, int aTankCapacity,
+        int aAmperage, ITexture[][][] aTextures, ResourceLocation aSound, SpecialEffects aSpecialEffect) {
+        this(
+            aName,
+            aTier,
+            aDescription,
+            aRecipes,
+            aInputSlots,
+            aOutputSlots,
+            inputFluidSlotCount,
+            outputFluidSlotCount,
+            aTankCapacity,
+            aAmperage,
+            aTextures,
+            SoundResource.get(aSound.toString()),
+            aSpecialEffect);
     }
 
     public MTEBasicMachineWithRecipe(String aName, int aTier, String[] aDescription, RecipeMap<?> aRecipes,
@@ -265,10 +361,12 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             aRecipes,
             aInputSlots,
             aOutputSlots,
+            1,
+            1,
             aTankCapacity,
             aAmperage,
             aTextures,
-            SoundResource.get(aSound.toString()),
+            aSound,
             aSpecialEffect);
     }
 
@@ -281,6 +379,8 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
             this.mRecipes,
             this.mInputSlotCount,
             this.mOutputItems == null ? 0 : this.mOutputItems.length,
+            this.inputFluids.getSlotCount(),
+            this.outputFluids.getSlotCount(),
             this.mTankCapacity,
             this.mAmperage,
             this.mTextures,
