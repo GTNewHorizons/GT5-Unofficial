@@ -846,9 +846,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         renderDisabled = !renderDisabled;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled"));
     }
 
     @Override

@@ -465,25 +465,17 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (aPlayer.isSneaking()) {
             if (!InfernalMobs.isModLoaded()) return;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal(
-                    "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled")));
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled"));
         } else {
             if (!BloodMagic.isModLoaded()) return;
             isInRitualMode = !isInRitualMode;
             checkRitualConnection();
 
             if (!isInRitualMode) {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("kubatech.chat.eec.ritual_mode_disabled"));
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_disabled");
             } else {
                 GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_enabled");
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector
-                        .translateToLocal("kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error")));
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error"));
             }
         }
     }
