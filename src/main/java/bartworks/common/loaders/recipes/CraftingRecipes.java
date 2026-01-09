@@ -41,7 +41,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingRecipes implements Runnable {
@@ -531,17 +530,11 @@ public class CraftingRecipes implements Runnable {
                 ItemList.Magnetron.get(1), 'C', ItemList.Vajra_Core.get(1), 'E',
                 OrePrefixes.plateDense.get(Materials.Silver), 'B', OrePrefixes.battery.get(Materials.IV) });
 
-        RecipeUtils.addShapedRecipe(
-            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
-            ItemList.HV_Coil.get(1),
-            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
-            OrePrefixes.plate.get(Materials.Silver),
-            OrePrefixes.wireGt12.get(Materials.SuperconductorIV),
-            OrePrefixes.plate.get(Materials.Silver),
-            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
-            ItemList.HV_Coil.get(1),
-            OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic),
-            ItemList.Magnetron.get(1));
+        GTModHandler.addCraftingRecipe(
+            ItemList.Magnetron.get(1),
+            new Object[] { "DCD", "PWP", "DCD", 'D', OrePrefixes.plateDense.get(Materials.NeodymiumMagnetic), 'C',
+                ItemList.HV_Coil, 'P', OrePrefixes.plate.get(Materials.Silver), 'W',
+                OrePrefixes.wireGt12.get(Materials.SuperconductorIV) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Vajra_Core.get(1),

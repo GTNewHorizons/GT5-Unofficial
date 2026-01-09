@@ -522,7 +522,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 Logger.INFO("Bad Rotor.");
                 return false;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         return false;
@@ -760,7 +760,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
                     reduction));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             aTooltipSuper.add(
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",

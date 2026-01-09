@@ -48,7 +48,6 @@ import gregtech.api.util.ParallelHelper;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -68,7 +67,7 @@ public class MTEThermalBoiler extends GTPPMultiBlockBase<MTEThermalBoiler> imple
         .getFluid();
     private static final Fluid fluidSteam = Materials.Steam.getGas(1)
         .getFluid();
-    private static final Fluid fluidSHSteam = FluidUtils.getSuperHeatedSteam(1)
+    private static final Fluid fluidSHSteam = GTModHandler.getSuperHeatedSteam(1)
         .getFluid();
 
     public MTEThermalBoiler(int aID, String aName, String aNameRegional) {
