@@ -806,7 +806,12 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public boolean isInputSeparationEnabled() {
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean getDefaultInputSeparationMode() {
         return true;
     }
 
