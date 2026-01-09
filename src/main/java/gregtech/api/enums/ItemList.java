@@ -154,7 +154,7 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rod,
     Shape_Extruder_Bolt,
     Shape_Extruder_Ingot,
-    Shape_Extruder_Wire,
+    Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     Shape_Extruder_Casing,
     Shape_Extruder_Pipe_Tiny,
     Shape_Extruder_Pipe_Small,
@@ -183,7 +183,7 @@ public enum ItemList implements IItemContainer {
     White_Dwarf_Shape_Extruder_Rod,
     White_Dwarf_Shape_Extruder_Bolt,
     White_Dwarf_Shape_Extruder_Ingot,
-    White_Dwarf_Shape_Extruder_Wire,
+    White_Dwarf_Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     White_Dwarf_Shape_Extruder_Casing,
     White_Dwarf_Shape_Extruder_Pipe_Tiny,
     White_Dwarf_Shape_Extruder_Pipe_Small,
@@ -1239,12 +1239,6 @@ public enum ItemList implements IItemContainer {
     Machine_EV_Cutter,
     Machine_IV_Cutter,
 
-    Machine_LV_Slicer,
-    Machine_MV_Slicer,
-    Machine_HV_Slicer,
-    Machine_EV_Slicer,
-    Machine_IV_Slicer,
-
     Machine_LV_Sifter,
     Machine_MV_Sifter,
     Machine_HV_Sifter,
@@ -1514,10 +1508,26 @@ public enum ItemList implements IItemContainer {
     Hatch_Antimatter,
 
     Machine_Multi_Canner,
-    Machine_Multi_Solidifier,
 
+    Machine_Multi_Solidifier,
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
+
+    Machine_Multi_ExoFoundry,
+    Glass_ExoFoundry,
+    Primary_Casing_ExoFoundry,
+    Secondary_Casing_ExoFoundry,
+    Central_Casing_ExoFoundry,
+    Magnetic_Chassis_T1_ExoFoundry,
+    Magnetic_Chassis_T2_ExoFoundry,
+    Magnetic_Chassis_T3_ExoFoundry,
+    Streamlined_Casters_ExoFoundry,
+    Power_Efficient_Subsystems_ExoFoundry,
+    Extra_Casting_Basins_ExoFoundry,
+    Heliocast_Reinforcement_ExoFoundry,
+    Hypercooler_ExoFoundry,
+    Efficient_Overclocking_ExoFoundry,
+    Universal_Collapser_ExoFoundry,
 
     Casing_Reinforced_Wood,
 
@@ -2631,13 +2641,6 @@ public enum ItemList implements IItemContainer {
     SiftingMachineUEV,
     SiftingMachineUIV,
     SiftingMachineUMV,
-    SlicingMachineLuV,
-    SlicingMachineZPM,
-    SlicingMachineUV,
-    SlicingMachineUHV,
-    SlicingMachineUEV,
-    SlicingMachineUIV,
-    SlicingMachineUMV,
     ThermalCentrifugeLuV,
     ThermalCentrifugeZPM,
     ThermalCentrifugeUV,

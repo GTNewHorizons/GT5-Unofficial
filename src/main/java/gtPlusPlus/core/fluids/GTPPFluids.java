@@ -21,6 +21,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
 
@@ -96,6 +97,7 @@ public class GTPPFluids {
     public static Fluid BurntLiFBeF2ZrF4UF4Salt;
     public static Fluid BurntLiFBeF2ZrF4U235Salt;
     public static Fluid ImpureMoltenSaltBase;
+    public static Fluid NuclearWaste;
 
     // Misc Fluids
     public static Fluid GeneticMutagen;
@@ -108,6 +110,11 @@ public class GTPPFluids {
     public static Fluid IndustrialStrengthHydrogenChloride;
     public static Fluid SulfuricLithiumMix;
     public static Fluid LithiumHydroxide;
+    public static Fluid BasicFertilizer;
+    public static Fluid UN18Fertilizer;
+    public static Fluid UN32Fertilizer;
+    public static Fluid RaisinJuice;
+    public static Fluid MobEssence;
 
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
@@ -462,6 +469,17 @@ public class GTPPFluids {
             null,
             null);
 
+        NuclearWaste = FluidUtils.addGTFluidNoPrefix(
+            "nuclear.waste",
+            "Nuclear Waste",
+            new short[] { 10, 250, 10, 100 },
+            0,
+            1000,
+            null,
+            ItemList.Cell_Empty.get(1),
+            1000,
+            true);
+
         GeneticMutagen = FluidUtils.generateFluidNonMolten(
             "GeneticMutagen",
             "Genetic Mutagen",
@@ -571,6 +589,46 @@ public class GTPPFluids {
             1000,
             false);
         generateIC2FluidCell(20, "LithiumHydroxide");
+
+        BasicFertilizer = FluidUtils.generateFluidNonMolten(
+            "Fertiliser",
+            "Fertiliser",
+            32,
+            new short[] { 45, 170, 45, 100 },
+            ItemList.IC2_Fertilizer.get(1),
+            null,
+            true);
+
+        UN32Fertilizer = FluidUtils.generateFluidNonMolten(
+            "UN32Fertiliser",
+            "UN-32 Fertiliser",
+            24,
+            new short[] { 55, 190, 55, 100 },
+            null,
+            null,
+            true);
+
+        UN18Fertilizer = FluidUtils.generateFluidNonMolten(
+            "UN18Fertiliser",
+            "UN-18 Fertiliser",
+            22,
+            new short[] { 60, 155, 60, 100 },
+            null,
+            null,
+            true);
+
+        RaisinJuice = FluidUtils.generateFluidNonMolten(
+            "RaisinJuice",
+            "Raisin Juice",
+            2,
+            new short[] { 51, 0, 51, 100 },
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
+            50,
+            true);
+
+        MobEssence = FluidUtils
+            .generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
 
         handleBlood();
     }
