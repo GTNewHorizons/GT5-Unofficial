@@ -255,6 +255,34 @@ public class GTModHandler {
     }
 
     /**
+     * Returns a Liquid Stack with given amount of IC2 Hot Water
+     */
+    public static FluidStack getHotWater(final int amount) {
+        return FluidRegistry.getFluidStack("ic2hotwater", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Pahoehoe Lava
+     */
+    public static FluidStack getPahoehoeLava(final int amount) {
+        return FluidRegistry.getFluidStack("ic2pahoehoelava", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Superheated Steam
+     */
+    public static FluidStack getSuperHeatedSteam(final int amount) {
+        return FluidRegistry.getFluidStack("ic2superheatedsteam", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Hot Coolant
+     */
+    public static FluidStack getHotCoolant(final int amount) {
+        return FluidRegistry.getFluidStack("ic2hotcoolant", amount);
+    }
+
+    /**
      * @return the Value of this Stack, when burning inside a Furnace (200 = 1 Burn Process = 500 EU, max = 32767 (that
      *         is 81917.5 EU)), limited to Short because the vanilla Furnace otherwise can't handle it properly, stupid
      *         Mojang...
@@ -407,11 +435,18 @@ public class GTModHandler {
     /**
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
-    public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
-        aOutput = GTOreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null) return false;
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output) {
+        return addSmeltingRecipe(input, output, 0.0F);
+    }
+
+    /**
+     * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
+     */
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output, float xp) {
+        output = GTOreDictUnificator.get(true, output);
+        if (input == null || output == null) return false;
         FurnaceRecipes.smelting()
-            .func_151394_a(aInput, GTUtility.copyOrNull(aOutput), 0.0F);
+            .func_151394_a(input, GTUtility.copyOrNull(output), xp);
         return true;
     }
 

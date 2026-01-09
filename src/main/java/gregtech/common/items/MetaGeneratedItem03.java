@@ -274,6 +274,7 @@ import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
@@ -1338,7 +1339,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 White_Dwarf_Shape_Extruder_Wire.ID,
                 "White Dwarf Extruder Shape (Wire)",
-                "Ultra Strong Stellar Shape for making Wires"));
+                EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update."));
         ItemList.White_Dwarf_Shape_Extruder_Casing.set(
             addItem(
                 White_Dwarf_Shape_Extruder_Casing.ID,

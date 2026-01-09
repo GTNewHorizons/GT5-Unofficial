@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -45,17 +43,7 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public String getNameGUI() {
-        return "Ball Housing";
-    }
-
-    @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
         return MTEIsaMill.isMillingBall(aStack);
     }
 

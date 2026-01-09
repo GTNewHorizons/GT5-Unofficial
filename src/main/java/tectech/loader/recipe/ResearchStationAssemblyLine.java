@@ -66,7 +66,6 @@ import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.Particle;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.LanthItemList;
 import kekztech.common.Blocks;
@@ -2366,7 +2365,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                     ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
                     GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
                 new FluidStack[] { Materials.Time.getMolten(144_000), Materials.Space.getMolten(144_000),
-                    FluidUtils.getFluidStack("molten.metastable oganesson", 16 * STACKS),
+                    GGMaterial.metastableOganesson.getMolten(16 * STACKS),
                     GGMaterial.shirabon.getMolten(16 * STACKS), },
                 CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
                 400 * MINUTES,
