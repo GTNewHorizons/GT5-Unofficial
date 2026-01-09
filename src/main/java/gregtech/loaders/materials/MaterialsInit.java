@@ -1308,7 +1308,7 @@ public class MaterialsInit {
             .setElement(Element.Pd)
             .setIconSet(TextureSet.SET_SHINY)
             .setColor(Dyes.dyeGray)
-            .setARGB(0x00808080)
+            .setARGB(0xB1B1B1)
             .setTool(512, 4, 8.0f)
             .addDustItems()
             .addMetalItems()
