@@ -218,7 +218,6 @@ public class MTEHatchInput extends MTEHatch {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         disableFilter = !disableFilter;
-        GTUtility
-            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
     }
 }
