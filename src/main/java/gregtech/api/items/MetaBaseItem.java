@@ -155,7 +155,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 aPlayer.destroyCurrentEquippedItem();
                 return false;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error left clicking entity", e);
         }
         return false;
@@ -177,7 +177,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 aPlayer.destroyCurrentEquippedItem();
                 return false;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
@@ -209,7 +209,7 @@ public abstract class MetaBaseItem extends GTGenericItem
                 aPlayer.destroyCurrentEquippedItem();
                 return false;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
@@ -223,7 +223,7 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;

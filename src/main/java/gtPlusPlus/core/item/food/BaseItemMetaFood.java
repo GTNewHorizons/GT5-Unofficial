@@ -297,7 +297,7 @@ public class BaseItemMetaFood extends ItemFood {
             if (aTooltip != null && !aTooltip.isEmpty()) {
                 aList.add(aTooltip);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         super.addInformation(aStack, p_77624_2_, aList, p_77624_4_);
