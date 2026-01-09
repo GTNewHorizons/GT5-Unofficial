@@ -1977,6 +1977,11 @@ public class Textures {
         COKE_OVEN_OVERLAY_INACTIVE,
         COKE_OVEN_OVERLAY_ACTIVE,
 
+        OVERLAY_FRONT_MASS_SOLIDIFIER,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
