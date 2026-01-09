@@ -147,7 +147,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.isSticky = !this.isSticky;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
+        GTUtility.sendChatTrans(aPlayer, this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3");
         return true;
     }
 
