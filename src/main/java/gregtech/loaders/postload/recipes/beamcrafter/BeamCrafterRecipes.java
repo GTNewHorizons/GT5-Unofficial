@@ -148,7 +148,7 @@ public class BeamCrafterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().URANIUM238.getDust(1))
             .fluidInputs(Materials.Deuterium.getGas(400))
-            .itemOutputs(new ItemStack(ModItems.dustNeptunium238))
+            .itemOutputs(GregtechItemList.Neptunium238Dust.get(1))
             .metadata(
                 BEAMCRAFTER_METADATA,
                 BeamCrafterMetadata.builder()
