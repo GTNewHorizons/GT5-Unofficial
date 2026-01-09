@@ -517,7 +517,7 @@ public class GTPowerfailTracker {
                         }
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.warn("Could not load powerfail data", t);
             }
         }
