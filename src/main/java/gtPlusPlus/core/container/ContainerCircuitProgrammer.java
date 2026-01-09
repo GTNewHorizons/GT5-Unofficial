@@ -105,7 +105,7 @@ public class ContainerCircuitProgrammer extends Container {
             }
 
             Logger.INFO("4");
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
     }
 
     @Override

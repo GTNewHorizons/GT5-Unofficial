@@ -79,7 +79,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
         try {
             updateEntityProfiled();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error(
                 "Error ticking meta tile entity {} at ({}, {}, {}) in world {}",
                 getMetaTileID(),
@@ -90,7 +90,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 e);
             try {
                 onTickFail();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 GT_FML_LOGGER.error(
                     "Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}",
                     getMetaTileID(),
@@ -146,12 +146,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
                     GTMod.logStackTrace(e);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
             GTMod.logStackTrace(e);
         }
@@ -176,7 +176,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
             try {
                 getMetaTileEntity().loadNBTData(aNBT);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while loading MetaTileEntity.");
                 GTMod.logStackTrace(e);
             }
