@@ -27,7 +27,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -1432,7 +1431,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                GTUtility.sendChatTrans(aPlayer, mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
+                                GTUtility.sendChatTrans(
+                                    aPlayer,
+                                    mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
                             }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);

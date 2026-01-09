@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;

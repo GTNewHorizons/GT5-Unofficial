@@ -297,7 +297,9 @@ public class MTEPump extends MTEBasicMachine {
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
         EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         mDisallowRetract = !mDisallowRetract;
-        GTUtility.sendChatTrans(entityPlayer, mDisallowRetract ? "GT5U.machines.autoretract.disabled" : "GT5U.machines.autoretract.enabled");
+        GTUtility.sendChatTrans(
+            entityPlayer,
+            mDisallowRetract ? "GT5U.machines.autoretract.disabled" : "GT5U.machines.autoretract.enabled");
         return true;
     }
 

@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;

@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
