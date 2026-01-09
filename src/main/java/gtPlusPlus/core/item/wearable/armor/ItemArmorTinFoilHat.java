@@ -1,4 +1,4 @@
-package gtPlusPlus.core.item.wearable.armour.tinfoil;
+package gtPlusPlus.core.item.wearable.armor;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
@@ -27,30 +27,27 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
-import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
+import gtPlusPlus.core.item.wearable.base.BaseItemWearable;
 
-public class ItemArmourTinFoilHat extends BaseArmourHelm {
+public class ItemArmorTinFoilHat extends BaseItemWearable {
+
+    public static ArmorMaterial tinFoilArmor = EnumHelper.addArmorMaterial("TINFOIL", 5, new int[] { 1, 1, 1, 1 }, 50);
 
     public IIcon iconHelm;
 
-    public ItemArmourTinFoilHat() {
-        super(ArmourLoader.TinFoilArmour, 0);
+    public ItemArmorTinFoilHat() {
+        super(tinFoilArmor, 0, 0);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
         this.iconHelm = ir.registerIcon(GTPlusPlus.ID + ":itemHatTinFoil");
-    }
-
-    @Override
-    public int getRenderIndex() {
-        return 0;
     }
 
     @Override
