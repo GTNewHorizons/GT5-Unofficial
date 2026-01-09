@@ -2,6 +2,7 @@ package gregtech.common.tools;
 
 import java.util.List;
 
+import gregtech.api.enums.Textures;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;

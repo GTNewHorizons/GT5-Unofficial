@@ -213,7 +213,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             if (provider.getCheckMode()) {
                 return provider.canStore(stack, stack.stackSize + cache.get(id));
             }
-            return hasAvailableSpace() && provider.getFilter().isFilteredToItem(id);
+            return hasAvailableSpace() && provider.getFilter()
+                .isFilteredToItem(id);
         }
 
         @Override
@@ -267,13 +268,13 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-                                        ItemStack aTool) {
+        ItemStack aTool) {
         provider.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-                                          float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         return provider.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
@@ -304,7 +305,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
@@ -339,7 +340,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             tooltip.add(
                 "Current cache capacity: " + EnumChatFormatting.YELLOW
                     + ReadableNumberConverter.INSTANCE
-                    .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
+                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity")));
         }
     }
 
@@ -447,7 +448,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         provider.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
@@ -455,7 +456,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     @SideOnly(Side.CLIENT)
     public void getWailaBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, ss, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
@@ -477,7 +478,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     @Override
     @SideOnly(Side.CLIENT)
     public void getWailaAdvancedBody(ItemStack itemStack, List<String> ss, IWailaDataAccessor accessor,
-                                     IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaAdvancedBody(itemStack, ss, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
@@ -522,8 +523,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             (getProxy() != null && getProxy().isActive())
                 ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
                 : StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                getAEDiagnostics()));
+                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
+                    getAEDiagnostics()));
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_bus_me.cache_capacity",
