@@ -3,7 +3,6 @@ package gtnhintergalactic.tile.multi.elevatormodules;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gtnhintergalactic.recipe.SpaceMiningRecipes.uniqueAsteroidList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +24,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -64,8 +59,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.gui.modularui.multiblock.TileEntityModuleMinerGui;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -86,9 +79,6 @@ import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
-import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
-import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
-import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
 /**
@@ -96,8 +86,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModuleMiner extends TileEntityModuleBase
-    implements IOverclockDescriptionProvider, IParametrized {
+public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
     /** Max chance to get a bonus stack from space mining */
     protected static int BONUS_STACK_MAX_CHANCE = 7500;
@@ -106,7 +95,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected static final double MIN_RECIPE_TIME_MODIFIER = 0.5D;
 
     /** Max distance a mining drone can travel */
-    public static final double MAX_DISTANCE = 300D;
+    protected static final double MAX_DISTANCE = 300D;
 
     // Tiered plasmas, the mining operation uses one of them. Using higher tier plasmas boosts the mining operation
     /** Usage of helium plasma per mining operation */
@@ -129,14 +118,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected static String IS_WHITELISTED_NBT_TAG = "isWhitelisted";
     /** String of the NBT tag that saves the whitelist */
     protected static String WHITELIST_NBT_TAG = "whitelist";
-    protected static String FILTER_NBT_TAG = "filter";
     /** Flag if the user modified the filter */
     protected boolean wasFilterModified;
-
-    public com.cleanroommc.modularui.utils.item.ItemStackHandler filterInventory = new LimitingItemStackHandler(64, 1);
-    public PhantomItemSlot[] filterSlots = new PhantomItemSlot[64];
-    public ModularSlot[] filterModularSlots = new ModularSlot[64];
-    private int filterStacksUsed;
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -147,12 +130,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         stepSetting;
 
     Parameters.Group.ParameterOut distanceDisplay;
-    public static final String DISTANCE_PARAMETER = "distance";
-    public static final String PARALLEL_PARAMETER = "parallel";
-    public static final String CYCLE_PARAMETER = "cycle";
-    public static final String CYCLE_DISTANCE_PARAMETER = "cycleDistance";
-    public static final String RANGE_PARAMETER = "range";
-    public static final String STEP_PARAMETER = "step";
 
     /** Name of the distance setting */
     private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
@@ -200,7 +177,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected ProjectAsteroidOutpost asteroidOutpost;
 
     /** Flag if the module has a whitelist to generate ores, else it will use a blacklist */
-    public boolean isWhitelisted = false;
+    protected boolean isWhitelisted = false;
     /** List for ore generation. Can either be a white- or blacklist */
     protected HashSet<String> configuredOres;
     /** Handler that holds the visual whitelist */
@@ -209,22 +186,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     protected int prevDistance = 0;
     /** Bitmask of tiers for which a drone, drills, and rods were present when prevRecipes was computed */
     protected int prevAvailDroneMask = 0;
-    public int currentDroneMask = 0;
     /**
      * The last computed list of possible recipes. Can be reused if distance etc don't change, and used to display stats
      * to the user
      */
     protected WeightedAsteroidList prevRecipes = null;
-
-    // GUI STUFF
-    private List<IPanelHandler> asteroidPanels = new ArrayList<>(uniqueAsteroidList.size());
-
-    private int startCache;
-    private int endCache;
-    private boolean cycleCache;
-    private int droneCache;
-    private boolean filterCache[] = new boolean[64];
-    private boolean checked[] = new boolean[64];
 
     /**
      * Create new Space Mining module
@@ -240,16 +206,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
-        for (int i = 0; i < 64; i++) {
-            filterModularSlots[i] = new ModularSlot(this.filterInventory, i) {
-
-                @Override
-                public void onSlotChanged() {
-                    generateOreConfigurationList();
-                }
-            };
-            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
-        }
     }
 
     /**
@@ -263,56 +219,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     public TileEntityModuleMiner(String aName, int tTier, int tModuleTier, int tMinMotorTier) {
         super(aName, tTier, tModuleTier, tMinMotorTier);
         overclockDescriber = new ModuleOverclockDescriber((byte) tTier, tModuleTier);
-        for (int i = 0; i < 64; i++) {
-            filterModularSlots[i] = new ModularSlot(this.filterInventory, i) {
-
-                @Override
-                public void onSlotChanged() {
-                    generateOreConfigurationList();
-                }
-            };
-            filterSlots[i] = new PhantomItemSlot().slot(filterModularSlots[i]);
-        }
-    }
-
-    @Override
-    public void initParameters() {
-        parameterMap.put(
-            DISTANCE_PARAMETER,
-            new IntegerParameter(0, "tt.spaceminer.distance", () -> 0, () -> (int) MAX_DISTANCE));
-        parameterMap.put(
-            PARALLEL_PARAMETER,
-            new IntegerParameter(getMaxParallels(), "tt.spaceminer.parallel", () -> 0, this::getMaxParallels));
-        parameterMap.put(CYCLE_PARAMETER, new BooleanParameter(false, "tt.spaceminer.cycle"));
-
-        parameterMap
-            .put(RANGE_PARAMETER, new IntegerParameter(0, "tt.spaceminer.range", () -> 0, () -> Integer.MAX_VALUE));
-        parameterMap
-            .put(STEP_PARAMETER, new IntegerParameter(0, "tt.spaceminer.step", () -> 0, () -> Integer.MAX_VALUE));
-        parameterMap.put(
-            CYCLE_DISTANCE_PARAMETER,
-            new IntegerParameter(
-                (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue(),
-                "",
-                () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue()
-                    - (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue(),
-                () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                    .getValue()
-                    + (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue()));
-    }
-
-    @Override
-    public void saveParameters(NBTTagCompound nbt) {
-
-    }
-
-    @Override
-    public void loadParameters(NBTTagCompound nbt) {
-
     }
 
     @Override
@@ -332,9 +238,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (whiteListHandler != null) {
             whiteListHandler.deserializeNBT(aNBT.getCompoundTag(WHITELIST_NBT_TAG));
         }
-        if (filterInventory != null) {
-            filterInventory.deserializeNBT(aNBT.getCompoundTag(FILTER_NBT_TAG));
-        }
         generateOreConfigurationList();
     }
 
@@ -350,18 +253,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (whiteListHandler != null) {
             aNBT.setTag(WHITELIST_NBT_TAG, whiteListHandler.serializeNBT());
         }
-        if (filterInventory != null) {
-            aNBT.setTag(FILTER_NBT_TAG, filterInventory.serializeNBT());
-        }
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return IGRecipeMaps.spaceMiningRecipes;
-    }
-
-    public int getModuleTier() {
-        return tModuleTier;
     }
 
     /**
@@ -466,11 +362,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
-        int distance = (int) parameterMap.get(DISTANCE_PARAMETER)
-            .getValue();
+        int distance = (int) distanceDisplay.get();
         int availDroneMask = getAvailDroneMask(inputs);
-        currentDroneMask = availDroneMask;
-
         WeightedAsteroidList recipes = null;
         // Try to use the cached recipe list if the distance and available drones are the same as when it was computed
         if (prevRecipes != null && prevDistance == distance && prevAvailDroneMask == availDroneMask) {
@@ -716,8 +609,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         } else {
             configuredOres.clear();
         }
-        if (filterInventory != null) {
-            for (ItemStack item : filterInventory.getStacks()) {
+        if (whiteListHandler != null) {
+            for (ItemStack item : whiteListHandler.getStacks()) {
                 configuredOres.add(getOreString(item));
             }
         }
@@ -766,10 +659,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         }
         float plasmaModifier = asteroidOutpost != null ? 1f - asteroidOutpost.getPlasmaDiscount() : 1f;
         return Math.min(
-            Math.min(
-                getMaxParallels(),
-                (Integer) parameterMap.get(PARALLEL_PARAMETER)
-                    .getValue()),
+            (int) Math.min(getMaxParallels(), parallelSetting.get()),
             (int) (plasma.amount / (plasmaUsage * plasmaModifier)));
     }
 
@@ -791,42 +681,17 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * Cycle the current distance according to parameters
      */
     protected void cycleDistance() {
-        if ((Boolean) parameterMap.get(CYCLE_PARAMETER)
-            .getValue()) {
+        if (((int) modeSetting.get()) != 0) {
             // cycle distanceDisplay from (distance - range)
             // to (distance + range) in increments of step.
-            if ((Integer) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-                .getValue()
-                + (Integer) parameterMap.get(STEP_PARAMETER)
-                    .getValue()
-                <= Math.min(
-                    MAX_DISTANCE,
-                    (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                        .getValue()
-                        + (Integer) parameterMap.get(RANGE_PARAMETER)
-                            .getValue())) {
-                ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(
-                    (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                        .getValue()
-                        + (Integer) parameterMap.get(STEP_PARAMETER)
-                            .getValue());
+            if (distanceDisplay.get() + stepSetting.get()
+                <= Math.min(MAX_DISTANCE, distanceSetting.get() + rangeSetting.get())) {
+                distanceDisplay.set(distanceDisplay.get() + stepSetting.get());
             } else {
-                ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(
-                    Math.max(
-                        0,
-                        (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                            .getValue()
-                            - (Integer) parameterMap.get(RANGE_PARAMETER)
-                                .getValue()));
+                distanceDisplay.set(Math.max(0, distanceSetting.get() - rangeSetting.get()));
             }
         } else {
-            ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(
-                (int) Math.min(
-                    MAX_DISTANCE,
-                    Math.max(
-                        0,
-                        (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                            .getValue())));
+            distanceDisplay.set(Math.min(MAX_DISTANCE, Math.max(0, distanceSetting.get())));
         }
     }
 
@@ -876,11 +741,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                     Math.min(maxParallels, Math.min((int) (effectiveComp / data.computation), (int) (power / r.mEUt))));
             })
             .collect(Collectors.toList());
-    }
-
-    @Override
-    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new TileEntityModuleMinerGui(this);
     }
 
     /**
