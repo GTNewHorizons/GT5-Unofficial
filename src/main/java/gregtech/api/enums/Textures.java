@@ -341,8 +341,8 @@ public class Textures {
         OVERLAY_FRONT_EMS_GLOW,
         MACHINE_CASING_EMS,
 
-        MACHINE_CASING_MS160,
-        RADIATOR_MS160,
+        MASS_SOLIDIFIER_CASING,
+        MASS_SOLIDIFIER_RADIATOR_CASING,
 
         CASING_REINFORCED_WOOD,
         CASING_REINFORCED_WOOD_TOP,
@@ -1983,6 +1983,11 @@ public class Textures {
         COKE_OVEN_CASING,
         COKE_OVEN_OVERLAY_INACTIVE,
         COKE_OVEN_OVERLAY_ACTIVE,
+
+        OVERLAY_FRONT_MASS_SOLIDIFIER,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
 
         // semicolon after the comment to reduce merge conflicts
         ;

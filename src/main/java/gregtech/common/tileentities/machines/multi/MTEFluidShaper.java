@@ -67,8 +67,11 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolid
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiSolidifier>
-    implements ISurvivalConstructable {
+/**
+ * DEPRECATED! Will be removed after 2.9 is released. see
+ * {@link gregtech.common.tileentities.machines.multi.MTEMassSolidifier} instead
+ */
+public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper> implements ISurvivalConstructable {
 
     private static final String MS_LEFT_MID = "leftmid";
     private static final String MS_RIGHT_MID = "rightmid";
@@ -85,8 +88,8 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     private int runningTickCounter = 0;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEMultiSolidifier> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMultiSolidifier>builder()
+    private static final IStructureDefinition<MTEFluidShaper> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEFluidShaper>builder()
         .addShape(
             MS_LEFT_MID,
             (transpose(
@@ -113,28 +116,27 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement(
             'B',
-            buildHatchAdder(MTEMultiSolidifier.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
+            buildHatchAdder(MTEFluidShaper.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13))
                 .hint(1)
-                .buildAndChain(
-                    onElementPass(MTEMultiSolidifier::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+                .buildAndChain(onElementPass(MTEFluidShaper::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 13))))
 
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 14))
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .build();
 
-    public MTEMultiSolidifier(final int aID, final String aName, final String aNameRegional) {
+    public MTEFluidShaper(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMultiSolidifier(String aName) {
+    public MTEFluidShaper(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMultiSolidifier(this.mName);
+        return new MTEFluidShaper(this.mName);
     }
 
     @Override
@@ -180,6 +182,14 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
+            .addInfo(
+                EnumChatFormatting.RED + "DEPRECATED!"
+                    + EnumChatFormatting.GRAY
+                    + " Will be removed in next major version. Use the "
+                    + EnumChatFormatting.YELLOW
+                    + "Mass Solidifier"
+                    + EnumChatFormatting.GRAY
+                    + " instead")
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
@@ -247,7 +257,7 @@ public class MTEMultiSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMultiS
     }
 
     @Override
-    public IStructureDefinition<MTEMultiSolidifier> getStructureDefinition() {
+    public IStructureDefinition<MTEFluidShaper> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 

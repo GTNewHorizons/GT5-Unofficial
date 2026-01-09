@@ -91,6 +91,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -121,6 +122,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -517,11 +519,32 @@ public class GTUtility {
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
 
+    /**
+     * @deprecated Use {@link #sendChatTrans} instead.
+     */
+    @Deprecated
     public static void sendChatToPlayer(EntityPlayer player, String message) {
         if (message != null) {
             message = processFormatStacks(message);
             player.addChatComponentMessage(new ChatComponentText(message));
         }
+    }
+
+    /**
+     * Send a translated chat message to the player.
+     *
+     * @param player     The player who will receive the message.
+     * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
+     *                   placeholder '%s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
+     *                   will be converted to String
+     */
+    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
+        // FIXME：
+        // should have a better translation component to:
+        // 1. process format stacks;
+        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
+        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
     /**
@@ -687,15 +710,18 @@ public class GTUtility {
         compactInventory(imte, 0, imte.getSizeInventory());
     }
 
-    public static void compactInventory(IMetaTileEntity imte, int start, int end) {
-        imte.markDirty();
-
+    public static boolean compactInventory(IMetaTileEntity imte, int start, int end) {
         ItemStackSizeCalculator stackSizes = (slot, stack) -> imte.getStackSizeLimit(slot + start, stack);
 
-        compactInventory(wrapInventory(imte).subList(start, end), stackSizes);
+        if (compactInventory(wrapInventory(imte).subList(start, end), stackSizes)) {
+            imte.markDirty();
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static void compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
+    public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
@@ -710,6 +736,8 @@ public class GTUtility {
             slots.computeIfAbsent(stack, ignored -> new ObjectArrayList<>())
                 .add(ObjectIntPair.of(stack, i));
         }
+
+        MutableBoolean didSomething = new MutableBoolean(false);
 
         // For each ItemStack, merge stacks from the end of the list to the front
         slots.forEach((ignored, stacks) -> {
@@ -736,6 +764,8 @@ public class GTUtility {
                     toBeExtracted.left().stackSize -= toTransfer;
                     inflateStack.stackSize += toTransfer;
                     remaining -= toTransfer;
+
+                    didSomething.setTrue();
 
                     if (toBeExtracted.left().stackSize <= 0) {
                         inv.set(toBeExtracted.rightInt(), null);
@@ -767,6 +797,7 @@ public class GTUtility {
                 if (stack != null) {
                     inv.set(insert, stack);
                     inv.set(extract, null);
+                    didSomething.setTrue();
                 } else {
                     break;
                 }
@@ -774,6 +805,8 @@ public class GTUtility {
 
             insert++;
         }
+
+        return didSomething.isTrue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {
@@ -786,18 +819,28 @@ public class GTUtility {
         inv.markDirty();
     }
 
-    public static void cleanInventory(IInventory inv) {
-        cleanInventory(wrapInventory(inv));
+    public static boolean cleanInventory(IInventory inv) {
+        if (cleanInventory(wrapInventory(inv))) {
+            inv.markDirty();
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static void cleanInventory(List<ItemStack> inv) {
+    public static boolean cleanInventory(List<ItemStack> inv) {
+        boolean didSomething = false;
+
         for (int i = 0, invSize = inv.size(); i < invSize; i++) {
             ItemStack stack = inv.get(i);
 
             if (stack != null && (stack.getItem() == null || stack.stackSize <= 0)) {
                 inv.set(i, null);
+                didSomething = true;
             }
         }
+
+        return didSomething;
     }
 
     public static void dropItemsOrClusters(World world, float x, float y, float z, List<ItemStack> stacks) {
