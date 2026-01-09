@@ -1,10 +1,6 @@
 package gregtech.common.tileentities.render;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 
 import org.joml.AxisAngle4f;
 
@@ -12,13 +8,16 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.api.util.GTUtility;
 
-public class TileEntityLaser extends TileEntity {
+public class RenderingTileEntityLaser extends AbstractRenderingTileEntity {
 
     public boolean shouldRender = false;
     public float red = 0, green = 0, blue = 0;
-    public float counter = 0F;
     public boolean realism = false;
     public double rotAxisX = 0, rotAxisY = 0, rotAxisZ = 0, rotationAngle = 0;
+
+    public RenderingTileEntityLaser() {
+        super(3);
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -89,23 +88,5 @@ public class TileEntityLaser extends TileEntity {
 
     public float getBlue() {
         return blue;
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-        writeToNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbttagcompound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        readFromNBT(pkt.func_148857_g());
-        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-    }
-
-    @Override
-    public double getMaxRenderDistanceSquared() {
-        return 4096;
     }
 }
