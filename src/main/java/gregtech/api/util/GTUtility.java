@@ -91,6 +91,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -518,11 +519,32 @@ public class GTUtility {
         return "(" + color + GTValues.VN[tier] + EnumChatFormatting.RESET + ")";
     }
 
+    /**
+     * @deprecated Use {@link #sendChatTrans} instead.
+     */
+    @Deprecated
     public static void sendChatToPlayer(EntityPlayer player, String message) {
         if (message != null) {
             message = processFormatStacks(message);
             player.addChatComponentMessage(new ChatComponentText(message));
         }
+    }
+
+    /**
+     * Send a translated chat message to the player.
+     *
+     * @param player     The player who will receive the message.
+     * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
+     *                   placeholder '%s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
+     *                   will be converted to String
+     */
+    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
+        // FIXME：
+        // should have a better translation component to:
+        // 1. process format stacks;
+        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
+        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
     /**
