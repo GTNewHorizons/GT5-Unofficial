@@ -950,6 +950,14 @@ public enum GregtechItemList implements IItemContainer {
 
     ZirconiumPellet,
 
+    ZrCl4Dust,
+    SmallZrCl4Dust,
+    TinyZrCl4Dust,
+
+    CookedZrCl4Dust,
+    SmallCookedZrCl4Dust,
+    TinyCookedZrCl4Dust,
+
     SimpleHandPump,
     AdvancedHandPump,
     SuperHandPump,
