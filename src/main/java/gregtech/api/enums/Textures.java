@@ -2555,7 +2555,7 @@ public class Textures {
 
     public enum ItemIcons implements IIconContainer, Runnable {
 
-        VVOID, // The Empty Texture
+        VOID, // The Empty Texture
         RENDERING_ERROR,
         WRENCH,
         MORTAR,
