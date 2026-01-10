@@ -14,9 +14,9 @@ import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 import static gtnhintergalactic.recipe.IGRecipeMaps.MODULE_TIER;
 import static gtnhintergalactic.recipe.IGRecipeMaps.spaceAssemblerRecipes;
 
-import bartworks.system.material.WerkstoffLoader;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -66,13 +66,11 @@ public class AdvancedCircuitAssemblyLineRecipes implements Runnable {
                 Materials.RadoxPolymer.getPlates(1),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), 20, 10106),
                 HYPOGEN.getFoil(20),
-                ADVANCED_NITINOL.getFoil(20)
-            )
+                ADVANCED_NITINOL.getFoil(20))
             .fluidInputs(
                 Materials.SulfuricAcid.getFluid(707),
                 Materials.IronIIIChloride.getFluid(17677),
-                Materials.CosmicNeutronium.getMolten(6109)
-            )
+                Materials.CosmicNeutronium.getMolten(6109))
             .itemOutputs(ItemList.Circuit_Board_Exotic.get(14))
             .duration(15 * SECONDS)
             .eut(TierEU.UHV)
@@ -85,13 +83,11 @@ public class AdvancedCircuitAssemblyLineRecipes implements Runnable {
                 Materials.RadoxPolymer.getPlates(1),
                 new ItemStack(WerkstoffLoader.items.get(OrePrefixes.foil), 22, 10106),
                 HYPOGEN.getFoil(22),
-                ADVANCED_NITINOL.getFoil(22)
-            )
+                ADVANCED_NITINOL.getFoil(22))
             .fluidInputs(
                 Materials.SulfuricAcid.getFluid(707),
                 Materials.IronIIIChloride.getFluid(17677),
-                Materials.CosmicNeutronium.getMolten(6109)
-            )
+                Materials.CosmicNeutronium.getMolten(6109))
             .itemOutputs(ItemList.Circuit_Board_Exotic.get(18))
             .duration(13 * SECONDS)
             .eut(TierEU.UEV)
@@ -140,7 +136,7 @@ public class AdvancedCircuitAssemblyLineRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialsAlloy.BOTMIUM.getFoil(4),
-                MaterialsAlloy.ABYSSAL.getFoil(2),
+                MaterialsAlloy.TITANSTEEL.getFoil(2),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.SuperconductorUMVBase, 1),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1),
                 GTUtility.getIntegratedCircuit(9))

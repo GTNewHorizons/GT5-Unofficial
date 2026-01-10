@@ -35,6 +35,7 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Board_Bio;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Bio_Ultra;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Coated_Basic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Epoxy_Advanced;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Exotic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Fiberglass_Advanced;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Multifiberglass_Elite;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Optical;
@@ -92,16 +93,19 @@ import static gregtech.common.items.IDMetaItem03.Circuit_OpticalComputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_OpticalMainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_OpticalProcessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorISMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_CapacitorXSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Chip_Bioware;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Coil;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeISMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_DiodeXSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_GlassFiber;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Glass_Tube;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorISMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_InductorXSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_PetriDish;
@@ -109,11 +113,14 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Parts_RawCrystalChip;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_RawCrystalParts;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_Reinforced_Glass_Tube;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorISMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_ResistorXSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorASMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorISMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorSMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Parts_TransistorXSMD;
+import static gregtech.common.items.IDMetaItem03.Circuit_Parts_UniversalISMD;
 import static gregtech.common.items.IDMetaItem03.Circuit_Processor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Quantumcomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Quantummainframe;
@@ -163,6 +170,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UEV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UHV;
 import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
+import static gregtech.common.items.IDMetaItem03.Exotic_Super_CPU;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
@@ -1447,6 +1455,22 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "If you sift this, you're a monster",
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
+        ItemList.Circuit_Board_Exotic
+            .set(addItem(Circuit_Board_Exotic.ID, "Innovative Circuit Board", "Innovative Purple Board", o));
+        ItemList.Exotic_Super_CPU.set(addItem(Exotic_Super_CPU.ID, "Exotic Super CPU", "Exotic Super CPU", o));
+        ItemList.Circuit_Parts_ResistorISMD
+            .set(addItem(Circuit_Parts_ResistorISMD.ID, "Innovative SMD Resistor", "Innovative Component", o));
+        ItemList.Circuit_Parts_DiodeISMD
+            .set(addItem(Circuit_Parts_DiodeISMD.ID, "Innovative SMD Diode", "Innovative Component", o));
+        ItemList.Circuit_Parts_TransistorISMD
+            .set(addItem(Circuit_Parts_TransistorISMD.ID, "Innovative SMD Transistor", "Innovative Component", o));
+        ItemList.Circuit_Parts_CapacitorISMD
+            .set(addItem(Circuit_Parts_CapacitorISMD.ID, "Innovative SMD Capacitor", "Innovative Component", o));
+        ItemList.Circuit_Parts_InductorISMD
+            .set(addItem(Circuit_Parts_InductorISMD.ID, "Innovative SMD Inductor", "Innovative Component", o));
+        ItemList.Circuit_Parts_UniversalISMD
+            .set(addItem(Circuit_Parts_UniversalISMD.ID, "Innovative Universal SMD", "Universal SMD Component", o));
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();

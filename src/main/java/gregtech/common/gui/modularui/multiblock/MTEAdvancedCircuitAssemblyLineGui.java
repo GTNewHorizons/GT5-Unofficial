@@ -115,14 +115,14 @@ public class MTEAdvancedCircuitAssemblyLineGui extends MTEMultiBlockBaseGui<MTEA
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return super.createTerminalTextWidget(syncManager, parent).child(
             IKey.dynamic(
-                    () -> EnumChatFormatting.WHITE + "Energy used: "
-                        + (mMaxProgresstimeSync.getValue() > 0 ? toStandardForm(
+                () -> EnumChatFormatting.WHITE + "Energy used: "
+                    + (mMaxProgresstimeSync.getValue() > 0 ? toStandardForm(
                         finalConsumptionSync.getValue()
                             .divide(BigInteger.valueOf(-mMaxProgresstimeSync.getValue())))
                         : "0")
-                        + "EU"
-                    // enabled if active
-                )
+                    + "EU"
+            // enabled if active
+            )
                 .asWidget()
                 .setEnabledIf(
                     (w) -> multiblock.getBaseMetaTileEntity()

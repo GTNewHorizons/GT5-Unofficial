@@ -141,7 +141,8 @@ public class MTEAdvancedCircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MT
         .addElement(
             'J',
             ofChain(
-                buildHatchAdder(MTEAdvancedCircuitAssemblyLine.class).atLeast(ImmutableMap.of(InputHatch, 1, InputBus, 1))
+                buildHatchAdder(MTEAdvancedCircuitAssemblyLine.class)
+                    .atLeast(ImmutableMap.of(InputHatch, 1, InputBus, 1))
                     .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
                     .hint(1)
                     .buildAndChain(GregTechAPI.sBlockCasings8, 12)))
@@ -181,7 +182,7 @@ public class MTEAdvancedCircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MT
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_ADVANCED_CIRCUIT_ASSEMBLY_LINE_ACTIVE)
@@ -356,7 +357,7 @@ public class MTEAdvancedCircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MT
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
                 + (mMaxProgresstime == 0 ? "0"
-                : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
+                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
                 + EnumChatFormatting.RESET
                 + " EU" };
     }

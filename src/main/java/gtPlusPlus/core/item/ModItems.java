@@ -426,6 +426,8 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.LAFIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.ABYSSAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.OCTIRON);
 
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);

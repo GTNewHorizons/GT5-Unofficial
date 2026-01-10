@@ -21,7 +21,7 @@ public class AdvancedCircuitAssemblyLineBackend extends RecipeMapBackend {
 
     @Override
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
-                                         @Nullable ItemStack specialSlot) {
+        @Nullable ItemStack specialSlot) {
         return recipe;
     }
 }

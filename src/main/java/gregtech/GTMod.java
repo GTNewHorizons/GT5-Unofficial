@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 
-import gregtech.loaders.postload.recipes.AdvancedCircuitAssemblyLineRecipes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -123,6 +122,7 @@ import gregtech.loaders.postload.MissingMappingsHandler;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
+import gregtech.loaders.postload.recipes.AdvancedCircuitAssemblyLineRecipes;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
