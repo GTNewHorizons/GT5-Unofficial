@@ -2846,7 +2846,7 @@ public class ChemicalRecipes implements Runnable {
         // 2NO2 = N2O4
 
         GTValues.RA.stdBuilder()
-            .circuit(14)
+            .circuit(6)
             .fluidInputs(Materials.NitrogenDioxide.getGas(2_000))
             .fluidOutputs(Materials.DinitrogenTetroxide.getGas(1_000))
             .duration(32 * SECONDS)
