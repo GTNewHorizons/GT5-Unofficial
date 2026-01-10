@@ -521,9 +521,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
                 markDirty();
 
-                GTUtility.sendChatToPlayer(
-                    lastClickedPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.item.filter.disable"));
+                GTUtility.sendChatTrans(lastClickedPlayer, "GT5U.hatch.item.filter.disable");
             }
         }
     }

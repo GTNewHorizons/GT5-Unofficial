@@ -27,7 +27,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -1432,10 +1431,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     aPlayer,
-                                    StatCollector.translateToLocal(
-                                        mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off"));
+                                    mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
                             }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1535,9 +1533,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                         sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
 
                                     } else {
-                                        GTUtility.sendChatToPlayer(
-                                            aPlayer,
-                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
+                                        GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
                                     }
                                     if (tCurrentItem.stackSize == 0)
                                         ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
