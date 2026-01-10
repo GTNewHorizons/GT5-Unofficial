@@ -1509,7 +1509,8 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_Canner,
 
-    Machine_Multi_Solidifier,
+    Machine_Fluid_Shaper, // DEPRECATED. Remove after 2.9
+    Machine_Mass_Solidifier,
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
 

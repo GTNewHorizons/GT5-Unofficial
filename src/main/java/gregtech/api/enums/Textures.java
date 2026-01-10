@@ -341,8 +341,8 @@ public class Textures {
         OVERLAY_FRONT_EMS_GLOW,
         MACHINE_CASING_EMS,
 
-        MACHINE_CASING_MS160,
-        RADIATOR_MS160,
+        MASS_SOLIDIFIER_CASING,
+        MASS_SOLIDIFIER_RADIATOR_CASING,
 
         CASING_REINFORCED_WOOD,
         CASING_REINFORCED_WOOD_TOP,
@@ -1977,6 +1977,11 @@ public class Textures {
         COKE_OVEN_OVERLAY_INACTIVE,
         COKE_OVEN_OVERLAY_ACTIVE,
 
+        OVERLAY_FRONT_MASS_SOLIDIFIER,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW,
+        OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
@@ -2512,21 +2517,10 @@ public class Textures {
 
         VOID, // The Empty Texture
         RENDERING_ERROR,
-        WRENCH,
         MORTAR,
-        CROWBAR,
-        JACKHAMMER,
-        WIRE_CUTTER,
-        KNIFE,
-        BUTCHERYKNIFE,
-        SICKLE,
-        SCOOP,
-        GRAFTER,
-        PLUNGER,
         ROLLING_PIN,
         HANDLE_SWORD,
         HANDLE_FILE,
-        HANDLE_SAW,
         HANDLE_SCREWDRIVER,
         HANDLE_BUZZSAW,
         HANDLE_ELECTRIC_SCREWDRIVER,
@@ -2552,22 +2546,9 @@ public class Textures {
         ENERGY_BAR_6,
         ENERGY_BAR_7,
         ENERGY_BAR_8,
-        TURBINE,
-        TURBINE_SMALL,
-        TURBINE_LARGE,
-        TURBINE_HUGE,
         WIRELESS_HEADPHONES,
-        POCKET_MULTITOOL_CLOSED,
-        POCKET_MULTITOOL_BRANCHCUTTER,
-        POCKET_MULTITOOL_FILE,
-        POCKET_MULTITOOL_KNIFE,
-        POCKET_MULTITOOL_SAW,
-        POCKET_MULTITOOL_SCREWDRIVER,
-        POCKET_MULTITOOL_WIRECUTTER,
         HALO,
         HALO_FUZZY,
-        TROWEL,
-        HANDLE_TROWEL,
         ELECTRIC_WIRE_CUTTER,
         ELECTRIC_FILE,
         JACKHAMMER_BASE;
