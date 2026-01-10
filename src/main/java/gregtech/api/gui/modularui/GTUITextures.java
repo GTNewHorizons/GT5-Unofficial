@@ -175,6 +175,8 @@ public class GTUITextures {
     public static final UITexture PROGRESSBAR_CANNER = UITexture.fullImage(GregTech.ID, "gui/progressbar/canner");
     public static final UITexture PROGRESSBAR_CIRCUIT_ASSEMBLER = UITexture
         .fullImage(GregTech.ID, "gui/progressbar/circuit_assembler");
+    public static final UITexture PROGRESSBAR_ADVANCED_CIRCUIT_ASSEMBLY_LINE = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/advanced_circuit_assembly_line");
     public static final UITexture PROGRESSBAR_COMPRESS = UITexture.fullImage(GregTech.ID, "gui/progressbar/compress");
     public static final SteamTexture PROGRESSBAR_COMPRESS_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/progressbar/compress_%s");

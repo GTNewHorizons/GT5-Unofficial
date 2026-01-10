@@ -1044,6 +1044,9 @@ gt.recipe.unpackager.description=Grabs things out of Boxes
 gt.recipe.wiremill=Wiremill
 gt.recipe.wiremill.description=Produces Wires more efficiently
 
+gt.recipe.advcircuitassemblyline=Advanced Circuit Assembly Line
+gt.recipe.advcircuitassemblyline.description=Faster circuit assembler
+
 # RecipeMaps that are not listed on MachineType enum
 gt.recipe.fakeAssemblylineProcess=Assemblyline Process
 gt.recipe.fusionreactor=Fusion Reactor
@@ -3202,6 +3205,7 @@ GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
 GTPP.CC.parallel=Maximum Parallel
+GTPP.CC.duration=Crafting Duration
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles

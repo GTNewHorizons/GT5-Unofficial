@@ -44,6 +44,7 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.multi.acal.MTEAdvancedCircuitAssemblyLine;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
@@ -611,6 +612,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
+
+        ItemList.AdvancedCircuitAssemblyLine.set(
+            new MTEAdvancedCircuitAssemblyLine(
+                AdvancedCircuitAssemblyLine.ID,
+                "multimachine.adv-circuit-assemblyline",
+                "Advanced Circuit Assembly line").getStackForm(1));
+
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
