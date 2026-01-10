@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -41,6 +42,16 @@ public class ToolSaw extends GTTool {
     @Override
     public float getBaseDamage() {
         return 1.75F;
+    }
+
+    @Override
+    public String getCraftingSound() {
+        return SoundResource.GTCEU_OP_SAW.toString();
+    }
+
+    @Override
+    public String getMiningSound() {
+        return SoundResource.GTCEU_OP_SAW.toString();
     }
 
     @Override
