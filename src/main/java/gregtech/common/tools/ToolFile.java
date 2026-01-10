@@ -1,5 +1,6 @@
 package gregtech.common.tools;
 
+import gregtech.api.enums.SoundResource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -27,6 +28,11 @@ public class ToolFile extends GTTool {
     @Override
     public float getBaseDamage() {
         return 1.5F;
+    }
+
+    @Override
+    public String getCraftingSound() {
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override
