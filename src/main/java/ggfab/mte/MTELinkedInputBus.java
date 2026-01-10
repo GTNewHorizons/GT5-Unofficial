@@ -373,9 +373,7 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
         } else {
             this.disableFilter = !this.disableFilter;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + this.disableFilter);
         }
     }
 
