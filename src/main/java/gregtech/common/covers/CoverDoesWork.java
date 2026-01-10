@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fluids.Fluid;
 
@@ -103,17 +101,17 @@ public class CoverDoesWork extends CoverLegacyData {
             this.coverData = 5;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.normal"));
+            case 0 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.normal");
             // Progress scaled
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.inverted"));
+            case 1 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.inverted");
             // ^ inverted
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.ready"));
+            case 2 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.ready");
             // Not Running
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.not_ready"));
+            case 3 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.not_ready");
             // Running
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mach_on"));
+            case 4 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.mach_on");
             // Enabled
-            case 5 -> GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mach_off"));
+            case 5 -> GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.mach_off");
             // Disabled
         }
     }

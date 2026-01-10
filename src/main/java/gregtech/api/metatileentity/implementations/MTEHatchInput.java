@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -218,7 +217,6 @@ public class MTEHatchInput extends MTEHatch {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         disableFilter = !disableFilter;
-        GTUtility
-            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
     }
 }
