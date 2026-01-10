@@ -1289,7 +1289,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.CobaltIINitrate.getDust(9),
-                getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 6L, 0))
+                getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6L, 0))
             .itemOutputs(Materials.CobaltIIHydroxide.getDust(5), Materials.Saltpeter.getDust(10))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)

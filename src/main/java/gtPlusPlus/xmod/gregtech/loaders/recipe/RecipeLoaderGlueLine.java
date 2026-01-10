@@ -431,7 +431,7 @@ public class RecipeLoaderGlueLine {
                 .itemInputs(
                     getModItem(Mods.GalacticraftMars.ID, "item.itemBasicAsteroids", 1, 7),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
-                    getModItem(Mods.NewHorizonsCoreMod.ID, "item.TungstenString", 8))
+                    getModItem(Mods.NewHorizonsCoreMod.ID, "TungstenString", 8))
                 .circuit(1)
                 .itemOutputs(getModItem(Mods.GalaxySpace.ID, "item.ThermalClothT2", 1))
                 .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(576))
