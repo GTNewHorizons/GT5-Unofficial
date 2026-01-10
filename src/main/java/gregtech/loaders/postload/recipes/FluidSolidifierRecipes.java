@@ -381,14 +381,6 @@ public class FluidSolidifierRecipes implements Runnable {
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Wire.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Wire.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Extruder_Casing.get(1))
                 .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Casing.get(1))
                 .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))

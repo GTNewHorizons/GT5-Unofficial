@@ -266,9 +266,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (supportsSingleRecipeLocking()) {
             mLockedToSingleRecipe = !mLockedToSingleRecipe;
             if (mLockedToSingleRecipe) {
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_on"));
+                GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.mb.locking_on");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.mb.locking_off"));
+                GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.mb.locking_off");
                 mSingleRecipeCheck = null;
             }
         }
@@ -2496,7 +2496,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         deactivateCoilLease();
     }
 
-    private void deactivateCoilLease() {
+    protected void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;
