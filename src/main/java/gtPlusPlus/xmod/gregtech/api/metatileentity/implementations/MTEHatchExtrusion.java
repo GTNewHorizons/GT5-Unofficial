@@ -111,7 +111,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
             this.setInventorySlotContents(shapeSlot, phantom);
         } catch (Throwable ignored) {}
         markDirty();
-        // GTValues.NW.sendToServer(new GTPacketSetShape(this, selected));
     }
 
     public int findMatchingShapeIndex(ItemStack stack) {
