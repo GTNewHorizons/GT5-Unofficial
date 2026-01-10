@@ -3,7 +3,6 @@ package gregtech.common.tools;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.enums.OrePrefixes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -16,6 +15,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
@@ -86,9 +86,8 @@ public class ToolScrewdriver extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver
-                    .getTextureIndex()]
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver
+                .getTextureIndex()]
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleScrewdriver];
     }
 

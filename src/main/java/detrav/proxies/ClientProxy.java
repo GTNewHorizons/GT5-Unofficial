@@ -1,11 +1,11 @@
 package detrav.proxies;
 
-import detrav.items.tools.DetravToolElectricProspectorBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 import detrav.DetravScannerMod;
 import detrav.gui.DetravScannerGUI;
+import detrav.items.tools.DetravToolElectricProspectorBase;
 
 /**
  * Created by wital_000 on 19.03.2016.

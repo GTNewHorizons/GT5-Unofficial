@@ -32,8 +32,7 @@ public class DetravToolElectricProspector extends DetravToolElectricProspectorBa
                 ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[tier - 5]]
                 : null;
         } else {
-            return aIsToolHead
-                ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[1]]
+            return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[1]]
                 : null;
         }
     }

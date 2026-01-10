@@ -1,7 +1,5 @@
 package gregtech.common.tools;
 
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SoundResource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -9,6 +7,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -54,9 +54,8 @@ public class ToolFile extends GTTool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile
-                    .getTextureIndex()]
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadFile
+                .getTextureIndex()]
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleFile];
     }
 

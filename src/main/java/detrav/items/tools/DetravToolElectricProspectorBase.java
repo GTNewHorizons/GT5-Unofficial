@@ -2,7 +2,6 @@ package detrav.items.tools;
 
 import java.util.List;
 
-import gregtech.api.enums.TextureSet;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -21,6 +20,7 @@ import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -33,7 +33,6 @@ public class DetravToolElectricProspectorBase implements IToolStats {
     public static final short[] mProspectorTextures = new short[] { TextureSet.INDEX_prospector,
         TextureSet.INDEX_prospectorElectricLuV, TextureSet.INDEX_prospectorElectricZPM,
         TextureSet.INDEX_prospectorElectricUV, TextureSet.INDEX_prospectorElectricUHV };
-
 
     public int getToolDamagePerBlockBreak() {
         return 100;
