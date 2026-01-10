@@ -61,7 +61,7 @@ As you can see below, for now (2026-1-1), the only use of the ACAL is to craft:
 I'm working to add Cosmic line and Temporal line, but not for now.
 
 If you are interested about math comparisons, please see this:
-https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/maths.md
+https://github.com/mamiemru/GT5-Unofficial/blob/Advanced-Circuit-Assembly-Line/maths.md
 
 ## Why did I choose these recipes?
 
