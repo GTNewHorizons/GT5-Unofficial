@@ -178,7 +178,7 @@ public class EntityRenderer extends EntityFX {
 
         try {
             instance.renderEntityWithPosYaw(entityToRender, 0f, 0f, 0f, f1, p_147936_2_);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Tessellator tes = Tessellator.instance;
             try {
                 tes.draw();

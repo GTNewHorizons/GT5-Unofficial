@@ -918,6 +918,46 @@ public enum GregtechItemList implements IItemContainer {
     SmallAmmoniumNitrateDust,
     TinyAmmoniumNitrateDust,
 
+    LithiumCarbonateDust,
+    SmallLithiumCarbonateDust,
+    TinyLithiumCarbonateDust,
+
+    LithiumPeroxideDust,
+    SmallLithiumPeroxideDust,
+    TinyLithiumPeroxideDust,
+
+    LithiumHydroxideDust,
+    SmallLithiumHydroxideDust,
+    TinyLithiumHydroxideDust,
+
+    CalciumHydroxideDust,
+    SmallCalciumHydroxideDust,
+    TinyCalciumHydroxideDust,
+
+    CalciumCarbonateDust,
+    SmallCalciumCarbonateDust,
+    TinyCalciumCarbonateDust,
+
+    Li2CO3CaOH2Dust,
+    SmallLi2CO3CaOH2Dust,
+    TinyLi2CO3CaOH2Dust,
+
+    Neptunium238Dust,
+    Neptunium239Dust,
+    Radium226Dust,
+    DecayedRadium226Dust,
+    Protactinium233Dust,
+
+    ZirconiumPellet,
+
+    ZrCl4Dust,
+    SmallZrCl4Dust,
+    TinyZrCl4Dust,
+
+    CookedZrCl4Dust,
+    SmallCookedZrCl4Dust,
+    TinyCookedZrCl4Dust,
+
     SimpleHandPump,
     AdvancedHandPump,
     SuperHandPump,
@@ -927,9 +967,54 @@ public enum GregtechItemList implements IItemContainer {
     DehydratorCoilWireIV,
     DehydratorCoilWireLuV,
     DehydratorCoilWireZPM,
+    DehydratorCoilEV,
+    DehydratorCoilIV,
+    DehydratorCoilLuV,
+    DehydratorCoilZPM,
     PersonalCloakingDevice,
     PersonalHealingDevice,
     Hatch_Input_Debug_Steam,
+    SupremePizzaGloves,
+    LFTRControlCircuit,
+
+    ChargePack_LV,
+    ChargePack_MV,
+    ChargePack_HV,
+    ChargePack_EV,
+    ChargePack_IV,
+    ChargePack_LuV,
+    ChargePack_ZPM,
+    ChargePack_UV,
+    ChargePack_UHV,
+
+    HalfCompleteCasing_I,
+    HalfCompleteCasing_II,
+    HalfCompleteCasing_III,
+    HalfCompleteCasing_IV,
+
+    BoilerChassis_Tier0,
+    BoilerChassis_Tier1,
+    BoilerChassis_Tier2,
+
+    AirFilter_Tier1,
+    AirFilter_Tier2,
+    LavaFilter,
+
+    BitCoin,
+    HandPumpToken_I,
+    HandPumpToken_II,
+    HandPumpToken_III,
+    HandPumpToken_IV,
+
+    RawHumanMeat,
+    CookedHumanMeat,
+    RawHorseMeat,
+    CookedHorseMeat,
+    RawWolfMeat,
+    CookedWolfMeat,
+    RawOcelotMeat,
+    CookedOcelotMeat,
+    BlazeFlesh,
 
     ;
 

@@ -21,6 +21,7 @@ import java.util.TreeMap;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -148,14 +149,15 @@ public class GlassTier {
 
             // --- HV ---
             addCustomGlass(ItemRegistry.bw_realglas, 0, 3, 0);
+            addCustomGlass(Blocks.glass, 0, 3, 1);
             if (EnderIO.isModLoaded()) {
                 for (int i = 0; i < 6; i++) {
-                    addCustomGlass(EnderIO.ID, "blockFusedQuartz", i, 3, 1 + i);
+                    addCustomGlass(EnderIO.ID, "blockFusedQuartz", i, 3, 2 + i);
                 }
             }
             if (Thaumcraft.isModLoaded()) {
                 // Warded glass
-                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 7);
+                addCustomGlass(Thaumcraft.ID, "blockCosmeticOpaque", 2, 3, 8);
             }
 
             // --- EV ---
@@ -198,7 +200,8 @@ public class GlassTier {
 
             // --- UEV ---
             addCustomGlass(ItemRegistry.bw_realglas, 14, 10, 0);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 1);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 10, 1);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 2);
 
             // --- UIV ---
             addCustomGlass(ItemRegistry.bw_realglas, 15, 11, 0);

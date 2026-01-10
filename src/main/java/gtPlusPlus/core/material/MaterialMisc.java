@@ -140,32 +140,6 @@ public final class MaterialMisc {
         new MaterialStack(MaterialsElements.getInstance().CARBON, 1),
         new MaterialStack(MaterialsElements.getInstance().NITROGEN, 1));
 
-    public static final Material CARBON_MONOXIDE = new Material(
-        "Carbon Monoxide",
-        MaterialState.PURE_GAS, // State
-        null, // Material Colour
-        -1, // Melting Point in C
-        -1, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().CARBON, 1),
-        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 1));
-
-    public static final Material CARBON_DIOXIDE = new Material(
-        "Carbon Dioxide",
-        MaterialState.PURE_GAS, // State
-        null, // Material Colour
-        -1, // Melting Point in C
-        -1, // Boiling Point in C
-        -1, // Protons
-        -1,
-        false, // Uses Blast furnace?
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().CARBON, 1),
-        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2));
-
     public static final Material WOODS_GLASS = new Material(
         "Wood's Glass", // Material Name
         MaterialState.SOLID, // State
@@ -273,12 +247,6 @@ public final class MaterialMisc {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().NITROGEN, 1),
         new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 4));
-
-    public static final Material HYDROGEN_CHLORIDE = new Material(
-        "Hydrogen Chloride",
-        MaterialState.PURE_GAS,
-        new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 1),
-        new MaterialStack(MaterialsElements.getInstance().CHLORINE, 1));
 
     public static final Material HYDROGEN_CHLORIDE_MIX = new Material(
         "Hydrogen Chloride Mix",
