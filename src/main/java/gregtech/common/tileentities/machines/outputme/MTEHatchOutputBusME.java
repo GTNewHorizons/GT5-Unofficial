@@ -70,7 +70,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             aID,
             aName,
             aNameRegional,
-            3,
+            4,
             new String[] { "Item Output for Multiblocks", "Stores directly into ME", "Can cache 1600 items by default",
                 "Change cache size by inserting a storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter",
