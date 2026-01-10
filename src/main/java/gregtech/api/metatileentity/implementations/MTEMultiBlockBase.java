@@ -2864,26 +2864,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return machineModeIcons.get(index);
     }
 
-    @Override
-    public void setMachineMode(int index) {
-        // Hacky solution. Opening the GUI runs this method
-        // The machineMode and index are likely to be the same
-        // Should be solved when MTEs migrate to MUI2
-        if (machineMode == index) return;
+@Override
+public void setMachineMode(int index) {
+    // Hacky solution. Opening the GUI runs this method
+    // The machineMode and index are likely to be the same
+    // Should be solved when MTEs migrate to MUI2
+    if (machineMode == index) return;
 
-        if (this.processingLogic != null) {
-            // recipe map changed, reset CRIB recipe cache
-            for (IDualInputHatch dualInput : mDualInputHatches) {
-                if (dualInput instanceof IDualInputHatchWithPattern crib) {
-                    crib.resetCraftingInputRecipeMap(this.processingLogic);
-                }
+    if (this.processingLogic != null) {
+        // recipe map changed, reset CRIB recipe cache
+        for (IDualInputHatch dualInput : mDualInputHatches) {
+            if (dualInput instanceof IDualInputHatchWithPattern crib) {
+                crib.resetCraftingInputRecipeMap(this.processingLogic);
             }
         }
-        machineMode = index;
-        // The machine is likely using a different recipemap now
-        // Clear the cached recipe
-        setSingleRecipeCheck(null);
     }
+    machineMode = index;
+    // The machine is likely using a different recipemap now
+    // Clear the cached recipe
+    setSingleRecipeCheck(null);
+}
 
     @Override
     public int nextMachineMode() {
