@@ -21,7 +21,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.cover.CoverItemMeterGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemMeterUIFactory;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
@@ -106,8 +106,9 @@ public class CoverItemMeter extends Cover {
         if (mte instanceof MTEDigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
-        } else if (mte instanceof MTEHatchOutputBusME) {
-            if (((MTEHatchOutputBusME) mte).canAcceptItem()) {
+        } else if (mte instanceof MTEHatchOutputBusME meoutputbus) {
+            // todo for cache mode
+            if (meoutputbus.canAcceptAnyItem()) {
                 max = 64;
                 used = 0;
             }
