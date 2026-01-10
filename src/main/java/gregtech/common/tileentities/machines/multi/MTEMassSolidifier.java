@@ -173,7 +173,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
@@ -266,7 +266,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             return false;
         }
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
+            if (glassTier < VoltageIndex.UEV & mEnergyHatch.mTier > glassTier) {
                 return false;
             }
         }
