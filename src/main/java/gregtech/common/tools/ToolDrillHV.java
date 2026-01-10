@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import gregtech.GTMod;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -59,11 +58,6 @@ public class ToolDrillHV extends ToolDrillLV {
             GTMod.achievements.issueAchievement(aPlayer, "highpowerdrill");
             GTMod.achievements.issueAchievement(aPlayer, "buildDDrill");
         } catch (Exception ignored) {}
-    }
-
-    @Override
-    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.StainlessSteel.mRGBa;
     }
 
     @Override
