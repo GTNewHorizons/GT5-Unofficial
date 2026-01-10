@@ -257,9 +257,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                 markDirty();
 
-                GTUtility.sendChatToPlayer(
-                    lastClickedPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
+                GTUtility.sendChatTrans(lastClickedPlayer, "GT5U.hatch.fluid.filter.disable");
             }
         }
     }
