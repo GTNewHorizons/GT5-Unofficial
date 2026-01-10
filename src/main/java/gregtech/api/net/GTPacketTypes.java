@@ -22,10 +22,13 @@ public enum GTPacketTypes {
     BLOCK_EVENT(2, new GTPacketBlockEvent()),
     POLLUTION(4, new GTPacketPollution()),
     CLIENT_PREFERENCE(9, new GTPacketClientPreference()),
+    // ID 12 unused
     UPDATE_ITEM(13, new GTPacketUpdateItem()),
     SEND_COVER_DATA(16, new GTPacketSendCoverData()),
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
+    // ID 18 unused
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
+    // ID 20 unused
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),

@@ -139,9 +139,7 @@ public class CommonWidgets {
                 } else {
                     baseMachine.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
                 }
-            }
-
-            );
+            });
             syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
             return new GhostCircuitSlotWidget(baseMachine, syncManager)
                 .slot(new ModularSlot(new GhostCircuitItemStackHandler(baseMachine), 0));
