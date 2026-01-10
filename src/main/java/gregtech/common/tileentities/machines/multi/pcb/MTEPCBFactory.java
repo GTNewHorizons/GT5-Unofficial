@@ -33,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -1079,7 +1080,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("mBioChamber")) {
             NBTTagCompound bioChamber = tag.getCompoundTag("mBioChamber");
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Bio Chamber at: "
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.pcb.linked_to_bio_chamber_at")
+                    + " "
                     + EnumChatFormatting.WHITE
                     + bioChamber.getInteger("x")
                     + ", "
@@ -1091,7 +1093,8 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("mCoolingTower")) {
             NBTTagCompound coolingTower = tag.getCompoundTag("mCoolingTower");
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Cooling Tower at: "
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.pcb.linked_to_colling_tower_at")
+                    + " "
                     + EnumChatFormatting.WHITE
                     + coolingTower.getInteger("x")
                     + ", "
@@ -1103,8 +1106,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("compatMode")) {
             CompatMode compat = new CompatMode(tag);
             if (compat.isSet) {
-                currenttip.add(
-                    EnumChatFormatting.RED + "IN COMPAT MODE, PLEASE USE NEW COOLING TOWER AND BIO CHAMBER STRUCTURES");
+                currenttip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.pcb.compat_mode"));
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);

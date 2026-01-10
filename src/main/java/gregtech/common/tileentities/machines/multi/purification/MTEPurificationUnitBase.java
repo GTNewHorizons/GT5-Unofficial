@@ -680,7 +680,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.purification_unit_base.linked_to")
+                    + " "
                     + EnumChatFormatting.WHITE
                     + tag.getInteger("controllerX")
                     + ", "
@@ -689,7 +690,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                     + tag.getInteger("controllerZ")
                     + EnumChatFormatting.RESET);
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
+            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);

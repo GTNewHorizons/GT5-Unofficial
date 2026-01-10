@@ -304,7 +304,7 @@ public class MTEBoilerSolar extends MTEBoiler {
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
             String.format(
-                (GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"),
+                (GOLD + StatCollector.translateToLocal("GT5U.waila.boiler_solar.output") + RESET + " %d/%d L/s"),
                 tag.getInteger("calcificationOutput"),
                 tag.getInteger("maxCalcificationOutput")));
 

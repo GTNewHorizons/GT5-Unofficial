@@ -709,8 +709,8 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
-            String.format(
-                "Item cache capacity: %s%s%s",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.output_bus_me.item_cache_capacity",
                 EnumChatFormatting.GOLD,
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
