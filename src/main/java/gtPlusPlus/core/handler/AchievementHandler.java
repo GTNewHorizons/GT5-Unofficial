@@ -20,7 +20,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -196,10 +195,10 @@ public class AchievementHandler {
             "decay.neptunium238",
             11,
             8,
-            new ItemStack(ModItems.dustNeptunium238),
+            GregtechItemList.Neptunium238Dust.get(1),
             "multi.cyclo",
             false);
-        this.registerAchievement("decay.radium226", 12, 8, new ItemStack(ModItems.dustRadium226), "multi.cyclo", false);
+        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.cyclo", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(

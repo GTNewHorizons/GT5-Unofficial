@@ -17,7 +17,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 // An extension of MTEHatchCustomFluidBase, it caches 2G of the supplied fluid and refills its buffer every 30 seconds
 public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
@@ -99,8 +98,8 @@ public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
 
     @Override
     public String[] getDescription() {
-        if (mLockedStack == null) {
-            mLockedStack = FluidUtils.getFluidStack(mLockedFluid, 1);
+        if (mLockedStack == null && mLockedFluid != null) {
+            mLockedStack = new FluidStack(mLockedFluid, 1);
         }
         int aFluidTemp = 0;
         boolean isSteam = false;

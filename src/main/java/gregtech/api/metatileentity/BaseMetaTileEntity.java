@@ -27,7 +27,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -128,7 +127,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public void writeToNBT(NBTTagCompound nbt) {
         try {
             super.writeToNBT(nbt);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
         try {
@@ -151,7 +150,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
             nbt.setBoolean("mOutputDisabled", mOutputDisabled);
             nbt.setString("shutDownReasonID", getLastShutDownReason().getID());
             nbt.setTag("shutDownReason", getLastShutDownReason().writeToNBT(new NBTTagCompound()));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
         saveMetaTileNBT(nbt);
@@ -706,7 +705,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         if (hasValidMetaTileEntity()) {
             try {
                 mMetaTileEntity.receiveClientEvent((byte) aEventID, (byte) aValue);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GTLog.err.println(
                     "Encountered Exception while receiving Data from the Server, the Client should've been crashed by now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
                 e.printStackTrace(GTLog.err);
@@ -1432,10 +1431,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     aPlayer,
-                                    StatCollector.translateToLocal(
-                                        mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off"));
+                                    mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
                             }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1535,9 +1533,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                         sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
 
                                     } else {
-                                        GTUtility.sendChatToPlayer(
-                                            aPlayer,
-                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
+                                        GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
                                     }
                                     if (tCurrentItem.stackSize == 0)
                                         ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1573,7 +1569,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
                 return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.println(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GTLog.err);
@@ -1587,7 +1583,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public void onLeftclick(EntityPlayer aPlayer) {
         try {
             if (aPlayer != null && hasValidMetaTileEntity()) mMetaTileEntity.onLeftclick(this, aPlayer);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.println(
                 "Encountered Exception while leftclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
             e.printStackTrace(GTLog.err);
