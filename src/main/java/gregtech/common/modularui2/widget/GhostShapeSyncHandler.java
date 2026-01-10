@@ -24,7 +24,7 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
     public void init(String key, PanelSyncManager syncHandler) {
         super.init(key, syncHandler);
         indexSync = new IntSyncValue(() -> {
-            ItemStack current = hatch.inventoryHandler.getStackInSlot(MTEHatchExtrusion.shapeSlot);
+            ItemStack current = hatch.inventoryHandler.getStackInSlot(hatch.shapeSlot);
             return current != null ? hatch.findMatchingShapeIndex(current) : -1;
         }, index -> {
             if (index >= 0 && index < MTEHatchExtrusion.extruderShapes.length) {
@@ -44,7 +44,7 @@ public class GhostShapeSyncHandler extends PhantomItemSlotSH {
         int newIndex = getSelectedIndex() + delta;
         if (newIndex < 0) newIndex = MTEHatchExtrusion.extruderShapes.length - 1;
         if (newIndex >= MTEHatchExtrusion.extruderShapes.length) newIndex = 0;
-        setSelectedIndex(newIndex);
+        hatch.inventoryHandler.setStackInSlot(hatch.shapeSlot, MTEHatchExtrusion.extruderShapes[newIndex].copy());
     }
 
     @Override
