@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 
 public class InputBusInventoryProxy implements IInventory {
+
     @NotNull
     private List<MTEHatchInputBus> inputs;
 
