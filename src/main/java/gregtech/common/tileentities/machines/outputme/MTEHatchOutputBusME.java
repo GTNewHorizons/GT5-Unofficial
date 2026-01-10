@@ -610,4 +610,9 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
         return getProxy().getNode();
     }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+    }
 }

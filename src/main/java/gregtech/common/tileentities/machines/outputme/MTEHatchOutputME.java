@@ -551,4 +551,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
         return getProxy().getNode();
     }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+    }
 }
