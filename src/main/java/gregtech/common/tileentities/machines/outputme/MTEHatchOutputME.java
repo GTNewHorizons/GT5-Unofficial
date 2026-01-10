@@ -75,7 +75,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter",
-                "Partition the inserted Storage Cell to filter accepted outputs" },
+                "Partition the inserted Storage Cell to filter accepted outputs",
+                "Right click with screwdriver to toggle Cache Mode",
+                "Shift right click with screwdriver to toggle Check Mode" },
             1);
     }
 

@@ -179,14 +179,19 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             checkMode = !checkMode;
-            aPlayer.addChatComponentMessage(
-                new ChatComponentText(
-                    "Check Mode: " + (this.checkMode
-                        ? "On\nNOTE: Check Mode checks whether there is enough space for the output, resulting in more lag."
-                        : "Off")));
+            aPlayer.addChatComponentMessage(new ChatComponentText("Check Mode: " + (this.checkMode ? "On" : "Off")));
+            if (checkMode) {
+                aPlayer.addChatComponentMessage(
+                    new ChatComponentText(
+                        "NOTE: Check Mode checks whether there is enough space for the output, resulting in more lag."));
+            }
         } else {
             cacheMode = !cacheMode;
             aPlayer.addChatComponentMessage(new ChatComponentText("Cache Mode: " + (this.cacheMode ? "On" : "Off")));
+            if (cacheMode) {
+                aPlayer.addChatComponentMessage(
+                    new ChatComponentText("Stores to the internal cell instead of to the ME Network."));
+            }
             updateState();
         }
         env.markDirty();
