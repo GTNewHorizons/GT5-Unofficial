@@ -124,7 +124,7 @@ public enum CircuitWraps {
         }
 
         String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
-        String localised = GTLanguageManager.getTranslation(GTLanguageManager.getTranslateableItemStackName(itemStack));
+        String localised = StatCollector.translateToFallback(itemStack.getUnlocalizedName());
         itemWrap.set(
             BWMetaItems.getCircuitParts()
                 .addItem(id, "Wrap of " + localised + "s", tt));
