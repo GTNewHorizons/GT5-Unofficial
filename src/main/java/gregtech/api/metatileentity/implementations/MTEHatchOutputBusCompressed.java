@@ -317,7 +317,7 @@ public class MTEHatchOutputBusCompressed extends MTEHatchOutputBus implements IM
 
     @Override
     protected ItemSource getItemSource(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing() ? inventory.getItemIO() : null;
+        return side == getBaseMetaTileEntity().getFrontFacing() ? (ItemSource) inventory.getItemIO() : null;
     }
 
     @Override

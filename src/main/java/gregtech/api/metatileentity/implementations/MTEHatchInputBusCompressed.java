@@ -495,12 +495,12 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
 
     @Override
     protected ItemSource getItemSource(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing() ? inventory.getItemIO() : null;
+        return side == getBaseMetaTileEntity().getFrontFacing() ? (ItemSource) inventory.getItemIO() : null;
     }
 
     @Override
     protected ItemSink getItemSink(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing() ? inventory.getItemIO() : null;
+        return side == getBaseMetaTileEntity().getFrontFacing() ? (ItemSink) inventory.getItemIO() : null;
     }
 
     public long getStackLimitOverride() {

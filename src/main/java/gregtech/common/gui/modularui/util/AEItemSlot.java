@@ -88,7 +88,7 @@ public class AEItemSlot extends ItemSlot {
     @Override
     protected void drawSlotAmountText(int amount, String format) {
         IAEItemStack stack = inv.getAEStackInSlot(slot);
-        GuiDraw.drawStandardSlotAmountText(stack == null ? 0L : stack.getStackSize(), format, getArea());
+        GuiDraw.drawStandardSlotAmountText((int) (stack == null ? 0L : stack.getStackSize()), format, getArea());
     }
 
     private static class AEModularSlot extends ModularSlot {
