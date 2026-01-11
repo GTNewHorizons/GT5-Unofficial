@@ -139,8 +139,7 @@ Yes, the goal of this first release is to check whether the multiblock is well b
 
 Some modules will include puzzles, others will not.
 
-- Array Warping System: Allows crafting two different circuits at the same time
-- Matrix Folding System: Allows crafting up to four different circuits at the same time
+- Array Warping System: Allows crafting up to four different circuits at the same time
 - Borg Cooling Drones: Puzzle mandatory; allows faster crafting — this machine will comply
 - Perfect Alignment Sensor: Allows perfect overclock
 
