@@ -24,5 +24,5 @@ public interface IAEInventory {
 
     long getAESlotLimit(int slot, @Nullable IAEItemStack stack);
 
-    void setStackInSlot(int slot,  @Nullable IAEItemStack stack);
+    void setStackInSlot(int slot, @Nullable IAEItemStack stack);
 }

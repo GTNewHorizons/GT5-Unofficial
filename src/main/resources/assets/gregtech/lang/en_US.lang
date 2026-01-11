@@ -1567,6 +1567,7 @@ GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 GT5U.gui.text.stack_capacity=Stack Capacity
 GT5U.gui.text.bus_settings=Bus Settings
 GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
+GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.

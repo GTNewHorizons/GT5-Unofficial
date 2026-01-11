@@ -56,6 +56,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
@@ -70,7 +71,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -97,7 +97,7 @@ import tectech.util.ItemStackLong;
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
-    public static final boolean EOH_DEBUG_MODE = true;
+    public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
 
@@ -1154,7 +1154,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     };
 
     private void drainFluidFromHatchesAndStoreInternally() {
-        startRecipeProcessing();
         List<FluidStack> fluidStacks = getStoredFluids();
         for (FluidStack fluidStack : fluidStacks) {
             if (validFluidMap.containsKey(fluidStack.getFluid())) {
@@ -1162,7 +1161,6 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 fluidStack.amount = 0;
             }
         }
-        endRecipeProcessing();
         updateSlots();
     }
 

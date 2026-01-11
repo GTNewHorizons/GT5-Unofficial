@@ -140,19 +140,6 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
-
-    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:spark-361579:4271867"))
-}
-
-afterEvaluate {
-    dependencies {
-        functionalTestImplementation(platform('org.junit:junit-bom:5.14.1'))
-        functionalTestImplementation('org.junit.jupiter:junit-jupiter')
-        functionalTestRuntimeOnly("org.junit.platform:junit-platform-launcher")
-        functionalTestImplementation('org.junit.platform:junit-platform-engine')
-        functionalTestImplementation('org.junit.platform:junit-platform-launcher')
-        functionalTestImplementation('org.junit.platform:junit-platform-reporting')
-    }
 }
 
 afterEvaluate {

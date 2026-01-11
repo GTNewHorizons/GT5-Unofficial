@@ -3,7 +3,6 @@ package gregtech.api.metatileentity;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.List;
-import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,8 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -479,21 +477,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return getMetaTileEntity().getGUITextureSet();
         }
         return super.getGUITextureSet();
-    }
-
-    @Override
-    protected Function<Integer, BaseSlot> getSlotCreator() {
-        return ((IAddUIWidgets) getMetaTileEntity()).getSlotCreator();
-    }
-
-    @Override
-    protected Function<BaseSlot, SlotWidget> getSlotWidgetCreator() {
-        return ((IAddUIWidgets) getMetaTileEntity()).getSlotWidgetCreator();
-    }
-
-    @Override
-    protected void modifySlotWidget(SlotWidget widget) {
-        ((IAddUIWidgets) getMetaTileEntity()).modifySlotWidget(widget);
     }
 
     @Override

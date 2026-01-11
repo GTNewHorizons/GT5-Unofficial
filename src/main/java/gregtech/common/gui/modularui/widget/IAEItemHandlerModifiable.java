@@ -9,11 +9,12 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import appeng.api.storage.data.IAEItemStack;
-import appeng.util.item.AEItemStack;
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InsertionItemStack;
+
+import appeng.api.storage.data.IAEItemStack;
+import appeng.util.item.AEItemStack;
 import gregtech.api.util.GTUtility;
 import gregtech.common.inventory.IAEInventory;
 

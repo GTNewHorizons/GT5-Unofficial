@@ -13,6 +13,8 @@ import net.minecraft.nbt.NBTTagList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.utils.item.INBTSerializable;
+
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.BaseActionSource;
@@ -30,7 +32,8 @@ import gregtech.common.gui.modularui.widget.IAEItemHandlerModifiable;
 /**
  * An inventory that stores AE item stacks. This also sends monitor updates as needed.
  */
-public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemStack>, IAEItemHandlerModifiable {
+public abstract class AEInventory
+    implements IAEInventory, IMEMonitor<IAEItemStack>, IAEItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
 
     private final Map<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<>();
 
@@ -42,13 +45,15 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
     public AEInventory(IAEItemStack[] inventory) {
         this.inventory = inventory;
         slotCount = inventory.length;
-        allSlots = IntStream.range(0, slotCount).toArray();
+        allSlots = IntStream.range(0, slotCount)
+            .toArray();
     }
 
     public AEInventory(int slotCount) {
         this.inventory = new IAEItemStack[slotCount];
         this.slotCount = slotCount;
-        allSlots = IntStream.range(0, slotCount).toArray();
+        allSlots = IntStream.range(0, slotCount)
+            .toArray();
     }
 
     @Override
@@ -85,12 +90,14 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> l, Object verificationToken) {
+    public void addListener(IMEMonitorHandlerReceiver l, Object verificationToken) {
+        // noinspection unchecked
         listeners.put(l, verificationToken);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> l) {
+    public void removeListener(IMEMonitorHandlerReceiver l) {
+        // noinspection unchecked
         listeners.remove(l);
     }
 
@@ -170,8 +177,7 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
                 if (mode == Actionable.MODULATE) slot.incStackSize(toTransfer);
 
                 if (inserted == null) {
-                    inserted = input.copy()
-                        .setStackSize(0);
+                    inserted = input.empty();
                 }
 
                 inserted.incStackSize(toTransfer);
@@ -212,7 +218,7 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
             postChange(src, inserted);
         }
 
-        return input;
+        return input.getStackSize() == 0 ? null : input;
     }
 
     private void postChange(BaseActionSource src, IAEItemStack inserted) {
@@ -230,7 +236,8 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
         return extractItems(request, mode, src, getValidExtractionSlots(request));
     }
 
-    private @Nullable IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src, int[] slots) {
+    private @Nullable IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src,
+        int[] slots) {
         IAEItemStack extracted = null;
 
         for (int slotIndex : slots) {
@@ -258,7 +265,10 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
         }
 
         if (extracted != null && mode == Actionable.MODULATE) {
-            postChange(src, extracted.empty().setStackSize(-extracted.getStackSize()));
+            postChange(
+                src,
+                extracted.empty()
+                    .setStackSize(-extracted.getStackSize()));
         }
 
         return extracted;
@@ -298,8 +308,10 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
     }
 
     @Override
-    public @Nullable IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate, boolean forced) {
+    public @Nullable IAEItemStack insertAEItem(int slot, @NotNull IAEItemStack stack, boolean simulate,
+        boolean forced) {
         if (slot < 0 || slot >= slotCount) return stack;
+        if (!forced && !allowPutStack(slot, stack)) return stack;
 
         IAEItemStack existing = inventory[slot];
 
@@ -323,17 +335,21 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
                 if (!simulate) {
                     inventory[slot] = existing;
 
-                    postChange(getActionSource(), existing.empty().setStackSize(toTransfer));
+                    postChange(
+                        getActionSource(),
+                        existing.empty()
+                            .setStackSize(toTransfer));
                 }
             }
         }
 
-        return stack.getStackSize() <= 0 ? stack : null;
+        return stack.getStackSize() > 0 ? stack : null;
     }
 
     @Override
     public @Nullable IAEItemStack extractAEItem(int slot, long amount, boolean simulate, boolean forced) {
         if (slot < 0 || slot >= slotCount) return null;
+        if (!forced && !allowPullStack(slot)) return null;
 
         IAEItemStack existing = inventory[slot];
 
@@ -341,7 +357,8 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
 
         long toExtract = Math.min(existing.getStackSize(), amount);
 
-        IAEItemStack extracted = existing.empty().setStackSize(toExtract);
+        IAEItemStack extracted = existing.empty()
+            .setStackSize(toExtract);
 
         if (!simulate) {
             existing.decStackSize(toExtract);
@@ -350,7 +367,10 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
                 inventory[slot] = null;
             }
 
-            postChange(getActionSource(), existing.empty().setStackSize(-toExtract));
+            postChange(
+                getActionSource(),
+                existing.empty()
+                    .setStackSize(-toExtract));
         }
 
         return extracted;
@@ -370,7 +390,10 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
         inventory[slot] = stack != null ? stack.copy() : null;
 
         if (existing != null && !existing.isSameType(stack)) {
-            postChange(getActionSource(), existing.empty().setStackSize(-existing.getStackSize()));
+            postChange(
+                getActionSource(),
+                existing.empty()
+                    .setStackSize(-existing.getStackSize()));
             existing = null;
         }
 
@@ -379,8 +402,16 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
 
             long delta = stack.getStackSize() - previousAmount;
 
-            postChange(getActionSource(), stack.empty().setStackSize(delta));
+            postChange(
+                getActionSource(),
+                stack.empty()
+                    .setStackSize(delta));
         }
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        return writeToNBT(new NBTTagCompound());
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -402,6 +433,11 @@ public abstract class AEInventory implements IAEInventory, IMEMonitor<IAEItemSta
         }
 
         return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound nbt) {
+        readFromNBT(nbt);
     }
 
     public void readFromNBT(NBTTagCompound tag) {
