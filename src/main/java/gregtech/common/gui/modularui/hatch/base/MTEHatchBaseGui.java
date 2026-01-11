@@ -113,7 +113,7 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
         return false;
     }
 
-    // Column by defualt, going bottom to up (reversed child order)
+    // Column by default, going bottom to up (reversed child order)
     protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow cornerFlow = Flow.row()
             .coverChildren()
