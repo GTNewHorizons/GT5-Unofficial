@@ -2,6 +2,7 @@ package gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
+import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.TickTime.MINUTE;
@@ -42,7 +43,7 @@ public class MachineRecipes implements Runnable {
     public void run() {
 
         // exit early if not in pack
-        if (!NewHorizonsCoreMod.isModLoaded()) return;
+        if (!NewHorizonsCoreMod.isModLoaded() || !GalacticraftCore.isModLoaded()) return;
 
         ItemStack hypogenFrameBox_8 = MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(8);
         ItemStack hypogenScrew_32 = MaterialsElements.STANDALONE.HYPOGEN.getScrew(32);

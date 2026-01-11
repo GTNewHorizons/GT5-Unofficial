@@ -261,8 +261,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                     + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
         } else {
             disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
         }
     }
 

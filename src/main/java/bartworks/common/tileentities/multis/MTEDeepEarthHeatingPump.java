@@ -194,7 +194,7 @@ public class MTEDeepEarthHeatingPump extends MTEDrillerBase {
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.translate("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", getMachineModeName());
     }
 
     @Override

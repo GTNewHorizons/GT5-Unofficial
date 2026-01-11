@@ -92,6 +92,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
     public float speed = 3F;
+    public float euMultiplier = 1;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
@@ -115,7 +116,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         ItemList.Chamber_Casing.get(1)
             .getDisplayName());
 
-    private boolean mStaticAnimations = false;
+    private boolean staticAnimations = false;
     // spotless:off
 
     private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition.<MTEChamberCentrifuge>builder()
@@ -323,7 +324,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         tier = aNBT.getInteger("multiTier");
         mode = aNBT.getDouble("multiMode");
         RP = aNBT.getInteger("RP");
-        mStaticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
+        staticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
         tier2Fluid = aNBT.getBoolean("tier2FluidOn");
         lastCheckedTierIndex = aNBT.getInteger("lastCheckedTierIndex");
         if (turbineHolder != null) {
@@ -338,7 +339,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         aNBT.setDouble("multiMode", mode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
-        aNBT.setBoolean("turbineAnimationsStatic", mStaticAnimations);
+        aNBT.setBoolean("turbineAnimationsStatic", staticAnimations);
         aNBT.setInteger("lastCheckedTierIndex", lastCheckedTierIndex);
         if (turbineHolder != null) {
             aNBT.setTag("inventory", turbineHolder.serializeNBT());
@@ -548,6 +549,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setMaxParallel(getTrueParallel());
+        logic.setUnlimitedTierSkips();
         if (mExoticEnergyHatches.isEmpty() && !debugEnergyPresent) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
@@ -562,16 +564,21 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
+                euMultiplier = 1;
                 if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
-                if (mode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (mode == 2.0) {
+                    if (!tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                    euMultiplier = 16;
+                }
 
                 if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mode != 2.0)
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
                 setSpeedBonus(1F / speed);
+                setEuModifier(0.7 * euMultiplier);
                 return super.validateRecipe(recipe);
             }
 
@@ -587,7 +594,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 return super.createOverclockCalculator(recipe).setMaxOverclocks(
                     (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
             }
-        }.setEuModifier(0.7F);
+        };
     }
 
     @Override
@@ -649,7 +656,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     public void setTurbineActive() {
-        if (mStaticAnimations) return;
+        if (staticAnimations) return;
 
         for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.setActive(true);
@@ -751,11 +758,11 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        mStaticAnimations = !mStaticAnimations;
+        staticAnimations = !staticAnimations;
         GTUtility
-            .sendChatToPlayer(aPlayer, "Using " + (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+            .sendChatToPlayer(aPlayer, "Using " + (staticAnimations ? "Static" : "Animated") + " Turbine Texture.");
         for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
-            h.mUsingAnimation = mStaticAnimations;
+            h.mUsingAnimation = staticAnimations;
         }
     }
 

@@ -86,7 +86,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                     controller.parametrization
                         .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
                 }
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.pasteMessage"));
+                GTUtility.sendChatTrans(aPlayer, "item.em.parametrizerMemoryCard.pasteMessage");
             } else {
                 // read from controller
                 NBTTagCompound newTag = new NBTTagCompound();
@@ -111,7 +111,7 @@ public final class ItemParametrizerMemoryCard extends Item {
                 newTag.setString("coords", aX + ", " + aY + ", " + aZ);
                 newTag.setTag("paramList", tagList);
                 aStack.setTagCompound(newTag);
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("item.em.parametrizerMemoryCard.copyMessage"));
+                GTUtility.sendChatTrans(aPlayer, "item.em.parametrizerMemoryCard.copyMessage");
             }
             return true;
         }
