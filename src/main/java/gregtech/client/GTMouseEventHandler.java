@@ -1,7 +1,9 @@
 package gregtech.client;
 
+import gregtech.api.interfaces.item.IMiddleClickItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
 
@@ -53,15 +55,20 @@ public final class GTMouseEventHandler {
             isOffhand = false;
         }
 
-        final MetaBaseItem mbItem = (MetaBaseItem) heldItemStack.getItem();
-        if (mbItem == null) {
-            return;
+        final Item item = heldItemStack.getItem();
+
+        if (item instanceof final MetaBaseItem mbItem) {
+            if (buttonPressed == Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode()) {
+                event.setCanceled(mbItem.onMiddleClick(heldItemStack, player));
+            } else if (!isOffhand && buttonPressed == Minecraft.getMinecraft().gameSettings.keyBindAttack.getKeyCode()) {
+                event.setCanceled(mbItem.onLeftClick(heldItemStack, player));
+            }
         }
 
-        if (buttonPressed == Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode()) {
-            event.setCanceled(mbItem.onMiddleClick(heldItemStack, player));
-        } else if (!isOffhand && buttonPressed == Minecraft.getMinecraft().gameSettings.keyBindAttack.getKeyCode()) {
-            event.setCanceled(mbItem.onLeftClick(heldItemStack, player));
+        if (item instanceof final IMiddleClickItem mcItem) {
+            if (buttonPressed == Minecraft.getMinecraft().gameSettings.keyBindPickBlock.getKeyCode()) {
+                event.setCanceled(mcItem.onMiddleClick(heldItemStack, player));
+            }
         }
     }
 
