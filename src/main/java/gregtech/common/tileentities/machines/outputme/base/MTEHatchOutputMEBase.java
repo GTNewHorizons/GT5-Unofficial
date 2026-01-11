@@ -76,8 +76,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
         StorageChannel getChannel();
 
-        void markDirty();
-
         ItemStack getCellStack();
 
         ISaveProvider getISaveProvider();
@@ -97,6 +95,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         String getCopiedDataIdentifier(EntityPlayer player);
 
         ItemStack getVisual();
+    }
+
+    protected void markDirty() {
+        if (env.getBaseMetaTileEntity() != null) {
+            env.getBaseMetaTileEntity()
+                .markDirty();
+        }
     }
 
     private final Environment<T> env;
@@ -161,7 +166,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         myPriority = newValue;
         isCached = false;
         updateState();
-        env.markDirty();
+        markDirty();
     }
 
     @Nullable
@@ -194,7 +199,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             }
             updateState();
         }
-        env.markDirty();
+        markDirty();
     }
 
     boolean additionalConnection = false;
@@ -245,7 +250,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         if (cell != null) {
             this.cell = this.wrap(cell, AccessRestriction.READ_WRITE);
             this.cellRead = this.wrap(cell, AccessRestriction.READ);
-            env.markDirty();
+            markDirty();
         }
     }
 
@@ -351,7 +356,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             } catch (final GridAccessException ignored) {}
         }
 
-        env.markDirty();
+        markDirty();
     }
 
     boolean hadCell = false;
@@ -377,7 +382,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                     StatCollector.translateToLocal(modeKey)
                         + StatCollector.translateToLocalFormatted(filter.getEnableKey(), msg));
             }
-            env.markDirty();
+            markDirty();
         } else {
             hadCell = false;
 
@@ -390,7 +395,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                     env.getLastClickedPlayer(),
                     StatCollector.translateToLocal(filter.getDisableKey()));
             }
-            env.markDirty();
+            markDirty();
         }
     }
 
