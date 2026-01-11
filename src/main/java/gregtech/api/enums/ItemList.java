@@ -2869,7 +2869,7 @@ public enum ItemList implements IItemContainer {
     Wrap_PlasticCircuitBoards,
     Wrap_PlasticCircuitBoards2,
     Wrap_BioCircuitBoards,
-    Wrap_BioMutatedCircuitBoards,
+    Wrap_UltraBioMutatedCircuitBoards,
     Wrap_SMDResistors,
     Wrap_SMDInductors,
     Wrap_SMDDiodes,

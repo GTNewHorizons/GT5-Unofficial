@@ -40,7 +40,7 @@ public enum CircuitWraps {
     PlasticCircuitBoards(32749, ItemList.Circuit_Board_Plastic, ItemList.Wrap_PlasticCircuitBoards),
     PlasticCircuitBoards2(32748, ItemList.Circuit_Board_Plastic_Advanced, ItemList.Wrap_PlasticCircuitBoards2),
     BioCircuitBoards(32747, ItemList.Circuit_Board_Bio, ItemList.Wrap_BioCircuitBoards),
-    BioMutatedCircuitBoards(32746, ItemList.Circuit_Board_Bio_Ultra, ItemList.Wrap_BioMutatedCircuitBoards),
+    UltraBioMutatedCircuitBoards(32746, ItemList.Circuit_Board_Bio_Ultra, ItemList.Wrap_UltraBioMutatedCircuitBoards),
     SMDResistors(32745, ItemList.Circuit_Parts_ResistorSMD, ItemList.Wrap_SMDResistors),
     SMDInductors(32744, ItemList.Circuit_Parts_InductorSMD, ItemList.Wrap_SMDInductors),
     SMDDiodes(32743, ItemList.Circuit_Parts_DiodeSMD, ItemList.Wrap_SMDDiodes),
