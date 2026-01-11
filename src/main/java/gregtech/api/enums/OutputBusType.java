@@ -19,8 +19,8 @@ public enum OutputBusType {
 
     public boolean isFiltered() {
         return switch (this) {
-            case Void, StandardFiltered, MEFiltered, CompressedFiltered -> true;
-            case StandardUnfiltered, MEUnfiltered, CompressedUnfiltered -> false;
+            case Void, StandardFiltered, MEFiltered, CompressedFiltered, MECacheFiltered -> true;
+            case StandardUnfiltered, MEUnfiltered, CompressedUnfiltered, MECacheUnfiltered -> false;
         };
     }
 }
