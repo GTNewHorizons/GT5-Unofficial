@@ -197,7 +197,7 @@ import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;

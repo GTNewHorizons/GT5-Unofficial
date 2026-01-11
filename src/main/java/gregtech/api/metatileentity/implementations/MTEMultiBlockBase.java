@@ -3667,4 +3667,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean hasRunningText() {
         return true;
     }
+
+    public boolean isDebugEnergyPresent() {
+        return debugEnergyPresent;
+    }
 }

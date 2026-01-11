@@ -1476,7 +1476,7 @@ GT5U.gui.text.no_black_hole=§7Requires an active black hole
 GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.backfiller_working=§aPouring concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
-GT5U.gui.text.overheated=§7HIP Unit overheated!
+GT5U.gui.text.overheated=§cOverheated !
 GT5U.gui.text.pump_fluid_type=Fluid: §a%s
 GT5U.gui.text.pump_rate.1=Pumping rate: %s§r
 GT5U.gui.text.pump_rate.2= L/t
@@ -1565,6 +1565,7 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.overheat_fail=Shut down due to §coverheat
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
