@@ -837,7 +837,6 @@ public final class GTGuiTextures {
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
 
-
     public static final UITexture TESLA_VISUAL_EFFECT_ON = UITexture.builder()
         .location(MODID, "gui/overlay_button/tesla_tower_effect_on")
         .canApplyTheme()
