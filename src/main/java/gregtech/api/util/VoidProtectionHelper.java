@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 
 /**
@@ -217,8 +217,17 @@ public class VoidProtectionHelper {
      */
     private int calculateMaxFluidParallels() {
         List<? extends IFluidStore> hatches = machine.getFluidOutputSlots(fluidOutputs);
-        if (hatches.size() < fluidOutputs.length) {
-            return 0;
+        // TODO: Temporary Fix, need to refactor it.
+        int size = hatches.size();
+        if (size < fluidOutputs.length) {
+            boolean hasMe = false;
+            for (IFluidStore hatch : hatches) {
+                if (hatch instanceof MTEHatchOutputME) {
+                    hasMe = true;
+                    break;
+                }
+            }
+            if (!hasMe) return 0;
         }
 
         // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
