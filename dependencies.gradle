@@ -34,16 +34,16 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    api("com.github.GTNewHorizons:StructureLib:1.4.27:dev")
+    api("com.github.GTNewHorizons:StructureLib:1.4.28:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.48-GTNH:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.50-GTNH:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.9.0:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.1:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.3.24-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.25-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.9.15:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-777-GTNH:dev")
-    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.39-gtnh:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-782-GTNH-pre:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.40-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.1.5:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.4:dev')
@@ -57,13 +57,13 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.78:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev') { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.8:dev") { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:2.0.0-alpha5:dev') { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.9:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.48:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.12:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.4:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.14-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.8-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.15-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.12-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.12:dev") { transitive = false }
 
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
@@ -84,9 +84,9 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.7.2:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.37:dev")
-    compileOnly('com.github.GTNewHorizons:Botania:1.13.8-GTNH:dev') { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Natura:2.8.9:dev") { transitive = false }
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.39:dev")
+    compileOnly('com.github.GTNewHorizons:Botania:1.13.10-GTNH:dev') { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Natura:2.8.12:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.6-GTNH:dev') { transitive = false }
     compileOnly rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     compileOnly rfg.deobf('curse.maven:minefactory-reloaded-66672:2366150')
@@ -100,7 +100,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.3.12:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Binnie:2.6.4:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Binnie:2.6.7:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.4:dev'){transitive=false}
 
@@ -111,10 +111,10 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.11.4:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.17.0:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.10.2-GTNH:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.4:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.7:dev')
 
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.14-GTNH:dev") {
+    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.15-GTNH:dev") {
     //     exclude group: "com.github.GTNewHorizons", module: "GT5-Unofficial"
     // }
 
@@ -136,7 +136,7 @@ dependencies {
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.6:dev')
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha5:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
