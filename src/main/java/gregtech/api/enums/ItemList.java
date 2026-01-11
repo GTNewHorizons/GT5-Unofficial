@@ -154,7 +154,7 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Rod,
     Shape_Extruder_Bolt,
     Shape_Extruder_Ingot,
-    Shape_Extruder_Wire,
+    Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     Shape_Extruder_Casing,
     Shape_Extruder_Pipe_Tiny,
     Shape_Extruder_Pipe_Small,
@@ -183,7 +183,7 @@ public enum ItemList implements IItemContainer {
     White_Dwarf_Shape_Extruder_Rod,
     White_Dwarf_Shape_Extruder_Bolt,
     White_Dwarf_Shape_Extruder_Ingot,
-    White_Dwarf_Shape_Extruder_Wire,
+    White_Dwarf_Shape_Extruder_Wire, // DEPRECATED, remove in next major version
     White_Dwarf_Shape_Extruder_Casing,
     White_Dwarf_Shape_Extruder_Pipe_Tiny,
     White_Dwarf_Shape_Extruder_Pipe_Small,
@@ -1239,12 +1239,6 @@ public enum ItemList implements IItemContainer {
     Machine_EV_Cutter,
     Machine_IV_Cutter,
 
-    Machine_LV_Slicer,
-    Machine_MV_Slicer,
-    Machine_HV_Slicer,
-    Machine_EV_Slicer,
-    Machine_IV_Slicer,
-
     Machine_LV_Sifter,
     Machine_MV_Sifter,
     Machine_HV_Sifter,
@@ -1514,10 +1508,27 @@ public enum ItemList implements IItemContainer {
     Hatch_Antimatter,
 
     Machine_Multi_Canner,
-    Machine_Multi_Solidifier,
 
+    Machine_Fluid_Shaper, // DEPRECATED. Remove after 2.9
+    Machine_Mass_Solidifier,
     Casing_Fluid_Solidifier,
     Radiator_Fluid_Solidifier,
+
+    Machine_Multi_ExoFoundry,
+    Glass_ExoFoundry,
+    Primary_Casing_ExoFoundry,
+    Secondary_Casing_ExoFoundry,
+    Central_Casing_ExoFoundry,
+    Magnetic_Chassis_T1_ExoFoundry,
+    Magnetic_Chassis_T2_ExoFoundry,
+    Magnetic_Chassis_T3_ExoFoundry,
+    Streamlined_Casters_ExoFoundry,
+    Power_Efficient_Subsystems_ExoFoundry,
+    Extra_Casting_Basins_ExoFoundry,
+    Heliocast_Reinforcement_ExoFoundry,
+    Hypercooler_ExoFoundry,
+    Efficient_Overclocking_ExoFoundry,
+    Universal_Collapser_ExoFoundry,
 
     Casing_Reinforced_Wood,
 
@@ -2631,13 +2642,6 @@ public enum ItemList implements IItemContainer {
     SiftingMachineUEV,
     SiftingMachineUIV,
     SiftingMachineUMV,
-    SlicingMachineLuV,
-    SlicingMachineZPM,
-    SlicingMachineUV,
-    SlicingMachineUHV,
-    SlicingMachineUEV,
-    SlicingMachineUIV,
-    SlicingMachineUMV,
     ThermalCentrifugeLuV,
     ThermalCentrifugeZPM,
     ThermalCentrifugeUV,
@@ -2788,6 +2792,8 @@ public enum ItemList implements IItemContainer {
             Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV },
         MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV, Hull_MAX,
             Hull_UEV, Hull_UIV, Hull_UMV, Hull_UXV, Hull_MAXV },
+        MACHINE_CASINGS = { Casing_ULV, Casing_LV, Casing_MV, Casing_HV, Casing_EV, Casing_IV, Casing_LuV, Casing_ZPM,
+            Casing_UV, Casing_MAX, Casing_UEV, Casing_UIV, Casing_UMV, Casing_UXV, Casing_MAXV },
         HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
             Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_UHV },
         HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,

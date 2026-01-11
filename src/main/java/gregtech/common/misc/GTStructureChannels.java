@@ -29,6 +29,7 @@ public enum GTStructureChannels implements IStructureChannels {
     PRASS_UNIT_CASING("unit_casing", "Precise Electronic Unit Casing Tier"),
     METAL_MACHINE_CASING("casing", "Metal Machine Casing Tier"),
     TIER_MACHINE_CASING("machine_casing", "Machine Casing Tier"),
+    TIER_CASING("casing", "Machine Casing Tier"),
     SOLENOID("solenoid", "Solenoid Tier"),
     LSC_CAPACITOR("capacitor", "Capacitor Tier"),
     STRUCTURE_HEIGHT("height", "Structure Height"),
@@ -45,7 +46,9 @@ public enum GTStructureChannels implements IStructureChannels {
     EIC_PISTON("piston_block", "Metal Block Tier"),
     ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
     ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
-    SUPER_CHEST("super_chest", "Super Chest Tier")
+    SUPER_CHEST("super_chest", "Super Chest Tier"),
+    MAGNETIC_CHASSIS("chassis", "Magnetic Chassis Tier"),
+    COMPONENT_ASSEMBLYLINE_CASING("component_casing", "Component Assembly Line Casing Tier")
     //
     ;
 

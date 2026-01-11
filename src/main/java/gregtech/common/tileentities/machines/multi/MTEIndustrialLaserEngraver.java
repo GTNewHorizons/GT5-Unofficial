@@ -201,9 +201,9 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         } else {
@@ -230,7 +230,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addStaticEuEffInfo(0.8F)
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
-            .addInfo("With UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)")
+            .addInfo(
+                "When using a UEV+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
             .addInfo("Parallels equal to the cube root of laser source amperage input")
             .addInfo("Glass tier determines maximum laser source tier")
             .addInfo(
