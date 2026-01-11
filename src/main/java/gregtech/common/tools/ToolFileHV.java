@@ -3,6 +3,7 @@ package gregtech.common.tools;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -21,7 +22,9 @@ public class ToolFileHV extends ToolFileLV {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.ELECTRIC_FILE : Textures.ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_angleGrinder]
+            : Textures.ItemIcons.POWER_UNIT_HV;
     }
 
 }
