@@ -22,7 +22,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -30,7 +29,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashBiMap;
 
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
