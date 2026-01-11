@@ -67,7 +67,11 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         if (maxAmperes > 64) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            // Laser hatches are separate classes, so detect by type instead of amperage.
+            if (this instanceof MTEHatchDynamoTunnel) {
+                return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            }
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_256A[mTier + 1] };
         } else if (maxAmperes > 16) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
         } else if (maxAmperes > 4) {
@@ -82,7 +86,10 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         if (maxAmperes > 64) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            if (this instanceof MTEHatchDynamoTunnel) {
+                return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            }
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_256A[mTier + 1] };
         } else if (maxAmperes > 16) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
         } else if (maxAmperes > 4) {
