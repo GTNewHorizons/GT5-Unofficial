@@ -3789,6 +3789,7 @@ machtype.distillation_tower=Distillery, DT
 machtype.assline=Assembly Line, Assline, AL
 machtype.mb_air_filter=Air Filter, EAF
 machtype.completer=Research Completer
+machtype.decay_warehouse=Decay Warehouse
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3799,6 +3800,12 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.decay_warehouse.tips=Stores a single type of radioactive isotope and allows it to decay over time\nDecay speed is dependent on the isotopes' half-lives (lower is faster)\nIsotopes decay regardless of whether the warehouse is on or powered<SEPARATOR>The warehouse's capacity equals the super chest's capacity divided by §9%s§7.\nThe warehouse will pull in up to §9N / %s§7 items per second,\nwhere §9N§7 is the warehouse's EU input (standard energy hatch rules)<SEPARATOR>Right click the controller with a screwdriver to dump stored isotopes into the output bus\nRight click the controller with a plunger to empty it\nThe warehouse's contents are §c§nvoided§7 when the controller is broken
+
+gt.rfpp.tips=Refines fluorides and Uranium into nuclear fuel for the LFTR\nLFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes\nOnly one Energy Hatch is allowed per Processing Unit\nAll recipe times in this multi are very long, watch out!
+gt.rfpp.info.hatches=Base platform
+gt.rfpp.info=Muffler's Tier must be IV+\n2+ Input Hatches, 1+ Output Hatches\n1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch
+
 gt.boldarnator.tips=Use Integrated Circuit to determine recipe\n1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack\nNeeds Water and Lava in input hatch\nNeeds Soul Sand and Blue Ice in input bus for basalt\nNeeds Soul Sand and Magma in input bus for deepslate
 
 gt.completer.tips=Completes Thaumcraft research notes using EU and Thaumcraft nodes\nPlace nodes in the center row

@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
@@ -81,6 +82,7 @@ import gregtech.common.tools.ToolTurbineSmall;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
 public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
@@ -108,7 +110,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
-    private static final String anyCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", "gt.blockcasings12.9.name");
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Chamber_Casing.get(1)
+            .getDisplayName());
 
     private boolean mStaticAnimations = false;
     // spotless:off
@@ -396,15 +401,33 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .beginStructureBlock(17, 17, 17, false)
             .addController("front_center")
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 81, true)
-            .addCasingInfoMin("gt.blockcasings12.9.name", 550)
-            .addCasingInfoExactly("gt.blockglass1.6.name", 144)
+            .addCasingInfoMin(
+                ItemList.Chamber_Casing.get(1)
+                    .getDisplayName(),
+                550)
+            .addCasingInfoExactly(
+                ItemList.Chamber_Grate.get(1)
+                    .getDisplayName(),
+                144)
             .addCasingInfoExactly("gt.spinmatron.info.frame", 9, true)
             .addCasingInfoExactly("gt.spinmatron.info.rotor", 56, true)
-            .addCasingInfoExactly("gtplusplus.blockcasings.5.2.name", 54)
-            .addCasingInfoExactly("gt.blockcasings9.0.name", 160)
-            .addCasingInfoExactly("gtplusplus.blockspecialcasings.1.0.name", 24)
+            .addCasingInfoExactly(
+                GregtechItemList.Casing_IsaMill_Gearbox.get(1)
+                    .getDisplayName(),
+                54)
+            .addCasingInfoExactly(
+                ItemList.Casing_Pipe_Polybenzimidazole.get(1)
+                    .getDisplayName(),
+                160)
+            .addCasingInfoExactly(
+                GregtechItemList.Casing_Turbine_Shaft.get(1)
+                    .getDisplayName(),
+                24)
             .addCasingInfoExactly("gt.blockmachines.hatch.turbine.name", 8)
-            .addCasingInfoExactly("gtplusplus.blockspecialcasings.1.15.name", 264)
+            .addCasingInfoExactly(
+                GregtechItemList.Casing_Turbine_SC.get(1)
+                    .getDisplayName(),
+                264)
             .addInputBus(anyCasing, 1)
             .addOutputBus(anyCasing, 1)
             .addInputHatch(anyCasing, 1)

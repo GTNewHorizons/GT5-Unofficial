@@ -618,7 +618,7 @@ public class GTValues {
     // for use with the chain
     public static final Supplier<String> AUTHOR_SUPPLIER = () -> "Author: ";
     public static final Supplier<String> AUTHORS_SUPPLIER = () -> "Authors: ";
-    public static final Supplier<String> AND_SUPPLIER = () -> EnumChatFormatting.RESET + " & ";
+    public static final Supplier<String> AND_SUPPLIER = () -> RESET + " & ";
 
     // a list specifically for random selection of formatting codes.
     public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,
@@ -703,9 +703,7 @@ public class GTValues {
         String[] colorList = new String[letters.length];
         final String letter = letters[index];
         for (int i = 0; i < letters.length; i++) {
-            colorList[i] = LIGHT_PURPLE
-                + (i == (letters.length - index - 1) ? EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "<3"
-                    : letter);
+            colorList[i] = LIGHT_PURPLE + (i == (letters.length - index - 1) ? BOLD + "" + ITALIC + "<3" : letter);
         }
         return emptyAnimatedText(1, 1000, colorList);
     }
