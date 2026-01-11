@@ -9012,117 +9012,133 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerCompressedBus() {
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
-            "hatch.comp-output-bus.tier.00",
-            "Compressed Output Bus (LuV)",
-            VoltageIndex.LuV,
-            256);
+        ItemList.CompressedOutputBusLuV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
+                "hatch.comp-output-bus.tier.00",
+                "Compressed Output Bus (LuV)",
+                VoltageIndex.LuV,
+                256).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
-            "hatch.comp-output-bus.tier.01",
-            "Compressed Output Bus (ZPM)",
-            VoltageIndex.ZPM,
-            2048);
+        ItemList.CompressedOutputBusZPM.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
+                "hatch.comp-output-bus.tier.01",
+                "Compressed Output Bus (ZPM)",
+                VoltageIndex.ZPM,
+                2048).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
-            "hatch.comp-output-bus.tier.02",
-            "Compressed Output Bus (UV)",
-            VoltageIndex.UV,
-            16384);
+        ItemList.CompressedOutputBusUV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
+                "hatch.comp-output-bus.tier.02",
+                "Compressed Output Bus (UV)",
+                VoltageIndex.UV,
+                16384).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
-            "hatch.comp-output-bus.tier.03",
-            "Compressed Output Bus (UHV)",
-            VoltageIndex.UHV,
-            131072);
+        ItemList.CompressedOutputBusUHV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
+                "hatch.comp-output-bus.tier.03",
+                "Compressed Output Bus (UHV)",
+                VoltageIndex.UHV,
+                131072).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_QUANTUM_1.ID,
-            "hatch.quantum-output-bus.tier.00",
-            "Quantum Output Bus (UEV)",
-            VoltageIndex.UEV,
-            2097152);
+        ItemList.CompressedOutputBusUEV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_1.ID,
+                "hatch.quantum-output-bus.tier.00",
+                "Quantum Output Bus (UEV)",
+                VoltageIndex.UEV,
+                2097152).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_QUANTUM_2.ID,
-            "hatch.quantum-output-bus.tier.01",
-            "Quantum Output Bus (UIV)",
-            VoltageIndex.UIV,
-            Integer.MAX_VALUE / 64L);
+        ItemList.CompressedOutputBusUIV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_2.ID,
+                "hatch.quantum-output-bus.tier.01",
+                "Quantum Output Bus (UIV)",
+                VoltageIndex.UIV,
+                Integer.MAX_VALUE / 64L).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_QUANTUM_3.ID,
-            "hatch.quantum-output-bus.tier.02",
-            "Quantum Output Bus (UMV)",
-            VoltageIndex.UMV,
-            Integer.MAX_VALUE * 64L);
+        ItemList.CompressedOutputBusUMV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_3.ID,
+                "hatch.quantum-output-bus.tier.02",
+                "Quantum Output Bus (UMV)",
+                VoltageIndex.UMV,
+                Integer.MAX_VALUE * 64L).getStackForm(1));
 
-        new MTEHatchOutputBusCompressed(
-            HATCH_OUTPUT_BUS_QUANTUM_4.ID,
-            "hatch.quantum-output-bus.tier.03",
-            "Quantum Output Bus (UXV)",
-            VoltageIndex.UXV,
-            Long.MAX_VALUE / 64L);
+        ItemList.CompressedOutputBusUXV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_4.ID,
+                "hatch.quantum-output-bus.tier.03",
+                "Quantum Output Bus (UXV)",
+                VoltageIndex.UXV,
+                Long.MAX_VALUE / 64L).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_COMPRESSED_1.ID,
-            "hatch.comp-input-bus.tier.00",
-            "Compressed Input Bus (LuV)",
-            VoltageIndex.LuV,
-            256);
+        ItemList.CompressedInputBusLuV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_1.ID,
+                "hatch.comp-input-bus.tier.00",
+                "Compressed Input Bus (LuV)",
+                VoltageIndex.LuV,
+                256).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_COMPRESSED_2.ID,
-            "hatch.comp-input-bus.tier.01",
-            "Compressed Input Bus (ZPM)",
-            VoltageIndex.ZPM,
-            2048);
+        ItemList.CompressedInputBusZPM.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_2.ID,
+                "hatch.comp-input-bus.tier.01",
+                "Compressed Input Bus (ZPM)",
+                VoltageIndex.ZPM,
+                2048).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_COMPRESSED_3.ID,
-            "hatch.comp-input-bus.tier.02",
-            "Compressed Input Bus (UV)",
-            VoltageIndex.UV,
-            16384);
+        ItemList.CompressedInputBusUV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_3.ID,
+                "hatch.comp-input-bus.tier.02",
+                "Compressed Input Bus (UV)",
+                VoltageIndex.UV,
+                16384).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_COMPRESSED_4.ID,
-            "hatch.comp-input-bus.tier.03",
-            "Compressed Input Bus (UHV)",
-            VoltageIndex.UHV,
-            131072);
+        ItemList.CompressedInputBusUHV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_4.ID,
+                "hatch.comp-input-bus.tier.03",
+                "Compressed Input Bus (UHV)",
+                VoltageIndex.UHV,
+                131072).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_QUANTUM_1.ID,
-            "hatch.quantum-input-bus.tier.00",
-            "Quantum Input Bus (UEV)",
-            VoltageIndex.UEV,
-            2097152);
+        ItemList.CompressedInputBusUEV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_1.ID,
+                "hatch.quantum-input-bus.tier.00",
+                "Quantum Input Bus (UEV)",
+                VoltageIndex.UEV,
+                2097152).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_QUANTUM_2.ID,
-            "hatch.quantum-input-bus.tier.01",
-            "Quantum Input Bus (UIV)",
-            VoltageIndex.UIV,
-            Integer.MAX_VALUE / 64L);
+        ItemList.CompressedInputBusUIV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_2.ID,
+                "hatch.quantum-input-bus.tier.01",
+                "Quantum Input Bus (UIV)",
+                VoltageIndex.UIV,
+                Integer.MAX_VALUE / 64L).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_QUANTUM_3.ID,
-            "hatch.quantum-input-bus.tier.02",
-            "Quantum Input Bus (UMV)",
-            VoltageIndex.UMV,
-            Integer.MAX_VALUE * 64L);
+        ItemList.CompressedInputBusUMV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_3.ID,
+                "hatch.quantum-input-bus.tier.02",
+                "Quantum Input Bus (UMV)",
+                VoltageIndex.UMV,
+                Integer.MAX_VALUE * 64L).getStackForm(1));
 
-        new MTEHatchInputBusCompressed(
-            HATCH_INPUT_BUS_QUANTUM_4.ID,
-            "hatch.quantum-input-bus.tier.03",
-            "Quantum Input Bus (UXV)",
-            VoltageIndex.UXV,
-            Long.MAX_VALUE / 64L);
+        ItemList.CompressedInputBusUXV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_4.ID,
+                "hatch.quantum-input-bus.tier.03",
+                "Quantum Input Bus (UXV)",
+                VoltageIndex.UXV,
+                Long.MAX_VALUE / 64L).getStackForm(1));
     }
 
     private static void registerQuantumTank() {
