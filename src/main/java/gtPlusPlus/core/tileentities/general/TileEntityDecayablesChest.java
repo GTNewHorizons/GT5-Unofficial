@@ -64,7 +64,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         // Try do chesty stuff
         try {
             this.updateEntityChest();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
 
@@ -88,7 +88,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 }
                 updateSlots();
             }
-        } catch (final Throwable ignored) {}
+        } catch (final Exception ignored) {}
     }
 
     public void tryUpdateDecayable(final DustDecayable b, ItemStack iStack, final World world) {

@@ -617,13 +617,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mAllowInputFromOutputSide = val;
                 if (isServer) {
                     if (!mAllowInputFromOutputSide) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_off"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_off");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_on"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_on");
                     }
                 }
             })

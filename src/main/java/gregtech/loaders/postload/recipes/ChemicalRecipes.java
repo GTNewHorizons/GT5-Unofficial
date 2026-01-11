@@ -37,8 +37,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalRecipes implements Runnable {
@@ -2846,7 +2846,7 @@ public class ChemicalRecipes implements Runnable {
         // 2NO2 = N2O4
 
         GTValues.RA.stdBuilder()
-            .circuit(2)
+            .circuit(6)
             .fluidInputs(Materials.NitrogenDioxide.getGas(2_000))
             .fluidOutputs(Materials.DinitrogenTetroxide.getGas(1_000))
             .duration(32 * SECONDS)
@@ -4017,7 +4017,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CalciumCarbide, 3))
             .circuit(1)
-            .itemOutputs(new ItemStack(ModItems.dustCalciumHydroxide, 5))
+            .itemOutputs(GregtechItemList.CalciumHydroxideDust.get(5))
             .fluidInputs(Materials.Water.getFluid(2_000))
             .fluidOutputs(Materials.Acetylene.getGas(1_000))
             .duration(15 * SECONDS)
@@ -5756,8 +5756,8 @@ public class ChemicalRecipes implements Runnable {
             .circuit(3)
             .itemOutputs(Materials.RawStyreneButadieneRubber.getDust(3))
             .fluidInputs(
-                Materials.Styrene.getFluid(36),
-                Materials.Butadiene.getGas(108),
+                Materials.Styrene.getFluid(72),
+                Materials.Butadiene.getGas(216),
                 Materials.Oxygen.getGas(2_000))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)

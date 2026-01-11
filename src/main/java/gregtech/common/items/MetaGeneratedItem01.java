@@ -782,8 +782,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Shape_Extruder_Ingot.ID,
                 "Extruder Shape (Ingot)",
                 "Extruder Shape for, wait, can't we just use a Furnace?"));
-        ItemList.Shape_Extruder_Wire
-            .set(addItem(Shape_Extruder_Wire.ID, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
+        ItemList.Shape_Extruder_Wire.set(
+            addItem(
+                Shape_Extruder_Wire.ID,
+                "Extruder Shape (Wire)",
+                EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update."));
         ItemList.Shape_Extruder_Casing.set(
             addItem(Shape_Extruder_Casing.ID, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
         ItemList.Shape_Extruder_Pipe_Tiny.set(

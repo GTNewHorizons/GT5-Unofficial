@@ -467,7 +467,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
         if (isInputDisabledAtSide(side)) {
             mDisableInput &= ~mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("212", "Input enabled"));
-            if (!isConnectedAtSide(side)) connect(side);
         } else {
             mDisableInput |= mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("213", "Input disabled"));
