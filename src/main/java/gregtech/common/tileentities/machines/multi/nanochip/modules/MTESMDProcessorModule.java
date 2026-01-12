@@ -21,7 +21,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
-public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
+public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDProcessorModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SMD_OFFSET_X = 3;
@@ -30,8 +30,8 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
     protected static final String[][] SMD_STRING = new String[][] { { " B   B ", " EA AE ", " BB BB " },
         { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " D   D ", "AAA AAA", "BBBDBBB" }, { " D   D ", "       ", "  DDD  " },
         { " D   D ", "AAA AAA", "BBBDBBB" }, { "BBDDDBB", "ECA ACE", "BBB BBB" }, { " B   B ", " EA AE ", " BB BB " } };
-    public static final IStructureDefinition<SMDProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<SMDProcessor>builder()
+    public static final IStructureDefinition<MTESMDProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTESMDProcessorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SMD_STRING)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
@@ -45,16 +45,16 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
         .addElement('E', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
         .build();
 
-    public SMDProcessor(int aID, String aName, String aNameRegional) {
+    public MTESMDProcessorModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected SMDProcessor(String aName) {
+    protected MTESMDProcessorModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<SMDProcessor> getStructureDefinition() {
+    public IStructureDefinition<MTESMDProcessorModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -100,7 +100,7 @@ public class SMDProcessor extends MTENanochipAssemblyModuleBase<SMDProcessor> {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new SMDProcessor(this.mName);
+        return new MTESMDProcessorModule(this.mName);
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {

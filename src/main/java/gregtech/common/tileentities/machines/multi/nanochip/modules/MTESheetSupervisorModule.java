@@ -28,7 +28,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 
-public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervisor> {
+public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTESheetSupervisorModule> {
 
     private static final int COMPUTATION_TO_BE_DRAINED_PER_SECOND = 100000;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
@@ -43,8 +43,8 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
         { "       ", "  DED  ", "  DED  ", " CDEDC ", " CDEDC ", " CDEDC " } };
-    public static final IStructureDefinition<SheetSupervisor> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<SheetSupervisor>builder()
+    public static final IStructureDefinition<MTESheetSupervisorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTESheetSupervisorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SHEET_STRING)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
@@ -59,7 +59,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
             'E',
             // TODO: Add correct textureIndex when the new blocks get made
             GTStructureUtility
-                .ofHatchAdderOptional(SheetSupervisor::addDataHatch, 0, 1, GregTechAPI.sBlockCasings8, 10))
+                .ofHatchAdderOptional(MTESheetSupervisorModule::addDataHatch, 0, 1, GregTechAPI.sBlockCasings8, 10))
         .build();
 
     private Set<MTEHatchDataInput> dataInputHatchList = new HashSet<>();
@@ -73,16 +73,16 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
         return false;
     }
 
-    public SheetSupervisor(int aID, String aName, String aNameRegional) {
+    public MTESheetSupervisorModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected SheetSupervisor(String aName) {
+    protected MTESheetSupervisorModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<SheetSupervisor> getStructureDefinition() {
+    public IStructureDefinition<MTESheetSupervisorModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -156,7 +156,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
 
     private boolean hasEnoughComputation() {
         long availableData = getAvailableData();
-        return availableData >= SheetSupervisor.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
+        return availableData >= MTESheetSupervisorModule.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
     }
 
     @Override
@@ -172,7 +172,7 @@ public class SheetSupervisor extends MTENanochipAssemblyModuleBase<SheetSupervis
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new SheetSupervisor(this.mName);
+        return new MTESheetSupervisorModule(this.mName);
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
