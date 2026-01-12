@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
@@ -15,6 +14,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,14 +46,14 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
     public static final IStructureDefinition<MTESheetSupervisorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESheetSupervisorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SHEET_STRING)
-        // White casing block
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // Quantium Frame Box
         .addElement('C', ofFrame(Materials.Quantium))
-        // Black glass
-        .addElement('D', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Nanochip Glass
+        .addElement('D', Casings.NanochipGlass.asElement())
         // Compuation input hatch
         .addElement(
             'E',

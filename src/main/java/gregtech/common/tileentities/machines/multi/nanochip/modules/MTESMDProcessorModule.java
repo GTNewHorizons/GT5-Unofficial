@@ -11,6 +11,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,16 +34,16 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
     public static final IStructureDefinition<MTESMDProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESMDProcessorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SMD_STRING)
-        // White casing block
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // UEV Machine Casings
         .addElement('C', ofBlock(GregTechAPI.sBlockCasingsNH, 10))
         // Radox polymer frame
         .addElement('D', ofFrame(Materials.RadoxPolymer))
-        // Black glass
-        .addElement('E', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Nanochip Glass
+        .addElement('E', Casings.NanochipGlass.asElement())
         .build();
 
     public MTESMDProcessorModule(int aID, String aName, String aNameRegional) {

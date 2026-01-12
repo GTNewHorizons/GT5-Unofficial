@@ -1989,6 +1989,12 @@ public class Textures {
         OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW,
         OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
 
+        NANOCHIP_PRIMARY_CASING,
+        NANOCHIP_SECONDARY_CASING,
+        NANOCHIP_EXTERIOR_CASING,
+        NANOCHIP_BRAIN_CASING,
+        NANOCHIP_GLASS,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
