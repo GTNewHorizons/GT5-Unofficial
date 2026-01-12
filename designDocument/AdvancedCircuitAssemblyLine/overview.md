@@ -14,16 +14,16 @@ This is the first release of the ACAL: a simpler and faster-to-develop alternati
 
 The ACAL is a giant CAL, 15 blocks width x 15 blocks height x 47 blocks deep. Structure below:
 
-![ACAL OVERVIEW](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/Acaloverview2.png)
+![ACAL OVERVIEW](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/Acaloverview2.png)
 
-![ACAL overview](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/ACALoverview1.png)
+![ACAL overview](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/ACALoverview1.png)
 
 This machine comes with two settings:
 
 - MaxParallel: Controls how much parallel processing is allowed (interacts with batch mode).
 - Expected Duration: Sets the time required to craft a batch of circuits.
 
-![Acal inside 1](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/ACALinside1.png)
+![Acal inside 1](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/ACALinside1.png)
 
 By default, MaxParallel (P) is set to 64 and Expected Duration (D) is set to 70 seconds.
 
@@ -34,7 +34,7 @@ Behind the scenes, it uses the OverclockCalculator algorithm, with:
 
 These settings can be adjusted depending on how much energy you want to allocate.
 
-![Acal inside 2](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/ACALinside2.png)
+![Acal inside 2](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/ACALinside2.png)
 
 The energy shown below represents how much energy is pulled from the wireless network when the craft starts.
 This energy is only pulled once, at the beginning of the craft.
@@ -49,7 +49,7 @@ The multi is unlockable in UIV. the requirements are:
 
 The structure require 336 Eternal coils, 333 Infinit cooled casings, the rest is cheap.
 
-![ACAL RECIPE](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/ACALrecipe1.png)
+![ACAL RECIPE](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/ACALrecipe1.png)
 
 ## What can i do with the ACAL?
 
@@ -61,11 +61,11 @@ As you can see below, for now (2026-1-1), the only use of the ACAL is to craft:
 I'm working to add Cosmic line and Temporal line, but not for now.
 
 If you are interested about math comparisons, please see this:
-https://github.com/mamiemru/GT5-Unofficial/blob/Advanced-Circuit-Assembly-Line/maths.md
+https://github.com/mamiemru/GT5-Unofficial/blob/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/maths.md
 
 ## Why did I choose these recipes?
 
-![Any circuit recipe](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/ACALanycircuits.png)
+![Any circuit recipe](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/ACALanycircuits.png)
 
 Above is the current mapping of Any Circuits. I chose to use Any Circuits to add a new layer to circuit crafting. At this stage of the game, all the circuits shown above should be easy to craft.
 
@@ -75,7 +75,7 @@ For those curious about the numbers: the amount of circuits was calculated (and 
 
 As you can see, you don’t need as many materials to craft lower-tier circuits. However, you do require more raw materials, such as bolts or fine wires. A major gain comes from the use of wafers, which removes the cutting recipe entirely.
 
-![ACAL recipe exotic](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/ACALrecipeExotic.png)
+![ACAL recipe exotic](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/ACALrecipeExotic.png)
 
 Here we have the Exotic line. It’s a pleasure to see these magenta circuits appear in the crafting tree.
 
@@ -91,7 +91,7 @@ You can also see new SMDs introduced here. There are five Innovative SMDs, all u
 
 For the new components, here is the recipe tree:
 
-![Compoennts](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/Components.png)
+![Compoennts](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/Components.png)
 
 All ISMD are assembler recipe gated to UIV energy.
 The last foil is Superconductor base UMV foil and the cable is UIV SU.
@@ -103,7 +103,7 @@ The 2 last recipe are PCB one.
 
 A Better recipe for Optical CPU containment housing:
 
-![Compoennts](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/overview/occh.png)
+![Compoennts](https://raw.githubusercontent.com/mamiemru/GT5-Unofficial/refs/heads/Advanced-Circuit-Assembly-Line/designDocument/AdvancedCircuitAssemblyLine/images/occh.png)
 
 
 If you’re interested, here is the development history of the project:

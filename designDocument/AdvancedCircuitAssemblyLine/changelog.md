@@ -1,3 +1,4 @@
+# Guys, its a draft, I will clean this doc later. I better keep my though in raw for now.
 
 ## 2025 November 18:
 
@@ -84,3 +85,12 @@ I changed some text and set default values that was most accurate to early UIV.
 The inputted crafting duration now match with the recipe time.
 Translation has been done.
 Unused textures has been deleted.
+
+## 2026 January 5
+
+2 Exotic processors are required to craft an Exotic Assembly.
+Polish game and doc for PR.
+
+## 2026 January 12
+
+PR time
