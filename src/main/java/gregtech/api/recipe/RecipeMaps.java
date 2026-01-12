@@ -82,9 +82,22 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.*;
+import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTRecipeMapUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.*;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.OpticalOrganizer;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervisor;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
@@ -675,7 +688,7 @@ public final class RecipeMaps {
                 coalChances[2] = 10000;
             }
 
-            GTRecipeTemplate coll = asTemplate(rr.get());
+            GTRecipeMapUtil.GTRecipeTemplate coll = asTemplate(rr.get());
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
