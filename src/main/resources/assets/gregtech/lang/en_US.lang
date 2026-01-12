@@ -748,6 +748,7 @@ GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pyl
 GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
+GT5U.autoplace.error.no_placeable=§cNothing found to place (use gt_hatch 1 to suggest hatches)
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
@@ -1377,7 +1378,7 @@ channels.gregtech.antenna=Decides the of Antenna Casing. Starts at §6T1§r at v
 channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compression Field Generator. Starts at §6Crude Spacetime Compression Field Generator§r at value 1 and ends at §6Gallifreyan Spacetime Compression Field Generator§r at value 9.
 channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
-channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
+channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
 channels.gregtech.component_casing=Decides the tier of component assemblyline casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
