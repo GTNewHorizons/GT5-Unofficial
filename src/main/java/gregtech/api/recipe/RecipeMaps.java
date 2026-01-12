@@ -89,15 +89,15 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.OpticalOrganizer;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervisor;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESheetSupervisorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
@@ -1368,7 +1368,7 @@ public final class RecipeMaps {
             // Fake recipes for the assembly matrix may not have this
             if (output == null) return;
             if (output.realCircuit != null) {
-                AssemblyMatrix.registerLocalName(output.realCircuit, output);
+                MTEAssemblyMatrixModule.registerLocalName(output.realCircuit, output);
             }
         })
         .frontend(AssemblyLineFrontend::new)
@@ -1381,7 +1381,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            SMDProcessor.registerLocalName(input.getLocalizedName(), output);
+            MTESMDProcessorModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
@@ -1391,7 +1391,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            BoardProcessor.registerLocalName(input.getLocalizedName(), output);
+            MTEBoardProcessorModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
@@ -1401,7 +1401,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            EtchingArray.registerLocalName(input.getLocalizedName(), output);
+            MTEEtchingArrayModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
@@ -1411,7 +1411,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            CuttingChamber.registerLocalName(input.getLocalizedName(), output);
+            MTECuttingChamberModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
@@ -1421,7 +1421,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            WireTracer.registerLocalName(input.getLocalizedName(), output);
+            MTEWireTracerModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
@@ -1431,7 +1431,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            SuperconductorSplitter.registerLocalName(input.getLocalizedName(), output);
+            MTESuperconductorSplitterModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
@@ -1441,7 +1441,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            OpticalOrganizer.registerLocalName(input.getLocalizedName(), output);
+            MTEOpticalOrganizerModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
@@ -1451,7 +1451,7 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            SheetSupervisor.registerLocalName(input.getLocalizedName(), output);
+            MTESheetSupervisorModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
 }

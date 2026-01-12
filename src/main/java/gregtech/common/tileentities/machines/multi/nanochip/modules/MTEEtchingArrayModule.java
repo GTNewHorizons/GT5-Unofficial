@@ -52,7 +52,7 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
+public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtchingArrayModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int ETCHING_OFFSET_X = 3;
@@ -70,8 +70,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
     int requiredEnergy = 1;
     Particle requiredParticle = Particle.ALPHA;
 
-    public static final IStructureDefinition<EtchingArray> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<EtchingArray>builder()
+    public static final IStructureDefinition<MTEEtchingArrayModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTEEtchingArrayModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ETCHING_STRUCTURE)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
@@ -90,17 +90,17 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         // Beamline input
         .addElement(
             'H',
-            buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
+            buildHatchAdder(MTEEtchingArrayModule.class).hatchClass(MTEHatchInputBeamline.class)
                 .atLeast(SpecialHatchElement.BeamlineInput)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .hint(1)
-                .adder(EtchingArray::addBeamLineInputHatch)
+                .adder(MTEEtchingArrayModule::addBeamLineInputHatch)
                 .build())
         // Particle Indicator Hatch
         .addElement(
             'I',
             lazy(
-                t -> GTStructureUtility.<EtchingArray>buildHatchAdder()
+                t -> GTStructureUtility.<MTEEtchingArrayModule>buildHatchAdder()
                     .atLeast(SpecialHatchElement.ParticleSensor)
                     .hint(2)
                     .cacheHint(() -> "Particle Indicator")
@@ -152,29 +152,29 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         return false;
     }
 
-    private enum SpecialHatchElement implements IHatchElement<EtchingArray> {
+    private enum SpecialHatchElement implements IHatchElement<MTEEtchingArrayModule> {
 
-        ParticleSensor(EtchingArray::addParticleSensorToMachineList, MTEHatchParticleSensor.class) {
+        ParticleSensor(MTEEtchingArrayModule::addParticleSensorToMachineList, MTEHatchParticleSensor.class) {
 
             @Override
-            public long count(EtchingArray gtMetaTileEntityEtchingArray) {
+            public long count(MTEEtchingArrayModule gtMetaTileEntityEtchingArray) {
                 return gtMetaTileEntityEtchingArray.particleSensor != null ? 1 : 0;
             }
         },
 
-        BeamlineInput(EtchingArray::addBeamLineInputHatch, MTEHatchInputBeamline.class) {
+        BeamlineInput(MTEEtchingArrayModule::addBeamLineInputHatch, MTEHatchInputBeamline.class) {
 
             @Override
-            public long count(EtchingArray gtMetaTileEntityEtchingArray) {
+            public long count(MTEEtchingArrayModule gtMetaTileEntityEtchingArray) {
                 return gtMetaTileEntityEtchingArray.beamlineInput != null ? 1 : 0;
             }
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<EtchingArray> adder;
+        private final IGTHatchAdder<MTEEtchingArrayModule> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<EtchingArray> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(IGTHatchAdder<MTEEtchingArrayModule> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -184,7 +184,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             return mteClasses;
         }
 
-        public IGTHatchAdder<? super EtchingArray> adder() {
+        public IGTHatchAdder<? super MTEEtchingArrayModule> adder() {
             return adder;
         }
     }
@@ -271,16 +271,16 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
         currentTip.add(EnumChatFormatting.LIGHT_PURPLE + "Current Particle" + ": " + tag.getString("inputparticle"));
     }
 
-    public EtchingArray(int aID, String aName, String aNameRegional) {
+    public MTEEtchingArrayModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected EtchingArray(String aName) {
+    protected MTEEtchingArrayModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<EtchingArray> getStructureDefinition() {
+    public IStructureDefinition<MTEEtchingArrayModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -330,7 +330,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new EtchingArray(this.mName);
+        return new MTEEtchingArrayModule(this.mName);
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
