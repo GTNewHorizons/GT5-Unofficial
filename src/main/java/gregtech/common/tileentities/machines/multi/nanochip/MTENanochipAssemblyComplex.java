@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -24,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -37,8 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import appeng.api.AEApi;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -79,8 +75,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final String NAC_MODULE = "Module of the " + EnumChatFormatting.GREEN
         + "Nanochip Assembly Complex"
         + EnumChatFormatting.GRAY;
-    public static final int CASING_INDEX_BASE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 10);
-    public static final int CASING_INDEX_WHITE = GregTechAPI.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 5);
+    public static final int CASING_INDEX_BASE = Casings.NanochipPrimaryCasing.textureId;
+    public static final int CASING_INDEX_WHITE = Casings.NanochipPrimaryCasing.textureId;
 
     // For usage in the GUI
     public boolean isTalkModeActive = false;
@@ -94,15 +90,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<MTENanochipAssemblyComplex>builder()
         .addShape(STRUCTURE_PIECE_MAIN, AssemblyComplexStructureString.MAIN_STRUCTURE)
-        // Dimensional Bridge
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, 14))
-        // White casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Exterior Nanochip Casing
+        .addElement('A', Casings.NanochipExteriorCasing.asElement())
+        // Primary Nanochip Casing
+        .addElement('B', Casings.NanochipPrimaryCasing.asElement())
+        // Secondary Nanochip Casing
+        .addElement('C', Casings.NanochipSecondaryCasing.asElement())
+        // Computational Matrix Casing
+        .addElement('J', Casings.NanochipBrainCasing.asElement())
         .addElement('D', ofFrame(Materials.Naquadah))
-        // Tinted glass, for now just black and gray because other options are for psychopaths
-        .addElement('E', ofChain(ofBlock(GregTechAPI.sBlockTintedGlass, 3), ofBlock(GregTechAPI.sBlockTintedGlass, 2)))
+        // Nanochip Glass
+        .addElement('E', Casings.NanochipGlass.asElement())
         // Module
         .addElement(
             'F',
@@ -111,7 +109,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(1)
                 // Base casing or assembly module
-                .buildAndChain(GregTechAPI.sBlockCasings8, 5))
+                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
 
         // Vacuum conveyor hatches that the main controller cares about go in specific slots & Energy Hatches
         .addElement(
@@ -121,7 +119,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(2)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
+                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
         // Either a white casing block or an ignored hatch (this hatch is on the module)
         .addElement(
             'I',
@@ -129,9 +127,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .atLeast(AssemblyHatchElement.IgnoredHatch)
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(3)
-                .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
-        // Crafting storage block
-        .addElement('J', ofBlock(getCraftingStorageBlock(), getCraftingStorageMeta()))
+                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
+
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
@@ -285,27 +282,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             return true;
         }
         return false;
-    }
-
-    private static Block getCraftingStorageBlock() {
-        // Should never error on get()
-        return AEApi.instance()
-            .definitions()
-            .blocks()
-            .craftingStorage16384k()
-            .maybeBlock()
-            .get();
-    }
-
-    private static int getCraftingStorageMeta() {
-        // Should never error on get()
-        return AEApi.instance()
-            .definitions()
-            .blocks()
-            .craftingStorage16384k()
-            .maybeStack(1)
-            .get()
-            .getItemDamage();
     }
 
     /**
