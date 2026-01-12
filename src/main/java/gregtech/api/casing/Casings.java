@@ -377,11 +377,16 @@ public enum Casings implements ICasing {
         (() -> TTCasingsContainer.sBlockCasingsTT, 13, tt(13)),
     UltimateContainmentFieldGenerator
         (() -> TTCasingsContainer.sBlockCasingsTT, 14, tt(14)),
-    NanochipPrimaryCasing( () -> GregTechAPI.sBlockCasings13, 10,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10)),
-    NanochipSecondaryCasing( () -> GregTechAPI.sBlockCasings13, 11,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(11)),
-    NanochipBrainCasing( () -> GregTechAPI.sBlockCasings13, 12,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(12)),
-    NanochipExteriorCasing( () -> GregTechAPI.sBlockCasings13, 13,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(13)),
-    NanochipGlass( () -> GregTechAPI.sBlockGlass1, 8,((BlockGlass1) GregTechAPI.sBlockGlass1).getTextureIndex(8)),
+    NanochipPrimaryCasing(
+        () -> GregTechAPI.sBlockCasings13, 10, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10)),
+    NanochipSecondaryCasing(
+        () -> GregTechAPI.sBlockCasings13, 11, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(11)),
+    NanochipBrainCasing(
+        () -> GregTechAPI.sBlockCasings13, 12, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(12)),
+    NanochipExteriorCasing(
+        () -> GregTechAPI.sBlockCasings13, 13, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(13)),
+    NanochipGlass(
+        () -> GregTechAPI.sBlockGlass1, 8, ((BlockGlass1) GregTechAPI.sBlockGlass1).getTextureIndex(8)),
 
     ;
     // spotless:on
