@@ -40,11 +40,11 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
     public String identifier = null;
 
     protected MTEHatchVacuumConveyor(int aID, String aName, String aNameRegional, int aTier, String[] descr) {
-        super(aID, aName, aNameRegional, aTier, 0, descr);
+        super(aID, aName, aNameRegional, aTier, 1, descr);
     }
 
     protected MTEHatchVacuumConveyor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 0, aDescription, aTextures);
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
