@@ -36,6 +36,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -196,6 +198,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.NANOCHIP;
     }
 
     protected static class ItemInputInformation {
