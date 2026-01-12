@@ -43,6 +43,7 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
@@ -10701,7 +10702,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
     }
 
-    private static void registerVacuumComponents() {
+    private static void registerNacHatches() {
         ItemList.Hatch_VacuumConveyor_Input.set(
             new MTEHatchVacuumConveyorInput(
                 HATCH_VACUUM_CONVEYOR_INPUT.ID,
@@ -10714,6 +10715,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "vacuum.hatch.output",
                 "Vacuum Conveyor Output",
                 1).getStackForm(1L));
+        ItemList.Hatch_Splitter_Level.set(
+            new MTEHatchSplitterRedstone(HATCH_SPLITTER_LEVEL.ID,
+                "hatch.splitter.redstone",
+                "Splitter Redstone Input", 1
+            ).getStackForm(1));
+
         ItemList.VacuumConveyorPipe.set(
             new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
     }
@@ -10831,7 +10838,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
-        registerVacuumComponents();
+        registerNacHatches();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
