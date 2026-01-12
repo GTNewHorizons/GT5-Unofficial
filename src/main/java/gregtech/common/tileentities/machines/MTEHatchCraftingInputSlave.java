@@ -301,7 +301,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.hatch.crafting_input_slave.bound_to",
                     tag.getInteger("masterX"),
-                    +tag.getInteger("masterY"),
+                    tag.getInteger("masterY"),
                     tag.getInteger("masterZ")));
         }
 
