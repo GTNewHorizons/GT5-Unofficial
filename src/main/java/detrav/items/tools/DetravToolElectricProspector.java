@@ -2,8 +2,8 @@ package detrav.items.tools;
 
 import net.minecraft.item.ItemStack;
 
-import detrav.enums.Textures01;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.items.MetaGeneratedTool;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -27,7 +27,13 @@ public class DetravToolElectricProspector extends DetravToolElectricProspectorBa
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
 
-        if (tier <= 9 && tier >= 6) return Textures01.mTextures[tier - 5];
-        else return Textures01.mTextures[1];
+        if (tier <= 9 && tier >= 6) {
+            return aIsToolHead
+                ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[tier - 5]]
+                : null;
+        } else {
+            return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[mProspectorTextures[1]]
+                : null;
+        }
     }
 }
