@@ -574,7 +574,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 return tileEntity.modules.size();
             }
         },
-        VacuumConveyorHatch(MTENanochipAssemblyComplex::addConveyorToMachineList, MTENanochipAssemblyComplex.class) {
+        VacuumConveyorHatch(MTENanochipAssemblyComplex::addConveyorToMachineList, MTEHatchVacuumConveyor.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
