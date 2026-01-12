@@ -1379,6 +1379,7 @@ channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generato
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.component_casing=Decides the tier of component assemblyline casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
