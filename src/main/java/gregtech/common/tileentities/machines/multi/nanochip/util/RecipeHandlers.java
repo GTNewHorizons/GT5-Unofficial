@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static tectech.thing.CustomItemList.DATApipe;
 
@@ -186,6 +189,9 @@ public class RecipeHandlers {
         addConversionRecipe(CircuitComponent.WaferASOC, ItemList.Circuit_Wafer_SoC2.get(1));
         addConversionRecipe(CircuitComponent.WaferPikoPIC, ItemList.Circuit_Wafer_PPIC.get(1));
         addConversionRecipe(CircuitComponent.WaferQuantumPIC, ItemList.Circuit_Wafer_QPIC.get(1));
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            addConversionRecipe(CircuitComponent.WaferPico, getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1));
+        }
 
         // Superconductors
         addConversionRecipe(
@@ -461,6 +467,12 @@ public class RecipeHandlers {
             CircuitComponent.WaferQuantumPIC,
             Materials.Lubricant.getFluid(500),
             CircuitComponent.ProcessedChipQuantumPIC,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.WaferPico,
+            Materials.Lubricant.getFluid(750),
+            CircuitComponent.ProcessedChipPico,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
     }
@@ -787,5 +799,50 @@ public class RecipeHandlers {
             CircuitComponent.OpticalMainframe,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV);
+
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            addAssemblyMatrixRecipe(
+                Arrays.asList(
+                    new CircuitComponentStack(CircuitComponent.BoardOptical, 1),
+                    new CircuitComponentStack(CircuitComponent.ProcessedChipPico, 4),
+                    new CircuitComponentStack(CircuitComponent.OpticalMainframe, 2),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedChipPikoPIC, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedFoilRadoxPolymer, 16),
+                    new CircuitComponentStack(CircuitComponent.BoltTranscendentMetal, 32),
+                    new CircuitComponentStack(CircuitComponent.BoltNeutronium, 16),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireLanthanum, 64)),
+                Arrays.asList(
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(26 * INGOTS),
+                    Materials.UUMatter.getFluid(8000),
+                    Materials.Osmium.getMolten(8 * INGOTS)),
+                CircuitComponent.PicoCircuit,
+                ModuleRecipeInfo.Fast,
+                TierEU.RECIPE_LuV);
+
+            addAssemblyMatrixRecipe(
+                Arrays.asList(
+                    new CircuitComponentStack(CircuitComponent.ProcessedFrameboxNeutronium, 16),
+                    new CircuitComponentStack(CircuitComponent.PicoCircuit, 2),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedChipQuantumPIC, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedFoilShirabon, 64),
+                    new CircuitComponentStack(CircuitComponent.BoltIndium, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireSpacetime, 8),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireLanthanum, 16)),
+                Arrays.asList(
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(26 * INGOTS),
+                    Materials.UUMatter.getFluid(24000),
+                    Materials.Osmium.getMolten(16 * INGOTS)),
+                CircuitComponent.QuantumCircuit,
+                ModuleRecipeInfo.Fast,
+                TierEU.RECIPE_LuV);
+        }
     }
 }
