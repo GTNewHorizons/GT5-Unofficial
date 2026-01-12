@@ -1976,6 +1976,12 @@ public class Textures {
         OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_GLOW,
         OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE,
         OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE_GLOW,
+        NANOCHIP_PRIMARY_CASING,
+        NANOCHIP_SECONDARY_CASING,
+        NANOCHIP_EXTERIOR_CASING,
+        NANOCHIP_BRAIN_CASING,
+        NANOCHIP_GLASS,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 

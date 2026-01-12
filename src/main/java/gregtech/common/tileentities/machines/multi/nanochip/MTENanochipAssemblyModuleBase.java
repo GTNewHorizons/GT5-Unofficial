@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
@@ -29,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -97,8 +96,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                     .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
                     .hint(2)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
-            .addElement('Z', ofBlock(GregTechAPI.sBlockCasings8, 10));
+                    .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
+            .addElement('Z', Casings.NanochipSecondaryCasing.asElement());
     }
 
     public enum ModuleHatchElement implements IHatchElement<MTENanochipAssemblyModuleBase<?>> {

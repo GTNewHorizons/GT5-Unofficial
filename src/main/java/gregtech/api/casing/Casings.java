@@ -28,6 +28,10 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -1063,6 +1067,42 @@ public enum Casings implements ICasing {
         }
     },
 
+
+    HighPowerCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 0, tt(0)),
+    ComputerCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 1, tt(1)),
+    ComputerHeatVent
+        (() -> TTCasingsContainer.sBlockCasingsTT, 2, tt(2)),
+    AdvancedComputerCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 3, tt(3)),
+    MolecularCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 4, tt(4)),
+    AdvancedMolecularCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 5, tt(5)),
+    ContainmentFieldGenerator
+        (() -> TTCasingsContainer.sBlockCasingsTT, 6, tt(6)),
+    MolecularCoil
+        (() -> TTCasingsContainer.sBlockCasingsTT, 7, tt(7)),
+    HollowCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 8, tt(8)),
+    SpacetimeAlteringCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 9, tt(9)),
+    TeleportationCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 10, tt(10)),
+    DimensionalBridgeGenerator
+        (() -> TTCasingsContainer.sBlockCasingsTT, 11, tt(11)),
+    UltimateMolecularCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 12, tt(12)),
+    UltimateAdvancedMolecularCasing
+        (() -> TTCasingsContainer.sBlockCasingsTT, 13, tt(13)),
+    UltimateContainmentFieldGenerator
+        (() -> TTCasingsContainer.sBlockCasingsTT, 14, tt(14)),
+    NanochipPrimaryCasing( () -> GregTechAPI.sBlockCasings13, 10,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10)),
+    NanochipSecondaryCasing( () -> GregTechAPI.sBlockCasings13, 11,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(11)),
+    NanochipBrainCasing( () -> GregTechAPI.sBlockCasings13, 12,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(12)),
+    NanochipExteriorCasing( () -> GregTechAPI.sBlockCasings13, 13,((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(13)),
+    NanochipGlass( () -> GregTechAPI.sBlockGlass1, 8,((BlockGlass1) GregTechAPI.sBlockGlass1).getTextureIndex(8)),
 
     ;
     // spotless:on
