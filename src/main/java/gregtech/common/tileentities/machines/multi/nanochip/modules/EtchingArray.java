@@ -7,7 +7,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,7 +93,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             buildHatchAdder(EtchingArray.class).hatchClass(MTEHatchInputBeamline.class)
                 .atLeast(SpecialHatchElement.BeamlineInput)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                .dot(1)
+                .hint(1)
                 .adder(EtchingArray::addBeamLineInputHatch)
                 .build())
         // Particle Indicator Hatch
@@ -102,7 +102,7 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             lazy(
                 t -> GTStructureUtility.<EtchingArray>buildHatchAdder()
                     .atLeast(SpecialHatchElement.ParticleSensor)
-                    .dot(2)
+                    .hint(2)
                     .cacheHint(() -> "Particle Indicator")
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
                     .build()))
@@ -323,8 +323,8 @@ public class EtchingArray extends MTENanochipAssemblyModuleBase<EtchingArray> {
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
-            .addOtherStructurePart("Particle Indicator", addDotText(2))
+            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(1))
+            .addOtherStructurePart("Particle Indicator", addHintNumber(2))
             .toolTipFinisher("GregTech");
     }
 
