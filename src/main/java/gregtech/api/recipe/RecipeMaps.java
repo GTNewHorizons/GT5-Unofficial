@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
 import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
+import static gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.asTemplate;
 import static gregtech.api.util.GTRecipeMapUtil.buildOrEmpty;
 import static gregtech.api.util.GTUtility.clamp;
@@ -88,7 +89,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTRecipeMapUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
@@ -885,7 +885,7 @@ public final class RecipeMaps {
                 coalChances[2] = 10000;
             }
 
-            GTRecipeMapUtil.GTRecipeTemplate coll = asTemplate(rr.get());
+            GTRecipeTemplate coll = asTemplate(rr.get());
             for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
@@ -1015,7 +1015,7 @@ public final class RecipeMaps {
                 .build();
             if (!t.isPresent()) return Collections.emptyList();
             ItemStack input = b.getItemInputBasic(0);
-            GTRecipeMapUtil.GTRecipeTemplate coll = asTemplate(t.get());
+            GTRecipeTemplate coll = asTemplate(t.get());
             int tExplosives = Math.min(b.getMetadataOrDefault(ADDITIVE_AMOUNT, 0), 64);
             int tGunpowder = tExplosives << 1; // Worst
             int tDynamite = Math.max(1, tExplosives >> 1); // good
