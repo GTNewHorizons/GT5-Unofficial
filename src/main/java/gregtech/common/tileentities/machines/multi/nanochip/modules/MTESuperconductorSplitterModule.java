@@ -28,7 +28,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
-public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<SuperconductorSplitter> {
+public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBase<MTESuperconductorSplitterModule> {
 
     protected static final int COOLANT_CONSUMED_PER_SEC = 1000;
 
@@ -47,8 +47,8 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
         { "       ", " D   D ", "DBD DBD", " B   B ", " B   B ", " B   B ", "DDD DDD" },
         { "       ", "       ", " DEEED ", "       ", "       ", "       ", " DEEED " } };
 
-    public static final IStructureDefinition<SuperconductorSplitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<SuperconductorSplitter>builder()
+    public static final IStructureDefinition<MTESuperconductorSplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTESuperconductorSplitterModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SUPERCOND_SPLITTER_STRUCTURE)
         // UHV Solenoid
         .addElement('A', ofBlock(GregTechAPI.sSolenoidCoilCasings, 7))
@@ -64,16 +64,16 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
         .addElement('F', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
         .build();
 
-    public SuperconductorSplitter(int aID, String aName, String aNameRegional) {
+    public MTESuperconductorSplitterModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected SuperconductorSplitter(String aName) {
+    protected MTESuperconductorSplitterModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<SuperconductorSplitter> getStructureDefinition() {
+    public IStructureDefinition<MTESuperconductorSplitterModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -177,7 +177,7 @@ public class SuperconductorSplitter extends MTENanochipAssemblyModuleBase<Superc
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new SuperconductorSplitter(this.mName);
+        return new MTESuperconductorSplitterModule(this.mName);
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {

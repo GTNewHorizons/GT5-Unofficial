@@ -38,7 +38,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacu
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 
-public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
+public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitterModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SPLITTER_OFFSET_X = 3;
@@ -52,8 +52,8 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     // Splitter$getOutputColors instead.
     public Map<Integer, ColorRule> colorMap = new HashMap<>();
 
-    public static final IStructureDefinition<Splitter> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<Splitter>builder()
+    public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTESplitterModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SPLITTER_STRUCTURE)
         // White casing block
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
@@ -63,16 +63,16 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
         .addElement('C', ofFrame(Materials.EpoxidFiberReinforced))
         .build();
 
-    public Splitter(int aID, String aName, String aNameRegional) {
+    public MTESplitterModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected Splitter(String aName) {
+    protected MTESplitterModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<Splitter> getStructureDefinition() {
+    public IStructureDefinition<MTESplitterModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -204,7 +204,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new Splitter(this.mName);
+        return new MTESplitterModule(this.mName);
     }
 
     @NotNull
@@ -318,7 +318,7 @@ public class Splitter extends MTENanochipAssemblyModuleBase<Splitter> {
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<Splitter> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<MTESplitterModule> getGui() {
         return new SplitterGui(this);
     }
 

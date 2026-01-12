@@ -23,7 +23,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
-public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor> {
+public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int BOARD_OFFSET_X = 3;
@@ -33,8 +33,8 @@ public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor
         { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "  A A  ", "CBCCCBC", "DEDDDED", "DEDDDED" },
         { "   A   ", "CBCCCBC", "DEDADED", "DEDADED" }, { "  A A  ", "CBCCCBC", "DEDDDED", "DEDDDED" },
         { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "       ", " A   A ", " A   A ", " B   B " } };
-    public static final IStructureDefinition<BoardProcessor> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<BoardProcessor>builder()
+    public static final IStructureDefinition<MTEBoardProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTEBoardProcessorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, BOARD_STRING)
         // Octiron frame
         .addElement(
@@ -56,16 +56,16 @@ public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor
         .addElement('E', lazy(unused -> ofBlock(blockFluidEnder, 0)))
         .build();
 
-    public BoardProcessor(int aID, String aName, String aNameRegional) {
+    public MTEBoardProcessorModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected BoardProcessor(String aName) {
+    protected MTEBoardProcessorModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<BoardProcessor> getStructureDefinition() {
+    public IStructureDefinition<MTEBoardProcessorModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -112,7 +112,7 @@ public class BoardProcessor extends MTENanochipAssemblyModuleBase<BoardProcessor
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new BoardProcessor(this.mName);
+        return new MTEBoardProcessorModule(this.mName);
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
