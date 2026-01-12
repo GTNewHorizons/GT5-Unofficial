@@ -209,16 +209,16 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPip
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.AssemblyMatrix;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.BoardProcessor;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.CuttingChamber;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.EtchingArray;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.OpticalOrganizer;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.SMDProcessor;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.SheetSupervisor;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.SuperconductorSplitter;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.WireTracer;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESheetSupervisorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
@@ -631,50 +631,50 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.nanochipassemblycomplex",
                 "Nanochip Assembly Complex").getStackForm(1));
         ItemList.NanoChipModule_AssemblyMatrix.set(
-            new AssemblyMatrix(
+            new MTEAssemblyMatrixModule(
                 NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
                 "multimachine.nanochipmodule.assemblymatrix",
                 "Nanochip Assembly Matrix").getStackForm(1));
         ItemList.NanoChipModule_SMDProcessor.set(
-            new SMDProcessor(
+            new MTESMDProcessorModule(
                 NANOCHIP_MODULE_SMD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
         ItemList.NanoChipModule_BoardProcessor.set(
-            new BoardProcessor(
+            new MTEBoardProcessorModule(
                 NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.boadprocessor",
                 "Full-Board Immersion Device").getStackForm(1));
         ItemList.NanoChipModule_EtchingArray.set(
-            new EtchingArray(
+            new MTEEtchingArrayModule(
                 NANOCHIP_MODULE_ETCHING_ARRAY.ID,
                 "multimachine.nanochipmodule.etchingarray",
                 "Ultra-high Energy Etching Array").getStackForm(1));
         ItemList.NanoChipModule_CuttingChamber.set(
-            new CuttingChamber(
+            new MTECuttingChamberModule(
                 NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
                 "multimachine.nanochipmodule.cuttingchamber",
                 "Nanoprecision Cutting Chamber").getStackForm(1));
         ItemList.NanoChipModule_WireTracer.set(
-            new WireTracer(
+            new MTEWireTracerModule(
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
                 "multimachine.nanochipmodule.wiretracer",
                 "Nanoprecision Wire Tracer").getStackForm(1));
         ItemList.NanoChipModule_SuperconductorSplitter.set(
-            new SuperconductorSplitter(
+            new MTESuperconductorSplitterModule(
                 NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
                 "multimachine.nanochipmodule.superconductorsplitter",
                 "Superconductive Strand Splitter").getStackForm(1));
         ItemList.NanoChipModule_Splitter.set(
-            new Splitter(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
+            new MTESplitterModule(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
                 .getStackForm(1));
         ItemList.NanoChipModule_OpticalOrganizer.set(
-            new OpticalOrganizer(
+            new MTEOpticalOrganizerModule(
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
         ItemList.NanoChipModule_SheetSupervisor.set(
-            new SheetSupervisor(
+            new MTESheetSupervisorModule(
                 NANOCHIP_MODULE_SHEET_SUPERVISOR.ID,
                 "multimachine.nanochipmodule.sheetsupervisor",
                 "Atomic Sheet Supervisor").getStackForm(1));

@@ -28,11 +28,11 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.ColorGridWidget;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 
-public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
+public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
 
-    public SplitterGui(Splitter multiblock) {
+    public SplitterGui(MTESplitterModule multiblock) {
         super(multiblock);
     }
 
@@ -78,9 +78,9 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         list.pos(0, 16 + 5);
 
         // Add existing rules
-        for (Map.Entry<Integer, Splitter.ColorRule> entry : multiblock.colorMap.entrySet()) {
+        for (Map.Entry<Integer, MTESplitterModule.ColorRule> entry : multiblock.colorMap.entrySet()) {
             int id = entry.getKey();
-            Splitter.ColorRule rule = entry.getValue();
+            MTESplitterModule.ColorRule rule = entry.getValue();
             if (rule == null) continue;
             list.child(createColorManager(syncManager, rule.getInputColors(), rule.getOutputColors(), id));
         }
@@ -192,12 +192,12 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         ColorGridWidget inputGrid;
         ColorGridWidget outputGrid;
         PanelSyncManager manager;
-        GenericSyncValue<Map<Integer, Splitter.ColorRule>> colorMapSyncer;
+        GenericSyncValue<Map<Integer, MTESplitterModule.ColorRule>> colorMapSyncer;
 
         public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
             super();
             manager = syncManager;
-            colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager
+            colorMapSyncer = (GenericSyncValue<Map<Integer, MTESplitterModule.ColorRule>>) syncManager
                 .findSyncHandler("rules", GenericSyncValue.class);
             if (indexOverride == null) {
                 while (multiblock.colorMap.get(id) != null) {
@@ -244,20 +244,20 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
             removeSelector();
         }
 
-        public Splitter.ColorRule thisAsRule() {
+        public MTESplitterModule.ColorRule thisAsRule() {
             List<Byte> input = inputGrid.getSelected();
             List<Byte> output = outputGrid.getSelected();
             if (input.isEmpty()) input = ImmutableList.of((byte) -1);
             if (output.isEmpty()) output = ImmutableList.of((byte) -1);
-            return new Splitter.ColorRule(input, output);
+            return new MTESplitterModule.ColorRule(input, output);
         }
     }
 
-    private static class ColorMapAdapter implements IByteBufAdapter<Map<Integer, Splitter.ColorRule>> {
+    private static class ColorMapAdapter implements IByteBufAdapter<Map<Integer, MTESplitterModule.ColorRule>> {
 
         @Override
-        public Map<Integer, Splitter.ColorRule> deserialize(PacketBuffer buffer) {
-            Map<Integer, Splitter.ColorRule> list = new HashMap<>();
+        public Map<Integer, MTESplitterModule.ColorRule> deserialize(PacketBuffer buffer) {
+            Map<Integer, MTESplitterModule.ColorRule> list = new HashMap<>();
             int size = buffer.readInt();
             for (int i = 0; i < size; i++) {
                 int id = buffer.readInt();
@@ -267,16 +267,16 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
                 List<Byte> outputs = new ArrayList<>();
                 for (int j = 0; j < inputCount; j++) inputs.add(buffer.readByte());
                 for (int j = 0; j < outputCount; j++) outputs.add(buffer.readByte());
-                list.put(id, new Splitter.ColorRule(inputs, outputs));
+                list.put(id, new MTESplitterModule.ColorRule(inputs, outputs));
             }
             return list;
         }
 
         @Override
-        public void serialize(PacketBuffer buffer, Map<Integer, Splitter.ColorRule> map) {
+        public void serialize(PacketBuffer buffer, Map<Integer, MTESplitterModule.ColorRule> map) {
             buffer.writeInt(map.size());
-            for (Map.Entry<Integer, Splitter.ColorRule> entry : map.entrySet()) {
-                Splitter.ColorRule rule = entry.getValue();
+            for (Map.Entry<Integer, MTESplitterModule.ColorRule> entry : map.entrySet()) {
+                MTESplitterModule.ColorRule rule = entry.getValue();
                 List<Byte> inputs = rule.getInputColors();
                 List<Byte> outputs = rule.getOutputColors();
                 buffer.writeInt(entry.getKey());
@@ -288,7 +288,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
         }
 
         @Override
-        public boolean areEqual(Map<Integer, Splitter.ColorRule> t1, Map<Integer, Splitter.ColorRule> t2) {
+        public boolean areEqual(Map<Integer, MTESplitterModule.ColorRule> t1, Map<Integer, MTESplitterModule.ColorRule> t2) {
             return t1.equals(t2);
         }
     }

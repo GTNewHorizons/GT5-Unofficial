@@ -44,7 +44,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructure
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix> {
+public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAssemblyMatrixModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int ASSEMBLY_OFFSET_X = 3;
@@ -55,8 +55,8 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
         { " FFDFF ", "F  E  F", "F  A  F", "FE   EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
         { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
     private int machineTier = -1;
-    public static final IStructureDefinition<AssemblyMatrix> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<AssemblyMatrix>builder()
+    public static final IStructureDefinition<MTEAssemblyMatrixModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTEAssemblyMatrixModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ASSEMBLY_STRING)
         // Iron bar
         .addElement('A', ofBlock(Blocks.iron_bars, 0))
@@ -69,8 +69,8 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
                 -1,
-                AssemblyMatrix::setCasingTier,
-                AssemblyMatrix::getCasingTier))
+                MTEAssemblyMatrixModule::setCasingTier,
+                MTEAssemblyMatrixModule::getCasingTier))
         // White casing block
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 5))
         // Black casing block
@@ -97,16 +97,16 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
      * @param aName         Name of this module
      * @param aNameRegional Localized name of this module
      */
-    public AssemblyMatrix(int aID, String aName, String aNameRegional) {
+    public MTEAssemblyMatrixModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected AssemblyMatrix(String aName) {
+    protected MTEAssemblyMatrixModule(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<AssemblyMatrix> getStructureDefinition() {
+    public IStructureDefinition<MTEAssemblyMatrixModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -153,7 +153,7 @@ public class AssemblyMatrix extends MTENanochipAssemblyModuleBase<AssemblyMatrix
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new AssemblyMatrix(this.mName);
+        return new MTEAssemblyMatrixModule(this.mName);
     }
 
     @Override
