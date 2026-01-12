@@ -1080,28 +1080,20 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("mBioChamber")) {
             NBTTagCompound bioChamber = tag.getCompoundTag("mBioChamber");
             currenttip.add(
-                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.pcb.linked_to_bio_chamber_at")
-                    + " "
-                    + EnumChatFormatting.WHITE
-                    + bioChamber.getInteger("x")
-                    + ", "
-                    + bioChamber.getInteger("y")
-                    + ", "
-                    + bioChamber.getInteger("z")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.pcb.linked_to_bio_chamber_at",
+                    bioChamber.getInteger("x"),
+                    bioChamber.getInteger("y"),
+                    bioChamber.getInteger("z")));
         }
         if (tag.hasKey("mCoolingTower")) {
             NBTTagCompound coolingTower = tag.getCompoundTag("mCoolingTower");
             currenttip.add(
-                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.pcb.linked_to_colling_tower_at")
-                    + " "
-                    + EnumChatFormatting.WHITE
-                    + coolingTower.getInteger("x")
-                    + ", "
-                    + coolingTower.getInteger("y")
-                    + ", "
-                    + coolingTower.getInteger("z")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.pcb.linked_to_colling_tower_at",
+                    coolingTower.getInteger("x"),
+                    coolingTower.getInteger("y"),
+                    coolingTower.getInteger("z")));
         }
         if (tag.hasKey("compatMode")) {
             CompatMode compat = new CompatMode(tag);

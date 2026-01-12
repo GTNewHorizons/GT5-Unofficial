@@ -282,15 +282,13 @@ public class MTETransformer extends MTETieredMachineBlock {
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
-                String.format(
-                    GOLD + StatCollector.translateToLocal("GT5U.waila.transformer.input") + RESET + " %s(%dA)",
+                    GOLD + StatCollector.translateToLocalFormatted("GT5U.waila.transformer.input",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
-                String.format(
-                    BLUE + StatCollector.translateToLocal("GT5U.waila.transformer.output") + RESET + " %s(%dA)",
+                    BLUE + StatCollector.translateToLocalFormatted("GT5U.waila.transformer.output",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));

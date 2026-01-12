@@ -303,8 +303,7 @@ public class MTEBoilerSolar extends MTEBoiler {
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            String.format(
-                (GOLD + StatCollector.translateToLocal("GT5U.waila.boiler_solar.output") + RESET + " %d/%d L/s"),
+                GOLD + StatCollector.translateToLocalFormatted("GT5U.waila.boiler_solar.output",
                 tag.getInteger("calcificationOutput"),
                 tag.getInteger("maxCalcificationOutput")));
 

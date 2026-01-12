@@ -284,15 +284,11 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
             if (coordinates.length % 3 != 0) return;
             for (int i = 0; i < coordinates.length; i += 3) {
                 currentTip.add(
-                    EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.pcb.upgrade_base.linked_to")
-                        + " "
-                        + EnumChatFormatting.WHITE
-                        + coordinates[i]
-                        + ", "
-                        + coordinates[i + 1]
-                        + ", "
-                        + coordinates[i + 2]
-                        + EnumChatFormatting.RESET);
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.pcb.upgrade_base.linked_to",
+                        coordinates[i],
+                        coordinates[i + 1],
+                        coordinates[i + 2]));
             }
         } else {
             currentTip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
