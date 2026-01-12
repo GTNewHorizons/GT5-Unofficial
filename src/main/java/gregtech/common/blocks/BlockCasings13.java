@@ -27,6 +27,11 @@ public class BlockCasings13 extends BlockCasingsAbstract {
         register(7, ItemList.FieldEnergyAbsorberCasing, "Field Energy Absorber Casing");
         register(8, ItemList.LoadbearingDistributionCasing, "Loadbearing Distribution Casing");
         register(9, ItemList.NaniteFramework, "Nanite Replication Framework");
+        register(10, ItemList.PrimaryNanochipCasing, "Primary Nanochip Casing");
+        register(11, ItemList.SecondaryNanochipCasing, "Secondary Nanochip Casing");
+        register(12, ItemList.ComputationalMatrixCasing, "Computational Matrix Casing");
+        register(13, ItemList.ExteriorNanochipCasing, "Exterior Nanochip Casing");
+
     }
 
     @Override
@@ -48,6 +53,10 @@ public class BlockCasings13 extends BlockCasingsAbstract {
             case 7 -> Textures.BlockIcons.NANO_FORGE_CASING_3.getIcon();
             case 8 -> Textures.BlockIcons.NANO_FORGE_CASING_4.getIcon();
             case 9 -> Textures.BlockIcons.NANITE_CORE.getIcon();
+            case 10 -> Textures.BlockIcons.NANOCHIP_PRIMARY_CASING.getIcon();
+            case 11 -> Textures.BlockIcons.NANOCHIP_SECONDARY_CASING.getIcon();
+            case 12 -> Textures.BlockIcons.NANOCHIP_BRAIN_CASING.getIcon();
+            case 13 -> Textures.BlockIcons.NANOCHIP_EXTERIOR_CASING.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

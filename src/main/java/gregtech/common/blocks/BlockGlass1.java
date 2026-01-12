@@ -39,6 +39,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(5, ItemList.NaniteShieldingGlass, "Nanite Shielding Glass");
         register(6, ItemList.Spinmatron_Chamber_Grate, "Chamber Grate");
         register(7, ItemList.Glass_ExoFoundry, "Exo-Foundry Containment Glass");
+        register(8, ItemList.CircuitComplexGlass, "Circuit Complex Glass");
 
     }
 
@@ -81,6 +82,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 5 -> Textures.BlockIcons.NANITE_SHIELDING_FRAME.getIcon();
             case 6 -> Textures.BlockIcons.SPINMATRON_GRATE.getIcon();
             case 7 -> Textures.BlockIcons.EXOFOUNDRY_GLASS.getIcon();
+            case 8 -> Textures.BlockIcons.NANOCHIP_GLASS.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }
