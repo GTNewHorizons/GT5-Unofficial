@@ -268,10 +268,8 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
 
     @Override
     public float getCollisionThickness() {
-        if (GTMod.clientProxy()
-            .isClientSide()
-            && GTMod.clientProxy()
-                .shouldHideThings()) {
+        if (GTMod.GT.isClientSide() && GTMod.clientProxy()
+            .shouldHideThings()) {
             return 0.0625F;
         }
         return 0.375f;
