@@ -1,15 +1,24 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.IGTHatchAdder;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,12 +59,24 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
     // Splitter$getOutputColors instead.
     public Map<Integer, ColorRule> colorMap = new HashMap<>();
+    private final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
 
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SPLITTER_STRUCTURE)
         // Nanochip Primary Casing
-        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
+        .addElement('A', ofChain(
+            lazy(
+                t -> GTStructureUtility.<MTESplitterModule>buildHatchAdder()
+                    .atLeast(SpecialHatchElement.redstoneHatch)
+                    .hint(1)
+                    .cacheHint(() -> "redstone hatch")
+                    .casingIndex(1)
+                    .build()
+
+            ),
+            ofBlock(Casings.NanochipPrimaryCasing.getBlock(), 10)
+        ))
         // Nanochip Secondary Casing
         .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // Epoxy Resin Casing
@@ -73,6 +94,16 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     public IStructureDefinition<MTESplitterModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
+    }
+
+    private boolean addRedstoneHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if(aMetaTileEntity instanceof MTEHatchSplitterRedstone redstoneHatch){
+            redstoneHatch.updateTexture(aBaseCasingIndex);
+            return  this.redstoneHatches.add(redstoneHatch);
+        }
+        return false;
     }
 
     @Override
@@ -337,6 +368,36 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
         public List<Byte> getOutputColors() {
             return outputColors;
+        }
+    }
+
+    private enum SpecialHatchElement implements IHatchElement<MTESplitterModule> {
+
+        redstoneHatch(MTESplitterModule::addRedstoneHatchToMachineList, MTEHatchSplitterRedstone.class) {
+
+            @Override
+            public long count(MTESplitterModule splitterModule) {
+                return splitterModule.redstoneHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTESplitterModule> adder;
+
+        @SafeVarargs
+        SpecialHatchElement(IGTHatchAdder<MTESplitterModule> adder,
+                            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTESplitterModule> adder() {
+            return adder;
         }
     }
 }
