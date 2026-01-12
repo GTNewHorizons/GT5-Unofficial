@@ -502,6 +502,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             }
         }
     }
+
     private static final long EU_MULTIPLIER = TierEU.UV;
 
     @Override

@@ -15,10 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.IGTHatchAdder;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,15 +29,19 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.SplitterGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -65,18 +65,19 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         .<MTESplitterModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SPLITTER_STRUCTURE)
         // Nanochip Primary Casing
-        .addElement('A', ofChain(
-            lazy(
-                t -> GTStructureUtility.<MTESplitterModule>buildHatchAdder()
-                    .atLeast(SpecialHatchElement.redstoneHatch)
-                    .hint(1)
-                    .cacheHint(() -> "redstone hatch")
-                    .casingIndex(1)
-                    .build()
+        .addElement(
+            'A',
+            ofChain(
+                lazy(
+                    t -> GTStructureUtility.<MTESplitterModule>buildHatchAdder()
+                        .atLeast(SpecialHatchElement.redstoneHatch)
+                        .hint(1)
+                        .cacheHint(() -> "redstone hatch")
+                        .casingIndex(1)
+                        .build()
 
-            ),
-            ofBlock(Casings.NanochipPrimaryCasing.getBlock(), 10)
-        ))
+                ),
+                ofBlock(Casings.NanochipPrimaryCasing.getBlock(), 10)))
         // Nanochip Secondary Casing
         .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // Epoxy Resin Casing
@@ -99,9 +100,9 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     private boolean addRedstoneHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if(aMetaTileEntity instanceof MTEHatchSplitterRedstone redstoneHatch){
+        if (aMetaTileEntity instanceof MTEHatchSplitterRedstone redstoneHatch) {
             redstoneHatch.updateTexture(aBaseCasingIndex);
-            return  this.redstoneHatches.add(redstoneHatch);
+            return this.redstoneHatches.add(redstoneHatch);
         }
         return false;
     }
@@ -385,8 +386,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         private final IGTHatchAdder<MTESplitterModule> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTESplitterModule> adder,
-                            Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(IGTHatchAdder<MTESplitterModule> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
