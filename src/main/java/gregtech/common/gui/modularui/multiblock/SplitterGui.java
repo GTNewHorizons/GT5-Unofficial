@@ -288,7 +288,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         }
 
         @Override
-        public boolean areEqual(Map<Integer, MTESplitterModule.ColorRule> t1, Map<Integer, MTESplitterModule.ColorRule> t2) {
+        public boolean areEqual(Map<Integer, MTESplitterModule.ColorRule> t1,
+            Map<Integer, MTESplitterModule.ColorRule> t2) {
             return t1.equals(t2);
         }
     }

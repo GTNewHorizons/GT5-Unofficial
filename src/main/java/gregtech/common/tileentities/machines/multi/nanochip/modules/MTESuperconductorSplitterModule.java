@@ -15,6 +15,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,14 +55,14 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         .addElement('A', ofBlock(GregTechAPI.sSolenoidCoilCasings, 7))
         // UEV Solenoid
         .addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 8))
-        // White casing block
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('C', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('D', Casings.NanochipSecondaryCasing.asElement())
         // Naquadah Frame box
         .addElement('E', ofFrame(Materials.Naquadah))
-        // Black glass
-        .addElement('F', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Nanochip Glass
+        .addElement('F', Casings.NanochipGlass.asElement())
         .build();
 
     public MTESuperconductorSplitterModule(int aID, String aName, String aNameRegional) {

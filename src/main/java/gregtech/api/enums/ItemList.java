@@ -2792,6 +2792,12 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    PrimaryNanochipCasing,
+    SecondaryNanochipCasing,
+    ComputationalMatrixCasing,
+    ExteriorNanochipCasing,
+    CircuitComplexGlass,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

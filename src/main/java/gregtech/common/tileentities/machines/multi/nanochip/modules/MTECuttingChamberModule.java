@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,14 +50,14 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
                             .getItem()),
                     MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
                         .getItemDamage())))
-        // White casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('B', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('C', Casings.NanochipSecondaryCasing.asElement())
         // Bulk Production Frame
         .addElement('D', Casings.BulkProductionFrame.asElement(null))
-        // Black glass
-        .addElement('E', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Nanochip Glass
+        .addElement('E', Casings.NanochipGlass.asElement())
         .build();
 
     public MTECuttingChamberModule(int aID, String aName, String aNameRegional) {

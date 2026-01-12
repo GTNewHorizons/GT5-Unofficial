@@ -12,6 +12,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -49,10 +50,10 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
                             .getItem()),
                     MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)
                         .getItemDamage())))
-        // White casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('B', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('C', Casings.NanochipSecondaryCasing.asElement())
         // Non-Photonic Matter Exclusion Glass
         .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 3))
         .build();
