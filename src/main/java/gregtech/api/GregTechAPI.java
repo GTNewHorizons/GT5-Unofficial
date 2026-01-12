@@ -493,5 +493,4 @@ public class GregTechAPI {
         if (teCreators[meta] == null) return null;
         return teCreators[meta].apply(meta);
     }
-
 }
