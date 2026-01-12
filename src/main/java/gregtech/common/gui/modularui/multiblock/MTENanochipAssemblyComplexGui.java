@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
@@ -34,7 +35,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
-public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
+public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
@@ -72,8 +73,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
     }
 
     @Override
-    protected IDrawable.DrawableWidget makeLogoWidget() {
-        return super.makeLogoWidget().setEnabledIf(a -> !multiblock.isTalkModeActive);
+    protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        return super.makeLogoWidget(syncManager, parent).setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
 
     @Override
@@ -81,7 +82,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
-            .height(textBoxToInventoryGap)
+            .height(getTextBoxToInventoryGap())
             .child(createTalkTextField(panel, syncManager));
     }
 
