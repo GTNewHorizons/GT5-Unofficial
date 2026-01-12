@@ -44,7 +44,6 @@ import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.GTValues;
@@ -213,6 +212,7 @@ import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchParticleSensor;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
@@ -10893,10 +10893,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Vacuum Conveyor Output",
                 1).getStackForm(1L));
         ItemList.Hatch_Splitter_Level.set(
-            new MTEHatchSplitterRedstone(HATCH_SPLITTER_LEVEL.ID,
+            new MTEHatchSplitterRedstone(
+                HATCH_SPLITTER_LEVEL.ID,
                 "hatch.splitter.redstone",
-                "Splitter Redstone Input", 1
-            ).getStackForm(1));
+                "Splitter Redstone Input",
+                1).getStackForm(1));
 
         ItemList.VacuumConveyorPipe.set(
             new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
