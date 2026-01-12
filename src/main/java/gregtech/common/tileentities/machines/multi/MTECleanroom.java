@@ -28,6 +28,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
@@ -127,10 +128,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
             .addController("top_center")
             .addStructureInfo("gt.cleanroom.info.controller")
-            .addStructurePart("gt.blockcasings3.11.name", "gt.cleanroom.info.filter")
+            .addStructurePart(
+                ItemList.Casing_Vent.get(1)
+                    .getDisplayName(),
+                "gt.cleanroom.info.filter")
             .addStructureInfo(
                 "gt.cleanroom.info.plascrete",
-                "gt.blockreinforced.2.name",
+                ItemList.Block_Plascrete.get(1)
+                    .getDisplayName(),
                 MachineStats.cleanroom.minCasingCount)
             .addEnergyHatch("gt.cleanroom.info.energy")
             .addMaintenanceHatch("gt.cleanroom.info.energy")

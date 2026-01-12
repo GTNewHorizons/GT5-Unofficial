@@ -32,6 +32,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISurvivalConstructable {
@@ -56,25 +57,36 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
-            .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-            .addInfo("Only one Energy Hatch is allowed per Processing Unit")
-            .addInfo("All recipe times in this multi are very long, watch out!")
+            .addInfo("gt.rfpp.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Bottom Center")
-            .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
-            .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-            .addCasingInfoMin("Reactor Shield Casing", 4, false)
-            .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false)
-            .addInputHatch("Base platform", 1)
-            .addOutputHatch("Base platform", 1)
-            .addMufflerHatch("Base platform", 1)
-            .addMaintenanceHatch("Base platform", 1)
-            .addEnergyHatch("Base platform", 1)
-            .addStructureInfo("Muffler's Tier must be IV+")
-            .addStructureInfo("2+ Input Hatches, 1+ Output Hatches")
-            .addStructureInfo("1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch")
+            .addController("front_bottom_middle")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Refinery_Structural.get(1)
+                    .getDisplayName(),
+                7,
+                false)
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Refinery_Internal.get(1)
+                    .getDisplayName(),
+                5,
+                false)
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Reactor_II.get(1)
+                    .getDisplayName(),
+                4,
+                false)
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Refinery_External.get(1)
+                    .getDisplayName(),
+                17,
+                false)
+            .addInputHatch("gt.rfpp.info.hatches", 1)
+            .addOutputHatch("gt.rfpp.info.hatches", 1)
+            .addMufflerHatch("gt.rfpp.info.hatches", 1)
+            .addMaintenanceHatch("gt.rfpp.info.hatches", 1)
+            .addEnergyHatch("gt.rfpp.info.hatches", 1)
+            .addStructureInfo("gt.rfpp.info")
             .toolTipFinisher();
         return tt;
     }

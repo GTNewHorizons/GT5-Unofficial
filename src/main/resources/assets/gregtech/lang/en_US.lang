@@ -1055,8 +1055,6 @@ gt.recipe.scanner=Scanner
 gt.recipe.scanner.description=Scans Crops and other things.
 gt.recipe.sifter=Sifter
 gt.recipe.sifter.description=Stay calm and keep sifting
-gt.recipe.slicer=Slicer
-gt.recipe.slicer.description=Slice of Life
 gt.recipe.thermalcentrifuge=Thermal Centrifuge
 gt.recipe.thermalcentrifuge.description=Separating Ores more precisely
 gt.recipe.unpackager=Unpackager
@@ -1109,6 +1107,7 @@ gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
+gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -1135,7 +1134,8 @@ GT5U.machines.powersource.power=power
 GT5U.machines.powersource.steam=steam
 GT5U.machines.steam.amount=%1$s/%2$sL Steam
 GT5U.machines.pump=Pump
-GT5U.machines.separatebus=Input buses are separated
+GT5U.machines.separatebus.true=Input buses are separated
+GT5U.machines.separatebus.false=Input buses aren't separated
 GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Multiblock Miner
@@ -1172,6 +1172,10 @@ GT5U.machines.select_mold.tooltip=Ghost Mold Slot
 GT5U.machines.select_mold.tooltip.1=§7LMB/RMB/scroll to cycle through the list
 GT5U.machines.select_mold.tooltip.2=§7Shift left click to open GUI
 GT5U.machines.select_mold=Configure Mold
+GT5U.machines.select_shape.tooltip=Ghost Extruder Shape Slot
+GT5U.machines.select_shape.tooltip.1=§7LMB/RMB/scroll to cycle through the list
+GT5U.machines.select_shape.tooltip.2=§7Shift left click to open GUI
+GT5U.machines.select_shape=Configure Shape
 GT5U.machines.extra_tooltips_toggle.tooltip=Additional information
 GT5U.machines.fluid_transfer.tooltip=Fluid Auto-Output
 GT5U.machines.fluid_transfer.tooltip.extended=§6Screwdriver:§7 Right click machine to
@@ -1214,8 +1218,6 @@ GT5U.machines.solarindicator2=Not Raining
 GT5U.machines.solarindicator3=Can See Sky
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.0=Electric
 GT5U.GTPP_MULTI_ARC_FURNACE.mode.1=Plasma
-GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.0=Cutting
-GT5U.GTPP_MULTI_CUTTING_MACHINE.mode.1=Slicing
 GT5U.GTPP_MULTI_WASH_PLANT.mode.0=Ore Washer
 GT5U.GTPP_MULTI_WASH_PLANT.mode.1=Simple Washer
 GT5U.GTPP_MULTI_WASH_PLANT.mode.2=Chemical Bath
@@ -1440,6 +1442,7 @@ GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
 GT5U.gui.text.success=§aProcessing recipe
@@ -2166,7 +2169,7 @@ GT5U.waila.status.insufficient_energy=Status: Insufficient energy
 GT5U.waila.status.obstructed_steam_vent=Status: Obstructed steam vent
 GT5U.waila.machine.working_disabled=Working Disabled
 GT5U.waila.machine.idle=Idle
-GT5U.waila.machine.in_progress=In progress: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
 GT5U.waila.machine_facing=Machine Facing: %s
 GT5U.waila.output_facing=Output Facing: %s
 GT5U.waila.facing=Facing: %s
@@ -2594,6 +2597,108 @@ achievement.gt.blockcasings5.12.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockcasings5.13=Eternal Coil
 achievement.gt.blockcasings5.13.desc=Pickup this item to see the recipe in NEI
 
+# Exo-Foundry
+gt.blockmachines.multimachine.foundry.basemodule=When used in the Exo-Foundry:
+gt.blockmachines.multimachine.foundry.modulelimit=- Limit of §f1 §7per §6Foundry
+gt.blockmachines.multimachine.foundry.tier=- Tier: %s
+gt.blockmachines.multimachine.foundry.chassis1.flavor=Break Infinity
+gt.blockmachines.multimachine.foundry.chassis2.flavor=Become Eternal
+gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
+
+gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s2x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §620
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
+
+gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s35%%§7 speed
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aPower Efficient Subsystems§7 module
+
+gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Efficient Overclocking System§7 module
+
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §dUIV+§7 Recipes to be processed
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip2=- Grants benefits when paired with other §dHeliocast Reinforcement§7 modules
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip3=- §f2+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Increases Base Speed by %s75%%§7 per module
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
+
+gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
+gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
+gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
+gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casters §7module
+
+gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip2=- Drains %s L/s of %s to gain %s Maximum Overclocks
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip3=- Only drains §bcooling fluid §7when the §6Foundry §7is active
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip4=- §3Requires an input hatch on any Cryogenic Casing to drain from!
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip5=- Can use §aEternity §7at §a25 §7L/s to gain §a3 §7Maximum Overclocks when
+gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §5Universal Collapser §7module
+
+gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
+# Exo-Foundry GUI
+GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
+GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
+GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
+GT5U.gui.button.foundry.contributorpanel=Open Contributor List
+
+GT5U.gui.text.foundry.projectlead=Project Lead
+GT5U.gui.text.foundry.programming=Programming
+GT5U.gui.text.foundry.textures=Textures
+GT5U.gui.text.foundry.rendering=Rendering
+GT5U.gui.text.foundry.structure=Structure Architect
+GT5U.gui.text.foundry.idea=Original Idea
+GT5U.gui.text.foundry.playtest=Playtesting
+
+GT5U.gui.text.foundry.pairings.activity.on=This pairing is §aactive
+GT5U.gui.text.foundry.pairings.activity.off=This pairing is §cinactive
+GT5U.gui.text.foundry.pairings.activity.bonus=When active, this pairing provides the following bonuses:
+GT5U.gui.text.foundry.pairings.optimumproduction.title=§bOptimum Production
+GT5U.gui.text.foundry.pairings.optimumproduction.required=Requires §eSuperdense Casting Basins§r and §cStreamlined Casting§r Modules
+GT5U.gui.text.foundry.pairings.optimumproduction.tooltip1=%s+75%%§r Speed
+GT5U.gui.text.foundry.pairings.optimumproduction.tooltip2=%s+6§r parallels per %sVoltage§r tier
+
+GT5U.gui.text.foundry.pairings.harmonicefficiency.title=§aHarmonic Efficiency
+GT5U.gui.text.foundry.pairings.harmonicefficiency.required=Requires §aProto-Volt Stabilizer§r and §3Sentient Overclocker§r Modules
+GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip1=§d+0.1§r OC Factor
+GT5U.gui.text.foundry.pairings.harmonicefficiency.tooltip2=%s-50%%§r Initial EU Cost
+
+GT5U.gui.text.foundry.pairings.superstablecore.title=§dSuperstable Core
+GT5U.gui.text.foundry.pairings.superstablecore.required=Requires 2+ §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip1=This pairings bonuses scale with the amount of §dHeliocast Reinforcement§r Modules
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip2=When §f2 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by %s75%%§r per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.1
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
+
+GT5U.gui.text.foundry.pairings.realizedpotential.title=§5§k0§r§4Realized Potential§5§k0
+GT5U.gui.text.foundry.pairings.realizedpotential.required=Requires §bHypercooler§r and §5Universal Collapser§r Modules
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1=§c2x§r EU Cost
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2=%s2x§r Speed
+GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercooler§r to utilize Eternity
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch
@@ -2624,37 +2729,6 @@ achievement.gt.blockmachines.wireless.receiver.tier.13=UXV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.13.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.14=MAX Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.14.desc=Pickup this item to see the recipe in NEI
-
-achievement.gt.blockmachines.wireless.transmitter.tier.00=ULV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.00.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.01=LV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.01.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.02=MV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.02.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.03=HV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.03.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.04=EV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.04.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.05=IV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.05.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.06=LuV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.06.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.07=ZPM Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.07.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.08=UV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.08.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.09=UHV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.09.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.10=UEV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.10.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.11=UIV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.11.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.12=UMV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.12.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.13=UXV Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
-achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
 achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Fluid Drilling Rig
 achievement.gt.blockmachines.multimachine.oildrillinfinite.desc=Pickup this item to see the recipe in NEI
@@ -3716,6 +3790,7 @@ machtype.distillation_tower=Distillery, DT
 machtype.assline=Assembly Line, Assline, AL
 machtype.mb_air_filter=Air Filter, EAF
 machtype.completer=Research Completer
+machtype.decay_warehouse=Decay Warehouse
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3726,6 +3801,12 @@ gt.mb.corepos.top_center=Top center
 gt.mb.hint_block=Hint block with dot %d
 
 # Multiblock Tooltip lines
+gt.decay_warehouse.tips=Stores a single type of radioactive isotope and allows it to decay over time\nDecay speed is dependent on the isotopes' half-lives (lower is faster)\nIsotopes decay regardless of whether the warehouse is on or powered<SEPARATOR>The warehouse's capacity equals the super chest's capacity divided by §9%s§7.\nThe warehouse will pull in up to §9N / %s§7 items per second,\nwhere §9N§7 is the warehouse's EU input (standard energy hatch rules)<SEPARATOR>Right click the controller with a screwdriver to dump stored isotopes into the output bus\nRight click the controller with a plunger to empty it\nThe warehouse's contents are §c§nvoided§7 when the controller is broken
+
+gt.rfpp.tips=Refines fluorides and Uranium into nuclear fuel for the LFTR\nLFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes\nOnly one Energy Hatch is allowed per Processing Unit\nAll recipe times in this multi are very long, watch out!
+gt.rfpp.info.hatches=Base platform
+gt.rfpp.info=Muffler's Tier must be IV+\n2+ Input Hatches, 1+ Output Hatches\n1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch
+
 gt.boldarnator.tips=Use Integrated Circuit to determine recipe\n1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack\nNeeds Water and Lava in input hatch\nNeeds Soul Sand and Blue Ice in input bus for basalt\nNeeds Soul Sand and Magma in input bus for deepslate
 
 gt.completer.tips=Completes Thaumcraft research notes using EU and Thaumcraft nodes\nPlace nodes in the center row
@@ -3767,7 +3848,7 @@ gt.mb_boiler.info.o_hatch=Steam, any casing
 gt.spinmatron.tips.1=3 Modes: §dLight§7 | §6Standard§7 | §aHeavy\nOverclocks limited to §fHatch Tier + 1
 gt.spinmatron.tips.2=Gains §f2§7 Turbine Slots per Structure Tier
 gt.spinmatron.tips.3=Non-Huge Turbines have reduced effectiveness...
-gt.spinmatron.tips.4=Requires Recipe Tier * §910L/s§7 of §5Kerosene§7 to operate by default\nSupply §5Biocatalyzed Propulsion Fluid§7 instead for a §f1.25x§7 Parallel multiplier<SEPARATOR>§dLight Mode§7: +§d100%§7 Speed Bonus, Maximum Recipe Tier is §dVoltage Tier - 3\n§6Standard Mode§7: No Changes\n§aHeavy Mode§7: Divides Parallels by §a32§7, Requires T3 Structure and §5Biocatalyzed Propulsion Fluid\nSome recipes §c§lrequire§a Heavy Mode<SEPARATOR>§o§4Maahes guides the way...
+gt.spinmatron.tips.4=Requires Recipe Tier * §910L/s§7 of §5Kerosene§7 to operate by default\nSupply §5Biocatalyzed Propulsion Fluid§7 instead for a §f1.25x§7 Parallel multiplier<SEPARATOR>§dLight Mode§7: +§d100%§7 Speed Bonus, Maximum Recipe Tier is §dVoltage Tier - 3\n§6Standard Mode§7: No Changes\n§aHeavy Mode§7: Divides Parallels by §a32§7, Requires T3+ Structure and §5Biocatalyzed Propulsion Fluid\nMultiplies EU Cost by §c16\nSome recipes §c§lrequire§a Heavy Mode<SEPARATOR>§o§4Maahes guides the way...
 gt.spinmatron.info.frame=Central Frame Blocks
 gt.spinmatron.info.rotor=Central Rotor Blocks
 
@@ -3899,7 +3980,7 @@ gt.latex.tips.1=§8§oAKA Laminated Application and Thermal Enclosure eXpert
 gt.latex.tips.2=Recipes have an additive §26.25%%§7 rubber discount based on %s\nAn Elastic Singularity can be inserted into the controller to gain the following bonuses\n§62x§7 parallels, +§225%%§7 rubber discount, and the use of a singular §aMulti-Amp energy hatch
 gt.latex.tips.3=§3Make sure to cover up!
 
-gt.hi_engraver.tips.1=Laser source hatch determines maximum recipe tier and parallels\nRecipe tier and overclocks limited to laser source tier + 1\nWith UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)\nParallels equal to the cube root of laser source amperage input\nGlass tier determines maximum laser source tier\n%s glass accepts all laser source hatches\nUse screwdriver to disable laser rendering\nUse wire cutter to toggle realism mode if you hate angled lasers
+gt.hi_engraver.tips.1=Laser source hatch determines maximum recipe tier and parallels\nRecipe tier and overclocks limited to laser source tier + 1\nWhen using a UEV+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches\nParallels equal to the cube root of laser source amperage input\nGlass tier determines maximum laser source tier\n%s glass accepts all laser source hatches\nUse screwdriver to disable laser rendering\nUse wire cutter to toggle realism mode if you hate angled lasers
 
 gt.ore_factory.tips.1=Does all ore processing in one step
 gt.ore_factory.tips.2=Every ore costs 30EU/t, 2L lubricant, 200L distilled water\nRecipes that need extra input require their extra inputs on top of the normal costs\nProcessing time is dependent on mode\nUse a screwdriver to switch mode\nSneak click with screwdriver to void the stone dust
