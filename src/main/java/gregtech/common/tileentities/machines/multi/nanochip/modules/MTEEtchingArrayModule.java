@@ -28,6 +28,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,10 +74,10 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     public static final IStructureDefinition<MTEEtchingArrayModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEEtchingArrayModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ETCHING_STRUCTURE)
-        // White casing block
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // Infinity Cooled Casings
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 14))
         // Particle Beam Guidance Pipe Casing
@@ -85,8 +86,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         .addElement('E', ofFrame(Materials.EnrichedHolmium))
         // Non-Photonic Matter Exclusion Glass
         .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        // Black glass
-        .addElement('G', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Nanochip Glass
+        .addElement('G', Casings.NanochipGlass.asElement())
         // Beamline input
         .addElement(
             'H',
@@ -174,7 +175,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         private final IGTHatchAdder<MTEEtchingArrayModule> adder;
 
         @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEEtchingArrayModule> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        SpecialHatchElement(IGTHatchAdder<MTEEtchingArrayModule> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }

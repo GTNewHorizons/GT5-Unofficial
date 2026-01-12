@@ -26,7 +26,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import goodgenerator.loader.Loaders;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -71,14 +71,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                 -1,
                 MTEAssemblyMatrixModule::setCasingTier,
                 MTEAssemblyMatrixModule::getCasingTier))
-        // White casing block
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('C', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('D', Casings.NanochipSecondaryCasing.asElement())
         // Naquadah Alloy Frame Box
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
-        // Black glass
-        .addElement('F', ofBlock(GregTechAPI.sBlockTintedGlass, 3))
+        // Nanochip Glass
+        .addElement('F', Casings.NanochipGlass.asElement())
 
         .build();
 
