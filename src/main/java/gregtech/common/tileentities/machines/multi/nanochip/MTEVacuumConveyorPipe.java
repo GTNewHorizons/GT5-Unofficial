@@ -135,24 +135,24 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
                 }
                 for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                     final ForgeDirection oppositeSide = side.getOpposite();
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
-                    if (tTileEntity instanceof IConnectsToVacuumConveyor) {
-                        byte tColor = ((IConnectsToVacuumConveyor) tTileEntity).getColorization();
+                    TileEntity pipeTE = aBaseMetaTileEntity.getTileEntityAtSide(side);
+                    if (pipeTE instanceof IConnectsToVacuumConveyor vacuumPipeTE) {
+                        byte tColor = vacuumPipeTE.getColorization();
                         if (tColor != myColor) {
                             continue;
                         }
-                        if (((IConnectsToVacuumConveyor) tTileEntity).canConnect(oppositeSide)) {
+                        if (vacuumPipeTE.canConnect(oppositeSide)) {
                             mConnections |= 1 << side.ordinal();
                             connectionCount++;
                         }
-                    } else if (tTileEntity instanceof IGregTechTileEntity) {
-                        IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                        if (meta instanceof IConnectsToVacuumConveyor) {
-                            byte tColor = ((IConnectsToVacuumConveyor) meta).getColorization();
+                    } else if (pipeTE instanceof IGregTechTileEntity iGTE) {
+                        IMetaTileEntity meta = iGTE.getMetaTileEntity();
+                        if (meta instanceof IConnectsToVacuumConveyor vacuumMetaTE) {
+                            byte tColor = vacuumMetaTE.getColorization();
                             if (tColor != myColor) {
                                 continue;
                             }
-                            if (((IConnectsToVacuumConveyor) meta).canConnect(oppositeSide)) {
+                            if (vacuumMetaTE.canConnect(oppositeSide)) {
                                 mConnections |= 1 << side.ordinal();
                                 connectionCount++;
                             }
@@ -181,19 +181,19 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
                 continue; // if not connected continue
             }
             TileEntity next = getBaseMetaTileEntity().getTileEntityAtSide(side);
-            if (next instanceof IConnectsToVacuumConveyor && next != source) {
-                if (((IConnectsToVacuumConveyor) next).isComponentsInputFacing(side.getOpposite())) {
-                    return (IConnectsToVacuumConveyor) next;
+            if (next instanceof IConnectsToVacuumConveyor nextVacuumTE && next != source) {
+                if (nextVacuumTE.isComponentsInputFacing(side.getOpposite())) {
+                    return nextVacuumTE;
                 }
-            } else if (next instanceof IGregTechTileEntity) {
-                IMetaTileEntity meta = ((IGregTechTileEntity) next).getMetaTileEntity();
-                if (meta instanceof IConnectsToVacuumConveyor connecsToPipe && meta != source) {
+            } else if (next instanceof IGregTechTileEntity nextIGTE) {
+                IMetaTileEntity meta = nextIGTE.getMetaTileEntity();
+                if (meta instanceof IConnectsToVacuumConveyor connectsToPipe && meta != source) {
                     if (meta instanceof MTEVacuumConveyorPipe pipeData && pipeData.connectionCount == 2) {
                         pipeData.markUsed();
-                        return connecsToPipe;
+                        return connectsToPipe;
                     }
-                    if (connecsToPipe.isComponentsInputFacing(side.getOpposite())) {
-                        return connecsToPipe;
+                    if (connectsToPipe.isComponentsInputFacing(side.getOpposite())) {
+                        return connectsToPipe;
                     }
                 }
             }
