@@ -38,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -401,6 +402,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                     if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
                         if (stackInSlot.stackSize >= stack.stack.stackSize) {
+                            lEUt -= (stack.stack.stackSize * EU_MULTIPLIER);
                             baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
                             break;
                         }
@@ -424,6 +426,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realCircuit != null) {
+                            lEUt -= (amount * EU_MULTIPLIER);
                             ItemStack toOutput = GTUtility
                                 .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
@@ -499,13 +502,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             }
         }
     }
+    private static final long EU_MULTIPLIER = TierEU.UV;
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         // Always keep the machine running, it doesn't run recipes directly.
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
-            mMaxProgresstime = 1 * SECONDS;
+            mMaxProgresstime = 5 * SECONDS;
+            lEUt = 0;
             // Inside checkProcessing we can safely consume inputs from hatches
             processRealItemInputs();
             processComponentInputs();
