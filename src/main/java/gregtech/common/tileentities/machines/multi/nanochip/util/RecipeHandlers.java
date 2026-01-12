@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -137,9 +137,14 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.WireYttriumBariumCuprate,
             GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.YttriumBariumCuprate, 1));
+        addConversionRecipe(CircuitComponent.WireLumiium, GGMaterial.lumiium.get(OrePrefixes.wireFine));
         addConversionRecipe(
-            CircuitComponent.WireLumiium,
-            new ItemStack(WerkstoffLoader.items.get(OrePrefixes.wireFine), 1, 10101));
+            CircuitComponent.WireLanthanum,
+            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 1));
+        addConversionRecipe(
+            CircuitComponent.WireSpacetime,
+            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 1));
+
         // SMDs
         addConversionRecipe(CircuitComponent.SMDTransistor, ItemList.Circuit_Parts_TransistorSMD.get(1));
         addConversionRecipe(CircuitComponent.SMDInductor, ItemList.Circuit_Parts_InductorSMD.get(1));
@@ -156,6 +161,7 @@ public class RecipeHandlers {
         addConversionRecipe(CircuitComponent.OpticalSMDCapacitor, ItemList.Circuit_Parts_CapacitorXSMD.get(1));
         addConversionRecipe(CircuitComponent.OpticalSMDDiode, ItemList.Circuit_Parts_DiodeXSMD.get(1));
         addConversionRecipe(CircuitComponent.OpticalSMDResistor, ItemList.Circuit_Parts_ResistorXSMD.get(1));
+
         // Boards
         addConversionRecipe(
             CircuitComponent.BoardMultifiberglassElite,
@@ -163,18 +169,24 @@ public class RecipeHandlers {
         addConversionRecipe(CircuitComponent.BoardWetwareLifesupport, ItemList.Circuit_Board_Wetware_Extreme.get(1));
         addConversionRecipe(CircuitComponent.BoardBioMutated, ItemList.Circuit_Board_Bio_Ultra.get(1));
         addConversionRecipe(CircuitComponent.BoardOptical, ItemList.Circuit_Board_Optical.get(1));
+
         // CPUs
         addConversionRecipe(CircuitComponent.ChipCrystalCPU, ItemList.Circuit_Chip_CrystalCPU.get(1));
         addConversionRecipe(CircuitComponent.ChipAdvCrystalCPU, ItemList.Circuit_Chip_CrystalSoC.get(1));
         addConversionRecipe(CircuitComponent.ChipOpticalCPU, ItemList.Optically_Perfected_CPU.get(1));
+
         // RAM
         addConversionRecipe(CircuitComponent.OpticalRAM, ItemList.Optically_Compatible_Memory.get(1));
+
         // Wafers
         addConversionRecipe(CircuitComponent.WaferNanoCPU, ItemList.Circuit_Wafer_NanoCPU.get(1));
         addConversionRecipe(CircuitComponent.WaferRAM, ItemList.Circuit_Wafer_Ram.get(1));
         addConversionRecipe(CircuitComponent.WaferNOR, ItemList.Circuit_Wafer_NOR.get(1));
         addConversionRecipe(CircuitComponent.WaferNAND, ItemList.Circuit_Wafer_NAND.get(1));
         addConversionRecipe(CircuitComponent.WaferASOC, ItemList.Circuit_Wafer_SoC2.get(1));
+        addConversionRecipe(CircuitComponent.WaferPikoPIC, ItemList.Circuit_Wafer_PPIC.get(1));
+        addConversionRecipe(CircuitComponent.WaferQuantumPIC, ItemList.Circuit_Wafer_QPIC.get(1));
+
         // Superconductors
         addConversionRecipe(
             CircuitComponent.SuperconductorLuV,
@@ -188,6 +200,13 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.SuperconductorUEV,
             GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 1));
+        addConversionRecipe(
+            CircuitComponent.SuperconductorUIV,
+            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1));
+        addConversionRecipe(
+            CircuitComponent.SuperconductorUMV,
+            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1));
+
         // Frame boxes
         addConversionRecipe(
             CircuitComponent.FrameboxAluminium,
@@ -195,12 +214,27 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.FrameboxTritanium,
             GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 1));
+        addConversionRecipe(
+            CircuitComponent.FrameboxNeutronium,
+            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1));
+
         // Bolts
         addConversionRecipe(
             CircuitComponent.BoltEnrichedHolmium,
             GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 1));
+        addConversionRecipe(
+            CircuitComponent.BoltTranscendentMetal,
+            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 1));
+        addConversionRecipe(
+            CircuitComponent.BoltNeutronium,
+            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 1));
+        addConversionRecipe(
+            CircuitComponent.BoltIndium,
+            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 1));
+
         // Cables
         addConversionRecipe(CircuitComponent.CableOpticalFiber, DATApipe.get(1));
+
         // Foil
         addConversionRecipe(
             CircuitComponent.FoilSiliconeRubber,
@@ -208,6 +242,11 @@ public class RecipeHandlers {
         addConversionRecipe(
             CircuitComponent.FoilPolybenzimidazole,
             GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 1));
+        addConversionRecipe(
+            CircuitComponent.FoilRadoxPolymer,
+            GTOreDictUnificator.get(OrePrefixes.foil, Materials.RadoxPolymer, 1));
+        addConversionRecipe(CircuitComponent.FoilShirabon, GGMaterial.shirabon.get(OrePrefixes.foil));
+
         // Circuits
         for (CircuitComponent circuitComponent : CircuitComponent.values()) {
             if (circuitComponent.realCircuit != null) {
@@ -234,6 +273,17 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedWireLumiium,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.WireLanthanum,
+            CircuitComponent.ProcessedWireLanthanum,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.WireSpacetime,
+            CircuitComponent.ProcessedWireSpacetime,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
+
         // SMD processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.SMDResistor,
@@ -401,6 +451,18 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedChipASOC,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.WaferPikoPIC,
+            Materials.Lubricant.getFluid(375),
+            CircuitComponent.ProcessedChipPikoPIC,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.WaferQuantumPIC,
+            Materials.Lubricant.getFluid(500),
+            CircuitComponent.ProcessedChipQuantumPIC,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
     }
 
     public static void registerSuperconductorRecipes() {
@@ -425,6 +487,16 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedSuperconductorUEV,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SuperconductorUIV,
+            CircuitComponent.ProcessedSuperconductorUIV,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.SuperconductorUMV,
+            CircuitComponent.ProcessedSuperconductorUMV,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
     }
 
     public static void registerFrameBoxRecipes() {
@@ -441,6 +513,13 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedFrameboxTritanium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxNeutronium,
+            Materials.Grade1PurifiedWater.getFluid(1000),
+            CircuitComponent.ProcessedFrameboxNeutronium,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+
         // Foil processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FoilPolybenzimidazole,
@@ -452,7 +531,16 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedFoilSiliconeRubber,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV);
-
+        addSimpleProcessingRecipe(
+            CircuitComponent.FoilRadoxPolymer,
+            CircuitComponent.ProcessedFoilRadoxPolymer,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.FoilShirabon,
+            CircuitComponent.ProcessedFoilShirabon,
+            ModuleRecipeInfo.Medium,
+            TierEU.RECIPE_LV);
     }
 
     public static void populateFinishedCircuitRecipeMaps() {

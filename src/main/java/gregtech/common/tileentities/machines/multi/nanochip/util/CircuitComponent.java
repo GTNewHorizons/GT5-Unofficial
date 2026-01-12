@@ -24,18 +24,30 @@ public enum CircuitComponent {
 
     // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items, so
     // adding in the middle will break saved state!
+
+    // Wires
     WireNiobiumTitanium("gt.circuitcomponent.wirenbti", RecipeMaps.nanochipWireTracer, Materials.NiobiumTitanium,
         "wireniobiumtitanium"),
     WireYttriumBariumCuprate("gt.circuitcomponent.wireybc", RecipeMaps.nanochipWireTracer,
         Materials.YttriumBariumCuprate, "wireyttriumbariumcuprate"),
     // Lumiium is a werkstoff, not a material, can't insert yet
     WireLumiium("gt.circuitcomponent.wirelumiium", RecipeMaps.nanochipWireTracer, "wirelumiium"),
+    WireLanthanum("gt.circuitcomponent.wirelanthanum", RecipeMaps.nanochipWireTracer, Materials.Lanthanum,
+        "wirelanthanum"),
+    WireSpacetime("gt.circuitcomponent.wirespacetime", RecipeMaps.nanochipWireTracer, Materials.SpaceTime,
+        "wirespacetime"),
     ProcessedWireNiobiumTitanium("gt.circuitcomponent.processed.wirenbti", RecipeMaps.nanochipAssemblyMatrixRecipes,
         Materials.NiobiumTitanium, "processedwireniobiumtitanium"),
     ProcessedWireYttriumBariumCuprate("gt.circuitcomponent.processed.wireybc", RecipeMaps.nanochipAssemblyMatrixRecipes,
         Materials.YttriumBariumCuprate, "processedwireyttriumbariumcuprate"),
     ProcessedWireLumiium("gt.circuitcomponent.processed.wirelumiium", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedwirelumiium"),
+    ProcessedWireLanthanum("gt.circuitcomponent.processed.wirelanthanum", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        Materials.Lanthanum, "processedwirelanthanum"),
+    ProcessedWireSpacetime("gt.circuitcomponent.processed.wirespacetime", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        Materials.SpaceTime, "processedwirespacetime"),
+
+    // SMDs
     SMDResistor("gt.circuitcomponent.smd.resistor", RecipeMaps.nanochipSMDProcessorRecipes, "smdresistor"),
     SMDTransistor("gt.circuitcomponent.smd.transistor", RecipeMaps.nanochipSMDProcessorRecipes, "smdtransistor"),
     SMDInductor("gt.circuitcomponent.smd.inductor", RecipeMaps.nanochipSMDProcessorRecipes, "smdinductor"),
@@ -85,6 +97,8 @@ public enum CircuitComponent {
         RecipeMaps.nanochipAssemblyMatrixRecipes, "processedopticalsmdcapacitor"),
     ProcessedOpticalSMDDiode("gt.circuitcomponent.processed.xsmd.diode", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedopticalsmddiode"),
+
+    // Boards
     BoardMultifiberglassElite("gt.circuitcomponent.board.multifiberelite", RecipeMaps.nanochipBoardProcessorRecipes,
         "boardmultifiberglasselite"),
     BoardWetwareLifesupport("gt.circuitcomponent.board.wetwarelifesupport", RecipeMaps.nanochipBoardProcessorRecipes,
@@ -102,11 +116,16 @@ public enum CircuitComponent {
         "processedboardbiomutated"),
     ProcessedBoardOptical("gt.circuitcomponent.processed.board.optical", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedboardoptical"),
+
+    // Wafers and chips
     WaferNanoCPU("gt.circuitcomponent.waferNanoCPU", RecipeMaps.nanochipCuttingChamber, "wafernanocpu"),
     WaferRAM("gt.circuitcomponent.waferram", RecipeMaps.nanochipCuttingChamber, "waferram"),
     WaferNOR("gt.circuitcomponent.wafernor", RecipeMaps.nanochipCuttingChamber, "wafernor"),
     WaferNAND("gt.circuitcomponent.wafernand", RecipeMaps.nanochipCuttingChamber, "wafernand"),
     WaferASOC("gt.circuitcomponent.waferasoc", RecipeMaps.nanochipCuttingChamber, "waferasoc"),
+    WaferPikoPIC("gt.circuitcomponent.waferpikopic", RecipeMaps.nanochipCuttingChamber, "waferpikopic"),
+    WaferQuantumPIC("gt.circuitcomponent.waferquantumpic", RecipeMaps.nanochipCuttingChamber, "waferquantumpic"),
+    // todo Pico wafer
     ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedchipnanocpu"),
     ProcessedChipRAM("gt.circuitcomponent.processed.chipram", RecipeMaps.nanochipAssemblyMatrixRecipes,
@@ -117,18 +136,28 @@ public enum CircuitComponent {
         "processedchipnand"),
     ProcessedChipASOC("gt.circuitcomponent.processed.chipasoc", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedchipasoc"),
+    ProcessedChipPikoPIC("gt.circuitcomponent.processed.chippikopic", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchippikopic"),
+    ProcessedChipQuantumPIC("gt.circuitcomponent.processed.chipquantumpic", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchipquantumpic"),
+
+    // Crystal components
     ChipCrystalCPU("gt.circuitcomponent.chipcrystalcpu", RecipeMaps.nanochipEtchingArray, "chipcrystalcpu"),
     ChipAdvCrystalCPU("gt.circuitcomponent.chipadvcrystalcpu", RecipeMaps.nanochipEtchingArray, "chipadvcrystalcpu"),
-    ChipOpticalCPU("gt.circuitcomponent.opticalcpu", RecipeMaps.nanochipOpticalOrganizer, "chipopticalcpu"),
     ProcessedChipCrystalCPU("gt.circuitcomponent.processed.chipcrystalcpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedchipcrystalcpu"),
     ProcessedChipAdvCrystalCPU("gt.circuitcomponent.processed.chipadvcrystalcpu",
         RecipeMaps.nanochipAssemblyMatrixRecipes, "processedchipadvcrystalcpu"),
+
+    // Optical components
+    ChipOpticalCPU("gt.circuitcomponent.opticalcpu", RecipeMaps.nanochipOpticalOrganizer, "chipopticalcpu"),
     ProcessedChipOpticalCPU("gt.circuitcomponent.processed.opticalcpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedchipopticalcpu"),
     OpticalRAM("gt.circuitcomponent.opticalram", RecipeMaps.nanochipOpticalOrganizer, "opticalram"),
     ProcessedOpticalRAM("gt.circuitcomponent.processed.opticalram", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedopticalram"),
+
+    // Superconductors
     SuperconductorLuV("gt.circuitcomponent.superconductorluv", RecipeMaps.nanochipSuperconductorSplitter,
         Materials.SuperconductorLuV, "superconductorluv"),
     SuperconductorZPM("gt.circuitcomponent.superconductorzpm", RecipeMaps.nanochipSuperconductorSplitter,
@@ -137,6 +166,10 @@ public enum CircuitComponent {
         Materials.SuperconductorUHV, "superconductoruhv"),
     SuperconductorUEV("gt.circuitcomponent.superconductoruev", RecipeMaps.nanochipSuperconductorSplitter,
         Materials.SuperconductorUEV, "superconductoruev"),
+    SuperconductorUIV("gt.circuitcomponent.superconductoruiv", RecipeMaps.nanochipSuperconductorSplitter,
+        Materials.SuperconductorUIV, "superconductoruiv"),
+    SuperconductorUMV("gt.circuitcomponent.superconductorumv", RecipeMaps.nanochipSuperconductorSplitter,
+        Materials.SuperconductorUMV, "superconductorumv"),
     ProcessedSuperconductorLuV("gt.circuitcomponent.processed.superconductorluv",
         RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorLuV, "processedsuperconductorluv"),
     ProcessedSuperconductorZPM("gt.circuitcomponent.processed.superconductorzpm",
@@ -145,26 +178,54 @@ public enum CircuitComponent {
         RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorUHV, "processedsuperconductoruhv"),
     ProcessedSuperconductorUEV("gt.circuitcomponent.processed.superconductoruev",
         RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorUEV, "processedsuperconductoruev"),
+    ProcessedSuperconductorUIV("gt.circuitcomponent.processed.superconductoruiv",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorUIV, "processedsuperconductoruiv"),
+    ProcessedSuperconductorUMV("gt.circuitcomponent.processed.superconductorumv",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, Materials.SuperconductorUMV, "processedsuperconductorumv"),
+
+    // Frameboxes
     FrameboxAluminium("gt.circuitcomponent.frame.aluminium", RecipeMaps.nanochipCuttingChamber, Materials.Aluminium,
         "frameboxaluminium"),
     FrameboxTritanium("gt.circuitcomponent.frame.tritanium", RecipeMaps.nanochipCuttingChamber, Materials.Tritanium,
         "frameboxtritanium"),
+    FrameboxNeutronium("gt.circuitcomponent.frame.neutronium", RecipeMaps.nanochipCuttingChamber, Materials.Neutronium,
+        "frameboxneutronium"),
     ProcessedFrameboxAluminium("gt.circuitcomponent.processed.frame.aluminium",
         RecipeMaps.nanochipAssemblyMatrixRecipes, "processedframeboxaluminium"),
     ProcessedFrameboxTritanium("gt.circuitcomponent.processed.frame.tritanium",
         RecipeMaps.nanochipAssemblyMatrixRecipes, "processedframeboxtritanium"),
+    ProcessedFrameboxNeutronium("gt.circuitcomponent.processed.frame.neutronium",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedframeboxneutronium"),
+
+    // Foils
     FoilSiliconeRubber("gt.circuitcomponent.sheet.siliconerubber", RecipeMaps.nanochipSheetSupervisor,
         "foilsiliconerubber"),
     FoilPolybenzimidazole("gt.circuitcomponent.sheet.polybenzimidazole", RecipeMaps.nanochipSheetSupervisor,
         "foilpolybenzimidazole"),
+    FoilRadoxPolymer("gt.circuitcomponent.sheet.radoxpolymer", RecipeMaps.nanochipSheetSupervisor, "foilradoxpolymer"),
+    FoilShirabon("gt.circuitcomponent.sheet.shirabon", RecipeMaps.nanochipSheetSupervisor, "foilshirabon"),
     ProcessedFoilSiliconeRubber("gt.circuitcomponent.sheet.siliconerubber", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedfoilsiliconerubber"),
     ProcessedFoilPolybenzimidazole("gt.circuitcomponent.sheet.polybenzimidazole",
         RecipeMaps.nanochipAssemblyMatrixRecipes, "processedfoilpolybenzimidazole"),
+    ProcessedFoilRadoxPolymer("gt.circuitcomponent.sheet.radoxpolymer", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedfoilradoxpolymer"),
+    ProcessedFoilShirabon("gt.circuitcomponent.sheet.shirabon", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedfoilshirabon"),
+
+    // Misc
     CableOpticalFiber("gt.circuitcomponent.cable.opticalfiber", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "cableopticalfiber"),
+
+    // Bolts
     BoltEnrichedHolmium("gt.circuitcomponent.bolt.enrichedholmium", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "boltenrichedholmium"),
+    BoltTranscendentMetal("gt.circuitcomponent.bolt.transcendentmetal", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "bolttranscendentmetal"),
+    BoltNeutronium("gt.circuitcomponent.bolt.neutronium", RecipeMaps.nanochipAssemblyMatrixRecipes, "boltneutronium"),
+    BoltIndium("gt.circuitcomponent.bolt.indium", RecipeMaps.nanochipAssemblyMatrixRecipes, "boltindium"),
+
+    // Circuits
     // The first three circuits in a line can be recursively used in the assembly matrix, and all of them can be turned
     // into a physical circuit item
     CrystalProcessor("gt.circuitcomponent.crystalprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes,
@@ -198,7 +259,10 @@ public enum CircuitComponent {
     OpticalComputer("gt.circuitcomponent.opticalcomputer", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_OpticalComputer.get(1)),
     OpticalMainframe("gt.circuitcomponent.opticalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
-        ItemList.Circuit_OpticalMainframe.get(1)),;
+        ItemList.Circuit_OpticalMainframe.get(1)),
+    // todo Pico circuit
+
+    ;
 
     public final String unlocalizedName;
     public String fallbackLocalizedName = null;
