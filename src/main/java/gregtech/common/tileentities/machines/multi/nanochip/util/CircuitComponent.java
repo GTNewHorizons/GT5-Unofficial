@@ -1,8 +1,12 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTModHandler.getModItem;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -125,7 +129,7 @@ public enum CircuitComponent {
     WaferASOC("gt.circuitcomponent.waferasoc", RecipeMaps.nanochipCuttingChamber, "waferasoc"),
     WaferPikoPIC("gt.circuitcomponent.waferpikopic", RecipeMaps.nanochipCuttingChamber, "waferpikopic"),
     WaferQuantumPIC("gt.circuitcomponent.waferquantumpic", RecipeMaps.nanochipCuttingChamber, "waferquantumpic"),
-    // todo Pico wafer
+    WaferPico("gt.circuitcomponent.waferpico", RecipeMaps.nanochipCuttingChamber, "waferpico"),
     ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedchipnanocpu"),
     ProcessedChipRAM("gt.circuitcomponent.processed.chipram", RecipeMaps.nanochipAssemblyMatrixRecipes,
@@ -140,6 +144,8 @@ public enum CircuitComponent {
         "processedchippikopic"),
     ProcessedChipQuantumPIC("gt.circuitcomponent.processed.chipquantumpic", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedchipquantumpic"),
+    ProcessedChipPico("gt.circuitcomponent.processed.chippico", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        "processedchippico"),
 
     // Crystal components
     ChipCrystalCPU("gt.circuitcomponent.chipcrystalcpu", RecipeMaps.nanochipEtchingArray, "chipcrystalcpu"),
@@ -260,7 +266,11 @@ public enum CircuitComponent {
         ItemList.Circuit_OpticalComputer.get(1)),
     OpticalMainframe("gt.circuitcomponent.opticalmainframe", RecipeMaps.nanochipAssemblyMatrixRecipes,
         ItemList.Circuit_OpticalMainframe.get(1)),
-    // todo Pico circuit
+    // todo consider doing fallbacks better
+    PicoCircuit("gt.circuitcomponent.picocircuit", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.dirt))),
+    QuantumCircuit("gt.circuitcomponent.quantumcircuit", RecipeMaps.nanochipAssemblyMatrixRecipes,
+        getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.stone))),
 
     ;
 
