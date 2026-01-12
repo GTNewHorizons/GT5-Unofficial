@@ -91,7 +91,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 HatchElementBuilder.<B>builder()
                     .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
             .addElement('Z', ofBlock(GregTechAPI.sBlockCasings8, 10));
     }
@@ -458,8 +458,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return false;
     }
 
+    // todo check that this is correct after item logistics changes
     @Override
-    public boolean addOutput(ItemStack aStack) {
+    public boolean addOutputAtomic(ItemStack aStack) {
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
         if (GTUtility.isStackInvalid(aStack)) return false;
         MTEHatchVacuumConveyorOutput hatch = findOutputHatch(this.outputColor);

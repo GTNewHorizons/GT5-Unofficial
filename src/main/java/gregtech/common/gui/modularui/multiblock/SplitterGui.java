@@ -25,13 +25,12 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.Splitter;
 
-public class SplitterGui extends MTEMultiBlockBaseGui {
+public class SplitterGui extends MTEMultiBlockBaseGui<Splitter> {
 
     public SplitterGui(Splitter multiblock) {
         super(multiblock);
@@ -79,7 +78,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
         list.pos(0, 16 + 5);
 
         // Add existing rules
-        for (Map.Entry<Integer, Splitter.ColorRule> entry : base.colorMap.entrySet()) {
+        for (Map.Entry<Integer, Splitter.ColorRule> entry : multiblock.colorMap.entrySet()) {
             int id = entry.getKey();
             Splitter.ColorRule rule = entry.getValue();
             if (rule == null) continue;
@@ -201,7 +200,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
             colorMapSyncer = (GenericSyncValue<Map<Integer, Splitter.ColorRule>>) syncManager
                 .findSyncHandler("rules", GenericSyncValue.class);
             if (indexOverride == null) {
-                while (base.colorMap.get(id) != null) {
+                while (multiblock.colorMap.get(id) != null) {
                     id++;
                 }
             } else id = indexOverride;
@@ -232,15 +231,15 @@ public class SplitterGui extends MTEMultiBlockBaseGui {
 
         private void saveColorData() {
             if (manager.isClient()) {
-                base.colorMap.put(id, thisAsRule());
-                colorMapSyncer.setValue(base.colorMap);
+                multiblock.colorMap.put(id, thisAsRule());
+                colorMapSyncer.setValue(multiblock.colorMap);
             }
         }
 
         private void removeColorData() {
             if (manager.isClient()) {
-                base.colorMap.remove(id);
-                colorMapSyncer.setValue(base.colorMap);
+                multiblock.colorMap.remove(id);
+                colorMapSyncer.setValue(multiblock.colorMap);
             }
             removeSelector();
         }
