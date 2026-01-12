@@ -29,6 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -77,7 +78,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final String NAC_MODULE = "Module of the " + EnumChatFormatting.GREEN
         + "Nanochip Assembly Complex"
         + EnumChatFormatting.GRAY;
-    public static final int CASING_INDEX_BASE = Casings.NanochipPrimaryCasing.textureId;
+
     public static final int CASING_INDEX_WHITE = Casings.NanochipPrimaryCasing.textureId;
 
     // For usage in the GUI
@@ -107,7 +108,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'F',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeastList(Arrays.asList(AssemblyHatchElement.IgnoredHatch, AssemblyHatchElement.AssemblyModule))
+                .atLeast(ImmutableMap.of(AssemblyHatchElement.AssemblyModule, 0))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(1)
                 // Base casing or assembly module
@@ -117,8 +118,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'H',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeastList(
-                    Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
+                .atLeast(
+                    ImmutableMap.of(
+                        AssemblyHatchElement.VacuumConveyorHatch,
+                        1,
+                        InputBus,
+                        1,
+                        OutputBus,
+                        1,
+                        ExoticEnergy,
+                        1,
+                        Energy,
+                        0))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(2)
                 .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
@@ -126,11 +137,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'I',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(AssemblyHatchElement.IgnoredHatch)
+                .atLeast(ImmutableMap.of(AssemblyHatchElement.IgnoredHatch, 0))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(3)
                 .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
-
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
