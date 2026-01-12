@@ -189,6 +189,7 @@ gt.interact.desc.deny_i_filter_o=Deny input, Filter output
 gt.interact.desc.deny_i_invert_o=Deny input, Invert output
 gt.interact.desc.any_i_filter_o=Permit any input, Filter output
 gt.interact.desc.any_i_invert_o=Permit any input, Invert output
+gt.interact.desc.unknown=UNKNOWN
 gt.interact.desc.mb.idle.1=Hit with Soft Mallet
 gt.interact.desc.mb.idle.2= to (re-)start the Machine
 gt.interact.desc.mb.idle.3= if it doesn't start.

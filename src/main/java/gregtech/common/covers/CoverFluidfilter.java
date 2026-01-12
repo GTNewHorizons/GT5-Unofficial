@@ -175,7 +175,7 @@ public class CoverFluidfilter extends Cover {
             case DENY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.deny_i_invert_o");
             case ANY_INPUT_FILTER_OUTPUT -> translateToLocal("gt.interact.desc.any_i_filter_o");
             case ANY_INPUT_INVERT_OUTPUT -> translateToLocal("gt.interact.desc.any_i_invert_o");
-            default -> ("UNKNOWN");
+            default -> translateToLocal("gt.interact.desc.unknown");
         };
     }
 
