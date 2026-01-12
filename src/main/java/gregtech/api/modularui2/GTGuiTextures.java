@@ -71,13 +71,6 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
         .build();
-
-    public static final UITexture BACKGROUND_TEXT_FIELD_LIGHT_GRAY = UITexture.builder()
-        .location(GregTech.ID, "gui/background/text_field_light_gray")
-        .adaptable(1)
-        .name(GTTextureIds.BACKGROUND_TEXT_FIELD_LIGHT_GRAY)
-        .build();
-
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
@@ -141,7 +134,6 @@ public final class GTGuiTextures {
         .location(MODID, "gui/tesla_tower_chart_background")
         .nonOpaque()
         .build();
-
     public static final UITexture BACKGROUND_STAR = UITexture.fullImage(MODID, "gui/background/star");
     public static final UITexture BACKGROUND_GLOW_ORANGE = UITexture.fullImage(MODID, "gui/background/orange_glow");
     public static final UITexture BACKGROUND_GLOW_PURPLE = UITexture.fullImage(MODID, "gui/background/purple_glow");
@@ -574,30 +566,6 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
         .build();
-    public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_plasma");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_background");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BLUE = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_blue");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RED = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_red");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_PURPLE = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BLUE_INVERTED = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_blue_inverted");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RED_INVERTED = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_red_inverted");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_PURPLE_INVERTED = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_purple_inverted");
-    public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_RAINBOW_INVERTED = UITexture
-        .fullImage(MODID, "gui/progressbar/godforge_progressbar_rainbow_inverted");
-
-    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
-    public static final UITexture STEAM_GAUGE_BG_STEEL = UITexture
-        .fullImage(GregTech.ID, "gui/background/steam_dial_steel");
 
     // endregion progressbar
 
@@ -864,12 +832,12 @@ public final class GTGuiTextures {
             GTTextureIds.PICTURE_GT_LOGO_STEEL,
             GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
-
     public static final UITexture PICTURE_TECTECH_LOGO_DARK = UITexture.builder()
         .location(MODID, "gui/picture/tectech_logo_dark")
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .build();
+    public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()

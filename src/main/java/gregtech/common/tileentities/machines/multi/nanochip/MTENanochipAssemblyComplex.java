@@ -48,7 +48,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.gui.MTEMultiBlockBaseGui;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -110,7 +109,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
                 .atLeastList(Arrays.asList(AssemblyHatchElement.IgnoredHatch, AssemblyHatchElement.AssemblyModule))
                 .casingIndex(CASING_INDEX_WHITE)
-                .dot(1)
+                .hint(1)
                 // Base casing or assembly module
                 .buildAndChain(GregTechAPI.sBlockCasings8, 5))
 
@@ -121,7 +120,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .atLeastList(
                     Arrays.asList(AssemblyHatchElement.VacuumConveyorHatch, InputBus, OutputBus, Energy, ExoticEnergy))
                 .casingIndex(CASING_INDEX_WHITE)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
         // Either a white casing block or an ignored hatch (this hatch is on the module)
         .addElement(
@@ -129,7 +128,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
                 .atLeast(AssemblyHatchElement.IgnoredHatch)
                 .casingIndex(CASING_INDEX_WHITE)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 5)))
         // Crafting storage block
         .addElement('J', ofBlock(getCraftingStorageBlock(), getCraftingStorageMeta()))
@@ -440,7 +439,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                             ItemStack toOutput = GTUtility
                                 .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
                             // Add output and deplete from hatch
-                            addOutput(toOutput);
+                            // todo check that this is correct after item logistics changes
+                            addOutputAtomic(toOutput);
                             contents.remove(component);
                         }
                     }
