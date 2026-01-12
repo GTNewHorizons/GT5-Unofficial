@@ -1,7 +1,5 @@
 package gregtech.common.covers;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.lang.ref.WeakReference;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -179,19 +177,19 @@ public class CoverControlsWork extends CoverLegacyData {
             newCoverData = 2;
         }
         if (newCoverData == 0) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_on");
         }
         if (newCoverData == 1) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_inverted");
         }
         if (newCoverData == 2) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_off"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_off");
         }
         if (newCoverData == 3) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_on_safe"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_on_safe");
         }
         if (newCoverData == 4) {
-            GTUtility.sendChatToPlayer(aPlayer, translateToLocal("gt.interact.desc.signal_inverted_safe"));
+            GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.signal_inverted_safe");
         }
         // TODO: Set lastPlayer
         coverData = newCoverData;
