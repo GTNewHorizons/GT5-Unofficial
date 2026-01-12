@@ -500,14 +500,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             mAllowOverclocks = !mAllowOverclocks;
-
-            if (mAllowOverclocks) {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §a%s§r", GTUtility.trans("088", "Enabled")));
-            } else {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §c%s§r", GTUtility.trans("087", "Disabled")));
-            }
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAllowOverclocks ? "GT5U.chat.worm_hole_generator.overclocks.enable"
+                    : "GT5U.chat.worm_hole_generator.overclocks.disable");
         } else {
             super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         }
