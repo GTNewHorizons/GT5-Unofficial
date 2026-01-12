@@ -666,8 +666,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "multimachine.nanochipmodule.superconductorsplitter",
                 "Superconductive Strand Splitter").getStackForm(1));
         ItemList.NanoChipModule_Splitter.set(
-            new MTESplitterModule(NANOCHIP_MODULE_SPLITTER.ID, "multimachine.nanochipmodule.splitter", "Nanopart Splitter")
-                .getStackForm(1));
+            new MTESplitterModule(
+                NANOCHIP_MODULE_SPLITTER.ID,
+                "multimachine.nanochipmodule.splitter",
+                "Nanopart Splitter").getStackForm(1));
         ItemList.NanoChipModule_OpticalOrganizer.set(
             new MTEOpticalOrganizerModule(
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,

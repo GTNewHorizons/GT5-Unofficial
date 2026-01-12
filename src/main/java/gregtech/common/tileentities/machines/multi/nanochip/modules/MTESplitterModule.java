@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 
@@ -23,7 +22,7 @@ import com.google.common.primitives.Bytes;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -55,10 +54,10 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SPLITTER_STRUCTURE)
-        // White casing block
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings8, 5))
-        // Black casing block
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 10))
+        // Nanochip Primary Casing
+        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
+        // Nanochip Secondary Casing
+        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // Epoxy Resin Casing
         .addElement('C', ofFrame(Materials.EpoxidFiberReinforced))
         .build();
