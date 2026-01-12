@@ -85,8 +85,7 @@ public class TooltipMarkupProcessor {
 
             if (markIdx + mark.length() < str.length()) {
                 String after = str.substring(markIdx + mark.length());
-                String indent = str.startsWith(INDENT) ? INDENT : "";
-                parts.add(indent + after);
+                parts.add(after);
             }
 
             list.remove(i);
