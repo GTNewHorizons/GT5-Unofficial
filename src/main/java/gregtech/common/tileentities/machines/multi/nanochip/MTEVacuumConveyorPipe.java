@@ -30,8 +30,8 @@ import tectech.mechanics.pipe.PipeActivityMessage;
 
 public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsToVacuumConveyor, IActivePipe {
 
-    private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMbar, EMbarActive;
+    private static Textures.BlockIcons.CustomIcon CCPipe;
+    private static Textures.BlockIcons.CustomIcon CCBarOverlay, CCBarOverlayActive;
     public byte connectionCount = 0;
 
     private boolean active;
@@ -52,17 +52,19 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA");
-        EMbar = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
-        EMbarActive = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR_ACTIVE");
+        CCPipe = new Textures.BlockIcons.CustomIcon("iconsets/CC_PIPE");
+        CCBarOverlay = new Textures.BlockIcons.CustomIcon("iconsets/CC_BAR_OVERLAY");
+        CCBarOverlayActive = new Textures.BlockIcons.CustomIcon("iconsets/CC_BAR_OVERLAY_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[] { TextureFactory.of(EMpipe), TextureFactory
-            .of(getActive() ? EMbarActive : EMbar, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+        return new ITexture[] { TextureFactory.of(CCPipe),
+            TextureFactory.of(
+                getActive() ? CCBarOverlayActive : CCBarOverlay,
+                Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
     }
 
     @Override
