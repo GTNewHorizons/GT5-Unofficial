@@ -405,11 +405,13 @@ public class RecipeHandlers {
 
         addSimpleProcessingRecipe(
             CircuitComponent.NeuroProcessingUnit,
+            Materials.GrowthMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedNeuroProcessingUnit,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.BioProcessingUnit,
+            Materials.BioMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedBioProcessingUnit,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);

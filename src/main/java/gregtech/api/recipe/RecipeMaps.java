@@ -1463,7 +1463,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
         .of("gt.recipe.nanochip.biologicalcoordinator")
-        .maxIO(1, 1, 0, 0)
+        .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
