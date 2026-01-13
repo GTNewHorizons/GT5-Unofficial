@@ -15,6 +15,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.common.gui.modularui.hatch.MTEHatchSplitterRedstoneGui;
 
@@ -22,6 +24,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     private byte redstoneInput = 0;
     private int channel = 1;
+    public int MAX_CHANNEL = 20;
 
     public MTEHatchSplitterRedstone(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Allows Redstone Control for Spliter");
@@ -63,7 +66,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        this.setChannel((channel + 1) % 20);
+        this.setChannel((channel + 1) % MAX_CHANNEL);
         aPlayer.addChatComponentMessage(new ChatComponentText(channel + ""));
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -71,7 +74,6 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         this.setRedstoneInput(baseMetaTileEntity.getStrongestRedstone());
-        System.out.println(redstoneInput);
         super.onPostTick(baseMetaTileEntity, tick);
     }
 
@@ -83,6 +85,11 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.NANOCHIP;
     }
 
     public byte getRedstoneInput() {
