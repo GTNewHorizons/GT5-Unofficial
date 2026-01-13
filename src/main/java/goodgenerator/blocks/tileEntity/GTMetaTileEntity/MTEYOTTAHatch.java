@@ -137,7 +137,10 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GTUtility.sendChatTrans(aPlayer, "yothatch.chat.1", new ChatComponentTranslation(getUnlocalizedReadMode(this.readMode)));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "yothatch.chat.1",
+            new ChatComponentTranslation(getUnlocalizedReadMode(this.readMode)));
         return true;
     }
 
