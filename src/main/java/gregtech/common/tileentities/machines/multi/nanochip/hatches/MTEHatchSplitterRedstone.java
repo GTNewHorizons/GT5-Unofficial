@@ -5,10 +5,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.MetaTileEntityGuiHandler;
+import gregtech.common.gui.modularui.hatch.MTEHatchSplitterRedstoneGui;
 
 public class MTEHatchSplitterRedstone extends MTEHatch {
 
@@ -26,6 +34,14 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[0];
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!NetworkUtils.isClient(aPlayer)) {
+            MetaTileEntityGuiHandler.open(aPlayer, this);
+        }
+        return true;
     }
 
     @Override
@@ -54,10 +70,19 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            this.setRedstoneInput(baseMetaTileEntity.getInputRedstoneSignal(side));
-        }
+        this.setRedstoneInput(baseMetaTileEntity.getStrongestRedstone());
+        System.out.println(redstoneInput);
         super.onPostTick(baseMetaTileEntity, tick);
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchSplitterRedstoneGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     public byte getRedstoneInput() {
