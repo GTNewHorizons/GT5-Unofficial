@@ -48,6 +48,7 @@ import bartworks.common.configs.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -82,6 +83,11 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     private int mCasingFrostProof = 0;
     private int mTier = 1;
+
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Casing_FrostProof.get(1)
+            .getDisplayName());
 
     private static class SubspaceCoolingFluid {
 
@@ -244,21 +250,29 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 FluidRegistry.getFluidStack("spatialfluid", 1)
                     .getLocalizedName(),
                 Materials.Eternity.getLocalizedName())
-            .addSeparator()
             .addInfo("gt.mvf.tips.3")
             .beginStructureBlock(15, 15, 15, true)
             .addController("front_center")
-            .addEnergyHatch("gt.mvf.info.1", 1)
-            .addMaintenanceHatch("gt.mvf.info.1", 1)
-            .addInputHatch("gt.mvf.info.1", 1)
-            .addOutputHatch("gt.mvf.info.1", 1)
-            .addInputBus("gt.mvf.info.1", 1)
-            .addOutputBus("gt.mvf.info.1", 1)
-            .addStructureInfo("gt.mvf.info.2")
-            .addCasingInfoMin("gt.blockcasings2.1.name", 800)
-            .addStructureInfo("gt.mvf.info.3")
-            .addCasingInfoMin("gt.blockcasings2.1.name", 700)
-            .addCasingInfoExactly("gt.blockcasings8.14.name", 384)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addStructureInfo("gt.mvf.info.t1_multi")
+            .addCasingInfoMin(
+                ItemList.Casing_FrostProof.get(1)
+                    .getDisplayName(),
+                800)
+            .addStructureInfo("gt.mvf.info.t2_multi")
+            .addCasingInfoMin(
+                ItemList.Casing_FrostProof.get(1)
+                    .getDisplayName(),
+                700)
+            .addCasingInfoExactly(
+                ItemList.InfinityCooledCasing.get(1)
+                    .getDisplayName(),
+                384)
             .toolTipFinisher();
         return tt;
     }

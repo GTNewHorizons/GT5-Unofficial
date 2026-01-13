@@ -47,6 +47,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -126,14 +127,17 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.sparge")
-            .addInfo("gt.sparge_tower.tips.1")
+            .addInfo("gt.sparge_tower.tips")
             .beginStructureBlock(3, 8, 3, true)
             .addController("front_bottom_middle")
-            .addCasingInfoMin("gtplusplus.blockcasings.5.4.name", 45)
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Sparge_Tower_Exterior.get(1)
+                    .getDisplayName(),
+                45)
             .addEnergyHatch("<casing>", 1, 2)
             .addMaintenanceHatch("<casing>", 1, 2, 3)
-            .addInputHatch("gt.sparge_tower.info.ihatch", 1)
-            .addOutputHatch("gt.sparge_tower.info.ohatch", 2, 3)
+            .addInputHatch("gt.sparge_tower.info.i_hatch", 1)
+            .addOutputHatch("gt.sparge_tower.info.o_hatch", 2, 3)
             .toolTipFinisher();
         return tt;
     }

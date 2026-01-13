@@ -218,7 +218,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
             .addController("front_center")
-            .addCasingInfoMin("gt.blockcasings10.3.name", 128)
+            .addCasingInfoMin(
+                ItemList.Casing_Autoclave.get(1)
+                    .getDisplayName(),
+                128)
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 42, true)
             .addCasingInfoExactly("GT5U.MBTT.Tiers.ItemPipe", 7, true)
             .addCasingInfoExactly("GT5U.MBTT.Tiers.FluidPipe", 14, true)

@@ -47,6 +47,7 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -59,6 +60,10 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     private int mLevel = 0;
     private int mCasing;
     private static IStructureDefinition<MTEIndustrialAlloySmelter> STRUCTURE_DEFINITION = null;
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        GregtechItemList.Casing_Extruder.get(1)
+            .getDisplayName());;
 
     public MTEIndustrialAlloySmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -125,14 +130,21 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("front_bottom_middle")
-            .addCasingInfoMin("gtplusplus.blockcasings.3.1.name", 8, false)
-            .addStructurePart("gtplusplus.blocktieredcasings.1.4.name", "gt.zyngen.info.1")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Extruder.get(1)
+                    .getDisplayName(),
+                8,
+                false)
+            .addStructurePart(
+                GregtechItemList.GTPP_Casing_EV.get(1)
+                    .getDisplayName(),
+                "gt.zyngen.info.1")
             .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.zyngen.info.2")
-            .addInputBus("gt.zyngen.info.3", 1)
-            .addOutputBus("gt.zyngen.info.3", 1)
-            .addEnergyHatch("gt.zyngen.info.3", 1)
-            .addMaintenanceHatch("gt.zyngen.info.3", 1)
-            .addMufflerHatch("gt.zyngen.info.3", 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
+            .addMaintenanceHatch(anyCasing, 1)
+            .addMufflerHatch(anyCasing, 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;

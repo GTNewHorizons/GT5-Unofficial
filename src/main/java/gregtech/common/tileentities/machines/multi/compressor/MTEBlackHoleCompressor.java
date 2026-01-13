@@ -89,6 +89,11 @@ import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
 
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Background_Radiation_Casing.get(1)
+            .getDisplayName());
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBlackHoleCompressor>builder()
@@ -358,18 +363,27 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .addTecTechHatchInfo()
             .addInfo("gt.bhc.tips.3")
             .beginStructureBlock(35, 33, 35, false)
-            .addCasingInfoMin("gt.blockcasings10.12.name", 950)
-            .addCasingInfoExactly("gt.blockcasings10.11.name", 3667)
-            .addCasingInfoExactly("gt.blockglass1.4.name", 64)
+            .addCasingInfoMin(
+                ItemList.Background_Radiation_Casing.get(1)
+                    .getDisplayName(),
+                950)
+            .addCasingInfoExactly(
+                ItemList.Extreme_Density_Casing.get(1)
+                    .getDisplayName(),
+                3667)
+            .addCasingInfoExactly(
+                ItemList.Hawking_Glass.get(1)
+                    .getDisplayName(),
+                64)
             .addCasingInfoExactly(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
                     .getDisplayName(),
                 144)
             .addInputHatch("gt.bhc.info.i_hatch", 2)
-            .addInputBus("gt.bhc.info.i_bus", 1)
-            .addOutputBus("gt.bhc.info.i_bus", 1)
-            .addInputHatch("gt.bhc.info.i_bus", 1)
-            .addEnergyHatch("gt.bhc.info.i_bus", 1)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

@@ -61,6 +61,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.client.renderer.EICPistonVisualizer;
 import bartworks.common.configs.Configuration;
+import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.net.PacketEIC;
 import bartworks.util.Coords;
 import cpw.mods.fml.relauncher.Side;
@@ -68,6 +69,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -108,6 +110,11 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEElectricImplosionCompressor(this.mName);
     }
+
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Casing_SolidSteel.get(1)
+            .getDisplayName());
 
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -212,21 +219,24 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.eic")
-            .addInfo("gt.eic.tips.1")
+            .addInfo("gt.eic.tips")
             .addMaxTierSkips(1)
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 9, 3, false)
-            .addController("gt.eic.info.1")
-            .addCasingInfoMin("gt.blockcasings2.0.name", 8)
-            .addStructureInfo("gt.eic.info.2")
-            .addStructurePart("BW_Machinery_Casings.1.name", "gt.eic.info.3")
-            .addStructurePart("BW_Machinery_Casings.0.name", "gt.eic.info.4")
-            .addStructurePart("GT5U.tooltip.structure.kaboom_containment", "gt.eic.info.5")
-            .addMaintenanceHatch("gt.eic.info.6", 1)
-            .addInputBus("gt.eic.info.6", 1)
-            .addInputHatch("gt.eic.info.6", 1)
-            .addOutputBus("gt.eic.info.6", 1)
-            .addEnergyHatch("gt.eic.info.7", 2)
+            .addController("gt.eic.info.controller")
+            .addCasingInfoMin(
+                ItemList.Casing_SolidSteel.get(1)
+                    .getDisplayName(),
+                8)
+            .addStructureInfo("gt.eic.info.replacement")
+            .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 1).getDisplayName(), "gt.eic.info.casing.a")
+            .addStructurePart(new ItemStack(ItemRegistry.BW_BLOCKS[2], 1, 0).getDisplayName(), "gt.eic.info.casing.b")
+            .addStructurePart("GT5U.tooltip.structure.kaboom_containment", "gt.eic.info.casing.c")
+            .addMaintenanceHatch(anyCasing, 1)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addEnergyHatch("gt.eic.info.e_hatch", 2)
             .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
         return tt;

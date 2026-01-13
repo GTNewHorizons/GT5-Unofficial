@@ -31,6 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -73,11 +74,22 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("gt.recipe.cokeoven")
-            .addInfo("gt.mb_coke_oven.tips.1")
+            .addInfo("gt.mb_coke_oven.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_center")
-            .addCasingInfoRange("gt.blockcasings12.0.name", 0, 26, false)
-            .addStructurePart("gt.blockmachines.hatch.cokeoven.name", "gt.mb_coke_oven.info.1")
+            .addCasingInfoRange(
+                ItemList.CokeOvenCasing.get(1)
+                    .getDisplayName(),
+                0,
+                26,
+                false)
+            .addStructurePart(
+                ItemList.CokeOvenHatch.get(1)
+                    .getDisplayName(),
+                GTUtility.nestParams(
+                    "GT5U.MBTT.HatchInfo",
+                    ItemList.CokeOvenCasing.get(1)
+                        .getDisplayName()))
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher(AuthorJulia);
     }
