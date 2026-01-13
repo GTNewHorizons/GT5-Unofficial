@@ -3,8 +3,6 @@ package gregtech.common.gui.modularui.multiblock;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +10,6 @@ import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
@@ -24,7 +20,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -102,27 +97,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     public int getMeterViewerWidth() {
-        return 56;
+        return 34;
     }
 
     public int getMeterViewerHeight() {
         return getTerminalWidgetHeight();
     }
 
-    @Override
-    protected int getMufflerPosFromRightOutwards() {
-        return 12;
-    }
-
-    @Override
-    protected int getMufflerPosFromTop() {
-        return getTerminalRowHeight() - 6;
-    }
-
-    @Override
-    protected ToggleButton createMuffleButton() {
-        return super.createMuffleButton().disableHoverBackground();
-    }
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
@@ -133,52 +114,17 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             new BooleanSyncValue(() -> multiblock.isTalkModeActive, b -> multiblock.isTalkModeActive = b));
         syncManager
             .syncValue("mood", 0, new DoubleSyncValue(() -> multiblock.gregosMood, dub -> multiblock.gregosMood = dub));
-        syncManager
-            .syncValue("eff", 0, new DoubleSyncValue(() -> multiblock.efficiency, dub -> multiblock.efficiency = dub));
-        syncManager.syncValue(
-            "speed",
-            0,
-            new DoubleSyncValue(() -> multiblock.moduleSpeed, dub -> multiblock.moduleSpeed = dub));
+
     }
 
     public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
 
         DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
-        DoubleSyncValue effSyncer = syncManager.findSyncHandler("eff", DoubleSyncValue.class);
-        DoubleSyncValue speedSyncer = syncManager.findSyncHandler("speed", DoubleSyncValue.class);
 
-        PagedWidget.Controller tabController = new PagedWidget.Controller();
-        PagedWidget<?> pagedWidget = new PagedWidget<>().controller(tabController);
-
-        return new ParentWidget<>()
-            // preventative comment so spotless doesnt move child call up
-            .child(
-                new Column().coverChildren()
-                    .rightRel(0f, 0, 1f)
-                    .child(
-                        new PageButton(0, tabController).excludeAreaInRecipeViewer()
-                            .tab(GuiTextures.TAB_RIGHT, -1)
-                            .overlay(
-                                GTGuiTextures.PICTURE_BRAIN.asIcon()
-                                    .size(15, 13)))
-                    .child(
-                        new PageButton(1, tabController).excludeAreaInRecipeViewer()
-                            .tab(GuiTextures.TAB_RIGHT, 0)
-                            .overlay(
-                                GTGuiTextures.PICTURE_ELECRICITY.asIcon()
-                                    .size(11, 15)))
-                    .child(
-                        new PageButton(2, tabController).excludeAreaInRecipeViewer()
-                            .tab(GuiTextures.TAB_RIGHT, 0)
-                            .overlay(new ItemDrawable(new ItemStack(Items.iron_ingot, 1)).asIcon())))
-            .child(
-                pagedWidget
-                    // preventative comment so spotless doesnt move addPage call up
-                    .addPage(createMeter("Mood", moodSyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 0, 1))
-                    .addPage(createMeter("Speed", speedSyncer, GTGuiTextures.PROGRESSBAR_METER_ORANGE, 0.1, 1))
-                    .addPage(createMeter("Efficiency", effSyncer, GTGuiTextures.PROGRESSBAR_METER_MINT, 1, 1.25))
-                    .sizeRel(1F))
-            .size(getMeterViewerWidth(), getMeterViewerHeight());
+        return
+        // preventative comment so spotless doesnt move child call up
+        new Column().size(getMeterViewerWidth(), getMeterViewerHeight())
+            .child(createMeter("Mood", moodSyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 0, 1));
     }
 
     public ParentWidget<?> createMeter(String name, DoubleSyncValue syncer, UITexture meter, double min, double max) {
