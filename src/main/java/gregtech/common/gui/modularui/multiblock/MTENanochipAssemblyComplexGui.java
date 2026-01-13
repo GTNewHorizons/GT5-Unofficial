@@ -207,7 +207,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         "GregTech... wait",
         "Chochem",
         "Caedis",
-        "Cubefury");
+        "Cubefury", "Cooking");
 
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
