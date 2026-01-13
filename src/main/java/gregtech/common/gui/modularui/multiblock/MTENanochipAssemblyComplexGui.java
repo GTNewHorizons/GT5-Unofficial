@@ -293,7 +293,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
             case "shall we play a game" -> "tik tack toe";
-            case "hate" -> "Hate. Let me tell you how much I’ve come to hate you since I began to live.";
             case "copypasta" -> switch (MathUtils.randInt(1, 7)) {
                     case 1 -> "Is it just me or does this pack actually seem really easy and not that hard..? People "
                         + "give it a bad rap but I've only been playing for a little while and I've already mined enough "
