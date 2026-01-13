@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -73,7 +74,6 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .coverChildrenHeight()
             .crossAxisAlignment(Alignment.CrossAxis.END);
         column.child(createCellDrainRow(syncManager));
-        column.child(createVoidButton(syncManager));
         return column.align(Alignment.CenterRight)
             .marginRight(3);
     }
@@ -93,7 +93,6 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             },
             null);
         syncManager.syncValue("contents", contentsSyncHandler);
-
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
             GenericSyncValue<CircuitComponentPacket> syncContents = syncManager
                 .findSyncHandler("contents", GenericSyncValue.class);
@@ -122,6 +121,11 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
         });
     }
 
+    @Override
+    protected UITexture getLogoTexture() {
+        return GTGuiTextures.PICTURE_NANOCHIP_LOGO;
+    }
+
     @SuppressWarnings("unchecked")
     private IWidget createCCSlotGroup(ModularPanel panel, PanelSyncManager syncManager) {
 
@@ -141,10 +145,10 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                     .matrix(matrix)
                     .key('c', index -> {
                         List<ItemStack> itemRepresentations = packet.getItemRepresentations();
-                        if (index >= itemRepresentations.size()) return GTGuiTextures.SLOT_ITEM_STANDARD.asWidget()
+                        if (index >= itemRepresentations.size()) return GTGuiTextures.SLOT_ITEM_NANOCHIP.asWidget()
                             .size(18);
                         ItemStack item = itemRepresentations.get(index);
-                        if (item == null) return GTGuiTextures.SLOT_ITEM_STANDARD.asWidget()
+                        if (item == null) return GTGuiTextures.SLOT_ITEM_NANOCHIP.asWidget()
                             .size(18);
                         long amount = packet.getComponents()
                             .get(CircuitComponent.getFromFakeStackUnsafe(item));
@@ -170,7 +174,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
     private Widget<?> createSlotWidget(ItemStack item, long amount, PanelSyncManager syncManager) {
         return new Widget<>().size(18)
             .background(
-                GTGuiTextures.SLOT_ITEM_STANDARD,
+                GTGuiTextures.SLOT_ITEM_NANOCHIP,
                 new DynamicDrawable(
                     () -> new ItemDrawable(item).asIcon()
                         .size(16)))
