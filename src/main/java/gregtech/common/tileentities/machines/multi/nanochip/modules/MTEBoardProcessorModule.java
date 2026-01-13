@@ -34,6 +34,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBoardProcessorModule> {
@@ -103,6 +104,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     protected MTEBoardProcessorModule(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.BoardProcessor;
     }
 
     @Override
