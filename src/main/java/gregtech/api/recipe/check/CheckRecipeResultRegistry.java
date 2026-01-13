@@ -130,6 +130,13 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult CYCLE_IDLE = SimpleCheckRecipeResult.ofSuccess("cycle_idle");
 
     /**
+     * Machine is waiting for the main controller to start the cycle.
+     */
+    @Nonnull
+    public static final CheckRecipeResult NAC_OPTICAL_MISSING_WATER = SimpleCheckRecipeResult
+        .ofFailure("nac.missing_water");
+
+    /**
      * Cannot process recipe because the machine cannot handle required EUt.
      */
     @Nonnull
