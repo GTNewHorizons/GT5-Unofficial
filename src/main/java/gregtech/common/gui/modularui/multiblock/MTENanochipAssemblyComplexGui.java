@@ -257,6 +257,16 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
             case "knock knock" -> "Who's there?";
+            case "what kind of multi is this" -> "i don't " + EnumChatFormatting.OBFUSCATED
+                + "fucking"
+                + EnumChatFormatting.RESET
+                + " know!";
+            case "cake" -> switch (MathUtils.randInt(1, 2)) {
+                case 1 -> "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
+                default -> "This time not a lie";
+            };
+            case "6" -> "7";
+            case "tilapia" -> "An awesome protein for your fried rice!";
             case "joke" -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "No time for jokes.";
                     case 2 -> "A rolling golem gathers no rust.";
