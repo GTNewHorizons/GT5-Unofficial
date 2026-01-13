@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
@@ -209,6 +210,27 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
+            case "help" -> "List of commands: contributors, gregos";
+            case "contributors" -> EnumChatFormatting.YELLOW + "Lead:\n"
+                + EnumChatFormatting.RESET
+                + " NotAPenguin\n"
+                + EnumChatFormatting.YELLOW
+                + "Programming:\n"
+                + EnumChatFormatting.RESET
+                + " JurreJelle\n FourIsTheNumber\n PureBluez\n TheEpicGamer274\n Nockyx\n Serenibyss\n Chrom\n SpicierSpace153\n"
+                + EnumChatFormatting.YELLOW
+                + "Textures:\n"
+                + EnumChatFormatting.RESET
+                + " June\n "
+                + " Auynonymous\n"
+                + EnumChatFormatting.YELLOW
+                + "Idea:\n"
+                + EnumChatFormatting.RESET
+                + " Sampsa\n"
+                + EnumChatFormatting.YELLOW
+                + "Structure:\n"
+                + EnumChatFormatting.RESET
+                + " Deleno";
             case "hi" -> "Hello.";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
                 + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
