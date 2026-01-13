@@ -377,7 +377,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = recipe.mDuration;
             // Needs to be negative obviously to display correctly
-            this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel ;
+            this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel;
             this.lEUt = (long) (this.lEUt * this.getEUDiscountModifier());
         }
 
@@ -460,7 +460,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * Applies an EU Discount
      * In case any specific module wants to control this value
      */
-    protected double getEUDiscountModifier() {
+    protected float getEUDiscountModifier() {
         return 1;
     }
 
