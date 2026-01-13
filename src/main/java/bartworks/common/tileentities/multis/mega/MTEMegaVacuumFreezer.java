@@ -114,9 +114,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 7500),
-            new SubspaceCoolingFluid(Materials.Space, 2, 5000),
-            new SubspaceCoolingFluid(Materials.Eternity, 3, 2500)));
+            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 75),
+            new SubspaceCoolingFluid(Materials.Space, 2, 50),
+            new SubspaceCoolingFluid(Materials.Eternity, 3, 25)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 
