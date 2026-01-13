@@ -26,7 +26,6 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -81,8 +80,8 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         .addElement('B', Casings.NanochipPrimaryCasing.asElement())
         // Nanochip Secondary Casing
         .addElement('C', Casings.NanochipSecondaryCasing.asElement())
-        // Non-Photonic Matter Exclusion Glass
-        .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 3))
+        // Nanochip Glass
+        .addElement('D', Casings.NanochipGlass.asElement())
         .build();
 
     @Override
@@ -288,7 +287,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
                 }
             }
         }
-        if (firstWater == null || secondWater == null) {
+        if (firstWater == null || secondWater == null || (firstWater.water == secondWater.water)) {
             return CheckRecipeResultRegistry.NAC_OPTICAL_MISSING_WATER;
         }
         firstWater.boosterFunction.accept(this);
