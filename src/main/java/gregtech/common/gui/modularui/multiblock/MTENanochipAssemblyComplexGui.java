@@ -74,7 +74,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.makeLogoWidget(syncManager, parent).size(24).setEnabledIf(a -> !multiblock.isTalkModeActive);
+        return super.makeLogoWidget(syncManager, parent).size(24)
+            .setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
 
     @Override

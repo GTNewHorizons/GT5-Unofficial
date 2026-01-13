@@ -9,17 +9,12 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -29,29 +24,25 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 
 public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTESheetSupervisorModule> {
 
-    private static final int COMPUTATION_TO_BE_DRAINED_PER_SECOND = 100000;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int SHEET_OFFSET_X = 3;
     protected static final int SHEET_OFFSET_Y = 6;
     protected static final int SHEET_OFFSET_Z = 0;
     protected static final String[][] SHEET_STRING = new String[][] {
-        { "       ", "  DED  ", "  DED  ", " CDEDC ", " CDEDC ", " CDEDC " },
+        { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
-        { " BAAAB ", "E     E", "ECAAACE", "E     E", "ECAAACE", "E     E" },
+        { " BAAAB ", "B     B", "BCAAACB", "B     B", "BCAAACB", "B     B" },
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
-        { "       ", "  DED  ", "  DED  ", " CDEDC ", " CDEDC ", " CDEDC " } };
+        { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " } };
     public static final IStructureDefinition<MTESheetSupervisorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESheetSupervisorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SHEET_STRING)
@@ -63,12 +54,6 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
         .addElement('C', ofFrame(Materials.Quantium))
         // Nanochip Glass
         .addElement('D', Casings.NanochipGlass.asElement())
-        // Compuation input hatch
-        .addElement(
-            'E',
-            // TODO: Add correct textureIndex when the new blocks get made
-            GTStructureUtility
-                .ofHatchAdderOptional(MTESheetSupervisorModule::addDataHatch, 0, 1, GregTechAPI.sBlockCasings8, 10))
         .build();
 
     @Override
@@ -97,17 +82,6 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
-    }
-
-    private Set<MTEHatchDataInput> dataInputHatchList = new HashSet<>();
-
-    private boolean addDataHatch(IGregTechTileEntity mte, int baseCasingIndex) {
-        if (mte.getMetaTileEntity() instanceof MTEHatchDataInput dataInput) {
-            dataInput.updateTexture(baseCasingIndex);
-            dataInputHatchList.add(dataInput);
-            return true;
-        }
-        return false;
     }
 
     public MTESheetSupervisorModule(int aID, String aName, String aNameRegional) {
@@ -150,50 +124,6 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
         return checkPiece(STRUCTURE_PIECE_MAIN, SHEET_OFFSET_X, SHEET_OFFSET_Y, SHEET_OFFSET_Z);
-    }
-
-    private int ticker = 0;
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (!super.onRunningTick(aStack)) {
-            return false;
-        }
-
-        if (ticker % 20 == 0) {
-            if (!hasEnoughComputation()) {
-                stopMachine(ShutDownReasonRegistry.outOfStuff("Computation", COMPUTATION_TO_BE_DRAINED_PER_SECOND));
-                return false;
-            }
-            ticker = 0;
-        }
-
-        ticker++;
-
-        return true;
-    }
-
-    protected long getAvailableData() {
-        long result = 0;
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        Vec3Impl pos = new Vec3Impl(
-            baseMetaTileEntity.getXCoord(),
-            baseMetaTileEntity.getYCoord(),
-            baseMetaTileEntity.getZCoord());
-        for (MTEHatchDataInput in : dataInputHatchList) {
-            if (in.q != null) {
-                Long value = in.q.contentIfNotInTrace(pos);
-                if (value != null) {
-                    result += value;
-                }
-            }
-        }
-        return result;
-    }
-
-    private boolean hasEnoughComputation() {
-        long availableData = getAvailableData();
-        return availableData >= MTESheetSupervisorModule.COMPUTATION_TO_BE_DRAINED_PER_SECOND;
     }
 
     @Override

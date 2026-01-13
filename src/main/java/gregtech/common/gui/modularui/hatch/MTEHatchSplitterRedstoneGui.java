@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.hatch;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -24,8 +23,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
         IntSyncValue redstone = syncManager.findSyncHandler("redstone", IntSyncValue.class);
         IntSyncValue channel = syncManager.findSyncHandler("channel", IntSyncValue.class);
         return super.createContentSection(panel, syncManager).child(
-            new Column()
-                .coverChildren()
+            new Column().coverChildren()
                 .child(
                     new Row().child(new ButtonWidget<>())
                         .child(
