@@ -10742,7 +10742,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HATCH_SPLITTER_LEVEL.ID,
                 "hatch.splitter.redstone",
                 "Splitter Redstone Input",
-                1).getStackForm(1));
+                9).getStackForm(1));
 
         ItemList.VacuumConveyorPipe.set(
             new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
