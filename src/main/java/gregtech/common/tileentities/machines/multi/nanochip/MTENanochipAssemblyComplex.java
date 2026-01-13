@@ -507,8 +507,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public @NotNull CheckRecipeResult checkProcessing() {
         // Always keep the machine running, it doesn't run recipes directly.
         if (isAllowedToWork()) {
-            for(MTENanochipAssemblyModuleBase<?> module : modules) {
-               this.gregosMood = module.calculateMoodMultiplier() * gregosMood;
+            for (MTENanochipAssemblyModuleBase<?> module : modules) {
+                this.gregosMood = module.calculateMoodMultiplier() * gregosMood;
             }
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 5 * SECONDS;

@@ -74,6 +74,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .coverChildrenHeight()
             .crossAxisAlignment(Alignment.CrossAxis.END);
         column.child(createCellDrainRow(syncManager));
+        column.child(createVoidButton(syncManager));
         return column.align(Alignment.CenterRight)
             .marginRight(3);
     }
