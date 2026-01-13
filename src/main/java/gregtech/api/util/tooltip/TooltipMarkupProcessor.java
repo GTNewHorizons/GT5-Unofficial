@@ -85,6 +85,9 @@ public class TooltipMarkupProcessor {
 
             if (markIdx + mark.length() < str.length()) {
                 String after = str.substring(markIdx + mark.length());
+                if (mark.equals(STRUCTURE_SEPARATOR_MARK) && !after.startsWith(INDENT)) {
+                    after = INDENT + after;
+                }
                 parts.add(after);
             }
 
