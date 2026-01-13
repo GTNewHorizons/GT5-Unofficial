@@ -1,6 +1,9 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_PIPE_PORT;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.*;
 
 import java.util.ArrayList;
@@ -56,17 +59,20 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory
-            .of(EM_D_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+        return new ITexture[] { aBaseTexture,
+            TextureFactory.of(
+                OVERLAY_VACUUM_HATCH_ACTIVE,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            TextureFactory
-                .of(EM_D_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
-            TextureFactory.of(EM_D_CONN) };
+            TextureFactory.of(
+                OVERLAY_VACUUM_HATCH,
+                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
     }
 
     public void unifyPacket(CircuitComponentPacket packet) {
