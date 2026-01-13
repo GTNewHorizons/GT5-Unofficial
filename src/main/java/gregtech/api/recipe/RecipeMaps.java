@@ -92,6 +92,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBiologicalCoordinationModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
@@ -1777,6 +1778,16 @@ public final class RecipeMaps {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
             MTESheetSupervisorModule.registerLocalName(input.getLocalizedName(), output);
+        })
+        .build();
+    public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
+        .of("gt.recipe.nanochip.biologicalcoordinator")
+        .maxIO(1, 1, 0, 0)
+        .minInputs(1, 0)
+        .recipeTransformer(recipe -> {
+            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
+            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
+            MTEBiologicalCoordinationModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
 }
