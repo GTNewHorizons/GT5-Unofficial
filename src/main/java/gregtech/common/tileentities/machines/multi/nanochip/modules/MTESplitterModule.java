@@ -54,6 +54,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSpli
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitterModule> {
 
@@ -127,6 +128,11 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     protected MTESplitterModule(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.Splitter;
     }
 
     @Override
