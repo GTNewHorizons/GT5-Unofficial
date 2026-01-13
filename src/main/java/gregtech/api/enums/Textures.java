@@ -2032,6 +2032,9 @@ public class Textures {
         OVERLAY_FRONT_BIOLOGICAL_COORDINATION_GLOW,
         OVERLAY_FRONT_BIOLOGICAL_COORDINATION_ACTIVE_GLOW,
 
+        OVERLAY_VACUUM_HATCH,
+        OVERLAY_VACUUM_HATCH_ACTIVE,
+        OVERLAY_VACUUM_PIPE_PORT,
         // semicolon after the comment to reduce merge conflicts
         ;
 
