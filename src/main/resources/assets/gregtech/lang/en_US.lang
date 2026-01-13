@@ -748,6 +748,7 @@ GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pyl
 GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
+GT5U.autoplace.error.no_placeable=§cNothing found to place (use gt_hatch 1 to suggest hatches)
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
@@ -1377,8 +1378,9 @@ channels.gregtech.antenna=Decides the of Antenna Casing. Starts at §6T1§r at v
 channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compression Field Generator. Starts at §6Crude Spacetime Compression Field Generator§r at value 1 and ends at §6Gallifreyan Spacetime Compression Field Generator§r at value 9.
 channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
-channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
+channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.component_casing=Decides the tier of component assemblyline casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
@@ -2599,13 +2601,13 @@ gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s35%%§7 speed
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aPower Efficient Subsystems§7 module
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aProto-Volt Stabilizer§7 module
 
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Efficient Overclocking System§7 module
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Sentient Overclocker§7 module
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §dUIV+§7 Recipes to be processed
@@ -2623,7 +2625,7 @@ gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
 gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
 gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
-gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casters §7module
+gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
@@ -2636,7 +2638,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
