@@ -172,6 +172,8 @@ public class RecipeHandlers {
         addConversionRecipe(CircuitComponent.BoardWetwareLifesupport, ItemList.Circuit_Board_Wetware_Extreme.get(1));
         addConversionRecipe(CircuitComponent.BoardBioMutated, ItemList.Circuit_Board_Bio_Ultra.get(1));
         addConversionRecipe(CircuitComponent.BoardOptical, ItemList.Circuit_Board_Optical.get(1));
+        addConversionRecipe(CircuitComponent.NeuroProcessingUnit, ItemList.Circuit_Chip_NeuroCPU.get(1));
+        addConversionRecipe(CircuitComponent.BioProcessingUnit, ItemList.Circuit_Chip_BioCPU.get(1));
 
         // CPUs
         addConversionRecipe(CircuitComponent.ChipCrystalCPU, ItemList.Circuit_Chip_CrystalCPU.get(1));
@@ -394,6 +396,23 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedBoardOptical,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.BoardOptical,
+            Materials.MysteriousCrystal.getMolten(1000),
+            CircuitComponent.ProcessedBoardOptical,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
+
+        addSimpleProcessingRecipe(
+            CircuitComponent.NeuroProcessingUnit,
+            CircuitComponent.ProcessedNeuroProcessingUnit,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
+        addSimpleProcessingRecipe(
+            CircuitComponent.BioProcessingUnit,
+            CircuitComponent.ProcessedBioProcessingUnit,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LV);
     }
 
     public static void registerEtchingRecipes() {
@@ -608,7 +627,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.Neuroprocessor, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedNeuroProcessingUnit, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalCPU, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
@@ -663,7 +682,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.Bioprocessor, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedBioProcessingUnit, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipAdvCrystalCPU, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 12),
