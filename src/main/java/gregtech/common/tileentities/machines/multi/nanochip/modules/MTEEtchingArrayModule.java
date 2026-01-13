@@ -272,9 +272,6 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         return true;
     }
 
-    // todo: simplify the complexity of this challenge. it feels too complex for the simplicity of crystals.
-    // can change to 2 particle types.
-    // possibly have the particle type never change depending on NAC efficiency or mood. (>80% = 1 particle type)
     private void updateRequiredPatricle() {
         int particle = MathUtils.randInt(1, 3);
         requiredParticle = switch (particle) {
