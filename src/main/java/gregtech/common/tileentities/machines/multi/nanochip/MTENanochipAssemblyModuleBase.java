@@ -302,7 +302,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .enableBatchMode(0)
             .setRecipe(recipe)
             .setMachine(this, false, false)
-            .setMaxParallel(Integer.MAX_VALUE)
+            .setMaxParallel(this.getMaximumParallel())
             .setOutputCalculation(true)
             .setCalculator(OverclockCalculator.ofNoOverclock(recipe));
     }
@@ -371,13 +371,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             addVCOutput(mOutputItems[0], outputHatch);
             CircuitComponent fakeItem = CircuitComponent.tryGetFromFakeStack(mOutputItems[0]);
             incrementProcessedItemCounts(fakeItem, mOutputItems[0].stackSize);
-            this.processingLogic.setSpeedBonus(1F / Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
-
+            this.processingLogic.setSpeedBonus(
+                1F / this.getBonusSpeedModifier() * Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = recipe.mDuration;
             // Needs to be negative obviously to display correctly
-            this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel;
+            this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel ;
+            this.lEUt = (long) (this.lEUt * this.getEUDiscountModifier());
         }
 
         return result;
@@ -437,6 +438,30 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         } else {
             return false;
         }
+    }
+
+    /**
+     * Determines the maximum parallel for use in {@see createParallelHelper}
+     * In case any specific module wants to control this value.
+     */
+    protected int getMaximumParallel() {
+        return Integer.MAX_VALUE;
+    }
+
+    /**
+     * Further applies a modifier to speed
+     * In case any specific module wants to control this value.
+     */
+    protected float getBonusSpeedModifier() {
+        return 1f;
+    }
+
+    /**
+     * Applies an EU Discount
+     * In case any specific module wants to control this value
+     */
+    protected double getEUDiscountModifier() {
+        return 1;
     }
 
     /**
@@ -592,7 +617,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 "optimizedItem",
                 optimizedEntry.getKey()
                     .getLocalizedName());
-            tag.setDouble("speedBoost", getSpeedModifierForOutput(optimizedEntry.getKey()));
+            tag.setDouble(
+                "speedBoost",
+                this.getBonusSpeedModifier() * Math.min(10, getSpeedModifierForOutput(optimizedEntry.getKey())));
         }
     }
 
@@ -608,8 +635,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .startsWith("Producing"); insertIdx++) {}
         if (tag.hasKey("optimizedItem"))
             currentTip.add(insertIdx++, "Optimized for: " + tag.getString("optimizedItem"));
-        if (tag.hasKey("speedBoost")) currentTip.add(
-            insertIdx,
-            "Speed boost: §b" + GTUtility.formatNumbers((100 * Math.min(10, tag.getDouble("speedBoost")))) + "%");
+        if (tag.hasKey("speedBoost")) currentTip
+            .add(insertIdx, "Speed boost: §b" + GTUtility.formatNumbers((100 * tag.getDouble("speedBoost"))) + "%");
     }
 }
