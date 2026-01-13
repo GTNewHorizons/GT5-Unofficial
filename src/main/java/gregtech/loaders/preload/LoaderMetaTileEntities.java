@@ -211,6 +211,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSpli
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBiologicalCoordinationModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
@@ -681,6 +682,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_SHEET_SUPERVISOR.ID,
                 "multimachine.nanochipmodule.sheetsupervisor",
                 "Atomic Sheet Supervisor").getStackForm(1));
+        ItemList.NanoChipModule_BiologicalCoordinator.set(
+            new MTEBiologicalCoordinationModule(
+                NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
+                "multimachine.nanochipmodule.biologicalcoordinator",
+                "Accelerated Biological Coordinator").getStackForm(1));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
