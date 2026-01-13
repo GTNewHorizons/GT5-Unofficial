@@ -143,6 +143,12 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return checkPiece(STRUCTURE_PIECE_MAIN, OPTICAL_OFFSET_X, OPTICAL_OFFSET_Y, OPTICAL_OFFSET_Z);
     }
 
+    /**
+     * potential gimmick:
+     * can drain purified waters, comes in pairings of 2 (t1/t2, t3/t4, t5/t6, t7/t8)
+     * each pair has a different boost that it gives to the multi.
+     * the multi can drain at most 2 water types (e.g t1/t2 and t5/t6)
+     */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
