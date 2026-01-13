@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import com.cleanroommc.modularui.api.GuiAxis;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -35,6 +37,10 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
 
@@ -208,9 +214,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .sizeRel(1);
     }
 
+    List<String> NOptions = Arrays.asList("Not", "Never", "Now", "Nearly", "Nanochip", "Nearing", "Noc", "NAC", "NotAPenguin", "Nano", "Nine");
+    List<String> AOptions = Arrays.asList("Abbydullah", "Apple", "Awesome", "Assembly", "Advanced", "Actually", "Always", "Almost", "About", "Auynonymous", "Alright", "Admin", "A", "Alkalus", "Alastor", "Applied", "Angry");
+    List<String> COptions = Arrays.asList("Chrom", "Croup", "Complex", "Coming", "Casing", "Completed", "Circuit", "CAL", "Challenged", "Coded", "ChatGPT", "Cosmic", "Cloud", "GregTech... wait", "chochem");
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
-            case "help" -> "List of commands: contributors, gregos";
+            case "help" -> "List of commands: contributors, gregos, copypasta, joke, what is nac, nac, clear";
             case "contributors" -> EnumChatFormatting.YELLOW + "Lead:\n"
                 + EnumChatFormatting.RESET
                 + " NotAPenguin\n"
@@ -243,6 +252,16 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
             case "knock knock" -> "Who's there?";
+            case "joke" -> switch(MathUtils.randInt(1,10)) {
+                case 1 -> "No time for jokes.";
+                case 2 -> "A rolling golem gathers no rust.";
+                case 3 -> "He was destroyed!";
+                case 4 -> "A literal line... of asses...";
+                case 5 -> "I miss when waterline was dogshit";
+                case 6 -> "Waiter! Waiter! More lineslop please!";
+                case 7 -> "Don't even joke, lad.";
+                default -> "lol what im a robot dawg wtf do i know";
+            };
             case "why did the chicken cross the road" -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "To get to the other side?";
                     case 2 -> "Because it was too far to walk around?";
@@ -278,6 +297,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 6 -> "stargate people are all snarky assholes about shit. lol. you all cheated your way to gate and were carried by others. i'm not sure why you act this way ";
                     default -> "Looks like you understand nothing.";
                 };
+            case "what is nac", "nac" -> {
+                yield "NAC stands for: "
+                    + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
+                    + " "
+                    + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
+                    + " "
+                    + COptions.get(MathUtils.randInt(0, COptions.size() - 1));
+            }
             default -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "It is certain";
                     case 2 -> "It is decidedly so";
@@ -324,6 +351,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     moodSyncer.setValue(Math.min(1, moodSyncer.getValue() + 0.05));
                     list.child(createPlayerTextWidget(text));
                     list.child(createResponseTextWidget(getGREGOSResponse(text)));
+                    if(text.equals("clear")) {
+                        list.removeAll();
+                    }
                 }
                 updateHintText();
                 return Result.SUCCESS;
