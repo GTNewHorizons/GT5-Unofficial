@@ -110,8 +110,10 @@ public enum CircuitComponent {
     BoardBioMutated("gt.circuitcomponent.board.biomutated", RecipeMaps.nanochipBoardProcessorRecipes,
         "boardbiomutated"),
     BoardOptical("gt.circuitcomponent.board.optical", RecipeMaps.nanochipBoardProcessorRecipes, "boardoptical"),
-    Neuroprocessor("gt.circuitcomponent.neuroprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes, "neuroprocessor"),
-    Bioprocessor("gt.circuitcomponent.neuroprocessor", RecipeMaps.nanochipAssemblyMatrixRecipes, "bioprocessor"),
+    NeuroProcessingUnit("gt.circuitcomponent.neuroprocessingunit", RecipeMaps.nanochipBiologicalCoordinator,
+        "neuroprocessingunit"),
+    BioProcessingUnit("gt.circuitcomponent.bioprocessingunit", RecipeMaps.nanochipBiologicalCoordinator,
+        "bioprocessingunit"),
     ProcessedBoardMultifiberglassElite("gt.circuitcomponent.processed.board.multifiberelite",
         RecipeMaps.nanochipAssemblyMatrixRecipes, "processedboardmultifiberglasselite"),
     ProcessedBoardWetwareLifesupport("gt.circuitcomponent.processed.board.wetwarelifesupport",
@@ -120,6 +122,10 @@ public enum CircuitComponent {
         "processedboardbiomutated"),
     ProcessedBoardOptical("gt.circuitcomponent.processed.board.optical", RecipeMaps.nanochipAssemblyMatrixRecipes,
         "processedboardoptical"),
+    ProcessedNeuroProcessingUnit("gt.circuitcomponent.processed.neuroprocessingunit",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedneuroprocessingunit"),
+    ProcessedBioProcessingUnit("gt.circuitcomponent.processed.board.bioprocessingunit",
+        RecipeMaps.nanochipAssemblyMatrixRecipes, "processedbioprocessingunit"),
 
     // Wafers and chips
     WaferNanoCPU("gt.circuitcomponent.waferNanoCPU", RecipeMaps.nanochipCuttingChamber, "wafernanocpu"),
