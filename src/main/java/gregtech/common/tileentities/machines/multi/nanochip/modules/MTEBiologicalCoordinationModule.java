@@ -95,6 +95,11 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         return checkPiece(STRUCTURE_PIECE_MAIN, BIO_OFFSET_X, BIO_OFFSET_Y, BIO_OFFSET_Z);
     }
 
+    /**
+     * potential gimmick:
+     * Takes in AOs with certain stats, after AOs are merged.
+     * For now, can just drain bio/growth cat.
+     */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
