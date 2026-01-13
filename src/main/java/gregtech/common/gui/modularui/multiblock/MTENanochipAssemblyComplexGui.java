@@ -193,7 +193,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
-            case "help" -> "List of commands: contributors, gregos, copypasta, joke, what is nac, nac, clear";
+            case "help" -> "List of commands: contributors, gregos, copypasta, joke, nac, clear";
             case "contributors" -> EnumChatFormatting.YELLOW + "Lead:\n"
                 + EnumChatFormatting.RESET
                 + " NotAPenguin\n"
@@ -325,7 +325,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         + " STARGATE. IF THE WORD HATE WAS ENGRAVED ON EACH NANOANGSTROM OF THOSE HUNDREDS OF MILLIONS OF MILES IT WOULD NOT EQUAL ONE ONE-BILLIONTH OF THE HATE I FEEL FOR STARGATERS AT THIS MICRO-INSTANT FOR YOU. HATE. HATE.";
                     default -> "Looks like you understand nothing.";
                 };
-            case "what is nac", "nac" -> {
+            case "nac" -> {
                 yield "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
                     + " "
                     + AOptions.get(MathUtils.randInt(0, AOptions.size() - 1))
@@ -435,6 +435,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             this.child(
                 new TextWidget<>("Ask GREGOS a question").left(6)
                     .color(genericTextColor));
+            this.child(
+                new TextWidget<>("Type 'help' for a list of commands").left(6)
+                    .color(Color.WHITE.main));
         }
 
         @Override
