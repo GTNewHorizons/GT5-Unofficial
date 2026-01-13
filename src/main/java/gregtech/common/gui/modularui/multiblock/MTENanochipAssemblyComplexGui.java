@@ -272,20 +272,19 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + EnumChatFormatting.RESET
                 + " Deleno";
             case "hi" -> "Hello.";
-            case "fastfetch" ->"\n" +
-                "\n" +
-                "       ====+%       \n" +
-                "  ==========+====   \n" +
-                "  ==++++++++++++*%  \n" +
-                "  ==+%%%%%%%%%%%%%  \n" +
-                "====+% ===========+%\n" +
-                "====+% ====+%%+===+%\n" +
-                "=*+=+% =****% ==+**%\n" +
-                "  ==+#        ==*%  \n" +
-                "  ==============*%  \n" +
-                "   %%%%+===+%%%%%%  \n" +
-                "       =*###%       \n" +
-                "\n";
+            case "fastfetch" -> "\n" + "\n"
+                + "       ====+%       \n"
+                + "  ==========+====   \n"
+                + "  ==++++++++++++*%  \n"
+                + "  ==+%%%%%%%%%%%%%  \n"
+                + "====+% ===========+%\n"
+                + "====+% ====+%%+===+%\n"
+                + "=*+=+% =****% ==+**%\n"
+                + "  ==+#        ==*%  \n"
+                + "  ==============*%  \n"
+                + "   %%%%+===+%%%%%%  \n"
+                + "       =*###%       \n"
+                + "\n";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
                 + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
                 + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
