@@ -3995,7 +3995,7 @@ gt.advdistill.info.1=One per layer except bottom
 gt.advdistill.info.2=Top Casing
 
 gt.mvf.tips.1=§8§o"Handles all things cooling!"
-gt.mvf.tips.2=Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a7500 L/s§7 : §61§7 : §d%s\n§a5000 L/s§7 : §62§7 : §d%s\n§a2500 L/s§7 : §63§7 : §d%s
+gt.mvf.tips.2=Upgrade to Tier 2 to unlock §3Subspace Cooling\nWill gain §6perfect overclocks§7 by §aconsuming §dcoolants:\n§a75 L/s§7 : §61§7 : §d%s\n§a50 L/s§7 : §62§7 : §d%s\n§a25 L/s§7 : §63§7 : §d%s
 gt.mvf.tips.3=<SEPARATOR>§3Reinforcing the structure allows the injection of exotic coolants,\n§3enabling the capture of heat energy from miniature tears in spacetime,\n§3massively increasing the efficiency of the cooling process.
 gt.mvf.info.t1_multi=§9Base Multi (Tier §51§9):
 gt.mvf.info.t2_multi=§9Tier §52§9 (Upgrades from Tier §51§9):
