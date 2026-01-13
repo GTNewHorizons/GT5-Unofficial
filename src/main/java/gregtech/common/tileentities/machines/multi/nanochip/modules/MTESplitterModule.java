@@ -68,7 +68,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
     // Splitter$getOutputColors instead.
     public Map<Integer, ColorRule> colorMap = new HashMap<>();
-    private final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
+    public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
 
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
