@@ -441,6 +441,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
     }
 
+    //call this method to allow the module to affect nac's mood (if we want it )
+
+    protected double calculateMoodMultiplier(){
+        return 1;
+    }
+
     @Override
     public long maxEUStore() {
         return euBufferSize;
