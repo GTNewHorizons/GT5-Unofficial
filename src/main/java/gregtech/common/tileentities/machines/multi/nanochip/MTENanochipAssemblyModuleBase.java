@@ -24,6 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -80,6 +81,23 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     private FluidStack[] fluidInputs = null;
     private byte outputColor = -1;
     private int currentParallel;
+
+    protected MTENanochipAssemblyComplex baseMulti;
+
+    @Nullable
+    public MTENanochipAssemblyComplex getbaseMulti() {
+        return baseMulti;
+    }
+
+    public MTENanochipAssemblyComplex setBaseMulti(MTENanochipAssemblyComplex baseMulti) {
+        this.baseMulti = baseMulti;
+        return baseMulti;
+    }
+
+    public void clearBaseMulti() {
+        this.baseMulti = null;
+        disconnect();
+    }
 
     // Something, needs to be tested further what this should really be (probably MUCH higher and scale with hatch tier)
     protected static long EU_BUFFER_BASE_SIZE = 160008000L * 16384;
