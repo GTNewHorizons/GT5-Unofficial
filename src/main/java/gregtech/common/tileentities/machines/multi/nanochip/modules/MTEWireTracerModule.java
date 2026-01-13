@@ -30,6 +30,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTracerModule> {
 
@@ -94,6 +95,11 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
 
     protected MTEWireTracerModule(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.WireTracer;
     }
 
     @Override
