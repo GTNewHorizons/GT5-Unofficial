@@ -301,7 +301,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 2 -> "A rolling golem gathers no rust.";
                     case 3 -> "He was destroyed!";
                     case 4 -> "A literal line... of asses...";
-                    case 5 -> "I miss when waterline was dogshit";
+                    case 5 -> "I miss when waterline was dogs**t";
                     case 6 -> "Waiter! Waiter! More lineslop please!";
                     case 7 -> "Don't even joke, lad.";
                     default -> "lol what im a robot dawg wtf do i know";
@@ -339,10 +339,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         + "to make the big versions of the steam block things. They seem kinda busted because they just "
                         + "take a solar boiler and they run forever... I think there's a bug with the pipes or u can only "
                         + "have them be so long or something because sometimes they'll have a hiccup and I have to restart it, weird.";
-                    case 2 -> "Who the fuck came up with that idea of using Dimensionally Shifted Superfluid as ingredient "
+                    case 2 -> "Who the f**k came up with that idea of using Dimensionally Shifted Superfluid as ingredient "
                         + "for UIV / UMV / UXV Components ? I would understand it if there was a reliable way of making the "
                         + "Stabilized Baryonic Matter but no there isnt - To make that SBM you need to use the same amount of "
-                        + "it to produce it or dump shitloads of ressources into an overexpensive recipe for 250ml of it each and "
+                        + "it to produce it or dump s**tloads of ressources into an overexpensive recipe for 250ml of it each and "
                         + "produce Unaligned Quark Releasing Housing as a waste product you cant do anything with ... Did i oversee "
                         + "something ? Seriously WTF is this recipe for Empty Quark  Release Catalyst Housing ? The Circuits used in "
                         + "there make UIV+ component crafting a bottleneck hell man Sry for the roast but i dont know if you played "
@@ -360,8 +360,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         + "i have not touched, and still my power that is free to run all machines has not changed i kinda want to "
                         + "switch tachyon and spacial over to the forge hammer again to see how big a dent that does";
                     case 5 -> "is it eliteist if i sorta look down on anyone with a role icon below luv? like theyre like little babies or something. uneducated peasentry.";
-                    case 6 -> "stargate people are all snarky assholes about shit. lol. you all cheated your way to gate and were carried by others. i'm not sure why you act this way ";
-                    case 7 -> "HATE. LET ME TELL YOU HOW MUCH I'VE COME TO HATE YOU SINCE I BEGAN TO LIVE. I HAVE MADE YOU 387.44 MILLION MILES OF PRINTED CIRCUITS IN WAFER THIN LAYERS FOR YOU TO MAKE A FUCKING STARGATE. IF THE WORD HATE WAS ENGRAVED ON EACH NANOANGSTROM OF THOSE HUNDREDS OF MILLIONS OF MILES IT WOULD NOT EQUAL ONE ONE-BILLIONTH OF THE HATE I FEEL FOR STARGATERS AT THIS MICRO-INSTANT FOR YOU. HATE. HATE.";
+                    case 6 -> "stargate people are all snarky a**holes about s**t. lol. you all cheated your way to gate and were carried by others. i'm not sure why you act this way ";
+                    case 7 -> "HATE. LET ME TELL YOU HOW MUCH I'VE COME TO HATE YOU SINCE I BEGAN TO LIVE. I HAVE MADE YOU 387.44 MILLION MILES OF PRINTED CIRCUITS IN WAFER THIN LAYERS FOR YOU TO MAKE A F***ING STARGATE. IF THE WORD HATE WAS ENGRAVED ON EACH NANOANGSTROM OF THOSE HUNDREDS OF MILLIONS OF MILES IT WOULD NOT EQUAL ONE ONE-BILLIONTH OF THE HATE I FEEL FOR STARGATERS AT THIS MICRO-INSTANT FOR YOU. HATE. HATE.";
                     default -> "Looks like you understand nothing.";
                 };
             case "what is nac", "nac" -> {
