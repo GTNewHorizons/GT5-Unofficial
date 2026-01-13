@@ -154,8 +154,20 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .sizeRel(1);
     }
 
-    List<String> NOptions = Arrays
-        .asList("Not", "Never", "Now", "Nearly", "Nanochip", "Nearing", "Noc", "NAC", "NotAPenguin", "Nano", "Nine");
+    List<String> NOptions = Arrays.asList(
+        "Not",
+        "Never",
+        "Now",
+        "Nearly",
+        "Nanochip",
+        "Nearing",
+        "Noc",
+        "NAC",
+        "NotAPenguin",
+        "Nano",
+        "Nine",
+        "Nonchalant",
+        "Namikon");
     List<String> AOptions = Arrays.asList(
         "Abbydullah",
         "Apple",
@@ -173,7 +185,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         "Alkalus",
         "Alastor",
         "Applied",
-        "Angry");
+        "Angry",
+        "Adapt",
+        "Abuse",
+        "Agitate",
+        "Adjust");
     List<String> COptions = Arrays.asList(
         "Chrom",
         "Croup",
@@ -189,7 +205,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         "Cosmic",
         "Cloud",
         "GregTech... wait",
-        "chochem");
+        "Chochem",
+        "Caedis",
+        "Cubefury");
 
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {

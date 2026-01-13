@@ -441,9 +441,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
     }
 
-    //call this method to allow the module to affect nac's mood (if we want it )
+    // call this method to allow the module to affect nac's mood (if we want it )
 
-    protected double calculateMoodMultiplier(){
+    protected double calculateMoodMultiplier() {
         return 1;
     }
 
