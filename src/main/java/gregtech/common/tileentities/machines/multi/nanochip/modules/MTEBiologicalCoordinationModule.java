@@ -19,6 +19,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
 public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBase<MTEBiologicalCoordinationModule> {
 
@@ -53,6 +54,11 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
 
     protected MTEBiologicalCoordinationModule(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.BiologicalCoordinator;
     }
 
     @Override

@@ -50,6 +50,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -140,6 +141,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     protected MTEAssemblyMatrixModule(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.AssemblyMatrix;
     }
 
     @Override

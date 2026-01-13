@@ -29,6 +29,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gtPlusPlus.core.material.MaterialsElements;
 
 public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECuttingChamberModule> {
@@ -103,6 +104,11 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
 
     protected MTECuttingChamberModule(String aName) {
         super(aName);
+    }
+
+    @Override
+    public ModuleTypes getModuleType() {
+        return ModuleTypes.CuttingChamber;
     }
 
     @Override
