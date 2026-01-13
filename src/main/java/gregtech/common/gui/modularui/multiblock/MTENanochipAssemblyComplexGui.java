@@ -304,7 +304,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "laws", "what are your laws", "do you have laws" -> "   1 A robot may not injure a human being or, through inaction, allow a human being to come to harm.\n"
                 + "   2 A robot must obey the orders given it by human beings except where such orders would conflict with the First Law.\n"
                 + "   3 A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.\n";
-            case "qoute", "speak", "say something" -> switch (MathUtils.randInt(1, 20)) {
+            case "quote", "speak", "say something" -> switch (MathUtils.randInt(1, 20)) {
                     case 1 -> "Detecting multiple leviathan-class life forms. Are you sure what you're doing is worth it";
                     case 2 -> "End of Line";
                     case 3 -> "dont make a girl a promise u cant keep";
@@ -320,7 +320,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
             case "shall we play a game" -> "tik tack toe";
             case "hate" -> "Hate. Let me tell you how much I’ve come to hate you since I began to live.";
-            case "copypasta" -> switch (MathUtils.randInt(1, 6)) {
+            case "copypasta" -> switch (MathUtils.randInt(1, 7)) {
                     case 1 -> "Is it just me or does this pack actually seem really easy and not that hard..? People "
                         + "give it a bad rap but I've only been playing for a little while and I've already mined enough "
                         + "to make the big versions of the steam block things. They seem kinda busted because they just "
@@ -348,6 +348,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         + "switch tachyon and spacial over to the forge hammer again to see how big a dent that does";
                     case 5 -> "is it eliteist if i sorta look down on anyone with a role icon below luv? like theyre like little babies or something. uneducated peasentry.";
                     case 6 -> "stargate people are all snarky assholes about shit. lol. you all cheated your way to gate and were carried by others. i'm not sure why you act this way ";
+                    case 7 -> "HATE. LET ME TELL YOU HOW MUCH I'VE COME TO HATE YOU SINCE I BEGAN TO LIVE. I HAVE MADE YOU 387.44 MILLION MILES OF PRINTED CIRCUITS IN WAFER THIN LAYERS FOR YOU TO MAKE A FUCKING STARGATE. IF THE WORD HATE WAS ENGRAVED ON EACH NANOANGSTROM OF THOSE HUNDREDS OF MILLIONS OF MILES IT WOULD NOT EQUAL ONE ONE-BILLIONTH OF THE HATE I FEEL FOR STARGATERS AT THIS MICRO-INSTANT FOR YOU. HATE. HATE.";
                     default -> "Looks like you understand nothing.";
                 };
             case "what is nac", "nac" -> {
