@@ -527,7 +527,6 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_button/safe_void_off")
         .canApplyTheme()
         .build();
-
     public static final UITexture TT_SAFE_VOID_ON = UITexture.builder()
         .location(MODID, "gui/overlay_button/safe_void_on")
         .canApplyTheme()
@@ -831,6 +830,15 @@ public final class GTGuiTextures {
         .collect(Collectors.toList())
         .toArray(new UITexture[0]);
 
+
+    public static final UITexture TESLA_VISUAL_EFFECT_ON = UITexture.builder()
+        .location(MODID, "gui/overlay_button/tesla_tower_effect_on")
+        .canApplyTheme()
+        .build();
+    public static final UITexture TESLA_VISUAL_EFFECT_OFF = UITexture.builder()
+        .location(MODID, "gui/overlay_button/tesla_tower_effect_off")
+        .canApplyTheme()
+        .build();
     // endregion slot overlay
 
     // region progressbar
