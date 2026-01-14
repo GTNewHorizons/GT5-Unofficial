@@ -55,32 +55,33 @@ public class MechanicalArmorRenderer implements IItemRenderer {
 
         GTRenderUtil.renderItem(type, baseLayer);
 
-        // TODO: remove unnecessary second check thats just here to make my test world not crash
-        if (state.frame != null) {
-            short[] frameColor = state.frame.getColor();
-            GL11.glColor4f(frameColor[0] / 255.0F, frameColor[1] / 255.0F, frameColor[2] / 255.0F, 1);
-            GTRenderUtil.renderItem(type, frameLayer);
-        }
-
-        if (state.core != null) {
-            short[] modulation = dyeWhite.getRGBA();
-            switch (state.core.getTier()) {
-                case 1 -> modulation = dyeRed.getRGBA();
-                case 2 -> modulation = dyeGreen.getRGBA();
-                case 3 -> modulation = dyeLightBlue.getRGBA();
-                case 4 -> modulation = dyeOrange.getRGBA();
+        if (state != null) {
+            // TODO: remove unnecessary second check thats just here to make my test world not crash
+            if (state.frame != null) {
+                short[] frameColor = state.frame.getColor();
+                GL11.glColor4f(frameColor[0] / 255.0F, frameColor[1] / 255.0F, frameColor[2] / 255.0F, 1);
+                GTRenderUtil.renderItem(type, frameLayer);
             }
-            GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 1);
-            GTRenderUtil.renderItem(type, coreLayer);
-            GL11.glColor4f(1, 1, 1, 1);
-        }
 
-        for (IArmorBehavior behavior : state.behaviors.values()) {
-            if (behavior.getModularArmorTexture() != null) {
-                GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
+            if (state.core != null) {
+                short[] modulation = dyeWhite.getRGBA();
+                switch (state.core.getTier()) {
+                    case 1 -> modulation = dyeRed.getRGBA();
+                    case 2 -> modulation = dyeGreen.getRGBA();
+                    case 3 -> modulation = dyeLightBlue.getRGBA();
+                    case 4 -> modulation = dyeOrange.getRGBA();
+                }
+                GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 1);
+                GTRenderUtil.renderItem(type, coreLayer);
+                GL11.glColor4f(1, 1, 1, 1);
+            }
+
+            for (IArmorBehavior behavior : state.behaviors.values()) {
+                if (behavior.getModularArmorTexture() != null) {
+                    GTRenderUtil.renderItem(type, behavior.getModularArmorTexture());
+                }
             }
         }
-
         GL11.glDisable(GL11.GL_BLEND);
     }
 
