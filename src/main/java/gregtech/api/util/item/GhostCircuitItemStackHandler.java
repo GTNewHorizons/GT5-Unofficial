@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
 
@@ -20,17 +19,14 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
 
     public static final int NO_CONFIG = -1;
 
-    private final ItemStack[] inventory;
+    private final IItemHandlerModifiable inventory;
     private final int circuitSlot;
 
     public GhostCircuitItemStackHandler(IMetaTileEntity mte) {
-        if (!(mte instanceof CommonMetaTileEntity cmte)) {
-            throw new IllegalArgumentException("Unknown MetaTileEntity: " + mte);
-        }
-        this.inventory = cmte.mInventory;
         if (!(mte instanceof IConfigurationCircuitSupport ccs)) {
             throw new IllegalArgumentException(mte + " does not implement IConfigurationCircuitSupport");
         }
+        this.inventory = mte.getInventoryHandler();
         this.circuitSlot = ccs.getCircuitSlot();
     }
 
@@ -38,7 +34,7 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
      * Returns whether circuit item is present.
      */
     public boolean hasCircuit() {
-        return inventory[circuitSlot] != null;
+        return inventory.getStackInSlot(circuitSlot) != null;
     }
 
     /**
@@ -46,7 +42,8 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
      */
     public int getCircuitConfig() {
         if (hasCircuit()) {
-            return inventory[circuitSlot].getItemDamage();
+            return inventory.getStackInSlot(circuitSlot)
+                .getItemDamage();
         }
         return NO_CONFIG;
     }
@@ -56,9 +53,9 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
      */
     public void setCircuitConfig(int config) {
         if (config == NO_CONFIG) {
-            inventory[circuitSlot] = null;
+            inventory.setStackInSlot(circuitSlot, null);
         } else if (config >= 1 && config <= ItemIntegratedCircuit.MAX_CIRCUIT_NUMBER) {
-            inventory[circuitSlot] = GTUtility.getIntegratedCircuit(config);
+            inventory.setStackInSlot(circuitSlot, GTUtility.getIntegratedCircuit(config));
         } else {
             throw new IllegalArgumentException("Invalid circuit config: " + config);
         }
@@ -71,7 +68,7 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
             if (stack != null) {
                 stack.stackSize = 0;
             }
-            inventory[circuitSlot] = stack;
+            inventory.setStackInSlot(circuitSlot, stack);
         }
     }
 
@@ -84,7 +81,7 @@ public class GhostCircuitItemStackHandler implements IItemHandlerModifiable {
     @Override
     public ItemStack getStackInSlot(int slot) {
         validateSlot(slot);
-        return inventory[circuitSlot];
+        return inventory.getStackInSlot(circuitSlot);
     }
 
     @Nullable

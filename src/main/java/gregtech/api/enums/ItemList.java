@@ -2797,6 +2797,24 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    CompressedOutputBusLuV,
+    CompressedOutputBusZPM,
+    CompressedOutputBusUV,
+    CompressedOutputBusUHV,
+    CompressedOutputBusUEV,
+    CompressedOutputBusUIV,
+    CompressedOutputBusUMV,
+    CompressedOutputBusUXV,
+
+    CompressedInputBusLuV,
+    CompressedInputBusZPM,
+    CompressedInputBusUV,
+    CompressedInputBusUHV,
+    CompressedInputBusUEV,
+    CompressedInputBusUIV,
+    CompressedInputBusUMV,
+    CompressedInputBusUXV,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 
