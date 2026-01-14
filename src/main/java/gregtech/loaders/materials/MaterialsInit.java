@@ -12602,7 +12602,7 @@ public class MaterialsInit {
     private static Materials loadGalgadorianEnhanced() {
         return new MaterialBuilder().setName("EnhancedGalgadorian")
             .setDefaultLocalName("Enhanced Galgadorian")
-            .setChemicalFormula("???C₉Nh₃(Fe₂(C(MgFeSi₂O₈)₈))₂")
+            .setChemicalFormula("???C₉Nh₃Fe₂(C(MgFeSi₂O₈)₈)")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
             .setARGB(0x00985d85)
