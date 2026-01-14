@@ -1,10 +1,8 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static tectech.thing.CustomItemList.DATApipe;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,40 +11,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
 import gtPlusPlus.core.material.MaterialMisc;
 
 public class RecipeHandlers {
 
-    private static void addConversionRecipe(CircuitComponent component, ItemStack stack) {
-        GTValues.RA.stdBuilder()
-            .itemInputs(stack)
-            .itemOutputs(component.getFakeStack(1))
-            .duration(1 * TICKS)
-            .eut(0)
-            .addTo(RecipeMaps.nanochipConversionRecipes);
-    }
-
     // Adds a simple processing recipe for circuit components in a module. The recipe map used for processing is
     // inferred from the map stored by the input component.
     private static void addSimpleProcessingRecipe(CircuitComponent input, CircuitComponent output,
-        ModuleRecipeInfo info, long eut) {
-        RecipeMap<?> recipeMap = input.processingMap;
-        if (recipeMap == null) {
-            throw new IllegalArgumentException(
-                "Tried to add component processing recipe for a component without an associated recipemap");
-        }
+        ModuleRecipeInfo info, long eut, RecipeMap<?> recipeMap) {
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .itemInputs(input.getFakeStack(info.getBaseParallel()))
@@ -59,12 +39,7 @@ public class RecipeHandlers {
     // Adds a simple processing recipe with a fluid for circuit components in a module. The recipe map
     // used for processing is inferred from the map stored by the input component.
     private static void addSimpleProcessingRecipe(CircuitComponent input, FluidStack inputStack,
-        CircuitComponent output, ModuleRecipeInfo info, long eut) {
-        RecipeMap<?> recipeMap = input.processingMap;
-        if (recipeMap == null) {
-            throw new IllegalArgumentException(
-                "Tried to add component processing recipe for a component without an associated recipemap");
-        }
+        CircuitComponent output, ModuleRecipeInfo info, long eut, RecipeMap<?> recipeMap) {
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .itemInputs(input.getFakeStack(info.getBaseParallel()))
@@ -77,17 +52,15 @@ public class RecipeHandlers {
 
     private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, List<FluidStack> fluidInputs,
         CircuitComponent output, ModuleRecipeInfo info, long eut) {
-        if (!output.processingMap.equals(RecipeMaps.nanochipAssemblyMatrixRecipes)) {
-            throw new IllegalArgumentException("Invalid RecipeMap passed to addAssemblyMatrixRecipe!");
-        } else if (output.realCircuit == null) {
+        if (output.realComponent == null) {
             throw new IllegalArgumentException("No real circuit was defined for given output!");
         }
-        ItemStack realOutput = output.realCircuit.copy();
+        ItemStack realOutput = output.realComponent.get();
         realOutput.stackSize = info.getBaseParallel();
         ItemStack[] inputsWithRealCircuits = input.stream()
             .map(c -> {
-                if (c.getCircuitComponent().realCircuit != null) {
-                    ItemStack realCircuit = c.getCircuitComponent().realCircuit.copy();
+                if (c.getCircuitComponent().realComponent != null) {
+                    ItemStack realCircuit = c.getCircuitComponent().realComponent.get();
                     realCircuit.stackSize = info.getBaseParallel() * c.getSize();
                     return realCircuit;
                 }
@@ -110,13 +83,13 @@ public class RecipeHandlers {
         builder.copy()
             .hidden()
             .itemInputs(inputsWithFakeCircuits)
-            .addTo(output.processingMap);
+            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
         // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
         builder.copy()
             .fake()
             .itemInputs(inputsWithRealCircuits)
             .itemOutputs(realOutput)
-            .addTo(output.processingMap);
+            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     }
 
     public static void populateCircuitComponentRecipeMaps() {
@@ -134,132 +107,16 @@ public class RecipeHandlers {
     }
 
     public static void registerConversionRecipes() {
-        addConversionRecipe(
-            CircuitComponent.WireNiobiumTitanium,
-            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.NiobiumTitanium, 1));
-        addConversionRecipe(
-            CircuitComponent.WireYttriumBariumCuprate,
-            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.YttriumBariumCuprate, 1));
-        addConversionRecipe(CircuitComponent.WireLumiium, GGMaterial.lumiium.get(OrePrefixes.wireFine));
-        addConversionRecipe(
-            CircuitComponent.WireLanthanum,
-            GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 1));
-        addConversionRecipe(
-            CircuitComponent.WireSpacetime,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 1));
+        for (CircuitComponent cc : CircuitComponent.values()) {
+            if (cc.isProcessed) continue;
+            if (cc.realComponent == null) throw new IllegalStateException("CC must define its representative item!");
 
-        // SMDs
-        addConversionRecipe(CircuitComponent.SMDTransistor, ItemList.Circuit_Parts_TransistorSMD.get(1));
-        addConversionRecipe(CircuitComponent.SMDInductor, ItemList.Circuit_Parts_InductorSMD.get(1));
-        addConversionRecipe(CircuitComponent.SMDCapacitor, ItemList.Circuit_Parts_CapacitorSMD.get(1));
-        addConversionRecipe(CircuitComponent.SMDDiode, ItemList.Circuit_Parts_DiodeSMD.get(1));
-        addConversionRecipe(CircuitComponent.SMDResistor, ItemList.Circuit_Parts_ResistorSMD.get(1));
-        addConversionRecipe(CircuitComponent.AdvSMDTransistor, ItemList.Circuit_Parts_TransistorASMD.get(1));
-        addConversionRecipe(CircuitComponent.AdvSMDInductor, ItemList.Circuit_Parts_InductorASMD.get(1));
-        addConversionRecipe(CircuitComponent.AdvSMDCapacitor, ItemList.Circuit_Parts_CapacitorASMD.get(1));
-        addConversionRecipe(CircuitComponent.AdvSMDDiode, ItemList.Circuit_Parts_DiodeASMD.get(1));
-        addConversionRecipe(CircuitComponent.AdvSMDResistor, ItemList.Circuit_Parts_ResistorASMD.get(1));
-        addConversionRecipe(CircuitComponent.OpticalSMDTransistor, ItemList.Circuit_Parts_TransistorXSMD.get(1));
-        addConversionRecipe(CircuitComponent.OpticalSMDInductor, ItemList.Circuit_Parts_InductorXSMD.get(1));
-        addConversionRecipe(CircuitComponent.OpticalSMDCapacitor, ItemList.Circuit_Parts_CapacitorXSMD.get(1));
-        addConversionRecipe(CircuitComponent.OpticalSMDDiode, ItemList.Circuit_Parts_DiodeXSMD.get(1));
-        addConversionRecipe(CircuitComponent.OpticalSMDResistor, ItemList.Circuit_Parts_ResistorXSMD.get(1));
-
-        // Boards
-        addConversionRecipe(
-            CircuitComponent.BoardMultifiberglassElite,
-            ItemList.Circuit_Board_Multifiberglass_Elite.get(1));
-        addConversionRecipe(CircuitComponent.BoardWetwareLifesupport, ItemList.Circuit_Board_Wetware_Extreme.get(1));
-        addConversionRecipe(CircuitComponent.BoardBioMutated, ItemList.Circuit_Board_Bio_Ultra.get(1));
-        addConversionRecipe(CircuitComponent.BoardOptical, ItemList.Circuit_Board_Optical.get(1));
-        addConversionRecipe(CircuitComponent.NeuroProcessingUnit, ItemList.Circuit_Chip_NeuroCPU.get(1));
-        addConversionRecipe(CircuitComponent.BioProcessingUnit, ItemList.Circuit_Chip_BioCPU.get(1));
-
-        // CPUs
-        addConversionRecipe(CircuitComponent.ChipCrystalCPU, ItemList.Circuit_Chip_CrystalCPU.get(1));
-        addConversionRecipe(CircuitComponent.ChipAdvCrystalCPU, ItemList.Circuit_Chip_CrystalSoC.get(1));
-        addConversionRecipe(CircuitComponent.ChipOpticalCPU, ItemList.Optically_Perfected_CPU.get(1));
-
-        // RAM
-        addConversionRecipe(CircuitComponent.OpticalRAM, ItemList.Optically_Compatible_Memory.get(1));
-
-        // Wafers
-        addConversionRecipe(CircuitComponent.WaferNanoCPU, ItemList.Circuit_Wafer_NanoCPU.get(1));
-        addConversionRecipe(CircuitComponent.WaferRAM, ItemList.Circuit_Wafer_Ram.get(1));
-        addConversionRecipe(CircuitComponent.WaferNOR, ItemList.Circuit_Wafer_NOR.get(1));
-        addConversionRecipe(CircuitComponent.WaferNAND, ItemList.Circuit_Wafer_NAND.get(1));
-        addConversionRecipe(CircuitComponent.WaferASOC, ItemList.Circuit_Wafer_SoC2.get(1));
-        addConversionRecipe(CircuitComponent.WaferPikoPIC, ItemList.Circuit_Wafer_PPIC.get(1));
-        addConversionRecipe(CircuitComponent.WaferQuantumPIC, ItemList.Circuit_Wafer_QPIC.get(1));
-        if (NewHorizonsCoreMod.isModLoaded()) {
-            addConversionRecipe(CircuitComponent.WaferPico, getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1));
-        }
-
-        // Superconductors
-        addConversionRecipe(
-            CircuitComponent.SuperconductorLuV,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 1));
-        addConversionRecipe(
-            CircuitComponent.SuperconductorZPM,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 1));
-        addConversionRecipe(
-            CircuitComponent.SuperconductorUHV,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1));
-        addConversionRecipe(
-            CircuitComponent.SuperconductorUEV,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 1));
-        addConversionRecipe(
-            CircuitComponent.SuperconductorUIV,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1));
-        addConversionRecipe(
-            CircuitComponent.SuperconductorUMV,
-            GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1));
-
-        // Frame boxes
-        addConversionRecipe(
-            CircuitComponent.FrameboxAluminium,
-            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Aluminium, 1));
-        addConversionRecipe(
-            CircuitComponent.FrameboxTritanium,
-            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 1));
-        addConversionRecipe(
-            CircuitComponent.FrameboxNeutronium,
-            GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1));
-
-        // Bolts
-        addConversionRecipe(
-            CircuitComponent.BoltEnrichedHolmium,
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 1));
-        addConversionRecipe(
-            CircuitComponent.BoltTranscendentMetal,
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 1));
-        addConversionRecipe(
-            CircuitComponent.BoltNeutronium,
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 1));
-        addConversionRecipe(
-            CircuitComponent.BoltIndium,
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 1));
-
-        // Cables
-        addConversionRecipe(CircuitComponent.CableOpticalFiber, DATApipe.get(1));
-
-        // Foil
-        addConversionRecipe(
-            CircuitComponent.FoilSiliconeRubber,
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.RubberSilicone, 1));
-        addConversionRecipe(
-            CircuitComponent.FoilPolybenzimidazole,
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 1));
-        addConversionRecipe(
-            CircuitComponent.FoilRadoxPolymer,
-            GTOreDictUnificator.get(OrePrefixes.foil, Materials.RadoxPolymer, 1));
-        addConversionRecipe(CircuitComponent.FoilShirabon, GGMaterial.shirabon.get(OrePrefixes.foil));
-
-        // Circuits
-        for (CircuitComponent circuitComponent : CircuitComponent.values()) {
-            if (circuitComponent.realCircuit != null) {
-                addConversionRecipe(circuitComponent, circuitComponent.realCircuit);
-            }
+            GTValues.RA.stdBuilder()
+                .itemInputs(cc.realComponent.get())
+                .itemOutputs(cc.getFakeStack(1))
+                .duration(1 * TICKS)
+                .eut(0)
+                .addTo(RecipeMaps.nanochipConversionRecipes);
         }
     }
 
@@ -270,104 +127,124 @@ public class RecipeHandlers {
             CircuitComponent.WireNiobiumTitanium,
             CircuitComponent.ProcessedWireNiobiumTitanium,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipWireTracer);
         addSimpleProcessingRecipe(
             CircuitComponent.WireYttriumBariumCuprate,
             CircuitComponent.ProcessedWireYttriumBariumCuprate,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipWireTracer);
         addSimpleProcessingRecipe(
             CircuitComponent.WireLumiium,
             CircuitComponent.ProcessedWireLumiium,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipWireTracer);
         addSimpleProcessingRecipe(
             CircuitComponent.WireLanthanum,
             CircuitComponent.ProcessedWireLanthanum,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipWireTracer);
         addSimpleProcessingRecipe(
             CircuitComponent.WireSpacetime,
             CircuitComponent.ProcessedWireSpacetime,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipWireTracer);
 
         // SMD processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.SMDResistor,
             CircuitComponent.ProcessedSMDResistor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDTransistor,
             CircuitComponent.ProcessedSMDTransistor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDInductor,
             CircuitComponent.ProcessedSMDInductor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDCapacitor,
             CircuitComponent.ProcessedSMDCapacitor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.SMDDiode,
             CircuitComponent.ProcessedSMDDiode,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDResistor,
             CircuitComponent.ProcessedAdvSMDResistor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDTransistor,
             CircuitComponent.ProcessedAdvSMDTransistor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDInductor,
             CircuitComponent.ProcessedAdvSMDInductor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDCapacitor,
             CircuitComponent.ProcessedAdvSMDCapacitor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDDiode,
             CircuitComponent.ProcessedAdvSMDDiode,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDResistor,
             CircuitComponent.ProcessedOpticalSMDResistor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDTransistor,
             CircuitComponent.ProcessedOpticalSMDTransistor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDInductor,
             CircuitComponent.ProcessedOpticalSMDInductor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDCapacitor,
             CircuitComponent.ProcessedOpticalSMDCapacitor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalSMDDiode,
             CircuitComponent.ProcessedOpticalSMDDiode,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSMDProcessorRecipes);
     }
 
     public static void registerBoardRecipes() {
@@ -377,44 +254,51 @@ public class RecipeHandlers {
             Materials.IronIIIChloride.getFluid(1000),
             CircuitComponent.ProcessedBoardMultifiberglassElite,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBoardProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardWetwareLifesupport,
             Materials.GrowthMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedBoardWetwareLifesupport,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBoardProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardBioMutated,
             Materials.BioMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedBoardBioMutated,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBoardProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardOptical,
             Materials.MysteriousCrystal.getMolten(1000),
             CircuitComponent.ProcessedBoardOptical,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBoardProcessorRecipes);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardOptical,
             Materials.MysteriousCrystal.getMolten(1000),
             CircuitComponent.ProcessedBoardOptical,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBoardProcessorRecipes);
 
         addSimpleProcessingRecipe(
             CircuitComponent.NeuroProcessingUnit,
             Materials.GrowthMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedNeuroProcessingUnit,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBiologicalCoordinator);
         addSimpleProcessingRecipe(
             CircuitComponent.BioProcessingUnit,
             Materials.BioMediumSterilized.getFluid(1000),
             CircuitComponent.ProcessedBioProcessingUnit,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipBiologicalCoordinator);
     }
 
     public static void registerEtchingRecipes() {
@@ -423,12 +307,14 @@ public class RecipeHandlers {
             CircuitComponent.ChipCrystalCPU,
             CircuitComponent.ProcessedChipCrystalCPU,
             ModuleRecipeInfo.Slow,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipEtchingArray);
         addSimpleProcessingRecipe(
             CircuitComponent.ChipAdvCrystalCPU,
             CircuitComponent.ProcessedChipAdvCrystalCPU,
             ModuleRecipeInfo.Slow,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipEtchingArray);
 
     }
 
@@ -437,13 +323,15 @@ public class RecipeHandlers {
             CircuitComponent.ChipOpticalCPU,
             CircuitComponent.ProcessedChipOpticalCPU,
             ModuleRecipeInfo.Slow,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipOpticalOrganizer);
         // RAM processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.OpticalRAM,
             CircuitComponent.ProcessedOpticalRAM,
             ModuleRecipeInfo.Slow,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipOpticalOrganizer);
     }
 
     public static void registerCuttingRecipes() {
@@ -453,49 +341,57 @@ public class RecipeHandlers {
             Materials.Lubricant.getFluid(250),
             CircuitComponent.ProcessedChipNanoCPU,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferRAM,
             Materials.Lubricant.getFluid(67),
             CircuitComponent.ProcessedChipRAM,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferNOR,
             Materials.Lubricant.getFluid(135),
             CircuitComponent.ProcessedChipNOR,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferNAND,
             Materials.Lubricant.getFluid(135),
             CircuitComponent.ProcessedChipNAND,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferASOC,
             Materials.Lubricant.getFluid(250),
             CircuitComponent.ProcessedChipASOC,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferPikoPIC,
             Materials.Lubricant.getFluid(375),
             CircuitComponent.ProcessedChipPikoPIC,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferQuantumPIC,
             Materials.Lubricant.getFluid(500),
             CircuitComponent.ProcessedChipQuantumPIC,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.WaferPico,
             Materials.Lubricant.getFluid(750),
             CircuitComponent.ProcessedChipPico,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
     }
 
     public static void registerSuperconductorRecipes() {
@@ -504,32 +400,38 @@ public class RecipeHandlers {
             CircuitComponent.SuperconductorLuV,
             CircuitComponent.ProcessedSuperconductorLuV,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSuperconductorSplitter);
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorZPM,
             CircuitComponent.ProcessedSuperconductorZPM,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSuperconductorSplitter);
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorUHV,
             CircuitComponent.ProcessedSuperconductorUHV,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSuperconductorSplitter);
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorUEV,
             CircuitComponent.ProcessedSuperconductorUEV,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSuperconductorSplitter);
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorUIV,
             CircuitComponent.ProcessedSuperconductorUIV,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSuperconductorSplitter);
         addSimpleProcessingRecipe(
             CircuitComponent.SuperconductorUMV,
             CircuitComponent.ProcessedSuperconductorUMV,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSuperconductorSplitter);
     }
 
     public static void registerFrameBoxRecipes() {
@@ -539,41 +441,48 @@ public class RecipeHandlers {
             Materials.Grade1PurifiedWater.getFluid(1000),
             CircuitComponent.ProcessedFrameboxAluminium,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxTritanium,
             Materials.Grade1PurifiedWater.getFluid(1000),
             CircuitComponent.ProcessedFrameboxTritanium,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxNeutronium,
             Materials.Grade1PurifiedWater.getFluid(1000),
             CircuitComponent.ProcessedFrameboxNeutronium,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipCuttingChamber);
 
         // Foil processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FoilPolybenzimidazole,
             CircuitComponent.ProcessedFoilPolybenzimidazole,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSheetSupervisor);
         addSimpleProcessingRecipe(
             CircuitComponent.FoilSiliconeRubber,
             CircuitComponent.ProcessedFoilSiliconeRubber,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSheetSupervisor);
         addSimpleProcessingRecipe(
             CircuitComponent.FoilRadoxPolymer,
             CircuitComponent.ProcessedFoilRadoxPolymer,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSheetSupervisor);
         addSimpleProcessingRecipe(
             CircuitComponent.FoilShirabon,
             CircuitComponent.ProcessedFoilShirabon,
             ModuleRecipeInfo.Medium,
-            TierEU.RECIPE_LV);
+            TierEU.RECIPE_LV,
+            RecipeMaps.nanochipSheetSupervisor);
     }
 
     public static void populateFinishedCircuitRecipeMaps() {
