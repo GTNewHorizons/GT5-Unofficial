@@ -469,29 +469,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     if (!modules.isEmpty()) {
                         // Calculate the max power to be shared to the modules
                         // to not powerfail or distribute un-evenly.
-                        long totalEU = (long) (getEUVar() * 0.9);
-                        long totalEUPerModule = totalEU / modules.size();
-                        long euToCharge = this.getMaxInputEu() / modules.size() * MODULE_CONNECT_INTERVAL;
-                        euToCharge = Math.min(euToCharge, totalEUPerModule);
-
-                        long eutPerModule = euToCharge / MODULE_CONNECT_INTERVAL;
-
+                        long currentEu = getEUVar();
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
-                            module.connect();
-                            // Set available EU/t for this module, which is the total EU/t divided by the amount of
-                            // modules,
-                            // since each module can draw power equally (no mixed overclocks).
-                            module.setAvailableEUt(eutPerModule);
-                            // Charge the module with power
-                            long availableEnergy = getEUVar();
-                            if (availableEnergy > 0) {
+                            if (currentEu > 0) {
+                                module.connect();
+                                long moduleEu = module.getEuT();
+                                module.setAvailableEUt(Math.min(moduleEu, module.getMaxEUT()));
                                 setEUVar(
-                                    Math.max(
-                                        0,
-                                        availableEnergy
-                                            - module.increaseStoredEU(Math.min(euToCharge, availableEnergy))));
+                                    Math.max(0, currentEu - module.increaseStoredEU(Math.min(moduleEu, currentEu))));
                             }
                         }
+
                     }
                 }
             } else {

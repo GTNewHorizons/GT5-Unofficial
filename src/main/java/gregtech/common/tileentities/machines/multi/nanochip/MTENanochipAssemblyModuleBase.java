@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,6 +73,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
+
+    private long euT = TierEU.RECIPE_LuV;
+    private long maxEUT = Long.MAX_VALUE;
 
     private boolean isConnected = false;
 
@@ -335,6 +339,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      */
     @NotNull
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+        this.euT = recipe.mEUt;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -472,6 +477,38 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      */
     protected int getMaximumParallel() {
         return BASE_PARALLEL;
+    }
+
+    /**
+     * Determines the euT of the current module that the Nac will send to this module
+     * In case any specific module wants to control this value.
+     */
+    protected long getEuT() {
+        return euT;
+    }
+
+    /**
+     * Sets the euT of the current module that the Nac will send to this module
+     * In case any specific module wants to control this value.
+     */
+    protected void setEuT(long euT) {
+        this.euT = euT;
+    }
+
+    /**
+     * Determines the max EU that the module can pull
+     * In case any specific module wants to control this value.
+     */
+    protected long getMaxEUT() {
+        return maxEUT;
+    }
+
+    /**
+     * Sets the max EU that the module can pull
+     * In case any specific module wants to control this value.
+     */
+    protected void setMaxEUT(long maxEUT) {
+        this.maxEUT = maxEUT;
     }
 
     /**
