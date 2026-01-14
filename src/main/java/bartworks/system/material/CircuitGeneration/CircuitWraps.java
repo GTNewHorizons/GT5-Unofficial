@@ -7,7 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import bartworks.MainMod;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -93,9 +92,9 @@ public enum CircuitWraps {
 
     ;
 
-    public int id;
-    public ItemList itemSingle;
-    public ItemList itemWrap;
+    public final int id;
+    public final ItemList itemSingle;
+    public final ItemList itemWrap;
 
     CircuitWraps(int id, ItemList itemSingle, ItemList itemWrap) {
         this.id = id;
@@ -124,10 +123,11 @@ public enum CircuitWraps {
         }
 
         String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
-        String localised = StatCollector.translateToFallback(itemStack.getUnlocalizedName());
+
+        // If you aren't using English, you probably already have translations for this item too.
         itemWrap.set(
             BWMetaItems.getCircuitParts()
-                .addItem(id, "Wrap of " + localised + "s", tt));
+                .addItem(id, "Wrap of " + itemStack.getDisplayName() + "s", tt));
     }
 
     public void registerWrapRecipe() {
