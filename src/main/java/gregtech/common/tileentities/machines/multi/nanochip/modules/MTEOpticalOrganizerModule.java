@@ -240,11 +240,10 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     float speedModifier = 1;
     float euMultiplier = 1;
     float extraBoost = 1;
-    private static final int BASE_PARALLEL = 1024;
 
     @Override
     protected int getMaximumParallel() {
-        return (int) (BASE_PARALLEL * extraBoost * parallelModifier);
+        return (int) (super.getMaximumParallel() * extraBoost * parallelModifier);
     }
 
     @Override
