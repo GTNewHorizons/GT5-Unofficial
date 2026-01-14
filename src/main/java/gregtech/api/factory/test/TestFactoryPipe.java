@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,8 +44,10 @@ public class TestFactoryPipe extends MTEBaseFactoryPipe implements TestFactoryEl
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.network",
+                accessor.getNBTData()
+                    .getString("network")));
     }
 
     @Override
