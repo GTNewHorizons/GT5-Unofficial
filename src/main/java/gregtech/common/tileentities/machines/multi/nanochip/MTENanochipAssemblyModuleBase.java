@@ -464,12 +464,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
     }
 
+    protected static final int BASE_PARALLEL = 1024;
+
     /**
      * Determines the maximum parallel for use in {@see createParallelHelper}
      * In case any specific module wants to control this value.
      */
     protected int getMaximumParallel() {
-        return Integer.MAX_VALUE;
+        return BASE_PARALLEL;
     }
 
     /**

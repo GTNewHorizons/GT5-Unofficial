@@ -200,6 +200,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
+    protected int getMaximumParallel() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
         int recipeTier = GTUtility.getTier(recipe.mEUt);
         int machineTier = getCasingTier();

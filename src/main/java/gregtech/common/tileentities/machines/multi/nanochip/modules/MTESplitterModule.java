@@ -151,6 +151,11 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     }
 
     @Override
+    protected int getMaximumParallel() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
         buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, SPLITTER_OFFSET_X, SPLITTER_OFFSET_Y, SPLITTER_OFFSET_Z);
