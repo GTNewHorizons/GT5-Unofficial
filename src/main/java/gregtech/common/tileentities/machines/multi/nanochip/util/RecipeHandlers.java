@@ -736,8 +736,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 128)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
                 Materials.BioMediumSterilized.getFluid(2880),
@@ -808,10 +807,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 128),
+                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 128)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(5760),
                 Materials.Radon.getGas(5760),
