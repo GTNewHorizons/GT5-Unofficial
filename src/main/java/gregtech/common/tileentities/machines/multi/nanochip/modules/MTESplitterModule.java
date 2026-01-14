@@ -1,12 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
@@ -43,7 +41,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -77,17 +74,10 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // Nanochip Primary Casing
         .addElement(
             'A',
-            ofChain(
-                lazy(
-                    t -> GTStructureUtility.<MTESplitterModule>buildHatchAdder()
-                        .atLeast(SpecialHatchElement.redstoneHatch)
-                        .hint(1)
-                        .cacheHint(() -> "redstone hatch")
-                        .casingIndex(1)
-                        .build()
-
-                ),
-                ofBlock(Casings.NanochipPrimaryCasing.getBlock(), 10)))
+            buildHatchAdder(MTESplitterModule.class).hint(2)
+                .casingIndex(Casings.NanochipPrimaryCasing.getTextureId())
+                .atLeast(SpecialHatchElement.redstoneHatch)
+                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
         // Nanochip Secondary Casing
         .addElement('B', Casings.NanochipSecondaryCasing.asElement())
         // Epoxy Resin Casing
