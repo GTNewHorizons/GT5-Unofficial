@@ -113,9 +113,14 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             for (var entry : ccs.getComponents()
                 .entrySet()) {
                 CircuitComponent cc = entry.getKey();
-                long amountLeft = outputCircuitComponent(cc, entry.getValue(), stack, src);
-                if (amountLeft > 0) {
-                    leftovers.add(Pair.of(cc.getFakeStack(1), amountLeft));
+                if (cc.isProcessed) {
+                    // Skip PC's
+                    leftovers.add(Pair.of(cc.getFakeStack(1), entry.getValue()));
+                } else {
+                    long amountLeft = outputCircuitComponent(cc, entry.getValue(), stack, src);
+                    if (amountLeft > 0) {
+                        leftovers.add(Pair.of(cc.getFakeStack(1), amountLeft));
+                    }
                 }
             }
             hatch.contents = new CircuitComponentPacket(leftovers);
@@ -239,8 +244,11 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .getCellInventory(storageCell, null, StorageChannel.ITEMS);
 
         long maxDrain = amount;
-        // todo make this be the real item not the CC/PC
-        ItemStack stack = cc.getFakeStack(1);
+        ItemStack stack = cc.realComponent.get();
+        if (stack == null) {
+            // Unable to find real item, do not try to output to cell
+            return amount;
+        }
         AEItemStack aeStack = AEItemStack.create(stack);
         aeStack.setStackSize(maxDrain);
 
