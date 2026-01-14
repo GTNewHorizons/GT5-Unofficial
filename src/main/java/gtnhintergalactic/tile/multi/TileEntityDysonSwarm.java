@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -487,7 +488,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         WorldProvider provider = this.getBaseMetaTileEntity()
             .getWorld().provider;
 
-        if (!Loader.isModLoaded("GalacticraftCore")) {
+        if (!Mods.GalacticraftCore.isModLoaded()) {
             return 1.0D;
         }
 
