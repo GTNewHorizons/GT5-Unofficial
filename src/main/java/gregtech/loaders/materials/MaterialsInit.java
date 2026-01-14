@@ -12583,7 +12583,7 @@ public class MaterialsInit {
     private static Materials loadGalgadorian() {
         return new MaterialBuilder().setName("Galgadorian")
             .setDefaultLocalName("Galgadorian")
-            .setChemicalFormula("???Fe₂C₉Nh₃")
+            .setChemicalFormula("???C₉Nh₃(Fe₂(C(MgFeSi₂O₈)₈))₂")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
             .setARGB(0x009a6977)
@@ -12602,7 +12602,7 @@ public class MaterialsInit {
     private static Materials loadGalgadorianEnhanced() {
         return new MaterialBuilder().setName("EnhancedGalgadorian")
             .setDefaultLocalName("Enhanced Galgadorian")
-            .setChemicalFormula("???Fe₂C₉Nh₃")
+            .setChemicalFormula("???C₉Nh₃(Fe₂(C(MgFeSi₂O₈)₈))₂")
             .setIconSet(TextureSet.SET_METALLIC)
             .setColor(Dyes.dyePink)
             .setARGB(0x00985d85)
