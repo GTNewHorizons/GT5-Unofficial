@@ -105,13 +105,15 @@ public enum CircuitWraps {
     public void registerWrap() {
         if (!itemSingle.hasBeenSet()) {
             MainMod.LOGGER
-                .error("Source item for wrap with ID: " + id + " is registered later than the wrap, this is a bug.");
+                .error("Source item for wrap with ID: {} is registered later than the wrap, this is a bug.", id);
+            return;
         }
 
         ItemStack itemStack = itemSingle.get(1);
 
         if (!GTUtility.isStackValid(itemStack)) {
-            MainMod.LOGGER.error("Source item for wrap with ID: " + id + " has an invalid stack, this is a bug.");
+            MainMod.LOGGER.error("Source item for wrap with ID: {} has an invalid stack, this is a bug.", id);
+            return;
         }
 
         ArrayList<String> toolTip = new ArrayList<>();
