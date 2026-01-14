@@ -50,7 +50,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.MTEHatchOutputME;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
     implements ISurvivalConstructable {
