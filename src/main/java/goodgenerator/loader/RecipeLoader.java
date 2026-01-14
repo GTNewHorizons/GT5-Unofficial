@@ -1072,7 +1072,7 @@ public class RecipeLoader {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedGoldChip", 16),
+                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         GGMaterial.signalium.get(OrePrefixes.bolt, 32),
@@ -1087,7 +1087,7 @@ public class RecipeLoader {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedGoldChip", 16),
+                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         GGMaterial.signalium.get(OrePrefixes.bolt, 32),
