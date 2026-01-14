@@ -111,6 +111,7 @@ public class TexturesGtBlock {
     public static final CustomIcon Casing_Material_Fluid_IncoloyDS = new CustomIcon(
         "TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
     public static final CustomIcon Casing_Material_Laurenium = new CustomIcon("TileEntities/MACHINE_CASING_LAURENIUM");
+    public static final CustomIcon Casing_Material_Botmium = new CustomIcon("TileEntities/MACHINE_CASING_BOTMIUM");
 
     // Trinium Alloys
     public static final CustomIcon Casing_Trinium_Titanium = new CustomIcon(

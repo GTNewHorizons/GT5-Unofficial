@@ -541,8 +541,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
-            String.format(
-                "Fluid cache capacity: %s%s L%s",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.output_me.fluid_cache_capacity",
                 EnumChatFormatting.GOLD,
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
