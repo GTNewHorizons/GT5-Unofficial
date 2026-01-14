@@ -64,7 +64,7 @@ public class CircuitComponentFakeItem extends GTGenericItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        for (CircuitComponent component : CircuitComponent.values()) {
+        for (CircuitComponent component : CircuitComponent.VALUES) {
             if (component.iconString != null) iconMap.put(
                 component.ordinal(),
                 iconRegister.registerIcon(GregTech.ID + TextureLocation + component.iconString));
