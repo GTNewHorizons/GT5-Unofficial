@@ -803,4 +803,9 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTECleanRoomGui(this);
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
