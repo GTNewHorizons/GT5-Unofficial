@@ -3,8 +3,6 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import net.minecraft.init.Blocks;
@@ -17,7 +15,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import tectech.thing.CustomItemList;
 
 public enum CircuitComponent {
@@ -171,7 +168,7 @@ public enum CircuitComponent {
         () -> ItemList.Circuit_Wafer_QPIC.get(1)),
     WaferPico(
         "gt.circuitcomponent.waferpico",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1)),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1, 0, new ItemStack(Blocks.cobblestone))),
 
     ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", true),
     ProcessedChipRAM("gt.circuitcomponent.processed.chipram", true),
@@ -352,10 +349,6 @@ public enum CircuitComponent {
     public final Supplier<ItemStack> realComponent;
     public final boolean isProcessed;
 
-    // No need to use a full recipe map for conversions to real circuits, this also makes things a little easier
-    // since we won't need to match outputs of recipes
-    public static final Map<GTUtility.ItemId, CircuitComponent> realCircuitToComponent = new HashMap<>();
-
     // CC constructor
     CircuitComponent(String unlocalizedName, Supplier<ItemStack> realComponent) {
         this(unlocalizedName, realComponent, false);
@@ -419,16 +412,6 @@ public enum CircuitComponent {
 
         public int getSize() {
             return mSize;
-        }
-    }
-
-    static {
-        // Populate real circuit conversion hashmap
-        for (CircuitComponent component : CircuitComponent.values()) {
-            if (component.realComponent != null) {
-                GTUtility.ItemId id = GTUtility.ItemId.createNoCopy(component.realComponent.get());
-                realCircuitToComponent.put(id, component);
-            }
         }
     }
 }
