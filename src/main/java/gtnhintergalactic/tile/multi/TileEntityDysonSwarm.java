@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -485,6 +486,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public double getPowerFactor() {
         WorldProvider provider = this.getBaseMetaTileEntity()
             .getWorld().provider;
+
+        if (!Loader.isModLoaded("GalacticraftCore")) {
+            return 1.0D;
+        }
 
         if (provider instanceof IOrbitDimension orbitDimension) {
             return IGConfig.dysonSwarm.getPowerFactor(orbitDimension.getPlanetToOrbit());
