@@ -1693,8 +1693,8 @@ public final class RecipeMaps {
             CircuitComponent output = CircuitComponent.tryGetFromFakeStack(recipe.mOutputs[0]);
             // Fake recipes for the assembly matrix may not have this
             if (output == null) return;
-            if (output.realCircuit != null) {
-                MTEAssemblyMatrixModule.registerLocalName(output.realCircuit, output);
+            if (output.realComponent != null) {
+                MTEAssemblyMatrixModule.registerLocalName(output.realComponent.get(), output);
             }
         })
         .frontend(AssemblyLineFrontend::new)
