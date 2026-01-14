@@ -18,8 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_ACTIVE_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_SCANNER_GLOW;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 
-import java.util.LinkedList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,13 +31,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 
 public class MTEScanner extends MTEBasicMachine {
-
-    public static final LinkedList<IGTScannerHandler> HANDLERS = new LinkedList<>();
 
     public MTEScanner(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -135,42 +132,28 @@ public class MTEScanner extends MTEBasicMachine {
             fluid = null;
         }
 
-        // run last handler that found something first.
-        GTScannerResult result = mLastSuccesfulHandler != null
-            ? mLastSuccesfulHandler.apply(this, input, specialSlot, fluid)
-            : null;
-        // check other handlers
-        if (result == null) {
-            for (IGTScannerHandler handler : HANDLERS) {
-                if (handler == mLastSuccesfulHandler) continue;
-                result = handler.apply(this, input, specialSlot, fluid);
-                // check next if not handled
-                if (result == null) continue;
-                // cache the last handler for faster lookups
-                mLastSuccesfulHandler = handler;
-                break;
-            }
-        }
+        // check handlers
+        GTScannerResult result = RecipeMaps.scannerHandlers
+            .findRecipeWithCache(this.mLastSuccesfulHandler, this, input, specialSlot, fluid);
         // abort if no recipe found
         if (result == null) {
             return DID_NOT_FIND_RECIPE;
         }
         // abort if req were not met internally.
-        if (result.eut() <= 0 || result.duration() <= 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (result.isNotMet()) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
         // check if oc fails
-        calculateOverclockedNess(result.eut(), result.duration());
-        boolean success = mMaxProgresstime != Integer.MAX_VALUE - 1 && mEUt != Integer.MAX_VALUE - 1;
+        calculateOverclockedNess(result.eut, result.duration);
+        if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
+            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+
         // consume
-        if (success || result.consumeInputsIfOCFail()) {
-            input.stackSize -= result.inputConsume();
-            if (specialSlot != null) specialSlot.stackSize -= result.specialConsume();
-            if (fluid != null) fluid.amount -= result.fluidConsume();
-        }
-        if (success) {
-            this.mOutputItems[0] = result.output();
-        }
+        input.stackSize -= result.inputConsume;
+        if (specialSlot != null) specialSlot.stackSize -= result.specialConsume;
+        if (fluid != null) fluid.amount -= result.fluidConsume;
+        this.mOutputItems[0] = result.output;
         // return code
-        return success ? FOUND_AND_SUCCESSFULLY_USED_RECIPE : FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
 
     @Override

@@ -5,7 +5,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.getTier;
@@ -21,37 +23,37 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
-import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -59,20 +61,18 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.AssemblyLineUtils;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTScannerResult;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -86,22 +86,20 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 
 /**
  * Created by danie_000 on 17.12.2016.
+ * Updated by C0bra5 on 11.01.2026.
  */
 public class MTEResearchStation extends TTMultiblockBase implements ISurvivalConstructable {
 
-    public static final String machine = "EM Machinery";
-    public static final String crafter = "EM Crafting";
     // region variables
-    private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
-    private GTRecipe.RecipeAssemblyLine tRecipe;
-    private static final String assembly = "Assembly line";
-    private static final String scanner = "Scanner";
-    private String machineType = assembly;
-    private ItemStack holdItem;
-    private long computationRemaining, computationRequired;
+    public static final int MODE_RESEARCH_STATION = 0;
+    public static final int MODE_SCANNER = 1;
 
+    private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
+    private ItemStack holderStackToConsume = null;
+    private ItemStack researchOutputForGUI = null;
+    private long computationRemaining = 0, computationRequired = 0;
     // Used to sync currently researching item to GUI
-    private String clientOutputName;
+    private ItemStack clientResearchOutput = null;
 
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -121,9 +119,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             transpose(
                 new String[][] { { "   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA" },
                     { "AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB" },
-                    { "   ", " C ", "   ", "   ", "ACA", "CCC", "DDD" },
+                    { "   ", " C ", "   ", "   ", "AFA", "CCC", "DDD" },
                     { "   ", " E ", "   ", "   ", "A~A", "CCC", "DDD" },
-                    { "   ", " C ", "   ", "   ", "ACA", "CCC", "DDD" },
+                    { "   ", " C ", "   ", "   ", "AFA", "CCC", "DDD" },
                     { "AAA", "ACA", "ACA", "ACA", "BCB", "BCB", "BBB" },
                     { "   ", " A ", " A ", "AAA", "AAA", "AAA", "AAA" } }))
         .addElement('A', ofBlock(TTCasingsContainer.sBlockCasingsTT, 1))
@@ -132,13 +130,101 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         .addElement(
             'D',
             buildHatchAdder(MTEResearchStation.class)
-                .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.InputData)
+                .atLeast(
+                    Energy.or(HatchElement.EnergyMulti),
+                    Maintenance,
+                    HatchElement.InputData,
+                    OutputBus,
+                    InputHatch)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
                 .hint(1)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
         .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 2))
+        .addElement(
+            'F',
+            buildHatchAdder(MTEResearchStation.class).anyOf(OutputBus, InputHatch)
+                .casingIndex(BlockGTCasingsTT.textureOffset + 1)
+                .hint(1)
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
+
         .build();
-    // endregion
+
+    public final boolean addHolderToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof MTEHatchObjectHolder) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eHolders.add((MTEHatchObjectHolder) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {
+
+        INSTANCE;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchObjectHolder.class);
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEResearchStation> adder() {
+            return MTEResearchStation::addHolderToMachineList;
+        }
+
+        @Override
+        public long count(MTEResearchStation t) {
+            return t.eHolders.size();
+        }
+    }
+
+    @Override
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        unlockHolders();
+        eHolders.clear();
+
+        if (!structureCheck_EM("main", 1, 3, 4)) {
+            return false;
+        }
+
+        if (iGregTechTileEntity.isActive()) {
+            lockHolders();
+        } else {
+            unlockHolders();
+        }
+
+        return eHolders.size() == 1;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        structureBuild_EM("main", 1, 3, 4, stackSize, hintsOnly);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece("main", stackSize, 1, 3, 4, elementBudget, env, false, true);
+    }
+
+    @Override
+    public IStructureDefinition<MTEResearchStation> getStructure_EM() {
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public String[] getStructureDescription(ItemStack stackSize) {
+        return description;
+    }
+    // endregion structure
+
+    // region ctor and definitions
 
     public MTEResearchStation(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -148,181 +234,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         super(aName);
     }
 
-    private void makeStick() {
-        mInventory[1].setTagCompound(new NBTTagCompound());
-        mInventory[1].getTagCompound()
-            .setString(
-                "author",
-                EnumChatFormatting.BLUE + "Tec"
-                    + EnumChatFormatting.DARK_BLUE
-                    + "Tech"
-                    + EnumChatFormatting.WHITE
-                    + ' '
-                    + machineType
-                    + " Recipe Generator");
-        AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
-    }
-
-    private boolean iterateRecipes() {
-        for (GTRecipe ttRecipe : TecTechRecipeMaps.researchStationFakeRecipes.getAllRecipes()) {
-            if (GTUtility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
-                computationRequired = computationRemaining = ttRecipe.mDuration * 20L;
-                mMaxProgresstime = 20;
-                mEfficiencyIncrease = 10000;
-                eRequiredData = (short) (ttRecipe.mSpecialValue >>> 16);
-                eAmpereFlow = (short) (ttRecipe.mSpecialValue & 0xFFFF);
-                mEUt = Math.min(ttRecipe.mEUt, -ttRecipe.mEUt);
-                eHolders.get(0)
-                    .getBaseMetaTileEntity()
-                    .setActive(true);
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEResearchStation(mName);
-    }
-
-    @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for (MTEHatchObjectHolder rack : validMTEList(eHolders)) {
-            rack.getBaseMetaTileEntity()
-                .setActive(false);
-        }
-        eHolders.clear();
-
-        if (!structureCheck_EM("main", 1, 3, 4)) {
-            return false;
-        }
-
-        for (MTEHatchObjectHolder rack : validMTEList(eHolders)) {
-            rack.getBaseMetaTileEntity()
-                .setActive(iGregTechTileEntity.isActive());
-        }
-        return eHolders.size() == 1;
-    }
-
-    @Override
-    @NotNull
-    protected CheckRecipeResult checkProcessing_EM() {
-        ItemStack controllerStack = getControllerSlot();
-        tRecipe = null;
-        if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
-            holdItem = eHolders.get(0).mInventory[0].copy();
-            boolean isDataStick = ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true);
-            boolean isDataOrb = ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true);
-            if (isDataStick || isDataOrb) {
-                switch (machineType) {
-                    case scanner -> {
-                        if (isDataStick) {
-                            for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
-                                if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
-                                    boolean failScanner = true;
-                                    for (GTRecipe scannerRecipe : scannerFakeRecipes.getAllRecipes()) {
-                                        if (GTUtility.areStacksEqual(scannerRecipe.mInputs[0], holdItem, true)) {
-                                            failScanner = false;
-                                            break;
-                                        }
-                                    }
-                                    if (failScanner) {
-                                        return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
-                                    }
-                                    this.tRecipe = assRecipe;
-                                    // Set property
-                                    computationRequired = computationRemaining = (long) (assRecipe.mResearchTime
-                                        * GTUtility.powInt(2, getTier(assRecipe.mResearchVoltage) - 1));
-                                    mMaxProgresstime = 20;
-                                    mEfficiencyIncrease = 10000;
-                                    eRequiredData = 1;
-                                    eAmpereFlow = 1;
-                                    mEUt = -Math.max(assRecipe.mResearchVoltage, (int) TierEU.RECIPE_UV);
-                                    eHolders.get(0)
-                                        .getBaseMetaTileEntity()
-                                        .setActive(true);
-                                    return SimpleCheckRecipeResult.ofSuccess("scanning");
-                                }
-                            }
-                        } else {
-                            ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
-                            if ((tData != null)
-                                && ((tData.mPrefix == OrePrefixes.dust) || (tData.mPrefix == OrePrefixes.cell))
-                                && (tData.mMaterial.mMaterial.mElement != null)
-                                && (!tData.mMaterial.mMaterial.mElement.mIsIsotope)
-                                && (tData.mMaterial.mMaterial != Materials.Magic)
-                                && (tData.mMaterial.mMaterial.getMass() > 0L)) {
-
-                                this.tRecipe = new GTRecipe.RecipeAssemblyLine(
-                                    holdItem.copy(),
-                                    (int) (tData.mMaterial.mMaterial.getMass() * 8192L),
-                                    (int) TierEU.RECIPE_UV,
-                                    GTValues.emptyItemStackArray,
-                                    GTValues.emptyFluidStackArray,
-                                    holdItem.copy(),
-                                    1,
-                                    30); // make fake recipe
-                                // Set property
-                                computationRequired = computationRemaining = GTUtility
-                                    .safeInt(tData.mMaterial.mMaterial.getMass() * 8192L); // value get from
-                                                                                           // MTEScanner
-                                                                                           // class
-                                mMaxProgresstime = 20;
-                                mEfficiencyIncrease = 10000;
-                                eRequiredData = 1;
-                                eAmpereFlow = 1;
-                                mEUt = (int) -TierEU.RECIPE_UV;
-                                eHolders.get(0)
-                                    .getBaseMetaTileEntity()
-                                    .setActive(true);
-                                return SimpleCheckRecipeResult.ofSuccess("scanning");
-                            }
-                        }
-                    }
-                    case assembly -> {
-                        for (GTRecipe.RecipeAssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
-                            if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
-                                tRecipe = assRecipe;
-                                // if found
-                                if (iterateRecipes()) return SimpleCheckRecipeResult.ofSuccess("researching");
-                            }
-                        }
-                    }
-                }
-            } else {
-                return CheckRecipeResultRegistry.NO_DATA_STICKS;
-            }
-        }
-        holdItem = null;
-        computationRequired = computationRemaining = 0;
-        for (MTEHatchObjectHolder r : eHolders) {
-            r.getBaseMetaTileEntity()
-                .setActive(false);
-        }
-        return SimpleCheckRecipeResult.ofFailure("no_research_item");
-    }
-
-    @Override
-    public void outputAfterRecipe_EM() {
-        if (!eHolders.isEmpty() && tRecipe != null) {
-            eHolders.get(0)
-                .getBaseMetaTileEntity()
-                .setActive(false);
-            if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                makeStick();
-                eHolders.get(0).mInventory[0] = null;
-            } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                BehaviourDataOrb.setDataTitle(mInventory[1], "Elemental-Scan");
-                ItemData tData = GTOreDictUnificator.getAssociation(holdItem);
-                assert tData != null;
-                BehaviourDataOrb.setDataName(mInventory[1], tData.mMaterial.mMaterial.mElement.name());
-                eHolders.get(0).mInventory[0] = null;
-            }
-        }
-        computationRequired = computationRemaining = 0;
-        tRecipe = null;
-        holdItem = null;
     }
 
     @Override
@@ -361,20 +275,435 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
+            return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3],
+                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
+        }
+        return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3] };
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(scannerFakeRecipes, TecTechRecipeMaps.researchStationFakeRecipes);
+    }
+
+    @Override
+    protected boolean supportsSlotAutomation(int aSlot) {
+        return aSlot == getControllerSlotIndex();
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+    // endregion ctor and definitions
+
+    // region void protection
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public VoidingMode getDefaultVoidingMode() {
+        return VoidingMode.VOID_NONE;
+    }
+
+    @Override
+    public Set<VoidingMode> getAllowedVoidingModes() {
+        return VoidingMode.ITEM_ONLY_MODES;
+    }
+    // endregion
+
+    // region machine mode
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (this.machineMode == MODE_RESEARCH_STATION) return MODE_SCANNER;
+        return MODE_RESEARCH_STATION;
+    }
+
+    @Override
+    public void setMachineMode(int aIndex) {
+        switch (aIndex) {
+            case MODE_RESEARCH_STATION, MODE_SCANNER -> this.machineMode = aIndex;
+            default -> this.machineMode = MODE_RESEARCH_STATION;
+        }
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return getMachineModeName(this.machineMode);
+    }
+
+    private static String getMachineModeName(int mode) {
+        if (mode == MODE_RESEARCH_STATION)
+            return StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.mode.Assembly_line");
+        return StatCollector.translateToLocal("gt.blockmachines.multimachine.em.research.mode.Scanner");
+    }
+
+    @Override
+    public int getMachineMode() {
+        return super.getMachineMode();
+    }
+
+    // endregion machine mode
+
+    // region holder utils
+    private void unlockHolders() {
+        for (MTEHatchObjectHolder holder : this.eHolders) {
+            IGregTechTileEntity mte = holder.getBaseMetaTileEntity();
+            if (mte != null) {
+                mte.setActive(false);
+            }
+        }
+    }
+
+    private void lockHolders() {
+        for (MTEHatchObjectHolder holder : this.eHolders) {
+            IGregTechTileEntity mte = holder.getBaseMetaTileEntity();
+            if (mte != null) {
+                mte.setActive(true);
+            }
+        }
+    }
+
+    private void exploderHolders() {
+        for (MetaTileEntity holder : eHolders) {
+            IGregTechTileEntity mte = holder.getBaseMetaTileEntity();
+            if (mte != null) {
+                mte.doExplosion(V[9]);
+            }
+        }
+    }
+
+    private @Nullable ItemStack getHolderStack() {
+        if (this.eHolders.isEmpty() || this.eHolders.get(0).mInventory[0] == null) return null;
+        ItemStack stack = this.eHolders.get(0).mInventory[0];
+        if (GTUtility.isStackInvalid(stack) || stack.stackSize <= 0) return null;
+        return stack;
+    }
+    // endregion holder utils
+
+    // region input fetching
+    private @Nullable ItemStack getResearchSpecialStack() {
+        ItemStack stack = this.getControllerSlot();
+        if (GTUtility.isStackInvalid(stack) || stack.stackSize <= 0) return null;
+        return stack;
+    }
+
+    private @Nullable FluidStack getResearchFluid() {
+        return this.getStoredFluids()
+            .stream()
+            .filter(f -> f.getFluid() != null && f.amount > 0)
+            .findFirst()
+            .orElse(null);
+    }
+    // endregion input fetching
+
+    // region event handlers
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+        unlockHolders();
+    }
+
+    @Override
+    protected void extraExplosions_EM() {
+        this.exploderHolders();
+    }
+
+    @Override
+    public void stopMachine(@Nonnull ShutDownReason reason) {
+        super.stopMachine(reason);
+        unlockHolders();
+        computationRequired = computationRemaining = 0;
+        holderStackToConsume = null;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (eHolders == null || eHolders.get(0).mInventory[0] == null)
+            stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
+        if (computationRemaining <= 0) {
+            computationRemaining = 0;
+            mProgresstime = mMaxProgresstime;
+            return true;
+        } else {
+            computationRemaining -= eAvailableData;
+            mProgresstime = 1;
+            return super.onRunningTick(aStack);
+        }
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        super.onRightclick(aBaseMetaTileEntity, aPlayer);
+        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
+            if (aPlayer instanceof EntityPlayerMPAccessor) {
+                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+            }
+        } else {
+            return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
+    }
+    // endregion event handlers
+
+    // region recipe check
+    @Override
+    @NotNull
+    protected CheckRecipeResult checkProcessing_EM() {
+        this.holderStackToConsume = null;
+        this.researchOutputForGUI = null;
+        CheckRecipeResult result;
+        ItemStack holderStack = getHolderStack();
+        if (GTUtility.isStackInvalid(holderStack) || holderStack.stackSize <= 0) {
+            return SimpleCheckRecipeResult.ofFailure("no_research_item");
+        }
+        // null controller stack if invalid
+        ItemStack specialStack = this.getResearchSpecialStack();
+        result = switch (this.machineMode) {
+            case MODE_SCANNER -> findSBScannerRecipe(holderStack, specialStack);
+            case MODE_RESEARCH_STATION -> findResearchStationRecipe(holderStack, specialStack);
+            default -> CheckRecipeResultRegistry.INTERNAL_ERROR;
+        };
+        // fail-safes
+        if (!result.wasSuccessful()) {
+            this.researchOutputForGUI = null;
+            this.holderStackToConsume = null;
+            this.mMaxProgresstime = 0;
+            this.mEfficiencyIncrease = 0;
+            this.mEUt = 0;
+            this.computationRequired = computationRemaining = 0;
+            this.unlockHolders();
+        } else {
+            mMaxProgresstime = 20;
+            mEfficiencyIncrease = 10000;
+            this.lockHolders();
+        }
+        return result;
+    }
+
+    private CheckRecipeResult findSBScannerRecipe(ItemStack aHolderStack, ItemStack aSpecialStack) {
+        // only accepts one fluid so consider going though multiple times?
+        // but doesn't seem too relevant since the only possible thing would be honey anyway.
+        FluidStack fluid = getResearchFluid();
+        // try to find a recipe
+        GTScannerResult result = RecipeMaps.scannerHandlers.findRecipe(this, aHolderStack, aSpecialStack, fluid);
+        // check if the result was found.
+        if (result == null) return CheckRecipeResultRegistry.NO_RECIPE;
+        // abort if req were not met internally.
+        if (result.isNotMet()) return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
+        // check if we can output
+        if (this.voidingMode.protectItem && result.output != null
+            && !this.canOutputAll(new ItemStack[] { result.output })) {
+            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+        }
+        // calc computation/update req
+        long computation;
+        int eut;
+        if (result instanceof GTScannerResult.ALScannerResult alResult) {
+            this.researchOutputForGUI = alResult.alRecipe.mOutput == null ? null : alResult.alRecipe.mOutput.copy();
+            computation = getComputationForALScannerResult(
+                alResult.alRecipe.mResearchTime,
+                alResult.alRecipe.mResearchVoltage);
+            eut = getEUtForScannerResult(alResult.alRecipe.mResearchVoltage);
+        } else {
+            this.researchOutputForGUI = result.output == null ? null : result.output.copy();
+            computation = getComputationForScannerResult(result.duration);
+            eut = getEUtForScannerResult(result.eut);
+        }
+        if (fluid != null) fluid.amount -= result.fluidConsume;
+        if (aSpecialStack != null) {
+            aSpecialStack.stackSize -= result.specialConsume;
+            if (aSpecialStack.stackSize <= 0) {
+                this.mInventory[this.getControllerSlotIndex()] = null;
+            }
+        }
+        // store params
+        this.holderStackToConsume = GTUtility.copyAmount(result.inputConsume, aHolderStack);
+        this.computationRemaining = this.computationRequired = computation;
+        this.mEUt = -eut;
+        this.mOutputItems = result.output == null ? null : new ItemStack[] { result.output };
+        this.eRequiredData = 1;
+        this.eAmpereFlow = 1;
+        return SimpleCheckRecipeResult.ofSuccess("scanning");
+    }
+
+    // public static for nei/fake recipes
+    public static long getComputationForALScannerResult(long aResearchTime, long aResearchEUt) {
+        return (long) (aResearchTime * GTUtility.powInt(2, getTier(aResearchEUt) - 1));
+    }
+
+    // public static for nei/fake recipes
+    public static long getComputationForScannerResult(int duration) {
+        return duration;
+    }
+
+    // public static for nei/fake recipes
+    public static int getEUtForScannerResult(int eut) {
+        // minimum of UV
+        return Math.max(eut, (int) TierEU.RECIPE_UV);
+    }
+
+    private CheckRecipeResult findResearchStationRecipe(ItemStack aHolderStack, ItemStack aSpecialStack) {
+        // controller slot must be a data stick.
+        if (!ItemList.Tool_DataStick.isStackEqual(aSpecialStack, false, true))
+            return CheckRecipeResultRegistry.NO_DATA_STICKS;
+        for (TecTechRecipeMaps.TTResearchStationALRecipe assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
+            if (GTUtility.areStacksEqual(assRecipe.mResearchItem, aHolderStack, true)) {
+                // generate datastick
+                ItemStack output = ItemList.Tool_DataStick.get(1);
+                output.setTagCompound(new NBTTagCompound());
+                output.getTagCompound()
+                    .setString(
+                        "author",
+                        EnumChatFormatting.BLUE + "Tec"
+                            + EnumChatFormatting.DARK_BLUE
+                            + "Tech"
+                            + EnumChatFormatting.WHITE
+                            + " Assembly Line Recipe Generator");
+                AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(output, assRecipe);
+                // check if we can output
+                if (this.voidingMode.protectItem && !this.canOutputAll(new ItemStack[] { output })) {
+                    return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+                }
+                // consume
+                aSpecialStack.stackSize -= 1;
+                if (aSpecialStack.stackSize <= 0) {
+                    this.mInventory[this.getControllerSlotIndex()] = null;
+                }
+                // set params
+                this.researchOutputForGUI = assRecipe.mOutput == null ? null : assRecipe.mOutput.copy();
+                this.holderStackToConsume = GTUtility.copyAmount(assRecipe.mResearchItem.stackSize, aHolderStack);
+                this.computationRequired = this.computationRemaining = assRecipe.mComputation * 20L;
+                this.mOutputItems = new ItemStack[] { output };
+                // should probably fix what ever causes this at the root instead of here.
+                this.mEUt = Math.min(assRecipe.mEUt, -assRecipe.mEUt);
+                this.eRequiredData = assRecipe.mComputationRequiredPerSec;
+                this.eAmpereFlow = assRecipe.mAmperage;
+                return SimpleCheckRecipeResult.ofSuccess("researching");
+            }
+        }
+        return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+    // endregion recipe check
+
+    // region outputting
+    @Override
+    public void outputAfterRecipe_EM() {
+        unlockHolders();
+        // abort early if tracker is null for some reason
+        if (this.holderStackToConsume != null) {
+            ItemStack holderStack = this.getHolderStack();
+            if (GTUtility.areStacksEqual(this.holderStackToConsume, holderStack, false)
+                && this.holderStackToConsume.stackSize <= holderStack.stackSize) {
+                holderStack.stackSize -= this.holderStackToConsume.stackSize;
+                // we have to manually wipe it since it doesn't auto-clear if stack size <= 0
+                if (holderStack.stackSize <= 0) {
+                    this.eHolders.get(0).mInventory[0] = null;
+                }
+            } else {
+                this.mOutputItems = null;
+            }
+            this.researchOutputForGUI = null;
+            this.holderStackToConsume = null;
+        }
+        this.computationRequired = this.computationRemaining = 0;
+    }
+
+    // endregion outputting
+
+    // region nbt
+    private final static String NBT_OLD_MODE = "eMachineType";
+    private final static String NBT_COMP_REMAIN = "eComputationRemaining";
+    private final static String NBT_COMP_TOTAL = "eComputationRequired";
+    private final static String NBT_HOLDER = "eHold";
+    private final static String NBT_RESEARCH = "eResearchOutput";
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        if (this.computationRequired > 0) {
+            if (this.holderStackToConsume != null) {
+                NBTTagCompound iNBT = new NBTTagCompound();
+                this.holderStackToConsume.writeToNBT(iNBT);
+                aNBT.setTag(NBT_HOLDER, iNBT);
+            }
+            if (this.researchOutputForGUI != null) {
+                NBTTagCompound iNBT = new NBTTagCompound();
+                this.researchOutputForGUI.writeToNBT(iNBT);
+                aNBT.setTag(NBT_RESEARCH, iNBT);
+            }
+        }
+        aNBT.setLong(NBT_COMP_REMAIN, computationRemaining);
+        aNBT.setLong(NBT_COMP_TOTAL, computationRequired);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey(NBT_OLD_MODE, 8)) {
+            // abort the recipe if one was ongoing, this just makes the migration infinitely simpler
+            // since the old version didn't track any output values.
+            this.mMaxProgresstime = 0;
+            this.mEUt = 0;
+            this.mEfficiencyIncrease = 0;
+            this.computationRemaining = 0;
+            this.computationRequired = 0;
+            if (aNBT.getString(NBT_OLD_MODE)
+                .equals("Scanner")) {
+                this.machineMode = MODE_SCANNER;
+            } else {
+                this.machineMode = MODE_RESEARCH_STATION;
+            }
+        } else {
+            computationRemaining = aNBT.getLong(NBT_COMP_REMAIN);
+            computationRequired = aNBT.getLong(NBT_COMP_TOTAL);
+            if (computationRequired > 0) {
+                if (aNBT.hasKey(NBT_HOLDER, 10)) {
+                    this.holderStackToConsume = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(NBT_HOLDER));
+                }
+                if (aNBT.hasKey(NBT_RESEARCH, 10)) {
+                    this.researchOutputForGUI = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(NBT_RESEARCH));
+                }
+            }
+        }
+    }
+    // endregion nbt
+
+    // region scanner output
+    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            IGregTechTileEntity mte = tHatch.getBaseMetaTileEntity();
+            if (mte == null) continue;
+            storedEnergy += mte.getStoredEU();
+            maxEnergy += mte.getEUCapacity();
         }
         for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            IGregTechTileEntity mte = tHatch.getBaseMetaTileEntity();
+            if (mte == null) continue;
+            storedEnergy += mte.getStoredEU();
+            maxEnergy += mte.getEUCapacity();
         }
 
         return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
@@ -434,180 +763,26 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + eSafeVoid,
             translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eAvailableData)
+                + GTUtility.formatNumbers(this.eAvailableData)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(eRequiredData)
+                + GTUtility.formatNumbers(this.eRequiredData)
                 + EnumChatFormatting.RESET,
             translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(computationRemaining / 20L)
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.computationRemaining / 20L)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(getComputationRequired()) };
     }
+    // endregion scanner output
+
+    // region gui
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3],
-                new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
-        }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3] };
-    }
-
-    @Override
-    public void onRemoval() {
-        super.onRemoval();
-        for (MTEHatchObjectHolder r : eHolders) {
-            r.getBaseMetaTileEntity()
-                .setActive(false);
-        }
-    }
-
-    @Override
-    protected void extraExplosions_EM() {
-        for (MetaTileEntity tTileEntity : eHolders) {
-            tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(V[9]);
-        }
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setLong("eComputationRemaining", computationRemaining);
-        aNBT.setLong("eComputationRequired", computationRequired);
-        aNBT.setString("eMachineType", machineType);
-        if (holdItem != null) {
-            aNBT.setTag("eHold", holdItem.writeToNBT(new NBTTagCompound()));
-        } else {
-            aNBT.removeTag("eHold");
-        }
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        computationRemaining = aNBT.getLong("eComputationRemaining");
-        computationRequired = aNBT.getLong("eComputationRequired");
-        machineType = aNBT.hasKey("eMachineType") ? aNBT.getString("eMachineType") : assembly;
-        if (aNBT.hasKey("eHold")) {
-            holdItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eHold"));
-        } else {
-            holdItem = null;
-        }
-    }
-
-    @Override
-    public void stopMachine(@Nonnull ShutDownReason reason) {
-        super.stopMachine(reason);
-        for (MTEHatchObjectHolder r : eHolders) {
-            r.getBaseMetaTileEntity()
-                .setActive(false);
-        }
-        computationRequired = computationRemaining = 0;
-        tRecipe = null;
-        holdItem = null;
-    }
-
-    @Override
-    protected boolean supportsSlotAutomation(int aSlot) {
-        return aSlot == getControllerSlotIndex();
-    }
-
-    @Override
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (computationRemaining > 0) {
-                tRecipe = null;
-                if (holdItem != null) {
-                    if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                        for (GTRecipe.RecipeAssemblyLine tRecipe : TecTechRecipeMaps.researchableALRecipeList) {
-                            if (GTUtility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
-                                this.tRecipe = tRecipe;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (tRecipe == null) {
-                    holdItem = null;
-                    computationRequired = computationRemaining = 0;
-                    mMaxProgresstime = 0;
-                    mEfficiencyIncrease = 0;
-                    for (MTEHatchObjectHolder r : eHolders) {
-                        r.getBaseMetaTileEntity()
-                            .setActive(false);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        if (eHolders == null || eHolders.get(0).mInventory[0] == null)
-            stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
-        if (computationRemaining <= 0) {
-            computationRemaining = 0;
-            mProgresstime = mMaxProgresstime;
-            return true;
-        } else {
-            computationRemaining -= eAvailableData;
-            mProgresstime = 1;
-            return super.onRunningTick(aStack);
-        }
-    }
-
-    public final boolean addHolderToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        }
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-        if (aMetaTileEntity instanceof MTEHatchObjectHolder) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eHolders.add((MTEHatchObjectHolder) aMetaTileEntity);
-        }
+    public boolean showRecipeTextInGUI() {
         return false;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        super.onRightclick(aBaseMetaTileEntity, aPlayer);
-
-        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
-            if (aPlayer instanceof EntityPlayerMPAccessor) {
-                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-            }
-        } else {
-            return true;
-        }
-        return true;
-    }
-
-    @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
-        switch (machineType) {
-            case scanner -> machineType = assembly;
-            case assembly -> machineType = scanner;
-        }
-        aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation(
-                "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(scannerFakeRecipes, TecTechRecipeMaps.researchStationFakeRecipes);
     }
 
     @Override
@@ -615,11 +790,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         super.drawTexts(screenElements, inventorySlot);
         screenElements
             .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
+                new TextWidget()
+                    .setStringSupplier(
+                        () -> StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.researching_item",
+                            this.clientResearchOutput == null ? "" : this.clientResearchOutput.getDisplayName()))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
+                    .setEnabled(widget -> this.computationRequired > 0 && this.clientResearchOutput != null))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -629,40 +806,46 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             getComputationRequired(),
                             GTUtility.formatNumbers(getComputationProgress())))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .widget(new FakeSyncWidget.LongSyncer(() -> computationRequired, aLong -> computationRequired = aLong))
-            .widget(new FakeSyncWidget.LongSyncer(() -> computationRemaining, aLong -> computationRemaining = aLong))
-            .widget(new FakeSyncWidget.StringSyncer(() -> {
-                if (tRecipe != null && tRecipe.mOutput != null) {
-                    return tRecipe.mOutput.getDisplayName();
-                }
-                return "";
-            }, aString -> clientOutputName = aString));
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
-        tag.setFloat("efficiency", mEfficiency / 100.0F);
-        tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setString("machineType", machineType);
-        tag.setLong("computation", getComputationConsumed());
-        tag.setLong("computationRequired", getComputationRequired());
+                    .setEnabled(widget -> this.computationRequired > 0 && this.clientResearchOutput != null))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.computationRequired,
+                    aLong -> this.computationRequired = aLong))
+            .widget(
+                new FakeSyncWidget.LongSyncer(
+                    () -> this.computationRemaining,
+                    aLong -> this.computationRemaining = aLong))
+            .widget(
+                new FakeSyncWidget.ItemStackSyncer(
+                    () -> this.researchOutputForGUI,
+                    aStack -> this.clientResearchOutput = aStack));
     }
 
     private long getComputationConsumed() {
-        return (computationRequired - computationRemaining) / 20L;
+        return (this.computationRequired - this.computationRemaining) / 20L;
     }
 
     private long getComputationRequired() {
-        return computationRequired / 20L;
+        return this.computationRequired / 20L;
     }
 
     private double getComputationProgress() {
         return 100d
             * (getComputationRequired() > 0d ? (double) getComputationConsumed() / getComputationRequired() : 0d);
+    }
+
+    // endregion gui
+
+    // region waila
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
+        tag.setFloat("efficiency", this.mEfficiency / 100.0F);
+        tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
+        tag.setInteger("machineMode", this.machineMode);
+        tag.setLong("computation", getComputationConsumed());
+        tag.setLong("computationRequired", getComputationRequired());
     }
 
     @Override
@@ -682,60 +865,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             currentTip
                 .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
         }
-        currentTip.add(
-            StatCollector.translateToLocal(
-                "gt.blockmachines.multimachine.em.research.mode." + tag.getString("machineType")
-                    .replace(" ", "_")));
+        currentTip.add(getMachineModeName(tag.getInteger("machineMode")));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",
                 tag.getInteger("computation"),
                 tag.getInteger("computationRequired")));
     }
+    // endregion waila
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 3, 4, stackSize, hintsOnly);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
-        if (mMachine) return -1;
-        return survivalBuildPiece("main", stackSize, 1, 3, 4, elementBudget, source, actor, false, true);
-    }
-
-    @Override
-    public IStructureDefinition<MTEResearchStation> getStructure_EM() {
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
-    }
-
-    private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {
-
-        INSTANCE;
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(MTEHatchObjectHolder.class);
-        }
-
-        @Override
-        public IGTHatchAdder<? super MTEResearchStation> adder() {
-            return MTEResearchStation::addHolderToMachineList;
-        }
-
-        @Override
-        public long count(MTEResearchStation t) {
-            return t.eHolders.size();
-        }
-    }
 }
