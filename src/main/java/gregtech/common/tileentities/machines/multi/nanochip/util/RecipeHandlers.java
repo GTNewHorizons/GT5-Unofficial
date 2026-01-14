@@ -107,7 +107,7 @@ public class RecipeHandlers {
     }
 
     public static void registerConversionRecipes() {
-        for (CircuitComponent cc : CircuitComponent.values()) {
+        for (CircuitComponent cc : CircuitComponent.VALUES) {
             if (cc.isProcessed) continue;
             if (cc.realComponent == null) throw new IllegalStateException("CC must define its representative item!");
 

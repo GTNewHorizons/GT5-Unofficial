@@ -19,15 +19,8 @@ import tectech.thing.CustomItemList;
 
 public enum CircuitComponent {
 
-    // TODO: Consider if this whole fake stack system is overcomplicated and if we can't just use the real stacks
-    // The main drawback of this is that either we have to override a LOT of things in the NEI display, or simply accept
-    // that
-    // the circuit components will be displayed with the same textures and names as the real stacks backing them.
-    // This also wouldn't work well with components that don't have a 'real' backing ItemStack, such as components
-    // that are only created through a module in the NAC
-
-    // When adding to this list, PLEASE only add to the end! The ordinals are used as item ids for the fake items, so
-    // adding in the middle will break saved state!
+    // When adding to this list, PLEASE only add to the end!
+    // The ordinals are used as item ids for the fake items, so adding in the middle will break saved state!
 
     // spotless:off
 
@@ -168,7 +161,7 @@ public enum CircuitComponent {
         () -> ItemList.Circuit_Wafer_QPIC.get(1)),
     WaferPico(
         "gt.circuitcomponent.waferpico",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1, 0, new ItemStack(Blocks.cobblestone))),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
 
     ProcessedChipNanoCPU("gt.circuitcomponent.processed.chipnanocpu", true),
     ProcessedChipRAM("gt.circuitcomponent.processed.chipram", true),
@@ -330,15 +323,16 @@ public enum CircuitComponent {
     OpticalMainframe(
         "gt.circuitcomponent.opticalmainframe",
         () -> ItemList.Circuit_OpticalMainframe.get(1)),
-    // todo consider doing fallbacks better
     PicoCircuit(
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.dirt))),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.fire))),
     QuantumCircuit(
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.stone))),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.fire))),
 
     ;
+
+    public static final CircuitComponent[] VALUES = values();
 
     // spotless:on
 
@@ -383,17 +377,13 @@ public enum CircuitComponent {
     }
 
     public static CircuitComponent tryGetFromFakeStack(ItemStack stack) {
-        if (stack.getItemDamage() >= CircuitComponent.values().length) return null;
+        if (stack.getItemDamage() >= CircuitComponent.VALUES.length) return null;
         return getFromFakeStackUnsafe(stack);
     }
 
     public static CircuitComponent getFromFakeStackUnsafe(ItemStack stack) {
         // If this throws an IndexOutOfBounds exception, there is a bug
-        return CircuitComponent.values()[stack.getItemDamage()];
-    }
-
-    public static CircuitComponent getFromMetaDataUnsafe(int metadata) {
-        return CircuitComponent.values()[metadata];
+        return CircuitComponent.VALUES[stack.getItemDamage()];
     }
 
     public static class CircuitComponentStack {
