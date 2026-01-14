@@ -422,7 +422,11 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
-                + "eV" };
+                + "eV",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

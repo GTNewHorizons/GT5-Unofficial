@@ -429,7 +429,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
+        // Multiblock base already includes 1 parallel
+        this.recipesDone += finalParallel - 1;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
