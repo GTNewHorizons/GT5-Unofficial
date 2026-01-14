@@ -83,6 +83,14 @@ public class MTEHatchCokeOven extends MTEHatch {
                 case OutputFluid -> StatCollector.translateToLocal("GT5U.machines.coke_oven_hatch.mode.output_fluid");
             };
         }
+
+        public @NotNull String getLocalizedName() {
+            return switch (this) {
+                case Input -> StatCollector.translateToLocal("GT5U.waila.coke_oven_hatch.mode.input");
+                case OutputItem -> StatCollector.translateToLocal("GT5U.waila.coke_oven_hatch.mode.output_item");
+                case OutputFluid -> StatCollector.translateToLocal("GT5U.waila.coke_oven_hatch.mode.output_fluid");
+            };
+        }
     }
 
     /** Fluid transfer rate in liters per second. */
@@ -155,7 +163,7 @@ public class MTEHatchCokeOven extends MTEHatch {
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add("Mode: " + mode.name);
+        currenttip.add(StatCollector.translateToLocalFormatted("GT5U.waila.mode", mode.getLocalizedName()));
     }
 
     /**
