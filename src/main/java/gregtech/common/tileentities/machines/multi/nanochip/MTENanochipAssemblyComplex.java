@@ -423,10 +423,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         CircuitComponent component = entry.getKey();
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
-                        if (component.realCircuit != null) {
+                        if (component.realComponent != null) {
                             lEUt -= (amount * EU_MULTIPLIER);
-                            ItemStack toOutput = GTUtility
-                                .copyAmountUnsafe((int) Math.min(Integer.MAX_VALUE, amount), component.realCircuit);
+                            ItemStack toOutput = GTUtility.copyAmountUnsafe(
+                                (int) Math.min(Integer.MAX_VALUE, amount),
+                                component.realComponent.get());
                             // Add output and deplete from hatch
                             // todo check that this is correct after item logistics changes
                             addOutputAtomic(toOutput);
