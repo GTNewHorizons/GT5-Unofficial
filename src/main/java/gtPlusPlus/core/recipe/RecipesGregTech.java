@@ -438,6 +438,11 @@ public class RecipesGregTech {
             .duration(2 * MINUTES)
             .addTo(AssemblyLine);
 
+        /*
+         * Old Gem Battery Recipes
+         * todo: deprecated, remove after 2.9
+         */
+
         // Proton Cell
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.PROTON))
@@ -511,6 +516,98 @@ public class RecipesGregTech {
             .itemInputs(
                 GregtechItemList.Battery_Casing_Gem_4.get(1),
                 Particle.getBaseParticle(Particle.GRAVITON, 16),
+                MaterialsAlloy.ABYSSAL.getPlate(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
+                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(8),
+                MaterialsAlloy.TITANSTEEL.getScrew(8))
+            .fluidInputs(
+                MaterialsAlloy.ABYSSAL.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.OCTIRON.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.TITANSTEEL.getFluidStack(16 * INGOTS))
+            .itemOutputs(GregtechItemList.Battery_Gem_4.get(1))
+            .duration(120 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(AssemblyLine);
+
+        /*
+         * Gem Battery Recipes (post LHC/beamcrafting)
+         */
+
+        // Proton Cell
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.StableBaryonContainmentUnit.get(1))
+            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_ZPM))
+            .itemInputs(
+                GregtechItemList.Battery_Casing_Gem_1.get(1),
+                ItemList.StableBaryonContainmentUnit.get(16),
+                MaterialsAlloy.ZERON_100.getPlate(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.YttriumBariumCuprate, 32),
+                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getBolt(8),
+                MaterialsAlloy.INCONEL_625.getScrew(8))
+            .fluidInputs(
+                MaterialsAlloy.ZERON_100.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.HASTELLOY_N.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.LAFIUM.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(16 * INGOTS))
+            .itemOutputs(GregtechItemList.Battery_Gem_1.get(1))
+            .duration(120 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(AssemblyLine);
+
+        // Electron Cell
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.StableLeptonContainmentUnit.get(1))
+            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UV))
+            .itemInputs(
+                GregtechItemList.Battery_Casing_Gem_2.get(1),
+                ItemList.StableLeptonContainmentUnit.get(16),
+                MaterialsAlloy.PIKYONIUM.getPlate(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 32),
+                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getBolt(8),
+                MaterialsAlloy.ZERON_100.getScrew(8))
+            .fluidInputs(
+                MaterialsAlloy.PIKYONIUM.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.ENERGYCRYSTAL.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.CINOBITE.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFluidStack(16 * INGOTS))
+            .itemOutputs(GregtechItemList.Battery_Gem_2.get(1))
+            .duration(120 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(AssemblyLine);
+
+        // Quark Entanglement
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.StableMesonContainmentUnit.get(1))
+            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UHV))
+            .itemInputs(
+                GregtechItemList.Battery_Casing_Gem_3.get(1),
+                ItemList.StableMesonContainmentUnit.get(16),
+                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Duranium, 32),
+                MaterialsAlloy.TITANSTEEL.getBolt(8),
+                MaterialsAlloy.PIKYONIUM.getScrew(8))
+            .fluidInputs(
+                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFluidStack(32 * INGOTS),
+                MaterialsAlloy.TITANSTEEL.getFluidStack(16 * INGOTS),
+                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getFluidStack(16 * INGOTS))
+            .itemOutputs(GregtechItemList.Battery_Gem_3.get(1))
+            .duration(120 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(AssemblyLine);
+
+        // Graviton Anomaly
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.StableBosonContainmentUnit.get(1))
+            .metadata(SCANNING, new Scanning(60 * SECONDS, TierEU.RECIPE_UEV))
+            .itemInputs(
+                GregtechItemList.Battery_Casing_Gem_4.get(1),
+                ItemList.StableBosonContainmentUnit.get(16),
                 MaterialsAlloy.ABYSSAL.getPlate(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 8),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 32),
