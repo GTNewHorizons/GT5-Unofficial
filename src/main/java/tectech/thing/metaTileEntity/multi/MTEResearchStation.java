@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -53,7 +52,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,6 +71,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -94,12 +93,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public static final int MODE_RESEARCH_STATION = 0;
     public static final int MODE_SCANNER = 1;
 
+    public static final int PACKET_LOSS_GRACE_WINDOW = 20;
+    public static final int PACKET_LOSS_DECAY_WINDOW = 80;
+    public static final int PACKET_LOSS_FULL_WINDOW = PACKET_LOSS_GRACE_WINDOW + PACKET_LOSS_DECAY_WINDOW;
+
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
     private ItemStack holderStackToConsume = null;
     private ItemStack researchOutputForGUI = null;
     private long computationRemaining = 0, computationRequired = 0;
-    // Used to sync currently researching item to GUI
-    private ItemStack clientResearchOutput = null;
+    private int ticksUntilPacketLossFail = PACKET_LOSS_FULL_WINDOW;
+    private long packetLossDecayFrom = 0;
 
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
@@ -142,7 +145,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 2))
         .addElement(
             'F',
-            buildHatchAdder(MTEResearchStation.class).anyOf(OutputBus, InputHatch)
+            buildHatchAdder(MTEResearchStation.class).anyOf(OutputBus, InputHatch, Maintenance)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
                 .hint(1)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
@@ -303,18 +306,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     // region void protection
     @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public VoidingMode getDefaultVoidingMode() {
-        return VoidingMode.VOID_NONE;
-    }
-
-    @Override
-    public Set<VoidingMode> getAllowedVoidingModes() {
-        return VoidingMode.ITEM_ONLY_MODES;
+    public boolean protectsExcessItem() {
+        return !eSafeVoid;
     }
     // endregion
 
@@ -423,25 +416,53 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
-        unlockHolders();
-        this.computationRequired = this.computationRemaining = 0;
-        this.holderStackToConsume = null;
-        this.researchOutputForGUI = null;
+        this.resetProgress();
     }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (eHolders == null || eHolders.get(0).mInventory[0] == null)
+        if (eHolders == null || eHolders.isEmpty() || eHolders.get(0).mInventory[0] == null)
             stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
         if (computationRemaining <= 0) {
             computationRemaining = 0;
             mProgresstime = mMaxProgresstime;
             return true;
         } else {
+            // packet loss mitigation
+            if (eAvailableData >= eRequiredData) {
+                this.packetLossDecayFrom = this.computationRemaining;
+                this.ticksUntilPacketLossFail = PACKET_LOSS_FULL_WINDOW;
+            }
             computationRemaining -= eAvailableData;
             mProgresstime = 1;
             return super.onRunningTick(aStack);
         }
+    }
+
+    @Override
+    protected boolean checkComputationTimeout() {
+        // this is only to mitigate packet loss, not the event of data being below expected.
+        // this might be adjusted if the issue on large serves causes sub-rate packets to be sent.
+        if (this.eAvailableData != 0) {
+            return super.checkComputationTimeout();
+        }
+        --this.ticksUntilPacketLossFail;
+        // if the counter reaches zero, fail with a full comp loss.
+        if (this.ticksUntilPacketLossFail <= 0) {
+            this.ticksUntilPacketLossFail = 0;
+            // fail completely
+            stopMachine(SimpleShutDownReason.ofCritical("computation_loss"));
+            return false;
+        }
+        // if we are within the grace window, just consume power as usual.
+        if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
+            return true;
+        }
+        // else loose 1/DECAY_WINDOW_PROGRESS of progress every tick.
+        long diff = this.computationRequired - this.packetLossDecayFrom;
+        double mult = 1.0d - (double) this.ticksUntilPacketLossFail / PACKET_LOSS_DECAY_WINDOW;
+        this.computationRemaining = this.packetLossDecayFrom + (long) (diff * mult);
+        return true;
     }
 
     @Override
@@ -470,8 +491,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
-        this.holderStackToConsume = null;
-        this.researchOutputForGUI = null;
+        resetProgress();
         CheckRecipeResult result;
         ItemStack holderStack = getHolderStack();
         if (GTUtility.isStackInvalid(holderStack) || holderStack.stackSize <= 0) {
@@ -486,19 +506,26 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         };
         // fail-safes
         if (!result.wasSuccessful()) {
-            this.researchOutputForGUI = null;
-            this.holderStackToConsume = null;
-            this.mMaxProgresstime = 0;
-            this.mEfficiencyIncrease = 0;
-            this.mEUt = 0;
-            this.computationRequired = computationRemaining = 0;
-            this.unlockHolders();
+            this.resetProgress();
         } else {
-            mMaxProgresstime = 20;
-            mEfficiencyIncrease = 10000;
+            this.mMaxProgresstime = 20;
+            this.mEfficiencyIncrease = 10000;
             this.lockHolders();
         }
         return result;
+    }
+
+    private void resetProgress() {
+        this.eComputationTimeout = MAX_COMPUTATION_TIMEOUT;
+        this.researchOutputForGUI = null;
+        this.holderStackToConsume = null;
+        this.mOutputItems = null;
+        this.mMaxProgresstime = 0;
+        this.mEfficiencyIncrease = 0;
+        this.mEUt = 0;
+        this.computationRequired = this.computationRemaining = this.packetLossDecayFrom = 0;
+        this.ticksUntilPacketLossFail = PACKET_LOSS_FULL_WINDOW;
+        this.unlockHolders();
     }
 
     private CheckRecipeResult findSBScannerRecipe(ItemStack aHolderStack, ItemStack aSpecialStack) {
@@ -512,23 +539,20 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         // abort if req were not met internally.
         if (result.isNotMet()) return SimpleCheckRecipeResult.ofFailure("wrongRequirements");
         // check if we can output
-        if (this.voidingMode.protectItem && result.output != null
+        if (this.protectsExcessItem() && result.output != null
             && !this.canOutputAll(new ItemStack[] { result.output })) {
             return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
         }
         // calc computation/update req
         long computation;
-        int eut;
         if (result instanceof GTScannerResult.ALScannerResult alResult) {
             this.researchOutputForGUI = alResult.alRecipe.mOutput == null ? null : alResult.alRecipe.mOutput.copy();
-            computation = getComputationForALScannerResult(
+            computation = getComputationForScannerResult(
                 alResult.alRecipe.mResearchTime,
                 alResult.alRecipe.mResearchVoltage);
-            eut = getEUtForScannerResult(alResult.alRecipe.mResearchVoltage);
         } else {
             this.researchOutputForGUI = result.output == null ? null : result.output.copy();
-            computation = getComputationForScannerResult(result.duration);
-            eut = getEUtForScannerResult(result.eut);
+            computation = getComputationForScannerResult(result.duration, result.eut);
         }
         if (fluid != null) fluid.amount -= result.fluidConsume;
         if (aSpecialStack != null) {
@@ -539,8 +563,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         }
         // store params
         this.holderStackToConsume = GTUtility.copyAmount(result.inputConsume, aHolderStack);
-        this.computationRemaining = this.computationRequired = computation;
-        this.mEUt = -eut;
+        this.computationRemaining = this.computationRequired = this.packetLossDecayFrom = computation;
+        this.mEUt = -getEUtForScannerResult(result.eut);
         this.mOutputItems = result.output == null ? null : new ItemStack[] { result.output };
         this.eRequiredData = 1;
         this.eAmpereFlow = 1;
@@ -548,19 +572,14 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     // public static for nei/fake recipes
-    public static long getComputationForALScannerResult(long aResearchTime, long aResearchEUt) {
+    public static long getComputationForScannerResult(long aResearchTime, long aResearchEUt) {
         return (long) (aResearchTime * GTUtility.powInt(2, getTier(aResearchEUt) - 1));
-    }
-
-    // public static for nei/fake recipes
-    public static long getComputationForScannerResult(int duration) {
-        return duration;
     }
 
     // public static for nei/fake recipes
     public static int getEUtForScannerResult(int eut) {
         // minimum of UV
-        return Math.max(eut, (int) TierEU.RECIPE_UV);
+        return Math.max(Math.abs(eut), (int) TierEU.RECIPE_UV);
     }
 
     private CheckRecipeResult findResearchStationRecipe(ItemStack aHolderStack, ItemStack aSpecialStack) {
@@ -582,7 +601,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             + " Assembly Line Recipe Generator");
                 AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(output, assRecipe);
                 // check if we can output
-                if (this.voidingMode.protectItem && !this.canOutputAll(new ItemStack[] { output })) {
+                if (this.protectsExcessItem() && !this.canOutputAll(new ItemStack[] { output })) {
                     return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
                 }
                 // consume
@@ -593,7 +612,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 // set params
                 this.researchOutputForGUI = assRecipe.mOutput == null ? null : assRecipe.mOutput.copy();
                 this.holderStackToConsume = GTUtility.copyAmount(assRecipe.mResearchItem.stackSize, aHolderStack);
-                this.computationRequired = this.computationRemaining = assRecipe.mComputation * 20L;
+                this.computationRequired = this.computationRemaining = this.packetLossDecayFrom = assRecipe.mComputation
+                    * 20L;
                 this.mOutputItems = new ItemStack[] { output };
                 // should probably fix what ever causes this at the root instead of here.
                 this.mEUt = Math.min(assRecipe.mEUt, -assRecipe.mEUt);
@@ -629,6 +649,13 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         this.computationRequired = this.computationRemaining = 0;
     }
 
+    @Override
+    protected void addClassicOutputs_EM() {
+        super.addClassicOutputs_EM();
+        // jic
+        this.resetProgress();
+    }
+
     // endregion outputting
 
     // region nbt
@@ -637,6 +664,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     private final static String NBT_COMP_TOTAL = "eComputationRequired";
     private final static String NBT_HOLDER = "eHold";
     private final static String NBT_RESEARCH = "eResearchOutput";
+    private final static String NBT_PACKET_LOSS_IN = "ePacketFailIn";
+    private final static String NBT_PACKET_LOSS_DECAY = "ePacketLossDecay";
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -655,6 +684,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         }
         aNBT.setLong(NBT_COMP_REMAIN, computationRemaining);
         aNBT.setLong(NBT_COMP_TOTAL, computationRequired);
+        aNBT.setInteger(NBT_PACKET_LOSS_IN, this.ticksUntilPacketLossFail);
+        aNBT.setLong(NBT_PACKET_LOSS_DECAY, this.packetLossDecayFrom);
     }
 
     @Override
@@ -663,11 +694,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         if (aNBT.hasKey(NBT_OLD_MODE, 8)) {
             // abort the recipe if one was ongoing, this just makes the migration infinitely simpler
             // since the old version didn't track any output values.
-            this.mMaxProgresstime = 0;
-            this.mEUt = 0;
-            this.mEfficiencyIncrease = 0;
-            this.computationRemaining = 0;
-            this.computationRequired = 0;
+            this.resetProgress();
             if (aNBT.getString(NBT_OLD_MODE)
                 .equals("Scanner")) {
                 this.machineMode = MODE_SCANNER;
@@ -677,6 +704,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         } else {
             computationRemaining = aNBT.getLong(NBT_COMP_REMAIN);
             computationRequired = aNBT.getLong(NBT_COMP_TOTAL);
+            ticksUntilPacketLossFail = aNBT.getInteger(NBT_PACKET_LOSS_IN);
+            packetLossDecayFrom = aNBT.getLong(NBT_PACKET_LOSS_DECAY);
             if (computationRequired > 0) {
                 if (aNBT.hasKey(NBT_HOLDER, 10)) {
                     this.holderStackToConsume = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(NBT_HOLDER));
@@ -705,6 +734,23 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             if (mte == null) continue;
             storedEnergy += mte.getStoredEU();
             maxEnergy += mte.getEUCapacity();
+        }
+
+        String connectionStatus;
+        if (this.mMaxProgresstime <= 0) {
+            connectionStatus = translateToLocalFormatted("tt.infodata.multi.connection_health.inactive");
+        } else if (this.ticksUntilPacketLossFail >= PACKET_LOSS_FULL_WINDOW) {
+            connectionStatus = EnumChatFormatting.GREEN
+                + translateToLocalFormatted("tt.infodata.multi.connection_health.established")
+                + EnumChatFormatting.RESET;
+        } else if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
+            connectionStatus = EnumChatFormatting.YELLOW
+                + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
+                + EnumChatFormatting.RESET;
+        } else {
+            connectionStatus = EnumChatFormatting.RED
+                + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
+                + EnumChatFormatting.RESET;
         }
 
         return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
@@ -770,12 +816,14 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(this.eRequiredData)
                 + EnumChatFormatting.RESET,
-            translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.computationRemaining / 20L)
+            translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(this.computationRemaining / 20L)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getComputationRequired()) };
+                + GTUtility.formatNumbers(getComputationRequired()),
+            translateToLocalFormatted("tt.infodata.multi.connection_health", connectionStatus) };
     }
     // endregion scanner output
 
@@ -795,9 +843,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                     .setStringSupplier(
                         () -> StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.researching_item",
-                            this.clientResearchOutput == null ? "" : this.clientResearchOutput.getDisplayName()))
+                            this.researchOutputForGUI == null ? "" : this.researchOutputForGUI.getDisplayName()))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> this.computationRequired > 0 && this.clientResearchOutput != null))
+                    .setEnabled(widget -> this.computationRequired > 0 && this.researchOutputForGUI != null))
             .widget(
                 new TextWidget()
                     .setStringSupplier(
@@ -807,7 +855,21 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             getComputationRequired(),
                             GTUtility.formatNumbers(getComputationProgress())))
                     .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> this.computationRequired > 0 && this.clientResearchOutput != null))
+                    .setEnabled(widget -> this.computationRequired > 0 && this.researchOutputForGUI != null))
+            .widget(new TextWidget().setStringSupplier(() -> {
+                if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
+                    return EnumChatFormatting.YELLOW
+                        + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
+                        + EnumChatFormatting.RESET;
+                }
+                return EnumChatFormatting.RED
+                    + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
+                    + EnumChatFormatting.RESET;
+            })
+                .setTextAlignment(Alignment.CenterLeft)
+                .setEnabled(
+                    widget -> this.computationRequired > 0 && this.researchOutputForGUI != null
+                        && this.ticksUntilPacketLossFail < PACKET_LOSS_FULL_WINDOW))
             .widget(
                 new FakeSyncWidget.LongSyncer(
                     () -> this.computationRequired,
@@ -819,7 +881,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             .widget(
                 new FakeSyncWidget.ItemStackSyncer(
                     () -> this.researchOutputForGUI,
-                    aStack -> this.clientResearchOutput = aStack));
+                    aStack -> this.researchOutputForGUI = aStack))
+            .widget(
+                new FakeSyncWidget.IntegerSyncer(
+                    () -> this.ticksUntilPacketLossFail,
+                    aLong -> this.ticksUntilPacketLossFail = aLong));
     }
 
     private long getComputationConsumed() {
