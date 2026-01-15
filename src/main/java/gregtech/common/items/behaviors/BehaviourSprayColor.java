@@ -32,7 +32,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     protected String mTooltip;
     private final String mTooltipUses = GTLanguageManager
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable = GTLanguageManager
+    protected final String mTooltipUnstackable = GTLanguageManager
         .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
     protected final String mTooltipChain = GTLanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain",

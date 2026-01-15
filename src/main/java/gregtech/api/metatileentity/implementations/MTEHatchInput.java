@@ -163,7 +163,10 @@ public class MTEHatchInput extends MTEHatch {
             .getByte("color");
         if (color >= 0 && color < 16) {
             currenttip.add(
-                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()
+                        + EnumChatFormatting.GRAY));
         }
     }
 
@@ -218,7 +221,6 @@ public class MTEHatchInput extends MTEHatch {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         disableFilter = !disableFilter;
-        GTUtility
-            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
     }
 }

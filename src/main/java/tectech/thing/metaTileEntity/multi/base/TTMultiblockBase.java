@@ -441,7 +441,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.computation",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET) };
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     /**
@@ -1055,7 +1059,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
                                     mLastWorkingTick = mTotalRunTime;
-
+                                    if (processingLogic != null) {
+                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), 1);
+                                    } else {
+                                        recipesDone += 1;
+                                    }
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe()) {
                                             mEfficiency = Math.max(
