@@ -424,8 +424,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
         unlockHolders();
-        computationRequired = computationRemaining = 0;
-        holderStackToConsume = null;
+        this.computationRequired = this.computationRemaining = 0;
+        this.holderStackToConsume = null;
+        this.researchOutputForGUI = null;
     }
 
     @Override
