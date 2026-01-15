@@ -72,7 +72,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
@@ -112,8 +111,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         translateToLocal("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or Advanced
                                                                               // Computer Casing
     };
-
-    private String clientLocale = "en_US";
     // endregion
 
     // region structure
@@ -468,19 +465,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        super.onRightclick(aBaseMetaTileEntity, aPlayer);
-        if (!aBaseMetaTileEntity.isClientSide() && aPlayer instanceof EntityPlayerMP) {
-            if (aPlayer instanceof EntityPlayerMPAccessor) {
-                clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
-            }
-        } else {
-            return true;
-        }
-        return true;
-    }
-
-    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         setMachineMode(nextMachineMode());
@@ -755,7 +739,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.RESET;
         }
 
-        return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
+        return new String[] { translateToLocal("tt.keyphrase.Energy_Hatches") + ":",
             EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
@@ -763,19 +747,18 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + GTUtility.formatNumbers(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
-            (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
-                : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
-                + EnumChatFormatting.RED
+            (mEUt <= 0 ? translateToLocal("tt.keyphrase.Probably_uses") + ": "
+                : translateToLocal("tt.keyphrase.Probably_makes") + ": ") + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(Math.abs(mEUt))
                 + EnumChatFormatting.RESET
                 + " EU/t "
-                + translateToLocalFormatted("tt.keyword.at", clientLocale)
+                + translateToLocal("tt.keyword.at")
                 + " "
                 + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(eAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
-            translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
+            translateToLocal("tt.keyphrase.Tier_Rating") + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[getMaxEnergyInputTier_EM()]
                 + EnumChatFormatting.RESET
@@ -784,33 +767,33 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + VN[getMinEnergyInputTier_EM()]
                 + EnumChatFormatting.RESET
                 + " "
-                + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
+                + translateToLocal("tt.keyphrase.Amp_Rating")
                 + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(eMaxAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
-            translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
+            translateToLocal("tt.keyword.Problems") + ": "
                 + EnumChatFormatting.RED
                 + (getIdealStatus() - getRepairStatus())
                 + EnumChatFormatting.RESET
                 + " "
-                + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
+                + translateToLocal("tt.keyword.Efficiency")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-            translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
+            translateToLocal("tt.keyword.PowerPass") + ": "
                 + EnumChatFormatting.BLUE
                 + ePowerPass
                 + EnumChatFormatting.RESET
                 + " "
-                + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
+                + translateToLocal("tt.keyword.SafeVoid")
                 + ": "
                 + EnumChatFormatting.BLUE
                 + eSafeVoid,
-            translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
+            translateToLocal("tt.keyphrase.Computation_Available") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(this.eAvailableData)
                 + EnumChatFormatting.RESET
@@ -818,14 +801,14 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(this.eRequiredData)
                 + EnumChatFormatting.RESET,
-            translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ": "
+            translateToLocal("tt.keyphrase.Computation_Remaining") + ": "
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(this.computationRemaining / 20L)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(getComputationRequired()),
-            translateToLocalFormatted("tt.infodata.multi.connection_health", connectionStatus) };
+            translateToLocalFormatted("tt.infodata.multi.connection_health"), connectionStatus };
     }
     // endregion scanner output
 
