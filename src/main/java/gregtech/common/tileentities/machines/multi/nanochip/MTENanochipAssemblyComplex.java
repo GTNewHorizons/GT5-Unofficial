@@ -84,8 +84,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     // For usage in the GUI
     public boolean isTalkModeActive = false;
-    // Will range from 0.0 -> 1.0 depending on something? just for decoration i think. Not properly implemented yet
-    public double gregosMood = 1D;
 
     public static final IStructureDefinition<MTENanochipAssemblyComplex> STRUCTURE_DEFINITION = StructureDefinition
         .<MTENanochipAssemblyComplex>builder()
@@ -496,9 +494,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public @NotNull CheckRecipeResult checkProcessing() {
         // Always keep the machine running, it doesn't run recipes directly.
         if (isAllowedToWork()) {
-            for (MTENanochipAssemblyModuleBase<?> module : modules) {
-                this.gregosMood = module.calculateMoodMultiplier() * gregosMood;
-            }
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 5 * SECONDS;
             lEUt = 0;
@@ -526,14 +521,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("talkMode", this.isTalkModeActive);
-        aNBT.setDouble("mood", this.gregosMood);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isTalkModeActive = aNBT.getBoolean("talkMode");
-        gregosMood = aNBT.getDouble("mood");
     }
 
     @Override
