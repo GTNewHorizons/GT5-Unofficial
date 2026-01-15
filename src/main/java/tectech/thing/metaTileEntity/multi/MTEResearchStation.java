@@ -109,6 +109,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
                                                                               // Computer casing
         translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
+        translateToLocal("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or Advanced
+                                                                              // Computer Casing
     };
 
     private String clientLocale = "en_US";
@@ -147,7 +149,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             'F',
             buildHatchAdder(MTEResearchStation.class).anyOf(OutputBus, InputHatch, Maintenance)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .hint(1)
+                .hint(3)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 3)))
 
         .build();
