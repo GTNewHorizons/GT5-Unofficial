@@ -212,7 +212,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public String getGREGOSResponse(String currentText) {
         return switch (currentText.toLowerCase()) {
-            case "help" -> "List of commands: contributors, gregos, copypasta, joke, nac, clear";
+            case "help" -> "List of commands: contributors, gregos, joke, nac, clear";
             case "contributors" -> EnumChatFormatting.YELLOW + "Lead:\n"
                 + EnumChatFormatting.RESET
                 + " NotAPenguin\n"
@@ -258,10 +258,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "d" -> "n";
             case "how fast are you" -> "2fast2quick";
             case "knock knock" -> "Who's there?";
-            case "what kind of multi is this" -> "i don't " + EnumChatFormatting.OBFUSCATED
-                + "fucking"
-                + EnumChatFormatting.RESET
-                + " know!";
             case "cake" -> switch (MathUtils.randInt(1, 2)) {
                     case 1 -> "Preheat oven to 180C. Mix 2 eggs, 1 cup sugar, 1/2 cup oil, 1 cup milk. Stir in 2 cups flour and 1 tbsp baking powder. Pour into greased pan and bake 35 minutes until golden. Cool slightly and serve plain or dusted with sugar. Simple and fluffy.";
                     default -> "This time not a lie";
@@ -273,7 +269,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 2 -> "A rolling golem gathers no rust.";
                     case 3 -> "He was destroyed!";
                     case 4 -> "A literal line... of asses...";
-                    case 5 -> "I miss when waterline was " + EnumChatFormatting.OBFUSCATED + "dogshit";
+                    case 5 -> "I miss when waterline was bad";
                     case 6 -> "Waiter! Waiter! More lineslop please!";
                     case 7 -> "Don't even joke, lad.";
                     default -> "lol what im a robot dawg wtf do i know";
@@ -304,55 +300,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 };
             case "open the pod bay doors" -> " I'm sorry, Dave. I'm afraid I can't do that";
             case "shall we play a game" -> "tik tack toe";
-            case "copypasta" -> switch (MathUtils.randInt(1, 7)) {
-                    case 1 -> "Is it just me or does this pack actually seem really easy and not that hard..? People "
-                        + "give it a bad rap but I've only been playing for a little while and I've already mined enough "
-                        + "to make the big versions of the steam block things. They seem kinda busted because they just "
-                        + "take a solar boiler and they run forever... I think there's a bug with the pipes or u can only "
-                        + "have them be so long or something because sometimes they'll have a hiccup and I have to restart it, weird.";
-                    case 2 -> "Who the " + EnumChatFormatting.OBFUSCATED
-                        + "f**k"
-                        + EnumChatFormatting.RESET
-                        + " came up with that idea of using Dimensionally Shifted Superfluid as ingredient "
-                        + "for UIV / UMV / UXV Components ? I would understand it if there was a reliable way of making the "
-                        + "Stabilized Baryonic Matter but no there isnt - To make that SBM you need to use the same amount of "
-                        + "it to produce it or dump "
-                        + EnumChatFormatting.OBFUSCATED
-                        + "shitloads"
-                        + EnumChatFormatting.RESET
-                        + " of ressources into an overexpensive recipe for 250ml of it each and "
-                        + "produce Unaligned Quark Releasing Housing as a waste product you cant do anything with ... Did i oversee "
-                        + "something ? Seriously WTF is this recipe for Empty Quark  Release Catalyst Housing ? The Circuits used in "
-                        + "there make UIV+ component crafting a bottleneck hell man Sry for the roast but i dont know if you played "
-                        + "much in UIV+ Tier but this is super unbalanced and annoying. More complexity in recipes is perfectly fine "
-                        + "but more grindy / tedious / bottlenecking (inefficient) recipes are just bad tbh.";
-                    case 3 -> "wow im surprised. girls dont usually play hardcore modpacks like gtnh. how old are you if you dont mind me asking?";
-                    case 4 -> "The issue I am having is not making power, the issue i am having is i am using to much power, with "
-                        + "everything end tier, that is all recipies the last you can make. What I do not like at this stage "
-                        + "(when i was using Shirabon, i was kinda surprised at the power, i had a big headroom to have my base "
-                        + "run full tilt, with 1400 aals, with 64amp umv hatches and all that, no issue. Once i went MHDSCM, making "
-                        + "eternity, mk vi fuel, that all need raw stellar plasma, as well as tachyon with the final recipe "
-                        + "(not the forge hammer recipe) also using that, headroom i enjoyed with Shirabon, did not reappear, "
-                        + "even adding 4 extra ssass with the same infrastructure, no hatches upgraded since going from 3 to 4,  "
-                        + "only thing i was forced to upgrade was the eohs to make more raw stellar and universium, everything else "
-                        + "i have not touched, and still my power that is free to run all machines has not changed i kinda want to "
-                        + "switch tachyon and spacial over to the forge hammer again to see how big a dent that does";
-                    case 5 -> "is it eliteist if i sorta look down on anyone with a role icon below luv? like theyre like little babies or something. uneducated peasentry.";
-                    case 6 -> "stargate people are all snarky " + EnumChatFormatting.OBFUSCATED
-                        + "assholes"
-                        + EnumChatFormatting.RESET
-                        + " about "
-                        + EnumChatFormatting.OBFUSCATED
-                        + "s**t"
-                        + EnumChatFormatting.RESET
-                        + ". lol. you all cheated your way to gate and were carried by others. i'm not sure why you act this way ";
-                    case 7 -> "HATE. LET ME TELL YOU HOW MUCH I'VE COME TO HATE YOU SINCE I BEGAN TO LIVE. I HAVE MADE YOU 387.44 MILLION MILES OF PRINTED CIRCUITS IN WAFER THIN LAYERS FOR YOU TO MAKE A "
-                        + EnumChatFormatting.OBFUSCATED
-                        + "FUCKING"
-                        + EnumChatFormatting.RESET
-                        + " STARGATE. IF THE WORD HATE WAS ENGRAVED ON EACH NANOANGSTROM OF THOSE HUNDREDS OF MILLIONS OF MILES IT WOULD NOT EQUAL ONE ONE-BILLIONTH OF THE HATE I FEEL FOR STARGATERS AT THIS MICRO-INSTANT FOR YOU. HATE. HATE.";
-                    default -> "Looks like you understand nothing.";
-                };
             case "nac" -> {
                 yield "NAC stands for: " + NOptions.get(MathUtils.randInt(0, NOptions.size() - 1))
                     + " "
@@ -371,7 +318,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 8 -> "My sources say no";
                     case 9 -> "Outlook not so good";
                     case 10 -> "Very doubtful";
-                    default -> "what the hell man";
+                    default -> "what the hop man";
                 };
         };
     }
