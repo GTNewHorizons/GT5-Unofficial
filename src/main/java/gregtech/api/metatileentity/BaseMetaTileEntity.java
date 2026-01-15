@@ -1449,13 +1449,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 enableWorking();
                             }
                             {
-                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
+                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
                                     // FIXME: localize it
                                     GTUtility.sendChatToPlayer(aPlayer, getMetaTileEntity().getAlternativeModeText());
-                                else GTUtility.sendChatTrans(
-                                    aPlayer,
-                                    isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
-                                        : "GT5U.chat.machine.processing.disable");
+                                } else {
+                                    GTUtility.sendChatTrans(
+                                        aPlayer,
+                                        isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                            : "GT5U.chat.machine.processing.disable");
+                                }
                             }
                             sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                             if (tCurrentItem.stackSize == 0)
