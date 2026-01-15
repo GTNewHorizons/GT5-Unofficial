@@ -95,13 +95,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         String getCopiedDataIdentifier(EntityPlayer player);
 
         ItemStack getVisual();
-    }
 
-    protected void markDirty() {
-        if (env.getBaseMetaTileEntity() != null) {
-            env.getBaseMetaTileEntity()
-                .markDirty();
-        }
+        void dispatchMarkDirty();
     }
 
     private final Environment<T> env;
@@ -166,7 +161,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         myPriority = newValue;
         isCached = false;
         updateState();
-        markDirty();
+        env.dispatchMarkDirty();
     }
 
     @Nullable
@@ -199,7 +194,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             }
             updateState();
         }
-        markDirty();
+        env.dispatchMarkDirty();
     }
 
     boolean additionalConnection = false;
@@ -250,7 +245,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         if (cell != null) {
             this.cell = this.wrap(cell, AccessRestriction.READ_WRITE);
             this.cellRead = this.wrap(cell, AccessRestriction.READ);
-            markDirty();
+            env.dispatchMarkDirty();
         }
     }
 
@@ -356,7 +351,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             } catch (final GridAccessException ignored) {}
         }
 
-        markDirty();
+        env.dispatchMarkDirty();
     }
 
     boolean hadCell = false;
@@ -382,7 +377,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                     StatCollector.translateToLocal(modeKey)
                         + StatCollector.translateToLocalFormatted(filter.getEnableKey(), msg));
             }
-            markDirty();
+            env.dispatchMarkDirty();
         } else {
             hadCell = false;
 
@@ -395,7 +390,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                     env.getLastClickedPlayer(),
                     StatCollector.translateToLocal(filter.getDisableKey()));
             }
-            markDirty();
+            env.dispatchMarkDirty();
         }
     }
 
