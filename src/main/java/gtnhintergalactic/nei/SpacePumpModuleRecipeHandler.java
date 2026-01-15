@@ -44,8 +44,6 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
 
     /** X coordinate of the category titles */
     private static final int CATEGORY_TITLE_X = 30;
-    /** X coordinate of the category values */
-    private static final int CATEGORY_VALUE_X = 85;
     /** Y coordinate of the planet type */
     private static final int PLANET_TYPE_Y = 0;
     /** Y coordinate of the gas type */
@@ -204,29 +202,25 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
      */
     @Override
     public void drawExtras(int recipeIndex) {
+        CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.planettype") + ":",
+            I18n.format("ig.nei.elevatorpump.planettype", Integer.toString(recipe.planetType)),
             CATEGORY_TITLE_X,
             PLANET_TYPE_Y,
             TEXT_COLOR,
             false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.gastype") + ":",
+            I18n.format("ig.nei.elevatorpump.gastype", Integer.toString(recipe.gasType)),
             CATEGORY_TITLE_X,
             GAS_TYPE_Y,
             TEXT_COLOR,
             false);
         GuiDraw.drawStringC(
-            I18n.format("ig.nei.elevatorpump.amount") + ":",
+            I18n.format("ig.nei.elevatorpump.amount", GTUtility.formatNumbers(recipe.amount)),
             CATEGORY_TITLE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,
             false);
-
-        CachedPumpRecipe recipe = (CachedPumpRecipe) this.arecipes.get(recipeIndex);
-        GuiDraw.drawStringC(Integer.toString(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(Integer.toString(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(GTUtility.formatNumbers(recipe.amount), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
