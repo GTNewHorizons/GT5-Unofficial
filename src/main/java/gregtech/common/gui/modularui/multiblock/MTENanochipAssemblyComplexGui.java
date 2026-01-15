@@ -10,24 +10,19 @@ import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -41,11 +36,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
-    }
-
-    @Override
-    protected Flow createTerminalRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createTerminalRow(panel, syncManager).child(createGREGOSMeterPages(panel, syncManager));
     }
 
     @Override
@@ -90,68 +80,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     @Override
-    protected int getTerminalWidgetWidth() {
-        return super.getTerminalWidgetWidth() - getMeterViewerWidth();
-    }
-
-    public int getMeterViewerWidth() {
-        return 34;
-    }
-
-    public int getMeterViewerHeight() {
-        return getTerminalWidgetHeight();
-    }
-
-    @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "talk",
             0,
             new BooleanSyncValue(() -> multiblock.isTalkModeActive, b -> multiblock.isTalkModeActive = b));
-        syncManager
-            .syncValue("mood", 0, new DoubleSyncValue(() -> multiblock.gregosMood, dub -> multiblock.gregosMood = dub));
 
-    }
-
-    public IWidget createGREGOSMeterPages(ModularPanel panel, PanelSyncManager syncManager) {
-
-        DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
-
-        return
-        // preventative comment so spotless doesnt move child call up
-        new Column().size(getMeterViewerWidth(), getMeterViewerHeight())
-            .child(createMeter("Mood", moodSyncer, GTGuiTextures.PROGRESSBAR_METER_ROSE, 0, 1));
-    }
-
-    public ParentWidget<?> createMeter(String name, DoubleSyncValue syncer, UITexture meter, double min, double max) {
-        boolean isPercentage = (min == 0D && max == 1D);
-        char end = isPercentage ? '%' : 'x';
-        return new ParentWidget<>().child(
-            new TextWidget<>(name).leftRel(0.5F)
-                .top(5))
-            .child(
-                new ProgressWidget().progress(() -> (syncer.getValue() - min) / (max - min))
-                    .texture(meter, 48)
-                    .direction(ProgressWidget.Direction.UP)
-                    .posRel(0.5F, 0.5F)
-                    .size(16, 48))
-            .child(
-                GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
-                    .tooltipDynamic(tooltip -> {
-                        double amount = isPercentage ? syncer.getDoubleValue() * 100 : syncer.getDoubleValue();
-                        tooltip.add(name + ": " + amount + end);
-                    })
-                    .tooltipAutoUpdate(true)
-                    .posRel(0.5F, 0.5F)
-                    .size(24, 56))
-            // Un-comment for debug purposes
-            // .child(
-            // new TextFieldWidget().setNumbersDouble(val -> Math.min(max, Math.max(min, val)))
-            // .value(new StringSyncValue(syncer::getStringValue, syncer::setStringValue))
-            // .pos(12, 70)
-            // .size(30, 12))
-            .sizeRel(1);
     }
 
     List<String> NOptions = Arrays.asList(
@@ -349,8 +284,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 // Reset the text box to be blank
                 this.handler.clear();
                 if (!checkForKeywords(text) && multiblock.isTalkModeActive) {
-                    DoubleSyncValue moodSyncer = syncManager.findSyncHandler("mood", DoubleSyncValue.class);
-                    moodSyncer.setValue(Math.min(1, moodSyncer.getValue() + 0.05));
                     list.child(createPlayerTextWidget(text));
                     list.child(createResponseTextWidget(getGREGOSResponse(text)));
                     if (text.equals("clear")) {
