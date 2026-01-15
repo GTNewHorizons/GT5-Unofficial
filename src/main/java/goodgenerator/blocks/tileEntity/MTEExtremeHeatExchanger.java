@@ -374,7 +374,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(tThreshold)
                 + EnumChatFormatting.RESET
-                + " L/s" };
+                + " L/s",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

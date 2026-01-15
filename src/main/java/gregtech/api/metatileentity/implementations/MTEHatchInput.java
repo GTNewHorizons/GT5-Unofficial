@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -162,7 +163,10 @@ public class MTEHatchInput extends MTEHatch {
             .getByte("color");
         if (color >= 0 && color < 16) {
             currenttip.add(
-                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()
+                        + EnumChatFormatting.GRAY));
         }
     }
 

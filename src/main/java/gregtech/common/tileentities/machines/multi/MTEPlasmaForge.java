@@ -990,6 +990,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
 
                     : EnumChatFormatting.RED
                         + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET,
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
