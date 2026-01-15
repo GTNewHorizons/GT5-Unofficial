@@ -345,6 +345,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
         lastFinalParallel = finalParallel;
+
         // for scanner
         setCurrentParallelism(finalParallel);
 
