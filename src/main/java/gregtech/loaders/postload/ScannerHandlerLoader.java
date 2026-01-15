@@ -276,13 +276,7 @@ public class ScannerHandlerLoader {
 
     public static @Nullable GTScannerResult scanProspectorData(@Nonnull MetaTileEntity aScanner,
         @Nonnull ItemStack aInput, @Nullable ItemStack aSpecialSlot, @Nullable FluidStack aFluid) {
-        // no special slot should be present
-        if (aSpecialSlot != null) return null;
-        if (!ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) return null;
-        // this feels like a bad idea in terms of localization, maybe consider retooling this to a separate unique nbt
-        // tag or item in the future.
-        if (!GTUtility.ItemNBT.getBookTitle(aInput)
-            .equals("Raw Prospection Data")) return null;
+        if (!isValidProspectionBook(aInput, aSpecialSlot)) return null;
 
         ItemStack output = GTUtility.copyAmount(1, aInput);
         assert output != null;
@@ -290,6 +284,17 @@ public class ScannerHandlerLoader {
         GTUtility.ItemNBT.convertProspectionData(output);
 
         return new GTScannerResult(SCAN_PROSPECTING_DATA_EUT, SCAN_PROSPECTING_DATA_DURATION, 1, 0, 0, output);
+    }
+
+    public static boolean isValidProspectionBook(ItemStack aInput, ItemStack aSpecialSlot) {
+        // no special slot should be present
+        if (aSpecialSlot != null) return false;
+        if (!ItemList.Tool_DataStick.isStackEqual(aInput, false, true)) return false;
+        // this feels like a bad idea in terms of localization, maybe consider retooling this to a separate unique nbt
+        // tag or item in the future.
+        if (!GTUtility.ItemNBT.getBookTitle(aInput)
+            .equals(GTUtility.ItemNBT.getRawProspectionDataName())) return false;
+        return true;
     }
 
     public static @Nullable GTScannerResult doAssemblyLineResearch(@Nonnull MetaTileEntity aScanner,
