@@ -308,7 +308,7 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
-                            recipesDone += processingLogic.getCurrentParallels();
+                            recipesDone += Math.max(processingLogic.getCurrentParallels(), 1);
                             mLastWorkingTick = mTotalRunTime;
                             para = 0;
                             if (aBaseMetaTileEntity.isAllowedToWork()) checkRecipe();
