@@ -134,6 +134,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private int sMode = 0;
     private boolean sVoidStone = false;
     private int currentParallelism = 0;
+    private int lastFinalParallel = 0;
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     private static void initHash() {
@@ -343,6 +344,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
+        lastFinalParallel = finalParallel;
 
         // for scanner
         setCurrentParallelism(finalParallel);
@@ -429,8 +431,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mProgresstime >= mMaxProgresstime - 1 && mMaxProgresstime > 0) {
+            // Multiblock base already includes 1 parallel
+            this.recipesDone += lastFinalParallel - 1;
+        }
+        super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
     private boolean checkTypes(int aID, IntOpenHashSet... aTables) {

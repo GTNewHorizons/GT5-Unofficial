@@ -168,7 +168,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     public boolean mStructureChanged = false;
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
-        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, mEfficiencyDecrease = 1000;
+        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0;
+    public long recipesDone = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
     public ItemStack[] mOutputItems = null;
@@ -317,6 +318,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         aNBT.setInteger("powerPanelMaxParallel", powerPanelMaxParallel);
         aNBT.setLong("mTotalRunTime", mTotalRunTime);
         aNBT.setLong("mLastWorkingTick", mLastWorkingTick);
+        aNBT.setLong("recipesDone", recipesDone);
         aNBT.setString("checkRecipeResultID", checkRecipeResult.getID());
         aNBT.setTag("checkRecipeResult", checkRecipeResult.writeToNBT(new NBTTagCompound()));
 
@@ -371,6 +373,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mRuntime = aNBT.getInteger("mRuntime");
         mTotalRunTime = aNBT.getLong("mTotalRunTime");
         mLastWorkingTick = aNBT.getLong("mLastWorkingTick");
+        recipesDone = aNBT.getLong("recipesDone");
         // If the key doesn't exist it should default true
         alwaysMaxParallel = !aNBT.hasKey("alwaysMaxParallel") || aNBT.getBoolean("alwaysMaxParallel");
         powerPanelMaxParallel = aNBT.getInteger("powerPanelMaxParallel");
@@ -790,6 +793,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                         mOutputItems = null;
                         mProgresstime = 0;
                         mMaxProgresstime = 0;
+                        if (processingLogic != null) {
+                            recipesDone += Math.max(processingLogic.getCurrentParallels(), 1);
+                        } else {
+                            recipesDone += 1;
+                        }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
                         if (aBaseMetaTileEntity.isAllowedToWork()) {
@@ -2253,7 +2261,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            /* 7 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

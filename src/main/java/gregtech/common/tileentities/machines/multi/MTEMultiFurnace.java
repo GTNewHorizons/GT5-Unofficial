@@ -263,7 +263,9 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
+        if (this.recipesDone == 0) this.recipesDone++;
+        // Multiblock base already includes 1 parallel
+        this.recipesDone += finalParallel - 1;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -358,7 +360,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

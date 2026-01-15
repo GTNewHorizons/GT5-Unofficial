@@ -104,6 +104,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
         if (working()) {
+            // Multiblock base already includes 1 parallel
+            recipesDone += batchMultiplier - 1;
             return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
         } else {
             return SimpleCheckRecipeResult.ofFailure("drill_extracting_ores_failed");
