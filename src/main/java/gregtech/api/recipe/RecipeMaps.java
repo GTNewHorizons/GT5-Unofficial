@@ -1039,7 +1039,7 @@ public final class RecipeMaps {
                 .duration(aDuration)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 50)))
+            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
                 .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);

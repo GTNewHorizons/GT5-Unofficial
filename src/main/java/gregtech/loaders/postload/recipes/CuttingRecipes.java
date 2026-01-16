@@ -334,7 +334,7 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(50, duration * eut / 4000))))
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
                 .duration((int) (duration / 2.5))
                 .eut(eut)
                 .requiresCleanRoom()
@@ -368,7 +368,7 @@ public class CuttingRecipes implements Runnable {
                 .itemInputs(inputs)
                 .itemOutputs(outputs)
                 .fluidInputs(
-                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(50, duration * eut / 4000))))
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
                 .duration((int) (duration / 2.5))
                 .eut(eut)
                 .addTo(cutterRecipes);
