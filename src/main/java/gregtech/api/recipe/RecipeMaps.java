@@ -1034,8 +1034,13 @@ public final class RecipeMaps {
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
+            b.copy()
+                .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
                 .duration(aDuration)
+                .build()
+                .ifPresent(ret::add);
+            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
+                .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);
             return ret;
