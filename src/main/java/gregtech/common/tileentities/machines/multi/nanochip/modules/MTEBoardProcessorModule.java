@@ -11,9 +11,28 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gtPlusPlus.xmod.thermalfoundation.block.TFBlocks.blockFluidEnder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+
+import goodgenerator.items.GGMaterial;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.OverclockCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
@@ -176,4 +196,147 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return new MTEBoardProcessorModuleGui(this);
     }
 
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setInteger("impurityFluidAmount", this.ImpurityFluidAmount);
+        aNBT.setInteger("fluidAmount", this.FluidAmount);
+        aNBT.setInteger("processedItems", this.ProcessedItems);
+        aNBT.setString(
+            "storedFluid",
+            StoredFluid == null ? ""
+                : StoredFluid.getFluid().getName());
+        aNBT.setString(
+            "impurityFluid",
+            this.ImpurityFluid == null ? ""
+                : ImpurityFluid.getFluid().getName());
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        ImpurityFluidAmount = aNBT.getInteger("impurityFluidAmount");
+        FluidAmount = aNBT.getInteger("fluidAmount");
+        ProcessedItems = aNBT.getInteger("processedItems");
+        if (!Objects.equals(aNBT.getString("storedFluid"), "")) {
+            StoredFluid = FluidRegistry.getFluidStack(aNBT.getString("storedFluid"), FluidAmount);
+        } else {
+            StoredFluid = null;
+        }
+        if (!Objects.equals(aNBT.getString("impurityFluid"), "")) {
+            ImpurityFluid = FluidRegistry.getFluidStack(aNBT.getString("impurityFluid"), ImpurityFluidAmount);
+        } else {
+            ImpurityFluid = null;
+        }
+    }
+
+    protected int Capacity = 10000;
+    protected FluidStack StoredFluid;
+    protected int FluidAmount;
+    private int ProcessedItems;
+    protected FluidStack ImpurityFluid;
+    protected int ImpurityFluidAmount;
+    private int ImpurityThreshold = 1000;
+    protected double ImpurityPercentage;
+
+    protected static final HashSet<Fluid> LegalFluids = new HashSet<>(Arrays.asList(Materials.IronIIIChloride.mFluid));
+
+    @NotNull
+    @Override
+    public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+
+        if (StoredFluid == null) {
+            return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
+        }
+
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1 && !StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        return super.validateRecipe(recipe);
+    }
+
+    @Override
+    public void endRecipeProcessing() {
+        if (StoredFluid != null && ImpurityFluid != null) {
+            ProcessedItems += mOutputItems[0].stackSize;
+            if (ProcessedItems >= ImpurityThreshold) {
+                ProcessedItems -= ImpurityThreshold;
+                ImpurityFluidAmount += 100;
+                ImpurityFluid.amount = ImpurityFluidAmount;
+                ImpurityPercentage = (double) ImpurityFluidAmount/Capacity;
+            }
+        }
+        super.endRecipeProcessing();
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        return super.checkProcessing();
+    }
+
+    public void FillTank() {
+        if (StoredFluid == null) {
+            ArrayList<FluidStack> inputFluid = getStoredFluids();
+            for (FluidStack fluid : inputFluid) {
+                if (LegalFluids.contains(fluid.getFluid())) {
+                    FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(Capacity, fluid.amount));
+                    depleteInput(toDeplete);
+                    StoredFluid = toDeplete;
+                    FluidAmount = toDeplete.amount;
+                    if (StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+                        ImpurityFluid = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                    }
+                }
+            }
+        }
+    }
+
+    public void FlushTank() {
+        if ((StoredFluid != null)  && (!mOutputHatches.isEmpty())){
+            ImpurityFluidAmount = FluidAmount;
+            FluidStack toFlush = new FluidStack(ImpurityFluid.getFluid(), ImpurityFluidAmount);
+            addOutput(toFlush);
+            StoredFluid = null;
+            ImpurityFluid = null;
+            FluidAmount = 0;
+            ImpurityFluidAmount = 0;
+        }
+    }
+
+    public FluidStack getStoredFluid() {
+        return StoredFluid;
+    }
+
+    public void setStoredFluid(FluidStack fluid) {
+        this.StoredFluid = fluid;
+    }
+
+    public int getCapacity() {
+        return Capacity;
+    }
+
+    public int getProcessedItems() {
+        return ProcessedItems;
+    }
+
+    public FluidStack getImpurityFluid() {
+        return ImpurityFluid;
+    }
+
+    public void setImpurityFluid(FluidStack impurityFluid) {
+        ImpurityFluid = impurityFluid;
+    }
+
+    public double getImpurityPercentage() {
+        return ImpurityPercentage;
+    }
+
+    public int getImpurityThreshold() {
+        return ImpurityThreshold;
+    }
+
+    public void setImpurityThreshold(int impurityThreshold) {
+        ImpurityThreshold = impurityThreshold;
+    }
 }

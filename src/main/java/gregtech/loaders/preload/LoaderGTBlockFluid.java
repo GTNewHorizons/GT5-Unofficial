@@ -1600,6 +1600,16 @@ public class LoaderGTBlockFluid implements Runnable {
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.HolyWater, 1L),
                 ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder("ImpureIronIIIChloride")
+            .withLocalizedName("Impure Iron III Chloride")
+            .withStateAndTemperature(LIQUID, 295)
+            .buildAndRegister()
+            .configureMaterials(Materials.ImpureIronIIIChloride)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ImpureIronIIIChloride, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         if (ItemList.TF_Vial_FieryBlood.get(1L) != null) {
             FluidContainerRegistry.registerFluidContainer(
                 new FluidContainerRegistry.FluidContainerData(
