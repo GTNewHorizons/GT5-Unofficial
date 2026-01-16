@@ -212,16 +212,33 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC, Nanochip-Assembly-Complex")
-            .addInfo("Creates Circuits out of Circuit Components (" + TOOLTIP_CC + "s) at lightning speed")
-            .addInfo("Convert items to " + TOOLTIP_CC + "s in the control room")
-            .addInfo("Convert finished Circuit " + TOOLTIP_CC + "s back to items in the control room")
-            .addInfo("Items in a colored input bus go into their corresponding color's VCO")
-            .addInfo(TOOLTIP_CC + "s in a colored VCI go into their corresponding color's output bus")
-            .addInfo("Build modules to process " + TOOLTIP_CC + "s into their processed version")
             .addInfo(
-                "Assemble them together in the " + EnumChatFormatting.GREEN
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Home of GREGOS, overseer of all circuit production.")
+            .addSeparator()
+            .addInfo("Uses Circuit Components (" + TOOLTIP_CC + "s) to create circuits at unimaginable speeds.")
+            .addInfo(TOOLTIP_CC + "s can only exist in the perfect environment present in Vacuum Conveyor Hatches.")
+            .addInfo("Convert items to " + TOOLTIP_CC + "s in the control room by placing them in a colored input bus.")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED + "5 seconds" + EnumChatFormatting.GRAY +
+                    ", all items in colored input buses are placed in " + EnumChatFormatting.YELLOW
+                    + " VCO"
+                    + EnumChatFormatting.GRAY
+                    + "s of the same color.")
+            .addInfo(
+                "Finished circuit " + TOOLTIP_CC
+                    + "s are converted back into circuits by routing them to a VCI in the control room.")
+            .addInfo(TOOLTIP_CC + "s in a colored VCI are placed in an output bus of the same color.")
+            .addSeparator()
+            .addInfo(TOOLTIP_CC + "s must be processed into a refined version by " +
+                EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "modules"
+                + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " before they")
+            .addInfo(
+                "can be assembled into a circuit in the " + EnumChatFormatting.GREEN
                     + "Nanochip Assembly Matrix"
                     + EnumChatFormatting.RESET)
+            .addInfo("All power from the energy hatch is distributed to the modules as they need it.")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any control room base casing - Input bus")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
