@@ -732,9 +732,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + EnumChatFormatting.GREEN
                 + (mCoolingTower == null ? ""
                     : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
-                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : "")
-
-        };
+                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
+            /* 8 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

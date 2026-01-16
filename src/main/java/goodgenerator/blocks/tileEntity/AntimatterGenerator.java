@@ -7,6 +7,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             setAvgEff(0f);
         }
 
+        recipesDone++;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -452,7 +454,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
                 + EnumChatFormatting.RESET
-                + " % ⟩₁₀" };
+                + " % ⟩₁₀",
+            translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     public long getEnergyProduced() {
