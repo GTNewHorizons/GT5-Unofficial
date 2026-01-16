@@ -8,9 +8,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -25,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 
 public class MTEBoardProcessorModuleGui extends MTEMultiBlockBaseGui<MTEBoardProcessorModule> {
 
@@ -58,15 +55,21 @@ public class MTEBoardProcessorModuleGui extends MTEMultiBlockBaseGui<MTEBoardPro
             multiblock::setImpurityFluid,
             multiblock::getCapacity);
 
-        final FluidSlot fluidSlot = new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank).canFillSlot(false).controlsAmount(false))
+        final FluidSlot fluidSlot = new FluidSlot().syncHandler(
+            new FluidSlotSyncHandler(fluidTank).canFillSlot(false)
+                .controlsAmount(false))
             .alwaysShowFull(false)
             .size(36, 94)
             .tooltipBuilder(IRichTextBuilder::clearText);
 
-        final FluidSlot impurityFluidSlot = new FluidSlot().syncHandler(new FluidSlotSyncHandler(impurityFluidTank).canFillSlot(false).controlsAmount(false))
+        final FluidSlot impurityFluidSlot = new FluidSlot()
+            .syncHandler(
+                new FluidSlotSyncHandler(impurityFluidTank).canFillSlot(false)
+                    .controlsAmount(false))
             .alwaysShowFull(false)
             .size(36, 94)
-            .tooltipBuilder(IRichTextBuilder::clearText).pos(376,71);
+            .tooltipBuilder(IRichTextBuilder::clearText)
+            .pos(376, 71);
 
         return new Row().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
             .paddingTop(4)
@@ -90,8 +93,7 @@ public class MTEBoardProcessorModuleGui extends MTEMultiBlockBaseGui<MTEBoardPro
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
 
-        return super.createLeftPanelGapRow(parent, syncManager)
-            .child(
+        return super.createLeftPanelGapRow(parent, syncManager).child(
             new ButtonWidget<>().size(18, 18)
                 .playClickSound(true)
                 .onMousePressed(d -> {
