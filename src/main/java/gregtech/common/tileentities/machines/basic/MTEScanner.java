@@ -159,27 +159,6 @@ public class MTEScanner extends MTEBasicMachine {
                     }
                 }
             }
-            if (ItemList.IC2_Crop_Seeds.isStackEqual(aStack, true, true)) {
-                NBTTagCompound tNBT = aStack.getTagCompound();
-                if (tNBT == null) {
-                    tNBT = new NBTTagCompound();
-                }
-                if (tNBT.getByte("scan") < 4) {
-                    tNBT.setByte("scan", (byte) 4);
-                    calculateOverclockedNess(8, 160);
-                    // In case recipe is too OP for that machine
-                    if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                        return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-                } else {
-                    this.mMaxProgresstime = 1;
-                    this.mEUt = 1;
-                }
-                aStack.stackSize -= 1;
-                this.mOutputItems[0] = GTUtility.copyAmount(1, aStack);
-                assert this.mOutputItems[0] != null;
-                this.mOutputItems[0].setTagCompound(tNBT);
-                return 2;
-            }
             if (ItemList.Tool_DataOrb.isStackEqual(getSpecialSlot(), false, true)) {
                 if (ItemList.Tool_DataOrb.isStackEqual(aStack, false, true)) {
                     aStack.stackSize -= 1;
