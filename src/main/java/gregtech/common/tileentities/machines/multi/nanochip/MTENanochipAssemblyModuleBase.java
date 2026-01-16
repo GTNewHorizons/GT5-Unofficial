@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
@@ -119,7 +120,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .addElement(
                 'V',
                 HatchElementBuilder.<B>builder()
-                    .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch)
+                    .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
                     .hint(2)
                     .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))

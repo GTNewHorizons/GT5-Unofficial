@@ -1038,6 +1038,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Plagioclase;
     public static Materials Epidote;
 
+    // NAC Materials
+    public static Materials ImpureIronIIIChloride;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
