@@ -30,7 +30,8 @@ public class ItemPipeFactoryNetwork
     public record TransferInfo(int stacksToTransfer, int stackMultiplier) {}
 
     @Desugar
-    public record PipeJumpTransferState(ItemPipeFactoryElement master, IntValue transfers, IntValue lastTransferred, IntValue stepCounter) {
+    public record PipeJumpTransferState(ItemPipeFactoryElement master, IntValue transfers, IntValue lastTransferred,
+        IntValue stepCounter) {
 
         public int getTransferredStacks() {
             return transfers.getIntValue();
@@ -132,7 +133,11 @@ public class ItemPipeFactoryNetwork
             int stackMultiplier = Integer.MAX_VALUE;
             long distance = 0;
 
-            PipeJumpTransferState transferState = new PipeJumpTransferState(element, new IntValue(0), new IntValue(0), new IntValue(0));
+            PipeJumpTransferState transferState = new PipeJumpTransferState(
+                element,
+                new IntValue(0),
+                new IntValue(0),
+                new IntValue(0));
 
             for (ItemPipeFactoryElement step : path) {
                 distance += step.getStepSize();
