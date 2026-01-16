@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,7 +36,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnectsToVacuumConveyor {
+public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement {
 
     public static final int VACUUM_MOVE_TICK = 17;
 
@@ -64,8 +65,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         return new ITexture[] { aBaseTexture,
             TextureFactory.of(
                 OVERLAY_VACUUM_HATCH_ACTIVE,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
             TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
+    }
+
+    @Override
+    public byte getColorization() {
+        return this.getBaseMetaTileEntity().getColorization();
     }
 
     @Override
@@ -73,7 +79,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         return new ITexture[] { aBaseTexture,
             TextureFactory.of(
                 OVERLAY_VACUUM_HATCH,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+                Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
             TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
     }
 
@@ -100,11 +106,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -140,10 +141,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         return true;
     }
 
-    @Override
-    public byte getColorization() {
-        return getBaseMetaTileEntity().getColorization();
-    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {

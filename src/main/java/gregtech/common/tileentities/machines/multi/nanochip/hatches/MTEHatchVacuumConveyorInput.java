@@ -1,7 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import java.util.Collection;
 import java.util.Map;
 
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -11,7 +14,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implements IConnectsToVacuumConveyor {
+public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
 
     public MTEHatchVacuumConveyorInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
@@ -30,26 +33,21 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
     public boolean isInputFacing(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
+//
+//    @Override
+//    public boolean isComponentsInputFacing(ForgeDirection side) {
+//        return isInputFacing(side);
+//    }
 
-    @Override
-    public boolean isComponentsInputFacing(ForgeDirection side) {
-        return isInputFacing(side);
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean canConnect(ForgeDirection side) {
-        return isInputFacing(side);
-    }
-
-    @Override
-    public IConnectsToVacuumConveyor getNext(IConnectsToVacuumConveyor source) {
-        return null;
-    }
+    //    @Override
+//    public boolean canConnect(ForgeDirection side) {
+//        return isInputFacing(side);
+//    }
+//
+//    @Override
+//    public IConnectsToVacuumConveyor getNext(IConnectsToVacuumConveyor source) {
+//        return null;
+//    }
 
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {}
@@ -74,5 +72,25 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
             return toConsume;
         }
         return 0;
+    }
+
+    @Override
+    public void getNeighbours(Collection<VacuumFactoryElement> neighbours) {
+
+    }
+
+    @Override
+    public VacuumFactoryNetwork getNetwork() {
+        return null;
+    }
+
+    @Override
+    public void setNetwork(VacuumFactoryNetwork network) {
+
+    }
+
+    @Override
+    public boolean canConnectOnSide(ForgeDirection side) {
+        return false;
     }
 }
