@@ -295,7 +295,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer4.get(2L))
             .circuit(2)
-            .itemOutputs(Materials.Graphene.getDust(32))
+            .itemOutputs(Materials.Graphene.getDust(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
