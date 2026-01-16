@@ -139,10 +139,11 @@ public class FoundryFakeModuleCostLoader {
                 ItemList.Hypercooler_ExoFoundry.get(36),
                 ItemList.GlassQuarkContainment.get(32),
                 ItemList.InfinityCooledCasing.get(20),
-                GregtechItemList.Casing_AdvancedVacuum.get(20),
+                GregtechItemList.Casing_AdvancedVacuum.get(19),
                 GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.CallistoIce, 64),
                 GTOreDictUnificator.get(OrePrefixes.sheetmetal, Materials.SuperconductorUHVBase, 16),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.InfinityCatalyst, 48))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.InfinityCatalyst, 48),
+                ItemList.Hatch_Input_LV.get(1))
             .itemOutputs(ItemList.Hypercooler_ExoFoundry.get(1))
             .duration(1)
             .eut(1)
