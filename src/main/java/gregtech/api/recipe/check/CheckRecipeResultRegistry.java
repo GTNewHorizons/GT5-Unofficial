@@ -126,7 +126,7 @@ public final class CheckRecipeResultRegistry {
     /**
      * Board Module has no fluid stored
      */
-    public static final CheckRecipeResult NO_IMMERSION_FLUID =  SimpleCheckRecipeResult.ofFailure("no_immersion_fluid");
+    public static final CheckRecipeResult NO_IMMERSION_FLUID = SimpleCheckRecipeResult.ofFailure("no_immersion_fluid");
 
     /**
      * Machine is waiting for the main controller to start the cycle.
