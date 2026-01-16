@@ -406,7 +406,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
                 EnumChatFormatting.GOLD + "1",
                 3)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 

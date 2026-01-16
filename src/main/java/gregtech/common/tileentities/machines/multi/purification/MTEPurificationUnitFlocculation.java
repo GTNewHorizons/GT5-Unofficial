@@ -366,7 +366,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addOutputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
                 1)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
