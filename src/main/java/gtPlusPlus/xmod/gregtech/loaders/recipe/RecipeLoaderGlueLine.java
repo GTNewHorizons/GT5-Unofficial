@@ -277,44 +277,33 @@ public class RecipeLoaderGlueLine {
             .addTo(assemblerRecipes);
         // Graphene recipes from later wafer tiers, using superglue instead of the bronze age glue
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer2.get(8L))
+            .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer2.get(16L))
             .circuit(2)
             .itemOutputs(Materials.Graphene.getDust(64))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(1000))
-            .duration(10 * SECONDS)
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
+            .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer3.get(2L))
+            .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer3.get(4L))
             .circuit(2)
             .itemOutputs(Materials.Graphene.getDust(64))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(750))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64),
-                ItemList.Circuit_Silicon_Wafer4.get(1L))
+            .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer4.get(2L))
             .circuit(2)
-            .itemOutputs(Materials.Graphene.getDust(128))
-            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(500))
+            .itemOutputs(Materials.Graphene.getDust(32))
+            .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64),
-                ItemList.Circuit_Silicon_Wafer5.get(1L),
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64),
-                Materials.Graphite.getDust(64))
-            .itemOutputs(Materials.Graphene.getDust(512))
+            .itemInputs(Materials.Graphite.getDust(64), ItemList.Circuit_Silicon_Wafer5.get(1L))
+            .circuit(2)
+            .itemOutputs(Materials.Graphene.getDust(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
