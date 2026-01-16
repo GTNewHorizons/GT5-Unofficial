@@ -65,6 +65,7 @@ import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.recipe.maps.LargeBoilerFuelFrontend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.recipe.maps.MicrowaveBackend;
+import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.recipe.maps.PrinterBackend;
 import gregtech.api.recipe.maps.PurificationUnitClarifierFrontend;
@@ -1361,8 +1362,8 @@ public final class RecipeMaps {
         })
         .build();
 
-    public static final RecipeMap<RecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.assemblymatrix")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipAssemblyMatrixRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.assemblymatrix", NACRecipeMapBackend::new)
         .maxIO(16, 1, 4, 0)
         .minInputs(0, 0)
         .recipeTransformer(recipe -> {
@@ -1376,8 +1377,8 @@ public final class RecipeMaps {
         .frontend(AssemblyLineFrontend::new)
         .build();
 
-    public static final RecipeMap<RecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.smdprocessor")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipSMDProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.smdprocessor", NACRecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
@@ -1386,8 +1387,8 @@ public final class RecipeMaps {
             MTESMDProcessorModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
-        .of("gt.recipe.nanochip.boardprocessor")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
+        .of("gt.recipe.nanochip.boardprocessor", NACRecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .recipeTransformer(recipe -> {
@@ -1396,8 +1397,8 @@ public final class RecipeMaps {
             MTEBoardProcessorModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
-        .of("gt.recipe.nanochip.etchingarray")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
+        .of("gt.recipe.nanochip.etchingarray", NACRecipeMapBackend::new)
         .maxIO(2, 1, 2, 0)
         .minInputs(0, 0)
         .recipeTransformer(recipe -> {
@@ -1406,8 +1407,8 @@ public final class RecipeMaps {
             MTEEtchingArrayModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
-        .of("gt.recipe.nanochip.cuttingchamber")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipCuttingChamber = RecipeMapBuilder
+        .of("gt.recipe.nanochip.cuttingchamber", NACRecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .recipeTransformer(recipe -> {
@@ -1416,8 +1417,8 @@ public final class RecipeMaps {
             MTECuttingChamberModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
-        .of("gt.recipe.nanochip.wiretracer")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipWireTracer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.wiretracer", NACRecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
@@ -1426,8 +1427,8 @@ public final class RecipeMaps {
             MTEWireTracerModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
-        .of("gt.recipe.nanochip.superconductorsplitter")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipSuperconductorSplitter = RecipeMapBuilder
+        .of("gt.recipe.nanochip.superconductorsplitter", NACRecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
@@ -1436,8 +1437,8 @@ public final class RecipeMaps {
             MTESuperconductorSplitterModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
-        .of("gt.recipe.nanochip.opticalorganizer")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipOpticalOrganizer = RecipeMapBuilder
+        .of("gt.recipe.nanochip.opticalorganizer", NACRecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
@@ -1446,8 +1447,8 @@ public final class RecipeMaps {
             MTEOpticalOrganizerModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
-        .of("gt.recipe.nanochip.sheetsupervisor")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
+        .of("gt.recipe.nanochip.sheetsupervisor", NACRecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
@@ -1456,8 +1457,8 @@ public final class RecipeMaps {
             MTESheetSupervisorModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<RecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
-        .of("gt.recipe.nanochip.biologicalcoordinator")
+    public static final RecipeMap<NACRecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
+        .of("gt.recipe.nanochip.biologicalcoordinator", NACRecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
