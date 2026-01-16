@@ -7,6 +7,8 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.recipe.maps.NACRecipeMapBackend;
+import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -48,6 +50,19 @@ public class RecipeHandlers {
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
             .addTo(recipeMap);
+    }
+
+    // Adds a board processing recipe with a fluid as metadata.
+    private static void addBoardProcessingRecipe(CircuitComponent input, Integer fluidType,
+                                                 CircuitComponent output, ModuleRecipeInfo info, long eut) {
+        GTValues.RA.stdBuilder()
+            .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, fluidType)
+            .itemInputs(input.getFakeStack(info.getBaseParallel()))
+            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+            .eut(eut)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
     }
 
     private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, List<FluidStack> fluidInputs,
@@ -249,13 +264,13 @@ public class RecipeHandlers {
 
     public static void registerBoardRecipes() {
         // Board processing recipes
-        addSimpleProcessingRecipe(
+
+        addBoardProcessingRecipe(
             CircuitComponent.BoardMultifiberglassElite,
-            Materials.IronIIIChloride.getFluid(1000),
+            1,
             CircuitComponent.ProcessedBoardMultifiberglassElite,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LV,
-            RecipeMaps.nanochipBoardProcessorRecipes);
+            TierEU.RECIPE_LV);
         addSimpleProcessingRecipe(
             CircuitComponent.BoardWetwareLifesupport,
             Materials.GrowthMediumSterilized.getFluid(1000),

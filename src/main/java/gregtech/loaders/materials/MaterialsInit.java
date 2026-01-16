@@ -61,6 +61,7 @@ public class MaterialsInit {
         loadAluminiumOres();
         loadUEVPlusMaterials();
         loadGTNHMaterials();
+        loadNACMaterials();
     }
 
     private static void loadElements() {
@@ -15891,6 +15892,10 @@ public class MaterialsInit {
         Materials.Epidote = loadEpidote();
     }
 
+    private static void loadNACMaterials() {
+        Materials.ImpureIronIIIChloride = loadImpureIronIIIChloride();
+    }
+
     private static Materials loadSignalum() {
         return new MaterialBuilder().setName("Signalum")
             .setDefaultLocalName("Signalum")
@@ -16049,6 +16054,20 @@ public class MaterialsInit {
             .addMaterial(Materials.SiliconDioxide, 3)
             .addMaterial(Materials.Oxygen, 1)
             .addMaterial(Materials.Hydrogen, 1)
+            .constructMaterial();
+    }
+
+    private static Materials loadImpureIronIIIChloride() {
+        return new MaterialBuilder().setName("ImpureIronIIIChloride")
+            .setDefaultLocalName("Impure Iron III Chloride")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBlack)
+            .setARGB(0x001a1910)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Iron, 1)
+            .addMaterial(Materials.Chlorine, 3)
+            .addMaterial(Materials.Unknown,1)
             .constructMaterial();
     }
 }
