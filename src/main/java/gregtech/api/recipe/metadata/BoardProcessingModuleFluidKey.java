@@ -1,13 +1,13 @@
 package gregtech.api.recipe.metadata;
 
-import gregtech.api.recipe.RecipeMetadataKey;
-import gregtech.api.util.MethodsReturnNonnullByDefault;
-import gregtech.nei.RecipeDisplayInfo;
+import static gregtech.api.util.GTUtility.trans;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static gregtech.api.util.GTUtility.trans;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.RecipeDisplayInfo;
 
 /**
  * Type of immersion fluid required

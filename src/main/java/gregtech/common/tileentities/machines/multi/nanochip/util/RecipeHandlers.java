@@ -7,8 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.recipe.maps.NACRecipeMapBackend;
-import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,6 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
@@ -53,8 +52,8 @@ public class RecipeHandlers {
     }
 
     // Adds a board processing recipe with a fluid as metadata.
-    private static void addBoardProcessingRecipe(CircuitComponent input, Integer fluidType,
-                                                 CircuitComponent output, ModuleRecipeInfo info, long eut) {
+    private static void addBoardProcessingRecipe(CircuitComponent input, Integer fluidType, CircuitComponent output,
+        ModuleRecipeInfo info, long eut) {
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .metadata(BoardProcessingModuleFluidKey.INSTANCE, fluidType)
