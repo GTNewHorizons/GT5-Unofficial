@@ -43,6 +43,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -103,9 +104,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         disconnect();
     }
 
-    // Something, needs to be tested further what this should really be (probably MUCH higher and scale with hatch tier)
-    protected static long EU_BUFFER_BASE_SIZE = 160008000L * 16384;
-    protected final long euBufferSize = EU_BUFFER_BASE_SIZE;
+    public NACRecipeMapBackend getBackend() {
+        return (NACRecipeMapBackend) this.getRecipeMap()
+            .getBackend();
+    }
+
+    protected long euBufferSize = TierEU.UV * 4096 * 20;
 
     protected final Map<CircuitComponent, Long> processedItemCounts = new HashMap<>();
 
@@ -339,7 +343,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      */
     @NotNull
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        this.euT = recipe.mEUt;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -385,6 +388,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .build();
         CheckRecipeResult result = parallelHelper.getResult();
         if (result.wasSuccessful()) {
+            long euToConsume = parallelHelper.getCurrentParallel() * (long) recipe.mDuration * (long) recipe.mEUt;
+            if (euToConsume > this.getEUVar()) return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
@@ -405,6 +410,30 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         return result;
+    }
+
+    public int getPriority() {
+        return 1;
+    }
+
+    public void setBufferSize(long buffer) {
+        this.euBufferSize = buffer;
+    }
+
+    public long getBufferSize() {
+        return this.euBufferSize;
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("bufferSize", this.euBufferSize);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        this.euBufferSize = aNBT.getLong("bufferSize");
     }
 
     @Override
@@ -599,7 +628,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     public void disconnect() {
         isConnected = false;
-        this.availableEUt = 0;
     }
 
     public boolean isConnected() {
