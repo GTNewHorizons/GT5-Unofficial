@@ -16,16 +16,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
-import goodgenerator.items.GGMaterial;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
-import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.OverclockCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,15 +29,20 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
+import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBoardProcessorModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -205,11 +200,13 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         aNBT.setString(
             "storedFluid",
             StoredFluid == null ? ""
-                : StoredFluid.getFluid().getName());
+                : StoredFluid.getFluid()
+                    .getName());
         aNBT.setString(
             "impurityFluid",
             this.ImpurityFluid == null ? ""
-                : ImpurityFluid.getFluid().getName());
+                : ImpurityFluid.getFluid()
+                    .getName());
     }
 
     @Override
@@ -249,7 +246,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
-        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1 && !StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1
+            && !StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -264,7 +262,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 ProcessedItems -= ImpurityThreshold;
                 ImpurityFluidAmount += 100;
                 ImpurityFluid.amount = ImpurityFluidAmount;
-                ImpurityPercentage = (double) ImpurityFluidAmount/Capacity;
+                ImpurityPercentage = (double) ImpurityFluidAmount / Capacity;
             }
         }
         super.endRecipeProcessing();
@@ -293,7 +291,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     public void FlushTank() {
-        if ((StoredFluid != null)  && (!mOutputHatches.isEmpty())){
+        if ((StoredFluid != null) && (!mOutputHatches.isEmpty())) {
             ImpurityFluidAmount = FluidAmount;
             FluidStack toFlush = new FluidStack(ImpurityFluid.getFluid(), ImpurityFluidAmount);
             addOutput(toFlush);
