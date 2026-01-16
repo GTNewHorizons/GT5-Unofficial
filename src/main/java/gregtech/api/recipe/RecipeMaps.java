@@ -1389,7 +1389,7 @@ public final class RecipeMaps {
     public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.boardprocessor", NACRecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
-        .minInputs(1, 1)
+        .minInputs(1, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
