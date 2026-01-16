@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -57,7 +58,12 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
             .addInfo("gt.vf.tips")
             .beginStructureBlock(3, 3, 3, true)
             .addController("front_center")
-            .addCasingInfoRange("gt.blockcasings2.1.name", 16, 24, false)
+            .addCasingInfoRange(
+                ItemList.Casing_FrostProof.get(1)
+                    .getDisplayName(),
+                16,
+                24,
+                false)
             .addEnergyHatch("<casing>", 1)
             .addMaintenanceHatch("<casing>", 1)
             .addInputHatch("<casing>", 1)

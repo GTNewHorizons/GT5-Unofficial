@@ -422,7 +422,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addStructurePart(
                 "gt.lapo_super_capacitor.info.lasers",
                 GTUtility.nestParams("gt.lapo_super_capacitor.info.lasers.pos", TooltipHelper.voltageText(8, false)))
-            .addStructureInfo("gt.lapo_super_capacitor.info.energy.tip")
+            .addStructureInfo("gt.lapo_super_capacitor.info.energy.tips")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR, "gt.lapo_super_capacitor.info.channel_purpose")
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)

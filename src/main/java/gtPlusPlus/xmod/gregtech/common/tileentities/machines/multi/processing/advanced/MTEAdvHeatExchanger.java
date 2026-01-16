@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IHatchElement;
@@ -54,6 +55,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -124,15 +126,17 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("gt.wwxl.tips.1")
-            .addSeparator()
-            .addInfo("gt.wwxl.tips.2")
-            .addSeparator()
-            .addInfo("gt.wwxl.tips.3")
+            .addInfo("gt.wwxl.tips")
             .beginStructureBlock(5, 9, 5, false)
             .addController("front_bottom_middle")
-            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.14.name", 90)
-            .addStructurePart("gt.blockcasings2.15.name", "gt.wwxl.info.casing")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_XL_HeatExchanger.get(1)
+                    .getDisplayName(),
+                90)
+            .addStructurePart(
+                ItemList.Casing_Pipe_TungstenSteel.get(1)
+                    .getDisplayName(),
+                "gt.wwxl.info.casing")
             .addMaintenanceHatch("<casing>", 1)
             .addInputHatch("gt.wwxl.info.i_hatch.1", 2)
             .addInputHatch("gt.wwxl.info.i_hatch.2", 1)

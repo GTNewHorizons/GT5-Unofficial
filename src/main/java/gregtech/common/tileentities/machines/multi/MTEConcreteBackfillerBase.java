@@ -97,7 +97,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
-        tt.addMachineType("Concrete Backfiller")
+        tt.addMachineType("machtype.backfiller")
             .addInfo(
                 "gt.backfiller.tips",
                 getRadius(),
