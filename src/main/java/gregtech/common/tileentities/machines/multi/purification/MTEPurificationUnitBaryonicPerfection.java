@@ -378,7 +378,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addInputHatch("Any Quark Exclusion Casing", 1)
             .addOutputBus("Any Quark Exclusion Casing", 1)
             .addOutputHatch("Any Quark Exclusion Casing", 1)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
