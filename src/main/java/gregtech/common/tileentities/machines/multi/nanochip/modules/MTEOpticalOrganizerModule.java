@@ -236,15 +236,11 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return RecipeMaps.nanochipOpticalOrganizer;
     }
 
+    // todo: rework boosts and slightly rework mechanic
     double parallelModifier = 1;
     float speedModifier = 1;
     float euMultiplier = 1;
     float extraBoost = 1;
-
-    @Override
-    protected int getMaximumParallel() {
-        return (int) (super.getMaximumParallel() * extraBoost * parallelModifier);
-    }
 
     @Override
     protected float getBonusSpeedModifier() {
