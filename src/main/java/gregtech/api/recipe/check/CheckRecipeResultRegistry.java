@@ -133,6 +133,10 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult NAC_OPTICAL_MISSING_WATER = SimpleCheckRecipeResult
         .ofFailure("nac.missing_water");
 
+    @Nonnull
+    public static final CheckRecipeResult NAC_WAITING_FOR_POWER = SimpleCheckRecipeResult
+        .ofFailure("nac.waiting_for_power");
+
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
      */

@@ -139,7 +139,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
-    private static final int INTERNAL_BUFFER_MULTIPLIER = 8;
 
     private final ArrayList<MTENanochipAssemblyModuleBase<?>> modules = new ArrayList<>();
 
@@ -186,11 +185,23 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         vacuumConveyors.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, MAIN_OFFSET_X, MAIN_OFFSET_Y, MAIN_OFFSET_Z)) return false;
         // At least most one energy hatch is accepted
+        boolean validEnergy = false;
         if (this.mEnergyHatches.isEmpty()) {
-            return this.mExoticEnergyHatches.size() == 1;
+            validEnergy = this.mExoticEnergyHatches.size() == 1;
         } else {
-            return this.mEnergyHatches.size() == 1;
+            validEnergy = this.mEnergyHatches.size() == 1;
         }
+        if (!validEnergy) return false;
+
+        modules.sort((module1, module2) -> module2.getPriority() - module1.getPriority());
+
+        for (MTENanochipAssemblyModuleBase<?> module : modules) {
+            final int maxDurationOfModuleRecipe = module.getBackend()
+                .getMaxDuration();
+            module.setBufferSize(this.getMaxInputEu() * maxDurationOfModuleRecipe * MODULE_CONNECT_INTERVAL);
+            module.setAvailableEUt(this.getMaxInputEu());
+        }
+        return true;
     }
 
     @Override
@@ -457,28 +468,27 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (isAllowedToWork()) {
-                // Every running tick, try to charge the buffer in the controller,
-                // because the MTE base class does not actually do this, but we need to in order to distribute the
-                // power to the modules.
+                // Every running tick, try to charge the buffer in the controller.
                 tryChargeInternalBuffer();
                 // If the complex is turned on, periodically reconnect modules.
-                // This code can be extended to only connect modules based on tiers of the complex or other
-                // conditions such as energy tier.
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
                         // Calculate the max power to be shared to the modules
-                        // to not powerfail or distribute un-evenly.
-                        long currentEu = getEUVar();
+                        long availableEnergy = Math
+                            .min(this.getEUVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL);
+                        if (availableEnergy == 0) return;
+                        // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
-                            if (currentEu > 0) {
-                                module.connect();
-                                long moduleEu = module.getEuT();
-                                module.setAvailableEUt(Math.min(moduleEu, module.getMaxEUT()));
-                                setEUVar(
-                                    Math.max(0, currentEu - module.increaseStoredEU(Math.min(moduleEu, currentEu))));
-                            }
+                            module.connect();
+                            long moduleSize = module.getBufferSize();
+                            long moduleCurrentEU = module.getEUVar();
+                            long euToSend = moduleSize - moduleCurrentEU;
+                            if (euToSend <= 0) continue;
+                            long sentEnergy = module.increaseStoredEU(Math.min(euToSend, availableEnergy));
+                            availableEnergy -= sentEnergy;
+                            if (availableEnergy <= 0) break;
                         }
-
+                        setEUVar(getEUVar() - availableEnergy);
                     }
                 }
             } else {
@@ -544,9 +554,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return GTGuiThemes.NANOCHIP;
     }
 
+    // holds a minute of eu/t reserves.
     @Override
     public long maxEUStore() {
-        return INTERNAL_BUFFER_MULTIPLIER * super.maxEUStore();
+        return 60 * this.getMaxInputEu() * MODULE_CONNECT_INTERVAL;
     }
 
     // Hatch adder for modules
