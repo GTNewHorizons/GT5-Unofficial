@@ -548,7 +548,7 @@ public class GTAchievements {
             case "gt.metaitem.01.32630" -> issueAchievement(player, "transport");
             case "gt.metaitem.01.32650" -> issueAchievement(player, "complexmachines");
             case "gt.metaitem.01.32670" -> issueAchievement(player, "hightech");
-            case "ic2.blockCrop" -> issueAchievement(player, "crops");
+            case "CropsNH:cropStick" -> issueAchievement(player, "crops");
             case "ic2.itemPartCircuit" -> issueAchievement(player, "gtbasiccircuit");
             case "ic2.itemPartCircuitAdv" -> issueAchievement(player, "stepforward");
             case "gt.blockmachines.boiler.solar" -> issueAchievement(player, "simplyeco");
