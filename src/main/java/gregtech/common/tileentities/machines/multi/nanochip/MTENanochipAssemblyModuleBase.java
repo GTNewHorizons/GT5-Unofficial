@@ -75,9 +75,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
     protected static final int BASE_STRUCTURE_OFFSET_Z = 0;
 
-    private long euT = TierEU.RECIPE_LuV;
-    private long maxEUT = Long.MAX_VALUE;
-
     private boolean isConnected = false;
 
     private long availableEUt = 0;
@@ -499,39 +496,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * In case any specific module wants to control this value.
      */
     protected int getMaximumParallel() {
-        return BASE_PARALLEL;
-    }
-
-    /**
-     * Determines the euT of the current module that the Nac will send to this module
-     * In case any specific module wants to control this value.
-     */
-    protected long getEuT() {
-        return euT;
-    }
-
-    /**
-     * Sets the euT of the current module that the Nac will send to this module
-     * In case any specific module wants to control this value.
-     */
-    protected void setEuT(long euT) {
-        this.euT = euT;
-    }
-
-    /**
-     * Determines the max EU that the module can pull
-     * In case any specific module wants to control this value.
-     */
-    protected long getMaxEUT() {
-        return maxEUT;
-    }
-
-    /**
-     * Sets the max EU that the module can pull
-     * In case any specific module wants to control this value.
-     */
-    protected void setMaxEUT(long maxEUT) {
-        this.maxEUT = maxEUT;
+        return Integer.MAX_VALUE;
     }
 
     /**
