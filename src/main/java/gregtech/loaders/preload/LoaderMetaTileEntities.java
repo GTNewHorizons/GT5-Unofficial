@@ -321,46 +321,55 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 PURIFICATION_PLANT_CONTROLLER.ID,
                 "multimachine.purificationplant",
                 "Water Purification Plant").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationPlant.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitClarifier.set(
             new MTEPurificationUnitClarifier(
                 PURIFICATION_UNIT_CLARIFIER.ID,
                 "multimachine.purificationunitclarifier",
                 "Clarifier Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitClarifier.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitFlocculator.set(
             new MTEPurificationUnitFlocculation(
                 PURIFICATION_UNIT_FLOCCULATOR.ID,
                 "multimachine.purificationunitflocculator",
                 "Flocculation Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitFlocculator.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
             new MTEPurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
                 "multimachine.purificationunitphadjustment",
                 "pH Neutralization Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitPhAdjustment.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitOzonation.set(
             new MTEPurificationUnitOzonation(
                 PURIFICATION_UNIT_OZONATION.ID,
                 "multimachine.purificationunitozonation",
                 "Ozonation Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitOzonation.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
             new MTEPurificationUnitPlasmaHeater(
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
                 "multimachine.purificationunitplasmaheater",
                 "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitPlasmaHeater.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
             new MTEPurificationUnitUVTreatment(
                 PURIFICATION_UNIT_UV_TREATMENT.ID,
                 "multimachine.purificationunituvtreatment",
                 "High Energy Laser Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitUVTreatment.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitDegasifier.set(
             new MTEPurificationUnitDegasser(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
                 "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitDegasifier.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Machine_Multi_PurificationUnitParticleExtractor.set(
             new MTEPurificationUnitBaryonicPerfection(
                 PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
                 "multimachine.purificationunitextractor",
                 "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
+        addItemTooltip(ItemList.Machine_Multi_PurificationUnitParticleExtractor.get(1), chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
         ItemList.Hatch_DegasifierControl.set(
             new MTEHatchDegasifierControl(
                 HATCH_DEGASIFIER_CONTROL.ID,
