@@ -305,7 +305,7 @@ public class RecipeLoaderGlueLine {
             .circuit(2)
             .itemOutputs(Materials.Graphene.getDust(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
-            .duration(5 * SECONDS)
+            .duration(50 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(assemblerRecipes);
 
