@@ -567,6 +567,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
+    public boolean doesBindPlayerInventory() { return false; }
+
+    @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
     }
