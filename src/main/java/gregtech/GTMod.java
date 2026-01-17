@@ -122,6 +122,7 @@ import gregtech.loaders.postload.MissingMappingsHandler;
 import gregtech.loaders.postload.PosteaTransformers;
 import gregtech.loaders.postload.RecyclerBlacklistLoader;
 import gregtech.loaders.postload.ScrapboxDropLoader;
+import gregtech.loaders.postload.recipes.AdvancedCircuitAssemblyLineRecipes;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
@@ -432,6 +433,7 @@ public class GTMod {
         new CropLoader().run();
         new GTWorldgenloader().run();
         new CoverLoader().run();
+        new AdvancedCircuitAssemblyLineRecipes().run();
         StoneType.init();
 
         GTRecipeRegistrator.registerUsagesForMaterials(
