@@ -57,26 +57,6 @@ public final class BioObjectAdder {
     }
 
     /**
-     * rarity inherits from dna
-     *
-     * @param color     the color of the Culture
-     * @param name      the name of the Culture
-     * @param plasmid   the cultures plasmid, get it from createAndRegisterBioPlasmid
-     * @param dna       the cultures dna, get it from createAndRegisterBioDNA
-     * @param breedable if the culture can be inserted into the BacterialVat
-     * @return
-     */
-    public static @Nullable BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid,
-        BioDNA dna, boolean breedable) {
-        if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
-            return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, breedable);
-        new Exception(
-            "Too Early to register a BioCulture! You MUST run this either after:bartworks OR in the init Phase!")
-                .printStackTrace();
-        return null;
-    }
-
-    /**
      * unspecific Biodata that can be converted into DNA and Plasmid with the propper methodes
      *
      * @param aName  the name of the Biodata
@@ -88,64 +68,6 @@ public final class BioObjectAdder {
     public static @Nullable BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
         if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
             return BioData.createAndRegisterBioData(aName, rarity, chance, tier);
-        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
-            .printStackTrace();
-        return null;
-    }
-
-    /**
-     * Default Constructor for HV Tier DNA with 75% extraction rate
-     *
-     * @param aName  Name of the DNA String
-     * @param rarity visual
-     * @return
-     */
-    public static @Nullable BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity) {
-        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1) return BioDNA.createAndRegisterBioDNA(aName, rarity);
-        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
-            .printStackTrace();
-        return null;
-    }
-
-    /**
-     * Default Constructor for HV Tier Plasmid with 75% extraction rate
-     *
-     * @param aName  Name of the Plasmid
-     * @param rarity visual
-     * @return
-     */
-    public static @Nullable BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity) {
-        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1) return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity);
-        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
-            .printStackTrace();
-        return null;
-    }
-
-    /**
-     * @param aName  Name of the DNA String
-     * @param rarity visual
-     * @param chance chanche of extracting
-     * @param tier   tier needed to extract 0=HV, 1=EV etc.
-     * @return
-     */
-    public static @Nullable BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity, int chance, int tier) {
-        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1) return BioDNA.createAndRegisterBioDNA(aName, rarity, chance, tier);
-        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
-            .printStackTrace();
-        return null;
-    }
-
-    /**
-     * @param aName  Name of the Plasmid
-     * @param rarity visual
-     * @param chance chanche of extracting
-     * @param tier   tier needed to extract 0=HV, 1=EV etc.
-     * @return
-     */
-    public static @Nullable BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity, int chance,
-        int tier) {
-        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
-            return BioPlasmid.createAndRegisterBioPlasmid(aName, rarity, chance, tier);
         new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
             .printStackTrace();
         return null;
