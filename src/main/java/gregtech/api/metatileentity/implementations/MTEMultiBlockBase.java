@@ -2345,12 +2345,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
+                    // FIXME: localize it
                     currentTip.add(
                         "  " + tag.getString("outputItem" + i)
                             + " x "
                             + formatNumbers(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
+                    // FIXME: localize it
                     currentTip.add(
                         "  " + tag.getString("outputFluid" + i)
                             + " x "
@@ -2420,6 +2422,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
+                // FIXME: localize it
                 tag.setString("outputItem" + index, stack.getDisplayName());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
@@ -2430,6 +2433,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (FluidStack stack : mOutputFluids) {
                 if (stack == null) continue;
+                // FIXME: localize it
                 tag.setString("outputFluid" + index, stack.getLocalizedName());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;

@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -198,75 +199,74 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         final String inBrackets;
         switch (mMode) {
             case 0 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("108", "Outputs misc. Fluids, Steam and Items"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_steam_item");
                 this.setLockedFluidName(null);
             }
             case 1 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("109", "Outputs Steam and Items"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.steam_item");
                 this.setLockedFluidName(null);
             }
             case 2 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("110", "Outputs Steam and misc. Fluids"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.steam_fluid");
                 this.setLockedFluidName(null);
             }
             case 3 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("111", "Outputs Steam"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.steam");
                 this.setLockedFluidName(null);
             }
             case 4 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("112", "Outputs misc. Fluids and Items"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_item");
                 this.setLockedFluidName(null);
             }
             case 5 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("113", "Outputs only Items"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.item");
                 this.setLockedFluidName(null);
             }
             case 6 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("114", "Outputs only misc. Fluids"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid");
                 this.setLockedFluidName(null);
             }
             case 7 -> {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("115", "Outputs nothing"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.nothing");
                 this.setLockedFluidName(null);
             }
             case 8 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = GTUtility.trans(
-                        "115.3",
-                        "currently none, will be locked to the next that is put in (or use fluid cell to lock)");
+                    inBrackets = "GT5U.chat.hatch.output.in_brackets.none";
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    inBrackets = this.getDrainableStack()
-                        .getLocalizedName();
+                    String inBracketsMayNull = this.getDrainableStack()
+                        .getUnlocalizedName();
+                    inBrackets = inBracketsMayNull == null ? "" : inBracketsMayNull;
                 }
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    String
-                        .format("%s (%s)", GTUtility.trans("151.1", "Outputs items and 1 specific Fluid"), inBrackets));
+                    "GT5U.chat.hatch.output.items_and_specific_fluid",
+                    new ChatComponentTranslation(inBrackets));
             }
             case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = GTUtility.trans(
-                        "115.3",
-                        "currently none, will be locked to the next that is put in (or use fluid cell to lock)");
+                    inBrackets = "GT5U.chat.hatch.output.in_brackets.none";
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    inBrackets = this.getDrainableStack()
-                        .getLocalizedName();
+                    String inBracketsMayNull = this.getDrainableStack()
+                        .getUnlocalizedName();
+                    inBrackets = inBracketsMayNull == null ? "" : inBracketsMayNull;
                 }
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    String.format("%s (%s)", GTUtility.trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
+                    "GT5U.chat.hatch.output.specific_fluid",
+                    new ChatComponentTranslation(inBrackets));
             }
         }
     }
@@ -284,30 +284,25 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             if (getLockedFluidName() != null && !getLockedFluidName().equals(
                 tFluid.getFluid()
                     .getName())) {
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    String.format(
-                        "%s %s",
-                        GTUtility.trans(
-                            "151.3",
-                            "Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to"),
-                        StatCollector.translateToLocal(getLockedFluidName())));
+                    "GT5U.chat.hatch.output.fluid.already_locked",
+                    // FIXME: is this the correct way to get unlocalized key?
+                    new ChatComponentTranslation(getLockedFluidName()));
             } else {
                 setLockedFluidName(
                     tFluid.getFluid()
                         .getName());
-                if (mMode == 8) GTUtility.sendChatToPlayer(
+                if (mMode == 8) GTUtility.sendChatTrans(
                     aPlayer,
-                    String.format(
-                        "%s (%s)",
-                        GTUtility.trans("151.1", "Outputs items and 1 specific Fluid"),
-                        tFluid.getLocalizedName()));
-                else GTUtility.sendChatToPlayer(
+                    "GT5U.chat.hatch.output.items_and_specific_fluid",
+                    new ChatComponentTranslation(
+                        tFluid.getUnlocalizedName() == null ? "" : tFluid.getUnlocalizedName()));
+                else GTUtility.sendChatTrans(
                     aPlayer,
-                    String.format(
-                        "%s (%s)",
-                        GTUtility.trans("151.2", "Outputs 1 specific Fluid"),
-                        tFluid.getLocalizedName()));
+                    "GT5U.chat.hatch.output.specific_fluid",
+                    new ChatComponentTranslation(
+                        tFluid.getUnlocalizedName() == null ? "" : tFluid.getUnlocalizedName()));
             }
             return true;
         }
@@ -404,9 +399,10 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     .getName());
             final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 player,
-                String.format(GTUtility.trans("151.4", "Successfully locked Fluid to %s"), mFluid.getLocalizedName()));
+                "GT5U.chat.hatch.output.fluid.locked_to",
+                new ChatComponentTranslation(mFluid.getUnlocalizedName() == null ? "" : mFluid.getUnlocalizedName()));
             playerThatLockedfluid = null;
         }
     }
