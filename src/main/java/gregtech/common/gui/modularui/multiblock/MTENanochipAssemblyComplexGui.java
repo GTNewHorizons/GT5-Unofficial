@@ -3,6 +3,12 @@ package gregtech.common.gui.modularui.multiblock;
 import java.util.Arrays;
 import java.util.List;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +45,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     @Override
+    public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createMainColumn(panel, syncManager).child(Flow.row()
+            .width(getTerminalRowWidth())
+            .coverChildrenHeight()
+            .child(createBarWidget(syncManager)));
+    }
+
+    @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
         textList.setEnabledIf(a -> multiblock.isTalkModeActive)
             .childSeparator(
@@ -46,6 +60,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .height(2))
             .size(getTerminalWidgetWidth() - 6, getTerminalWidgetHeight() - 8);
         return super.createTerminalParentWidget(panel, syncManager).child(textList);
+    }
+
+    @Override
+    protected int getTerminalRowHeight() {
+        return 94;
     }
 
     // disables hoverable in talk mode
@@ -65,18 +84,38 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
 
+    protected Widget<? extends Widget<?>> createBarWidget(PanelSyncManager syncManager) {
+        SegmentedBarWidget.SegmentInfo exotics = new SegmentedBarWidget.SegmentInfo(() -> 300, Color.ORANGE, "Exotics");
+        SegmentedBarWidget.SegmentInfo wetware = new SegmentedBarWidget.SegmentInfo(() -> 100, Color.RED, "We");
+        SegmentedBarWidget.SegmentInfo crystals = new SegmentedBarWidget.SegmentInfo(() -> 1, Color.BLUE, "Cr");
+
+        return new SegmentedBarWidget(500, 1, wetware, crystals, exotics).width(150);
+    }
+
     @Override
     protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
             .paddingLeft(4)
-            .height(getTextBoxToInventoryGap())
-            .child(createTalkTextField(panel, syncManager));
+            .height(getTextBoxToInventoryGap() + 20)
+            .child(createTalkTextField(panel, syncManager))
+            .child(createButtonColumn(panel, syncManager));
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
         return new TerminalTextFieldWidget(textList, syncManager).setFocusOnGuiOpen(true)
-            .size(getTerminalRowWidth() - 27, 14);
+            .size(getTerminalRowWidth() - 27, 14)
+            .top(4);
+    }
+
+    @Override
+    protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return new Column().width(18).height(38).top(2)
+            .marginLeft(3)
+            .mainAxisAlignment(Alignment.MainAxis.END)
+            .reverseLayout(true).childPadding(2)
+            .child(createPowerSwitchButton())
+            .child(createStructureUpdateButton(syncManager));
     }
 
     @Override
