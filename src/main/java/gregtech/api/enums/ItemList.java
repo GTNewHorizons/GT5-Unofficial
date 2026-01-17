@@ -1537,6 +1537,23 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_Autoclave,
     Casing_Autoclave,
 
+    Machine_Multi_NanochipAssemblyComplex,
+    Hatch_VacuumConveyor_Input,
+    Hatch_VacuumConveyor_Output,
+    VacuumConveyorPipe,
+    NanoChipModule_AssemblyMatrix,
+    NanoChipModule_SMDProcessor,
+    NanoChipModule_BoardProcessor,
+    NanoChipModule_EtchingArray,
+    NanoChipModule_CuttingChamber,
+    NanoChipModule_WireTracer,
+    NanoChipModule_Splitter,
+    NanoChipModule_SuperconductorSplitter,
+    NanoChipModule_OpticalOrganizer,
+    NanoChipModule_SheetSupervisor,
+    NanoChipModule_BiologicalCoordinator,
+    Hatch_Splitter_Level,
+
     Machine_LV_Miner,
     Machine_MV_Miner,
     Machine_HV_Miner,
@@ -2653,6 +2670,7 @@ public enum ItemList implements IItemContainer {
     NameRemover,
     Hatch_Nanite,
     Hatch_Catalyst_Bulk,
+    Hatch_Particle_Sensor,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
@@ -2746,6 +2764,12 @@ public enum ItemList implements IItemContainer {
     CokeOvenController,
     CokeOvenCasing,
     CokeOvenHatch,
+
+    PrimaryNanochipCasing,
+    SecondaryNanochipCasing,
+    ComputationalMatrixCasing,
+    ExteriorNanochipCasing,
+    CircuitComplexGlass,
 
     // semicolon after the comment to reduce merge conflicts
     ;
