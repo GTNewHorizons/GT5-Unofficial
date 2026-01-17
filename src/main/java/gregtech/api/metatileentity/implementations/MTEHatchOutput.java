@@ -284,11 +284,14 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             if (getLockedFluidName() != null && !getLockedFluidName().equals(
                 tFluid.getFluid()
                     .getName())) {
+                FluidStack fluidStack = FluidRegistry.getFluidStack(getLockedFluidName(), 1);
+                String fluidUnlocalizedName = fluidStack != null
+                    ? (fluidStack.getUnlocalizedName() == null ? "" : fluidStack.getUnlocalizedName())
+                    : "GT5U.machines.hatch_output.lockfluid.empty";
                 GTUtility.sendChatTrans(
                     aPlayer,
                     "GT5U.chat.hatch.output.fluid.already_locked",
-                    // FIXME: is this the correct way to get unlocalized key?
-                    new ChatComponentTranslation(getLockedFluidName()));
+                    new ChatComponentTranslation(fluidUnlocalizedName));
             } else {
                 setLockedFluidName(
                     tFluid.getFluid()
