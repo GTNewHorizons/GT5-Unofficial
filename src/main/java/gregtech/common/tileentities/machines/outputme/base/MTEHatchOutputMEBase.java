@@ -462,7 +462,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     /**
      * Note: this may return {@link Long#MAX_VALUE} for void cells.
-     * 
+     *
      * @return the cache capacity.
      */
     public long getCacheCapacity() {
@@ -597,6 +597,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
         getProxy().readFromNBT(aNBT);
+        oldCellStack = env.getCellStack();
         updateCacheCapacity();
         updateAE2ProxyColor();
     }
