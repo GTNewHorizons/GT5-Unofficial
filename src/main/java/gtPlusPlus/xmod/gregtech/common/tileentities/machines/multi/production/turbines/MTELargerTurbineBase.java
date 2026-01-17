@@ -374,7 +374,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected ArrayList<MTEHatchTurbine> getEmptyTurbineAssemblies() {
         ArrayList<MTEHatchTurbine> aEmptyTurbineRotorHatches = new ArrayList<>();
         // log("Checking "+mTurbineRotorHatches.size()+" Assemblies for empties.");
-        for (MTEHatchTurbine aTurbineHatch : this.mTurbineRotorHatches) {
+        for (MTEHatchTurbine aTurbineHatch : validMTEList(this.mTurbineRotorHatches)) {
             if (!aTurbineHatch.hasTurbine()) {
                 aEmptyTurbineRotorHatches.add(aTurbineHatch);
             }
@@ -385,7 +385,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected ArrayList<MTEHatchTurbine> getFullTurbineAssemblies() {
         ArrayList<MTEHatchTurbine> aTurbineRotorHatches = new ArrayList<>();
         // log("Checking "+mTurbineRotorHatches.size()+" Assemblies for Turbines.");
-        for (MTEHatchTurbine aTurbineHatch : this.mTurbineRotorHatches) {
+        for (MTEHatchTurbine aTurbineHatch : validMTEList(this.mTurbineRotorHatches)) {
             if (aTurbineHatch.hasTurbine()) {
                 // log("Found Assembly with Turbine.");
                 aTurbineRotorHatches.add(aTurbineHatch);
@@ -664,9 +664,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             looseFit = !looseFit;
             // Clear recipe maps so they don't attempt to filter off of a dummy recipe map
             clearRecipeMapForAllInputHatches();
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
+                looseFit ? "GT5U.chat.turbine.fitting.loose" : "GT5U.chat.turbine.fitting.tight");
         }
     }
 
@@ -715,7 +715,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (MTEHatchTurbine h : this.mTurbineRotorHatches) {
+        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.clearController();
         }
         disableAllTurbineHatches();
