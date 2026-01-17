@@ -8,8 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.items.IUpgradeModule;
+import appeng.api.storage.ICellWorkbenchItem;
 import appeng.api.storage.data.IAEStack;
-import appeng.items.AEBaseCell;
 import appeng.items.contents.CellConfig;
 import journeymap.shadow.org.jetbrains.annotations.NotNull;
 
@@ -71,7 +71,7 @@ public abstract class MEFilterBase<T extends IAEStack<T>, E, I> {
         return builder.toString();
     }
 
-    private void updateBlacklistMode(AEBaseCell cell, ItemStack stack) {
+    private void updateBlacklistMode(ICellWorkbenchItem cell, ItemStack stack) {
         isBlacklist = false;
         IInventory upgrades = cell.getUpgradesInventory(stack);
         for (int i = 0; i < upgrades.getSizeInventory(); i++) {
@@ -86,7 +86,7 @@ public abstract class MEFilterBase<T extends IAEStack<T>, E, I> {
         }
     }
 
-    public String updateFilterFromCell(AEBaseCell cell, ItemStack stack) {
+    public String updateFilterFromCell(ICellWorkbenchItem cell, ItemStack stack) {
         updateBlacklistMode(cell, stack);
 
         CellConfig cfg = (CellConfig) cell.getConfigAEInventory(stack);

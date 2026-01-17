@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,6 +42,7 @@ import appeng.api.networking.events.MENetworkCellArrayUpdate;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.storage.IBaseMonitor;
 import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.ICellWorkbenchItem;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
@@ -51,6 +53,7 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.util.AEColor;
 import appeng.core.localization.GuiText;
 import appeng.items.AEBaseCell;
+import appeng.items.storage.ItemVoidStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -326,9 +329,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         if (slot != 0) return;
 
         ItemStack upgradeItemStack = env.getCellStack();
-        if (GTUtility.areStacksEqualOrNull(oldCellStack, upgradeItemStack)
-            || (upgradeItemStack != null && !(upgradeItemStack.getItem() instanceof AEBaseCell))) {
+        if (GTUtility.areStacksEqualOrNull(oldCellStack, upgradeItemStack)) {
             return;
+        }
+
+        if (upgradeItemStack != null) {
+            Item item = upgradeItemStack.getItem();
+            boolean isCell = item instanceof AEBaseCell || item instanceof ItemVoidStorageCell;
+            if (!isCell) return;
         }
 
         updateFilter();
@@ -347,10 +355,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                 final IStorageGrid gs = this.getProxy()
                     .getStorage();
                 Platform.postChanges(gs, oldCellStack, upgradeItemStack, env.getActionSource());
-                oldCellStack = upgradeItemStack;
             } catch (final GridAccessException ignored) {}
         }
 
+        oldCellStack = upgradeItemStack;
         env.dispatchMarkDirty();
     }
 
@@ -363,13 +371,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             return;
         }
 
-        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof AEBaseCell cell) {
+        if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
             hadCell = true;
 
             if (filter.isFiltered()) {
                 return;
             }
-            String msg = filter.updateFilterFromCell(cell, upgradeItemStack);
+            String msg = filter.updateFilterFromCell(cellWorkbenchItem, upgradeItemStack);
             if (!msg.isEmpty() && env.getLastClickedPlayer() != null) {
                 String modeKey = filter.getIsBlackList() ? BLACKLIST.getKey() : WHITELIST.getKey();
                 GTUtility.sendChatToPlayer(
@@ -394,26 +402,33 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
+    boolean isVoidCell = false;
+
     private void updateCacheCapacity() {
         ItemStack cellStack = env.getCellStack();
-
-        if (cellStack == null || !(cellStack.getItem() instanceof AEBaseCell)) {
-            cacheCapacity = baseCapacity;
-            return;
-        }
-
-        final IMEInventoryHandler<?> inventory = AEApi.instance()
-            .registries()
-            .cell()
-            .getCellInventory(cellStack, env.getISaveProvider(), env.getChannel());
-
-        if (inventory instanceof CellInventoryHandler<?>handler
-            && handler.getCellInv() instanceof CellInventory<?>cellInv) {
-            cacheCapacity = cellInv.getRemainingItemCount() + cellInv.getStoredItemCount();
-            return;
-        }
-
+        isVoidCell = false;
         cacheCapacity = baseCapacity;
+
+        if (cellStack == null) return;
+
+        var cell = cellStack.getItem();
+        if (cell instanceof ItemVoidStorageCell) {
+            isVoidCell = true;
+            cacheCapacity = Long.MAX_VALUE;
+            return;
+        }
+
+        if (cell instanceof AEBaseCell) {
+            final IMEInventoryHandler<?> inventory = AEApi.instance()
+                .registries()
+                .cell()
+                .getCellInventory(cellStack, env.getISaveProvider(), env.getChannel());
+
+            if (inventory instanceof CellInventoryHandler<?>handler
+                && handler.getCellInv() instanceof CellInventory<?>cellInv) {
+                cacheCapacity = cellInv.getRemainingItemCount() + cellInv.getStoredItemCount();
+            }
+        }
     }
 
     long lastOutputTick = 0;
@@ -445,6 +460,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return cache.getTotal();
     }
 
+    /**
+     * Note: this may return {@link Long#MAX_VALUE} for void cells.
+     * 
+     * @return the cache capacity.
+     */
     public long getCacheCapacity() {
         return cacheCapacity;
     }
@@ -507,7 +527,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public void addToCache(T stack) {
-        cache.insert(stack, stack.getStackSize());
+        if (!isVoidCell) cache.insert(stack, stack.getStackSize());
         lastInputTick = tickCounter;
     }
 
@@ -577,6 +597,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
         getProxy().readFromNBT(aNBT);
+        updateCacheCapacity();
         updateAE2ProxyColor();
     }
 
