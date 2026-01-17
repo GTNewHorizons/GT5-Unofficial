@@ -139,7 +139,7 @@ dependencies {
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:1.0.0-beta68a:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
-    runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
+    runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.3.8-GTNH"))
 }
 
 afterEvaluate {
