@@ -252,9 +252,15 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     @Override
-    public String toString(){
-        return String.format("BioCulture(color=%s, name=%s, id=%d, plasmid=%s, dDNA=%s, rarity=%s, bBreedable=%b)",
-            this.color.toString(), this.name, this.ID, this.plasmid.toString(), this.dDNA.toString(),
-            this.rarity.name(),  this.bBreedable);
+    public String toString() {
+        return String.format(
+            "BioCulture(color=%s, name=%s, id=%d, plasmid=%s, dDNA=%s, rarity=%s, bBreedable=%b)",
+            this.color.toString(),
+            this.name,
+            this.ID,
+            this.plasmid.toString(),
+            this.dDNA.toString(),
+            this.rarity.name(),
+            this.bBreedable);
     }
 }
