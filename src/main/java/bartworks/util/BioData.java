@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import bartworks.API.enums.BioDataEnum;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
@@ -40,16 +41,12 @@ public class BioData {
         this.tier = tier;
     }
 
-    protected BioData(BioData bioData) {
-        this.rarity = bioData.rarity;
-        this.name = bioData.name;
-        this.ID = bioData.ID;
-        this.chance = bioData.chance;
-        this.tier = bioData.tier;
-    }
-
-    public static BioData convertBioDNAToBioData(BioDNA bioDNA) {
-        return new BioData(bioDNA.name, bioDNA.ID, bioDNA.rarity, bioDNA.chance, bioDNA.tier);
+    public BioData(BioDataEnum data) {
+        this.rarity = data.rarity;
+        this.name = data.name;
+        this.ID = data.id;
+        this.chance = data.chance;
+        this.tier = data.tier;
     }
 
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {

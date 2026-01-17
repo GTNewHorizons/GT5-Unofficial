@@ -18,7 +18,6 @@ import java.awt.Color;
 import net.minecraft.item.EnumRarity;
 
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 
 public class BioCultureLoader {
@@ -27,14 +26,14 @@ public class BioCultureLoader {
         .createAndRegisterBioData("beta-Lactamase", EnumRarity.uncommon, 10000, 0);
     private static final BioData BIO_DATA_YEAST = BioData
         .createAndRegisterBioData("Saccharomyces cerevisiae", EnumRarity.common);
-    private static final BioDNA BIO_DNA_WHINE_YEAST = BioDNA
-        .createAndRegisterBioDNA("Saccharomyces cerevisiae var bayanus", EnumRarity.uncommon);
-    private static final BioDNA BIO_DNA_BEER_YEAST = BioDNA
-        .createAndRegisterBioDNA("Saccharomyces cerevisiae var cerevisiae", EnumRarity.uncommon);
+    private static final BioData BIO_DNA_WHINE_YEAST = BioData
+        .createAndRegisterBioData("Saccharomyces cerevisiae var bayanus", EnumRarity.uncommon);
+    private static final BioData BIO_DNA_BEER_YEAST = BioData
+        .createAndRegisterBioData("Saccharomyces cerevisiae var cerevisiae", EnumRarity.uncommon);
     private static final BioData eColiData = BioData
         .createAndRegisterBioData("Escherichia koli", EnumRarity.uncommon, 10000, 0);
-    private static final BioDNA BIO_DNA_ANAEROBIC_OIL = BioDNA
-        .createAndRegisterBioDNA("Pseudomonas Veronii", EnumRarity.uncommon);
+    private static final BioData BIO_DNA_ANAEROBIC_OIL = BioData
+        .createAndRegisterBioData("Pseudomonas Veronii", EnumRarity.uncommon);
     private static final BioData BIO_DATA_ANAEROBIC_OIL = BioData
         .createAndRegisterBioData("Pseudomonas Veronii", EnumRarity.uncommon, 5000, 1);
     public static BioCulture CommonYeast;
@@ -50,7 +49,7 @@ public class BioCultureLoader {
             new Color(255, 248, 200),
             "Saccharomyces cerevisiae",
             BioCultureLoader.BIO_DATA_YEAST,
-            BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_YEAST),
+            BioCultureLoader.BIO_DATA_YEAST,
             true);
         BioCultureLoader.WhineYeast = BioCulture.createAndRegisterBioCulture(
             new Color(255, 248, 200),
@@ -70,19 +69,19 @@ public class BioCultureLoader {
             new Color(110, 40, 25),
             "Escherichia cadaver",
             BioCultureLoader.BIO_DATA_BETA_LACMATASE,
-            BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_BETA_LACMATASE),
+            BioCultureLoader.BIO_DATA_BETA_LACMATASE,
             false);
         BioCultureLoader.eColi = BioCulture.createAndRegisterBioCulture(
             new Color(149, 132, 75),
             "Escherichia koli",
             BioCultureLoader.eColiData,
-            BioDNA.convertDataToDNA(BioCultureLoader.eColiData),
+            BioCultureLoader.eColiData,
             true);
         BioCultureLoader.anaerobicOil = BioCulture.createAndRegisterBioCulture(
             new Color(0, 0, 0),
             "Pseudomonas Veronii",
             BioCultureLoader.BIO_DNA_ANAEROBIC_OIL,
-            BioDNA.convertDataToDNA(BioCultureLoader.BIO_DATA_ANAEROBIC_OIL),
+            BioCultureLoader.BIO_DATA_ANAEROBIC_OIL,
             true);
         BioCultureLoader.generalPurposeFermentingBacteria = BioCulture.createAndRegisterBioCulture(
             new Color(127, 69, 26),

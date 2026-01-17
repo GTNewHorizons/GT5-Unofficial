@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import bartworks.common.items.ItemLabModule;
 import bartworks.common.items.ItemLabParts;
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -56,7 +55,7 @@ public class BioItemList {
     public static Collection<ItemStack> getAllDNASampleFlasks() {
         HashSet<ItemStack> ret = new HashSet<>();
         for (BioData dna : BioData.BIO_DATA_ARRAY_LIST) {
-            ret.add(BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(dna)));
+            ret.add(BioItemList.getDNASampleFlask(dna));
         }
         return ret;
     }
@@ -76,7 +75,7 @@ public class BioItemList {
         return ret;
     }
 
-    public static ItemStack getDNASampleFlask(BioDNA dna) {
+    public static ItemStack getDNASampleFlask(BioData dna) {
         if (dna == null) return new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
 
         ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);

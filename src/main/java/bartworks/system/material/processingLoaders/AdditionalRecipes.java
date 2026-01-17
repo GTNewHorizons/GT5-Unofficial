@@ -69,7 +69,6 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -97,7 +96,7 @@ public class AdditionalRecipes {
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack, DNAFlask, Detergent, EthanolCell)
                     .itemOutputs(
-                        BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
+                        BioItemList.getDNASampleFlask(DNA),
                         GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
                     .outputChances(DNA.getChance(), 100_00)
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
@@ -170,6 +169,7 @@ public class AdditionalRecipes {
             BioData Plasmid = BioData.getBioDataFromNBTTag(
                 stack.getTagCompound()
                     .getCompoundTag("Plasmid"));
+            if (DNA == null) continue;
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
                 if ("TCetiEis Fucus Serratus".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_LuV;

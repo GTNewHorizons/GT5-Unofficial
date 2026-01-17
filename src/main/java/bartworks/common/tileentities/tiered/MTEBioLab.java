@@ -26,7 +26,6 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.util.BWTooltipReference;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -185,7 +184,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             this.mOutputItems[0] = BioItemList
-                                .getDNASampleFlask(BioDNA.convertDataToDNA(cultureDNABioData));
+                                .getDNASampleFlask(cultureDNABioData);
                         }
                         this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
                         this.calculateOverclockedNess(
@@ -370,7 +369,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mFluid.amount -= 8000;
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            BioCulture out = BioCulture.getBioCulture(BioDNA.convertDataToDNA(cultureDNABioData));
+                            BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
                             if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
                             out = out.setPlasmid(cultureDNABioData);
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);

@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
@@ -46,7 +45,7 @@ public final class BioObjectAdder {
      * @return
      */
     public static @Nullable BioCulture createAndRegisterBioCulture(Color color, String name, BioData plasmid,
-        BioDNA dna, EnumRarity rarity, boolean breedable) {
+        BioData dna, EnumRarity rarity, boolean breedable) {
         if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
             return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, rarity, breedable);
         new Exception(
