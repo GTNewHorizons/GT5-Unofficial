@@ -341,6 +341,10 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     public RecipeMap<?> getRecipeMap() {
         return GTPPRecipeMaps.algaePondRecipes;
     }

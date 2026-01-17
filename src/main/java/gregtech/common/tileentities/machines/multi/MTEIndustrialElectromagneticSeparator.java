@@ -374,11 +374,6 @@ public class MTEIndustrialElectromagneticSeparator
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     private void findMagnet() {
         magnetTier = null;
         if (mMagHatch != null) {

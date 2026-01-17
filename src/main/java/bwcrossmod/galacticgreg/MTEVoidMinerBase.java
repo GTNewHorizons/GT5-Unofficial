@@ -390,6 +390,11 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return false;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     protected String createGasString(EnumChatFormatting color, String gas, int boost) {
         return String.format(
             "%s%s%s : %s%dx%s",

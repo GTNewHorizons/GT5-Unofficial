@@ -134,11 +134,6 @@ public class MTEMegaChemicalReactor extends MegaMultiBlockBase<MTEMegaChemicalRe
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.multiblockChemicalReactorRecipes;
     }

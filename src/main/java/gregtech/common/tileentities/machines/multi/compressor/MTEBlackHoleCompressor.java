@@ -768,11 +768,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d != ForgeDirection.UP && d != ForgeDirection.DOWN;
     }

@@ -2,7 +2,6 @@ package goodgenerator.blocks.tileEntity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -10,7 +9,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,9 +37,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -59,7 +54,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -177,6 +171,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public void loadNBTData(NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
         machineTier = aNBT.getInteger("machineTier");
+        // Migrates old NBT tag to the new one
         if (aNBT.hasKey("RunningMode")) {
             machineMode = aNBT.getInteger("RunningMode");
         }
@@ -193,11 +188,21 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        if (getBaseMetaTileEntity().isServerSide()) {
-            this.machineMode = (this.machineMode + 1) % 2;
-            GTUtility.sendChatTrans(aPlayer, "preciseassembler.chat." + this.machineMode);
-        }
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
+        setMachineMode(nextMachineMode());
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode));
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode);
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.add(GGUITextures.OVERLAY_BUTTON_PRECISE_MODE);
+        machineModeIcons.add(GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE);
     }
 
     @Override
@@ -207,7 +212,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (machineMode == 0) {
+                if (machineMode == MACHINEMODE_PRECISE) {
                     if (recipe.mSpecialValue > (casingTier + 1)) {
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
@@ -218,14 +223,15 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setDurationModifier(machineMode == 0 ? 1 : 0.5);
+                return super.createOverclockCalculator(recipe)
+                    .setDurationModifier(machineMode == MACHINEMODE_PRECISE ? 1 : 0.5);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return machineMode == 0 ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
+        return machineMode == MACHINEMODE_PRECISE ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
     }
 
     @Override
@@ -245,8 +251,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (this.machineMode == 0) return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
-        else return RecipeMaps.assemblerRecipes;
+        return machineMode == MACHINEMODE_PRECISE ? GoodGeneratorRecipeMaps.preciseAssemblerRecipes
+            : RecipeMaps.assemblerRecipes;
     }
 
     @Nonnull
@@ -473,29 +479,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new CycleButtonWidget().setToggle(() -> machineMode == 1, val -> machineMode = val ? 1 : 0)
-                .setTextureGetter(
-                    state -> state == 1 ? GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
-                        : GGUITextures.OVERLAY_BUTTON_PRECISE_MODE)
-                .setBackground(GTUITextures.BUTTON_STANDARD)
-                .setPos(80, 91)
-                .setSize(16, 16)
-                .dynamicTooltip(
-                    () -> Collections
-                        .singletonList(StatCollector.translateToLocal("preciseassembler.chat." + machineMode)))
-                .setUpdateTooltipEveryTick(true)
-                .setTooltipShowUpDelay(TOOLTIP_DELAY));
-    }
-
-    @Override
     public boolean isInputSeparationEnabled() {
-        return true;
-    }
-
-    public boolean supportsMachineModeSwitch() {
         return true;
     }
 
@@ -510,15 +494,15 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setString("mode", getMachineModeName());
-    }
-
-    @Override
-    public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode);
     }
 
     @SideOnly(Side.CLIENT)

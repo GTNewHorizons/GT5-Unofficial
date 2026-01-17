@@ -777,4 +777,9 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }
