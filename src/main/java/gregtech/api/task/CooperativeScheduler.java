@@ -69,7 +69,7 @@ public final class CooperativeScheduler {
 
             try {
                 future.run();
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error(
                     "Caught error while running task; it will be cancelled (" + future.name + " " + future.task + ")",
                     t);
