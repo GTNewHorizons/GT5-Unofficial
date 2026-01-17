@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
@@ -69,6 +70,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         EnumRarity rarity, boolean breedable) {
         BioCulture ret = new BioCulture(color, name, BIO_CULTURE_ARRAY_LIST.size(), plasmid, dna, rarity, breedable);
         BIO_CULTURE_ARRAY_LIST.add(ret);
+        GTLog.out.println(ret);
         return ret;
     }
 
@@ -83,6 +85,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
             dna.getRarity(),
             breedable);
         BIO_CULTURE_ARRAY_LIST.add(ret);
+        GTLog.out.println(ret);
         return ret;
     }
 

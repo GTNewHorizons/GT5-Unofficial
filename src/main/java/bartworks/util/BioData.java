@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -65,12 +66,14 @@ public class BioData {
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
         BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, chance, tier);
         BIO_DATA_ARRAY_LIST.add(ret);
+        GTLog.out.println(ret);
         return ret;
     }
 
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity) {
         BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity);
         BIO_DATA_ARRAY_LIST.add(ret);
+        GTLog.out.println(ret);
         return ret;
     }
 

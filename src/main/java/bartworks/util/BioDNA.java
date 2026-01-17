@@ -13,6 +13,7 @@
 
 package bartworks.util;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 
 public class BioDNA extends BioData {
@@ -36,12 +37,16 @@ public class BioDNA extends BioData {
 
     public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity) {
         BioData ret = BioData.createAndRegisterBioData(aName, rarity);
-        return new BioDNA(ret);
+        BioDNA bioDNA = new BioDNA(ret);
+        GTLog.out.println(bioDNA);
+        return bioDNA;
     }
 
     public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity, int chance, int tier) {
         BioData ret = BioData.createAndRegisterBioData(aName, rarity, chance, tier);
-        return new BioDNA(ret);
+        BioDNA bioDNA = new BioDNA(ret);
+        GTLog.out.println(bioDNA);
+        return bioDNA;
     }
 
     @Override
