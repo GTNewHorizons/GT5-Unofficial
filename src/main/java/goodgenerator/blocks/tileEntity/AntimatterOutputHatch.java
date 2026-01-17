@@ -68,7 +68,10 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         mMode ^= 1;
-        GTUtility.sendChatToPlayer(aPlayer, "Front face input " + (mMode == 1 ? "enabled" : "disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            mMode == 1 ? "gg.chat.antimatter_output_hatch.front_face_input.enable"
+                : "gg.chat.antimatter_output_hatch.front_face_input.disable");
     }
 
     @Override

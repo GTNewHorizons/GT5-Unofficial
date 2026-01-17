@@ -181,7 +181,7 @@ public class ArtificialMicaLine {
             GTValues.RA.stdBuilder()
                 .itemInputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
                 .circuit(1)
-                .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 4))
+                .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 4))
                 .duration(10 * TICKS)
                 .eut(600)
                 .addTo(benderRecipes);
