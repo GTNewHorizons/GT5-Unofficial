@@ -51,6 +51,6 @@ public class BioDNA extends BioData {
 
     @Override
     public String toString() {
-        return String.format("BioDNA(name=%s, id=%d, rarity=%s", this.name, this.ID, this.rarity.name());
+        return String.format("BioDNA(name=%s, id=%d, rarity=%s)", this.name, this.ID, this.rarity.name());
     }
 }
