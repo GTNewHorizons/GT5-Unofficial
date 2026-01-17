@@ -31,8 +31,9 @@ import gregtech.api.util.GTLanguageManager;
 public class BioCulture extends BioData implements IColorModulationContainer {
 
     public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
+    public static final BioData NULLPLASMID = BioData.convertBioDNAToBioData(BioDNA.NULLDNA);
     public static final BioCulture NULLCULTURE = BioCulture
-        .createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID, BioDNA.NULLDNA, false); // fallback
+        .createAndRegisterBioCulture(Color.BLUE, "", NULLPLASMID, BioDNA.NULLDNA, false); // fallback
                                                                                                      // NULL
                                                                                                      // culture,
                                                                                                      // also Blue =)
@@ -46,12 +47,12 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     Color color;
-    BioPlasmid plasmid;
+    BioData plasmid;
     BioDNA dDNA;
     boolean bBreedable;
     Fluid mFluid;
 
-    protected BioCulture(Color color, String name, int ID, BioPlasmid plasmid, BioDNA dDNA, EnumRarity rarity,
+    protected BioCulture(Color color, String name, int ID, BioData plasmid, BioDNA dDNA, EnumRarity rarity,
         boolean bBreedable) {
         super(name, ID, rarity, 75_00, VoltageIndex.ULV);
         this.color = color;
@@ -60,7 +61,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         this.bBreedable = bBreedable;
     }
 
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
+    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioData plasmid, BioDNA dna,
         EnumRarity rarity, boolean breedable) {
         BioCulture ret = new BioCulture(color, name, BIO_CULTURE_ARRAY_LIST.size(), plasmid, dna, rarity, breedable);
         BIO_CULTURE_ARRAY_LIST.add(ret);
@@ -68,7 +69,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         return ret;
     }
 
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
+    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioData plasmid, BioDNA dna,
         boolean breedable) {
         BioCulture ret = new BioCulture(
             color,
@@ -91,7 +92,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         ret.setIntArray(
             "Color",
             new int[] { bioCulture.color.getRed(), bioCulture.color.getGreen(), bioCulture.color.getBlue() });
-        ret.setTag("Plasmid", BioData.getNBTTagFromBioData(BioData.convertBioPlasmidToBioData(bioCulture.plasmid)));
+        ret.setTag("Plasmid", BioData.getNBTTagFromBioData(bioCulture.plasmid));
         ret.setTag("DNA", BioData.getNBTTagFromBioData(BioData.convertBioDNAToBioData(bioCulture.dDNA)));
         ret.setBoolean("Breedable", bioCulture.bBreedable);
         ret.setByte("Rarety", BWUtil.getByteFromRarity(bioCulture.rarity));
@@ -109,7 +110,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         if (ret == null) ret = createAndRegisterBioCulture(
             new Color(tag.getIntArray("Color")[0], tag.getIntArray("Color")[1], tag.getIntArray("Color")[2]),
             tag.getString("Name"),
-            BioPlasmid.convertDataToPlasmid(getBioDataFromNBTTag(tag.getCompoundTag("Plasmid"))),
+            getBioDataFromNBTTag(tag.getCompoundTag("Plasmid")),
             BioDNA.convertDataToDNA(getBioDataFromNBTTag(tag.getCompoundTag("DNA"))),
             BWUtil.getRarityFromByte(tag.getByte("Rarety")),
             tag.getBoolean("Breedable"));
@@ -166,11 +167,11 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         this.color = color;
     }
 
-    public BioPlasmid getPlasmid() {
+    public BioData getPlasmid() {
         return this.plasmid;
     }
 
-    public BioCulture setPlasmid(BioPlasmid plasmid) {
+    public BioCulture setPlasmid(BioData plasmid) {
         return this.checkForExisting(
             new BioCulture(this.color, this.name, this.ID, plasmid, this.dDNA, this.rarity, this.bBreedable));
     }
@@ -185,11 +186,6 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         return culture;
     }
 
-    public BioCulture setPlasmidUnsafe(BioPlasmid plasmid) {
-        this.plasmid = plasmid;
-        return this;
-    }
-
     public BioDNA getdDNA() {
         return this.dDNA;
     }
@@ -197,11 +193,6 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     public BioCulture setdDNA(BioDNA dDNA) {
         return this.checkForExisting(
             new BioCulture(this.color, this.name, this.ID, this.plasmid, dDNA, this.rarity, this.bBreedable));
-    }
-
-    public BioCulture setdDNAUnsafe(BioDNA dDNA) {
-        this.dDNA = dDNA;
-        return this;
     }
 
     @Override
