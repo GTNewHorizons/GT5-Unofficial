@@ -26,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -1421,11 +1422,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             if (aPlayer.isSneaking()) {
                                 mInputDisabled = !mInputDisabled;
                                 if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                                GTUtility.sendChatTrans(
+                                GTUtility.sendChatComp(
                                     aPlayer,
-                                    (mInputDisabled ? "GT5U.chat.machine.auto_input.disable"
-                                        : (mOutputDisabled ? "GT5U.chat.machine.auto_input.enable.auto_output.disable"
-                                            : "GT5U.chat.machine.auto_input.enable.auto_output.enable")));
+                                    new ChatComponentTranslation(
+                                        mInputDisabled ? "GT5U.chat.machine.auto_input.disable"
+                                            : "GT5U.chat.machine.auto_input.enable").appendText("  ")
+                                                .appendSibling(
+                                                    new ChatComponentTranslation(
+                                                        mOutputDisabled ? "GT5U.chat.machine.auto_output.disable"
+                                                            : "GT5U.chat.machine.auto_output.enable")));
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
