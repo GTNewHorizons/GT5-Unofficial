@@ -18,7 +18,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,6 +28,7 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
@@ -123,62 +123,24 @@ public class MTECleanroom extends MTETooltipMultiBlockBase
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cleanroom")
-            .addInfo("Consumes 40 EU/t when first turned on, and 4 EU/t once at 100% efficiency")
-            .addInfo("Can accept 2A from an LV energy hatch")
-            .addInfo("Will overclock and gain efficiency faster starting from HV")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.RED + "Warning:")
-            .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
-            .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
-            .addInfo("Generating any pollution inside causes the cleanroom to shut down")
+        tt.addMachineType("machtype.cleanroom")
+            .addInfo("gt.cleanroom.tips")
             .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
-            .addController("Top center")
-            .addStructureInfo("  If width or length is even, it can be in either of the two middle positions")
-            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
-            .addOtherStructurePart(
-                "Plascrete Blocks",
-                "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
-                    + MachineStats.cleanroom.minCasingCount
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addEnergyHatch("Any Plascrete Block. Exactly one")
-            .addMaintenanceHatch("Any Plascrete Block. Exactly one")
+            .addController("top_center")
+            .addStructureInfo("gt.cleanroom.info.controller")
+            .addStructurePart(
+                ItemList.Casing_Vent.get(1)
+                    .getDisplayName(),
+                "gt.cleanroom.info.filter")
+            .addStructureInfo(
+                "gt.cleanroom.info.plascrete",
+                ItemList.Block_Plascrete.get(1)
+                    .getDisplayName(),
+                MachineStats.cleanroom.minCasingCount)
+            .addEnergyHatch("gt.cleanroom.info.energy")
+            .addMaintenanceHatch("gt.cleanroom.info.energy")
             .addStructureInfo("")
-            .addStructureInfo(
-                "Up to " + EnumChatFormatting.GOLD
-                    + MachineStats.cleanroom.maxReplacementPercentage
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + " of plascrete blocks can be replaced by other valid blocks")
-            .addStructureInfo("Try some of the following:")
-            .addStructureInfo("- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass")
-            .addStructureInfo("- Machine hulls or diodes for item and power transfer")
-            .addStructureInfo(
-                "- Reinforced Doors (" + EnumChatFormatting.ITALIC
-                    + "IC2"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + "). Keep closed, no gaps allowed or efficiency will drop!")
-            .addStructureInfo(
-                "- Elevators (" + EnumChatFormatting.ITALIC
-                    + "OpenBlocks"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ") or Travel Anchors ("
-                    + EnumChatFormatting.ITALIC
-                    + "EnderIO"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addStructureInfo(
-                "See " + EnumChatFormatting.DARK_GRAY
-                    + "config/GregTech/MachineStats.cfg"
-                    + EnumChatFormatting.GRAY
-                    + " for more valid blocks")
-            .addStructureInfo(
-                EnumChatFormatting.YELLOW
-                    + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
+            .addStructureInfo("gt.cleanroom.info.replacements", MachineStats.cleanroom.maxReplacementPercentage)
             .toolTipFinisher();
         return tt;
     }

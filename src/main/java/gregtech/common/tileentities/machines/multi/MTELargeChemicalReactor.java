@@ -26,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -104,24 +103,21 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Chemical Reactor, LCR")
-            .addInfo("Accepts fluids instead of fluid cells")
+        tt.addMachineType("machtype.lcr")
+            .addInfo("gt.lcr.tips.1")
             .addPerfectOCInfo()
             .beginStructureBlock(3, 3, 3, false)
-            .addController("Front center")
-            .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
-            .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
-                "Adjacent to the PTFE Pipe Machine Casing",
-                1)
-            .addEnergyHatch("Any casing", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2)
-            .addInputBus("Any casing", 1, 2)
-            .addInputHatch("Any casing", 1, 2)
-            .addOutputBus("Any casing", 1, 2)
-            .addOutputHatch("Any casing", 1, 2)
-            .addStructureInfo("You can have multiple hatches/buses")
+            .addController("front_center")
+            .addCasingInfoRange("gt.blockcasings8.0.name", 8, 22, false)
+            .addStructurePart("gt.blockcasings8.1.name", "gt.lcr.info.1")
+            .addStructurePart("GT5U.tooltip.structure.heating_coil", "gt.lcr.info.2", 1)
+            .addEnergyHatch("<casing>", 1, 2)
+            .addMaintenanceHatch("<casing>", 1, 2)
+            .addInputBus("<casing>", 1, 2)
+            .addInputHatch("<casing>", 1, 2)
+            .addOutputBus("<casing>", 1, 2)
+            .addOutputHatch("<casing>", 1, 2)
+            .addStructureInfo("gt.lcr.info.3")
             .toolTipFinisher();
         return tt;
     }

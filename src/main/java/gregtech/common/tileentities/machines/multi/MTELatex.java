@@ -18,10 +18,6 @@ import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
-import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
-import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.Objects;
 
@@ -30,7 +26,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -46,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,6 +51,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -261,32 +258,26 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cable Coater, LATEX")
-            .addInfo(
-                DARK_GRAY + "" + EnumChatFormatting.ITALIC + "AKA Laminated Application and Thermal Enclosure eXpert")
+        tt.addMachineType("machtype.latex")
+            .addInfo("gt.latex.tips.1")
             .addBulkMachineInfo(8, 2F, 0.85F)
-            .addInfo(
-                "Recipes have an additive " + TooltipHelper.coloredText("6.25%", DARK_GREEN)
-                    + " rubber discount based on "
-                    + TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
-            .addInfo("An Elastic Singularity can be inserted into the controller to gain the following bonuses")
-            .addInfo(
-                TooltipHelper.parallelText("2x") + " parallels, +"
-                    + TooltipHelper.coloredText("25%", DARK_GREEN)
-                    + " rubber discount, and the use of a singular "
-                    + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
+            .addInfo("gt.latex.tips.2", TooltipHelper.tierText(TooltipTier.ITEM_PIPE_CASING))
             .addSeparator()
-            .addInfo(DARK_AQUA + "Make sure to cover up!")
+            .addInfo("gt.latex.tips.3")
             .beginStructureBlock(5, 8, 5, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
+            .addController("front_center")
+            .addCasingInfoMin("gt.blockcasings8.0.name", 14, false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 24, true)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.PolyvinylChloride, 1)
+                    .getDisplayName(),
+                16,
+                false)
+            .addInputBus("<casing>", 1)
+            .addOutputBus("<casing>", 1)
+            .addInputHatch("<casing>", 1)
+            .addEnergyHatch("<casing>", 1)
+            .addMaintenanceHatch("<casing>", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

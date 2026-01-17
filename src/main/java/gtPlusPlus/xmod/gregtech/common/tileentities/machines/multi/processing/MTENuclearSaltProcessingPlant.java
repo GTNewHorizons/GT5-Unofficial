@@ -78,26 +78,21 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType("machtype.reactor_processing_unit", "machtype.cold_trap")
             .addBulkMachineInfo(2, 2.5f, 1f)
-            .addInfo("Processes depleted nuclear salts that come from the LFTR")
-            .addInfo("Handles the recipes of the Reactor Processor Unit and Cold Trap")
-            .addInfo("Only Thermally Insulated Casings can be replaced with hatches")
-            .addInfo("Mufflers on top, Energy Hatches on bottom, exactly 2 of each are required")
-            .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
-            .addInfo("Inputs go on the left side of the multi, outputs on the right side")
+            .addInfo("gt.nuclear_salt_processing_plant.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
-            .addCasingInfoMin("IV Machine Casing", 58, false)
-            .addCasingInfoMin("Thermally Insulated Casing", 1, false)
-            .addInputBus("Left Half", 2)
-            .addInputHatch("Left Half", 2)
-            .addOutputBus("Right Half", 3)
-            .addOutputHatch("Right Half", 3)
-            .addMufflerHatch("Top Side, 2 Required", 4)
-            .addEnergyHatch("Bottom Side, 2 Required", 5)
-            .addMaintenanceHatch("Back Side, Opposite of Controller", 6)
+            .addController("front_center")
+            .addCasingInfoMin("gt.blockcasings.5.name", 58)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.8.name", 1)
+            .addInputBus("gt.nuclear_salt_processing_plant.info.1", 2)
+            .addInputHatch("gt.nuclear_salt_processing_plant.info.1", 2)
+            .addOutputBus("gt.nuclear_salt_processing_plant.info.2", 3)
+            .addOutputHatch("gt.nuclear_salt_processing_plant.info.2", 3)
+            .addMufflerHatch("gt.nuclear_salt_processing_plant.info.3", 4)
+            .addEnergyHatch("gt.nuclear_salt_processing_plant.info.4", 5)
+            .addMaintenanceHatch("gt.nuclear_salt_processing_plant.info.5", 6)
             .toolTipFinisher();
         return tt;
     }

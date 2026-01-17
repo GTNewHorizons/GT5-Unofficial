@@ -135,17 +135,16 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, DT")
-            .addInfo("Fluids are only put out at the correct height")
-            .addInfo("The correct height equals the slot number in the NEI recipe")
+        tt.addMachineType("machtype.distillation_tower")
+            .addInfo("gt.distillation_tower.tips.1")
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-            .addController("Front bottom")
-            .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-            .addEnergyHatch("Any casing except top centre", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("Any bottom layer casing", 1)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .addController("front_bottom_middle")
+            .addStructurePart("gt.blockcasings4.1.name", "gt.distillation_tower.info.1")
+            .addEnergyHatch("gt.distillation_tower.info.2", 1, 2)
+            .addMaintenanceHatch("<casing>", 1, 2, 3)
+            .addInputHatch("<bottom casing>", 1)
+            .addOutputBus("<bottom casing>", 1)
+            .addOutputHatch("gt.distillation_tower.info.3", 2, 3)
             .toolTipFinisher();
         return tt;
     }

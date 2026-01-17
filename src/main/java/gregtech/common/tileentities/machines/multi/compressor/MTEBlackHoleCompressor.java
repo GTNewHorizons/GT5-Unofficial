@@ -56,6 +56,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -72,6 +73,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -86,6 +88,11 @@ import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
     implements ISurvivalConstructable {
+
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Background_Radiation_Casing.get(1)
+            .getDisplayName());
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -349,76 +356,34 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Compressor, Advanced Neutronium Compressor, BHC")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Uses the immense power of the event horizon to compress things")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE
-                    + "No longer requires heat management to perform superdense compression")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "Can create advanced singularities!")
-            .addSeparator()
-            .addInfo(
-                "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Seed"
-                    + EnumChatFormatting.GRAY
-                    + " to open a black hole")
-            .addInfo(
-                "The black hole will begin its life at " + EnumChatFormatting.RED
-                    + "100"
-                    + EnumChatFormatting.GRAY
-                    + " stability and slowly decay")
-            .addInfo(
-                "Stability decays by " + EnumChatFormatting.RED
-                    + "1/s"
-                    + EnumChatFormatting.GRAY
-                    + " until it reaches 0")
-            .addInfo("At 0 stability, the black hole is " + EnumChatFormatting.DARK_RED + "UNSTABLE")
-            .addInfo("Once the black hole becomes unstable, it will void recipes and eventually close itself!")
-            .addSeparator()
-            .addInfo(
-                "The decay can be " + EnumChatFormatting.BOLD
-                    + "halted"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " by inserting 1 L/s of spacetime into specific hatches")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "30"
-                    + EnumChatFormatting.GRAY
-                    + " total seconds saved by spacetime insertion will "
-                    + EnumChatFormatting.RED
-                    + "double"
-                    + EnumChatFormatting.GRAY
-                    + " the cost per second!")
-            .addInfo(
-                "Insert a " + EnumChatFormatting.WHITE
-                    + "Black Hole Collapser"
-                    + EnumChatFormatting.GRAY
-                    + " to close the black hole")
-            .addInfo("To restore stability and reset spacetime costs, close the black hole and open a new one")
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Use circuit 20 for Compressor and 21 for Neutronium Compressor")
+        tt.addMachineType("gt.recipe.compressor", "machtype.adv_nt_compressor", "BHC")
+            .addInfo("gt.bhc.tips.1")
             .addBulkMachineInfo(8, 5f, 0.7f)
-            .addInfo(
-                EnumChatFormatting.RED + "2x/4x"
-                    + EnumChatFormatting.GRAY
-                    + " parallels when stability is BELOW "
-                    + EnumChatFormatting.RED
-                    + "50/20")
+            .addInfo("gt.bhc.tips.2")
             .addTecTechHatchInfo()
-            .addInfo(
-                EnumChatFormatting.RED
-                    + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier")
-            .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
+            .addInfo("gt.bhc.tips.3")
             .beginStructureBlock(35, 33, 35, false)
-            .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
-            .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
-            .addCasingInfoExactly("Hawking Radiation Realignment Focus", 64, false)
-            .addCasingInfoExactly("Naquadah Alloy Frame Box", 144, false)
-            .addInputHatch("Spacetime Insertion, Behind Laser", 2)
-            .addInputBus("Any Radiation Absorbent Casing", 1)
-            .addOutputBus("Any Radiation Absorbent Casing", 1)
-            .addInputHatch("Any Radiation Absorbent Casing", 1)
-            .addEnergyHatch("Any Radiation Absorbent Casing", 1)
+            .addCasingInfoMin(
+                ItemList.Background_Radiation_Casing.get(1)
+                    .getDisplayName(),
+                950)
+            .addCasingInfoExactly(
+                ItemList.Extreme_Density_Casing.get(1)
+                    .getDisplayName(),
+                3667)
+            .addCasingInfoExactly(
+                ItemList.Hawking_Glass.get(1)
+                    .getDisplayName(),
+                64)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.NaquadahAlloy, 1)
+                    .getDisplayName(),
+                144)
+            .addInputHatch("gt.bhc.info.i_hatch", 2)
+            .addInputBus(anyCasing, 1)
+            .addOutputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addEnergyHatch(anyCasing, 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }

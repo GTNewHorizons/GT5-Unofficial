@@ -10,7 +10,9 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.tooltip.TooltipHelper.voltageText;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.text.MessageFormat;
@@ -340,30 +342,21 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fluid Tank")
-            .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
-            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used")
-            .addSeparator()
-            .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder")
+        tt.addMachineType("machtype.fluid_tank")
+            .addInfo("gt.tfft.tips")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
-            .addController("Top Center")
-            .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
-            .addStructureInfo("Energy hatch is not required when running cost is 0")
-            .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom casing")
-            .addEnergyHatch("Any top or bottom casing")
-            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("You can have a bunch of hatches")
-            .addOtherStructurePart(
-                "Multi I/O Hatches",
-                "Instead of any casing or glass, has to touch storage field block")
-            .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
+            .addController("top_center")
+            .addCasingInfoMin("tile.kekztech_tfftstoragefield_block.0.name", MIN_CASING_AMOUNT)
+            .addCasingInfoRange("tile.kekztech_tfftstoragefield_block.generic.name", 7, 117, true)
+            .addStructureInfo("gt.tfft.info.energy_tip")
+            .addCasingInfoRange(translateToLocalFormatted("GT5U.MBTT.AnyGlass_Tier", voltageText(4)), 48, 208, true)
+            .addMaintenanceHatch("gt.tfft.info.maintenance")
+            .addEnergyHatch("gt.tfft.info.maintenance")
+            .addInputHatch("gt.tfft.info.i_hatch")
+            .addOutputHatch("gt.tfft.info.i_hatch")
+            .addStructureInfo("gt.tfft.info.hatch_tip")
+            .addStructurePart("gt.blockmachines.machine.tffthatch.name", "gt.tfft.info.i_hatch")
+            .addStructureInfo("gt.tfft.info.fluid_tip")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -542,8 +535,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         NumberFormat nf = NumberFormat.getNumberInstance();
 
         ll.add(
-            EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
+            EnumChatFormatting.YELLOW + translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
                 + EnumChatFormatting.RESET);
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
@@ -566,28 +558,21 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             }
         }
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
+            EnumChatFormatting.YELLOW + translateToLocal("kekztech.infodata.operational_data")
                 + EnumChatFormatting.RESET);
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
         ll.add(
-            StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
+            translateToLocalFormatted("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+        ll.add(translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.tank.tfft.per_fluid_capacity",
-                nf.format(capacityPerFluid)));
-        ll.add(
-            StatCollector
-                .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "kekztech.infodata.multi.maintenance_status",
                 ((getRepairStatus() == getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
+                    ? EnumChatFormatting.GREEN + translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
                         + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
+                    : EnumChatFormatting.RED + translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
                         + EnumChatFormatting.RESET)));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 

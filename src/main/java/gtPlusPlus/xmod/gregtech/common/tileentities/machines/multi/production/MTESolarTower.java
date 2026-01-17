@@ -72,39 +72,26 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
     @Override
     public String getMachineType() {
-        return "Solar Tower";
+        return "machtype.solar_tower";
     }
 
     @Override
     protected final MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Contributing Green Energy towards the future")
-            .addInfo("Surround with rings of Solar Reflectors")
-            .addInfo("The Reflectors increase the internal heat value of the Tower (see below for formula)")
-            .addInfo("Each Reflector ring increases tier, the first ring is required for the Tower to work")
-            .addInfo("Input: " + MaterialMisc.SOLAR_SALT_COLD.getLocalizedName())
-            .addInfo("Output: " + MaterialMisc.SOLAR_SALT_HOT.getLocalizedName())
-            .addInfo("Every cycle (10 seconds), heat increases and all the Cold Solar Salt is heated")
-            .addInfo("Converting Cold to Hot Solar Salt reduces heat, equal to the amount converted")
-            .addInfo("This conversion only happens if heat >= 30000 and controller efficiency = 100%")
-            .addInfo("If there's more Cold Salt than heat, all the heat is used up and returns to 0")
-            .addInfo("The heat increase is most efficient at exactly half of maximum heat")
-            .addInfo("Minimum efficiency at 0 or 100000 heat, maximum efficiency at 50000")
-            .addInfo("Heat Efficiency formula: ( 7000 - [|currentHeat - 50000| ^ 0.8]) / 7000")
-            .addInfo("Heat gain per cycle: numberHeaters * heatEfficiency * (10 + bonus)")
-            .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
-            .addInfo("Total number of reflectors based on how many rings are built:")
-            .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
+            .addInfo(
+                "gt.solar_tower.tips",
+                MaterialMisc.SOLAR_SALT_COLD.getTranslatedName(),
+                MaterialMisc.SOLAR_SALT_HOT.getTranslatedName())
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
-            .addController("Top Middle")
-            .addCasingInfoMin("Structural Solar Casing", 229, false)
-            .addCasingInfoMin("Thermally Insulated Casing", 60, false)
-            .addCasingInfoMin("Salt Containment Casing", 66, false)
-            .addCasingInfoMin("Thermal Containment Casing", 60, false)
-            .addInputHatch("Hint Block Number 2 (Min 1)", 2)
-            .addOutputHatch("Hint Block Number 2 (Min 1)", 2)
-            .addMaintenanceHatch("Hint Block Number 2", 2)
+            .addController("top_center")
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.6.name", 229)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.8.name", 60)
+            .addCasingInfoMin("gtplusplus.blockspecialcasings.1.7.name", 66)
+            .addCasingInfoMin("gtplusplus.blockcasings.2.11.name", 60)
+            .addStructurePart("GT5U.MBTT.InputHatch", "<hint>", "gt.solar_tower.info.hatch", 2)
+            .addStructurePart("GT5U.MBTT.OutputHatch", "<hint>", "gt.solar_tower.info.hatch", 2)
+            .addMaintenanceHatch("<hint>", 2)
             .toolTipFinisher();
         return tt;
     }
