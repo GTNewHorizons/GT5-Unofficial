@@ -1563,7 +1563,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
 
             if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                if (!tMEHatch.canFillFluid()) continue;
+                if (!tMEHatch.canAcceptFluid()) continue;
             }
 
             int tAmount = tHatch.fill(copiedFluidStack, false);
@@ -2730,7 +2730,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             for (MTEHatchOutputBusME busME : meBusses) {
                 // If the bus has reached its max capacity, it can't accept anything
-                if (!busME.canAcceptItem()) continue;
+                if (!busME.canAcceptAnyItem()) continue;
 
                 // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
                 // We don't care about bus ordering here because we're just checking if it's possible
@@ -2754,7 +2754,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
+                if (((MTEHatchOutputME) tHatch).canFillFluid()) {
                     return true;
                 }
             }
