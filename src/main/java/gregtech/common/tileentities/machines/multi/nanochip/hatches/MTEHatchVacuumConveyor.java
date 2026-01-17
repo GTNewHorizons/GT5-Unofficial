@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,11 +36,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
-import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
 public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement {
 
     public static final int VACUUM_MOVE_TICK = 17;
+    public VacuumFactoryNetwork network;
 
     public CircuitComponentPacket contents;
 
@@ -88,7 +90,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
         else contents.unifyWith(packet);
     }
 
-    public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -98,10 +99,18 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
                     getBaseMetaTileEntity().setActive(false);
                 } else {
                     getBaseMetaTileEntity().setActive(true);
-                    moveAround(aBaseMetaTileEntity);
+                    this.getNetwork().addElement(this);
                 }
             }
         }
+    }
+
+
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onFirstTick(base);
     }
 
     @Override
