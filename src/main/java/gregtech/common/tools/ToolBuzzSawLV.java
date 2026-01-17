@@ -7,13 +7,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
-public class ToolBuzzSaw extends ToolSaw {
+public class ToolBuzzSawLV extends ToolSaw {
 
     @Override
     public int getToolDamagePerContainerCraft() {
@@ -60,8 +61,7 @@ public class ToolBuzzSaw extends ToolSaw {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
-            : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
+        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
     }
 
     @Override
