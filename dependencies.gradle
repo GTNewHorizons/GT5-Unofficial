@@ -140,6 +140,8 @@ dependencies {
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("CoreTweaks:CoreTweaks:0.3.3.2"))
+
+    runtimeOnlyNonPublishable(rfg.deobf("curse.maven:spark-361579:4271867"))
 }
 
 afterEvaluate {
