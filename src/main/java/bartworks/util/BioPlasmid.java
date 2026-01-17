@@ -46,6 +46,6 @@ public class BioPlasmid extends BioData {
 
     @Override
     public String toString() {
-        return "BioPlasmid{" + "name='" + this.name + '\'' + ", ID=" + this.ID + '}';
+        return String.format("BioPlasmid(name=%s, id=%d, rarity=%s", this.name, this.ID, this.rarity.name());
     }
 }
