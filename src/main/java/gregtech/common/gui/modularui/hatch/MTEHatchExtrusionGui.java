@@ -51,7 +51,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
             .syncValue("oneStackLimit", new BooleanSyncValue(() -> hatch.oneStackLimit, v -> hatch.oneStackLimit = v));
 
         syncManager.syncValue("shape", new IntSyncValue(() -> {
-            ItemStack current = hatch.inventoryHandler.getStackInSlot(MTEHatchExtrusion.shapeSlot);
+            ItemStack current = hatch.inventoryHandler.getStackInSlot(hatch.shapeSlot);
             return current != null ? hatch.findMatchingShapeIndex(current) : -1;
         }, index -> {
             if (index >= 0 && index < MTEHatchExtrusion.extruderShapes.length) {
@@ -79,8 +79,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
             .key('s', index -> {
                 if (index >= itemSlots) return new ItemSlot();
 
-                int actual = index + (index >= MTEHatchExtrusion.shapeSlot ? 1 : 0)
-                    + (index >= MTEHatchExtrusion.circuitSlot ? 1 : 0);
+                int actual = index + (index >= hatch.shapeSlot ? 1 : 0) + (index >= hatch.circuitSlot ? 1 : 0);
 
                 return new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, actual).slotGroup("item_inv"));
             })
@@ -101,7 +100,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
         syncManager.registerSlotGroup("shape_slot", 1);
 
         GhostShapeSlotWidget shapeSlot = new GhostShapeSlotWidget(hatch, syncManager);
-        shapeSlot.slot(new ModularSlot(hatch.inventoryHandler, MTEHatchExtrusion.shapeSlot).slotGroup("shape_slot"));
+        shapeSlot.slot(new ModularSlot(hatch.inventoryHandler, hatch.shapeSlot).slotGroup("shape_slot"));
 
         BooleanSyncValue stackSync = new BooleanSyncValue(() -> !hatch.disableSort, v -> hatch.disableSort = !v);
 
