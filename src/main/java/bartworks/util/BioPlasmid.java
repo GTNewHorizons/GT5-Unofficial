@@ -20,9 +20,6 @@ public class BioPlasmid extends BioData {
 
     public static final BioPlasmid NULLPLASMID = convertDataToPlasmid(BioData.convertBioDNAToBioData(BioDNA.NULLDNA));
 
-    private BioPlasmid(String name, int ID, EnumRarity rarity) {
-        super(name, ID, rarity);
-    }
 
     protected BioPlasmid(BioData bioData) {
         super(bioData);

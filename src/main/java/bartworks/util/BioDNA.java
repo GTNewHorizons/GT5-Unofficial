@@ -20,10 +20,6 @@ public class BioDNA extends BioData {
 
     public static final BioDNA NULLDNA = createAndRegisterBioDNA("", EnumRarity.epic);
 
-    protected BioDNA(String name, int ID, EnumRarity rarity) {
-        super(name, ID, rarity);
-    }
-
     protected BioDNA(BioData bioData) {
         super(bioData);
         this.name = bioData.name;
