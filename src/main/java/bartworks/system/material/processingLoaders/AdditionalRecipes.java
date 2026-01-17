@@ -71,7 +71,6 @@ import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
-import bartworks.util.BioPlasmid;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -180,7 +179,7 @@ public class AdditionalRecipes {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         BioItemList.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
-                        BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(Plasmid)),
+                        BioItemList.getPlasmidCell(Plasmid),
                         FluidLoader.BioLabFluidCells[2])
                     .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
                     .outputChances(Plasmid.getChance(), 100_00)

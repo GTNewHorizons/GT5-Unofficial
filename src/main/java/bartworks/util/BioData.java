@@ -48,10 +48,6 @@ public class BioData {
         this.tier = bioData.tier;
     }
 
-    public static BioData convertBioPlasmidToBioData(BioPlasmid bioPlasmid) {
-        return new BioData(bioPlasmid.name, bioPlasmid.ID, bioPlasmid.rarity, bioPlasmid.chance, bioPlasmid.tier);
-    }
-
     public static BioData convertBioDNAToBioData(BioDNA bioDNA) {
         return new BioData(bioDNA.name, bioDNA.ID, bioDNA.rarity, bioDNA.chance, bioDNA.tier);
     }
