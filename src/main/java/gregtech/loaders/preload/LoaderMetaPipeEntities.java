@@ -790,26 +790,31 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .material(Materials.Platinum)
             .idList(5620, 5621, 5622, 5623, 5624, 5644, 5645, 5625, 5626, 5627)
             .invSlotsForHugePipe(16)
+            .stackSizeMultiplier(4)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Osmium)
             .idList(5630, 5631, 5632, 5633, 5634, 5646, 5647, 5635, 5636, 5637)
             .invSlotsForHugePipe(32)
+            .stackSizeMultiplier(8)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.ElectrumFlux)
             .startId(5650)
             .invSlotsForHugePipe(64)
+            .stackSizeMultiplier(16)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.BlackPlutonium)
             .startId(5660)
             .invSlotsForHugePipe(128)
+            .stackSizeMultiplier(32)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.Bedrockium)
             .startId(5670)
             .invSlotsForHugePipe(256)
+            .stackSizeMultiplier(64)
             .build();
         ItemPipeBuilder.builder()
             .material(Materials.PolyvinylChloride)
@@ -840,6 +845,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .material(Materials.Quantium)
             .startId(5730)
             .invSlotsForHugePipe(512)
+            .stackSizeMultiplier(32)
             .build();
     }
 
@@ -1283,6 +1289,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
         private Integer startId;
         private int[] idList;
         private Integer invSlotsForHugePipe;
+        private int stackSizeMultiplier = 1;
         private boolean generateTinyAndSmall = true;
 
         private static ItemPipeBuilder builder() {
@@ -1338,6 +1345,11 @@ public final class LoaderMetaPipeEntities implements Runnable {
             return this;
         }
 
+        private ItemPipeBuilder stackSizeMultiplier(int mult) {
+            this.stackSizeMultiplier = mult;
+            return this;
+        }
+
         private void build() {
             if (material == null) throw new IllegalStateException("material must be set!");
             if (startId == null && idList == null)
@@ -1375,7 +1387,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         Math.max(invSlotsForHugePipe / 16, 1),
                         524288 / invSlotsForHugePipe,
                         false,
-                        Math.max(16 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                        Math.max(16 / invSlotsForHugePipe, 1) * 20,
+                        stackSizeMultiplier).getStackForm(1L));
                 idIndex++;
                 GTOreDictUnificator.registerOre(
                     OrePrefixes.pipeSmall.get(material),
@@ -1388,7 +1401,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         Math.max(invSlotsForHugePipe / 8, 1),
                         262144 / invSlotsForHugePipe,
                         false,
-                        Math.max(8 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                        Math.max(8 / invSlotsForHugePipe, 1) * 20,
+                        stackSizeMultiplier).getStackForm(1L));
                 idIndex++;
             }
             GTOreDictUnificator.registerOre(
@@ -1402,7 +1416,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     Math.max(invSlotsForHugePipe / 4, 1),
                     131072 / invSlotsForHugePipe,
                     false,
-                    Math.max(4 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                    Math.max(4 / invSlotsForHugePipe, 1) * 20,
+                    stackSizeMultiplier).getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeLarge.get(material),
@@ -1415,7 +1430,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     Math.max(invSlotsForHugePipe / 2, 1),
                     65536 / invSlotsForHugePipe,
                     false,
-                    Math.max(2 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                    Math.max(2 / invSlotsForHugePipe, 1) * 20,
+                    stackSizeMultiplier).getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeHuge.get(material),
@@ -1427,7 +1443,9 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     material,
                     invSlotsForHugePipe,
                     32768 / invSlotsForHugePipe,
-                    false).getStackForm(1L));
+                    false,
+                    20,
+                    stackSizeMultiplier).getStackForm(1L));
             idIndex++;
             if (generateTinyAndSmall) {
                 GTOreDictUnificator.registerOre(
@@ -1441,7 +1459,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         Math.max(invSlotsForHugePipe / 16, 1),
                         52428800 / invSlotsForHugePipe,
                         true,
-                        Math.max(16 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                        Math.max(16 / invSlotsForHugePipe, 1) * 20,
+                        stackSizeMultiplier).getStackForm(1L));
                 idIndex++;
                 GTOreDictUnificator.registerOre(
                     OrePrefixes.pipeRestrictiveSmall.get(material),
@@ -1454,7 +1473,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                         Math.max(invSlotsForHugePipe / 8, 1),
                         26214400 / invSlotsForHugePipe,
                         true,
-                        Math.max(8 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                        Math.max(8 / invSlotsForHugePipe, 1) * 20,
+                        stackSizeMultiplier).getStackForm(1L));
                 idIndex++;
             }
             GTOreDictUnificator.registerOre(
@@ -1468,7 +1488,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     Math.max(invSlotsForHugePipe / 4, 1),
                     13107200 / invSlotsForHugePipe,
                     true,
-                    Math.max(4 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                    Math.max(4 / invSlotsForHugePipe, 1) * 20,
+                    stackSizeMultiplier).getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveLarge.get(material),
@@ -1481,7 +1502,8 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     Math.max(invSlotsForHugePipe / 2, 1),
                     6553600 / invSlotsForHugePipe,
                     true,
-                    Math.max(2 / invSlotsForHugePipe, 1) * 20).getStackForm(1L));
+                    Math.max(2 / invSlotsForHugePipe, 1) * 20,
+                    stackSizeMultiplier).getStackForm(1L));
             idIndex++;
             GTOreDictUnificator.registerOre(
                 OrePrefixes.pipeRestrictiveHuge.get(material),
@@ -1493,7 +1515,9 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     material,
                     invSlotsForHugePipe,
                     3276800 / invSlotsForHugePipe,
-                    true).getStackForm(1L));
+                    true,
+                    20,
+                    stackSizeMultiplier).getStackForm(1L));
         }
     }
 }

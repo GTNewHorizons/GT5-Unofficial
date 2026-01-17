@@ -9,29 +9,13 @@ import gregtech.api.factory.standard.StandardFactoryGrid;
 public interface IFactoryGrid<TSelf extends IFactoryGrid<TSelf, TElement, TNetwork>, TElement extends IFactoryElement<TElement, TNetwork, TSelf>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TSelf>> {
 
     /**
-     * Adds an element and does potentially expensive network topology updates. Also acts like a hard reset in case the
-     * given element has changed its neighbours.
+     * Adds an element and its edges to the grid. Removes any connections the element previously had but no longer has.
+     * The element will always have a network after this returns.
      */
-    public void addElement(TElement element);
+    void updateElement(TElement element);
 
     /**
-     * Adds an element but does not do any network topology updates. Use with caution.
+     * Removes an element and its edges from the grid. The element will not have a network after this returns.
      */
-    public void addElementQuietly(TNetwork network, TElement element);
-
-    /**
-     * Removes an element and does potentially expensive network topology updates.
-     */
-    public void removeElement(TElement element);
-
-    /**
-     * Removes an element but does not do any network topology updates. Use with caution.
-     */
-    public void removeElementQuietly(TElement element);
-
-    /**
-     * Subsumes a network into another one. You generally shouldn't call this unless you have a good reason since
-     * network subsuming/splitting is handled automatically.
-     */
-    public void subsume(TNetwork dest, TNetwork source);
+    void removeElement(TElement element);
 }
