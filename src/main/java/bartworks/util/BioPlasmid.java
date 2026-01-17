@@ -13,6 +13,7 @@
 
 package bartworks.util;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 
 public class BioPlasmid extends BioData {
@@ -36,12 +37,16 @@ public class BioPlasmid extends BioData {
 
     public static BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity) {
         BioData ret = BioData.createAndRegisterBioData(aName, rarity);
-        return new BioPlasmid(ret);
+        BioPlasmid bioPlasmid = new BioPlasmid(ret);
+        GTLog.out.println(bioPlasmid);
+        return bioPlasmid;
     }
 
     public static BioPlasmid createAndRegisterBioPlasmid(String aName, EnumRarity rarity, int chance, int tier) {
         BioData ret = BioData.createAndRegisterBioData(aName, rarity, chance, tier);
-        return new BioPlasmid(ret);
+        BioPlasmid bioPlasmid = new BioPlasmid(ret);
+        GTLog.out.println(bioPlasmid);
+        return bioPlasmid;
     }
 
     @Override
