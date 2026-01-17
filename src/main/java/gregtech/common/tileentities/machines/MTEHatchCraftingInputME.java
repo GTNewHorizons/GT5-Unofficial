@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -463,7 +465,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    public Set<ProcessingLogic> processingLogics = Collections.newSetFromMap(new WeakHashMap<>());
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
@@ -1067,12 +1069,19 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
     }
 
-    private void resetCraftingInputRecipeMap() {
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
+            if (sl == null) continue;
+            pl.removeInventoryRecipeCache(sl);
+        }
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
         for (ProcessingLogic pl : processingLogics) {
-            for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
-                if (sl == null) continue;
-                pl.removeInventoryRecipeCache(sl);
-            }
+            resetCraftingInputRecipeMap(pl);
         }
     }
 
@@ -1295,7 +1304,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(this::resetCraftingInputRecipeMap))
+                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> resetCraftingInputRecipeMap()))
                 .build()
                 .setPos(7, 7));
         return builder.build();
