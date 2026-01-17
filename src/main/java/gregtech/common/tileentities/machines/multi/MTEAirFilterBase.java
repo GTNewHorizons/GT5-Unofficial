@@ -376,7 +376,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     private ItemStack getCleanFilter() {
         if (cleanFilter == null) {
             if (Mods.NewHorizonsCoreMod.isModLoaded()) {
-                cleanFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "item.AdsorptionFilter", 1, 0);
+                cleanFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "AdsorptionFilter", 1, 0);
             }
             if (cleanFilter == null) {
                 // fallback for dev environment
@@ -389,7 +389,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     private ItemStack getDirtyFilter() {
         if (dirtyFilter == null) {
             if (Mods.NewHorizonsCoreMod.isModLoaded()) {
-                dirtyFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "item.AdsorptionFilterDirty", 1, 0);
+                dirtyFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "AdsorptionFilterDirty", 1, 0);
             }
             if (dirtyFilter == null) {
                 // fallback for dev environment

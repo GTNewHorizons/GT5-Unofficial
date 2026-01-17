@@ -97,10 +97,10 @@ public final class AE2Compat {
         // GT lenses are registered by ProcessingLens
         registry.register(WerkstoffLoader.items.get(OrePrefixes.lens));
         if (NewHorizonsCoreMod.isModLoaded()) {
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassLense"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "ChromaticLens"));
         }
     }
 }
