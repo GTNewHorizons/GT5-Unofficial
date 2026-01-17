@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,14 +38,6 @@ public class BioData {
         this.rarity = rarity;
         this.chance = chance;
         this.tier = tier;
-    }
-
-    protected BioData(String name, int ID, EnumRarity rarity) {
-        this.name = name;
-        this.ID = ID;
-        this.rarity = rarity;
-        this.chance = 7500;
-        this.tier = 0;
     }
 
     protected BioData(BioData bioData) {
@@ -71,7 +64,7 @@ public class BioData {
     }
 
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity) {
-        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity);
+        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, 75_00, VoltageIndex.ULV);
         BIO_DATA_ARRAY_LIST.add(ret);
         GTLog.out.println(ret);
         return ret;

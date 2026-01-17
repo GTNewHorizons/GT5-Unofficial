@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,18 +53,11 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     protected BioCulture(Color color, String name, int ID, BioPlasmid plasmid, BioDNA dDNA, EnumRarity rarity,
         boolean bBreedable) {
-        super(name, ID, rarity);
+        super(name, ID, rarity, 75_00, VoltageIndex.ULV);
         this.color = color;
         this.plasmid = plasmid;
         this.dDNA = dDNA;
         this.bBreedable = bBreedable;
-    }
-
-    protected BioCulture(Color color, String name, int ID, BioPlasmid plasmid, BioDNA dDNA) {
-        super(name, ID, dDNA.getRarity());
-        this.color = color;
-        this.plasmid = plasmid;
-        this.dDNA = dDNA;
     }
 
     public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
