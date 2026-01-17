@@ -120,6 +120,7 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.ItemEjectionHelper;
+import gregtech.api.util.Localized;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
@@ -2345,16 +2346,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
-                    // FIXME: localize it
                     currentTip.add(
-                        "  " + tag.getString("outputItem" + i)
-                            + " x "
-                            + formatNumbers(tag.getInteger("outputItemCount" + i)));
+                        "  " + Localized.decodeFromBytes(tag.getByteArray("outputItemB" + i))
+                            .display() + " x " + formatNumbers(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
-                    // FIXME: localize it
                     currentTip.add(
-                        "  " + tag.getString("outputFluid" + i)
+                        "  " + Localized.decodeFromBytes(tag.getByteArray("outputFluidB" + i))
                             + " x "
                             + formatNumbers(tag.getInteger("outputFluidCount" + i))
                             + "L");
@@ -2422,8 +2420,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
-                // FIXME: localize it
-                tag.setString("outputItem" + index, stack.getDisplayName());
+                tag.setByteArray(
+                    "outputItemB" + index,
+                    Localized.itemStackName(stack)
+                        .encodeToBytes());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2433,8 +2433,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (FluidStack stack : mOutputFluids) {
                 if (stack == null) continue;
-                // FIXME: localize it
-                tag.setString("outputFluid" + index, stack.getLocalizedName());
+                tag.setByteArray(
+                    "outputFluidB" + index,
+                    Localized.fluidStackName(stack)
+                        .encodeToBytes());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }
