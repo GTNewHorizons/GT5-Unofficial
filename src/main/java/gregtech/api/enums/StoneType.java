@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -25,6 +26,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.Multimaps;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
@@ -40,7 +45,9 @@ import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
+import it.unimi.dsi.fastutil.Pair;
 
 public enum StoneType implements IStoneType {
 
@@ -145,6 +152,7 @@ public enum StoneType implements IStoneType {
         .addAllowedDimensions(DimNames.SETH)),
 
     Deepslate(new StoneBuilder()
+        .setPrefix(OrePrefixes.oreDeepslate)
         .setStoneNoCobble(Mods.EtFuturumRequiem, "deepslate", WILDCARD)
         .setDust(NewHorizonsCoreMod, "DeepslateDust")
         .setCategory(StoneCategory.Stone)
@@ -180,6 +188,20 @@ public enum StoneType implements IStoneType {
         StoneType.STONE_TYPES.stream()
             .filter(s -> s.getCategory() == StoneCategory.Ice)
             .toArray(StoneType[]::new));
+
+    public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
+
+    static {
+        Supplier<ListMultimap<OrePrefixes, StoneType>> mapMaker = () -> MultimapBuilder.hashKeys()
+            .arrayListValues()
+            .build();
+
+        var map = StoneType.STONE_TYPES.stream()
+            .map(s -> Pair.of(s.builder.oreBlockPrefix, s))
+            .collect(GTDataUtils.toMultiMap(mapMaker));
+
+        STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(Multimaps.asMap(map));
+    }
 
     private final StoneBuilder builder;
 
@@ -376,6 +398,14 @@ public enum StoneType implements IStoneType {
         }
 
         return null;
+    }
+
+    public static StoneType findStoneTypeByPrefix(OrePrefixes prefix) {
+        var options = STONE_TYPES_BY_PREFIX.get(prefix);
+
+        if (options.isEmpty()) return null;
+
+        return options.get(0);
     }
 
     private static class StoneBuilder {

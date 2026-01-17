@@ -2574,6 +2574,7 @@ public class MaterialsInit {
         Materials.Amber = loadAmber();
         Materials.Ammonium = loadAmmonium();
         Materials.Amordrine = loadAmordrine();
+        Materials.AncientDebris = loadAncientDebris();
         Materials.Andesite = loadAndesite();
         Materials.Ardite = loadArdite();
         Materials.Aredrite = loadAredrite();
@@ -2793,6 +2794,13 @@ public class MaterialsInit {
             .addOreItems()
             .addToolHeadItems()
             .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadAncientDebris() {
+        return new MaterialBuilder().setName("Debris")
+            .setDefaultLocalName("Ancient Debris")
+            .setARGB(0x351a0b)
             .constructMaterial();
     }
 
