@@ -17,6 +17,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import gregtech.api.enums.VoltageIndex;
+import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -38,24 +40,12 @@ public class BioData {
         this.tier = tier;
     }
 
-    protected BioData(String name, int ID, EnumRarity rarity) {
-        this.name = name;
-        this.ID = ID;
-        this.rarity = rarity;
-        this.chance = 7500;
-        this.tier = 0;
-    }
-
     protected BioData(BioData bioData) {
         this.rarity = bioData.rarity;
         this.name = bioData.name;
         this.ID = bioData.ID;
         this.chance = bioData.chance;
         this.tier = bioData.tier;
-    }
-
-    public static BioData convertBioPlasmidToBioData(BioPlasmid bioPlasmid) {
-        return new BioData(bioPlasmid.name, bioPlasmid.ID, bioPlasmid.rarity, bioPlasmid.chance, bioPlasmid.tier);
     }
 
     public static BioData convertBioDNAToBioData(BioDNA bioDNA) {
@@ -65,12 +55,14 @@ public class BioData {
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
         BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, chance, tier);
         BIO_DATA_ARRAY_LIST.add(ret);
+        GTLog.out.println(ret);
         return ret;
     }
 
     public static BioData createAndRegisterBioData(String aName, EnumRarity rarity) {
-        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity);
+        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, 75_00, VoltageIndex.ULV);
         BIO_DATA_ARRAY_LIST.add(ret);
+        GTLog.out.println(ret);
         return ret;
     }
 
@@ -135,7 +127,7 @@ public class BioData {
 
     @Override
     public String toString() {
-        return "BioData{" + "name='" + this.name + '\'' + ", ID=" + this.ID + '}';
+        return String.format("BioData(name=%s, id=%d, rarity=%s, chance=%d, tier=%d)", this.name, this.ID, this.rarity.name(), this.chance, this.tier);
     }
 
     public EnumRarity getRarity() {

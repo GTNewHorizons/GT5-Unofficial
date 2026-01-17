@@ -13,15 +13,12 @@
 
 package bartworks.util;
 
+import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 
 public class BioDNA extends BioData {
 
     public static final BioDNA NULLDNA = createAndRegisterBioDNA("", EnumRarity.epic);
-
-    protected BioDNA(String name, int ID, EnumRarity rarity) {
-        super(name, ID, rarity);
-    }
 
     protected BioDNA(BioData bioData) {
         super(bioData);
@@ -36,16 +33,20 @@ public class BioDNA extends BioData {
 
     public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity) {
         BioData ret = BioData.createAndRegisterBioData(aName, rarity);
-        return new BioDNA(ret);
+        BioDNA bioDNA = new BioDNA(ret);
+        GTLog.out.println(bioDNA);
+        return bioDNA;
     }
 
     public static BioDNA createAndRegisterBioDNA(String aName, EnumRarity rarity, int chance, int tier) {
         BioData ret = BioData.createAndRegisterBioData(aName, rarity, chance, tier);
-        return new BioDNA(ret);
+        BioDNA bioDNA = new BioDNA(ret);
+        GTLog.out.println(bioDNA);
+        return bioDNA;
     }
 
     @Override
     public String toString() {
-        return "BioDNA{" + "name='" + this.name + '\'' + ", ID=" + this.ID + '}';
+        return String.format("BioDNA(name=%s, id=%d, rarity=%s)", this.name, this.ID, this.rarity.name());
     }
 }

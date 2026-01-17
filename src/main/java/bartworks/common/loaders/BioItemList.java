@@ -24,7 +24,6 @@ import bartworks.common.items.ItemLabParts;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
-import bartworks.util.BioPlasmid;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BioItemList {
@@ -65,7 +64,7 @@ public class BioItemList {
     public static Collection<ItemStack> getAllPlasmidCells() {
         HashSet<ItemStack> ret = new HashSet<>();
         for (BioData dna : BioData.BIO_DATA_ARRAY_LIST) {
-            ret.add(BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(dna)));
+            ret.add(BioItemList.getPlasmidCell(dna));
         }
         return ret;
     }
@@ -85,7 +84,7 @@ public class BioItemList {
         return ret;
     }
 
-    public static ItemStack getPlasmidCell(BioPlasmid plasmid) {
+    public static ItemStack getPlasmidCell(BioData plasmid) {
         if (plasmid == null) return new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
         ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
         ret.setTagCompound(BioData.getNBTTagFromBioData(plasmid));

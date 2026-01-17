@@ -28,7 +28,6 @@ import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
-import bartworks.util.BioPlasmid;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -287,7 +286,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         this.mFluid.amount -= 1000;
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             this.mOutputItems[0] = BioItemList
-                                .getPlasmidCell(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
+                                .getPlasmidCell(cultureDNABioData);
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
@@ -326,7 +325,7 @@ public class MTEBioLab extends MTEBasicMachine {
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
                         }
                         this.mFluid.amount -= 1000;
-                        bioCulture = bioCulture.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
+                        bioCulture = bioCulture.setPlasmid(cultureDNABioData);
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             this.mOutputItems[0] = BioItemList.getPetriDish(bioCulture);
                         }
@@ -373,7 +372,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
                             BioCulture out = BioCulture.getBioCulture(BioDNA.convertDataToDNA(cultureDNABioData));
                             if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
-                            out = out.setPlasmid(BioPlasmid.convertDataToPlasmid(cultureDNABioData));
+                            out = out.setPlasmid(cultureDNABioData);
                             this.mOutputItems[0] = BioItemList.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(
