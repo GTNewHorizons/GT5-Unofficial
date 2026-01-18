@@ -47,6 +47,8 @@ public class NEI_IG_Config implements IConfigureNEI {
                     .setShiftY(6)
                     .setWidth(160)
                     .setHeight(90)
+                    .setShowFavoritesButton(false)
+                    .setShowOverlayButton(false)
                     .setMaxRecipesPerPage(3)
                     .build());
         event.registerHandlerInfo(
@@ -57,6 +59,8 @@ public class NEI_IG_Config implements IConfigureNEI {
                     .setShiftY(6)
                     .setWidth(160)
                     .setHeight(90)
+                    .setShowFavoritesButton(false)
+                    .setShowOverlayButton(false)
                     .setMaxRecipesPerPage(3)
                     .build());
     }
