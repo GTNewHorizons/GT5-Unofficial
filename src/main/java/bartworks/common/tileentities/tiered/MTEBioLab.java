@@ -44,6 +44,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MTEBioLab extends MTEBasicMachine {
 
@@ -137,6 +138,27 @@ public class MTEBioLab extends MTEBasicMachine {
         return this.mTier * 1000;
     }
 
+    private boolean isValidCulture(ItemStack stack){
+        //hyp: if it has a NBT then the Name field exist and is correct
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, BioCultureEnum.NullBioCulture.culture.get(1), true) && stack.getTagCompound() != null;
+    }
+
+    private boolean isEmptyDNAFlask(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, ItemList.EmptyDNAFlask.get(1), false);
+    }
+
+    private boolean isDetergentPowder(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(stack, ItemList.DetergentPowder.get(1), false);
+    }
+
+    private boolean hasEnoughDistilledWater(FluidStack stack){
+        return stack != null && stack.isFluidEqual(GTModHandler.getDistilledWater(1_000)) && stack.amount >= 1000;
+    }
+
+    private boolean isEthanolCell(ItemStack stack){
+        return GTUtility.isStackValid(stack) && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 3], Materials.Ethanol.getCells(1));
+    }
+
     @Override
     public int checkRecipe(boolean skipOC) {
         int rTier = 3;
@@ -147,36 +169,24 @@ public class MTEBioLab extends MTEBasicMachine {
                 .getItemDamage();
             switch (damage) {
                 case DNA_EXTRACTION_MODULE:
-                    if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
-                        && this.mInventory[this.getInputSlot()].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot()].getItemDamage() == 0
-                        && this.mInventory[this.getInputSlot()].getTagCompound() != null
-                        && // checks if it is a Culture
-                        GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
-                        && this.mInventory[this.getInputSlot() + 1].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot() + 1].getItemDamage() == 1
-                        && this.mInventory[this.getInputSlot() + 1].getTagCompound() == null
-                        && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
-                        && this.mInventory[this.getInputSlot() + 2].getItem() instanceof ItemLabParts
-                        && this.mInventory[this.getInputSlot() + 2].getItemDamage() == 3
-                        && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 3], Materials.Ethanol.getCells(1))
-                        && this.mFluid != null
-                        && this.mFluid.isFluidEqual(GTModHandler.getDistilledWater(1_000))
-                        && this.mFluid.amount >= 1000) {
+                    ItemStack cultureSlot = this.mInventory[this.getInputSlot()];
+                    ItemStack DNAFlaskSlot = this.mInventory[this.getInputSlot()+1];
+                    ItemStack detergentPowderSlot = this.mInventory[this.getInputSlot()+2];
+                    ItemStack ethanolCellSlot = this.mInventory[this.getInputSlot()+3];
 
-                        NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound()
-                            .getCompoundTag("DNA");
-                        if (DNABioDataTag == null) return super.checkRecipe(skipOC);
-                        BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(
-                            this.mInventory[this.getInputSlot()].getTagCompound()
-                                .getCompoundTag("DNA")
-                                .getString("Name")).getBioData();
-                        if (cultureDNABioData == null) return super.checkRecipe(skipOC);
+                    if (isValidCulture(cultureSlot) && isEmptyDNAFlask(DNAFlaskSlot)
+                        && isDetergentPowder(detergentPowderSlot)
+                        && isEthanolCell(ethanolCellSlot)
+                        && hasEnoughDistilledWater(this.mFluid)) {
 
+                        BioCulture culture = BioCulture.getBioCulture(cultureSlot.getTagCompound().getString("Name"));
+                        BioData cultureDNABioData = culture.getdDNA(); // Can't be null because it comes from the BioCultureEnum
+
+                        // rTier seems to be a scale adjustment
                         if (this.mTier < rTier + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
+                        // deplete all the inputs
                         for (int i = 0; i < 4; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
                                 this.mInventory[this.getInputSlot() + i].stackSize--;
@@ -184,9 +194,8 @@ public class MTEBioLab extends MTEBasicMachine {
 
                         this.mFluid.amount -= 1000;
 
-                        if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioDataEnum
-                                .getDNASampleFlask(cultureDNABioData);
+                        if (cultureDNABioData.getChance() > new XSTR().nextInt(100_00)) {
+                            this.mOutputItems[0] = BioDataEnum.getDNASampleFlask(cultureDNABioData);
                         }
                         this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
                         this.calculateOverclockedNess(
