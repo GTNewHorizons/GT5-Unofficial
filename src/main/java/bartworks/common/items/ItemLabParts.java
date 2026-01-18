@@ -60,7 +60,7 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0){
+        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null){
             Color color = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(stack.getTagCompound().getString("Name"), BioCultureEnum.NullBioCulture).color;
             return color.getRGB();
         }
