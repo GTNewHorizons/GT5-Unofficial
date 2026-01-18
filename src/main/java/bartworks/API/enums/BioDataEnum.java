@@ -1,5 +1,6 @@
 package bartworks.API.enums;
 
+import bartworks.common.loaders.BioItemList;
 import bartworks.util.BioData;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoltageIndex;
@@ -66,13 +67,17 @@ public enum BioDataEnum {
 
     public static void registerAllDNAItemStacks(){
         for (BioDataEnum data : BioDataEnum.values()){
-            data.DNASampleFlask.set(getDNASampleFlask(new BioData(data)));
+            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
+            stack.setTagCompound(BioData.getNBTTagFromBioData(data.getBioData()));
+            data.DNASampleFlask.set(stack);
         }
     }
 
     public static void registerAllPlasmidItemStacks(){
         for (BioDataEnum data : BioDataEnum.values()){
-            data.plasmidCell.set(getPlasmidCell(new BioData(data)));
+            ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
+            stack.setTagCompound(BioData.getNBTTagFromBioData(data.getBioData()));
+            data.plasmidCell.set(stack);
         }
     }
 

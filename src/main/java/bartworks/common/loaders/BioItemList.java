@@ -36,7 +36,7 @@ public class BioItemList {
     public static final ItemStack[] mBioLabParts = { new ItemStack(BioItemList.mItemBioLabParts),
         new ItemStack(BioItemList.mItemBioLabParts, 1, 1), new ItemStack(BioItemList.mItemBioLabParts, 1, 2),
         new ItemStack(BioItemList.mItemBioLabParts, 1, 3), new ItemStack(BioItemList.mItemBioLabParts, 1, 4) };
-    private static final Item vanillaBioLabParts = new ItemLabParts(
+    public static final Item vanillaBioLabParts = new ItemLabParts(
         new String[] { "petriDish", "DNASampleFlask", "PlasmidCell", "DetergentPowder", "Agarose", "IncubationModule",
             "PlasmaMembrane" });
 
