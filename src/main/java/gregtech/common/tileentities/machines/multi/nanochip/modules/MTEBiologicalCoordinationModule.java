@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines.multi.nanochip.modules;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCOs;
 
 import net.minecraft.item.ItemStack;
 
@@ -20,6 +23,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import net.minecraft.util.EnumChatFormatting;
 
 public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBase<MTEBiologicalCoordinationModule> {
 
@@ -105,7 +109,12 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
             .addInfo("Coordinates your living " + TOOLTIP_CC + "s")
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same color as the input " + TOOLTIP_VCI)
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.ITALIC
+                    + "Biological Circuit Components require strict reprogramming for optimal assembly")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
