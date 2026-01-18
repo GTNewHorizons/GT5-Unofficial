@@ -7,9 +7,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -76,9 +73,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Electric_Pump_UV.get(1L),
                 ItemList.Sensor_UV.get(4L),
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Infinity, 32))
-            .fluidInputs(
-                MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
-                Materials.SuperCoolant.getFluid(8000))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS), Materials.SuperCoolant.getFluid(8000))
             .itemOutputs(ItemList.PCBCoolingTower.get(1L))
             .eut(TierEU.UV)
             .duration(300 * SECONDS)
@@ -98,7 +93,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Holmium, 32))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(32 * INGOTS),
-                Materials.GrowthMediumSterilized.getFluid(27648) )
+                Materials.GrowthMediumSterilized.getFluid(27648))
             .itemOutputs(ItemList.PCBBioChamber.get(1L))
             .eut(TierEU.UV)
             .duration(300 * SECONDS)
