@@ -15,17 +15,14 @@ package bartworks.util;
 
 import java.awt.Color;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import bartworks.API.enums.BioCultureEnum;
-import bartworks.API.enums.BioDataEnum;
+
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.util.GTLanguageManager;
@@ -64,21 +61,9 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public static NBTTagCompound getNBTTagFromCulture(BioCulture bioCulture) {
-        if (bioCulture == null) return new NBTTagCompound();
+        String name = bioCulture != null ? bioCulture.name : BioCultureEnum.NullBioCulture.name;
         NBTTagCompound ret = new NBTTagCompound();
-        ret.setString("Name", bioCulture.name);
-        // ret.setInteger("ID", bioCulture.ID);
-        ret.setIntArray(
-            "Color",
-            new int[] { bioCulture.color.getRed(), bioCulture.color.getGreen(), bioCulture.color.getBlue() });
-        ret.setTag("Plasmid", BioData.getNBTTagFromBioData(bioCulture.plasmid));
-        ret.setTag("DNA", BioData.getNBTTagFromBioData(bioCulture.dDNA));
-        ret.setBoolean("Breedable", bioCulture.bBreedable);
-        ret.setByte("Rarety", BWUtil.getByteFromRarity(bioCulture.rarity));
-        if (bioCulture.bBreedable) ret.setString(
-            "Fluid",
-            bioCulture.getFluid()
-                .getName());
+        ret.setString("Name", name);
         return ret;
     }
 

@@ -14,13 +14,10 @@
 package bartworks.util;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import bartworks.API.enums.BioDataEnum;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -53,8 +50,9 @@ public class BioData {
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
+        String name = bioData != null ? bioData.name : BioDataEnum.NullBioData.name;
         NBTTagCompound ret = new NBTTagCompound();
-        ret.setString("Name", bioData.name);
+        ret.setString("Name", name);
         return ret;
     }
 
