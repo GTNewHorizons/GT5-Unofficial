@@ -429,7 +429,7 @@ public class RecipeLoaderChemicalSkips {
                 .copyAmountUnsafe(64 * 32, getModItem(GalaxySpace.ID, "tcetiedandelions", 1, 4));
             GTValues.RA.stdBuilder()
                 .itemInputs(GTOreDictUnificator.get("cropSeaweed", 64), Materials.Mytryl.getDust(16))
-                .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 16))
+                .itemOutputs(seaweed, getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 16))
                 .fluidInputs(FluidRegistry.getFluidStack("unknowwater", 25_000))
                 .fluidOutputs(
                     FluidRegistry.getFluidStack("seaweedbroth", 50_000),
@@ -691,7 +691,7 @@ public class RecipeLoaderChemicalSkips {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.EmptyCatalystCarrier.get(1),
-                getModItem(NewHorizonsCoreMod.ID, "item.TCetiESeaweedExtract", 64),
+                getModItem(NewHorizonsCoreMod.ID, "TCetiESeaweedExtract", 64),
                 GTOreDictUnificator.get("dustIodine", 64),
                 Materials.TranscendentMetal.getNanite(1))
             .circuit(10)

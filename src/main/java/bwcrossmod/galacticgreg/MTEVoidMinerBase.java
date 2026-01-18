@@ -316,14 +316,18 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         this.mBlacklist = !this.mBlacklist;
-        GTUtility.sendChatToPlayer(aPlayer, "Mode: " + (this.mBlacklist ? "Blacklist" : "Whitelist"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            this.mBlacklist ? "GT5U.chat.void_miner.mode.black_list" : "GT5U.chat.void_miner.mode.white_list");
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.batchMode = !this.batchMode;
-        GTUtility.sendChatToPlayer(aPlayer, "Batch Mode: " + (this.batchMode ? "Enabled" : "Disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            this.batchMode ? "GT5U.chat.machine.batch_mode.enable" : "GT5U.chat.machine.batch_mode.disable");
         return true;
     }
 
