@@ -56,7 +56,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     /** Color of all texts */
     private static final int TEXT_COLOR = 0x404040;
     /** Optional lang key for value formatting */
-    private static final String VALUE_FORMAT_KEY = "ig.nei.elevatorpump.value";
+    private static final String VALUE_FORMAT_KEY = "ig.nei.space.custom.value";
     /** Default value format if VALUE_FORMAT_KEY is not present */
     private static final String DEFAULT_VALUE_FORMAT = "%s";
 
