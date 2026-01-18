@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
-import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +23,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
@@ -103,10 +103,11 @@ public class MTEVacuumConveyorPipe extends MetaPipeEntity implements IConnectsTo
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Must be " + MTENanochipAssemblyComplexGui.coloredString() + " to work",
-            "Transports" + EnumChatFormatting.YELLOW + " Circuit Components " + EnumChatFormatting.GRAY + "between Vacuum Conveyor Hatches"
-        };
+        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.coloredString() + " to work",
+            "Transports" + EnumChatFormatting.YELLOW
+                + " Circuit Components "
+                + EnumChatFormatting.GRAY
+                + "between Vacuum Conveyor Hatches" };
     }
 
     @Override
