@@ -58,8 +58,10 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.network",
+                accessor.getNBTData()
+                    .getString("network")));
     }
 
     @Override

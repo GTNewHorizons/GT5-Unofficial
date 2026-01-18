@@ -275,7 +275,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi_block.total_time.in_ticks",
                 "" + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime));
-
+        mInfo.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.recipes_done",
+                "" + EnumChatFormatting.DARK_GREEN + GTUtility.formatNumbers(this.recipesDone)));
         return mInfo.toArray(new String[0]);
     }
 
