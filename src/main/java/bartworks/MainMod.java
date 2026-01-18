@@ -178,8 +178,6 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
 
         ArtificialMicaLine.runArtificialMicaRecipe();
-        BioDataEnum.registerAllDNAItemStacks();
-        BioDataEnum.registerAllPlasmidItemStacks();
         BioObjectAdder.regenerateBioFluids();
 
         WerkstoffLoader.run();

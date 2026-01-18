@@ -13,6 +13,7 @@
 
 package bartworks.common.loaders;
 
+import bartworks.API.enums.BioDataEnum;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 public class BioLabLoader {
@@ -20,6 +21,8 @@ public class BioLabLoader {
     public static void run(FMLInitializationEvent event) {
         FluidLoader.run(event);
         BioItemList.registerBioItems();
+        BioDataEnum.registerAllDNAItemStacks();
+        BioDataEnum.registerAllPlasmidItemStacks();
         BioRecipeLoader.run();
     }
 }
