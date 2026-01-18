@@ -39,7 +39,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     /** Modular window used to display the recipes */
     protected final ModularWindow modularWindow;
     /** Offsets of the recipe window */
-    private static final Pos2d WINDOW_OFFSET = new Pos2d(-2, -8);
+    private static final Pos2d WINDOW_OFFSET = new Pos2d(0, -8);
 
     /** X coordinate of the category titles */
     private static final int CATEGORY_TITLE_X = 30;
