@@ -214,22 +214,32 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private static String colorString() {
-        return EnumChatFormatting.RED + "c" +
-            EnumChatFormatting.YELLOW + "o" +
-            EnumChatFormatting.GREEN + "l" +
-            EnumChatFormatting.AQUA + "o" +
-            EnumChatFormatting.LIGHT_PURPLE + "r"
+        return EnumChatFormatting.RED + "c"
+            + EnumChatFormatting.YELLOW
+            + "o"
+            + EnumChatFormatting.GREEN
+            + "l"
+            + EnumChatFormatting.AQUA
+            + "o"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "r"
             + EnumChatFormatting.GRAY;
     }
 
     private static String coloredString() {
-        return EnumChatFormatting.RED + "c" +
-            EnumChatFormatting.YELLOW + "o" +
-            EnumChatFormatting.GREEN + "l" +
-            EnumChatFormatting.AQUA + "o" +
-            EnumChatFormatting.DARK_AQUA + "r" +
-            EnumChatFormatting.DARK_PURPLE + "e"
-            + EnumChatFormatting.LIGHT_PURPLE + "d"
+        return EnumChatFormatting.RED + "c"
+            + EnumChatFormatting.YELLOW
+            + "o"
+            + EnumChatFormatting.GREEN
+            + "l"
+            + EnumChatFormatting.AQUA
+            + "o"
+            + EnumChatFormatting.DARK_AQUA
+            + "r"
+            + EnumChatFormatting.DARK_PURPLE
+            + "e"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + "d"
             + EnumChatFormatting.GRAY;
     }
 
@@ -238,29 +248,55 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return new MultiblockTooltipBuilder().addMachineType("NAC, Nanochip-Assembly-Complex")
             .addSeparator()
             .addInfo("Uses Circuit Components (" + TOOLTIP_CCs + ") to create circuits at unimaginable speeds")
-            .addInfo(TOOLTIP_CCs + " can only exist in the perfect environment present in" + EnumChatFormatting.WHITE + " Vacuum Conveyor Hatches")
+            .addInfo(
+                TOOLTIP_CCs + " can only exist in the perfect environment present in"
+                    + EnumChatFormatting.WHITE
+                    + " Vacuum Conveyor Hatches")
             .addInfo("Convert items to " + TOOLTIP_CCs + " in the control room by placing them in a colored input bus")
             .addInfo(
-                "Every " + EnumChatFormatting.RED + "5 seconds" + EnumChatFormatting.GRAY +
-                    ", all items in " + coloredString() + " input buses are placed")
+                "Every " + EnumChatFormatting.RED
+                    + "5 seconds"
+                    + EnumChatFormatting.GRAY
+                    + ", all items in "
+                    + coloredString()
+                    + " input buses are placed")
             .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + colorString())
             .addInfo(
-                "Finished circuit " + TOOLTIP_CCs + " are converted back into circuits by routing them to a " + TOOLTIP_VCI + " in the control room")
-            .addInfo(TOOLTIP_CCs + " in a " + coloredString() + " " + TOOLTIP_VCI + " are placed in an output bus of the same " + colorString())
-            .addSeparator()
-            .addInfo(TOOLTIP_CCs + " must be processed into a refined version by " +
-                EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "modules"
-                + EnumChatFormatting.RESET + EnumChatFormatting.GRAY + " before they")
+                "Finished circuit " + TOOLTIP_CCs
+                    + " are converted back into circuits by routing them to a "
+                    + TOOLTIP_VCI
+                    + " in the control room")
             .addInfo(
-                "can be assembled into a circuit in the " + EnumChatFormatting.GREEN + "Nanochip Assembly Matrix")
+                TOOLTIP_CCs + " in a "
+                    + coloredString()
+                    + " "
+                    + TOOLTIP_VCI
+                    + " are placed in an output bus of the same "
+                    + colorString())
+            .addSeparator()
+            .addInfo(
+                TOOLTIP_CCs + " must be processed into a refined version by "
+                    + EnumChatFormatting.WHITE
+                    + EnumChatFormatting.UNDERLINE
+                    + "modules"
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY
+                    + " before they")
+            .addInfo("can be assembled into a circuit in the " + EnumChatFormatting.GREEN + "Nanochip Assembly Matrix")
             .addInfo("All power from the energy hatch is distributed to the modules as they need it")
             .addSeparator()
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.ITALIC +
-                "Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.ITALIC +
-                "a pseudo-sentient program overseeing circuit production in the NAC.")
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.ITALIC +
-                "It seems to be eager to learn more, maybe you can become friends?")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "a pseudo-sentient program overseeing circuit production in the NAC.")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "It seems to be eager to learn more, maybe you can become friends?")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any control room base casing - Input bus")
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
@@ -589,7 +625,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean doesBindPlayerInventory() { return false; }
+    public boolean doesBindPlayerInventory() {
+        return false;
+    }
 
     @Override
     protected GTGuiTheme getGuiTheme() {
