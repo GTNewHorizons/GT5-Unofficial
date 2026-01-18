@@ -195,14 +195,12 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
                     + " in the same pair do NOT stack!")
 
             // scuffed but works i guess.
-            .addInfo(getWaterTooltipLine("1", WATER_LIST.get(0).amount, "0.8x EU", TooltipHelper.EFF_COLOR))
-            .addInfo(getWaterTooltipLine("2", WATER_LIST.get(1).amount, "0.7x EU", TooltipHelper.EFF_COLOR))
-            .addInfo(getWaterTooltipLine("3", WATER_LIST.get(2).amount, "1.5x Speed", TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("4", WATER_LIST.get(3).amount, "2x Speed", TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(4).amount, "1.1x Other Stats", EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(5).amount, "1.3x Other Stats", EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(6).amount, "2x Parallels", TooltipHelper.PARALLEL_COLOR))
-            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(7).amount, "4x Parallels", TooltipHelper.PARALLEL_COLOR))
+            .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, "0.8x Water Cost", TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, "0.6x Water Cost", TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, "1.3x Speed", EnumChatFormatting.WHITE))
+            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, "1.8x Speed", EnumChatFormatting.WHITE))
+            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, "0.8x EU", TooltipHelper.PARALLEL_COLOR))
+            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, "0.5x EU", TooltipHelper.PARALLEL_COLOR))
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .addInputHatch("Any base casing", 2)
@@ -236,20 +234,18 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return RecipeMaps.nanochipOpticalOrganizer;
     }
 
-    // todo: rework boosts and slightly rework mechanic
-    double parallelModifier = 1;
     float speedModifier = 1;
     float euMultiplier = 1;
-    float extraBoost = 1;
+    float waterDiscount = 1;
 
     @Override
     protected float getBonusSpeedModifier() {
-        return extraBoost * speedModifier;
+        return speedModifier;
     }
 
     @Override
     protected float getEUDiscountModifier() {
-        return euMultiplier / extraBoost;
+        return euMultiplier;
     }
 
     BoostingWater firstWater = null;
@@ -257,8 +253,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-
-        parallelModifier = 1;
+        waterDiscount = 1;
         speedModifier = 1;
         euMultiplier = 1;
         firstWater = null;
@@ -295,25 +290,23 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         super.runMachine(aBaseMetaTileEntity, aTick);
         if (mMaxProgresstime > 0 && aTick % 20 == 0) {
             if (this.firstWater != null) {
-                FluidStack firstStack = firstWater.getStack();
+                FluidStack firstStack = firstWater.getStack(waterDiscount);
                 if (!this.depleteInput(firstStack)) stopMachine(ShutDownReasonRegistry.outOfFluid(firstStack));
             }
             if (this.secondWater != null) {
-                FluidStack secondStack = secondWater.getStack();
+                FluidStack secondStack = secondWater.getStack(waterDiscount);
                 if (!this.depleteInput(secondStack)) stopMachine(ShutDownReasonRegistry.outOfFluid(secondStack));
             }
         }
     }
 
     private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
-        new BoostingWater(Materials.Grade1PurifiedWater, 100, module -> { module.euMultiplier = 0.8f; }),
-        new BoostingWater(Materials.Grade2PurifiedWater, 50, module -> { module.euMultiplier = 0.7f; }),
-        new BoostingWater(Materials.Grade3PurifiedWater, 100, module -> { module.speedModifier = 1.5f; }),
-        new BoostingWater(Materials.Grade4PurifiedWater, 50, module -> { module.speedModifier = 2f; }),
-        new BoostingWater(Materials.Grade5PurifiedWater, 100, module -> { module.extraBoost = 1.1f; }),
-        new BoostingWater(Materials.Grade6PurifiedWater, 50, module -> { module.extraBoost = 1.3f; }),
-        new BoostingWater(Materials.Grade7PurifiedWater, 100, module -> { module.parallelModifier = 2; }),
-        new BoostingWater(Materials.Grade8PurifiedWater, 50, module -> { module.parallelModifier = 4; }));
+        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount = 0.8f; }),
+        new BoostingWater(Materials.Grade4PurifiedWater, 500, module -> { module.waterDiscount = 0.6f; }),
+        new BoostingWater(Materials.Grade5PurifiedWater, 600, module -> { module.speedModifier = 1.3f; }),
+        new BoostingWater(Materials.Grade6PurifiedWater, 300, module -> { module.speedModifier = 1.8f; }),
+        new BoostingWater(Materials.Grade7PurifiedWater, 200, module -> { module.euMultiplier = 0.8f; }),
+        new BoostingWater(Materials.Grade8PurifiedWater, 100, module -> { module.euMultiplier = 0.5f; }));
 
     private static class BoostingWater {
 
@@ -327,8 +320,8 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             this.boosterFunction = boosterFunction;
         }
 
-        public FluidStack getStack() {
-            return this.water.getFluid(this.amount);
+        public FluidStack getStack(float waterDiscount) {
+            return this.water.getFluid((long) (waterDiscount * this.amount));
         }
     }
 }

@@ -3,12 +3,6 @@ package gregtech.common.gui.modularui.multiblock;
 import java.util.Arrays;
 import java.util.List;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -25,11 +20,13 @@ import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -46,10 +43,11 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createMainColumn(panel, syncManager).child(Flow.row()
-            .width(getTerminalRowWidth())
-            .coverChildrenHeight()
-            .child(createBarWidget(syncManager)));
+        return super.createMainColumn(panel, syncManager).child(
+            Flow.row()
+                .width(getTerminalRowWidth())
+                .coverChildrenHeight()
+                .child(createBarWidget(syncManager)));
     }
 
     @Override
@@ -110,10 +108,13 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18).height(38).top(2)
+        return new Column().width(18)
+            .height(38)
+            .top(2)
             .marginLeft(3)
             .mainAxisAlignment(Alignment.MainAxis.END)
-            .reverseLayout(true).childPadding(2)
+            .reverseLayout(true)
+            .childPadding(2)
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));
     }
