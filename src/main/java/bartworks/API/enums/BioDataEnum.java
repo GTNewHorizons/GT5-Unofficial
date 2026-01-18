@@ -4,12 +4,13 @@ import bartworks.util.BioData;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static bartworks.common.loaders.BioItemList.getDNASampleFlask;
-import static bartworks.common.loaders.BioItemList.getPlasmidCell;
 
 // Todo: change the NullBioData rarity later because it's the fallback in ItemLabParts
 public enum BioDataEnum {
@@ -34,7 +35,10 @@ public enum BioDataEnum {
 
     ;
 
-    public static final Map<String, BioDataEnum> LOOKUPS_BY_NAME = new HashMap<String, BioDataEnum>();
+    public static final Map<String, BioDataEnum> LOOKUPS_BY_NAME = new HashMap<>();
+    public static final Map<BioData, BioDataEnum> LOOKUPS_BY_BIODATA = new HashMap<>();
+    public static final ArrayList<ItemStack> DNA_SAMPLE_FLASKS = new ArrayList<>();
+    public static final ArrayList<ItemStack> PLASMID_CELLS = new ArrayList<>();
     public final String name;
     public final int id;
     public final EnumRarity rarity;
@@ -56,6 +60,7 @@ public enum BioDataEnum {
     public static void registerLoopkups(){
         for (BioDataEnum data : BioDataEnum.values()) {
             LOOKUPS_BY_NAME.put(data.name, data);
+            LOOKUPS_BY_BIODATA.put(data.getBioData(), data);
         }
     }
 
@@ -69,6 +74,30 @@ public enum BioDataEnum {
         for (BioDataEnum data : BioDataEnum.values()){
             data.plasmidCell.set(getPlasmidCell(new BioData(data)));
         }
+    }
+
+    public static Collection<ItemStack> getAllDNASampleFlasks() {
+        if (!DNA_SAMPLE_FLASKS.isEmpty()) return DNA_SAMPLE_FLASKS;
+        for (BioDataEnum data : BioDataEnum.values()) {
+            DNA_SAMPLE_FLASKS.add(data.DNASampleFlask.get(1));
+        }
+        return DNA_SAMPLE_FLASKS;
+    }
+
+    public static Collection<ItemStack> getAllPlasmidCells() {
+        if (!PLASMID_CELLS.isEmpty()) return PLASMID_CELLS;
+        for (BioDataEnum data : BioDataEnum.values()) {
+            PLASMID_CELLS.add(data.plasmidCell.get(1));
+        }
+        return PLASMID_CELLS;
+    }
+
+    public static ItemStack getDNASampleFlask(BioData dna) {
+        return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(dna, BioDataEnum.NullBioData).DNASampleFlask.get(1);
+    }
+
+    public static ItemStack getPlasmidCell(BioData plasmid) {
+        return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(plasmid, BioDataEnum.NullBioData).DNASampleFlask.get(1);
     }
 
     public BioData getBioData(){

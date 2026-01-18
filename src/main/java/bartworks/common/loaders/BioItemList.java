@@ -16,6 +16,7 @@ package bartworks.common.loaders;
 import java.util.Collection;
 import java.util.HashSet;
 
+import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -52,41 +53,10 @@ public class BioItemList {
         return ret;
     }
 
-    public static Collection<ItemStack> getAllDNASampleFlasks() {
-        HashSet<ItemStack> ret = new HashSet<>();
-        for (BioData dna : BioData.BIO_DATA_ARRAY_LIST) {
-            ret.add(BioItemList.getDNASampleFlask(dna));
-        }
-        return ret;
-    }
-
-    public static Collection<ItemStack> getAllPlasmidCells() {
-        HashSet<ItemStack> ret = new HashSet<>();
-        for (BioData dna : BioData.BIO_DATA_ARRAY_LIST) {
-            ret.add(BioItemList.getPlasmidCell(dna));
-        }
-        return ret;
-    }
-
     public static ItemStack getPetriDish(BioCulture Culture) {
         if (Culture == null) return new ItemStack(BioItemList.vanillaBioLabParts);
         ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts);
         ret.setTagCompound(BioCulture.getNBTTagFromCulture(Culture));
-        return ret;
-    }
-
-    public static ItemStack getDNASampleFlask(BioData dna) {
-        if (dna == null) return new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
-
-        ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts, 1, 1);
-        ret.setTagCompound(BioData.getNBTTagFromBioData(dna));
-        return ret;
-    }
-
-    public static ItemStack getPlasmidCell(BioData plasmid) {
-        if (plasmid == null) return new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
-        ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts, 1, 2);
-        ret.setTagCompound(BioData.getNBTTagFromBioData(plasmid));
         return ret;
     }
 

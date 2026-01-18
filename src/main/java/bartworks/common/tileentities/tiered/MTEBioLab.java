@@ -184,7 +184,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         this.mFluid.amount -= 1000;
 
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList
+                            this.mOutputItems[0] = BioDataEnum
                                 .getDNASampleFlask(cultureDNABioData);
                         }
                         this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
@@ -260,7 +260,7 @@ public class MTEBioLab extends MTEBasicMachine {
                            // Culture
                         GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 1], BioItemList.getPlasmidCell(null))
+                            .areStacksEqual(this.mInventory[this.getInputSlot() + 1], BioDataEnum.getPlasmidCell(null))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
                         && GTUtility.areStacksEqual(
                             this.mInventory[this.getInputSlot() + 2],
@@ -284,7 +284,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mFluid.amount -= 1000;
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList
+                            this.mOutputItems[0] = BioDataEnum
                                 .getPlasmidCell(cultureDNABioData);
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
@@ -303,7 +303,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility.areStacksEqual(
                             this.mInventory[this.getInputSlot() + 1],
-                            BioItemList.getPlasmidCell(null),
+                            BioDataEnum.getPlasmidCell(null),
                             true)
                         && this.mInventory[this.getInputSlot() + 1].getTagCompound() != null
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
