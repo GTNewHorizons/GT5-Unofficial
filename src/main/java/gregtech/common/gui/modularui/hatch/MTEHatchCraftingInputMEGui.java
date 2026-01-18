@@ -193,9 +193,8 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
         }
 
         @Override
-        protected ItemStack getItemStackForRendering(ModularSlot slotIn) {
-            ItemStack stack = slotIn.getStack();
-            if (stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
+        protected ItemStack getItemStackForRendering(ItemStack stack, boolean dragging) {
+            if (dragging || stack == null || !(stack.getItem() instanceof ItemEncodedPattern patternItem)) {
                 return stack;
             }
             IAEStack<?> outputAE = patternItem.getOutputAE(stack);
