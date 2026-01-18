@@ -27,6 +27,11 @@ public class BioLabLoader {
         BioCultureEnum.registerAllCultures();
         BioDataEnum.registerAllDNAItemStacks();
         BioDataEnum.registerAllPlasmidItemStacks();
+
+
+        ItemList.EmptyPetriDish.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 0));
+        ItemList.EmptyDNAFlask.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 1));
+        ItemList.EmptyPlasmid.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 2));
         ItemList.DetergentPowder.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 3));
         ItemList.Agarose.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 4));
         ItemList.IncubationModule.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 5));

@@ -88,7 +88,7 @@ public enum BioCultureEnum {
     // Null has to be treated separatedly from the null culture because it's used to get the petri dish,
     // which is a culture without a NBT tag
     public static ItemStack getPetriDish(BioCulture culture) {
-        if (culture == null) return new ItemStack(BioItemList.vanillaBioLabParts);
+        if (culture == null) return ItemList.EmptyPetriDish.get(1);
 
         return BioCultureEnum.LOOKUPS_BY_BIODATA.getOrDefault(culture, BioCultureEnum.NullBioCulture).culture.get(1);
     }

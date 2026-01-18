@@ -2945,6 +2945,9 @@ public enum ItemList implements IItemContainer {
     PlasmidBacterialsludgebac,
     PlasmidMutagen,
 
+    EmptyPetriDish,
+    EmptyPlasmid,
+    EmptyDNAFlask,
     DetergentPowder,
     Agarose,
     IncubationModule,

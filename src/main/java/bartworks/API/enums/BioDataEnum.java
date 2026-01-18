@@ -97,11 +97,17 @@ public enum BioDataEnum {
         return PLASMID_CELLS;
     }
 
+    // Null has to be treated separatedly from the null biodata because it's used to get empty version,
+    // which is the itemstack without a NBT tag
     public static ItemStack getDNASampleFlask(BioData dna) {
+        if (dna == null) return ItemList.EmptyDNAFlask.get(1);
         return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(dna, BioDataEnum.NullBioData).DNASampleFlask.get(1);
     }
 
+    // Null has to be treated separatedly from the null biodata because it's used to get empty version,
+    // which is the itemstack without a NBT tag
     public static ItemStack getPlasmidCell(BioData plasmid) {
+        if (plasmid == null) return ItemList.EmptyPlasmid.get(1);
         return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(plasmid, BioDataEnum.NullBioData).DNASampleFlask.get(1);
     }
 
