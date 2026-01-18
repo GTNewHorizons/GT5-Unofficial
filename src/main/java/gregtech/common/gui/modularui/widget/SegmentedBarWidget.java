@@ -1,5 +1,10 @@
 package gregtech.common.gui.modularui.widget;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import com.cleanroommc.modularui.drawable.GuiDraw;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
@@ -9,22 +14,18 @@ import com.cleanroommc.modularui.utils.ColorShade;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.sizer.Area;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
 
     List<SegmentInfo> segments;
     int maximum;
     int borderSize;
 
-    public SegmentedBarWidget(int maximum, int borderSize, SegmentInfo ... segments) {
+    public SegmentedBarWidget(int maximum, int borderSize, SegmentInfo... segments) {
         this.maximum = maximum;
         this.borderSize = borderSize;
-        this.segments = Arrays.stream(segments).sorted((a, b) ->
-            Integer.compare(b.valueSupplier.get(), a.valueSupplier.get())).collect(Collectors.toList());;
+        this.segments = Arrays.stream(segments)
+            .sorted((a, b) -> Integer.compare(b.valueSupplier.get(), a.valueSupplier.get()))
+            .collect(Collectors.toList());;
 
         tooltip().setAutoUpdate(true);
         tooltipBuilder(this::createTooltip);
@@ -45,15 +46,25 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
         GuiDraw.drawRect(0, 0, area.width, area.height, Color.BLACK.main);
         for (SegmentInfo segment : segments) {
             int segWidth = Math.max(borderSize, (int) (((double) segment.valueSupplier.get() / maximum) * area.width));
-            GuiDraw.drawHorizontalGradientRect(start, borderSize, segWidth, area.height - borderSize - 1, segment.color.main, segment.color.darkerSafe(1));
+            GuiDraw.drawHorizontalGradientRect(
+                start,
+                borderSize,
+                segWidth,
+                area.height - borderSize - 1,
+                segment.color.main,
+                segment.color.darkerSafe(1));
             start += segWidth;
         }
-        GuiDraw.drawRect(start, borderSize, area.width - start - borderSize, area.height - borderSize - 1, Color.GREY.main);
+        GuiDraw.drawRect(
+            start,
+            borderSize,
+            area.width - start - borderSize,
+            area.height - borderSize - 1,
+            Color.GREY.main);
     }
 
-
-
     public static class SegmentInfo {
+
         public Supplier<Integer> valueSupplier;
         public ColorShade color;
         public String label;
