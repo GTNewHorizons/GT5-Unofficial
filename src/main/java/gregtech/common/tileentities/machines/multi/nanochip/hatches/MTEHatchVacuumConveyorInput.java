@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import java.util.Map;
 
-import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,6 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
@@ -30,11 +30,14 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Must be " + MTENanochipAssemblyComplexGui.coloredString() + " to work",
+        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.coloredString() + " to work",
             "Can be installed in the " + EnumChatFormatting.GREEN + "Nanochip Assembly Complex",
-            "Provides" + EnumChatFormatting.YELLOW + " Circuit Component " + EnumChatFormatting.GRAY + "input for NAC modules",
-            EnumChatFormatting.STRIKETHROUGH + "------------------------------------------------------------------------",
+            "Provides" + EnumChatFormatting.YELLOW
+                + " Circuit Component "
+                + EnumChatFormatting.GRAY
+                + "input for NAC modules",
+            EnumChatFormatting.STRIKETHROUGH
+                + "------------------------------------------------------------------------",
             EnumChatFormatting.YELLOW + "Outputs from recipes with inputs from a colored Vacuum Conveyor Input",
             EnumChatFormatting.YELLOW + "will be placed in a Vacuum Conveyor Output of the corresponding color", };
     }
