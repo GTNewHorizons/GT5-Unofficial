@@ -93,7 +93,7 @@ public class AdditionalRecipes {
                     .getCompoundTag("DNA"));
             if (DNA != null) {
                 ItemStack Detergent = ItemList.DetergentPowder.get(1);
-                ItemStack DNAFlask = BioDataEnum.getDNASampleFlask(null);
+                ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
                 ItemStack EthanolCell = Materials.Ethanol.getCells(1);
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack, DNAFlask, Detergent, EthanolCell)
@@ -150,7 +150,7 @@ public class AdditionalRecipes {
                 BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.getBioData().getName());
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(FluidLoader.BioLabFluidCells[1], BioDataEnum.getPlasmidCell(null), inp, inp2)
+                    .itemInputs(FluidLoader.BioLabFluidCells[1], ItemList.EmptyPlasmid.get(1), inp, inp2)
                     .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
                     .outputChances(DNA.getChance(), 100_00)
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))

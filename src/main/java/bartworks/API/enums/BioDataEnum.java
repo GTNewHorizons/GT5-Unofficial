@@ -7,6 +7,7 @@ import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -97,17 +98,11 @@ public enum BioDataEnum {
         return PLASMID_CELLS;
     }
 
-    // Null has to be treated separatedly from the null biodata because it's used to get empty version,
-    // which is the itemstack without a NBT tag
-    public static ItemStack getDNASampleFlask(BioData dna) {
-        if (dna == null) return ItemList.EmptyDNAFlask.get(1);
+    public static ItemStack getDNASampleFlask(@Nonnull BioData dna) {
         return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(dna, BioDataEnum.NullBioData).DNASampleFlask.get(1);
     }
 
-    // Null has to be treated separatedly from the null biodata because it's used to get empty version,
-    // which is the itemstack without a NBT tag
-    public static ItemStack getPlasmidCell(BioData plasmid) {
-        if (plasmid == null) return ItemList.EmptyPlasmid.get(1);
+    public static ItemStack getPlasmidCell(@Nonnull BioData plasmid) {
         return BioDataEnum.LOOKUPS_BY_BIODATA.getOrDefault(plasmid, BioDataEnum.NullBioData).DNASampleFlask.get(1);
     }
 

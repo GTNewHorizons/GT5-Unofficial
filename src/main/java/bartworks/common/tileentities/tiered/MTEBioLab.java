@@ -261,7 +261,7 @@ public class MTEBioLab extends MTEBasicMachine {
                            // Culture
                         GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot() + 1], BioDataEnum.getPlasmidCell(null))
+                            .areStacksEqual(this.mInventory[this.getInputSlot() + 1], ItemList.EmptyPlasmid.get(1))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
                         && GTUtility.areStacksEqual(
                             this.mInventory[this.getInputSlot() + 2],
@@ -304,7 +304,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility.areStacksEqual(
                             this.mInventory[this.getInputSlot() + 1],
-                            BioDataEnum.getPlasmidCell(null),
+                        ItemList.EmptyPlasmid.get(1),
                             true)
                         && this.mInventory[this.getInputSlot() + 1].getTagCompound() != null
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])

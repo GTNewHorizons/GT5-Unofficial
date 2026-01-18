@@ -31,7 +31,7 @@ public class Autoclave implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Items.glass_bottle))
-                .itemOutputs(BioDataEnum.getDNASampleFlask(null))
+                .itemOutputs(ItemList.EmptyDNAFlask.get(1))
                 .fluidInputs(used.getGas(10L) != null ? used.getGas(8L) : used.getFluid(16L))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
