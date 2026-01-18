@@ -4,10 +4,10 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_PIPE_PORT;
-import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,14 +31,19 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
-import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnectsToVacuumConveyor {
+public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement, IVacuumStorage {
 
     public static final int VACUUM_MOVE_TICK = 17;
-
+    public VacuumFactoryNetwork network;
+    protected MTENanochipAssemblyComplex mainController;
     public CircuitComponentPacket contents;
 
     // Identifier used to identify this hatch uniquely inside a multiblock.
@@ -55,18 +60,29 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            TextureFactory.of(
-                OVERLAY_VACUUM_HATCH_ACTIVE,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory
+                .of(OVERLAY_VACUUM_HATCH_ACTIVE, Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
             TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
+    }
+
+    @Override
+    public byte getColorization() {
+        return this.getBaseMetaTileEntity()
+            .getColorization();
+    }
+
+    public MTENanochipAssemblyComplex getMainController() {
+        return mainController;
+    }
+
+    public void setMainController(MTENanochipAssemblyComplex main) {
+        this.mainController = main;
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture,
-            TextureFactory.of(
-                OVERLAY_VACUUM_HATCH,
-                Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())),
+            TextureFactory.of(OVERLAY_VACUUM_HATCH, Dyes.getModulation(getColorization(), MACHINE_METAL.getRGBA())),
             TextureFactory.of(OVERLAY_VACUUM_PIPE_PORT) };
     }
 
@@ -74,8 +90,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
         if (contents == null) contents = packet;
         else contents.unifyWith(packet);
     }
-
-    public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -85,19 +99,21 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
                     getBaseMetaTileEntity().setActive(false);
                 } else {
                     getBaseMetaTileEntity().setActive(true);
-                    moveAround(aBaseMetaTileEntity);
+                    this.getNetwork()
+                        .addElement(this);
                 }
             }
         }
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
+    public void onFirstTick(IGregTechTileEntity base) {
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onFirstTick(base);
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -124,6 +140,18 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
     }
 
     @Override
+    public void getNeighbours(Collection<VacuumFactoryElement> neighbours) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base == null) return;
+
+        if (base.getTileEntityAtSide(base.getFrontFacing()) instanceof IGregTechTileEntity igte
+            && igte.getColorization() == base.getColorization()
+            && igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
+            neighbours.add(element);
+        }
+    }
+
+    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -134,16 +162,17 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
     }
 
     @Override
-    public byte getColorization() {
-        return getBaseMetaTileEntity().getColorization();
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         if (this.contents != null) {
             aNBT.setTag("vacuumContents", this.contents.writeToNBT());
         }
+    }
+
+    @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+        VacuumFactoryGrid.INSTANCE.addElement(this);
     }
 
     @Override
@@ -203,5 +232,15 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements IConnec
             }
         }
         return info.toArray(new String[] {});
+    }
+
+    @Override
+    public CircuitComponentPacket getcomponentPacket() {
+        return this.contents;
+    }
+
+    @Override
+    public MTENanochipAssemblyComplex getAssemblyComplex() {
+        return mainController;
     }
 }

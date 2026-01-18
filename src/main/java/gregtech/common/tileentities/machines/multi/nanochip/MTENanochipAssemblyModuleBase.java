@@ -196,12 +196,15 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (aMetaTileEntity == null) {
             return false;
         }
+
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
+            hatch.setMainController(this.getbaseMulti());
             return vacuumConveyorInputs.addHatch(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
+            hatch.setMainController(this.getbaseMulti());
             return vacuumConveyorOutputs.addHatch(hatch);
         }
         return false;
