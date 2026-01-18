@@ -3865,6 +3865,8 @@ machtype.completer=Research Completer
 machtype.decay_warehouse=Decay Warehouse
 machtype.backfiller=Concrete Backfiller
 machtype.solar_factory=Solar Factory
+machtype.wormhole_gen=Wormhole Generator, MWG
+machtype.tpm=Transcendent Mixer, TPM
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3872,9 +3874,14 @@ gt.mb.corepos.front_center=Front center
 gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
-gt.mb.hint_block=Hint block with dot %d
-
 # Multiblock Tooltip lines
+gt.tpm.tips=Assisting in all your DTPF needs!\nThis multiblock will run in parallel according to the amount set in the parallel menu\nAll inputs will scale, except time...\nAll EU is deducted from wireless EU networks only
+
+gt.wormhole_gen.tips=Transfers EU between two wormhole generators\nWormholes are linked by placing an AE2 Entangled Singularity in each controller slot\nThe transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate\nIf the transfer rate is completely stable, the transfer efficiency is %s%%\nEU will only be transferred if there is space in the laser source hatch\nEach laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side\nConsumes an AE2 Singularity from an input bus each time the wormhole is kick-started\nRight click the controller with a screwdriver to disable overclocking
+gt.wormhole_gen.info.1=§61§r (Hint Block Number 1)
+gt.wormhole_gen.info.2=§60§r - §64§r (Laser Only, Hint Block Number 2)
+gt.wormhole_gen.extra_author_info=§7, Rendering by: §fBucketBrigade
+
 gt.solar_factory.tips=Controller block for the Solar Factory\nProduces solar panels in bulk\nThe structure has 3 tiers, each allowing greater production than the last\n§f§lTier §b§l2 §f§land above:\n  §aSupports Multi-Amp energy hatches\n  25%% more outputs for every Wafer tier used above the minimum required\n  The bonus to output occurs after parallels, and cannot be greater than 100%%\n  The recipes shown in NEI display the minimum wafer tier required\n  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost\n  §fPrecise Casing §7Tier determines §6Parallels\n  %s->%s Parallels\n§f§lTier §b§l3§f§l:\n  §aSupports Laser energy hatches\n  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost\n  Bonus per increased wafer tier is raised to 50%%
 gt.solar_factory.tier_head=§f§lTier §b§l%s:
 gt.solar_factory.tier_head.all=§f§lAll Tiers:
