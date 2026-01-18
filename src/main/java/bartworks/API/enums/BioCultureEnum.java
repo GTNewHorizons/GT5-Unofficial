@@ -56,7 +56,7 @@ public enum BioCultureEnum {
         this.plasmid = plasmid;
         this.color = color;
         this.culture = culture;
-        this.bioCulture = new BioCulture(color, name, id, plasmid.getBioData(), dna.getBioData(), rarity, breedable);
+        this.bioCulture = new BioCulture(this);
     }
 
     public static void registerLoopkups(){
