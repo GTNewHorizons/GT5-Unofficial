@@ -43,7 +43,7 @@ public class BaseRecipeLoader {
     public static ItemStack getNHCoreModItem(String name, int count) {
         // must never be called before the try catch block is ran
         try {
-            return (ItemStack) NHCOREMOD_GETTER.invokeExact(Enum.valueOf(NHCOREMOD_ITEM_LIST, name), count);
+            return (ItemStack) NHCOREMOD_GETTER.invoke(Enum.valueOf(NHCOREMOD_ITEM_LIST, name), count);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
