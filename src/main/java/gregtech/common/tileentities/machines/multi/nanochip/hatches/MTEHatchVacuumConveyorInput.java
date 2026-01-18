@@ -10,10 +10,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
-import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
 
-public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implements IConnectsToVacuumConveyor {
+public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
 
     public MTEHatchVacuumConveyorInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
@@ -48,27 +49,10 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
     }
 
     @Override
-    public boolean isComponentsInputFacing(ForgeDirection side) {
-        return isInputFacing(side);
+    public void onFirstTick(IGregTechTileEntity base) {
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onFirstTick(base);
     }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public boolean canConnect(ForgeDirection side) {
-        return isInputFacing(side);
-    }
-
-    @Override
-    public IConnectsToVacuumConveyor getNext(IConnectsToVacuumConveyor source) {
-        return null;
-    }
-
-    @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {}
 
     // Try to consume a stack of fake input items from this hatch. Returns the amount of items consumed.
     public int tryConsume(ItemStack stack) {
@@ -90,5 +74,27 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor implemen
             return toConsume;
         }
         return 0;
+    }
+
+    @Override
+    public VacuumFactoryNetwork getNetwork() {
+        return network;
+    }
+
+    @Override
+    public void setNetwork(VacuumFactoryNetwork network) {
+        this.network = network;
+    }
+
+    @Override
+    public boolean canConnectOnSide(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        contents = this.getNetwork()
+            .getCircuitComponentPacket();
     }
 }

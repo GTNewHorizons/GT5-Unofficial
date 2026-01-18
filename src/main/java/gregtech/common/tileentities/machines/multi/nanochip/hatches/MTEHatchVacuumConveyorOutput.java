@@ -1,15 +1,20 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
-import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
-import gregtech.common.tileentities.machines.multi.nanochip.util.IConnectsToVacuumConveyor;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
+import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import it.unimi.dsi.fastutil.Pair;
 
 public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
 
@@ -51,53 +56,33 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
     }
 
     @Override
-    public boolean isComponentsInputFacing(ForgeDirection side) {
-        return isInputFacing(side);
+    public VacuumFactoryNetwork getNetwork() {
+        return network;
+    }
+
+    // SAVE ME
+    @Override
+    public CircuitComponentPacket getcomponentPacket() {
+        return this.contents;
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        IConnectsToVacuumConveyor current = this, source = this, next;
-        int range = 0;
-        while ((next = current.getNext(source)) != null && range++ < 1000) {
-            if (next instanceof MTEHatchVacuumConveyorInput) {
-                ((MTEHatchVacuumConveyorInput) next).unifyPacket(contents);
-                // Only clear contents if we actually moved the packet
-                contents = null;
-                break;
-            }
-            source = current;
-            current = next;
-        }
+    public List<Pair<Class<?>, Object>> getComponents() {
+        return Collections.singletonList(Pair.of(IVacuumStorage.class, this));
     }
 
     @Override
-    public IConnectsToVacuumConveyor getNext(IConnectsToVacuumConveyor source) {
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        byte color = base.getColorization();
-        if (color < 0) {
-            return null;
-        }
-        IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if (next == null) {
-            return null;
-        }
-        IMetaTileEntity meta = next.getMetaTileEntity();
-        if (meta instanceof MTEVacuumConveyorPipe) {
-            ((MTEVacuumConveyorPipe) meta).markUsed();
-            return (IConnectsToVacuumConveyor) meta;
-        } else if (meta instanceof MTEHatchVacuumConveyorInput
-            && ((MTEHatchVacuumConveyorInput) meta).getColorization() == color
-            && ((MTEHatchVacuumConveyorInput) meta).canConnect(
-                base.getFrontFacing()
-                    .getOpposite())) {
-                        return (IConnectsToVacuumConveyor) meta;
-                    }
-        return null;
+    public MTENanochipAssemblyComplex getAssemblyComplex() {
+        return this.getMainController();
     }
 
     @Override
-    public boolean canConnect(ForgeDirection side) {
-        return isOutputFacing(side);
+    public void setNetwork(VacuumFactoryNetwork network) {
+        this.network = network;
+    }
+
+    @Override
+    public boolean canConnectOnSide(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 }
