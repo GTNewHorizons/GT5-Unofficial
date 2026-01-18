@@ -108,7 +108,7 @@ public enum StoneType implements IStoneType {
     Mercury(StoneBuilder.galaxySpace("Mercury", 2, 1)),
     AlphaCentauri(new StoneBuilder()
         .setStoneNoCobble(GalaxySpace, "acentauribbsubgrunt", 0)
-        .setDust(NewHorizonsCoreMod, "item.CentauriASurfaceDust")),
+        .setDust(NewHorizonsCoreMod, "CentauriASurfaceDust")),
     TCetiE(StoneBuilder.galaxySpace("TCetiE", 2, 1)),
     VegaB(StoneBuilder.galaxySpace("VegaB", "subgrunt", 0)),
     BarnardaE(new StoneBuilder()
@@ -146,13 +146,13 @@ public enum StoneType implements IStoneType {
 
     Deepslate(new StoneBuilder()
         .setStoneNoCobble(Mods.EtFuturumRequiem, "deepslate", WILDCARD)
-        .setDust(NewHorizonsCoreMod, "item.DeepslateDust")
+        .setDust(NewHorizonsCoreMod, "DeepslateDust")
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.OW)),
 
     Tuff(new StoneBuilder()
         .setStoneNoCobble(Mods.EtFuturumRequiem, "tuff", 0)
-        .setDust(NewHorizonsCoreMod, "item.TuffDust")
+        .setDust(NewHorizonsCoreMod, "TuffDust")
         .setCategory(StoneCategory.Stone)
         .addAllowedDimensions(DimNames.OW)),
 
@@ -486,7 +486,7 @@ public enum StoneType implements IStoneType {
 
         public StoneBuilder setCoremodDust(String name) {
             if (NewHorizonsCoreMod.isModLoaded()) {
-                pureDust = impureDust = new LazyItem(NewHorizonsCoreMod, "item." + name + "StoneDust");
+                pureDust = impureDust = new LazyItem(NewHorizonsCoreMod, name + "StoneDust");
             }
 
             return this;
