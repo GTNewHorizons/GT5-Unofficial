@@ -15,6 +15,7 @@ package bartworks.common.loaders;
 
 import java.awt.Color;
 
+import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.EnumRarity;
 
 import bartworks.util.BioCulture;
@@ -22,20 +23,13 @@ import bartworks.util.BioData;
 
 public class BioCultureLoader {
 
-    public static final BioData BIO_DATA_BETA_LACMATASE = BioData
-        .createAndRegisterBioData("beta-Lactamase", EnumRarity.uncommon, 10000, 0);
-    private static final BioData BIO_DATA_YEAST = BioData
-        .createAndRegisterBioData("Saccharomyces cerevisiae", EnumRarity.common);
-    private static final BioData BIO_DNA_WHINE_YEAST = BioData
-        .createAndRegisterBioData("Saccharomyces cerevisiae var bayanus", EnumRarity.uncommon);
-    private static final BioData BIO_DNA_BEER_YEAST = BioData
-        .createAndRegisterBioData("Saccharomyces cerevisiae var cerevisiae", EnumRarity.uncommon);
-    private static final BioData eColiData = BioData
-        .createAndRegisterBioData("Escherichia koli", EnumRarity.uncommon, 10000, 0);
-    private static final BioData BIO_DNA_ANAEROBIC_OIL = BioData
-        .createAndRegisterBioData("Pseudomonas Veronii", EnumRarity.uncommon);
-    private static final BioData BIO_DATA_ANAEROBIC_OIL = BioData
-        .createAndRegisterBioData("Pseudomonas Veronii", EnumRarity.uncommon, 5000, 1);
+    public static final BioData BIO_DATA_BETA_LACMATASE = BioDataEnum.BetaLactamase.getBioData();
+    private static final BioData BIO_DATA_YEAST = BioDataEnum.SaccharomycesCerevisiae.getBioData();
+    private static final BioData BIO_DNA_WHINE_YEAST = BioDataEnum.SaccharomycesCerevisiaeVarBayanus.getBioData();
+    private static final BioData BIO_DNA_BEER_YEAST = BioDataEnum.SaccharomycesCerevisiaeVarCerevisiae.getBioData();
+    private static final BioData eColiData = BioDataEnum.EscherichiaKoli.getBioData();
+    private static final BioData BIO_DNA_ANAEROBIC_OIL = BioDataEnum.PseudomonasVeronii.getBioData();
+    private static final BioData BIO_DATA_ANAEROBIC_OIL = BioDataEnum.PseudomonasVeronii2.getBioData();
     public static BioCulture CommonYeast;
     public static BioCulture WhineYeast;
     public static BioCulture BeerYeast;

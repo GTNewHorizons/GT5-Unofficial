@@ -25,8 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class BioData {
 
-    public static final ArrayList<BioData> BIO_DATA_ARRAY_LIST = new ArrayList<>();
-
     protected String name;
     protected int ID;
     protected EnumRarity rarity;
@@ -47,20 +45,6 @@ public class BioData {
         this.ID = data.id;
         this.chance = data.chance;
         this.tier = data.tier;
-    }
-
-    public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
-        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, chance, tier);
-        BIO_DATA_ARRAY_LIST.add(ret);
-        GTLog.out.println(ret);
-        return ret;
-    }
-
-    public static BioData createAndRegisterBioData(String aName, EnumRarity rarity) {
-        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, 75_00, VoltageIndex.ULV);
-        BIO_DATA_ARRAY_LIST.add(ret);
-        GTLog.out.println(ret);
-        return ret;
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {

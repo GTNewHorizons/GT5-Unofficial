@@ -55,23 +55,6 @@ public final class BioObjectAdder {
     }
 
     /**
-     * unspecific Biodata that can be converted into DNA and Plasmid with the propper methodes
-     *
-     * @param aName  the name of the Biodata
-     * @param rarity visual only
-     * @param chance the chanche to extract this BioData
-     * @param tier   the tier of this BioData 0=HV, 1=EV etc.
-     * @return
-     */
-    public static @Nullable BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
-        if (BioData.BIO_DATA_ARRAY_LIST.size() > 1)
-            return BioData.createAndRegisterBioData(aName, rarity, chance, tier);
-        new Exception("Too Early to register a BioData! You MUST run this either after:bartworks OR in the init Phase!")
-            .printStackTrace();
-        return null;
-    }
-
-    /**
      * @param voltageTier (i.e. 6 for LuV, 7 for ZPM, only intresting for LuV+)
      * @return the propper Bacteria Tier (at least 0)
      */
