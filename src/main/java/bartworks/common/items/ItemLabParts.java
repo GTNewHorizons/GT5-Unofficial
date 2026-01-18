@@ -98,7 +98,7 @@ public class ItemLabParts extends SimpleSubItemClass {
         String name = itemStack.getTagCompound().getString("Name");
         switch (itemStack.getItemDamage()) {
             case 0:
-                BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioCultureEnum.NullBioCulture).getBioCulture();
+                BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioCultureEnum.NullBioCulture).bioCulture;
                 list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.5.name", culture.getLocalisedName()));
                 if (!culture.isBreedable()) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));

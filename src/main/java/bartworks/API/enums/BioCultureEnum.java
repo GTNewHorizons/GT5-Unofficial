@@ -2,12 +2,15 @@ package bartworks.API.enums;
 
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BioCulture;
+import bartworks.util.BioData;
 import gregtech.api.enums.ItemList;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum BioCultureEnum {
@@ -30,6 +33,7 @@ public enum BioCultureEnum {
     CorynebacteriumSludgeMarsensis("Corynebacterium Sludge Marsensis", 16, EnumRarity.uncommon, false, BioDataEnum.Bacterialsludgebac, BioDataEnum.Bacterialsludgebac, new Color(10, 62, 13), ItemList.CultureCorynebacteriumSludgeMarsensis),
     MutagenBacteriaASpatio("Mutagen Bacteria a Spatio", 17, EnumRarity.rare, false, BioDataEnum.Mutagen, BioDataEnum.Mutagen, new Color(29, 149, 50), ItemList.CultureMutagenBacteriaASpatio),;
 
+    public static final List<BioCulture> BIO_CULTURES = new ArrayList<>();
     public static final Map<String, BioCultureEnum> LOOKUPS_BY_NAME = new HashMap<>();
     public static final Map<BioCulture, BioCultureEnum> LOOKUPS_BY_BIODATA = new HashMap<>();
 
@@ -41,6 +45,7 @@ public enum BioCultureEnum {
     public final BioDataEnum plasmid;
     public final Color color;
     public final ItemList culture;
+    public final BioCulture bioCulture;
 
     BioCultureEnum(String name, int id, EnumRarity rarity, boolean breedable, BioDataEnum dna, BioDataEnum plasmid, Color color, ItemList culture){
         this.name = name;
@@ -51,24 +56,22 @@ public enum BioCultureEnum {
         this.plasmid = plasmid;
         this.color = color;
         this.culture = culture;
+        this.bioCulture = new BioCulture(color, name, id, plasmid.getBioData(), dna.getBioData(), rarity, breedable);
     }
 
     public static void registerLoopkups(){
         for (BioCultureEnum culture : BioCultureEnum.values()) {
             LOOKUPS_BY_NAME.put(culture.name, culture);
-            LOOKUPS_BY_BIODATA.put(culture.getBioCulture(), culture);
+            LOOKUPS_BY_BIODATA.put(culture.bioCulture, culture);
+            BIO_CULTURES.add(culture.bioCulture);
         }
     }
 
     public static void registerAllCultures(){
         for (BioCultureEnum culture : BioCultureEnum.values()){
             ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, 0);
-            stack.setTagCompound(BioCulture.getNBTTagFromCulture(culture.getBioCulture()));
+            stack.setTagCompound(BioCulture.getNBTTagFromCulture(culture.bioCulture));
             culture.culture.set(stack);
         }
-    }
-
-    public BioCulture getBioCulture(){
-        return new BioCulture(this);
     }
 }

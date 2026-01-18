@@ -54,6 +54,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -218,7 +219,7 @@ public class AdditionalRecipes {
 
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
-            for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
+            for (BioCulture bioCulture : BioCultureEnum.BIO_CULTURES) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(new ItemStack(Items.sugar, 64))

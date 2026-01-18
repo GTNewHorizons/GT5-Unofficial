@@ -23,7 +23,7 @@ import bartworks.util.BioCulture;
 import bartworks.util.BioData;
 
 public class BioCultureLoader {
-    
+
     public static BioCulture CommonYeast;
     public static BioCulture WhineYeast;
     public static BioCulture BeerYeast;
@@ -33,13 +33,13 @@ public class BioCultureLoader {
     public static BioCulture generalPurposeFermentingBacteria;
 
     public static void run() {
-        BioCultureLoader.CommonYeast = BioCultureEnum.SaccharomycesCerevisiae.getBioCulture();
-        BioCultureLoader.WhineYeast = BioCultureEnum.SaccharomycesCerevisiaeVarBayanus.getBioCulture();
-        BioCultureLoader.BeerYeast = BioCultureEnum.SaccharomycesCerevisiaeVarCerevisiae.getBioCulture();
-        BioCultureLoader.rottenFleshBacteria = BioCultureEnum.EscherichiaCadaver.getBioCulture();
-        BioCultureLoader.eColi = BioCultureEnum.EscherichiaKoli.getBioCulture();
-        BioCultureLoader.anaerobicOil = BioCultureEnum.PseudomonasVeronii.getBioCulture();
-        BioCultureLoader.generalPurposeFermentingBacteria = BioCultureEnum.SaccharomycesEscherichia.getBioCulture();
+        BioCultureLoader.CommonYeast = BioCultureEnum.SaccharomycesCerevisiae.bioCulture;
+        BioCultureLoader.WhineYeast = BioCultureEnum.SaccharomycesCerevisiaeVarBayanus.bioCulture;
+        BioCultureLoader.BeerYeast = BioCultureEnum.SaccharomycesCerevisiaeVarCerevisiae.bioCulture;
+        BioCultureLoader.rottenFleshBacteria = BioCultureEnum.EscherichiaCadaver.bioCulture;
+        BioCultureLoader.eColi = BioCultureEnum.EscherichiaKoli.bioCulture;
+        BioCultureLoader.anaerobicOil = BioCultureEnum.PseudomonasVeronii.bioCulture;
+        BioCultureLoader.generalPurposeFermentingBacteria = BioCultureEnum.SaccharomycesEscherichia.bioCulture;
 
         BioCultureLoader.CommonYeast.setLocalisedName("Common Yeast");
         BioCultureLoader.WhineYeast.setLocalisedName("Whine Yeast");

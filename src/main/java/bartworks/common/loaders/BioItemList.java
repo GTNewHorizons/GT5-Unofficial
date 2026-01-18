@@ -16,6 +16,7 @@ package bartworks.common.loaders;
 import java.util.Collection;
 import java.util.HashSet;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,7 +48,7 @@ public class BioItemList {
 
     public static Collection<ItemStack> getAllPetriDishes() {
         HashSet<ItemStack> ret = new HashSet<>();
-        for (BioCulture Culture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
+        for (BioCulture Culture : BioCultureEnum.BIO_CULTURES) {
             ret.add(BioItemList.getPetriDish(Culture));
         }
         return ret;

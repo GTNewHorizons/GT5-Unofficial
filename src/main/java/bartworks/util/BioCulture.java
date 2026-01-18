@@ -32,9 +32,6 @@ import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
 
-    public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
-    public static final BioCulture NULLCULTURE = BioCultureEnum.NullBioCulture.getBioCulture();
-
     public String getLocalisedName() {
         return GTLanguageManager.getTranslation(this.getName());
     }
@@ -57,7 +54,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         this.bBreedable = culture.breedable;
     }
 
-    protected BioCulture(Color color, String name, int ID, BioData plasmid, BioData dDNA, EnumRarity rarity,
+    public BioCulture(Color color, String name, int ID, BioData plasmid, BioData dDNA, EnumRarity rarity,
         boolean bBreedable) {
         super(name, ID, rarity, 75_00, VoltageIndex.ULV);
         this.color = color;
@@ -87,17 +84,17 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     public static BioCulture getBioCultureFromNBTTag(NBTTagCompound tag) {
         if (tag == null || !tag.hasKey("Name")) return null;
-        return BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(tag.getString("Name"), BioCultureEnum.NullBioCulture).getBioCulture();
+        return BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(tag.getString("Name"), BioCultureEnum.NullBioCulture).bioCulture;
     }
 
     public static BioCulture getBioCulture(String Name) {
         if (Name == null || Name.isEmpty()) return null;
-        for (BioCulture b : BIO_CULTURE_ARRAY_LIST) if (b.name.equals(Name)) return b;
+        for (BioCulture b : BioCultureEnum.BIO_CULTURES) if (b.name.equals(Name)) return b;
         return null;
     }
 
     public static BioCulture getBioCulture(BioData DNA) {
-        for (BioCulture b : BIO_CULTURE_ARRAY_LIST) if (b.getdDNA()
+        for (BioCulture b : BioCultureEnum.BIO_CULTURES) if (b.getdDNA()
             .equals(DNA)) return b;
         return null;
     }
@@ -148,7 +145,7 @@ public class BioCulture extends BioData implements IColorModulationContainer {
 
     private BioCulture checkForExisting(BioCulture culture) {
         if (culture == null) return null;
-        for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST) if (culture.getdDNA()
+        for (BioCulture bc : BioCultureEnum.BIO_CULTURES) if (culture.getdDNA()
             .equals(bc.getdDNA())
             && culture.getPlasmid()
                 .equals(bc.getPlasmid()))
