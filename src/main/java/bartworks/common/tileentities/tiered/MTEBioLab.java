@@ -344,7 +344,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && GTUtility
                             .areStacksEqual(this.mInventory[this.getInputSlot()], BioItemList.getPetriDish(null))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
-                        && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 1], BioItemList.getOther(4))
+                        && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 1], ItemList.PlasmaMembrane.get(1))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
                         && GTUtility.areStacksEqual(
                             this.mInventory[this.getInputSlot() + 2],

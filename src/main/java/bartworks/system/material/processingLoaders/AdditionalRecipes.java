@@ -91,7 +91,7 @@ public class AdditionalRecipes {
                 stack.getTagCompound()
                     .getCompoundTag("DNA"));
             if (DNA != null) {
-                ItemStack Detergent = BioItemList.getOther(1);
+                ItemStack Detergent = ItemList.DetergentPowder.get(1);
                 ItemStack DNAFlask = BioDataEnum.getDNASampleFlask(null);
                 ItemStack EthanolCell = Materials.Ethanol.getCells(1);
                 GTValues.RA.stdBuilder()
@@ -201,7 +201,7 @@ public class AdditionalRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 BioItemList.getPetriDish(null),
-                BioItemList.getOther(4),
+                ItemList.PlasmaMembrane.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(2L),
                 Outp)
             .itemOutputs(

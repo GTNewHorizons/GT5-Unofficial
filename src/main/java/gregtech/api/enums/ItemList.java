@@ -2926,6 +2926,11 @@ public enum ItemList implements IItemContainer {
     PlasmidBacterialsludgebac,
     PlasmidMutagen,
 
+    DetergentPowder,
+    Agarose,
+    IncubationModule,
+    PlasmaMembrane,
+
     // semicolon after the comment to reduce merge conflicts
     ;
 

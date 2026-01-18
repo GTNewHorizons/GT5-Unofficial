@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -90,7 +91,7 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(17)
-            .itemOutputs(BioItemList.getOther(4))
+            .itemOutputs(ItemList.PlasmaMembrane.get(1))
             .fluidInputs(new FluidStack(BioCultureLoader.eColi.getFluid(), 1000))
             .fluidOutputs(new FluidStack(FluidLoader.BioLabFluidMaterials[1], 10))
             .duration(60 * SECONDS)

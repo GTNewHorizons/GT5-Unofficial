@@ -59,16 +59,4 @@ public class BioItemList {
         ret.setTagCompound(BioCulture.getNBTTagFromCulture(Culture));
         return ret;
     }
-
-    /**
-     * 1 - Detergent Powder 2 - Agarose 3 - Incubation Module 4 - Plasma Membrane others are null
-     *
-     * @param selection see above
-     * @return the selected Item
-     */
-    public static ItemStack getOther(int selection) {
-        if (selection < 1 || selection > 4) return null;
-
-        return new ItemStack(BioItemList.vanillaBioLabParts, 1, 2 + selection);
-    }
 }
