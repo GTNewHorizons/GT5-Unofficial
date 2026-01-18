@@ -104,7 +104,7 @@ public class AdditionalRecipes {
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .special(BioItemList.mBioLabParts[0])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[3 + DNA.getTier()])
+                    .eut(GTValues.VP[DNA.getTier()])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -131,7 +131,7 @@ public class AdditionalRecipes {
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[1])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[4 + DNA.getTier()])
+                    .eut(GTValues.VP[DNA.getTier()+1])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -156,7 +156,7 @@ public class AdditionalRecipes {
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[2])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[4 + DNA.getTier()])
+                    .eut(GTValues.VP[DNA.getTier()+1])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);

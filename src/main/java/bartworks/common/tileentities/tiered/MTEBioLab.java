@@ -161,8 +161,6 @@ public class MTEBioLab extends MTEBasicMachine {
 
     @Override
     public int checkRecipe(boolean skipOC) {
-        int rTier = 3;
-
         if (this.getSpecialSlot() != null && this.getSpecialSlot()
             .getItem() instanceof ItemLabModule) {
             int damage = this.getSpecialSlot()
@@ -183,7 +181,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         BioData cultureDNABioData = culture.getdDNA(); // Can't be null because it comes from the BioCultureEnum
 
                         // rTier seems to be a scale adjustment
-                        if (this.mTier < rTier + cultureDNABioData.getTier())
+                        if (this.mTier < cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
                         // deplete all the inputs
@@ -199,7 +197,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L);
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(rTier + cultureDNABioData.getTier()),
+                            BWUtil.getMachineVoltageFromTier(cultureDNABioData.getTier()),
                             500);
 
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
@@ -228,7 +226,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(DNABioDataTag.getString("Name")).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
 
-                        if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 1 + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
                         for (int i = 0; i < 4; i++) {
@@ -248,7 +246,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(2L);
 
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
+                            BWUtil.getMachineVoltageFromTier(1 + cultureDNABioData.getTier()),
                             500);
 
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
@@ -286,7 +284,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && this.mFluid.amount >= 1000) {
                         BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 2])).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-                        if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 1 + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 2; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -299,7 +297,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
+                            BWUtil.getMachineVoltageFromTier(1 + cultureDNABioData.getTier()),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -327,7 +325,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         BioCulture bioCulture = BioCulture
                             .getBioCultureFromNBTTag(this.mInventory[this.getInputSlot()].getTagCompound());
                         if (cultureDNABioData == null || bioCulture == null) return super.checkRecipe(skipOC);
-                        if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 1 + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 3; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -340,7 +338,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(1 + rTier + cultureDNABioData.getTier()),
+                            BWUtil.getMachineVoltageFromTier(1 + cultureDNABioData.getTier()),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
@@ -370,7 +368,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
                         BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 3])).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
-                        if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
+                        if (this.mTier < 3 + cultureDNABioData.getTier()) // todo find why +3
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                         for (int i = 0; i < 3; i++) {
                             if (this.mInventory[this.getInputSlot() + i] != null)
@@ -384,7 +382,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             this.mOutputItems[0] = BioCultureEnum.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(
-                            BWUtil.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()),
+                            BWUtil.getMachineVoltageFromTier(3 + cultureDNABioData.getTier()),
                             500);
                         return MTEBasicMachine.FOUND_AND_SUCCESSFULLY_USED_RECIPE;
                     }
