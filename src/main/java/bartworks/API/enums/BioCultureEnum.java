@@ -7,6 +7,7 @@ import gregtech.api.enums.ItemList;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,11 +86,7 @@ public enum BioCultureEnum {
         return BIO_CULTURE_STACKS;
     }
 
-    // Null has to be treated separatedly from the null culture because it's used to get the petri dish,
-    // which is a culture without a NBT tag
-    public static ItemStack getPetriDish(BioCulture culture) {
-        if (culture == null) return ItemList.EmptyPetriDish.get(1);
-
+    public static ItemStack getPetriDish(@Nonnull BioCulture culture) {
         return BioCultureEnum.LOOKUPS_BY_BIODATA.getOrDefault(culture, BioCultureEnum.NullBioCulture).culture.get(1);
     }
 }

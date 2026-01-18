@@ -299,7 +299,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 case TRANSFORMATION_MODULE: {
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot()], BioCultureEnum.getPetriDish(null), true)
+                            .areStacksEqual(this.mInventory[this.getInputSlot()], ItemList.EmptyPetriDish.get(1), true)
                         && this.mInventory[this.getInputSlot()].getTagCompound() != null
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility.areStacksEqual(
@@ -343,7 +343,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot()], BioCultureEnum.getPetriDish(null))
+                            .areStacksEqual(this.mInventory[this.getInputSlot()], ItemList.EmptyPetriDish.get(1))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 1], ItemList.PlasmaMembrane.get(1))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])

@@ -201,13 +201,11 @@ public class AdditionalRecipes {
         // Clonal Cellular Synthesis- [Liquid DNA] + Medium Petri Dish + Plasma Membrane + Stem Cells + Genome Data
         GTValues.RA.stdBuilder()
             .itemInputs(
-                BioCultureEnum.getPetriDish(null),
+                ItemList.EmptyPetriDish.get(1),
                 ItemList.PlasmaMembrane.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(2L),
                 Outp)
-            .itemOutputs(
-                BioCultureEnum.getPetriDish(null)
-                    .setStackDisplayName("The Culture made from DNA"))
+            .itemOutputs(ItemList.EmptyPetriDish.get(1).setStackDisplayName("The Culture made from DNA"))
             .outputChances(75_00)
             .fluidInputs(GTModHandler.getLiquidDNA(8_000))
             .special(BioItemList.mBioLabParts[4])
@@ -234,7 +232,7 @@ public class AdditionalRecipes {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            BioCultureEnum.getPetriDish(null),
+                            ItemList.EmptyPetriDish.get(1),
                             fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
                                     .get(0))

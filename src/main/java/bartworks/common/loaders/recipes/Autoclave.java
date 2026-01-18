@@ -23,7 +23,7 @@ public class Autoclave implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Circuit_Parts_PetriDish.get(1L))
-                .itemOutputs(BioCultureEnum.getPetriDish(null))
+                .itemOutputs(ItemList.EmptyPetriDish.get(1))
                 .fluidInputs(used.getGas(10L) != null ? used.getGas(8L) : used.getFluid(16L))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

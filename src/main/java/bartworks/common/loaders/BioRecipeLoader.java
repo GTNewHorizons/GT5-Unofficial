@@ -49,7 +49,7 @@ public class BioRecipeLoader {
         for (FluidStack fluidStack : easyFluids) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), new ItemStack(Items.rotten_flesh))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), new ItemStack(Items.rotten_flesh))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.rottenFleshBacteria))
                 .outputChances(33_00)
                 .fluidInputs(fluidStack)
@@ -58,7 +58,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), new ItemStack(Items.fermented_spider_eye))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), new ItemStack(Items.fermented_spider_eye))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.eColi))
                 .outputChances(45_00)
                 .fluidInputs(fluidStack)
@@ -67,7 +67,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), ItemList.Food_Dough.get(1L))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), ItemList.Food_Dough.get(1L))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.CommonYeast))
                 .outputChances(75_00)
                 .fluidInputs(fluidStack)
@@ -76,7 +76,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), ItemList.Food_Dough_Sugar.get(1L))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), ItemList.Food_Dough_Sugar.get(1L))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.WhineYeast))
                 .outputChances(25_00)
                 .fluidInputs(fluidStack)
@@ -85,7 +85,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), ItemList.Bottle_Wine.get(1L))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), ItemList.Bottle_Wine.get(1L))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.WhineYeast))
                 .outputChances(33_00)
                 .fluidInputs(fluidStack)
@@ -94,7 +94,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), ItemList.Bottle_Beer.get(1L))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), ItemList.Bottle_Beer.get(1L))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.BeerYeast))
                 .outputChances(25_00)
                 .fluidInputs(fluidStack)
@@ -103,7 +103,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), ItemList.Bottle_Dark_Beer.get(1L))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), ItemList.Bottle_Dark_Beer.get(1L))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.BeerYeast))
                 .outputChances(33_00)
                 .fluidInputs(fluidStack)
@@ -112,7 +112,7 @@ public class BioRecipeLoader {
                 .addTo(bioLabRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(BioCultureEnum.getPetriDish(null), new ItemStack(Blocks.dirt))
+                .itemInputs(ItemList.EmptyPetriDish.get(1), new ItemStack(Blocks.dirt))
                 .itemOutputs(BioCultureEnum.getPetriDish(BioCultureLoader.anaerobicOil))
                 .outputChances(100)
                 .fluidInputs(fluidStack)
