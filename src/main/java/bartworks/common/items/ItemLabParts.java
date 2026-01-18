@@ -15,7 +15,9 @@ package bartworks.common.items;
 
 import java.util.List;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
+import bartworks.util.BioData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -98,35 +100,22 @@ public class ItemLabParts extends SimpleSubItemClass {
             return;
         }
 
-        BioCulture culture = BioCulture.getBioCulture(
-            itemStack.getTagCompound()
-                .getString("Name"));
-
+        String name = itemStack.getTagCompound().getString("Name");
         switch (itemStack.getItemDamage()) {
             case 0:
-                list.add(
-                    StatCollector.translateToLocal("tooltip.labparts.5.name") + " "
-                        + itemStack.getTagCompound()
-                            .getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
-                if (!itemStack.getTagCompound()
-                    .getBoolean("Breedable")) {
+                BioCulture culture = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioCultureEnum.NullBioCulture).getBioCulture();
+                list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.5.name", culture.getLocalisedName()));
+                if (!culture.isBreedable()) {
                     list.add(StatCollector.translateToLocal("tooltip.labparts.6.name"));
                 }
                 break;
             case 1:
-                list.add(
-                    StatCollector.translateToLocal("tooltip.labparts.7.name") + " "
-                        + itemStack.getTagCompound()
-                            .getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                BioData DNAFlask = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData).getBioData();
+                list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.7.name", DNAFlask.getLocalisedName()));
                 break;
             case 2:
-                list.add(
-                    StatCollector.translateToLocal("tooltip.labparts.8.name") + " "
-                        + itemStack.getTagCompound()
-                            .getString("Name")
-                        + (culture != null ? " (" + culture.getLocalisedName() + ")" : ""));
+                BioData plasmidCell = BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(name, BioDataEnum.NullBioData).getBioData();
+                list.add(StatCollector.translateToLocalFormatted("tooltip.labparts.8.name", plasmidCell.getLocalisedName()));
                 break;
             default:
                 break;

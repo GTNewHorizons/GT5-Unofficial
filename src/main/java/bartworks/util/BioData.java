@@ -19,6 +19,7 @@ import java.util.Objects;
 
 import bartworks.API.enums.BioDataEnum;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,6 +46,10 @@ public class BioData {
         this.ID = data.id;
         this.chance = data.chance;
         this.tier = data.tier;
+    }
+
+    public String getLocalisedName() {
+        return GTLanguageManager.getTranslation(this.getName());
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
