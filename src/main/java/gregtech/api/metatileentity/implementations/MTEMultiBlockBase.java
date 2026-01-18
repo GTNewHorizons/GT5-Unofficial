@@ -120,7 +120,7 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.ItemEjectionHelper;
-import gregtech.api.util.Localized;
+import gregtech.api.util.LocalizedP;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
@@ -2347,12 +2347,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
-                        "  " + Localized.decodeFromBytes(tag.getByteArray("outputItemB" + i))
+                        "  " + LocalizedP.decodeFromBytes(tag.getByteArray("outputItemB" + i))
                             .display() + " x " + formatNumbers(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     currentTip.add(
-                        "  " + Localized.decodeFromBytes(tag.getByteArray("outputFluidB" + i))
+                        "  " + LocalizedP.decodeFromBytes(tag.getByteArray("outputFluidB" + i))
                             + " x "
                             + formatNumbers(tag.getInteger("outputFluidCount" + i))
                             + "L");
@@ -2422,7 +2422,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (stack == null) continue;
                 tag.setByteArray(
                     "outputItemB" + index,
-                    Localized.itemStackName(stack)
+                    LocalizedP.itemStackName(stack)
                         .encodeToBytes());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
@@ -2435,7 +2435,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 if (stack == null) continue;
                 tag.setByteArray(
                     "outputFluidB" + index,
-                    Localized.fluidStackName(stack)
+                    LocalizedP.fluidStackName(stack)
                         .encodeToBytes());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;

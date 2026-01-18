@@ -4,22 +4,17 @@ import java.nio.charset.StandardCharsets;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketChat;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 /**
  * A data structure that represents an unlocalized message. This can be sent over the network easily. The use
@@ -35,7 +30,6 @@ public class Localized {
     public Object key;
     public Object[] args;
     public EnumChatFormatting baseColour = null;
-    private boolean rawString = false;
 
     public Localized() {
 
@@ -58,28 +52,6 @@ public class Localized {
         this.args = args;
     }
 
-    public static Localized itemStackName(ItemStack stack) {
-        Localized localized = new Localized();
-        localized.args = new Object[0];
-        localized.key = stack.getUnlocalizedName() + ".name";
-        if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("display", 10)) {
-            NBTTagCompound nbttagcompound = stack.stackTagCompound.getCompoundTag("display");
-
-            if (nbttagcompound.hasKey("Name", 8)) {
-                localized.key = nbttagcompound.getString("Name");
-                localized.rawString = true;
-            }
-        }
-        return localized;
-    }
-
-    public static Localized fluidStackName(FluidStack stack) {
-        Localized localized = new Localized();
-        localized.args = new Object[0];
-        localized.key = stack.getUnlocalizedName() == null ? "" : stack.getUnlocalizedName();
-        return localized;
-    }
-
     /**
      * Sets the base colour for this entry. Does not clobber the previous style, if the output of
      * {@link #localize(ArgProcessor)} is ran through {@link GTUtility#processFormatStacks(String)}.
@@ -91,15 +63,11 @@ public class Localized {
 
     private static final byte KEY_CHAT = 0;
     private static final byte KEY_LANG = 1;
-    private static final byte KEY_RAW = 2;
 
     public void encode(ByteBuf buffer) {
         if (key instanceof ChatMessage message) {
             buffer.writeByte(KEY_CHAT);
             buffer.writeInt(message.ordinal());
-        } else if (rawString) {
-            buffer.writeByte(KEY_RAW);
-            encodeString(buffer, (String) key);
         } else {
             buffer.writeByte(KEY_LANG);
             encodeString(buffer, (String) key);
@@ -114,22 +82,12 @@ public class Localized {
         }
     }
 
-    public byte[] encodeToBytes() {
-        ByteBuf buffer = Unpooled.buffer();
-        encode(buffer);
-        byte[] data = new byte[buffer.readableBytes()];
-        buffer.readBytes(data);
-        return data;
-    }
-
     public void decode(ByteArrayDataInput buffer) {
-        byte keyType = buffer.readByte();
-        this.key = switch (keyType) {
+        this.key = switch (buffer.readByte()) {
             case KEY_CHAT -> GTDataUtils.getIndexSafe(ChatMessage.values(), buffer.readInt());
-            case KEY_LANG, KEY_RAW -> decodeString(buffer);
+            case KEY_LANG -> decodeString(buffer);
             default -> null;
         };
-        this.rawString = keyType == KEY_RAW;
 
         baseColour = GTDataUtils.getIndexSafe(EnumChatFormatting.values(), buffer.readByte());
 
@@ -138,12 +96,6 @@ public class Localized {
         for (int i = 0; i < args.length; i++) {
             args[i] = decodeArg(buffer);
         }
-    }
-
-    public static Localized decodeFromBytes(byte[] data) {
-        Localized localized = new Localized();
-        localized.decode(ByteStreams.newDataInput(data));
-        return localized;
     }
 
     /**
@@ -167,8 +119,6 @@ public class Localized {
         // §s and §t are format stack codes, see processFormatStacks for more info
         if (key instanceof ChatMessage message) {
             return "§s" + colour + message.localize(args) + "§t";
-        } else if (rawString) {
-            return "§s" + colour + key + "§t";
         } else {
             return "§s" + colour + GTUtility.translate((String) key, argProcessor.process(args)) + "§t";
         }
@@ -177,10 +127,6 @@ public class Localized {
     @Override
     public String toString() {
         return localize(Localized::processArgs);
-    }
-
-    public String display() {
-        return GTUtility.processFormatStacks(this.toString());
     }
 
     public void sendChat(EntityPlayer player) {
