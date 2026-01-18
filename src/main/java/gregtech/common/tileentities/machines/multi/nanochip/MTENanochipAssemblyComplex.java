@@ -213,36 +213,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return STRUCTURE_DEFINITION;
     }
 
-    private static String colorString() {
-        return EnumChatFormatting.RED + "c"
-            + EnumChatFormatting.YELLOW
-            + "o"
-            + EnumChatFormatting.GREEN
-            + "l"
-            + EnumChatFormatting.AQUA
-            + "o"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "r"
-            + EnumChatFormatting.GRAY;
-    }
-
-    private static String coloredString() {
-        return EnumChatFormatting.RED + "c"
-            + EnumChatFormatting.YELLOW
-            + "o"
-            + EnumChatFormatting.GREEN
-            + "l"
-            + EnumChatFormatting.AQUA
-            + "o"
-            + EnumChatFormatting.DARK_AQUA
-            + "r"
-            + EnumChatFormatting.DARK_PURPLE
-            + "e"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "d"
-            + EnumChatFormatting.GRAY;
-    }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC, Nanochip-Assembly-Complex")

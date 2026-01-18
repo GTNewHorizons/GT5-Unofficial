@@ -37,6 +37,26 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     String fieldHintTalk = "Type 'talk' to enter talk mode";
     String fieldHintExit = "Type 'exit' to exit talk mode";
 
+    public static String colorString() {
+        return EnumChatFormatting.RED + "c" +
+            EnumChatFormatting.YELLOW + "o" +
+            EnumChatFormatting.GREEN + "l" +
+            EnumChatFormatting.AQUA + "o" +
+            EnumChatFormatting.LIGHT_PURPLE + "r"
+            + EnumChatFormatting.GRAY;
+    }
+
+    public static String coloredString() {
+        return EnumChatFormatting.RED + "c" +
+            EnumChatFormatting.YELLOW + "o" +
+            EnumChatFormatting.GREEN + "l" +
+            EnumChatFormatting.AQUA + "o" +
+            EnumChatFormatting.DARK_AQUA + "r" +
+            EnumChatFormatting.DARK_PURPLE + "e"
+            + EnumChatFormatting.LIGHT_PURPLE + "d"
+            + EnumChatFormatting.GRAY;
+    }
+
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
     }
