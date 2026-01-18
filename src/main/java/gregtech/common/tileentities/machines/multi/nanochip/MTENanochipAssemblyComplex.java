@@ -264,7 +264,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""
                     + EnumChatFormatting.ITALIC
-                    + "a pseudo-sentient program overseeing circuit production in the NAC.")
+                    + "a pseudo-sentient program overseeing circuit production in the NAC")
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""
                     + EnumChatFormatting.ITALIC

@@ -187,8 +187,26 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
+            .addSeparator()
             .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
-            .addInfo("Outputs into the VCO with the color of the first input in NEI")
+            .addInfo("Outputs are placed into the VCO with the color of the first input in NEI")
+            .addSeparator()
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo("Maximum allowed recipe tier is determined by")
+            .addInfo("the tier of the " + EnumChatFormatting.WHITE + "Component Assembly Line Casing")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "After processing your CCs through an intricate pipeline, they are finally")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "ready to be assembled into a circuit. This circuit can be converted into a real")
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "item in the NAC control center, or processed further into a higher tier circuit")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
