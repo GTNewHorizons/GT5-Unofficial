@@ -33,13 +33,7 @@ import gregtech.api.util.GTLanguageManager;
 public class BioCulture extends BioData implements IColorModulationContainer {
 
     public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
-    public static final BioData NULLDNA = new BioData(BioDataEnum.NullBioData);
-    public static final BioData NULLPLASMID = new BioData(BioDataEnum.NullBioData);
-    public static final BioCulture NULLCULTURE = BioCulture
-        .createAndRegisterBioCulture(Color.BLUE, "", NULLPLASMID, NULLDNA, false); // fallback
-                                                                                                     // NULL
-                                                                                                     // culture,
-                                                                                                     // also Blue =)
+    public static final BioCulture NULLCULTURE = BioCultureEnum.NullBioCulture.getBioCulture();
 
     public String getLocalisedName() {
         return GTLanguageManager.getTranslation(this.getName());
@@ -72,29 +66,6 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         this.bBreedable = bBreedable;
     }
 
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioData plasmid, BioData dna,
-        EnumRarity rarity, boolean breedable) {
-        BioCulture ret = new BioCulture(color, name, BIO_CULTURE_ARRAY_LIST.size(), plasmid, dna, rarity, breedable);
-        BIO_CULTURE_ARRAY_LIST.add(ret);
-        GTLog.out.println(ret);
-        return ret;
-    }
-
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioData plasmid, BioData dna,
-        boolean breedable) {
-        BioCulture ret = new BioCulture(
-            color,
-            name,
-            BIO_CULTURE_ARRAY_LIST.size(),
-            plasmid,
-            dna,
-            dna.getRarity(),
-            breedable);
-        BIO_CULTURE_ARRAY_LIST.add(ret);
-        GTLog.out.println(ret);
-        return ret;
-    }
-
     public static NBTTagCompound getNBTTagFromCulture(BioCulture bioCulture) {
         if (bioCulture == null) return new NBTTagCompound();
         NBTTagCompound ret = new NBTTagCompound();
@@ -115,20 +86,8 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     public static BioCulture getBioCultureFromNBTTag(NBTTagCompound tag) {
-        if (tag == null || tag.getIntArray("Color").length == 0) return null;
-        BioCulture ret = getBioCulture(tag.getString("Name"));
-
-        if (ret == null) ret = createAndRegisterBioCulture(
-            new Color(tag.getIntArray("Color")[0], tag.getIntArray("Color")[1], tag.getIntArray("Color")[2]),
-            tag.getString("Name"),
-            getBioDataFromNBTTag(tag.getCompoundTag("Plasmid")),
-            getBioDataFromNBTTag(tag.getCompoundTag("DNA")),
-            BWUtil.getRarityFromByte(tag.getByte("Rarety")),
-            tag.getBoolean("Breedable"));
-        if (ret.bBreedable) ret.setFluid(FluidRegistry.getFluid(tag.getString("Fluid")));
-        if (ret.getFluidNotSet()) // should never happen, but better safe than sorry
-            ret.setbBreedable(false);
-        return ret;
+        if (tag == null || !tag.hasKey("Name")) return null;
+        return BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(tag.getString("Name"), BioCultureEnum.NullBioCulture).getBioCulture();
     }
 
     public static BioCulture getBioCulture(String Name) {

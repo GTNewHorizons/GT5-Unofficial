@@ -248,7 +248,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 case PLASMID_SYNTHESIS_MODULE: {
                     ItemStack inp2 = ItemList.Tool_DataOrb.get(1L);
                     BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
-                    BehaviourDataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
+                    BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.getBioData().getName());
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
                             .areStacksEqual(FluidLoader.BioLabFluidCells[1], this.mInventory[this.getInputSlot()])

@@ -146,7 +146,7 @@ public class AdditionalRecipes {
                 BehaviourDataOrb.setDataName(inp, DNA.getName());
                 ItemStack inp2 = ItemList.Tool_DataOrb.get(0L);
                 BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
-                BehaviourDataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
+                BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.getBioData().getName());
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(FluidLoader.BioLabFluidCells[1], BioDataEnum.getPlasmidCell(null), inp, inp2)

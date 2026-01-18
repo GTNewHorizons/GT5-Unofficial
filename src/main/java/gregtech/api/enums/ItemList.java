@@ -2890,6 +2890,25 @@ public enum ItemList implements IItemContainer {
     Wrap_LivingCrystalChips,
     Wrap_LivingBioChips,
 
+    CultureNullBioCulture,
+    CultureSaccharomycesCerevisiae,
+    CultureSaccharomycesCerevisiaeVarBayanus,
+    CultureSaccharomycesCerevisiaeVarCerevisiae,
+    CultureEscherichiaCadaver,
+    CultureEscherichiaKoli,
+    CulturePseudomonasVeronii,
+    CultureSaccharomycesEscherichia,
+    CultureBarnadafisArboriatoris,
+    CultureTcetieisFucusSerratus,
+    CultureXenoxeneXenoxsis,
+    CultureOvaEvolutionis,
+    CultureDerivanturCellulaEvolutionis,
+    CultureCellulaBiologicumEvolutione,
+    CultureBinniGrowthMedium,
+    CultureBinniBacteria,
+    CultureCorynebacteriumSludgeMarsensis,
+    CultureMutagenBacteriaASpatio,
+
     DNABetaLactamase,
     DNASaccharomycesCerevisiae,
     DNANull,
@@ -2930,7 +2949,6 @@ public enum ItemList implements IItemContainer {
     Agarose,
     IncubationModule,
     PlasmaMembrane,
-
     // semicolon after the comment to reduce merge conflicts
     ;
 

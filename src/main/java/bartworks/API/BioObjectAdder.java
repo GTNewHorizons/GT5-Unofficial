@@ -36,25 +36,6 @@ import gregtech.api.util.GTModHandler;
 public final class BioObjectAdder {
 
     /**
-     * @param color     the color of the Culture
-     * @param name      the name of the Culture
-     * @param plasmid   the cultures plasmid, get it from createAndRegisterBioPlasmid
-     * @param dna       the cultures dna, get it from createAndRegisterBioDNA
-     * @param breedable if the culture can be inserted into the BacterialVat
-     * @param rarity    visual
-     * @return
-     */
-    public static @Nullable BioCulture createAndRegisterBioCulture(Color color, String name, BioData plasmid,
-        BioData dna, EnumRarity rarity, boolean breedable) {
-        if (BioCulture.BIO_CULTURE_ARRAY_LIST.size() > 1)
-            return BioCulture.createAndRegisterBioCulture(color, name, plasmid, dna, rarity, breedable);
-        new Exception(
-            "Too Early to register a BioCulture! You MUST run this either after:bartworks OR in the init Phase!")
-                .printStackTrace();
-        return null;
-    }
-
-    /**
      * @param voltageTier (i.e. 6 for LuV, 7 for ZPM, only intresting for LuV+)
      * @return the propper Bacteria Tier (at least 0)
      */

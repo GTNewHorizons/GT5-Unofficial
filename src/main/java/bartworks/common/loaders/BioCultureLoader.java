@@ -15,6 +15,7 @@ package bartworks.common.loaders;
 
 import java.awt.Color;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.EnumRarity;
 
@@ -22,14 +23,7 @@ import bartworks.util.BioCulture;
 import bartworks.util.BioData;
 
 public class BioCultureLoader {
-
-    public static final BioData BIO_DATA_BETA_LACMATASE = BioDataEnum.BetaLactamase.getBioData();
-    private static final BioData BIO_DATA_YEAST = BioDataEnum.SaccharomycesCerevisiae.getBioData();
-    private static final BioData BIO_DNA_WHINE_YEAST = BioDataEnum.SaccharomycesCerevisiaeVarBayanus.getBioData();
-    private static final BioData BIO_DNA_BEER_YEAST = BioDataEnum.SaccharomycesCerevisiaeVarCerevisiae.getBioData();
-    private static final BioData eColiData = BioDataEnum.EscherichiaKoli.getBioData();
-    private static final BioData BIO_DNA_ANAEROBIC_OIL = BioDataEnum.PseudomonasVeronii.getBioData();
-    private static final BioData BIO_DATA_ANAEROBIC_OIL = BioDataEnum.PseudomonasVeronii2.getBioData();
+    
     public static BioCulture CommonYeast;
     public static BioCulture WhineYeast;
     public static BioCulture BeerYeast;
@@ -39,51 +33,13 @@ public class BioCultureLoader {
     public static BioCulture generalPurposeFermentingBacteria;
 
     public static void run() {
-        BioCultureLoader.CommonYeast = BioCulture.createAndRegisterBioCulture(
-            new Color(255, 248, 200),
-            "Saccharomyces cerevisiae",
-            BioCultureLoader.BIO_DATA_YEAST,
-            BioCultureLoader.BIO_DATA_YEAST,
-            true);
-        BioCultureLoader.WhineYeast = BioCulture.createAndRegisterBioCulture(
-            new Color(255, 248, 200),
-            "Saccharomyces cerevisiae var bayanus",
-            BioCultureLoader.BIO_DNA_WHINE_YEAST,
-            BioCultureLoader.BIO_DNA_WHINE_YEAST,
-            EnumRarity.uncommon,
-            true);
-        BioCultureLoader.BeerYeast = BioCulture.createAndRegisterBioCulture(
-            new Color(255, 248, 200),
-            "Saccharomyces cerevisiae var cerevisiae",
-            BioCultureLoader.BIO_DNA_BEER_YEAST,
-            BioCultureLoader.BIO_DNA_BEER_YEAST,
-            EnumRarity.uncommon,
-            true);
-        BioCultureLoader.rottenFleshBacteria = BioCulture.createAndRegisterBioCulture(
-            new Color(110, 40, 25),
-            "Escherichia cadaver",
-            BioCultureLoader.BIO_DATA_BETA_LACMATASE,
-            BioCultureLoader.BIO_DATA_BETA_LACMATASE,
-            false);
-        BioCultureLoader.eColi = BioCulture.createAndRegisterBioCulture(
-            new Color(149, 132, 75),
-            "Escherichia koli",
-            BioCultureLoader.eColiData,
-            BioCultureLoader.eColiData,
-            true);
-        BioCultureLoader.anaerobicOil = BioCulture.createAndRegisterBioCulture(
-            new Color(0, 0, 0),
-            "Pseudomonas Veronii",
-            BioCultureLoader.BIO_DNA_ANAEROBIC_OIL,
-            BioCultureLoader.BIO_DATA_ANAEROBIC_OIL,
-            true);
-        BioCultureLoader.generalPurposeFermentingBacteria = BioCulture.createAndRegisterBioCulture(
-            new Color(127, 69, 26),
-            "Saccharomyces escherichia",
-            BioCultureLoader.CommonYeast.getPlasmid(),
-            BioCultureLoader.eColi.getdDNA(),
-            EnumRarity.epic,
-            true);
+        BioCultureLoader.CommonYeast = BioCultureEnum.SaccharomycesCerevisiae.getBioCulture();
+        BioCultureLoader.WhineYeast = BioCultureEnum.SaccharomycesCerevisiaeVarBayanus.getBioCulture();
+        BioCultureLoader.BeerYeast = BioCultureEnum.SaccharomycesCerevisiaeVarCerevisiae.getBioCulture();
+        BioCultureLoader.rottenFleshBacteria = BioCultureEnum.EscherichiaCadaver.getBioCulture();
+        BioCultureLoader.eColi = BioCultureEnum.EscherichiaKoli.getBioCulture();
+        BioCultureLoader.anaerobicOil = BioCultureEnum.PseudomonasVeronii.getBioCulture();
+        BioCultureLoader.generalPurposeFermentingBacteria = BioCultureEnum.SaccharomycesEscherichia.getBioCulture();
 
         BioCultureLoader.CommonYeast.setLocalisedName("Common Yeast");
         BioCultureLoader.WhineYeast.setLocalisedName("Whine Yeast");

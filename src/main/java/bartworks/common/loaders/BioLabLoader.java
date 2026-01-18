@@ -13,6 +13,7 @@
 
 package bartworks.common.loaders;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.enums.ItemList;
@@ -23,6 +24,7 @@ public class BioLabLoader {
     public static void run(FMLInitializationEvent event) {
         FluidLoader.run(event);
         BioItemList.registerBioItems();
+        BioCultureEnum.registerAllCultures();
         BioDataEnum.registerAllDNAItemStacks();
         BioDataEnum.registerAllPlasmidItemStacks();
         ItemList.DetergentPowder.set(new ItemStack(BioItemList.vanillaBioLabParts, 1, 3));
