@@ -49,6 +49,8 @@ import gregtech.common.capability.CleanroomReference;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
@@ -607,18 +609,29 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public void onBlockDestroyed() {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (this instanceof IConnectsToEnergyTunnel) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
 
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
-
-            if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
-                    neighbor.mConnections &= ~side.getOpposite().flag;
-                    neighbor.connectionCount--;
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor
+                        && neighbor.isConnectedAtSide(side.getOpposite())) {
+                        neighbor.mConnections &= ~side.getOpposite().flag;
+                        neighbor.connectionCount--;
+                    }
                 }
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
-                    neighbor.mConnections &= ~side.getOpposite().flag;
-                    neighbor.connectionCount--;
+            }
+        }
+        if (this instanceof IConnectsToDataPipe) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
+
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor
+                        && neighbor.isConnectedAtSide(side.getOpposite())) {
+                        neighbor.mConnections &= ~side.getOpposite().flag;
+                        neighbor.connectionCount--;
+                    }
                 }
             }
         }
@@ -759,7 +772,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return "";

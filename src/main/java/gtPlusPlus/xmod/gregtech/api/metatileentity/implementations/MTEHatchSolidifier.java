@@ -63,7 +63,9 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     @Override
     public String[] getDescription() {
         return new String[] {
-            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW + "Fluid Shaper" + EnumChatFormatting.RESET,
+            "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
+                + "Fluid Solidifier Multiblocks"
+                + EnumChatFormatting.RESET,
             "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l - "
@@ -117,7 +119,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         }
         try {
             this.setInventorySlotContents(moldSlot, phantom);
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         markDirty();
         GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
     }

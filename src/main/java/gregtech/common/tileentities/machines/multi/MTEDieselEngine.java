@@ -74,7 +74,7 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                         t -> buildHatchAdder(MTEDieselEngine.class)
                             .atLeast(InputHatch, InputHatch, InputHatch, Muffler, Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                 .build();
         }
@@ -393,7 +393,11 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

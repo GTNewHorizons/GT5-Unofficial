@@ -17,7 +17,9 @@ import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -106,6 +108,8 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchUncertainty;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
@@ -199,6 +203,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         numberFormat.setMaximumFractionDigits(8);
     }
 
+    // Parameters for IParametrized multiblocks
+    public Map<String, Parameter<?>> parameterMap = new LinkedHashMap<>();
     // endregion
 
     protected TTMultiblockBase(int aID, String aName, String aNameRegional) {
@@ -206,6 +212,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
+        if (this instanceof IParametrized parametrized) {
+            parametrized.initParameters();
+        }
     }
 
     protected TTMultiblockBase(String aName) {
@@ -213,6 +222,9 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         parametrization = new Parameters(this);
         parametersInstantiation_EM();
         parametrization.setToDefaults(true, true);
+        if (this instanceof IParametrized parametrized) {
+            parametrized.initParameters();
+        }
     }
 
     // region SUPER STRUCT
@@ -429,7 +441,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.computation",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET) };
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET),
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     /**
@@ -678,7 +694,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
         aNBT.setInteger("eOutputStackCount", 0);
         aNBT.removeTag("outputEM");
-
+        // TODO: REMOVE AFTER NEW PARAMETER PORT COMPLETE
         NBTTagCompound paramI = new NBTTagCompound();
         for (int i = 0; i < parametrization.iParamsIn.length; i++) {
             paramI.setDouble(Integer.toString(i), parametrization.iParamsIn[i]);
@@ -702,6 +718,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             paramOs.setByte(Integer.toString(i), parametrization.eParamsOutStatus[i].getOrdinalByte());
         }
         aNBT.setTag("eParamsOutS", paramOs);
+
+        if (this instanceof IParametrized parametrized) {
+            parametrized.saveParameters(aNBT);
+        }
     }
 
     /**
@@ -778,6 +798,10 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         NBTTagCompound paramOs = aNBT.getCompoundTag("eParamsOutS");
         for (int i = 0; i < parametrization.eParamsOutStatus.length; i++) {
             parametrization.eParamsOutStatus[i] = LedStatus.getStatus(paramOs.getByte(Integer.toString(i)));
+        }
+
+        if (this instanceof IParametrized parametrized) {
+            parametrized.loadParameters(aNBT);
         }
     }
 
@@ -1036,7 +1060,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
                                     mLastWorkingTick = mTotalRunTime;
-
+                                    if (processingLogic != null) {
+                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
+                                    } else {
+                                        recipesDone += 1;
+                                    }
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe()) {
                                             mEfficiency = Math.max(
@@ -1990,7 +2018,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 HatchElement.OutputData,
                 HatchElement.Uncertainty)
             .casingIndex(casingIndex)
-            .dot(dot)
+            .hint(dot)
             .buildAndChain(casingBlock, casingMeta);
     }
 
@@ -2010,7 +2038,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 HatchElement.OutputData,
                 HatchElement.Uncertainty)
             .casingIndex(casingIndex)
-            .dot(dot)
+            .hint(dot)
             .buildAndChain(casingBlock, casingMeta);
     }
 
@@ -2093,6 +2121,21 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return false;
     }
 
+    protected <T> T getParamValue(String key, Class<T> tClass) {
+        if (!parameterMap.containsKey(key)) {
+            throw new IllegalArgumentException("Tried to access nonexistent parameter " + key);
+        }
+
+        Object value = parameterMap.get(key)
+            .getValue();
+        if (value.getClass()
+            .equals(tClass)) {
+            return tClass.cast(value);
+        }
+
+        throw new IllegalArgumentException(
+            String.format("Tried to cast parameter %s to %s when its type is %s", key, tClass, value.getClass()));
+    }
     // region ModularUI
 
     @Override

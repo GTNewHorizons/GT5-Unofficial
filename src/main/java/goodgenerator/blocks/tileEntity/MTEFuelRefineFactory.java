@@ -105,7 +105,7 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
                             tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
                                 .or(gregtech.api.enums.HatchElement.Dynamo))
                         .casingIndex(179)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(ofBlock(Loaders.FRF_Casings, 0)))
                 .addElement('C', ofBlock(Loaders.FRF_Casings, 0))
                 .addElement('G', ofBlock(Loaders.fieldRestrictingGlass, 0))
@@ -252,9 +252,9 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

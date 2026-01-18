@@ -141,7 +141,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             buildHatchAdder(MTEHighTempGasCooledReactor.class)
                 .atLeast(HTGRHatches.HeliumInputHatch, HatchElement.Maintenance, HatchElement.Energy)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(11))
-                .dot(1)
+                .hint(1)
                 .build())
         .addElement(
             'f',
@@ -386,15 +386,15 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + " distilled water/tick/pellet")
             .beginStructureBlock(29, 16, 18, true)
             .addController("Front center")
-            .addInputHatch("Top of the Pump", 1)
+            .addInputHatch("Top of the Pump - Accepts Helium", 1)
             .addEnergyHatch("Top of the Pump", 1)
             .addMaintenanceHatch("Top of the Pump", 1)
-            .addInputBus("Top of the Reactor", 2)
-            .addOutputBus("Bottom of the Reactor", 3)
-            .addInputHatch("Bottom of the first Coolant Tower", 4)
-            .addOutputHatch("Top of the first Coolant Tower", 5)
-            .addInputHatch("Top of the second Coolant Tower", 6)
-            .addOutputHatch("Bottom of the second Coolant Tower", 7)
+            .addInputBus("Top of the Reactor - Accepts Fuel", 2)
+            .addOutputBus("Bottom of the Reactor - Outputs Fuel", 3)
+            .addInputHatch("Bottom of the tall Coolant Tower - Accepts Coolant", 4)
+            .addOutputHatch("Top of the tall Coolant Tower - Outputs Hot Coolant", 5)
+            .addInputHatch("Top of the short Coolant Tower - Accepts Distilled Water", 6)
+            .addOutputHatch("Bottom of the short Coolant Tower - Outputs Steam", 7)
 
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
@@ -875,8 +875,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.forbidden_while_running"));
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         this.empty = !this.empty;

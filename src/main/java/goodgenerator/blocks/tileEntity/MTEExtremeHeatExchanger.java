@@ -99,7 +99,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                                 gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement(
@@ -110,7 +110,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                                 gregtech.api.enums.HatchElement.OutputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
-                            .dot(2)
+                            .hint(2)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
@@ -121,7 +121,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                         buildHatchAdder(MTEExtremeHeatExchanger.class)
                             .atLeast(gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
-                            .dot(5)
+                            .hint(5)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement('G', chainAllGlasses())
@@ -374,7 +374,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 + EnumChatFormatting.GREEN
                 + GTUtility.formatNumbers(tThreshold)
                 + EnumChatFormatting.RESET
-                + " L/s" };
+                + " L/s",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

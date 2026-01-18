@@ -52,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
@@ -76,7 +77,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             buildHatchAdder(MTETranscendentPlasmaMixer.class)
                 .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
                 .casingIndex(DIM_INJECTION_CASING)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings1, DIM_TRANS_CASING))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, DIM_BRIDGE_CASING))
@@ -281,8 +282,6 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         }
     }
 
-    private static final int PARALLEL_WINDOW_ID = 10;
-
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTETranscendentPlasmaMixerGui(this);
@@ -317,7 +316,11 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                 + (mMaxProgresstime == 0 ? "0"
                     : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
                 + EnumChatFormatting.RESET
-                + " EU/t" };
+                + " EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

@@ -604,6 +604,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 
+        if (aBaseMetaTileEntity.getWorld().isRemote) {
+            return true;
+        }
         // Right-clicking could be a data stick linking action, so try this first.
         if (tryLinkDataStick(aPlayer)) {
             return true;
@@ -677,16 +680,13 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
-                    + EnumChatFormatting.WHITE
-                    + tag.getInteger("controllerX")
-                    + ", "
-                    + tag.getInteger("controllerY")
-                    + ", "
-                    + tag.getInteger("controllerZ")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.purification_unit_base.linked_to",
+                    tag.getInteger("controllerX"),
+                    tag.getInteger("controllerY"),
+                    tag.getInteger("controllerZ")));
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
+            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -724,8 +724,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
             .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
     }
-
-    private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {

@@ -113,7 +113,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             'b',
             ofChain(
                 buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(Energy, OutputHatch, OutputBus, Maintenance)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(BASECASINGINDEX)
                     .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
@@ -121,7 +121,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             'B',
             ofChain(
                 buildHatchAdder(MTEThoriumHighTempReactor.class).atLeast(InputHatch, InputBus)
-                    .dot(2)
+                    .hint(2)
                     .casingIndex(BASECASINGINDEX)
                     .build(),
                 onElementPass(x -> x.mCasingAmount++, ofBlock(GregTechAPI.sBlockCasings3, 12))))
@@ -397,13 +397,13 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "THTR mode cannot be changed while the machine is running.");
+            GTUtility.sendChatTrans(aPlayer, "BW.chat.thtr.cannot_change_mode");
             return;
         }
         this.emptyingMode = !this.emptyingMode;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            "THTR is now running in " + (this.emptyingMode ? "emptying mode." : "normal Operation"));
+            this.emptyingMode ? "BW.chat.thtr.running_in.emptying" : "BW.chat.thtr.running_in.normal");
     }
 
     @Override

@@ -224,7 +224,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             buildHatchAdder(MTEWormholeGenerator.class)
                 .atLeast(Maintenance, InputBus)
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(1)
+                .hint(1)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -235,28 +235,28 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(TOP_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('b',
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(BOTTOM_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('l',
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(LEFT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .addElement('r',
             buildHatchAdder(MTEWormholeGenerator.class)
                 .anyOf(new TransferHatch(RIGHT_HATCH))
                 .casingIndex(TT_CASING_INDEX) // High Power Casing
-                .dot(2)
+                .hint(2)
                 .buildAndChain(lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))) // High Power Casing
         )
         .build();
@@ -500,14 +500,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             mAllowOverclocks = !mAllowOverclocks;
-
-            if (mAllowOverclocks) {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §a%s§r", GTUtility.trans("088", "Enabled")));
-            } else {
-                GTUtility
-                    .sendChatToPlayer(aPlayer, String.format("Overclocks: §c%s§r", GTUtility.trans("087", "Disabled")));
-            }
+            GTUtility.sendChatTrans(
+                aPlayer,
+                mAllowOverclocks ? "GT5U.chat.worm_hole_generator.overclocks.enable"
+                    : "GT5U.chat.worm_hole_generator.overclocks.disable");
         } else {
             super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         }
@@ -707,7 +703,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
 
                 aNBT.setTag("mLink", link);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             GTMod.GT_FML_LOGGER.error("Could not save MTEWormholeGenerator", t);
         }
     }
@@ -758,7 +754,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                         0,
                         Math.min(send_amounts.length, mLink.mSendAmounts.length));
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error("Could not load MTEWormholeGenerator", t);
             }
         }
@@ -970,7 +966,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         // spotless:off
-        tt.addMachineType("Wormhole Generator")
+        tt.addMachineType("Wormhole Generator, MWG")
             .addInfo("Transfers EU between two wormhole generators")
             .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
             .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")
@@ -988,10 +984,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (dot 1)")
-            .addInputBus("§61§r (dot 1)")
-            .addDynamoHatch("§60§r - §64§r (laser only, dot 2)")
-            .addEnergyHatch("§60§r - §64§r (laser only, dot 2)")
+            .addMaintenanceHatch("§61§r (Hint Block Number 1)")
+            .addInputBus("§61§r (Hint Block Number 1)")
+            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
+            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTValues.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
