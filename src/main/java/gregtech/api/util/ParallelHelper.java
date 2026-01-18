@@ -455,8 +455,9 @@ public class ParallelHelper {
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setMachine(machine)
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
-                .setChanceGetter(recipe::getOutputChance)
-                .setChanceMultiplier(chanceMultiplier)
+                .setOutputChanceGetter(recipe::getOutputChance)
+                .setFluidOutputChanceGetter(recipe::getFluidOutputChance)
+                .setOutputChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
                 .build();
 

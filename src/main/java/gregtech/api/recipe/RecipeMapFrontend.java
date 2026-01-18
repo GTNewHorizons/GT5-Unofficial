@@ -302,6 +302,10 @@ public class RecipeMapFrontend {
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) {
             currentTip.add(GRAY + trans("151", "Does not get consumed in the process"));
+        } else if (pStack.isChanceBased()) {
+            String key = pStack.isInput() ? "150.1" : "150";
+            String def = pStack.isInput() ? "Consume Chance: " : "Output Chance: ";
+            currentTip.add(GRAY + trans(key, def) + pStack.getChanceText());
         }
         return currentTip;
     }
@@ -309,7 +313,9 @@ public class RecipeMapFrontend {
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isChanceBased()) {
-            currentTip.add(GRAY + trans("150", "Chance: ") + pStack.getChanceText());
+            String key = pStack.isInput() ? "150.1" : "150";
+            String def = pStack.isInput() ? "Consume Chance: " : "Output Chance: ";
+            currentTip.add(GRAY + trans(key, def) + pStack.getChanceText());
         }
         return currentTip;
     }
@@ -330,6 +336,8 @@ public class RecipeMapFrontend {
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         if (stack.isNotConsumed()) {
             drawNEIOverlayText("NC", stack);
+        } else if (stack.isChanceBased()) {
+            drawNEIOverlayText(stack.getChanceText(), stack);
         }
     }
 

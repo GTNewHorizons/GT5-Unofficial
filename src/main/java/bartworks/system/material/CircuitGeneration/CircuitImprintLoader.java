@@ -169,6 +169,9 @@ public class CircuitImprintLoader {
             BWMetaItems.getCircuitParts()
                 .getStackWithNBT(CircuitImprintLoader.getTagFromStack(original.mOutputs[0]), 0, 0),
             null,
+            null,
+            null,
+            null,
             original.mFluidInputs,
             null,
             original.mDuration * 12,

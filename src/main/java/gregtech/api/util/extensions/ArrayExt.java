@@ -218,7 +218,7 @@ public class ArrayExt {
         final int len = expectedLen == -1 ? chances.length : Math.min(chances.length, expectedLen);
         for (int i = 0; i < len; i++) {
             final int chance = chances[i];
-            if (chance > 0 && chance < 10000) {
+            if (chance >= 0 && chance < 10000) {
                 valid = true;
                 break;
             }
@@ -228,7 +228,7 @@ public class ArrayExt {
         final int[] array = needCopy ? Arrays.copyOf(chances, expectedLen) : chances;
         for (int i = 0, len2 = array.length; i < len2; i++) {
             final int chance = array[i];
-            if (chance <= 0 || chance > 10000) {
+            if (chance < 0 || chance > 10000) {
                 array[i] = 10000;
             }
         }

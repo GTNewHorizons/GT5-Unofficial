@@ -127,7 +127,7 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
             }
             for (ItemStack shell : recipe.getMetadata(HTGRLoader.SHELL)) {
                 neiCachedRecipe.mOutputs
-                    .add(new GTNEIDefaultHandler.FixedPositionedStack(shell, true, x, y, 9500, false));
+                    .add(new GTNEIDefaultHandler.FixedPositionedStack(shell, true, x, y, 9500, false, false));
                 x += 18;
                 if (x >= 75 + 18) {
                     x = 3;

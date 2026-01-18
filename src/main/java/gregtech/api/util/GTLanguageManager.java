@@ -279,7 +279,8 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_147", "A, Out: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
         addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
-        addStringLocalization("Interaction_DESCRIPTION_Index_150", "Chance: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_150", "Output Chance: ");
+        addStringLocalization("Interaction_DESCRIPTION_Index_150.1", "Consume Chance: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
