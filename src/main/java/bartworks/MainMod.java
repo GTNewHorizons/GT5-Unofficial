@@ -18,6 +18,8 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
+import bartworks.API.enums.BioDataEnum;
+import bartworks.util.BioData;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -175,6 +177,8 @@ public final class MainMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(MainMod.instance, MainMod.GH);
 
         ArtificialMicaLine.runArtificialMicaRecipe();
+        BioDataEnum.registerAllDNAItemStacks();
+        BioDataEnum.registerAllPlasmidItemStacks();
         BioObjectAdder.regenerateBioFluids();
 
         WerkstoffLoader.run();

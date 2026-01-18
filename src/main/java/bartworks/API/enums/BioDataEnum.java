@@ -1,8 +1,14 @@
 package bartworks.API.enums;
 
+import bartworks.common.loaders.BioItemList;
+import bartworks.util.BioData;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemStack;
+
+import static bartworks.common.loaders.BioItemList.getDNASampleFlask;
+import static bartworks.common.loaders.BioItemList.getPlasmidCell;
 
 public enum BioDataEnum {
     BetaLactamase("beta-Lactamase", 0, EnumRarity.uncommon, 100_00, VoltageIndex.ULV, ItemList.DNABetaLactamase, ItemList.PlasmidBetaLactamase),
@@ -41,5 +47,17 @@ public enum BioDataEnum {
         this.tier=tier;
         this.DNASampleFlask = DNASampleFlask;
         this.plasmidCell = plasmidCell;
+    }
+
+    public static void registerAllDNAItemStacks(){
+        for (BioDataEnum data : BioDataEnum.values()){
+            data.DNASampleFlask.set(getDNASampleFlask(new BioData(data)));
+        }
+    }
+
+    public static void registerAllPlasmidItemStacks(){
+        for (BioDataEnum data : BioDataEnum.values()){
+            data.plasmidCell.set(getPlasmidCell(new BioData(data)));
+        }
     }
 }
