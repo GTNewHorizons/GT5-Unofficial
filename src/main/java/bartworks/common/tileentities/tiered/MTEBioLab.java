@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.tiered;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -298,7 +299,7 @@ public class MTEBioLab extends MTEBasicMachine {
                 case TRANSFORMATION_MODULE: {
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot()], BioItemList.getPetriDish(null), true)
+                            .areStacksEqual(this.mInventory[this.getInputSlot()], BioCultureEnum.getPetriDish(null), true)
                         && this.mInventory[this.getInputSlot()].getTagCompound() != null
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility.areStacksEqual(
@@ -326,7 +327,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         this.mFluid.amount -= 1000;
                         bioCulture = bioCulture.setPlasmid(cultureDNABioData);
                         if (cultureDNABioData.getChance() > new XSTR().nextInt(10000)) {
-                            this.mOutputItems[0] = BioItemList.getPetriDish(bioCulture);
+                            this.mOutputItems[0] = BioCultureEnum.getPetriDish(bioCulture);
                         }
                         this.mOutputItems[1] = ItemList.Cell_Empty.get(1L);
                         this.calculateOverclockedNess(
@@ -342,7 +343,7 @@ public class MTEBioLab extends MTEBasicMachine {
 
                     if (GTUtility.isStackValid(this.mInventory[this.getInputSlot()])
                         && GTUtility
-                            .areStacksEqual(this.mInventory[this.getInputSlot()], BioItemList.getPetriDish(null))
+                            .areStacksEqual(this.mInventory[this.getInputSlot()], BioCultureEnum.getPetriDish(null))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 1])
                         && GTUtility.areStacksEqual(this.mInventory[this.getInputSlot() + 1], ItemList.PlasmaMembrane.get(1))
                         && GTUtility.isStackValid(this.mInventory[this.getInputSlot() + 2])
@@ -371,7 +372,7 @@ public class MTEBioLab extends MTEBasicMachine {
                             BioCulture out = BioCulture.getBioCulture(cultureDNABioData);
                             if (out == null) return MTEBasicMachine.DID_NOT_FIND_RECIPE;
                             out = out.setPlasmid(cultureDNABioData);
-                            this.mOutputItems[0] = BioItemList.getPetriDish(out);
+                            this.mOutputItems[0] = BioCultureEnum.getPetriDish(out);
                         }
                         this.calculateOverclockedNess(
                             BWUtil.getMachineVoltageFromTier(3 + rTier + cultureDNABioData.getTier()),

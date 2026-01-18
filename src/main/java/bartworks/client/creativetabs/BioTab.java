@@ -13,6 +13,7 @@
 
 package bartworks.client.creativetabs;
 
+import bartworks.API.enums.BioCultureEnum;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -26,7 +27,7 @@ public class BioTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return BioItemList.getPetriDish(null)
+        return BioCultureEnum.getPetriDish(null)
             .getItem();
     }
 }

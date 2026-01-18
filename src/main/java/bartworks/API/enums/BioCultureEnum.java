@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public enum BioCultureEnum {
     MutagenBacteriaASpatio("Mutagen Bacteria a Spatio", 17, EnumRarity.rare, false, BioDataEnum.Mutagen, BioDataEnum.Mutagen, new Color(29, 149, 50), ItemList.CultureMutagenBacteriaASpatio),;
 
     public static final List<BioCulture> BIO_CULTURES = new ArrayList<>();
+    public static final List<ItemStack> BIO_CULTURE_STACKS = new ArrayList<>();
     public static final Map<String, BioCultureEnum> LOOKUPS_BY_NAME = new HashMap<>();
     public static final Map<BioCulture, BioCultureEnum> LOOKUPS_BY_BIODATA = new HashMap<>();
 
@@ -73,5 +75,21 @@ public enum BioCultureEnum {
             stack.setTagCompound(BioCulture.getNBTTagFromCulture(culture.bioCulture));
             culture.culture.set(stack);
         }
+    }
+
+    public static Collection<ItemStack> getAllPetriDishes() {
+        if (!BIO_CULTURE_STACKS.isEmpty()) return BIO_CULTURE_STACKS;
+        for (BioCultureEnum data : BioCultureEnum.values()) {
+            BIO_CULTURE_STACKS.add(data.culture.get(1));
+        }
+        return BIO_CULTURE_STACKS;
+    }
+
+    // Null has to be treated separatedly from the null culture because it's used to get the petri dish,
+    // which is a culture without a NBT tag
+    public static ItemStack getPetriDish(BioCulture culture) {
+        if (culture == null) return new ItemStack(BioItemList.vanillaBioLabParts);
+
+        return BioCultureEnum.LOOKUPS_BY_BIODATA.getOrDefault(culture, BioCultureEnum.NullBioCulture).culture.get(1);
     }
 }

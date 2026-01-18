@@ -45,19 +45,4 @@ public class BioItemList {
         GameRegistry.registerItem(BioItemList.mItemBioLabParts, "BioLabModules");
         GameRegistry.registerItem(BioItemList.vanillaBioLabParts, "BioLabParts");
     }
-
-    public static Collection<ItemStack> getAllPetriDishes() {
-        HashSet<ItemStack> ret = new HashSet<>();
-        for (BioCulture Culture : BioCultureEnum.BIO_CULTURES) {
-            ret.add(BioItemList.getPetriDish(Culture));
-        }
-        return ret;
-    }
-
-    public static ItemStack getPetriDish(BioCulture Culture) {
-        if (Culture == null) return new ItemStack(BioItemList.vanillaBioLabParts);
-        ItemStack ret = new ItemStack(BioItemList.vanillaBioLabParts);
-        ret.setTagCompound(BioCulture.getNBTTagFromCulture(Culture));
-        return ret;
-    }
 }

@@ -120,7 +120,7 @@ public class ItemLabParts extends SimpleSubItemClass {
 
     @Override
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> list) {
-        list.addAll(BioItemList.getAllPetriDishes());
+        list.addAll(BioCultureEnum.getAllPetriDishes());
         list.addAll(BioDataEnum.getAllDNASampleFlasks());
         list.addAll(BioDataEnum.getAllPlasmidCells());
         super.getSubItems(item, creativeTabs, list);
