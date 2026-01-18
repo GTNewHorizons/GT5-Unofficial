@@ -2,8 +2,9 @@ package gtnhlanth.loader;
 
 import static gregtech.api.enums.OrePrefixes.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +20,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.util.BWUtil;
@@ -98,26 +98,19 @@ public class ZPMRubberChanges implements Runnable {
          */
     }
 
-    private static void addDreamcraftItemListItems(Collection ZPMPlusComponents) {
+    private static void addDreamcraftItemListItems(Collection<ItemStack> ZPMPlusComponents) {
         try {
-            Class customItemListClass = Class.forName("com.dreammaster.gthandler.CustomItemList");
-            Method hasnotBeenSet = MethodUtils.getAccessibleMethod(customItemListClass, "hasBeenSet");
-            Method get = MethodUtils.getAccessibleMethod(customItemListClass, "get", long.class, Object[].class);
-            for (Enum customItemList : (Enum[]) FieldUtils.getField(customItemListClass, "$VALUES", true)
+            Class itemListClass = Class.forName("com.dreammaster.item.NHItemList");
+            MethodHandle get = MethodHandles.publicLookup()
+                .findVirtual(itemListClass, "get", MethodType.methodType(ItemStack.class));
+            for (Enum item : (Enum[]) FieldUtils.getField(itemListClass, "$VALUES", true)
                 .get(null)) {
-                if ((customItemList.toString()
-                    .contains("ZPM")
-                    || customItemList.toString()
-                        .contains("UV")
-                    || customItemList.toString()
-                        .contains("UHV")
-                    || customItemList.toString()
-                        .contains("UEV"))
-                    && (boolean) hasnotBeenSet.invoke(customItemList))
-                    ZPMPlusComponents.add(get.invoke(customItemList, 1, new Object[0]));
+                final String name = item.toString();
+                if ((name.contains("ZPM") || name.contains("UV") || name.contains("UHV") || name.contains("UEV")))
+                    ZPMPlusComponents.add((ItemStack) get.invokeExact(item));
             }
-        } catch (IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 

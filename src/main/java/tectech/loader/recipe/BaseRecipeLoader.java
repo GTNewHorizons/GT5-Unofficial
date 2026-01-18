@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
+import java.lang.invoke.MethodType;
 
 import net.minecraft.item.ItemStack;
 
@@ -27,9 +27,8 @@ public class BaseRecipeLoader {
 
         try {
             itemList = Class.forName("com.dreammaster.item.NHItemList");
-            Method getter = itemList.getDeclaredMethod("get", itemList, int.class);
             getterHandle = MethodHandles.publicLookup()
-                .unreflect(getter);
+                .findVirtual(itemList, "get", MethodType.methodType(ItemStack.class, int.class));
         } catch (Exception e) {
             TecTech.LOGGER.error("NHCoreMod not present. Disabling all the recipes");
             itemList = null;
