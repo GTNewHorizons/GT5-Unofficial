@@ -115,7 +115,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             ofChain(
                 buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .build(),
                 onElementPass(it -> it.casing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement(
@@ -205,6 +205,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             for (List<ItemStack> l : aeJobs.subList(0, Math.min(parallel, aeJobs.size()))) {
                 outputs.addAll(l);
             }
+            // Multiblock base already includes 1 parallel
+            recipesDone += aeJobs.size() - 1;
             if (!outputs.isEmpty()) {
                 aeJobs.subList(0, Math.min(parallel, aeJobs.size()))
                     .clear();

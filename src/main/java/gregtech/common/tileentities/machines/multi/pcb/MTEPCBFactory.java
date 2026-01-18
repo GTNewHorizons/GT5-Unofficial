@@ -33,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,7 +47,6 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
@@ -202,7 +202,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     Maintenance,
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.NaniteBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(13))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 13))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
@@ -211,7 +211,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             buildHatchAdder(MTEPCBFactory.class).hatchClass(MTEHatchInput.class)
                 .adder(MTEPCBFactory::addCoolantInputToMachineList)
                 .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 12))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 12))
         .addElement(
             'P',
@@ -223,7 +223,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     Maintenance,
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.NaniteBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(11))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 11))
         .build();
@@ -638,7 +638,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         inputSeparation = !inputSeparation;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+        GTUtility.sendChatTrans(
+            aPlayer,
+            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
     }
 
     @Override
@@ -730,9 +732,11 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + EnumChatFormatting.GREEN
                 + (mCoolingTower == null ? ""
                     : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
-                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : "")
-
-        };
+                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
+            /* 8 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -983,11 +987,6 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         return SoundResource.GTCEU_LOOP_ASSEMBLER;
     }
 
-    @Override
-    public Pos2d getStructureUpdateButtonPos() {
-        return new Pos2d(80, 91);
-    }
-
     public boolean addNaniteBusToMachineList(IGregTechTileEntity tileEntity, int baseCasingIndex) {
         if (tileEntity == null) return false;
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
@@ -1083,32 +1082,25 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         if (tag.hasKey("mBioChamber")) {
             NBTTagCompound bioChamber = tag.getCompoundTag("mBioChamber");
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Bio Chamber at: "
-                    + EnumChatFormatting.WHITE
-                    + bioChamber.getInteger("x")
-                    + ", "
-                    + bioChamber.getInteger("y")
-                    + ", "
-                    + bioChamber.getInteger("z")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.pcb.linked_to_bio_chamber_at",
+                    bioChamber.getInteger("x"),
+                    bioChamber.getInteger("y"),
+                    bioChamber.getInteger("z")));
         }
         if (tag.hasKey("mCoolingTower")) {
             NBTTagCompound coolingTower = tag.getCompoundTag("mCoolingTower");
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Cooling Tower at: "
-                    + EnumChatFormatting.WHITE
-                    + coolingTower.getInteger("x")
-                    + ", "
-                    + coolingTower.getInteger("y")
-                    + ", "
-                    + coolingTower.getInteger("z")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.pcb.linked_to_colling_tower_at",
+                    coolingTower.getInteger("x"),
+                    coolingTower.getInteger("y"),
+                    coolingTower.getInteger("z")));
         }
         if (tag.hasKey("compatMode")) {
             CompatMode compat = new CompatMode(tag);
             if (compat.isSet) {
-                currenttip.add(
-                    EnumChatFormatting.RED + "IN COMPAT MODE, PLEASE USE NEW COOLING TOWER AND BIO CHAMBER STRUCTURES");
+                currenttip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.pcb.compat_mode"));
             }
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);

@@ -25,7 +25,6 @@ import static gregtech.api.enums.OrePrefixes.gearGtSmall;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.enums.OrePrefixes.plate;
-import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.enums.OrePrefixes.ring;
 import static gregtech.api.enums.OrePrefixes.rotor;
 import static gregtech.api.enums.OrePrefixes.screw;
@@ -308,12 +307,6 @@ public class MoltenCellLoader implements IWerkstoffRunnable {
                         .getMass() > 128 ? 64 : 30)
                 .addTo(fluidSolidifierRecipes);
 
-        }
-
-        if (werkstoff.getGenerationFeatures()
-            .hasMultipleMetalSolidifierRecipes() && !werkstoff.hasItemType(plateDouble)) {
-            // No multiple plate molds
-            return;
         }
 
         // Tank "Recipe"

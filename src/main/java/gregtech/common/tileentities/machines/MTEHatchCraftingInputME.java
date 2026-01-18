@@ -711,6 +711,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    public ItemStack getSelfRep() {
+        return this.getStackForm(1);
+    }
+
+    @Override
     public void gridChanged() {
         needPatternSync = true;
     }
@@ -791,7 +796,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (aNBT.hasKey("customName")) customName = aNBT.getString("customName");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
-        showPattern = aNBT.getBoolean("showPattern");
+        if (aNBT.hasKey("showPattern")) showPattern = aNBT.getBoolean("showPattern");
 
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
@@ -1369,7 +1374,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     }
                 }
             }
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         CraftingGridCache.unpauseRebuilds();
     }
 }

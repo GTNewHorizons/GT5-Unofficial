@@ -4,6 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -48,7 +49,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -59,7 +60,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -149,13 +149,14 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     protected void updateHatchTexture() {
-        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureId());
     }
 
-    private int getCasingTextureID() {
+    @Override
+    protected int getCasingTextureId() {
         if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
             return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
@@ -172,29 +173,13 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    protected ITexture getFrontOverlay() {
-        return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER)
-            .extFacing()
-            .build();
+    protected IIconContainer getInactiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER;
     }
 
     @Override
-    protected ITexture getFrontOverlayActive() {
-        return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE)
-            .extFacing()
-            .build();
-    }
-
-    @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                aActive ? getFrontOverlayActive() : getFrontOverlay() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+    protected IIconContainer getActiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE;
     }
 
     @Override
@@ -220,19 +205,19 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement('D', ofBlock(Blocks.glass, 0))
+                .addElement('D', chainAllGlasses())
                 .addElement('E', ofChain(isAir(), ofAnyWater()))
                 .addElement(
                     'A',
                     ofChain(
                         buildSteamInput(MTESteamWasher.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(MTESteamWasher.class)
                             .atLeast(SteamHatchElement.InputBus_Steam, SteamHatchElement.OutputBus_Steam, InputHatch)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(

@@ -150,7 +150,7 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
-import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.Tags;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -275,7 +275,7 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        ItemStack insulator = GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorSheet", 1);
+        ItemStack insulator = GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorSheet", 1);
 
         // Coolant Delivery Casing
 
@@ -650,7 +650,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.MASKED_MASK),
                 GGMaterial.lithiumChloride.get(OrePrefixes.dust, 2),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 4))
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 4))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.BLANK2)))
             .duration(80 * GTRecipeBuilder.SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -675,7 +675,7 @@ public class RecipeLoader {
             .itemInputs(
                 new ItemStack(LanthItemList.ETCHED_MASK_1, 4),
                 Materials.Glass.getPlates(2),
-                new ItemStack(ModItems.dustLithiumHydroxide, 2),
+                GregtechItemList.LithiumHydroxideDust.get(2),
                 Materials.Epoxid.getDust(4))
             .fluidInputs(Materials.Hydrogen.getGas(2_000))
             .itemOutputs(new ItemStack(LanthItemList.maskMap.get(MaskList.CBLANK)))
@@ -1033,7 +1033,7 @@ public class RecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.Pyrolusite.getDust(6),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 6),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6),
                 WerkstoffMaterialPool.PotassiumChlorate.get(OrePrefixes.dust, 5))
             .itemOutputs(
                 WerkstoffMaterialPool.PotassiumPermanganate.get(OrePrefixes.dust, 12),
@@ -1056,7 +1056,7 @@ public class RecipeLoader {
 
         // 6KOH + 6Cl = KClO3 + 5KCl + 3H2O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 18))
+            .itemInputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 18))
             .circuit(3)
             .itemOutputs(
                 Materials.RockSalt.getDust(10),
@@ -2209,7 +2209,7 @@ public class RecipeLoader {
         // Lanthanum
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Lanthanum.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2221,7 +2221,7 @@ public class RecipeLoader {
         // Praseodymium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Praseodymium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2233,7 +2233,7 @@ public class RecipeLoader {
         // Cerium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Cerium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2245,7 +2245,7 @@ public class RecipeLoader {
         // Neodymium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Neodymium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2257,7 +2257,7 @@ public class RecipeLoader {
         // Sm
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Samarium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2269,7 +2269,7 @@ public class RecipeLoader {
         // Europium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Europium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2281,7 +2281,7 @@ public class RecipeLoader {
         // Gadolinium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Gadolinium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2293,7 +2293,7 @@ public class RecipeLoader {
         // Terbium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Terbium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2305,7 +2305,7 @@ public class RecipeLoader {
         // Dysprosium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Dysprosium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2317,7 +2317,7 @@ public class RecipeLoader {
         // Holmium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Holmium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2329,7 +2329,7 @@ public class RecipeLoader {
         // Erbium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Erbium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2341,7 +2341,7 @@ public class RecipeLoader {
         // Thulium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Thulium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2353,7 +2353,7 @@ public class RecipeLoader {
         // Ytterbium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Ytterbium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
@@ -2365,7 +2365,7 @@ public class RecipeLoader {
         // Lutetium
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 0),
                 Materials.Lutetium.getDust(1),
                 Materials.Carbon.getNanite(1))
             .fluidInputs(GGMaterial.P507.getFluidOrGas(4_000))
