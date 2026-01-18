@@ -144,6 +144,8 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
                     .addTooltipLine(StatCollector.translateToLocal("gui.tooltips.appliedenergistics2.DoublePatterns")))
             .child(
                 new ButtonWidget<>().overlay(GTGuiTextures.OVERLAY_BUTTON_PLUS_LARGE)
+                    .addTooltipLine(
+                        StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_input_me.place_manual_items"))
                     .onMousePressed(mouseButton -> {
                         popupPanel.openPanel();
                         return popupPanel.isPanelOpen();
