@@ -56,7 +56,7 @@ public class GTCoilTracker {
      * Ref counter to make sure there aren't any race conditions/conflicts when deactivating coils. {packed x,y,z: ref
      * count}
      */
-    private final Long2IntOpenHashMap activeBlocks = new Long2IntOpenHashMap();
+    public final Long2IntOpenHashMap activeBlocks = new Long2IntOpenHashMap();
 
     /**
      * Used to send active coils when the player views a new chunk. {packed chunk x,0,chunk z: set of packed x,y,z

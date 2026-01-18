@@ -15,5 +15,4 @@ public interface IBlockWithClientMeta {
      * @return The metadata.
      */
     int getClientMeta(World world, int x, int y, int z);
-
 }
