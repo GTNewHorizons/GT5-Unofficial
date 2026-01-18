@@ -13,6 +13,7 @@
 
 package bartworks.common.items;
 
+import java.awt.Color;
 import java.util.List;
 
 import bartworks.API.enums.BioCultureEnum;
@@ -46,10 +47,9 @@ public class ItemLabParts extends SimpleSubItemClass {
         if (itemStack == null || itemStack.getTagCompound() == null) return EnumRarity.common;
 
         return switch (itemStack.getItemDamage()) {
-            case 0 -> BWUtil.getRarityFromByte(
-                itemStack.getTagCompound()
-                    .getCompoundTag("DNA")
-                    .getByte("Rarity"));
+            case 0 ->
+                BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(itemStack.getTagCompound()
+                    .getString("Name"), BioCultureEnum.NullBioCulture).rarity;
             case 1, 2 ->
                 BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(itemStack.getTagCompound()
                     .getString("Name"), BioDataEnum.NullBioData).rarity;
@@ -60,14 +60,9 @@ public class ItemLabParts extends SimpleSubItemClass {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (stack.getItemDamage() == 0 && stack.getTagCompound() != null
-            && stack.getTagCompound()
-                .getIntArray("Color") != null
-            && stack.getTagCompound()
-                .getIntArray("Color").length > 0) {
-            int[] rgb = stack.getTagCompound()
-                .getIntArray("Color");
-            return BWColorUtil.getColorFromRGBArray(rgb);
+        if (stack.getItemDamage() == 0){
+            Color color = BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(stack.getTagCompound().getString("Name"), BioCultureEnum.NullBioCulture).color;
+            return color.getRGB();
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
