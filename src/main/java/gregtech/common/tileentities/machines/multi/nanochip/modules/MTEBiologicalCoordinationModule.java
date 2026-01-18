@@ -108,6 +108,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
+            .addSeparator()
             .addInfo("Coordinates your living " + TOOLTIP_CC + "s")
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same color as the input " + TOOLTIP_VCI)
