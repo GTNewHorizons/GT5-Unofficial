@@ -25,18 +25,21 @@ public interface IMTERenderer {
 
     /**
      * Encore render data used by the client (Server side)
+     * 
      * @param buffer
      */
-    default void encodeRenderData(ByteBuf buffer){};
+    default void encodeRenderData(ByteBuf buffer) {};
 
     /**
      * Decodes render data used by the client (Client side)
+     * 
      * @param buffer
      */
-    default void decodeRenderData(ByteArrayDataInput buffer){};
+    default void decodeRenderData(ByteArrayDataInput buffer) {};
 
     /**
      * Send render data to the client
+     * 
      * @param mte
      */
     default void sendRenderDataToClient(IMetaTileEntity mte) {

@@ -16,17 +16,18 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.interfaces.tileentity.IHeatProducer;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHeatProducer;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 
 public class MTEHeatSensor extends MTEHatch {
+
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
     protected static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
@@ -83,7 +84,7 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Read heat of a machine.",
+        return new String[] { "Reads heat of a machine.",
             "Send redstone signal if the heat is greater than the threshold.",
             "Right click to open the GUI and change settings." };
     }
