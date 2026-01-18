@@ -548,6 +548,19 @@ public class GTUtility {
     }
 
     /**
+     * Send a chat component to the player.
+     * We use this method to ensure future compatibility.
+     * When we have a better translation component, we can modify the chat component sent to the player through this
+     * function.
+     *
+     * @param player    The player who will receive the message.
+     * @param component The chat component to send.
+     */
+    public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
+        player.addChatComponentMessage(component);
+    }
+
+    /**
      * Send a message to all players on the server
      */
     public static void sendServerMessage(String message) {

@@ -111,6 +111,43 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         super(aName);
     }
 
+    private static final IStructureElement<MTEWindmill> DISPENSER_OR_CLAY = new IStructureElement<>() {
+
+        @Override
+        public boolean check(MTEWindmill t, World world, int x, int y, int z) {
+            Block block = world.getBlock(x, y, z);
+
+            if (block == Blocks.dispenser) {
+                return t.addDispenserToOutputSet(world.getTileEntity(x, y, z));
+            }
+
+            if (block == Blocks.hardened_clay && world.getBlockMetadata(x, y, z) == 0) {
+                t.mHardenedClay++;
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, Blocks.hardened_clay, 0);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+            return world.setBlock(x, y, z, Blocks.hardened_clay, 0, 3);
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return BlocksToPlace
+                .create(new ItemStack(Blocks.dispenser, 1, 0), new ItemStack(Blocks.hardened_clay, 1, 0));
+        }
+    };
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
@@ -125,7 +162,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
                     { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
                     { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }, }))
@@ -150,6 +187,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                         return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
                     }
                 })))
+        .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
         .addElement('s', new IStructureElement<>() {
 
