@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.util.GTLog;
@@ -53,6 +54,14 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     BioData dDNA;
     boolean bBreedable;
     Fluid mFluid;
+
+    public BioCulture(BioCultureEnum culture){
+        super(culture.name, culture.id, culture.rarity, 75_00, VoltageIndex.ULV);
+        this.color = culture.color;
+        this.plasmid = culture.plasmid.getBioData();
+        this.dDNA = culture.dna.getBioData();
+        this.bBreedable = culture.breedable;
+    }
 
     protected BioCulture(Color color, String name, int ID, BioData plasmid, BioData dDNA, EnumRarity rarity,
         boolean bBreedable) {
