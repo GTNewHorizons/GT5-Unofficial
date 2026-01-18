@@ -15,6 +15,7 @@ package bartworks.common.items;
 
 import java.util.List;
 
+import bartworks.API.enums.BioDataEnum;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -47,9 +48,9 @@ public class ItemLabParts extends SimpleSubItemClass {
                 itemStack.getTagCompound()
                     .getCompoundTag("DNA")
                     .getByte("Rarity"));
-            case 1, 2 -> BWUtil.getRarityFromByte(
-                itemStack.getTagCompound()
-                    .getByte("Rarity"));
+            case 1, 2 ->
+                BioDataEnum.LOOKUPS_BY_NAME.getOrDefault(itemStack.getTagCompound()
+                    .getString("Name"), BioDataEnum.NullBioData).rarity;
             default -> EnumRarity.common;
         };
     }

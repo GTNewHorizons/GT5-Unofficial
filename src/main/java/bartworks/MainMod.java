@@ -119,6 +119,7 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        BioDataEnum.registerLoopkups();
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
 

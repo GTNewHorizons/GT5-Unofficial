@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.tiered;
 
+import bartworks.API.enums.BioDataEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -166,10 +167,10 @@ public class MTEBioLab extends MTEBasicMachine {
                         NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound()
                             .getCompoundTag("DNA");
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
-                        BioData cultureDNABioData = BioData.getBioDataFromName(
+                        BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(
                             this.mInventory[this.getInputSlot()].getTagCompound()
                                 .getCompoundTag("DNA")
-                                .getString("Name"));
+                                .getString("Name")).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
 
                         if (this.mTier < rTier + cultureDNABioData.getTier())
@@ -214,7 +215,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && this.mFluid.amount >= 1000) {
                         NBTTagCompound DNABioDataTag = this.mInventory[this.getInputSlot()].getTagCompound();
                         if (DNABioDataTag == null) return super.checkRecipe(skipOC);
-                        BioData cultureDNABioData = BioData.getBioDataFromName(DNABioDataTag.getString("Name"));
+                        BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(DNABioDataTag.getString("Name")).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
 
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
@@ -273,8 +274,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && this.mFluid != null
                         && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
                         && this.mFluid.amount >= 1000) {
-                        BioData cultureDNABioData = BioData
-                            .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 2]));
+                        BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 2])).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
                         if (this.mTier < 1 + rTier + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -358,8 +358,7 @@ public class MTEBioLab extends MTEBasicMachine {
                         && this.mFluid.isFluidEqual(GTModHandler.getLiquidDNA(1_000))
                         && this.mFluid.amount >= 8000) {
 
-                        BioData cultureDNABioData = BioData
-                            .getBioDataFromName(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 3]));
+                        BioData cultureDNABioData = BioDataEnum.LOOKUPS_BY_NAME.get(BehaviourDataOrb.getDataName(this.mInventory[this.getInputSlot() + 3])).getBioData();
                         if (cultureDNABioData == null) return super.checkRecipe(skipOC);
                         if (this.mTier < 3 + rTier + cultureDNABioData.getTier())
                             return MTEBasicMachine.FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;

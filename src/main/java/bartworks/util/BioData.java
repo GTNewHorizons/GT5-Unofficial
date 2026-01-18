@@ -65,23 +65,17 @@ public class BioData {
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
         NBTTagCompound ret = new NBTTagCompound();
-        ret.setByte("Rarity", BWUtil.getByteFromRarity(bioData.rarity));
         ret.setString("Name", bioData.name);
-        // ret.setInteger("ID", bioData.ID); buggy when load Order changes
-        ret.setInteger("Chance", bioData.chance);
-        ret.setInteger("Tier", bioData.tier);
         return ret;
     }
 
     public static BioData getBioDataFromNBTTag(NBTTagCompound tag) {
         if (tag == null) return null;
-        return getBioDataFromName(tag.getString("Name"));
+        if (!tag.hasKey("Name")) return null;
+        return BioDataEnum.LOOKUPS_BY_NAME.get(tag.getString("Name")).getBioData();
     }
 
-    public static BioData getBioDataFromName(String Name) {
-        for (BioData bd : BIO_DATA_ARRAY_LIST) if (bd.name.equals(Name)) return bd;
-        return null;
-    }
+
 
     @Override
     public boolean equals(Object o) {
