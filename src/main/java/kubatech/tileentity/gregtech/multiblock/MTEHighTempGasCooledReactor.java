@@ -53,9 +53,14 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
@@ -67,6 +72,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -98,6 +104,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     implements ISurvivalConstructable {
 
     private static final int BASECASINGINDEX = 181;
+    private static final int TOOLTIP_WINDOW_ID = 200;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHighTempGasCooledReactor> STRUCTURE_DEFINITION = StructureDefinition
@@ -888,6 +895,144 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             return new Text(sb);
         }).setTextAlignment(Alignment.CenterLeft));
         return w;
+    }
+
+    @Override
+    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
+        buildContext.addSyncedWindow(TOOLTIP_WINDOW_ID, (player) -> createTooltipWindow());
+        configurationElements.setSynced(false);
+        configurationElements.widget(
+            new ButtonWidget().setOnClick((clickData, widget) -> {
+                if (!widget.isClient()) widget.getContext()
+                    .openSyncedWindow(TOOLTIP_WINDOW_ID);
+            })
+                .setPlayClickSound(true)
+                .setBackground(GTUITextures.BUTTON_STANDARD, new Text("Instructions"))
+                .setSize(70, 14)
+                .addTooltip("Show HTGR Info"));
+    }
+
+
+    //this might suck but it's MUI1 so it's gonna be ported anyway, amirite?
+
+    private ModularWindow createTooltipWindow() {
+        int windowWidth = 350;
+        int windowHeight = 375;
+        ModularWindow.Builder builder = ModularWindow.builder(windowWidth, windowHeight);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+
+        ArrayList<String> lines = buildControllerTooltipLines();
+        DynamicPositionedColumn column = new DynamicPositionedColumn();
+        for (String line : lines) {
+            column.widget(new TextWidget(new Text(line)).setTextAlignment(Alignment.CenterLeft));
+        }
+        builder.widget(
+            column.setPos(6, 20)
+                .setSize(windowWidth - 12, windowHeight - 26));
+        builder.widget(
+            ButtonWidget.closeWindowButton(true)
+                .setSize(16, 16)
+                .setPos(windowWidth - 16, 0));
+
+        return builder.build();
+    }
+
+    private ArrayList<String> buildControllerTooltipLines() {
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add(
+            EnumChatFormatting.BLACK + "Uses fuel each operation (up to " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(CONVERSION_FACTOR * 100)
+                + EnumChatFormatting.BLACK
+                + "%)");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(
+            EnumChatFormatting.BLACK + "Power use is IV * " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(((double) POWER_USAGE) / TierEU.RECIPE_IV));
+        lines.add(
+            EnumChatFormatting.BLACK + "Power can rise up to x" + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1)
+                + EnumChatFormatting.BLACK
+                + " if helium is low");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Helium boosts exchanger efficiency");
+        lines.add(
+            EnumChatFormatting.BLACK + "Up to " + EnumChatFormatting.RED + "100" + EnumChatFormatting.BLACK
+                + "% at full Helium");
+        lines.add(
+            EnumChatFormatting.BLACK + "Helium is slowly lost each operation (" + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(HELIUM_LOST_PER_CYCLE * 100)
+                + EnumChatFormatting.BLACK
+                + "%)");
+        lines.add(
+            EnumChatFormatting.BLACK + "Needs at least " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED)
+                + EnumChatFormatting.BLACK
+                + "% Helium to start");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Operation time depends on fill level");
+        lines.add(
+            EnumChatFormatting.BLACK + "Between " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(BASE_PROCESSING_TIME / 20)
+                + EnumChatFormatting.BLACK
+                + "s (minimum fill) and " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20)
+                + EnumChatFormatting.BLACK
+                + "s (full)");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Coolant and water speed up the process");
+        lines.add(
+            EnumChatFormatting.BLACK + "Coolant gives +" + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(COOLANT_SPEEDUP * 20 * 100)
+                + EnumChatFormatting.BLACK
+                + "% total recipe time per second");
+        lines.add(
+            EnumChatFormatting.BLACK + "Water gives +" + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(WATER_SPEEDUP * 20 * 100)
+                + EnumChatFormatting.BLACK
+                + "% total recipe time per second");
+        lines.add(
+            EnumChatFormatting.BLACK + "Both give +" + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100))
+                + EnumChatFormatting.BLACK
+                + "% total recipe time per second");
+        lines.add(
+            EnumChatFormatting.BLACK + "Maintenance issues reduce cooling by " + EnumChatFormatting.RED
+                + "20"
+                + EnumChatFormatting.BLACK
+                + "% each");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Fluid demand scales with pellets");
+        lines.add(
+            EnumChatFormatting.BLACK + "Coolant: " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(COOLANT_PER_PELLET)
+                + EnumChatFormatting.BLACK
+                + " per tick per pellet");
+        lines.add(
+            EnumChatFormatting.BLACK + "Water: " + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(WATER_PER_PELLET)
+                + EnumChatFormatting.BLACK
+                + " per tick per pellet");
+        lines.add(EnumChatFormatting.BLACK + "Assuming Base/Mult/Exp = 1/1/1");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Fluid provided affects the reactor linearly");
+        lines.add(EnumChatFormatting.BLACK + "You don't need to provide full amount");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Total power generation depends on:");
+        lines.add(EnumChatFormatting.BLACK.toString() + EnumChatFormatting.RED + "Base" + EnumChatFormatting.BLACK
+            + " sets the baseline output strength");
+        lines.add(EnumChatFormatting.BLACK.toString() + EnumChatFormatting.RED + "Multiplier" + EnumChatFormatting.BLACK
+            + " scales that base output multiplicatively");
+        lines.add(EnumChatFormatting.BLACK.toString() + EnumChatFormatting.RED + "Exponent" + EnumChatFormatting.BLACK
+            + " amplifies the Multiplier and affects recipe time");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "The energy output formula:");
+        lines.add(EnumChatFormatting.BLACK + "= Base * (Multiplier ^ Exponent)");
+        lines.add(EnumChatFormatting.BLACK + "Recipe time multiplier:");
+        lines.add(EnumChatFormatting.BLACK + "= 1 / (Exponent^2)");
+        lines.add(EnumChatFormatting.BLACK + " ");
+        lines.add(EnumChatFormatting.BLACK + "Emptying Mode: toggle with screwdriver");
+
+        return lines;
     }
 
     @Override

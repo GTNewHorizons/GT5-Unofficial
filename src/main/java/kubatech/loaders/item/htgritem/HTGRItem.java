@@ -94,12 +94,9 @@ public abstract class HTGRItem extends Item {
         if (material != null) {
             tooltipList.add(" - " + material.getLocalizedNameForItem("%material"));
             Triple<Double, Double, Double> properties = fuelProperties.getOrDefault(material, DEFAULT_FUEL_PROPERTIES);
-            tooltipList.add(
-                StatCollector.translateToLocalFormatted(
-                    "kubatech.infodata.htgr.fuel_properties",
-                    properties.getLeft(),
-                    properties.getMiddle(),
-                    properties.getRight()));
+            tooltipList.add("Base: " + properties.getLeft());
+            tooltipList.add("Multiplier: " + properties.getMiddle());
+            tooltipList.add("Exponent: " + properties.getRight());
         }
     }
 
