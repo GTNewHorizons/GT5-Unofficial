@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
@@ -72,15 +76,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     @Override
-    public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createMainColumn(panel, syncManager).child(
-            Flow.row()
-                .width(getTerminalRowWidth())
-                .coverChildrenHeight()
-                .child(createBarWidget(syncManager)));
-    }
-
-    @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
         textList.setEnabledIf(a -> multiblock.isTalkModeActive)
             .childSeparator(
@@ -113,11 +108,46 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     protected Widget<? extends Widget<?>> createBarWidget(PanelSyncManager syncManager) {
-        SegmentedBarWidget.SegmentInfo exotics = new SegmentedBarWidget.SegmentInfo(() -> 300, Color.ORANGE, "Exotics");
-        SegmentedBarWidget.SegmentInfo wetware = new SegmentedBarWidget.SegmentInfo(() -> 100, Color.RED, "We");
-        SegmentedBarWidget.SegmentInfo crystals = new SegmentedBarWidget.SegmentInfo(() -> 1, Color.BLUE, "Cr");
-
-        return new SegmentedBarWidget(500, 1, wetware, crystals, exotics).width(150);
+        return new SegmentedBarWidget(
+            HISTORY_BLOCKS * BATCH_SIZE,
+            1,
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("primitives", IntSyncValue.class)::getValue,
+                Color.YELLOW,
+                "Primitive Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("crystals", IntSyncValue.class)::getValue,
+                Color.LIGHT_BLUE,
+                "Crystal Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("wetwares", IntSyncValue.class)::getValue,
+                Color.RED_ACCENT,
+                "Wetware Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("bios", IntSyncValue.class)::getValue,
+                Color.LIGHT_GREEN,
+                "Bio Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("opticals", IntSyncValue.class)::getValue,
+                Color.ORANGE,
+                "Optical Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("exotics", IntSyncValue.class)::getValue,
+                Color.PURPLE,
+                "Exotic Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("cosmics", IntSyncValue.class)::getValue,
+                Color.BLUE,
+                "Cosmic Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("temporals", IntSyncValue.class)::getValue,
+                Color.WHITE,
+                "Temporally Transcendent Circuits"),
+            new SegmentedBarWidget.SegmentInfo(
+                syncManager.findSyncHandler("specials", IntSyncValue.class)::getValue,
+                Color.WHITE,
+                "High-Grade Specialty Circuits")).width(getTerminalRowWidth() - 27)
+                    .height(14);
     }
 
     @Override
@@ -126,14 +156,20 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .paddingRight(6)
             .paddingLeft(4)
             .height(getTextBoxToInventoryGap() + 20)
-            .child(createTalkTextField(panel, syncManager))
+            .child(
+                Flow.column()
+                    .top(4)
+                    .mainAxisAlignment(Alignment.MainAxis.START)
+                    .coverChildren()
+                    .childPadding(6)
+                    .child(createTalkTextField(panel, syncManager))
+                    .child(createBarWidget(syncManager)))
             .child(createButtonColumn(panel, syncManager));
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
         return new TerminalTextFieldWidget(textList, syncManager).setFocusOnGuiOpen(true)
-            .size(getTerminalRowWidth() - 27, 14)
-            .top(4);
+            .size(getTerminalRowWidth() - 27, 14);
     }
 
     @Override
@@ -157,6 +193,15 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             0,
             new BooleanSyncValue(() -> multiblock.isTalkModeActive, b -> multiblock.isTalkModeActive = b));
 
+        syncManager.syncValue("primitives", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 1)));
+        syncManager.syncValue("crystals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 2)));
+        syncManager.syncValue("wetwares", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 3)));
+        syncManager.syncValue("bios", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 4)));
+        syncManager.syncValue("opticals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 5)));
+        syncManager.syncValue("exotics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 6)));
+        syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 7)));
+        syncManager.syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 8)));
+        syncManager.syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 64)));
     }
 
     List<String> NOptions = Arrays.asList(
