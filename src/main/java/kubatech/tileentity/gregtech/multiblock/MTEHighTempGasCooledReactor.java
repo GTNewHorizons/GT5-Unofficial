@@ -636,8 +636,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 sum += amount;
                 Triple<Double, Double, Double> prop = HTGR_ITEM.getFuelProperties(m);
                 fuelBase += prop.getLeft() * amount;
-                fuelMultiplier += prop.getMiddle() * amount;
-                fuelExponent += prop.getRight() * amount;
+                fuelMultiplier += ((prop.getMiddle() - 1d) / MAX_CAPACITY) * amount;
+                fuelExponent += ((prop.getRight() - 1d) / MAX_CAPACITY) * amount;
 
                 double toUse = (amount / totalFuel) * toReduce;
                 mStoredBurnedFuels.merge(m, toUse, Double::sum);
@@ -676,12 +676,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
          * TODO
          * each fuel ball has 3 values:
          * fuelbase responsible for base generation, averaged from all balls in the reactor
-         * fuelmultiplier - multiplying base generation, additive - each ball adds or subtracts multiplier, not averaged
-         * fuelexponent - calculated same as multiplier but is an exponent of the multiplier and divides recipe time by
-         * exponent^2
-         * fuel balls are supposed to have minimal value changes from 1 (for base) and from 0 (for multiplier and
-         * exponent)
-         * example: uranium (1,0,0) plutonium (2,0.00002,0.00001) tungsten (0.5,-0.00001,-0.00005)
+         * fuelmultiplier and fuelexponent are defined as "full reactor" values (at MAX_CAPACITY pellets)
+         * per-pellet contribution is (value - 1) / MAX_CAPACITY because multiplier/exponent start from 1
+         * example: uranium (1,1,1) plutonium (2,1.2,1.1) tungsten (0.5,0.9,0.5)
          * please remember that the reactor has maximum of 10k balls inside so the multiplier and exponent can go to
          * extreme values if not taken into account
          * (maybe cap them? but that would potentially remove some fun breaking points :p)

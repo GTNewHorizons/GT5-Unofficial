@@ -21,7 +21,7 @@ import gregtech.api.enums.Materials;
 
 public class HTGRItem extends Item {
 
-    public static final Triple<Double, Double, Double> DEFAULT_FUEL_PROPERTIES = Triple.of(1.0, 0.0, 0.0);
+    public static final Triple<Double, Double, Double> DEFAULT_FUEL_PROPERTIES = Triple.of(1.0, 1.0, 1.0);
 
     private IIcon[] icons;
     private final HashSet<Materials> knownMaterials = new HashSet<>();
