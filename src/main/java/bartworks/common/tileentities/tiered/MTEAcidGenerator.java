@@ -120,7 +120,10 @@ public class MTEAcidGenerator extends MTEBasicGenerator {
             TextureFactory
                 .of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE", true)),
             TextureFactory.builder()
-                .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW", true))
+                .addIcon(
+                    new Textures.BlockIcons.CustomIcon(
+                        "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW",
+                        true))
                 .glow()
                 .build() };
     }

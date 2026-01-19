@@ -2631,8 +2631,12 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()));
-            mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this + _OVERLAY));
+            mIcon = ResourceUtils.resourceExists(GregTech.getResourceLocation(ICONSETS, this + ".png"))
+                ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()))
+                : VOID.getIcon();
+            mOverlay = ResourceUtils.resourceExists(GregTech.getResourceLocation(ICONSETS, this + _OVERLAY + ".png"))
+                ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this + _OVERLAY))
+                : VOID.getOverlayIcon();
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -2662,8 +2666,13 @@ public class Textures {
 
             @Override
             public void run() {
-                mIcon = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName));
-                mOverlay = GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + _OVERLAY));
+                mIcon = ResourceUtils.resourceExists(GregTech.getResourceLocation(mIconName + ".png"))
+                    ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName))
+                    : VOID.getIcon();
+
+                mOverlay = ResourceUtils.resourceExists(GregTech.getResourceLocation(mIconName + _OVERLAY + ".png"))
+                    ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + _OVERLAY))
+                    : VOID.getOverlayIcon();
             }
         }
     }
