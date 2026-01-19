@@ -5,8 +5,14 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import java.util.Collection;
 
+import gregtech.api.enums.ToolModes;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.util.GTUtility;
+import gregtech.common.config.Other;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -198,6 +204,82 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         }
     }
 
+    public void connectPipeOnSide(ForgeDirection side, EntityPlayer entityPlayer) {
+        if (!isConnectedAtSide(side)) {
+            if (connect(side) > 0) {
+                GTUtility.sendChatTrans(entityPlayer, GTUtility.trans("214", "Connected"));
+            }
+        } else {
+            disconnect(side);
+            GTUtility.sendChatTrans(entityPlayer, GTUtility.trans("215", "Disconnected"));
+        }
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+    }
+
+    @Override
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+                                      float aX, float aY, float aZ, ItemStack aTool) {
+
+        if (GTMod.gregtechproxy.gt6Pipe) {
+            final int mode = MetaGeneratedTool.getToolMode(aTool);
+            IGregTechTileEntity currentPipeBase = getBaseMetaTileEntity();
+            MTEVacuumConveyorPipe currentPipe = (MTEVacuumConveyorPipe) currentPipeBase.getMetaTileEntity();
+            final ForgeDirection tSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+
+            if (mode == ToolModes.REGULAR.get()) {
+                currentPipe.connectPipeOnSide(tSide, entityPlayer);
+                return true;
+            }
+
+            if (mode == ToolModes.WRENCH_LINE.get()) {
+
+                boolean wasActionPerformed = false;
+
+                int limit = Other.pipeWrenchingChainRange;
+                for (int connected = 0; connected < limit; connected++) {
+
+                    TileEntity nextPipeBaseTile = currentPipeBase.getTileEntityAtSide(tSide);
+
+                    // if next tile doesn't exist or if next tile is not GT tile
+                    if (!(nextPipeBaseTile instanceof IGregTechTileEntity nextPipeBase)) {
+                        return wasActionPerformed;
+                    }
+
+                    MTEVacuumConveyorPipe nextPipe = nextPipeBase.getMetaTileEntity() instanceof MTEVacuumConveyorPipe
+                        ? (MTEVacuumConveyorPipe) nextPipeBase.getMetaTileEntity()
+                        : null;
+
+                    // if next tile entity is not a pipe
+                    if (nextPipe == null) {
+                        return wasActionPerformed;
+                    }
+
+                    currentPipe.connectPipeOnSide(tSide, entityPlayer);
+
+                    wasActionPerformed = true;
+
+                    currentPipeBase = (IGregTechTileEntity) nextPipeBase;
+                    currentPipe = nextPipe;
+
+                }
+                return wasActionPerformed;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
+        final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
+        TileEntity tTileEntity = baseMetaTile.getTileEntityAtSide(side);
+        if (tTileEntity != null) {
+            IMetaTileEntity meta = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+            if (meta == null) return false;
+            return meta instanceof VacuumFactoryElement;
+        }
+        return false;
+    }
+
     @Override
     protected void checkActive() {
         mIsActive = getBaseMetaTileEntity().getTimer() % 200 > 100;
@@ -218,6 +300,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void setNetwork(VacuumFactoryNetwork network) {
         this.network = network;
     }
+
 
     @Override
     public void onColorChangeServer(byte aColor) {
