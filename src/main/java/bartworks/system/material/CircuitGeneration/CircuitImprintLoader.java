@@ -43,8 +43,6 @@ import gregtech.api.util.GTUtility;
 
 public class CircuitImprintLoader {
 
-    public static short reverseIDs = Short.MAX_VALUE - 1;
-
     // Todo: fix recipeTagMap to add the items back to the creative tab.
     public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
 
