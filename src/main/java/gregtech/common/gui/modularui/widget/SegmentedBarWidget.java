@@ -1,6 +1,7 @@
 package gregtech.common.gui.modularui.widget;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -24,8 +25,7 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
         this.maximum = maximum;
         this.borderSize = borderSize;
         this.segments = Arrays.stream(segments)
-            .sorted((a, b) -> Integer.compare(b.valueSupplier.get(), a.valueSupplier.get()))
-            .collect(Collectors.toList());;
+            .collect(Collectors.toList());
 
         tooltip().setAutoUpdate(true);
         tooltipBuilder(this::createTooltip);
@@ -40,6 +40,10 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
     @Override
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
         Area area = getArea();
+
+        segments.sort(
+            Comparator.comparingInt((SegmentInfo s) -> s.valueSupplier.get())
+                .reversed());
 
         int start = borderSize;
 
