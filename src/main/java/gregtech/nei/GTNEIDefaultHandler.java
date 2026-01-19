@@ -516,11 +516,11 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         public final boolean renderRealStackSize;
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y) {
-            this(object, renderRealStackSizes, x, y, 0, true, false);
+            this(object, renderRealStackSizes, x, y, -1, true, false);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSizes, int x, int y, boolean aUnificate) {
-            this(object, renderRealStackSizes, x, y, 0, aUnificate, false);
+            this(object, renderRealStackSizes, x, y, -1, aUnificate, false);
         }
 
         public FixedPositionedStack(Object object, boolean renderRealStackSize, int x, int y, int aChance,
@@ -542,7 +542,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
         }
 
         public boolean isChanceBased() {
-            return mChance > 0 && mChance < 10000;
+            return mChance >= 0 && mChance < 10000;
         }
 
         public String getChanceText() {
