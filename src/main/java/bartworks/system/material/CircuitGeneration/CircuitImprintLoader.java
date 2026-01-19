@@ -350,7 +350,7 @@ public class CircuitImprintLoader {
             .addTo(cutterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Circuit_Chip_ILC.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemInputs(ItemList.Circuit_Basic.get(1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1))
             .duration(15 * SECONDS)
             .eut(16)
@@ -627,7 +627,7 @@ public class CircuitImprintLoader {
         if (NewHorizonsCoreMod.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0),
+                    getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 1, 0),
                     ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
                 .duration(15 * SECONDS)
