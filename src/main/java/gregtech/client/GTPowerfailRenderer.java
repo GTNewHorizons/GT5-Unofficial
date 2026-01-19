@@ -77,7 +77,7 @@ public class GTPowerfailRenderer {
 
             if (dist < 4 || dist > 512) continue;
 
-            double size = dist * 0.25;
+            double size = dist * 0.25 * Client.render.powerfailIconSize;
 
             if (dist < 16d) {
                 // Fade to zero when the player is less than 2 blocks away
