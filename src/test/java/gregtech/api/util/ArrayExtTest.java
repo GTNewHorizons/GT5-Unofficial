@@ -20,10 +20,10 @@ public class ArrayExtTest {
         assertNull(ArrayExt.fixChancesArray(new int[0], 0));
         assertNull(ArrayExt.fixChancesArray(new int[0], 42));
 
-        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 0, 0, 10000 }, -1000));
-        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 0, 0, 10000 }, -1));
-        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 0, 0, 10000 }, 5));
-        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 0, 0, 10000 }, 42));
+        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 15000, 10001, 10000 }, -1000));
+        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 15000, 10001, 10000 }, -1));
+        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 15000, 10001, 10000 }, 5));
+        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -511, 15000, 10001, 10000 }, 42));
 
         int[] expected, actual;
 
