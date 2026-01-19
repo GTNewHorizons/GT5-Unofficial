@@ -277,58 +277,58 @@ public enum CircuitComponent {
     // into a physical circuit item
     CrystalProcessor(
         "gt.circuitcomponent.crystalprocessor",
-        () -> ItemList.Circuit_Crystalprocessor.get(1)),
+        () -> ItemList.Circuit_Crystalprocessor.get(1), (byte) 2),
     CrystalAssembly(
         "gt.circuitcomponent.crystalasssembly",
-        () -> ItemList.Circuit_Crystalcomputer.get(1)),
+        () -> ItemList.Circuit_Crystalcomputer.get(1), (byte) 2),
     CrystalComputer(
         "gt.circuitcomponent.crystalcomputer",
-        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1)),
+        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), (byte) 2),
     CrystalMainframe(
         "gt.circuitcomponent.crystalmainframe",
-        () -> ItemList.Circuit_Crystalmainframe.get(1)),
+        () -> ItemList.Circuit_Crystalmainframe.get(1), (byte) 2),
     WetwareProcessor(
         "gt.circuitcomponent.wetwareprocessor",
-        () -> ItemList.Circuit_Neuroprocessor.get(1)),
+        () -> ItemList.Circuit_Neuroprocessor.get(1), (byte) 3),
     WetwareAssembly(
         "gt.circuitcomponent.wetwareassembly",
-        () -> ItemList.Circuit_Wetwarecomputer.get(1)),
+        () -> ItemList.Circuit_Wetwarecomputer.get(1), (byte) 3),
     WetwareComputer(
         "gt.circuitcomponent.wetwarecomputer",
-        () -> ItemList.Circuit_Wetwaresupercomputer.get(1)),
+        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), (byte) 3),
     WetwareMainframe(
         "gt.circuitcomponent.wetwaremainframe",
-        () -> ItemList.Circuit_Wetwaremainframe.get(1)),
+        () -> ItemList.Circuit_Wetwaremainframe.get(1), (byte) 3),
     BiowareProcessor(
         "gt.circuitcomponent.biowareprocessor",
-        () -> ItemList.Circuit_Bioprocessor.get(1)),
+        () -> ItemList.Circuit_Bioprocessor.get(1), (byte) 4),
     BiowareAssembly(
         "gt.circuitcomponent.biowareassembly",
-        () -> ItemList.Circuit_Biowarecomputer.get(1)),
+        () -> ItemList.Circuit_Biowarecomputer.get(1), (byte) 4),
     BiowareComputer(
         "gt.circuitcomponent.biowarecomputer",
-        () -> ItemList.Circuit_Biowaresupercomputer.get(1)),
+        () -> ItemList.Circuit_Biowaresupercomputer.get(1), (byte) 4),
     BiowareMainframe(
         "gt.circuitcomponent.biowaremainframe",
-        () -> ItemList.Circuit_Biomainframe.get(1)),
+        () -> ItemList.Circuit_Biomainframe.get(1), (byte) 4),
     OpticalProcessor(
         "gt.circuitcomponent.opticalprocessor",
-        () -> ItemList.Circuit_OpticalProcessor.get(1)),
+        () -> ItemList.Circuit_OpticalProcessor.get(1), (byte) 5),
     OpticalAssembly(
         "gt.circuitcomponent.opticalassembly",
-        () -> ItemList.Circuit_OpticalAssembly.get(1)),
+        () -> ItemList.Circuit_OpticalAssembly.get(1), (byte) 5),
     OpticalComputer(
         "gt.circuitcomponent.opticalcomputer",
-        () -> ItemList.Circuit_OpticalComputer.get(1)),
+        () -> ItemList.Circuit_OpticalComputer.get(1), (byte) 5),
     OpticalMainframe(
         "gt.circuitcomponent.opticalmainframe",
-        () -> ItemList.Circuit_OpticalMainframe.get(1)),
+        () -> ItemList.Circuit_OpticalMainframe.get(1), (byte) 5),
     PicoCircuit(
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.fire))),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), (byte) 64),
     QuantumCircuit(
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.fire))),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), (byte) 64),
 
     ;
 
@@ -343,21 +343,42 @@ public enum CircuitComponent {
     public final Supplier<ItemStack> realComponent;
     public final boolean isProcessed;
 
+    // Tier used for calibration
+    public final byte circuitTier;
+
     // CC constructor
     CircuitComponent(String unlocalizedName, Supplier<ItemStack> realComponent) {
-        this(unlocalizedName, realComponent, false);
+        this(unlocalizedName, realComponent, false, (byte) 0);
+    }
+
+    // CC constructor with tier, used for circuits
+
+    // 0 - No tier (not a circuit)
+    // 1 - Primitive Circuits (Pre-Crystal)
+    // 2 - Crystals
+    // 3 - Wetware
+    // 4 - Bio
+    // 5 - Optical
+    // 6 - Exotic
+    // 7 - Cosmic
+    // 8 - Temporally Transcendent
+    // 64 - Special Temporary circuits - Piko/Quantum
+
+    CircuitComponent(String unlocalizedName, Supplier<ItemStack> realComponent, byte circuitTier) {
+        this(unlocalizedName, realComponent, false, circuitTier);
     }
 
     // PC constructor
     CircuitComponent(String unlocalizedName, boolean isProcessed) {
-        this(unlocalizedName, null, isProcessed);
+        this(unlocalizedName, null, isProcessed, (byte) 0);
     }
 
     // Internal constructor
-    CircuitComponent(String unlocalizedName, Supplier<ItemStack> realComponent, boolean isProcessed) {
+    CircuitComponent(String unlocalizedName, Supplier<ItemStack> realComponent, boolean isProcessed, byte circuitTier) {
         this.unlocalizedName = unlocalizedName;
         this.realComponent = realComponent;
         this.isProcessed = isProcessed;
+        this.circuitTier = circuitTier;
 
         this.iconString = name().toLowerCase();
         codechicken.nei.api.API.hideItem(getFakeStack(1));

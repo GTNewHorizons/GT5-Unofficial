@@ -17,12 +17,14 @@ import static gregtech.common.tileentities.machines.multi.nanochip.util.Assembly
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -68,6 +70,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacu
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitBatch;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
@@ -88,6 +91,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         + EnumChatFormatting.GRAY;
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipPrimaryCasing.textureId;
+
+    public static final int BATCH_SIZE = 10_000;
+    public static final int HISTORY_BLOCKS = 100;
+    public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
+    private CircuitBatch currentBlock;
 
     // For usage in the GUI
     public boolean isTalkModeActive = false;
@@ -481,6 +489,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realComponent != null) {
+                            if (currentBlock == null) currentBlock = new CircuitBatch();
+                            // If the current block is full, store to history. Push the oldest block if needed.
+                            if (currentBlock.isFull()) {
+                                circuitHistory.add(currentBlock);
+                                if (circuitHistory.size() > HISTORY_BLOCKS) {
+                                    circuitHistory.poll();
+                                }
+                                currentBlock = new CircuitBatch();
+                            }
+
+                            currentBlock.add(component.circuitTier, (int) Math.min(Integer.MAX_VALUE, amount));
+
                             lEUt -= (amount * EU_MULTIPLIER);
                             ItemStack toOutput = GTUtility.copyAmountUnsafe(
                                 (int) Math.min(Integer.MAX_VALUE, amount),
@@ -494,6 +514,37 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 }
             }
         }
+    }
+
+    public int getTotalCircuit(byte type) {
+        int total = 0;
+        for (CircuitBatch batch : circuitHistory) {
+            switch (type) {
+                case 1 -> total += batch.primitives;
+                case 2 -> total += batch.crystals;
+                case 3 -> total += batch.wetwares;
+                case 4 -> total += batch.bios;
+                case 5 -> total += batch.opticals;
+                case 6 -> total += batch.exotics;
+                case 7 -> total += batch.cosmics;
+                case 8 -> total += batch.temporals;
+                case 64 -> total += batch.specials;
+            }
+        }
+        if (currentBlock != null) {
+            switch (type) {
+                case 1 -> total += currentBlock.primitives;
+                case 2 -> total += currentBlock.crystals;
+                case 3 -> total += currentBlock.wetwares;
+                case 4 -> total += currentBlock.bios;
+                case 5 -> total += currentBlock.opticals;
+                case 6 -> total += currentBlock.exotics;
+                case 7 -> total += currentBlock.cosmics;
+                case 8 -> total += currentBlock.temporals;
+                case 64 -> total += currentBlock.specials;
+            }
+        }
+        return total;
     }
 
     private void tryChargeInternalBuffer() {
