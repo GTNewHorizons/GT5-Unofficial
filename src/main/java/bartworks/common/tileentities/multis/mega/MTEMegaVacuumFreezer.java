@@ -109,9 +109,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 7500),
-            new SubspaceCoolingFluid(Materials.Space, 2, 5000),
-            new SubspaceCoolingFluid(Materials.Eternity, 3, 2500)));
+            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 75),
+            new SubspaceCoolingFluid(Materials.Space, 2, 50),
+            new SubspaceCoolingFluid(Materials.Eternity, 3, 25)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 
@@ -252,9 +252,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     + "consuming "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", "7500", 1))
-            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "5000", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", "2500", 3))
+            .addInfo(getCoolantTextFormatted("Molten Spacetime", "75", 1))
+            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "50", 2))
+            .addInfo(getCoolantTextFormatted("Molten Eternity", "25", 3))
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
