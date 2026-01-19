@@ -25,6 +25,20 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
     }
 
     @Override
+    public void onRemoval() {
+        super.onRemoval();
+
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+    }
+
+    @Override
+    public void onFacingChange() {
+        super.onFacingChange();
+
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+    }
+
+    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchVacuumConveyorInput(mName, mTier, mDescriptionArray, mTextures);
     }
@@ -93,8 +107,9 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
         contents = this.getNetwork()
             .getCircuitComponentPacket();
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+
     }
 }
