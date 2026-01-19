@@ -4,6 +4,8 @@ import static gregtech.api.enums.Mods.KubaTech;
 import static kubatech.api.gui.KubaTechUITextures.PICTURE_KUBATECH_LOGO;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -19,14 +21,11 @@ import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import codechicken.nei.PositionedStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
-import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.item.htgritem.HTGRItem;
@@ -43,8 +42,43 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
                 .progressBarDirection(ProgressBar.Direction.DOWN)
                 .logoPos(new Pos2d(145, 237))
                 .logo(PICTURE_KUBATECH_LOGO)
-                .logoSize(new Size(13, 15)),
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 245)));
+                .logoSize(new Size(13, 15))
+                .maxItemInputs(7)
+                .maxItemOutputs(16),
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 245))
+                .itemInputsGetter(recipe -> {
+                    ArrayList<ItemStack> inputs = new ArrayList<>();
+                    // main item
+                    inputs.add(recipe.mInputs[0]);
+                    // shell
+                    inputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
+                    // fuel
+                    for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
+                        inputs.add(fuel.getLeft());
+                    }
+                    return inputs.toArray(new ItemStack[0]);
+                })
+                .itemOutputsGetter(recipe -> {
+                    ArrayList<ItemStack> outputs = new ArrayList<>();
+                    Materials material = GTOreDictUnificator.getAssociation(recipe.mInputs[0]).mMaterial.mMaterial;
+                    outputs.add(HTGRItem.createTRISOMixture(material));
+                    outputs.add(HTGRItem.createIncompleteBISOFuel(material));
+                    outputs.add(HTGRItem.createIncompleteTRISOFuel(material));
+                    ItemStack ofuel = HTGRItem.createTRISOFuel(material);
+                    outputs.add(ofuel);
+                    outputs.add(ofuel.copy());
+                    outputs.add(HTGRItem.createBurnedTRISOFuel(material));
+                    Collections.addAll(outputs, recipe.mOutputs);
+                    // recycling
+                    for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
+                        ItemStack stack = fuel.getLeft()
+                            .copy();
+                        stack.stackSize = fuel.getRight();
+                        if (stack.stackSize > 0) outputs.add(stack);
+                    }
+                    outputs.addAll(Arrays.asList(recipe.getMetadata(HTGRLoader.SHELL)));
+                    return outputs.toArray(new ItemStack[0]);
+                }));
     }
 
     @Override
@@ -63,79 +97,44 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
     @Override
     public @NotNull List<Pos2d> getItemInputPositions(int itemInputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
+        // main item
         positions.add(new Pos2d(7, 25));
+        // shell
+        positions.add(new Pos2d(7, 80));
+        positions.add(new Pos2d(7, 118));
+        positions.add(new Pos2d(7, 157));
+        // fuel
+        int x = 30, y = 7;
+        for (int i = 0; i < itemInputCount - 4; i++) {
+            positions.add(new Pos2d(x, y));
+            y += 18;
+        }
         return positions;
     }
 
     @Override
     public @NotNull List<Pos2d> getItemOutputPositions(int itemOutputCount) {
         ArrayList<Pos2d> positions = new ArrayList<>();
+
+        // outputs
+        positions.add(new Pos2d(79, 67));
+        positions.add(new Pos2d(79, 99));
+        positions.add(new Pos2d(79, 131));
+        positions.add(new Pos2d(79, 163));
+        positions.add(new Pos2d(136, 25));
+        positions.add(new Pos2d(136, 163));
+        // recycling
+
         int x = 7, y = 197;
-        for (int i = 0; i < itemOutputCount; i++) {
+        for (int i = 0; i < itemOutputCount - 6; i++) {
             positions.add(new Pos2d(x, y));
             x += 18;
-        }
-        return positions;
-    }
-
-    @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.@NotNull CachedDefaultRecipe neiCachedRecipe) {
-        super.drawNEIOverlays(neiCachedRecipe);
-        if (neiCachedRecipe.mInputs.size() == 1) {
-            GTRecipe recipe = neiCachedRecipe.mRecipe;
-            Materials material = GTOreDictUnificator.getAssociation(recipe.mInputs[0]).mMaterial.mMaterial;
-
-            // FUEL
-            int x = 26, y = -3;
-            for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
-                neiCachedRecipe.mInputs.add(new PositionedStack(fuel.getLeft(), x, y, false));
+            if (x >= 75 + 18) {
+                x = 7;
                 y += 18;
             }
-
-            // SHELL
-            ItemStack[] shells = recipe.getMetadata(HTGRLoader.SHELL);
-            neiCachedRecipe.mInputs.add(new PositionedStack(shells[0], 3, 70, false));
-            neiCachedRecipe.mInputs.add(new PositionedStack(shells[1], 3, 108, false));
-            neiCachedRecipe.mInputs.add(new PositionedStack(shells[2], 3, 147, false));
-
-            // outputs
-            neiCachedRecipe.mOutputs.add(new PositionedStack(HTGRItem.createTRISOMixture(material), 75, 57, false));
-            neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRItem.createIncompleteBISOFuel(material), 75, 89, false));
-            neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRItem.createIncompleteTRISOFuel(material), 75, 121, false));
-            ItemStack ofuel = HTGRItem.createTRISOFuel(material);
-            neiCachedRecipe.mOutputs.add(new PositionedStack(ofuel, 75, 153, false));
-            neiCachedRecipe.mOutputs.add(new PositionedStack(ofuel, 132, 15, false));
-            neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRItem.createBurnedTRISOFuel(material), 132, 153, false));
-
-            // recycling
-            x = 3;
-            y = 187;
-            x += recipe.mOutputs.length * 18;
-            for (Pair<ItemStack, Integer> fuel : recipe.getMetadata(HTGRLoader.FUEL)) {
-                ItemStack stack = fuel.getLeft()
-                    .copy();
-                stack.stackSize = fuel.getRight();
-                neiCachedRecipe.mInputs.add(new PositionedStack(stack, x, y, false));
-                x += 18;
-                if (x >= 75 + 18) {
-                    x = 3;
-                    y += 18;
-                }
-            }
-            for (ItemStack shell : recipe.getMetadata(HTGRLoader.SHELL)) {
-                neiCachedRecipe.mOutputs
-                    .add(new GTNEIDefaultHandler.FixedPositionedStack(shell, true, x, y, 9500, false));
-                x += 18;
-                if (x >= 75 + 18) {
-                    x = 3;
-                    y += 18;
-                }
-            }
-
         }
+        return positions;
     }
 
     @Override

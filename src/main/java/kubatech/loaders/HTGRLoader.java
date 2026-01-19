@@ -113,7 +113,7 @@ public class HTGRLoader {
                     ItemStack fuelStack = fuel.getLeft()
                         .copy();
                     fuelStack.stackSize = fuel.getRight();
-                    items.add(fuelStack);
+                    if (fuelStack.stackSize > 0) items.add(fuelStack);
                 }
             }
             int[] chances = new int[items.size() + 3];
