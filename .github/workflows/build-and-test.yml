@@ -9,7 +9,7 @@ on:
 
 jobs:
   optimize-images:
-    uses: GTNewHorizons/GTNH-Actions-Workflows/.github/workflows/optimize-images.yml@master
+    uses: GTNewHorizons/GTNH-Actions-Workflows/.github/workflows/optimize-images.yml@fix_image_optimisation
     secrets: inherit
     
   build-and-test:
