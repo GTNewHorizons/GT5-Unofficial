@@ -304,13 +304,13 @@ public class CircuitImprintLoader {
             ItemList.CircuitImprint_HighEnergyFlowCircuit.set(
                 BWMetaItems.getCircuitParts()
                     .getStackWithNBT(
-                        getTagFromStack(getModItem(NewHorizonsCoreMod.ID, "item.HighEnergyFlowCircuit", 64, 0)),
+                        getTagFromStack(getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0)),
                         0,
                         1));
             ItemList.SlicedCircuit_HighEnergyFlowCircuit.set(
                 BWMetaItems.getCircuitParts()
                     .getStackWithNBT(
-                        getTagFromStack(getModItem(NewHorizonsCoreMod.ID, "item.HighEnergyFlowCircuit", 64, 0)),
+                        getTagFromStack(getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0)),
                         1,
                         1));
         }
@@ -627,7 +627,7 @@ public class CircuitImprintLoader {
         if (NewHorizonsCoreMod.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    getModItem(NewHorizonsCoreMod.ID, "item.HighEnergyFlowCircuit", 64, 0),
+                    getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0),
                     ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
                 .duration(15 * SECONDS)
