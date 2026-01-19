@@ -29,6 +29,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import kubatech.loaders.HTGRLoader;
+import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapFrontend {
 
@@ -98,17 +99,16 @@ public class HighTemperatureGasCooledReactorRecipeMapFrontend extends RecipeMapF
             neiCachedRecipe.mInputs.add(new PositionedStack(shells[2], 3, 147, false));
 
             // outputs
+            neiCachedRecipe.mOutputs.add(new PositionedStack(HTGRItem.createTRISOMixture(material), 75, 57, false));
             neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRLoader.HTGR_ITEM.createTRISOMixture(material), 75, 57, false));
+                .add(new PositionedStack(HTGRItem.createIncompleteBISOFuel(material), 75, 89, false));
             neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRLoader.HTGR_ITEM.createIncompleteBISOFuel(material), 75, 89, false));
-            neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRLoader.HTGR_ITEM.createIncompleteTRISOFuel(material), 75, 121, false));
-            ItemStack ofuel = HTGRLoader.HTGR_ITEM.createTRISOFuel(material);
+                .add(new PositionedStack(HTGRItem.createIncompleteTRISOFuel(material), 75, 121, false));
+            ItemStack ofuel = HTGRItem.createTRISOFuel(material);
             neiCachedRecipe.mOutputs.add(new PositionedStack(ofuel, 75, 153, false));
             neiCachedRecipe.mOutputs.add(new PositionedStack(ofuel, 132, 15, false));
             neiCachedRecipe.mOutputs
-                .add(new PositionedStack(HTGRLoader.HTGR_ITEM.createBurnedTRISOFuel(material), 132, 153, false));
+                .add(new PositionedStack(HTGRItem.createBurnedTRISOFuel(material), 132, 153, false));
 
             // recycling
             x = 3;

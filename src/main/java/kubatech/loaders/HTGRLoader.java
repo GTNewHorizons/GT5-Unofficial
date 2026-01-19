@@ -14,12 +14,10 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -34,13 +32,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.api.gui.HighTemperatureGasCooledReactorRecipeMapFrontend;
-import kubatech.api.utils.ModUtils;
-import kubatech.client.renderer.HTGRItemRenderer;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class HTGRLoader {
-
-    public static final HTGRItem HTGR_ITEM = new HTGRItem();
 
     @SuppressWarnings("unchecked")
     public static final RecipeMetadataKey<Pair<ItemStack, Integer>[]> FUEL = SimpleRecipeMetadataKey
@@ -66,7 +60,7 @@ public class HTGRLoader {
             Pair<ItemStack, Integer>[] fuels = builder.getMetadata(FUEL);
             ItemStack[] shells = builder.getMetadataOrDefault(SHELL, new ItemStack[0]);
             Triple<Double, Double, Double> fuelModificator = builder.getMetadata(FUEL_MODIFICATOR);
-            if (fuelModificator != null) HTGR_ITEM.setFuelProperties(material, fuelModificator);
+            if (fuelModificator != null) HTGRItem.setFuelProperties(material, fuelModificator);
 
             ArrayList<ItemStack> items = new ArrayList<>();
             Collections.addAll(items, inputs);
@@ -79,7 +73,7 @@ public class HTGRLoader {
             // mixer
             GTValues.RA.stdBuilder()
                 .itemInputs(items.toArray(new ItemStack[0]))
-                .itemOutputs(HTGR_ITEM.createTRISOMixture(material))
+                .itemOutputs(HTGRItem.createTRISOMixture(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(100)
                 .nbtSensitive()
@@ -87,22 +81,22 @@ public class HTGRLoader {
 
             // forming shell
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createTRISOMixture(material), shells[0])
-                .itemOutputs(HTGR_ITEM.createIncompleteBISOFuel(material))
+                .itemInputs(HTGRItem.createTRISOMixture(material), shells[0])
+                .itemOutputs(HTGRItem.createIncompleteBISOFuel(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createIncompleteBISOFuel(material), shells[1])
-                .itemOutputs(HTGR_ITEM.createIncompleteTRISOFuel(material))
+                .itemInputs(HTGRItem.createIncompleteBISOFuel(material), shells[1])
+                .itemOutputs(HTGRItem.createIncompleteTRISOFuel(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(50)
                 .nbtSensitive()
                 .addTo(formingPressRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createIncompleteTRISOFuel(material), shells[2])
-                .itemOutputs(HTGR_ITEM.createTRISOFuel(material))
+                .itemInputs(HTGRItem.createIncompleteTRISOFuel(material), shells[2])
+                .itemOutputs(HTGRItem.createTRISOFuel(material))
                 .eut(TierEU.RECIPE_EV)
                 .duration(50)
                 .nbtSensitive()
@@ -128,7 +122,7 @@ public class HTGRLoader {
             items.addAll(Arrays.asList(shells));
 
             GTValues.RA.stdBuilder()
-                .itemInputs(HTGR_ITEM.createBurnedTRISOFuel(material))
+                .itemInputs(HTGRItem.createBurnedTRISOFuel(material))
                 .itemOutputs(items.toArray(new ItemStack[0]))
                 .outputChances(chances)
                 .eut(TierEU.RECIPE_EV)
@@ -140,8 +134,18 @@ public class HTGRLoader {
 
     public static void load() {
 
-        GameRegistry.registerItem(HTGR_ITEM, "htgr_item");
-        if (ModUtils.isClientSided) MinecraftForgeClient.registerItemRenderer(HTGR_ITEM, new HTGRItemRenderer());
+        HTGRItem.initItems();
+
+        // DO NOT CHANGE THE ORDER OF ADDING KNOWN MATERIALS
+        HTGRItem.addKnownMaterial(Materials.Silver);
+        HTGRItem.addKnownMaterial(Materials.Uranium235);
+        HTGRItem.addKnownMaterial(Materials.Plutonium);
+        HTGRItem.addKnownMaterial(Materials.Thorium);
+        HTGRItem.addKnownMaterial(Materials.Tungsten);
+        HTGRItem.addKnownMaterial(Materials.Praseodymium);
+        HTGRItem.addKnownMaterial(Materials.Lanthanum);
+        HTGRItem.addKnownMaterial(Materials.Caesium);
+        HTGRItem.addKnownMaterial(Materials.Glowstone);
 
         // silver to indium
 

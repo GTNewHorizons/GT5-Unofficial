@@ -186,11 +186,11 @@ kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
 kubaitem.defc_schematic_t3.name=Awakened Core Schematic
 kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
 
-item.htgr_item.0.name=TRISO Fuel Mixture (%s)
-item.htgr_item.1.name=Incomplete BISO Fuel (%s)
-item.htgr_item.2.name=Incomplete TRISO Fuel (%s)
-item.htgr_item.3.name=TRISO Fuel (%s)
-item.htgr_item.4.name=Burned Out TRISO Fuel (%s)
+item.htgr_item.triso_mixture.name=TRISO Fuel Mixture (%s)
+item.htgr_item.incomplete_biso_fuel.name=Incomplete BISO Fuel (%s)
+item.htgr_item.incomplete_triso_fuel.name=Incomplete TRISO Fuel (%s)
+item.htgr_item.triso_fuel.name=TRISO Fuel (%s)
+item.htgr_item.burned.name=Burned Out TRISO Fuel (%s)
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
