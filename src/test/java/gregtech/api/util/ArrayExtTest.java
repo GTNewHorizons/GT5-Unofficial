@@ -40,10 +40,10 @@ public class ArrayExtTest {
         assertArrayEquals(expected, actual);
 
         expected = new int[] { 10000, 10000, 10000, 10000, 5, 5, 5, 5 };
-        actual = ArrayExt.fixChancesArray(new int[] { 0, 0, 0, 0, 5, 5, 5, 5 }, -1);
+        actual = ArrayExt.fixChancesArray(new int[] { -1, -1, -1, -1, 5, 5, 5, 5 }, -1);
         assertArrayEquals(expected, actual);
 
-        assertNull(ArrayExt.fixChancesArray(new int[] { 0, 0, 0, 0, 5, 5, 5, 5 }, 3));
+        assertNull(ArrayExt.fixChancesArray(new int[] { -1, -1, -1, -1, 5, 5, 5, 5 }, 3));
 
     }
 

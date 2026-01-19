@@ -225,7 +225,15 @@ public class ArrayExt {
         }
         if (!valid) return null;
         final boolean needCopy = expectedLen != -1 && expectedLen != chances.length;
-        final int[] array = needCopy ? Arrays.copyOf(chances, expectedLen) : chances;
+        final int[] array;
+        if (!needCopy) {
+            array = chances;
+        } else {
+            array = Arrays.copyOf(chances, expectedLen);
+            for (int i = chances.length; i < expectedLen; i++) {
+                array[i] = 10000;
+            }
+        }
         for (int i = 0, len2 = array.length; i < len2; i++) {
             final int chance = array[i];
             if (chance < 0 || chance > 10000) {
