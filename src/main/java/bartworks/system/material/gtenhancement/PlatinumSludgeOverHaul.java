@@ -100,7 +100,6 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 import static gtPlusPlus.core.material.MaterialsAlloy.HELICOPTER;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.WHITE_METAL;
 import static kubatech.loaders.HTGRLoader.HTGRRecipes;
-import static kubatech.loaders.HTGRLoader.HTGR_ITEM;
 import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
 
 import java.util.ArrayList;
@@ -144,6 +143,7 @@ import gregtech.common.blocks.GTBlockOre;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.base.BaseItemComponent;
+import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class PlatinumSludgeOverHaul {
 
@@ -1194,7 +1194,7 @@ public class PlatinumSludgeOverHaul {
             .getItem()) {
             return true;
         }
-        if (stack.getItem() == HTGR_ITEM) {
+        if (stack.getItem() == HTGRItem.BURNED_TRISO) {
             return true;
         }
         if (stack.getItem() == WHITE_METAL.getDust(1)

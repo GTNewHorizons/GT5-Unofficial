@@ -26,7 +26,6 @@ import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static kubatech.loaders.HTGRLoader.HTGR_ITEM;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,6 +92,7 @@ import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.loaders.HTGRLoader;
+import kubatech.loaders.item.htgritem.HTGRItem;
 
 public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHighTempGasCooledReactor>
     implements ISurvivalConstructable {
@@ -576,10 +576,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (MAX_CAPACITY - this.fuelsupply >= 1) {
                 this.startRecipeProcessing();
                 for (ItemStack itemStack : this.getStoredInputs()) {
-                    if (itemStack == null || itemStack.getItem() != HTGR_ITEM) continue;
-                    int damage = HTGR_ITEM.getDamage(itemStack);
-                    if (damage != 3) continue;
-                    Materials m = HTGR_ITEM.getItemMaterial(itemStack);
+                    if (itemStack == null || itemStack.getItem() != HTGRItem.TRISO) continue;
+                    Materials m = HTGRItem.getItemMaterial(itemStack);
                     int toget = (int) Math.min(MAX_CAPACITY - this.fuelsupply, itemStack.stackSize);
                     this.fuelsupply += toget;
                     itemStack.stackSize -= toget;
@@ -637,7 +635,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             double amount = entry.getValue();
             if (amount > 0) {
                 sum += amount;
-                Triple<Double, Double, Double> prop = HTGR_ITEM.getFuelProperties(m);
+                Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(m);
                 fuelBase += prop.getLeft() * amount;
                 fuelMultiplier += ((prop.getMiddle() - 1d) / MAX_CAPACITY) * amount;
                 fuelExponent += ((prop.getRight() - 1d) / MAX_CAPACITY) * amount;
@@ -659,7 +657,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (entry.getValue() >= 1.d) {
                 Materials m = entry.getKey();
                 double output = Math.floor(entry.getValue());
-                ItemStack stack = HTGR_ITEM.createBurnedTRISOFuel(m);
+                ItemStack stack = HTGRItem.createBurnedTRISOFuel(m);
                 stack.stackSize = (int) output;
                 toOutput.add(stack);
             }
@@ -667,7 +665,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
         if (this.canOutputAll(toOutput.toArray(new ItemStack[0]))) {
             for (ItemStack itemStack : toOutput) {
-                Materials m = HTGR_ITEM.getItemMaterial(itemStack);
+                Materials m = HTGRItem.getItemMaterial(itemStack);
                 if (m != null) {
                     mStoredBurnedFuels.merge(m, (double) -itemStack.stackSize, Double::sum);
                 }
@@ -728,7 +726,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             if (this.fuelsupply >= 1d) {
                 for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
                     if (entry.getValue() >= 1d) {
-                        ItemStack fuelStack = HTGR_ITEM.createTRISOFuel(entry.getKey());
+                        ItemStack fuelStack = HTGRItem.createTRISOFuel(entry.getKey());
                         int toOutput = (int) Math.floor(entry.getValue());
                         int didOutput = 0;
                         int outputNow = fuelStack.stackSize = Math.min(toOutput, 64);
@@ -809,7 +807,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.stored_fuel"))
             .append("\n");
         for (Map.Entry<Materials, Double> entry : mStoredFuels.entrySet()) {
-            Triple<Double, Double, Double> prop = HTGR_ITEM.getFuelProperties(entry.getKey());
+            Triple<Double, Double, Double> prop = HTGRItem.getFuelProperties(entry.getKey());
             sb.append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.stored_fuel_entry",
