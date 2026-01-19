@@ -318,10 +318,10 @@ public class CircuitImprintLoader {
 
     public static void makeCuttingRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.NandChip.get(1), ItemList.Shape_Slicer_Flat.get(0))
+            .itemInputs(ItemList.NandChipArray.get(1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_NANDChipArray.get(1))
             .duration(15 * SECONDS)
-            .eut(1)
+            .eut(TierEU.RECIPE_ULV)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
