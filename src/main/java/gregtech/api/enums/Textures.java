@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.HashMap;
 import java.util.Map;
 
-import gregtech.common.modularui2.sync.SelectItemServerAction;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
