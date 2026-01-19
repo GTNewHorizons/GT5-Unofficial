@@ -329,7 +329,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + EnumChatFormatting.RED
                     + "90"
                     + EnumChatFormatting.GRAY
-                    + "% dependent on the formula y=1-(1-x)^3 (x is % of pellet fill level)")
+                    + "% dependent on the formula y=1-(1-x)^3 (x is % fill level)")
             .addInfo(
                 "Maintenance problems decrease the efficiency of cooling by " + EnumChatFormatting.RED
                     + "20"
@@ -612,6 +612,9 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
+
+        // TODO differentiate between lack of fuel and lack of helium
+
         if (this.heliumSupply < MIN_HELIUM_NEEDED || this.fuelsupply < MIN_CAPACITY)
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
 
@@ -673,17 +676,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         }
 
         /*
-         * TODO
          * each fuel ball has 3 values:
          * fuelbase responsible for base generation, averaged from all balls in the reactor
          * fuelmultiplier and fuelexponent are defined as "full reactor" values (at MAX_CAPACITY pellets)
          * per-pellet contribution is (value - 1) / MAX_CAPACITY because multiplier/exponent start from 1
          * example: uranium (1,1,1) plutonium (2,1.2,1.1) tungsten (0.5,0.9,0.5)
-         * please remember that the reactor has maximum of 10k balls inside so the multiplier and exponent can go to
-         * extreme values if not taken into account
-         * (maybe cap them? but that would potentially remove some fun breaking points :p)
          * exponent affects the strength of multiplier at the cost of reactor recipe time (overclocking basically, but
          * depending on multiplier can be a hindrance or a boost)
+         * exponent cannot be < 0 otherwise math happens
          */
 
         this.energyMultiplier = fuelBase * Math.pow(fuelMultiplier, fuelExponent);
