@@ -5,10 +5,6 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import java.util.Collection;
 
-import gregtech.api.enums.ToolModes;
-import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTUtility;
-import gregtech.common.config.Other;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,10 +17,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.ToolModes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.common.config.Other;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
@@ -218,7 +218,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-                                      float aX, float aY, float aZ, ItemStack aTool) {
+        float aX, float aY, float aZ, ItemStack aTool) {
 
         if (GTMod.gregtechproxy.gt6Pipe) {
             final int mode = MetaGeneratedTool.getToolMode(aTool);
@@ -300,7 +300,6 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void setNetwork(VacuumFactoryNetwork network) {
         this.network = network;
     }
-
 
     @Override
     public void onColorChangeServer(byte aColor) {
