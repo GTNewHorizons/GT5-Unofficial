@@ -2553,7 +2553,7 @@ public class Textures {
         public static class CustomAlphaIcon extends CustomIcon {
 
             public CustomAlphaIcon(String aIconName) {
-                super(aIconName);
+                super(aIconName, true);
             }
 
             @Override
