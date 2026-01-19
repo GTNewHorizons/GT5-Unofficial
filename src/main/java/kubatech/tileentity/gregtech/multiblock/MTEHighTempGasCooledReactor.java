@@ -52,7 +52,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.TextRenderer;
 import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -60,10 +62,12 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -916,18 +920,25 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     //this might suck but it's MUI1 so it's gonna be ported anyway, amirite?
 
     private ModularWindow createTooltipWindow() {
-        int windowWidth = 350;
-        int windowHeight = 375;
+        int[] windowSize = getTooltipWindowSize();
+        int windowWidth = windowSize[0];
+        int windowHeight = windowSize[1];
         ModularWindow.Builder builder = ModularWindow.builder(windowWidth, windowHeight);
         builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setDraggable(true);
 
         ArrayList<String> lines = buildControllerTooltipLines();
         DynamicPositionedColumn column = new DynamicPositionedColumn();
         for (String line : lines) {
             column.widget(new TextWidget(new Text(line)).setTextAlignment(Alignment.CenterLeft));
         }
+        int contentHeight = lines.size() * TextRenderer.getFontRenderer().FONT_HEIGHT;
         builder.widget(
-            column.setPos(6, 20)
+            new Scrollable().setVerticalScroll()
+                .widget(
+                    column.setPos(0, 0)
+                        .setSize(windowWidth - 12, contentHeight))
+                .setPos(6, 20)
                 .setSize(windowWidth - 12, windowHeight - 26));
         builder.widget(
             ButtonWidget.closeWindowButton(true)
@@ -935,6 +946,50 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 .setPos(windowWidth - 16, 0));
 
         return builder.build();
+    }
+
+    private int[] getTooltipWindowSize() {
+        int baseWidth = 350;
+        int baseHeight = 260;
+        int minWidth = 180;
+        int minHeight = 140;
+        try {
+            if (FMLCommonHandler.instance()
+                .getSide()
+                .isClient()) {
+                Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
+                Object minecraft = minecraftClass.getMethod("getMinecraft")
+                    .invoke(null);
+                Class<?> scaledResolutionClass = Class.forName("net.minecraft.client.gui.ScaledResolution");
+                Object scaledResolution;
+                try {
+                    int displayWidth = (int) minecraftClass.getField("displayWidth")
+                        .get(minecraft);
+                    int displayHeight = (int) minecraftClass.getField("displayHeight")
+                        .get(minecraft);
+                    scaledResolution = scaledResolutionClass
+                        .getConstructor(minecraftClass, int.class, int.class)
+                        .newInstance(minecraft, displayWidth, displayHeight);
+                } catch (Throwable ignored) {
+                    scaledResolution = scaledResolutionClass.getConstructor(minecraftClass)
+                        .newInstance(minecraft);
+                }
+                int scaledWidth = (int) scaledResolutionClass.getMethod("getScaledWidth")
+                    .invoke(scaledResolution);
+                int scaledHeight = (int) scaledResolutionClass.getMethod("getScaledHeight")
+                    .invoke(scaledResolution);
+                int maxWidth = (int) (scaledWidth * 0.8d);
+                int maxHeight = (int) (scaledHeight * 0.8d);
+                int windowWidth = Math.min(baseWidth, maxWidth);
+                int windowHeight = Math.min(baseHeight, maxHeight);
+                windowWidth = Math.min(maxWidth, Math.max(minWidth, windowWidth));
+                windowHeight = Math.min(maxHeight, Math.max(minHeight, windowHeight));
+                return new int[] { windowWidth, windowHeight };
+            }
+        } catch (Throwable ignored) {
+            // fall back to defaults when client classes are unavailable
+        }
+        return new int[] { baseWidth, baseHeight };
     }
 
     private ArrayList<String> buildControllerTooltipLines() {
@@ -1007,11 +1062,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 + GTUtility.formatNumbers(COOLANT_PER_PELLET)
                 + EnumChatFormatting.BLACK
                 + " per tick per pellet");
+        lines.add(EnumChatFormatting.BLACK + "Coolant goes to the tall cooling tower");
         lines.add(
             EnumChatFormatting.BLACK + "Water: " + EnumChatFormatting.RED
                 + GTUtility.formatNumbers(WATER_PER_PELLET)
                 + EnumChatFormatting.BLACK
                 + " per tick per pellet");
+        lines.add(EnumChatFormatting.BLACK + "Distilled water goes to the small cooling tower");
         lines.add(EnumChatFormatting.BLACK + "Assuming Base/Mult/Exp = 1/1/1");
         lines.add(EnumChatFormatting.BLACK + " ");
         lines.add(EnumChatFormatting.BLACK + "Fluid provided affects the reactor linearly");
