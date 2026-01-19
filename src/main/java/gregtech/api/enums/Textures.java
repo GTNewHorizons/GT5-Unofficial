@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import java.util.HashMap;
 import java.util.Map;
 
+import gregtech.common.modularui2.sync.SelectItemServerAction;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -2495,16 +2496,26 @@ public class Textures {
 
             protected IIcon mIcon, mOverlay = null;
             protected final String mIconName, mOverlayName;
+            private final boolean optionalResource;
 
             public CustomIcon(String aIconName) {
+                this(aIconName, false);
+            }
+
+            public CustomIcon(String aIconName, boolean optionalResource) {
                 mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
+                this.optionalResource = optionalResource;
                 mOverlayName = mIconName + _OVERLAY;
                 GregTechAPI.sGTBlockIconload.add(this);
             }
 
             @Override
             public void run() {
-                mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
+                if (optionalResource && !ResourceUtils.resourceExists(getResourceLocation(mIconName))) {
+                    mIcon = VOID.getIcon();
+                } else {
+                    mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
+                }
                 // This makes the block _OVERLAY icon totally optional
                 if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
                     mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
