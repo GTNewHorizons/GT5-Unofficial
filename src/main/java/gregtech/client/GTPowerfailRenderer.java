@@ -80,8 +80,8 @@ public class GTPowerfailRenderer {
             double size = dist * 0.25;
 
             if (dist < 16d) {
-                // Fade to zero when the player is less than 4 blocks away
-                size *= GTUtility.linearCurve(dist, 8d, 0d, 16d, 1d);
+                // Fade to zero when the player is less than 2 blocks away
+                size *= GTUtility.linearCurve(dist, 2d, 0d, 16d, 1d);
             }
 
             if (dist > 48) {
