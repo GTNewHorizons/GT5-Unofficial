@@ -556,7 +556,7 @@ public class CircuitImprintLoader {
                 .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 0), ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_BasicCircuitBoard.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
@@ -565,7 +565,7 @@ public class CircuitImprintLoader {
                 .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 1), ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_EnhancedCircuitBoard.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
@@ -574,7 +574,7 @@ public class CircuitImprintLoader {
                 .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 2), ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_RefinedCircuitBoard.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
@@ -583,7 +583,7 @@ public class CircuitImprintLoader {
                 .itemInputs(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 3), ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_IntricateCircuitBoard.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Forestry)
                 .addTo(cutterRecipes);
@@ -596,7 +596,7 @@ public class CircuitImprintLoader {
                     ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_ControllerCircuit.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Railcraft)
                 .addTo(cutterRecipes);
@@ -607,7 +607,7 @@ public class CircuitImprintLoader {
                     ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_ReceiverCircuit.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Railcraft)
                 .addTo(cutterRecipes);
@@ -618,7 +618,7 @@ public class CircuitImprintLoader {
                     ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_SignalCircuit.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(Railcraft)
                 .addTo(cutterRecipes);
@@ -631,7 +631,7 @@ public class CircuitImprintLoader {
                     ItemList.Shape_Slicer_Flat.get(0))
                 .itemOutputs(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1))
                 .duration(15 * SECONDS)
-                .eut(1)
+                .eut(TierEU.RECIPE_ULV)
                 .requiresCleanRoom()
                 .requireMods(NewHorizonsCoreMod)
                 .addTo(cutterRecipes);
