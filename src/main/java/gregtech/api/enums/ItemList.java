@@ -738,6 +738,7 @@ public enum ItemList implements IItemContainer {
     Component_Grinder_Diamond,
     Component_Grinder_Tungsten,
     Component_Filter,
+    NandChipArray,
     Component_Minecart_Wheels_Iron,
     Component_Minecart_Wheels_Steel,
 
