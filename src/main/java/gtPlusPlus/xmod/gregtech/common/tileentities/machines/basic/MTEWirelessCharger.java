@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -29,6 +30,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.misc.WirelessChargerManager;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItemManager;
 
 public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirelessCharger {
 
@@ -600,18 +603,26 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
                     Integer.MAX_VALUE,
                     Math.min(maxChargeableEU - chargedEU, this.maxEUInput() * WirelessChargerManager.CHARGE_TICK));
 
-                if (stack.getItem() instanceof ic2.api.item.IElectricItem) {
-                    final int charged = Math.max(
-                        0,
-                        (int) ic2.api.item.ElectricItem.manager
-                            .charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
-                    chargedEU += charged;
-                } else if (COFHCore.isModLoaded() && stack.getItem() instanceof IEnergyContainerItem rfItem) {
+                final Item item = stack.getItem();
+                if (COFHCore.isModLoaded() && item instanceof IEnergyContainerItem rfItem) {
                     int chargeableRF = Math.min(
                         rfItem.getMaxEnergyStored(stack) - rfItem.getEnergyStored(stack),
                         (int) Math.min(Integer.MAX_VALUE, (long) chargeableEU * mEUtoRF / 100));
                     int chargedRF = rfItem.receiveEnergy(stack, chargeableRF, false);
                     chargedEU += (long) chargedRF * 100L / mEUtoRF;
+                } else {
+                    final IElectricItemManager manager;
+
+                    if (item instanceof final ic2.api.item.ISpecialElectricItem special) {
+                        manager = special.getManager(stack);
+                    } else if (item instanceof ic2.api.item.IElectricItem) {
+                        manager = ElectricItem.manager;
+                    } else {
+                        continue;
+                    }
+
+                    final int charged = Math.max(0, (int)manager.charge(stack, chargeableEU, Integer.MAX_VALUE, true, false));
+                    chargedEU += charged;
                 }
             }
         }

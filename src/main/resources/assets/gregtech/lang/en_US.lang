@@ -1744,29 +1744,29 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
-GT5U.gui.text.toolbox.title="Toolbox"
-GT5U.gui.text.toolbox.slot_title.0="Wrench"
-GT5U.gui.text.toolbox.slot_title.1="Wire Cutter"
-GT5U.gui.text.toolbox.slot_title.2="Screwdriver"
-GT5U.gui.text.toolbox.slot_title.3="Soft Mallet"
-GT5U.gui.text.toolbox.slot_title.4="Hard Hammer"
-GT5U.gui.text.toolbox.slot_title.5="Crowbar"
-GT5U.gui.text.toolbox.slot_title.6="Soldering Iron"
-GT5U.gui.text.toolbox.slot_title.7="Battery"
-GT5U.gui.text.toolbox.slot_title.8="Healing Axe"
-GT5U.gui.text.toolbox.slot_title.generic="Generic"
+GT5U.gui.text.toolbox.title=Field Engineer's Toolbox
+GT5U.gui.text.toolbox.slot_title.0=Wrench
+GT5U.gui.text.toolbox.slot_title.1=Wire Cutter
+GT5U.gui.text.toolbox.slot_title.2=Screwdriver
+GT5U.gui.text.toolbox.slot_title.3=Soft Mallet
+GT5U.gui.text.toolbox.slot_title.4=Hard Hammer
+GT5U.gui.text.toolbox.slot_title.5=Crowbar
+GT5U.gui.text.toolbox.slot_title.6=Soldering Iron
+GT5U.gui.text.toolbox.slot_title.7=Battery
+GT5U.gui.text.toolbox.slot_title.8=Healing Axe
+GT5U.gui.text.toolbox.slot_title.generic=Generic
 
-GT5U.gui.text.toolbox.tooltip.base="§2%s Slot§r\n§o%s§r"
-GT5U.gui.text.toolbox.tooltip.0="Connect pipes, break pipes, rotate stuff"
-GT5U.gui.text.toolbox.tooltip.1="Connect and break wires"
-GT5U.gui.text.toolbox.tooltip.2="Configure machines and covers"
-GT5U.gui.text.toolbox.tooltip.3="Enable and disable machines"
-GT5U.gui.text.toolbox.tooltip.4="Toggle auto input/output"
-GT5U.gui.text.toolbox.tooltip.5="Remove covers when sneaking"
-GT5U.gui.text.toolbox.tooltip.6="Needs soldering wire, will pull from toolbox"
-GT5U.gui.text.toolbox.tooltip.7="Add battery to charge all electric tools inside\nBattery can receive wireless charge"
-GT5U.gui.text.toolbox.tooltip.8="Add healing axe to make toolbox restore hunger when held"
-GT5U.gui.text.toolbox.tooltip.generic="Holds whatever you want"
+GT5U.gui.text.toolbox.tooltip.base=§2%s Slot§r\n§o%s§r
+GT5U.gui.text.toolbox.tooltip.0=Connect pipes, break pipes, rotate stuff
+GT5U.gui.text.toolbox.tooltip.1=Connect and break wires
+GT5U.gui.text.toolbox.tooltip.2=Configure machines and covers
+GT5U.gui.text.toolbox.tooltip.3=Enable and disable machines
+GT5U.gui.text.toolbox.tooltip.4=Toggle auto input/output
+GT5U.gui.text.toolbox.tooltip.5=Remove covers when sneaking
+GT5U.gui.text.toolbox.tooltip.6=Needs soldering wire, will pull from toolbox
+GT5U.gui.text.toolbox.tooltip.7=Add battery to charge all electric tools inside\nOnly works when toolbox is closed\nBattery can receive wireless charge
+GT5U.gui.text.toolbox.tooltip.8=Add healing axe to make toolbox restore hunger when held
+GT5U.gui.text.toolbox.tooltip.generic=Holds whatever you want
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
