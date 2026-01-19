@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
@@ -27,7 +26,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.primitives.Bytes;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -52,6 +50,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacu
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
 
 public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitterModule> {
 
@@ -65,7 +64,8 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
     // Splitter$getOutputColors instead.
-    public Map<Integer, ColorRule> colorMap = new HashMap<>();
+    public Map<Integer, SplitterRule> rules = new HashMap<>();
+    public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
 
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
@@ -149,7 +149,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             SPLITTER_OFFSET_X,
@@ -161,13 +161,12 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             true);
     }
 
-    public List<Byte> getGetOutputColors(byte color) {
+    public List<Byte> getGetOutputColors(byte color, ItemStack item) {
         Set<Byte> set = new HashSet<>();
-        for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
-            ColorRule rule = entry.getValue();
-            if (!rule.getInputColors()
-                .contains(color)) continue;
-            set.addAll(rule.getOutputColors());
+        for (Map.Entry<Integer, SplitterRule> entry : rules.entrySet()) {
+            SplitterRule rule = entry.getValue();
+            if (rule.appliesTo(color, item, redstoneChannelInfo)) continue;
+            set.addAll(rule.outputColors);
         }
         return new ArrayList<>(set);
     }
@@ -294,7 +293,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             ItemStack stack = inputs.get(color.getKey());
             if (currentDye == -1) continue;
 
-            List<Byte> outputDyes = getGetOutputColors(currentDye);
+            List<Byte> outputDyes = getGetOutputColors(currentDye, stack);
             if (outputDyes == null) continue;
 
             // Find output hatches that have the color of the dye
@@ -308,7 +307,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             }
 
             // Distribute the stack amongst the available output hatches.
-            // TODO: Add randomness to even out the busses / groups?
             int numberOfGroups = availableOutputHatches.size();
             if (numberOfGroups == 0) continue;
 
@@ -353,30 +351,28 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        colorMap = loadRulesTagList(aNBT.getTagList("rules", new NBTTagCompound().getId()));
+        rules = loadRulesTagList(aNBT.getTagList("rules", new NBTTagCompound().getId()));
+
     }
 
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
-        for (Map.Entry<Integer, ColorRule> entry : colorMap.entrySet()) {
-            ColorRule rule = entry.getValue();
-            NBTTagCompound compound = new NBTTagCompound();
-            compound.setTag("inputs", new NBTTagByteArray(Bytes.toArray(rule.getInputColors())));
-            compound.setTag("outputs", new NBTTagByteArray(Bytes.toArray(rule.getOutputColors())));
+        for (Map.Entry<Integer, SplitterRule> entry : rules.entrySet()) {
+            SplitterRule rule = entry.getValue();
+            NBTTagCompound compound = rule.saveToNBT();
             list.appendTag(compound);
         }
         return list;
     }
 
-    public Map<Integer, ColorRule> loadRulesTagList(NBTTagList tagList) {
-        Map<Integer, ColorRule> map = new HashMap<>();
-        int sustain = 0;
+    public Map<Integer, SplitterRule> loadRulesTagList(NBTTagList tagList) {
+        Map<Integer, SplitterRule> map = new HashMap<>();
+        int id = 0;
         for (Object a : tagList.tagList) {
             if (!(a instanceof NBTTagCompound compound)) continue;
-            List<Byte> inputs = Bytes.asList(compound.getByteArray("inputs"));
-            List<Byte> outputs = Bytes.asList(compound.getByteArray("outputs"));
-            map.put(sustain, new ColorRule(inputs, outputs));
-            sustain++;
+            SplitterRule rule = SplitterRule.loadFromNBT(compound);
+            map.put(id, rule);
+            id++;
         }
         return map;
     }
@@ -386,22 +382,16 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return new SplitterGui(this);
     }
 
-    public static class ColorRule {
+    public static class RedstoneChannelInfo {
 
-        List<Byte> inputColors;
-        List<Byte> outputColors;
+        private Map<Integer, Integer> levels = new HashMap<>();
 
-        public ColorRule(List<Byte> inputs, List<Byte> outputs) {
-            inputColors = inputs;
-            outputColors = outputs;
+        public int get(int channel) {
+            return levels.getOrDefault(channel, 0);
         }
 
-        public List<Byte> getInputColors() {
-            return inputColors;
-        }
-
-        public List<Byte> getOutputColors() {
-            return outputColors;
+        public void set(int channel, int value) {
+            levels.put(channel, value);
         }
     }
 
