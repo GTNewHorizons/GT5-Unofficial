@@ -36,6 +36,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         super(multiblock);
     }
 
+    /*
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
@@ -293,5 +294,6 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
             return t1.equals(t2);
         }
     }
+     */
 
 }
