@@ -195,8 +195,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             this.machineMode = (this.machineMode + 1) % 2;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.machineMode));
+            GTUtility.sendChatTrans(aPlayer, "preciseassembler.chat." + this.machineMode);
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -534,9 +533,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

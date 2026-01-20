@@ -146,7 +146,9 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         byte color = (byte) (accessor.getNBTData()
             .getByte("color") - 1);
         if (color >= 0 && color < 16) currenttip.add(
-            "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.color_channel",
+                Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName() + EnumChatFormatting.GRAY));
     }
 
     @Override
@@ -260,8 +262,7 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
                     + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + disableLimited));
         } else {
             disableFilter = !disableFilter;
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
         }
     }
 

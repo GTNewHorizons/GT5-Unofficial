@@ -2,6 +2,7 @@ package gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
+import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.enums.TickTime.MINUTE;
@@ -42,7 +43,7 @@ public class MachineRecipes implements Runnable {
     public void run() {
 
         // exit early if not in pack
-        if (!NewHorizonsCoreMod.isModLoaded()) return;
+        if (!NewHorizonsCoreMod.isModLoaded() || !GalacticraftCore.isModLoaded()) return;
 
         ItemStack hypogenFrameBox_8 = MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(8);
         ItemStack hypogenScrew_32 = MaterialsElements.STANDALONE.HYPOGEN.getScrew(32);
@@ -76,7 +77,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTModHandler.getModItem(OpenBlocks.ID, "elevator", 1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 64),
                 ItemList.Field_Generator_UV.get(16), new Object[] { OrePrefixes.circuit.get(Materials.UHV), 16 },
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier7", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier7", 32),
                 ItemList.Circuit_Chip_PPIC.get(64),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 64),
                 ItemList.Electric_Motor_UV.get(32), ItemList.SpaceElevatorBaseCasing.get(8) },
@@ -590,7 +591,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.NaquadahAlloy, 8),
                 ItemList.Robot_Arm_IV.get(8), ItemList.Field_Generator_IV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier4", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier4", 32),
                 new ItemStack(AsteroidsItems.basicItem, 4, 1), ItemList.Sensor_IV.get(8) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 Materials.Iridium.getMolten(10 * INGOTS),
@@ -609,8 +610,8 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Naquadria, 8),
                 ItemList.Robot_Arm_LuV.get(8), ItemList.Field_Generator_LuV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier5", 32),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier5", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4),
                 ItemList.Sensor_LuV.get(8) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 Materials.Osmiridium.getMolten(10 * INGOTS),
@@ -629,8 +630,8 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Neutronium, 8),
                 ItemList.Robot_Arm_ZPM.get(8), ItemList.Field_Generator_ZPM.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 2 },
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier6", 32),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier6", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4),
                 ItemList.Sensor_ZPM.get(8) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 Materials.Osmiridium.getMolten(10 * INGOTS),
@@ -649,8 +650,8 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.CosmicNeutronium, 8),
                 ItemList.Robot_Arm_UV.get(8), ItemList.Field_Generator_UV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier7", 32),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 4),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier7", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 4),
                 ItemList.Sensor_UV.get(8) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(20 * INGOTS),
                 Materials.Naquadria.getMolten(10 * INGOTS),
@@ -669,8 +670,8 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Infinity, 8),
                 ItemList.Robot_Arm_UHV.get(8), ItemList.Field_Generator_UHV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyPlateTier8", 32),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 4),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyPlateTier8", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 4),
                 ItemList.Sensor_UHV.get(8) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
                 Materials.Neutronium.getMolten(10 * INGOTS),
@@ -691,7 +692,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.CosmicNeutronium, 8),
                 ItemList.Robot_Arm_UEV.get(8), ItemList.Field_Generator_UEV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 4 }, GTUtility.copyAmount(32, t9Plate),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 8),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 8),
                 ItemList.Sensor_UEV.get(8) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
                 Materials.Quantium.getMolten(10 * INGOTS),
@@ -710,7 +711,7 @@ public class MachineRecipes implements Runnable {
             new Object[] { GTOreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.CosmicNeutronium, 8),
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Field_Generator_UIV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UMV), 4 }, GTUtility.copyAmount(64, t9Plate),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 16),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 16),
                 ItemList.Sensor_UIV.get(8) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(40 * INGOTS),
                 Materials.Quantium.getMolten(20 * INGOTS),
@@ -730,7 +731,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Robot_Arm_UMV.get(8), ItemList.Field_Generator_UMV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 4 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 32),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 32),
                 ItemList.Sensor_UMV.get(8) },
             new FluidStack[] { new FluidStack(hypogenFluid, 4 * INGOTS),
                 new FluidStack(celestialTungstenFluid, 4 * INGOTS),
@@ -750,7 +751,7 @@ public class MachineRecipes implements Runnable {
                 ItemList.Robot_Arm_UXV.get(8), ItemList.Field_Generator_UXV.get(2),
                 new Object[] { OrePrefixes.circuit.get(Materials.UXV), 8 }, GTUtility.copyAmount(64, t9Plate),
                 GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate), GTUtility.copyAmount(64, t9Plate),
-                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier4", 64),
+                GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 64),
                 ItemList.Sensor_UXV.get(8) },
             new FluidStack[] { Materials.Space.getMolten(4 * INGOTS), Materials.Universium.getMolten(4 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },

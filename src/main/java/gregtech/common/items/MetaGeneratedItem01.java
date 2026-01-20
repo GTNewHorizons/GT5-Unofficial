@@ -680,6 +680,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(IDMetaItem01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
         ItemList.Credit_Osmium.set(addItem(IDMetaItem01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
 
+        ItemList.NandChipArray.set(
+            addItem(
+                IDMetaItem01.NandChipArray.ID,
+                "NAND Chip Array",
+                "Chips on Board",
+                "circuitPrimitiveArray",
+                SubTag.NO_UNIFICATION));
         ItemList.Component_Minecart_Wheels_Iron.set(
             addItem(
                 Component_Minecraft_Wheels_Iron.ID,
@@ -782,8 +789,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Shape_Extruder_Ingot.ID,
                 "Extruder Shape (Ingot)",
                 "Extruder Shape for, wait, can't we just use a Furnace?"));
-        ItemList.Shape_Extruder_Wire
-            .set(addItem(Shape_Extruder_Wire.ID, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
+        ItemList.Shape_Extruder_Wire.set(
+            addItem(
+                Shape_Extruder_Wire.ID,
+                "Extruder Shape (Wire)",
+                EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update."));
         ItemList.Shape_Extruder_Casing.set(
             addItem(Shape_Extruder_Casing.ID, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
         ItemList.Shape_Extruder_Pipe_Tiny.set(
