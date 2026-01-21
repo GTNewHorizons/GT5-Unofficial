@@ -1061,7 +1061,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     mEfficiencyIncrease = 0;
                                     mLastWorkingTick = mTotalRunTime;
                                     if (processingLogic != null) {
-                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), 1);
+                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                                     } else {
                                         recipesDone += 1;
                                     }

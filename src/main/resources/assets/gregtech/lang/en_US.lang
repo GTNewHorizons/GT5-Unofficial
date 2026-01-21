@@ -1748,6 +1748,26 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+# chats
+GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
+GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
+GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
+GT5U.chat.machine.batch_mode.disable=Batch Mode: Disabled
+GT5U.chat.turbine.fitting.loose=Fitting: Loose - More Flow
+GT5U.chat.turbine.fitting.tight=Fitting: Tight - More Efficiency
+GT5U.chat.machine.processing.enable=Machine Processing: Enabled
+GT5U.chat.machine.processing.disable=Machine Processing: Disabled
+GT5U.chat.machine.redstone_output_set.strong=Redstone Output at Side %s set to: Strong
+GT5U.chat.machine.redstone_output_set.weak=Redstone Output at Side %s set to: Weak
+GT5U.chat.machine.auto_input.disable=Auto-Input: Disabled
+GT5U.chat.machine.auto_input.enable=Auto-Input: Enabled
+GT5U.chat.machine.auto_output.disable=Auto-Output: Disabled
+GT5U.chat.machine.auto_output.enable=Auto-Output: Enabled
+GT5U.chat.buffer.sort_mode.enable=Sort mode: Enabled
+GT5U.chat.buffer.sort_mode.disable=Sort mode: Disabled
+GT5U.chat.worm_hole_generator.overclocks.enable=Overclocks: §aEnabled§r
+GT5U.chat.worm_hole_generator.overclocks.disable=Overclocks: §cDisabled§r
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3

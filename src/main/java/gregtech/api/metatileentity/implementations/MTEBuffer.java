@@ -403,10 +403,9 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         if (entityPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 entityPlayer,
-                GTUtility.trans("200", "Sort mode: ")
-                    + (bSortStacks ? GTUtility.trans("088", "Enabled") : GTUtility.trans("087", "Disabled")));
+                bSortStacks ? "GT5U.chat.buffer.sort_mode.enable" : "GT5U.chat.buffer.sort_mode.disable");
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);

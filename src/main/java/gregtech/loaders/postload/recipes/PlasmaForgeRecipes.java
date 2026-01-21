@@ -126,7 +126,7 @@ public class PlasmaForgeRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(ModItems.itemStandarParticleBase, 1, 24),
-                getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
+                getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 0),
                 new ItemStack(huiCircuit, 0, 4))
             .fluidInputs(Materials.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(1 * INGOTS))
             .itemOutputs(GregtechItemList.Laser_Lens_Special.get(1))
