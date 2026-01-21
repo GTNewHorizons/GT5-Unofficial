@@ -92,7 +92,7 @@ public class ShutDownReasonRegistry {
     public static final ShutDownReason INSUFFICIENT_DYNAMO = SimpleShutDownReason.ofCritical("insufficient_dyamo");
 
     /**
-     * Critical unknown state.
+     * Critical shut down due to overheat.
      */
     @Nonnull
     public static final ShutDownReason OVERHEATED = SimpleShutDownReason.ofCritical("overheat_fail");
