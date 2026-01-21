@@ -52,7 +52,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.resources.I18n;
 
@@ -80,6 +79,11 @@ public class DimensionHelper {
     public static final Map<String, Dimension> REGISTRY = new LinkedHashMap<>();
     public static final Map<String, String> INTERNAL_TO_ABBR = new HashMap<>();
     public static final Map<String, String> ABBR_TO_INTERNAL = new HashMap<>();
+
+    public static final List<Dimension> ALL_DIMENSIONS = new ArrayList<>();
+    public static final List<String> ALL_DIM_NAMES = new ArrayList<>();
+    public static final List<String> ALL_TRIMMED_NAMES = new ArrayList<>();
+    public static final List<String> ALL_DISPLAYED_NAMES = new ArrayList<>();
 
     static {
         // first 2 letters if one word else 1 letter of every word, except
@@ -153,30 +157,31 @@ public class DimensionHelper {
 
     public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {
         if (!REGISTRY.containsKey(fullName)) {
-            REGISTRY.put(fullName, new Dimension(fullName, internalName, trimmedName, abbr, tierKey));
+            Dimension dim = new Dimension(fullName, internalName, trimmedName, abbr, tierKey);
+            REGISTRY.put(fullName, dim);
             INTERNAL_TO_ABBR.put(internalName, abbr);
             ABBR_TO_INTERNAL.put(abbr, internalName);
+
+            ALL_DIM_NAMES.add(fullName);
+            ALL_TRIMMED_NAMES.add(trimmedName);
+            ALL_DISPLAYED_NAMES.add(abbr);
+            ALL_DIMENSIONS.add(dim);
         }
     }
 
     public static int getIndex(String dimName) {
-        List<String> keys = new ArrayList<>(REGISTRY.keySet());
-        int index = keys.indexOf(dimName);
+        int index = ALL_DIM_NAMES.indexOf(dimName);
         return GTUtility.max(index, 0);
     }
 
     public static int getIndexByAbbr(String abbr) {
-        List<String> keys = new ArrayList<>(getAllDisplayedNames());
-        int index = keys.indexOf(abbr);
+        int index = ALL_DISPLAYED_NAMES.indexOf(abbr);
         return GTUtility.max(index, 0);
     }
 
     public static Dimension getByIndex(int index) {
-        List<Dimension> keys = new ArrayList<>(REGISTRY.values());
-        if (index < 0 || index >= keys.size()) {
-            return null;
-        }
-        return keys.get(index);
+        if (index < 0 || index >= ALL_DIMENSIONS.size()) return null;
+        return ALL_DIMENSIONS.get(index);
     }
 
     public static Collection<Dimension> getAllDim() {
@@ -184,21 +189,15 @@ public class DimensionHelper {
     }
 
     public static List<String> getAllDimNames() {
-        return new ArrayList<>(REGISTRY.keySet());
+        return ALL_DIM_NAMES;
     }
 
     public static List<String> getAllTrimmedNames() {
-        return REGISTRY.values()
-            .stream()
-            .map(r -> r.trimmedName)
-            .collect(Collectors.toList());
+        return ALL_TRIMMED_NAMES;
     }
 
     public static List<String> getAllDisplayedNames() {
-        return REGISTRY.values()
-            .stream()
-            .map(r -> r.abbr)
-            .collect(Collectors.toList());
+        return ALL_DISPLAYED_NAMES;
     }
 
     public static Set<String> getDims(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
