@@ -60,7 +60,7 @@ public class SmallOre implements Comparable<SmallOre> {
         headers[3] = "Amount Per Chunk";
 
         int i = 0;
-        for (DimensionHelper.DimRecord record : DimensionHelper.getAllDim()) {
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
             headers[sizeData + i] = DimensionHelper.getFullName(record.abbr());
             i++;
         }
@@ -79,7 +79,7 @@ public class SmallOre implements Comparable<SmallOre> {
         values[3] = Integer.toString(amount);
 
         int i = 0;
-        for (DimensionHelper.DimRecord record : DimensionHelper.getAllDim()) {
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
             values[sizeData + i] = Boolean.toString(dimensions.contains(record.abbr()));
             i++;
         }

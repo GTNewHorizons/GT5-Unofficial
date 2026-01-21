@@ -98,7 +98,7 @@ public class Oremix implements Comparable<Oremix> {
         headers[9] = "Weight";
 
         int i = 0;
-        for (DimensionHelper.DimRecord record : DimensionHelper.getAllDim()) {
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
             headers[sizeData + i] = DimensionHelper.getFullName(record.abbr());
             i++;
         }
@@ -123,7 +123,7 @@ public class Oremix implements Comparable<Oremix> {
         values[9] = Integer.toString(weight);
 
         int i = 0;
-        for (DimensionHelper.DimRecord record : DimensionHelper.getAllDim()) {
+        for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
             values[sizeData + i] = Boolean.toString(dimensions.contains(record.abbr()));
             i++;
         }

@@ -57,6 +57,8 @@ import net.minecraft.client.resources.I18n;
 
 import com.github.bsideup.jabel.Desugar;
 
+import gregtech.api.util.GTUtility;
+
 public class DimensionHelper {
 
     private static final String T0 = "gtnop.tier.0";
@@ -72,9 +74,9 @@ public class DimensionHelper {
     private static final String T10 = "gtnop.tier.10";
 
     @Desugar
-    public record DimRecord(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {}
+    public record Dimension(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {}
 
-    public static final Map<String, DimRecord> REGISTRY = new LinkedHashMap<>();
+    public static final Map<String, Dimension> REGISTRY = new LinkedHashMap<>();
 
     static {
         // first 2 letters if one word else 1 letter of every word, except
@@ -148,47 +150,31 @@ public class DimensionHelper {
 
     public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {
         if (!REGISTRY.containsKey(fullName)) {
-            REGISTRY.put(fullName, new DimRecord(fullName, internalName, trimmedName, abbr, tierKey));
+            REGISTRY.put(fullName, new Dimension(fullName, internalName, trimmedName, abbr, tierKey));
         }
     }
 
     public static int getIndex(String dimName) {
-        int i = 0;
-        for (String key : REGISTRY.keySet()) {
-            if (key.equals(dimName)) {
-                return i;
-            }
-            i++;
-        }
-        return 0;
+        List<String> keys = new ArrayList<>(REGISTRY.keySet());
+        int index = keys.indexOf(dimName);
+        return GTUtility.max(index, 0);
     }
 
     public static int getIndexByAbbr(String abbr) {
-        int i = 0;
-        for (DimRecord record : REGISTRY.values()) {
-            if (record.abbr.equals(abbr)) {
-                return i;
-            }
-            i++;
-        }
-        return 0;
+        List<String> keys = new ArrayList<>(getAllDisplayedNames());
+        int index = keys.indexOf(abbr);
+        return GTUtility.max(index, 0);
     }
 
-    public static DimRecord getByIndex(int index) {
-        if (index < 0 || index >= REGISTRY.size()) {
+    public static Dimension getByIndex(int index) {
+        List<Dimension> keys = new ArrayList<>(REGISTRY.values());
+        if (index < 0 || index >= keys.size()) {
             return null;
         }
-        int i = 0;
-        for (DimRecord record : REGISTRY.values()) {
-            if (i == index) {
-                return record;
-            }
-            i++;
-        }
-        return null;
+        return keys.get(index);
     }
 
-    public static Collection<DimRecord> getAllDim() {
+    public static Collection<Dimension> getAllDim() {
         return REGISTRY.values();
     }
 
@@ -215,7 +201,7 @@ public class DimensionHelper {
         Set<String> origNames = oreLayer.allowedDimWithOrigNames;
 
         for (String dimName : origNames) {
-            DimRecord record = REGISTRY.get(dimName);
+            Dimension record = REGISTRY.get(dimName);
             if (record != null) {
                 enabledDims.add(record.abbr);
             }
@@ -224,7 +210,7 @@ public class DimensionHelper {
     }
 
     public static String getDimAbbreviatedName(String internalName) {
-        for (DimRecord record : REGISTRY.values()) {
+        for (Dimension record : REGISTRY.values()) {
             if (record.internalName.equals(internalName)) {
                 return record.abbr;
             }
@@ -233,7 +219,7 @@ public class DimensionHelper {
     }
 
     public static String getFullName(String abbrDimName) {
-        for (DimRecord record : REGISTRY.values()) {
+        for (Dimension record : REGISTRY.values()) {
             if (record.abbr.equals(abbrDimName)) {
                 return record.internalName;
             }
@@ -242,7 +228,7 @@ public class DimensionHelper {
     }
 
     public static String getDimTier(String dimName) {
-        DimRecord record = REGISTRY.get(dimName);
+        Dimension record = REGISTRY.get(dimName);
         return record == null ? T0 : record.tierKey;
     }
 

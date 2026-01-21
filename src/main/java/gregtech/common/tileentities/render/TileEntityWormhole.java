@@ -59,7 +59,7 @@ public class TileEntityWormhole extends TileEntity {
     }
 
     public Block getBlock() {
-        DimensionHelper.DimRecord record = DimensionHelper.getByIndex(dimID);
+        DimensionHelper.Dimension record = DimensionHelper.getByIndex(dimID);
         if (record == null) {
             return null;
         }

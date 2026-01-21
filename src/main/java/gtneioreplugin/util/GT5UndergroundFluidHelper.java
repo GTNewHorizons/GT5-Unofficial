@@ -34,7 +34,7 @@ public class GT5UndergroundFluidHelper {
             } catch (NumberFormatException ignored) {
                 dimension = getDimensionForEdgeCase(rawDimension);
                 if (dimension == null) {
-                    for (DimensionHelper.DimRecord record : DimensionHelper.getAllDim()) {
+                    for (DimensionHelper.Dimension record : DimensionHelper.getAllDim()) {
                         if (record.trimmedName()
                             .equalsIgnoreCase(rawDimension)) {
                             dimension = record.abbr();
