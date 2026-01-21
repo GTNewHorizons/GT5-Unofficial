@@ -16,21 +16,25 @@ import gtneioreplugin.util.DimensionHelper;
 
 public class TileEntityWormhole extends TileEntity {
 
-    public int dimID = 0;
+    public int dimIndex = 0;
 
     public double targetRadius = 0;
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("dimID", dimID);
+        compound.setInteger("dimIndex", dimIndex);
         compound.setDouble("targetRadius", targetRadius);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        dimID = compound.getInteger("dimID");
+        if (compound.hasKey("dimIndex")) {
+            dimIndex = compound.getInteger("dimIndex");
+        } else {
+            dimIndex = compound.getInteger("dimID");
+        }
         targetRadius = compound.getDouble("targetRadius");
     }
 
@@ -45,8 +49,8 @@ public class TileEntityWormhole extends TileEntity {
 
     public void setDimFromWorld(World target) {
         int newName = getDimFromWorld(target);
-        if (target != null & dimID != newName) {
-            dimID = newName;
+        if (target != null & dimIndex != newName) {
+            dimIndex = newName;
             this.markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
@@ -59,7 +63,7 @@ public class TileEntityWormhole extends TileEntity {
     }
 
     public Block getBlock() {
-        DimensionHelper.Dimension record = DimensionHelper.getByIndex(dimID);
+        DimensionHelper.Dimension record = DimensionHelper.getByIndex(dimIndex);
         if (record == null) {
             return null;
         }
