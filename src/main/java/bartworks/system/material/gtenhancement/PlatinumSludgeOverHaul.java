@@ -1218,7 +1218,7 @@ public class PlatinumSludgeOverHaul {
             }
         }
         if (NewHorizonsCoreMod.isModLoaded()) {
-            if (stack.getItem() == GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IndustryFrame", 1L)
+            if (stack.getItem() == GTModHandler.getModItem(NewHorizonsCoreMod.ID, "IndustryFrame", 1L)
                 .getItem()) {
                 return true;
             }
