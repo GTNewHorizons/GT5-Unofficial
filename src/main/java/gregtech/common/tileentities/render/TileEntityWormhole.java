@@ -40,10 +40,7 @@ public class TileEntityWormhole extends TileEntity {
             .map(WorldProvider::getDimensionName)
             .orElse(null);
         if (dimName == null) return 0;
-        for (int i = 0; i < DimensionHelper.DimName.length; i++) {
-            if (dimName.equals(DimensionHelper.DimName[i])) return i;
-        }
-        return 0;
+        return DimensionHelper.getIndex(dimName);
     }
 
     public void setDimFromWorld(World target) {
@@ -62,7 +59,11 @@ public class TileEntityWormhole extends TileEntity {
     }
 
     public Block getBlock() {
-        return ModBlocks.getBlock(DimensionHelper.DimNameDisplayed[dimID]);
+        DimensionHelper.DimRecord record = DimensionHelper.getByIndex(dimID);
+        if (record == null) {
+            return null;
+        }
+        return ModBlocks.getBlock(record.abbr());
     }
 
     @Override
