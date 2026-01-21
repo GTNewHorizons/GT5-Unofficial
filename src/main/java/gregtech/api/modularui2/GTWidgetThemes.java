@@ -47,8 +47,7 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
         .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
-        .defaultTheme(
-            new WidgetTheme(0, 0, GTGuiTextures.TT_BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0))
         .defaultHoverTheme(null)
         .register();
 
