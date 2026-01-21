@@ -49,7 +49,7 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture BACKGROUND_NANOCHIP = UITexture.builder()
         .location(GregTech.ID, "gui/background/nanochip_default")
-        .imageSize(176, 166)
+        .imageSize(198, 203)
         .adaptable(4)
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_NANOCHIP)
@@ -124,9 +124,9 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture NANOCHIP_BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup_nanochip")
-        .imageSize(195, 136)
+        .imageSize(193, 134)
         .adaptable(4)
-        .name(GTTextureIds.BACKGROUND_NANOCHIP)
+        .name(GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
         .build();
 
     public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
