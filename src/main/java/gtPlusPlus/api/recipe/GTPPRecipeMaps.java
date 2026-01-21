@@ -7,13 +7,16 @@ import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
@@ -22,6 +25,7 @@ import gregtech.api.recipe.RecipeMapBuilder;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
@@ -227,6 +231,17 @@ public class GTPPRecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_MIXER, ProgressBar.Direction.CIRCULAR_CW)
         .frontend(LargeNEIFrontend::new)
         .build();
+    public static final RecipeMap<RecipeMapBackend> algaePondRecipes = RecipeMapBuilder.of("gtpp.recipe.algae_pond")
+        .maxIO(0, 15, 0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.UP)
+        .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("gtpp.nei.ap.tier"))
+        .frontend(AlgaePondFrontend::new)
+        .neiRecipeComparator(
+            (a, b) -> Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.mSpecialValue)
+                .thenComparing(GTRecipe::compareTo)
+                .compare(a, b))
+        .build();
+
     public static final RecipeMap<RecipeMapBackend> chemicalDehydratorNonCellRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multidehydrator")
         .maxIO(6, 9, 3, 3)
@@ -249,8 +264,10 @@ public class GTPPRecipeMaps {
         .frontend(TGSFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
-        .of("gt.recipe.multiblockrockbreaker")
-        .maxIO(2, 1, 0, 0)
-        .disableRegisterNEI()
+        .of("gtpp.recipe.multiblockrockbreaker")
+        .maxIO(3, 1, 2, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
+        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .frontend(MultiblockRockBreakerFrontend::new)
         .build();
 }

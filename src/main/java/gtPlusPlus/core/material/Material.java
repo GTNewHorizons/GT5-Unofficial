@@ -7,6 +7,7 @@ import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,12 +18,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.StoneType;
+import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
@@ -37,10 +45,11 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
-public class Material {
+public class Material implements IOreMaterial {
 
     public static final Set<Material> mMaterialMap = new HashSet<>();
     public static final HashMap<String, Material> mMaterialCache = new HashMap<>();
+    public static final HashMap<String, Material> mMaterialsByName = new HashMap<>();
     public static final Map<String, Map<String, ItemStack>> mComponentMap = new HashMap<>();
     public static final HashMap<String, String> sChemicalFormula = new HashMap<>();
 
@@ -88,6 +97,11 @@ public class Material {
     public short werkstoffID;
 
     public static ArrayList<Materials> invalidMaterials = new ArrayList<>();
+
+    /** A cache field for raw ores to prevent constant map lookups. */
+    private ItemStack rawOre;
+
+    private boolean hasOre;
 
     public Material(final String materialName, final MaterialState defaultState, final MaterialStack... inputs) {
         this(materialName, defaultState, null, inputs);
@@ -383,6 +397,7 @@ public class Material {
             this.translatedName = GTLanguageManager
                 .addStringLocalization("gtplusplus.material." + unlocalizedName, localizedName);
             mMaterialCache.put(getLocalizedName().toLowerCase(), this);
+            mMaterialsByName.put(unlocalizedName, this);
             Logger.INFO("Stored " + getLocalizedName() + " to cache with key: " + getLocalizedName().toLowerCase());
 
             this.materialState = defaultState;
@@ -583,7 +598,7 @@ public class Material {
 
             this.vChemicalSymbol = chemicalSymbol;
             if (this.vMaterialInput != null) {
-                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
+                this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.getMaterialAmount() / M, true);
             } else if (!this.vChemicalSymbol.isEmpty()) {
                 Logger.MATERIALS("materialInput is null, using a valid chemical symbol.");
                 this.vChemicalFormula = this.vChemicalSymbol;
@@ -592,6 +607,8 @@ public class Material {
                 this.vChemicalSymbol = "??";
                 this.vChemicalFormula = "??";
             }
+
+            this.textureSet = setTextureSet(set, vTier);
 
             if (generateFluid) {
                 final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();
@@ -632,8 +649,6 @@ public class Material {
                 }
             }
 
-            this.textureSet = setTextureSet(set, vTier);
-
             if (TinkerConstruct.isModLoaded() && this.materialState == MaterialState.SOLID) {
                 if (this.getProtons() >= 98 || this.getComposites()
                     .size() > 1 || this.getMeltingPointC() >= 3600) {
@@ -654,7 +669,7 @@ public class Material {
             Logger.MATERIALS("Mass: " + this.vMass + "/units");
             Logger.MATERIALS("Melting Point: " + this.meltingPointC + "C.");
             Logger.MATERIALS("Boiling Point: " + this.boilingPointC + "C.");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.MATERIALS("Stack Trace for " + materialName);
             t.printStackTrace();
         }
@@ -687,6 +702,7 @@ public class Material {
         }
     }
 
+    @Override
     public final TextureSet getTextureSet() {
         synchronized (this) {
             return textureSet;
@@ -797,11 +813,39 @@ public class Material {
         return Materials.Gold.mIconSet;
     }
 
+    @Override
     public final String getLocalizedName() {
         if (this.localizedName != null) {
             return this.localizedName;
         }
         return "ERROR BAD LOCALIZED NAME";
+    }
+
+    @Override
+    public int getId() {
+        ItemStack dust = getDust(1);
+
+        if (dust != null) return Item.getIdFromItem(dust.getItem());
+
+        ItemStack ingot = getIngot(1);
+
+        if (ingot != null) return Item.getIdFromItem(ingot.getItem());
+
+        ItemStack ore = getOre(1);
+
+        if (ore != null) return Item.getIdFromItem(ore.getItem());
+
+        return 0;
+    }
+
+    @Override
+    public List<IStoneType> getValidStones() {
+        return StoneType.STONE_ONLY;
+    }
+
+    @Override
+    public String getInternalName() {
+        return getUnlocalizedName();
     }
 
     public final String getUnlocalizedName() {
@@ -818,6 +862,11 @@ public class Material {
         return "ERROR.BAD.TRANSLATED.NAME";
     }
 
+    @Override
+    public String toString() {
+        return "Material{" + "unlocalizedName='" + unlocalizedName + '\'' + '}';
+    }
+
     public final MaterialState getState() {
         return this.materialState;
     }
@@ -829,6 +878,7 @@ public class Material {
         return new short[] { 255, 0, 0 };
     }
 
+    @Override
     public final short[] getRGBA() {
         if (this.RGBA != null) {
             if (this.RGBA.length == 4) {
@@ -881,7 +931,7 @@ public class Material {
     }
 
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
-        String aKey = aPrefix.name();
+        String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
         if (g == null) {
             Map<String, ItemStack> aMap = new HashMap<>();
@@ -907,7 +957,7 @@ public class Material {
                         Erg = ItemUtils.getOrePrefixStack(OrePrefixes.cellMolten, Erf, stacksize);
                         if (Erg != null) {
                             Logger.MATERIALS(
-                                "Found \"" + OrePrefixes.cellMolten.name()
+                                "Found \"" + OrePrefixes.cellMolten.getName()
                                     + this.unlocalizedName
                                     + "\" using backup GT Materials option.");
                             g.put(aKey, Erg);
@@ -1077,15 +1127,29 @@ public class Material {
         return getComponentByPrefix(OrePrefixes.cableGt16, stacksize);
     }
 
+    private ItemStack ore;
+
     /**
      * Ore Components
      *
      * @return
      */
     public final ItemStack getOre(final int stacksize) {
-        return ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
-            "ore" + StringUtils.sanitizeString(this.getUnlocalizedName()),
-            stacksize);
+        if (ore == null) {
+            ore = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
+                "ore" + StringUtils.sanitizeString(this.getUnlocalizedName()),
+                1);
+        }
+
+        return GTUtility.copyAmount(stacksize, ore);
+    }
+
+    public final boolean hasOre() {
+        return hasOre;
+    }
+
+    public void setHasOre() {
+        this.hasOre = true;
     }
 
     public final Block getOreBlock(final int stacksize) {
@@ -1108,7 +1172,7 @@ public class Material {
             if (x != null) {
                 return x;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         // Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
@@ -1140,7 +1204,11 @@ public class Material {
     }
 
     public final ItemStack getRawOre(final int stacksize) {
-        return getComponentByPrefix(OrePrefixes.rawOre, stacksize);
+        if (rawOre == null) {
+            rawOre = getComponentByPrefix(OrePrefixes.rawOre, 1);
+        }
+
+        return GTUtility.copyAmount(stacksize, rawOre);
     }
 
     public final boolean hasSolidForm() {
@@ -1157,7 +1225,7 @@ public class Material {
                 try {
                     testNull = this.vMaterialInput.get(i)
                         .getValidStack();
-                } catch (final Throwable r) {
+                } catch (final Exception r) {
                     Logger.MATERIALS("Failed gathering material stack for " + this.localizedName + ".");
                     Logger.MATERIALS("What Failed: Length:" + this.vMaterialInput.size() + " current:" + i);
                 }
@@ -1167,7 +1235,7 @@ public class Material {
                         temp[i] = this.vMaterialInput.get(i)
                             .getValidStack();
                     }
-                } catch (final Throwable r) {
+                } catch (final Exception r) {
                     Logger.MATERIALS("Failed setting slot " + i + ", using " + this.localizedName);
                 }
             }
@@ -1396,7 +1464,7 @@ public class Material {
 
         // This fluid does not exist at all, time to generate it.
         if (this.materialState == MaterialState.SOLID) {
-            return FluidUtils.addGTFluid(
+            return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
                 "Molten " + this.getLocalizedName(),
                 this.RGBA,
@@ -1405,9 +1473,10 @@ public class Material {
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells);
+                this.vGenerateCells,
+                this);
         } else if (this.materialState == MaterialState.LIQUID || this.materialState == MaterialState.PURE_LIQUID) {
-            return FluidUtils.addGTFluid(
+            return FluidUtils.addGTFluidMolten(
                 this.getUnlocalizedName(),
                 this.getLocalizedName(),
                 this.RGBA,
@@ -1416,7 +1485,8 @@ public class Material {
                 aFullCell,
                 ItemList.Cell_Empty.get(1),
                 1000,
-                this.vGenerateCells);
+                this.vGenerateCells,
+                this);
         } else if (this.materialState == MaterialState.GAS || this.materialState == MaterialState.PURE_GAS) {
             return FluidUtils
                 .generateGas(unlocalizedName, this.getLocalizedName(), getMeltingPointK(), getRGBA(), vGenerateCells);
@@ -1497,7 +1567,7 @@ public class Material {
             } else {
                 return Materials.Steel.mRGBa;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return Materials.Steel.mRGBa;
         }
@@ -1642,7 +1712,7 @@ public class Material {
         if (aMap == null) {
             aMap = new HashMap<>();
         }
-        String aKey = aPrefix.name();
+        String aKey = aPrefix.getName();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
             aMap.put(aKey, aStack);
@@ -1662,6 +1732,17 @@ public class Material {
 
     public Materials tryFindGregtechMaterialEquivalent() {
         return tryFindGregtechMaterialEquivalent(this);
+    }
+
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return tryFindGregtechMaterialEquivalent();
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        // This is really unreliable but it's also gt++ so there isn't a better solution
+        return getComponentByPrefix(prefix, 1) != null;
     }
 
     public static Materials tryFindGregtechMaterialEquivalent(Material aMaterial) {
@@ -1688,5 +1769,20 @@ public class Material {
 
     public void setWerkstoffID(short werkstoffID) {
         this.werkstoffID = werkstoffID;
+    }
+
+    @Override
+    public boolean contains(SubTag aTag) {
+        return false;
+    }
+
+    @Override
+    public ISubTagContainer add(SubTag... aTags) {
+        throw new UnsupportedOperationException("GT++ does not implement subtags");
+    }
+
+    @Override
+    public boolean remove(SubTag aTag) {
+        return false;
     }
 }

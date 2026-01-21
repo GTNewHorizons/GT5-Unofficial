@@ -25,13 +25,14 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
-import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.GTRenderUtil;
 
 @SideOnly(Side.CLIENT)
 public class BWItemRenderer implements IItemRenderer {
@@ -81,11 +82,11 @@ public class BWItemRenderer implements IItemRenderer {
                 GL11.glBlendFunc(770, 771);
                 final Tessellator tess = Tessellator.instance;
                 if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
-                    if (aMetaData < CircuitImprintLoader.reverseIDs)
-                        GTRenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                    if (aMetaData < CircuitWraps.getMinimalID())
+                        ItemRenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     else {
                         for (int i = 0; i < 4; i++) {
-                            GTRenderUtil.renderItemIcon(
+                            ItemRenderUtil.renderItemIcon(
                                 tIcon,
                                 0.0D + i * 2D,
                                 0.0D + i * 2D,
@@ -97,7 +98,7 @@ public class BWItemRenderer implements IItemRenderer {
                                 -1.0F);
                         }
                     }
-                } else if (aMetaData < CircuitImprintLoader.reverseIDs) {
+                } else if (aMetaData < CircuitWraps.getMinimalID()) {
                     ItemRenderer.renderItemIn2D(
                         tess,
                         tIcon.getMaxU(),
@@ -115,7 +116,7 @@ public class BWItemRenderer implements IItemRenderer {
                     Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                     GL11.glBlendFunc(770, 771);
                     if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
-                        GTRenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+                        ItemRenderUtil.renderItemIcon(tOverlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     } else {
                         ItemRenderer.renderItemIn2D(
                             tess,

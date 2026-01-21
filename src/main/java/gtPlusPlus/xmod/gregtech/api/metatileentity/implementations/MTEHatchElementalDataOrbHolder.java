@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate4by4;
-
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,22 +11,14 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchElementalDataOrbHolderGui;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -182,7 +172,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public int getCircuitSlot() {
-        return getSlots(mTier);
+        return this.getSizeInventory() - 1;
     }
 
     @Override
@@ -202,27 +192,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        syncManager.registerSlotGroup("item_inv", 4);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager, uiSettings)
-            .build()
-            .child(
-                gridTemplate4by4(
-                    index -> new ItemSlot().slot(
-                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
-                            .filter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                        .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_DATA_ORB)));
+        return new MTEHatchElementalDataOrbHolderGui(this).build(data, syncManager, uiSettings);
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DATA_ORB)
-                .applyForWidget(
-                    widget -> widget.setFilter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                .build()
-                .setPos(52, 7));
-    }
 }

@@ -15,6 +15,7 @@ package bartworks.common.loaders;
 
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorEV;
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorHV;
+import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorIV;
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorLV;
 import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorMV;
 import static gregtech.api.enums.MetaTileEntityIDs.CircuitAssemblyLine;
@@ -112,7 +113,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UXV;
 import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.GiantOutputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.HighTemperatureGasCooledReactor;
 import static gregtech.api.enums.MetaTileEntityIDs.HumongousInputHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaBlastFurnace;
 import static gregtech.api.enums.MetaTileEntityIDs.MegaChemicalReactor;
@@ -151,7 +151,6 @@ import bartworks.common.tileentities.debug.MTECreativeScanner;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
 import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
-import bartworks.common.tileentities.multis.MTEHighTempGasCooledReactor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
 import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactor;
@@ -176,6 +175,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
+import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
 public class ItemRegistry {
 
@@ -318,13 +318,12 @@ public class ItemRegistry {
     public static ItemStack[] diode12A = new ItemStack[GTValues.VN.length];
     public static ItemStack[] diode16A = new ItemStack[GTValues.VN.length];
     public static ItemStack[] energyDistributor = new ItemStack[GTValues.VN.length];
-    public static ItemStack[] acidGens = new ItemStack[3];
+    public static ItemStack[] acidGens = new ItemStack[4];
     public static ItemStack acidGensLV;
     public static ItemStack[] megaMachines = new ItemStack[5];
     public static ItemStack dehp;
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
-    public static ItemStack HTGR;
     public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack compressedHatch;
@@ -387,10 +386,6 @@ public class ItemRegistry {
             "THTR",
             "Thorium High Temperature Reactor").getStackForm(1L);
         MTEThoriumHighTempReactor.THTRMaterials.registeraTHR_Materials();
-        ItemRegistry.HTGR = new MTEHighTempGasCooledReactor(
-            HighTemperatureGasCooledReactor.ID,
-            "HTGR",
-            "High Temperature Gas-cooled Reactor").getStackForm(1L);
         MTEHighTempGasCooledReactor.HTGRMaterials.registeraTHR_Materials();
 
         // ID 12728 + 15 + 49 IS TAKEN !!! (12792)
@@ -458,23 +453,32 @@ public class ItemRegistry {
             AcidGeneratorMV.ID,
             "acidgenerator" + GTValues.VN[2],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[2],
-            2).getStackForm(1);
+            2,
+            94).getStackForm(1);
         ItemRegistry.acidGens[1] = new MTEAcidGenerator(
             AcidGeneratorHV.ID,
             "acidgenerator" + GTValues.VN[3],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[3],
-            3).getStackForm(1);
+            3,
+            91).getStackForm(1);
         ItemRegistry.acidGens[2] = new MTEAcidGenerator(
             AcidGeneratorEV.ID,
             "acidgenerator" + GTValues.VN[4],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[4],
-            4).getStackForm(1);
-
+            4,
+            88).getStackForm(1);
+        ItemRegistry.acidGens[3] = new MTEAcidGenerator(
+            AcidGeneratorIV.ID,
+            "acidgenerator" + GTValues.VN[5],
+            StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[5],
+            5,
+            50).getStackForm(1);
         ItemRegistry.acidGensLV = new MTEAcidGenerator(
             AcidGeneratorLV.ID,
             "acidgenerator" + GTValues.VN[1],
             StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GTValues.VN[1],
-            +1).getStackForm(1L);
+            1,
+            97).getStackForm(1L);
 
         ItemRegistry.dehp = new MTEDeepEarthHeatingPump(DeepEarthHeatingPump.ID, "DEHP", "Deep Earth Heating Pump")
             .getStackForm(1L);

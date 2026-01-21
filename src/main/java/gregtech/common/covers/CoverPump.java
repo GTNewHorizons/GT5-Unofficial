@@ -15,8 +15,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
-import gregtech.common.covers.gui.CoverIOBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.base.CoverIOBaseGui;
 import gregtech.common.gui.mui1.cover.PumpUIFactory;
 
 public class CoverPump extends CoverIOBase {
@@ -119,7 +119,7 @@ public class CoverPump extends CoverIOBase {
     // GUI stuff
 
     @Override
-    protected @NotNull CoverGui<?> getCoverGui() {
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
         return new CoverIOBaseGui(this, "cover.pump");
     }
 

@@ -45,9 +45,10 @@ import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
@@ -65,15 +66,16 @@ import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.gui.modularui.multiblock.MTEChamberCentrifugeGui;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.multi.gui.MTEChamberCentrifugeGui;
 import gregtech.common.tools.ToolTurbineHuge;
 import gregtech.common.tools.ToolTurbineLarge;
 import gregtech.common.tools.ToolTurbineNormal;
@@ -87,9 +89,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     implements ISurvivalConstructable {
 
     public boolean tier2Fluid = false;
-    public double mMode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
+    public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
     public int RP = 0;
     public float speed = 3F;
+    public float euMultiplier = 1;
     private final int horizontalOffset = 8; // base offset for tier 1
     private final int verticalOffset = 8; // base offset for tier 2
     private final int depthOffset = 2;
@@ -102,19 +105,17 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static final String STRUCTURE_MAIN = "main";
     private static final IIconContainer TEXTURE_CONTROLLER = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         "iconsets/TFFT_ACTIVE_GLOW");
-    public ArrayList<MTEHatchTurbine> mTurbineRotorHatches = new ArrayList<>();
+    public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
-    private boolean mStaticAnimations = false;
+    private boolean staticAnimations = false;
     // spotless:off
 
-    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEChamberCentrifuge>builder()
+    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition.<MTEChamberCentrifuge>builder()
         .addShape(
             STRUCTURE_TIER_1,
             transpose(
@@ -206,7 +207,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             buildHatchAdder(MTEChamberCentrifuge.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0)) // PBI Pipe Casing
@@ -215,13 +216,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('E', Casings.IsamillGearBoxCasing.asElement()) // Isamill central casing
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
-        .addElement(
-            'H',
-            buildHatchAdder(MTEChamberCentrifuge.class).adder(MTEChamberCentrifuge::addTurbineHatch)
-                .hatchClass(MTEHatchTurbine.class)
-                .casingIndex(1538)
-                .dot(2)
-                .build()) // Turbine Holder Hatches
+        .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
         .addElement('a', ofBlock(GregTechAPI.sBlockMetal4, 13)) // t1 block, Naq Alloy
         .addElement(
             'b',
@@ -244,7 +239,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
         .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
         .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
-        .addElement('h', lazy(t -> ofFrame(MaterialsUEVplus.SpaceTime))) // t4 frame
+        .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 
     public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
@@ -275,7 +270,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             }
         }
         this.setTurbineInactive();
-        this.mTurbineRotorHatches.clear();
+        this.turbineRotorHatchList.clear();
         super.onBlockDestroyed();
     }
 
@@ -284,21 +279,48 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return false;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchTurbine) {
-            mTurbineRotorHatches.add((MTEHatchTurbine) aMetaTileEntity);
-
+        if (aMetaTileEntity instanceof MTEHatchTurbine turbine) {
+            turbine.updateTexture(aBaseCasingIndex);
+            turbineRotorHatchList.add(turbine);
             return true;
         }
         return false;
+    }
+
+    private void rotateTurbines() {
+        for (int i = 0; i < turbineRotorHatchList.size(); i++) {
+            if (turbineRotorHatchList.get(i) == null) continue;
+            MTEHatchTurbine turbine = turbineRotorHatchList.get(i);
+            ForgeDirection direction = this.getDirection();
+            IGregTechTileEntity te = turbine.getBaseMetaTileEntity();
+            // 0, 1 = front top, front bottom
+            // 2, 4 = left top, left bottom
+            // 3, 5 = right top, right bottom
+            // 6, 7 = back top, back bottom (all in theory)
+            switch (i) {
+                case 0, 1 -> {
+                    te.setFrontFacing(direction);
+                }
+                case 2, 4 -> {
+                    te.setFrontFacing(direction.getRotation(ForgeDirection.EAST));
+                }
+                case 3, 5 -> {
+                    te.setFrontFacing(direction.getRotation(ForgeDirection.WEST));
+                }
+                case 6, 7 -> {
+                    te.setFrontFacing(direction.getOpposite());
+                }
+            }
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         tier = aNBT.getInteger("multiTier");
-        mMode = aNBT.getDouble("multiMode");
+        mode = aNBT.getDouble("multiMode");
         RP = aNBT.getInteger("RP");
-        mStaticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
+        staticAnimations = aNBT.getBoolean("turbineAnimationsStatic");
         tier2Fluid = aNBT.getBoolean("tier2FluidOn");
         lastCheckedTierIndex = aNBT.getInteger("lastCheckedTierIndex");
         if (turbineHolder != null) {
@@ -310,10 +332,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("multiTier", tier);
-        aNBT.setDouble("multiMode", mMode);
+        aNBT.setDouble("multiMode", mode);
         aNBT.setBoolean("tier2FluidOn", tier2Fluid);
         aNBT.setInteger("RP", RP);
-        aNBT.setBoolean("turbineAnimationsStatic", mStaticAnimations);
+        aNBT.setBoolean("turbineAnimationsStatic", staticAnimations);
         aNBT.setInteger("lastCheckedTierIndex", lastCheckedTierIndex);
         if (turbineHolder != null) {
             aNBT.setTag("inventory", turbineHolder.serializeNBT());
@@ -415,10 +437,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + "100%"
                     + EnumChatFormatting.GRAY
                     + " Speed Bonus, "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "0.9x"
-                    + EnumChatFormatting.GRAY
-                    + " Parallels, Maximum Recipe Tier is "
+                    + "Maximum Recipe Tier is "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Voltage Tier - 3")
             .addInfo(EnumChatFormatting.GOLD + "Standard Mode" + EnumChatFormatting.GRAY + ": No Changes")
@@ -429,9 +448,10 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                     + EnumChatFormatting.GREEN
                     + "32"
                     + EnumChatFormatting.GRAY
-                    + ", Requires T3 Structure and "
+                    + ", Requires T3+ Structure and "
                     + EnumChatFormatting.DARK_PURPLE
                     + "Biocatalyzed Propulsion Fluid")
+            .addInfo("Multiplies EU Cost by " + EnumChatFormatting.RED + "16")
             .addInfo(
                 "Some recipes " + EnumChatFormatting.RED + BOLD + "require" + EnumChatFormatting.GREEN + " Heavy Mode")
 
@@ -439,16 +459,16 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front Center")
-            .addCasingInfoRange("Any Tiered Glass", 81, 135, true)
+            .addCasingInfoExactly("Any Tiered Glass", 81, true)
             .addCasingInfoMin("Vibration-Safe Casing", 550, false)
             .addCasingInfoExactly("Chamber Grate", 144, false)
             .addCasingInfoExactly("Central Frame Blocks", 9, true)
             .addCasingInfoExactly("Central Rotor Blocks", 56, true)
             .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
-            .addCasingInfoRange("PBI Pipe Casing", 160, 178, false)
-            .addCasingInfoRange("Turbine Shaft", 6, 24, false)
-            .addCasingInfoRange("Rotor Assembly", 2, 8, false)
-            .addCasingInfoRange("SC Turbine Casing", 66, 264, false)
+            .addCasingInfoExactly("PBI Pipe Casing", 160, false)
+            .addCasingInfoExactly("Turbine Shaft", 24, false)
+            .addCasingInfoExactly("Rotor Assembly", 8, false)
+            .addCasingInfoExactly("SC Turbine Casing", 264, false)
             .addInputBus("Any Vibration-Safe Casing", 1)
             .addOutputBus("Any Vibration-Safe Casing", 1)
             .addInputHatch("Any Vibration-Safe Casing", 1)
@@ -552,6 +572,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset)) {
                 tier = piece.machineTier;
                 lastCheckedTierIndex = i;
+                rotateTurbines();
                 return casingAmount >= 550;
             }
         }
@@ -562,12 +583,14 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private void resetParameters() {
         clearHatches();
         casingAmount = 0;
+        turbineRotorHatchList.clear();
     }
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setMaxParallel(getTrueParallel());
-        if (mExoticEnergyHatches.isEmpty()) {
+        logic.setUnlimitedTierSkips();
+        if (mExoticEnergyHatches.isEmpty() && !debugEnergyPresent) {
             logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
             logic.setAvailableAmperage(1L);
         } else super.setProcessingLogicPower(logic);
@@ -581,16 +604,21 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 amountToDrain = GTUtility.getTier(recipe.mEUt) * 10;
-                if (!checkFluid(7 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
-                if (mMode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
+                euMultiplier = 1;
+                if (!checkFluid(5 * amountToDrain)) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (mode == 0.0 && GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt) < 3)
                     return CheckRecipeResultRegistry.NO_RECIPE;
-                if (mMode == 2.0 && !tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                if (mode == 2.0) {
+                    if (!tier2Fluid) return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
+                    euMultiplier = 16;
+                }
 
-                if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mMode != 2.0)
+                if (recipe.getMetadataOrDefault(CentrifugeRecipeKey.INSTANCE, Boolean.FALSE) && mode != 2.0)
                     return CheckRecipeResultRegistry.NO_RECIPE;
 
                 getSpeed();
                 setSpeedBonus(1F / speed);
+                setEuModifier(0.7 * euMultiplier);
                 return super.validateRecipe(recipe);
             }
 
@@ -606,7 +634,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
                 return super.createOverclockCalculator(recipe).setMaxOverclocks(
                     (GTUtility.getTier(getAverageInputVoltage()) - GTUtility.getTier(recipe.mEUt)) + 1);
             }
-        }.setEuModifier(0.7F);
+        };
     }
 
     @Override
@@ -659,31 +687,25 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return sumRotorLevels;
     }
 
-    private boolean checkFluid(int amount) // checks if 5 seconds worth of fluid is found in ANY of the machines input
-                                           // hatches
-    {
+    private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
-        FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amount)
+        final FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
             : new FluidStack(GTPPFluids.Kerosene, amount);
-        for (MTEHatchInput mInputHatch : mInputHatches) {
-            if (drain(mInputHatch, tFluid, false)) {
-                return true;
-            }
-        }
-        return false; // fluid was not found.
+
+        return this.depleteInput(tFluid, true);
     }
 
     public void setTurbineActive() {
-        if (mStaticAnimations) return;
+        if (staticAnimations) return;
 
-        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
+        for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.setActive(true);
             h.onTextureUpdate();
         }
     }
 
     public void setTurbineInactive() {
-        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
+        for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.setActive(false);
             h.onTextureUpdate();
         }
@@ -693,7 +715,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aTick % 100 == 0) {
-            if (!getBaseMetaTileEntity().isActive() && !this.mTurbineRotorHatches.isEmpty()) {
+            if (!getBaseMetaTileEntity().isActive() && !this.turbineRotorHatchList.isEmpty()) {
                 setTurbineInactive();
             }
         }
@@ -707,7 +729,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         if (tier2Fluid) {
             parallels = (int) Math.floor(parallels * 1.25);
         }
-        if (mMode == 2.0) {
+        if (mode == 2.0) {
             parallels /= 32;
         }
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
@@ -723,7 +745,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         // might need a cleanup here
         if (ticker % 21 == 0) {
 
-            FluidStack tFluid = tier2Fluid ? MaterialsUEVplus.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
+            FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
                 : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {
@@ -744,22 +766,14 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return new MTEChamberCentrifugeGui(this);
     }
 
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
-    }
-
     public int getRP() {
         RP = 4 * getSumRotorLevels();
-        if (mMode == 0.0) {
-            RP = (int) (RP * 0.9);
-        }
         return RP;
     }
 
     public float getSpeed() {
         speed = 3F;
-        if (mMode == 0.0) {
+        if (mode == 0.0) {
             speed = 4.0F;
         }
         return speed;
@@ -770,13 +784,13 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     public String modeToString() {
-        if (mMode == 0.0) {
+        if (mode == 0.0) {
             return "Light";
         }
-        if (mMode == 1.0) {
+        if (mode == 1.0) {
             return "Standard";
         }
-        if (mMode == 2.0) {
+        if (mode == 2.0) {
             return "Heavy";
         }
         return "Unset";
@@ -784,12 +798,17 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        mStaticAnimations = !mStaticAnimations;
+        staticAnimations = !staticAnimations;
         GTUtility
-            .sendChatToPlayer(aPlayer, "Using " + (mStaticAnimations ? "Static" : "Animated") + " Turbine Texture.");
-        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
-            h.mUsingAnimation = mStaticAnimations;
+            .sendChatToPlayer(aPlayer, "Using " + (staticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+        for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
+            h.mUsingAnimation = staticAnimations;
         }
+    }
+
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_CHAMBER_CENTRIFUGE;
     }
 
     @Override
@@ -825,6 +844,36 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    private enum CentrifugeHatchElement implements IHatchElement<MTEChamberCentrifuge> {
+
+        ROTOR_ASSEMBLY(MTEChamberCentrifuge::addTurbineHatch, MTEHatchTurbine.class) {
+
+            @Override
+            public long count(MTEChamberCentrifuge mteChamberCentrifuge) {
+                return mteChamberCentrifuge.turbineRotorHatchList.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEChamberCentrifuge> adder;
+
+        @SafeVarargs
+        CentrifugeHatchElement(IGTHatchAdder<MTEChamberCentrifuge> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super MTEChamberCentrifuge> adder() {
+            return adder;
+        }
     }
 }
 

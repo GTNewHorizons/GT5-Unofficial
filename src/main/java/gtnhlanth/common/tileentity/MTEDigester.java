@@ -42,6 +42,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
@@ -66,11 +67,14 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             buildHatchAdder(MTEDigester.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(47)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 0))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('c', activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel)))
+        .addElement(
+            'c',
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel))))
         .build();
 
     public MTEDigester(String name) {
@@ -206,12 +210,13 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
             .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 1")
-            .addOutputBus("Hint block with dot 1")
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 1")
+            .addInputHatch("Hint Block Number 1")
+            .addInputBus("Hint Block Number 1")
+            .addOutputHatch("Hint Block Number 1")
+            .addOutputBus("Hint Block Number 1")
+            .addMaintenanceHatch("Hint Block Number 1")
+            .addMufflerHatch("Hint Block Number 1")
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }

@@ -5,8 +5,11 @@ import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceRes
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.REJECT;
 import static com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult.SKIP;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode.EXACT;
+import static gregtech.api.GregTechAPI.sBlockSheetmetalBW;
+import static gregtech.api.GregTechAPI.sBlockSheetmetalGT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +48,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import bartworks.system.material.Werkstoff;
 import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -56,6 +61,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -129,6 +135,16 @@ public class GTStructureUtility {
         };
     }
 
+    public static <T> IStructureElement<T> ofSheetMetal(Materials material) {
+        if (material == null) throw new IllegalArgumentException("material for sheet metal can not be null!");
+        return ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID);
+    }
+
+    public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
+        if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
+        return ofBlock(sBlockSheetmetalBW, werkstoff.getmID());
+    }
+
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
         return new IStructureElement<>() {
@@ -153,9 +169,12 @@ public class GTStructureUtility {
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
-                if (mIcons == null) {
+                if (mIcons == null && FMLLaunchHandler.side()
+                    .isClient()) {
                     mIcons = new IIcon[6];
-                    Arrays.fill(mIcons, aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex].getIcon());
+                    Arrays.fill(
+                        mIcons,
+                        aFrameMaterial.mIconSet.mTextures[OrePrefixes.frameGt.getTextureIndex()].getIcon());
                 }
                 StructureLibAPI.hintParticleTinted(world, x, y, z, mIcons, aFrameMaterial.mRGBa);
                 return true;
@@ -732,7 +751,7 @@ public class GTStructureUtility {
 
     /**
      * like {@link #filterByMTEClass(java.util.List)}, but adds a blacklist check to the predicate
-     * 
+     *
      * @param list
      * @param blacklist
      * @return predicate of all multis of same type as hatchelement, with blacklist omitted
@@ -770,6 +789,22 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings() {
+        return chainAllCasings(-1, (te, t) -> {}, te -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.TIER_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    CasingTier::getCasingBlockTier,
+                    CasingTier.getCasingList(),
+                    notSet,
+                    setter,
+                    getter)));
     }
 
     public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {
@@ -888,8 +923,16 @@ public class GTStructureUtility {
 
                 if (!(stack.getItem() instanceof ItemMachines itemMachines)) return false;
 
-                return itemMachines
+                boolean success = itemMachines
                     .placeBlockAt(stack, null, world, x, y, z, ForgeDirection.UP.ordinal(), 0.5f, 0.5f, 0.5f, 0);
+
+                if (!success) return false;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return true;
             }
 
             @Override
@@ -911,12 +954,13 @@ public class GTStructureUtility {
 
                 if (actual == wanted) return PlaceResult.SKIP;
 
-                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
+                if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) {
                     return PlaceResult.REJECT;
+                }
 
                 ItemStack stack = wanted.getStackForm(1);
 
-                return StructureUtility.survivalPlaceBlock(
+                PlaceResult result = StructureUtility.survivalPlaceBlock(
                     stack,
                     EXACT,
                     null,
@@ -928,6 +972,14 @@ public class GTStructureUtility {
                     env.getSource(),
                     env.getActor(),
                     env.getChatter());
+
+                if (result != ACCEPT) return result;
+
+                if (world.getTileEntity(x, y, z) instanceof ITurnable turnable) {
+                    turnable.setFrontFacing(ForgeDirection.SOUTH);
+                }
+
+                return result;
             }
         };
     }

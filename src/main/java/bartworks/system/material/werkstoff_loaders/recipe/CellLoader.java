@@ -38,6 +38,7 @@ import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MaterialBuilder;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
@@ -76,8 +77,8 @@ public class CellLoader implements IWerkstoffRunnable {
                     .getValue()
                     .toArray(new Pair[0])) {
                     if (container.getKey() instanceof Materials) {
-                        if ((((Materials) container.getKey()).hasCorrespondingGas()
-                            || ((Materials) container.getKey()).hasCorrespondingFluid()
+                        if ((((Materials) container.getKey()).getGas(1) != null
+                            || ((Materials) container.getKey()).getFluid(1) != null
                             || ((Materials) container.getKey()).mIconSet == TextureSet.SET_FLUID)
                             && ((Materials) container.getKey()).getDust(0) == null) {
                             FluidStack tmpFl = ((Materials) container.getKey()).getGas(1000L * container.getValue());
@@ -263,7 +264,7 @@ public class CellLoader implements IWerkstoffRunnable {
                 .addTo(fluidExtractionRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.getIntegratedCircuit(1))
+                .circuit(1)
                 .itemOutputs(werkstoff.get(dust))
                 .fluidInputs(werkstoff.getFluidOrGas(1_000))
                 .duration(
@@ -283,15 +284,11 @@ public class CellLoader implements IWerkstoffRunnable {
                 if (e.toString()
                     .equals(werkstoff.getToolTip())) {
                     werkstoffBridgeMaterial = werkstoff.getBridgeMaterial() != null ? werkstoff.getBridgeMaterial()
-                        : new Materials(
-                            -1,
-                            werkstoff.getTexSet(),
-                            0,
-                            0,
-                            0,
-                            false,
-                            werkstoff.getDefaultName(),
-                            werkstoff.getDefaultName());
+                        : new MaterialBuilder().setName(werkstoff.getDefaultName())
+                            .setDefaultLocalName(werkstoff.getDefaultName())
+                            .setUnifiable(false)
+                            .setIconSet(werkstoff.getTexSet())
+                            .constructMaterial();
                     werkstoffBridgeMaterial.mElement = e;
                     e.mLinkedMaterials.add(werkstoffBridgeMaterial);
                     ElementSet = true;

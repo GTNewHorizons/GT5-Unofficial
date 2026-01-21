@@ -14,6 +14,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 
 public class GTRenderUtil {
@@ -22,7 +24,7 @@ public class GTRenderUtil {
         if (aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem) {
 
             short[] tModulation = aItem.getRGBa(aStack);
-            GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 255.0f);
+            GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 1);
         } else {
             System.out.println("WARNING: " + aStack.getDisplayName() + " does not have an associated GT colour.");
         }
@@ -38,32 +40,6 @@ public class GTRenderUtil {
             case WEST -> aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
             case EAST -> aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         }
-    }
-
-    public static void renderItemIcon(IIcon icon, double size, double z, float nx, float ny, float nz) {
-        renderItemIcon(icon, 0.0D, 0.0D, size, size, z, nx, ny, nz);
-    }
-
-    public static void renderItemIcon(IIcon icon, double xStart, double yStart, double xEnd, double yEnd, double z,
-        float nx, float ny, float nz) {
-        if (icon == null) {
-            return;
-        }
-        final Tessellator tess = Tessellator.instance;
-        tess.startDrawingQuads();
-        tess.setNormal(nx, ny, nz);
-        if (nz > 0.0F) {
-            tess.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
-            tess.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            tess.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            tess.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
-        } else {
-            tess.addVertexWithUV(xStart, yEnd, z, icon.getMinU(), icon.getMaxV());
-            tess.addVertexWithUV(xEnd, yEnd, z, icon.getMaxU(), icon.getMaxV());
-            tess.addVertexWithUV(xEnd, yStart, z, icon.getMaxU(), icon.getMinV());
-            tess.addVertexWithUV(xStart, yStart, z, icon.getMinU(), icon.getMinV());
-        }
-        tess.draw();
     }
 
     @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
@@ -109,44 +85,9 @@ public class GTRenderUtil {
                     .renderItemIn2D(tess, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
             }
             case INVENTORY -> {
-                renderItemIcon(icon, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);
+                ItemRenderUtil.renderItemIcon(icon, 16.0D, 0.001, 0.0F, 0.0F, -1.0F);
             }
             default -> {}
         }
-    }
-
-    public static void applyStandardItemTransform(IItemRenderer.ItemRenderType type) {
-        if (type == IItemRenderer.ItemRenderType.ENTITY) {
-            if (RenderItem.renderInFrame) {
-                // Magic numbers calculated from vanilla code
-                GL11.glScalef(1.025641F, 1.025641F, 1.025641F);
-                GL11.glTranslatef(0.0F, -0.05F, 0.0F);
-            }
-
-            if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
-                if (RenderItem.renderInFrame) {
-                    GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                }
-                // Magic numbers calculated from vanilla code
-                GL11.glTranslatef(-0.5F, -0.25F, 0.0421875F);
-            }
-        }
-    }
-
-    public static void undoStandardItemTransform(IItemRenderer.ItemRenderType type) {
-        if (type == IItemRenderer.ItemRenderType.ENTITY) {
-            if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
-                GL11.glTranslatef(0.5F, 0.25F, -0.0421875F); // negative of pre-transform
-                // if RenderItem.renderInFrame: rotate -180 (undo the frame rotation)
-                if (RenderItem.renderInFrame) {
-                    GL11.glRotatef(-180.0F, 0.0F, 1.0F, 0.0F);
-                }
-            }
-            if (RenderItem.renderInFrame) {
-                GL11.glTranslatef(0.0F, 0.05F, 0.0F);
-                GL11.glScalef(1F / 1.025641F, 1F / 1.025641F, 1F / 1.025641F);
-            }
-        }
-        // You can add more undo logic for other types if needed (EQUIPPED, etc)
     }
 }

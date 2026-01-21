@@ -106,7 +106,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                             .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
                             .disallowOnly(ForgeDirection.UP)
                             .casingIndex(getCasingTextureId())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         ofBlock(GregTechAPI.sBlockCasings4, 1)))
                 .addElement(
@@ -115,7 +115,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                         buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Energy, Maintenance)
                             .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                             .casingIndex(getCasingTextureId())
-                            .dot(2)
+                            .hint(2)
                             .build(),
                         ofHatchAdder(MTEAdvDistillationTower::addMufflerToMachineList, getCasingTextureId(), 3),
                         ofBlock(GregTechAPI.sBlockCasings4, 1)))
@@ -141,7 +141,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                     buildHatchAdder(MTEAdvDistillationTower.class).atLeast(layeredOutputHatch, Muffler)
                         .disallowOnly(ForgeDirection.DOWN)
                         .casingIndex(getCasingTextureId())
-                        .dot(2)
+                        .hint(2)
                         .buildAndChain(GregTechAPI.sBlockCasings4, 1))
                 .build();
         }
@@ -177,7 +177,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             .addInfo("Distillery Mode (requires full height tower)")
             .addInfo(TooltipHelper.parallelText("8 * Voltage Tier") + " Parallels")
             .addStaticSpeedInfo(2f)
-            .addStaticEuEffInfo(0.85f)
+            .addStaticEuEffInfo(0.15f)
             .addSeparator()
             .addInfo("Distillation Tower Mode")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)

@@ -103,14 +103,14 @@ public class PowerGogglesEventHandler {
     }
 
     @SideOnly(Side.CLIENT)
-    private void openConfig() {
+    public void openConfig() {
         Minecraft screenInfo = Minecraft.getMinecraft();
         Minecraft.getMinecraft()
             .displayGuiScreen(new PowerGogglesGuiHudConfig(screenInfo.displayWidth, screenInfo.displayHeight));
     }
 
     @SideOnly(Side.CLIENT)
-    private void toggleChart() {
+    public void toggleChart() {
         PowerGogglesConfigHandler.showPowerChart = !PowerGogglesConfigHandler.showPowerChart;
         PowerGogglesConfigHandler.config.getCategory(Configuration.CATEGORY_GENERAL)
             .get("Show Power Chart")

@@ -84,7 +84,8 @@ public class EUMeterUIFactory extends CoverUIFactory<CoverEUMeter> {
                                 : translateToLocal("gt.interact.desc.normal")))
                     .setPos(startX + spaceX, 4 + startY + spaceY))
             .widget(
-                new TextWidget(translateToLocal("gt.interact.desc.EnergyTHR")).setPos(startX, startY + spaceY * 3 + 4))
+                new TextWidget(translateToLocal("gt.interact.desc.EnergyThreshold"))
+                    .setPos(startX, startY + spaceY * 3 + 4))
 
             .widget(new FakeSyncWidget.LongSyncer(() -> {
                 CoverEUMeter cover = getCover();

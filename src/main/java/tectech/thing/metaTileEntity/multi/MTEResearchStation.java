@@ -71,6 +71,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -133,7 +134,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             buildHatchAdder(MTEResearchStation.class)
                 .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, HatchElement.InputData)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
         .addElement('E', HolderHatchElement.INSTANCE.newAny(BlockGTCasingsTT.textureOffset + 3, 2))
         .build();
@@ -444,7 +445,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getComputationRequired()) };
+                + GTUtility.formatNumbers(getComputationRequired()),
+            translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -548,6 +553,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        if (eHolders == null || eHolders.get(0).mInventory[0] == null)
+            stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
         if (computationRemaining <= 0) {
             computationRemaining = 0;
             mProgresstime = mMaxProgresstime;

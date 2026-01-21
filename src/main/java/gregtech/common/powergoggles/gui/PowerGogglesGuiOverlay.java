@@ -3,7 +3,6 @@ package gregtech.common.powergoggles.gui;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Configuration;
@@ -21,7 +20,6 @@ import com.cleanroommc.modularui.overlay.OverlayHandler;
 import com.cleanroommc.modularui.overlay.OverlayManager;
 import com.cleanroommc.modularui.screen.CustomModularScreen;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -49,15 +47,6 @@ public class PowerGogglesGuiOverlay {
             new OverlayHandler(
                 screen -> screen instanceof PowerGogglesGuiHudConfig,
                 PowerGogglesGuiOverlay::buildScreen));
-        // Render an overlay in the main menu to prevent a ~1s delay when opening the config gui for the first time
-        // This is a known bug with low priority
-        OverlayManager.register(
-            new OverlayHandler(
-                screen -> screen instanceof GuiMainMenu,
-                screen -> new ModularScreen(
-                    ModularPanel.defaultPanel("overlay")
-                        .size(0)
-                        .pos(-100, 0))));
     }
 
     private static CustomModularScreen buildScreen(GuiScreen screen) {

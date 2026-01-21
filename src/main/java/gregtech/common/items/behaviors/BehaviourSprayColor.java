@@ -32,7 +32,7 @@ public class BehaviourSprayColor extends BehaviourNone {
     protected String mTooltip;
     private final String mTooltipUses = GTLanguageManager
         .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable = GTLanguageManager
+    protected final String mTooltipUnstackable = GTLanguageManager
         .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
     protected final String mTooltipChain = GTLanguageManager.addStringLocalization(
         "gt.behaviour.paintspray.chain",
@@ -111,7 +111,7 @@ public class BehaviourSprayColor extends BehaviourNone {
         int initialBlockMeta = aWorld.getBlockMetadata(aX, aY, aZ);
         TileEntity initialTE = aWorld.getTileEntity(aX, aY, aZ);
         while ((GTUtility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side, aPlayer))) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_SPRAY_CAN, 1.0F, 1.0F, hitX, hitY, hitZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }

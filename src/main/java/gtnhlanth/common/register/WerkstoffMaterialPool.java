@@ -113,19 +113,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID + 6,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff Zirconium = new Werkstoff(
-        new short[] { 225, 230, 225 },
-        "Zirconium",
-        subscriptNumbers("Zr"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems(),
-        // .enforceUnification(),
-        offsetID + 7,
-        TextureSet.SET_METALLIC);
-
     public static final Werkstoff Zirconia = new Werkstoff(
         new short[] { 177, 152, 101 },
         "Zirconia",
@@ -693,9 +680,8 @@ public class WerkstoffMaterialPool implements Runnable {
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
-            .addPrefix(OrePrefixes.block)
-            .removePrefix(OrePrefixes.ingot)
-            .removePrefix(OrePrefixes.gem),
+            // Used for gangue singularities
+            .addPrefix(OrePrefixes.block),
         offsetID2 + 9,
         TextureSet.SET_DULL);
     // TODO: Deal with colouring
@@ -1311,26 +1297,6 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID4 + 8,
         TextureSet.SET_FLUID);
 
-    public static final Werkstoff PromethiumExtractingNanoResin = new Werkstoff(
-        new short[] { 110, 255, 60 },
-        "Promethium Extracting Nano Resin",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MATERIAL,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID4 + 9,
-        TextureSet.SET_FLUID);
-
-    public static final Werkstoff FilledPromethiumExtractingNanoResin = new Werkstoff(
-        new short[] { 150, 255, 140 },
-        "Filled Promethium Extracting Nano Resin",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MATERIAL,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID4 + 10,
-        TextureSet.SET_FLUID);
-
     public static final Werkstoff SamariumExtractingNanoResin = new Werkstoff(
         new short[] { 255, 240, 100 },
         "Samarium Extracting Nano Resin",
@@ -1757,7 +1723,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PromethiumOreConcentrate = new Werkstoff(
         new short[] { 150, 255, 140 },
         "Promethium Ore Concentrate",
-        subscriptNumbers("Po?"),
+        subscriptNumbers("Pm?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()

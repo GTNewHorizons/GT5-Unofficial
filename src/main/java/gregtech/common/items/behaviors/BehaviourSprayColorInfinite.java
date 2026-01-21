@@ -32,7 +32,7 @@ import gregtech.api.net.GTPacketInfiniteSpraycan;
 import gregtech.api.util.ColoredBlockContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
 public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
@@ -120,6 +120,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
+        aList.add(mTooltipUnstackable);
         aList.add(" ");
 
         if (!statuses.isEmpty()) {
@@ -345,7 +346,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     }
     // endregion
 
-    private static class DyeSelectGUI extends SelectItemUIFactory {
+    private static class DyeSelectGUI extends ItemSelectBaseGui {
 
         public DyeSelectGUI(final String header, final ItemStack headerItem, final Consumer<ItemStack> selectedCallback,
             final List<ItemStack> stacks, final int selected, final boolean noDeselect) {

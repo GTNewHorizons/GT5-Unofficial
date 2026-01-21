@@ -13,8 +13,8 @@
 
 package bartworks.system.material.gtenhancement;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -57,12 +57,13 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                     && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                 continue;
 
-            if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""))) {
+            if (OreDictionary
+                .doesOreNameExist(this.orePrefixes.getName() + material.mDefaultLocalName.replace(" ", ""))) {
                 this.hiddenThings.add(i);
                 continue;
             }
             GTOreDictUnificator
-                .registerOre(this.orePrefixes.name() + material.mDefaultLocalName.replace(" ", ""), tStack);
+                .registerOre(this.orePrefixes.getName() + material.mDefaultLocalName.replace(" ", ""), tStack);
         }
 
         if (noSubIDMaterials != null) {
@@ -76,11 +77,12 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
                         && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))
                     continue;
 
-                if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""))) {
+                if (OreDictionary.doesOreNameExist(this.orePrefixes.getName() + w.mDefaultLocalName.replace(" ", ""))) {
                     this.hiddenThings.add(i);
                     continue;
                 }
-                GTOreDictUnificator.registerOre(this.orePrefixes.name() + w.mDefaultLocalName.replace(" ", ""), tStack);
+                GTOreDictUnificator
+                    .registerOre(this.orePrefixes.getName() + w.mDefaultLocalName.replace(" ", ""), tStack);
             }
         }
     }
@@ -102,7 +104,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         Materials material = this.getMaterial(aStack);
         if (material != null) {
-            String tooltip = material.getToolTip();
+            String tooltip = material.getChemicalTooltip();
             if (tooltip != null && !tooltip.isEmpty()) {
                 aList.add(tooltip);
             }
@@ -111,10 +113,10 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
 
     @Override
     public IIconContainer getIconContainer(int aMetaData) {
-        if (this.orePrefixes.mTextureIndex == -1) return this.getIconContainerBartWorks(aMetaData);
+        if (this.orePrefixes.getTextureIndex() == -1) return this.getIconContainerBartWorks(aMetaData);
         Materials material = this.getMaterialFromMeta(aMetaData);
         if (material != null) {
-            return material.mIconSet.mTextures[this.orePrefixes.mTextureIndex];
+            return material.mIconSet.mTextures[this.orePrefixes.getTextureIndex()];
         }
         return null;
     }
@@ -123,7 +125,7 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     protected IIconContainer getIconContainerBartWorks(int aMetaData) {
         if (SideReference.Side.Server || PrefixTextureLinker.texMap == null) return null;
 
-        HashMap<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
+        Map<TextureSet, Textures.ItemIcons.CustomIcon> iconLink = PrefixTextureLinker.texMap.get(this.orePrefixes);
 
         if (iconLink == null) return null;
 
@@ -157,27 +159,70 @@ public class BWGTMetaItems extends BWMetaGeneratedItems {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
+        int materialGenerationBits = Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes);
+
         for (int i = 0; i < Materials.values().length; i++) {
-            Materials w = Materials.values()[i];
-            if (w == null || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
-                && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
-            if (w.getMolten(1) == null && this.orePrefixes == OrePrefixes.capsuleMolten
-                || w.getFluid(1) == null && w.getGas(1) == null
-                    && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
-                continue;
-            else if (this.hiddenThings.contains(i)) continue;
+            Materials material = Materials.values()[i];
+            if (material == null) continue;
+
+            // This only falls through when the material has no overlap with `materialGenerationBits`.
+            // spotless:off
+            if ((materialGenerationBits & 1) == 0 || !material.hasDustItems())
+                if ((materialGenerationBits & 2) == 0 || !material.hasMetalItems())
+                    if ((materialGenerationBits & 4) == 0 || !material.hasGemItems())
+                        if ((materialGenerationBits & 8) == 0 || !material.hasOresItems())
+                            if ((materialGenerationBits & 16) == 0 || !material.hasCell())
+                                if ((materialGenerationBits & 32) == 0 || !material.hasPlasma())
+                                    if ((materialGenerationBits & 64) == 0 || !material.hasToolHeadItems())
+                                        if ((materialGenerationBits & 128) == 0 || !material.hasGearItems())
+                                            if ((materialGenerationBits & 256) == 0 || !material.hasEmpty())
+                                                continue;
+            // spotless:on
+
+            if (material.getMolten(1) == null) {
+                if (this.orePrefixes == OrePrefixes.capsuleMolten) continue;
+            }
+
+            if (material.getFluid(1) == null && material.getGas(1) == null) {
+                if (this.orePrefixes == OrePrefixes.capsule) continue;
+                if (this.orePrefixes == OrePrefixes.bottle) continue;
+            }
+
+            if (this.hiddenThings.contains(i)) continue;
             aList.add(new ItemStack(this, 1, i));
         }
-        if (this.hasList) for (int i = 0; i < GTMetaItemEnhancer.NoMetaValue.size(); i++) {
-            Materials w = GTMetaItemEnhancer.NoMetaValue.get(i);
-            if (w == null || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
-                && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0) continue;
-            if (w.getMolten(1) == null && this.orePrefixes == OrePrefixes.capsuleMolten
-                || w.getFluid(1) == null && w.getGas(1) == null
-                    && (this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.bottle))
-                continue;
-            else if (this.hiddenThings.contains(i)) continue;
-            aList.add(new ItemStack(this, 1, i + 1001));
+
+        if (this.hasList) {
+            for (int i = 0; i < GTMetaItemEnhancer.NoMetaValue.size(); i++) {
+                Materials material = GTMetaItemEnhancer.NoMetaValue.get(i);
+                if (material == null) continue;
+
+                // This only falls through when the material has no overlap with `materialGenerationBits`.
+                // spotless:off
+                if ((materialGenerationBits & 1) == 0 || !material.hasDustItems())
+                    if ((materialGenerationBits & 2) == 0 || !material.hasMetalItems())
+                        if ((materialGenerationBits & 4) == 0 || !material.hasGemItems())
+                            if ((materialGenerationBits & 8) == 0 || !material.hasOresItems())
+                                if ((materialGenerationBits & 16) == 0 || !material.hasCell())
+                                    if ((materialGenerationBits & 32) == 0 || !material.hasPlasma())
+                                        if ((materialGenerationBits & 64) == 0 || !material.hasToolHeadItems())
+                                            if ((materialGenerationBits & 128) == 0 || !material.hasGearItems())
+                                                if ((materialGenerationBits & 256) == 0 || !material.hasEmpty())
+                                                    continue;
+                // spotless:on
+
+                if (material.getMolten(1) == null) {
+                    if (this.orePrefixes == OrePrefixes.capsuleMolten) continue;
+                }
+
+                if (material.getFluid(1) == null && material.getGas(1) == null) {
+                    if (this.orePrefixes == OrePrefixes.capsule) continue;
+                    if (this.orePrefixes == OrePrefixes.bottle) continue;
+                }
+
+                if (this.hiddenThings.contains(i)) continue;
+                aList.add(new ItemStack(this, 1, i + 1001));
+            }
         }
     }
 

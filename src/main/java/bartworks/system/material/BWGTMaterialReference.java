@@ -14,11 +14,13 @@ package bartworks.system.material;
 
 import bartworks.MainMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 
 public class BWGTMaterialReference {
 
     private static final Werkstoff.GenerationFeatures ADD_CASINGS_ONLY = new Werkstoff.GenerationFeatures().disable()
-        .addCasings();
+        .addPrefix(OrePrefixes.blockCasing)
+        .addPrefix(OrePrefixes.blockCasingAdvanced);
 
     public static Werkstoff Aluminium = new Werkstoff(
         Materials.Aluminium,
@@ -500,7 +502,7 @@ public class BWGTMaterialReference {
         Werkstoff.Types.COMPOUND,
         31_766 + 473);
     public static Werkstoff Plastic = new Werkstoff(
-        Materials.Plastic,
+        Materials.Polyethylene,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.COMPOUND,
         31_766 + 874);

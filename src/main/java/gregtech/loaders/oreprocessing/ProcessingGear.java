@@ -29,8 +29,8 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        switch (aPrefix) {
-            case gearGt -> {
+        switch (aPrefix.getName()) {
+            case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(aStack);
                 if (aMaterial.mStandardMoltenFluid != null) {
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
@@ -43,7 +43,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
-                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
@@ -68,7 +68,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
             }
-            case gearGtSmall -> {
+            case "gearGtSmall" -> {
                 if (aMaterial.mStandardMoltenFluid != null) {
                     if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
                         GTValues.RA.stdBuilder()
@@ -80,7 +80,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(fluidSolidifierRecipes);
                     }
                 }
-                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
                     && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(

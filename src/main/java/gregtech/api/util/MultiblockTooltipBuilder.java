@@ -59,7 +59,8 @@ public class MultiblockTooltipBuilder {
     private static final String TT_StaticEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Base");
     private static final String TT_DynamicParallels = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Additional");
     private static final String TT_SingularParallel = StatCollector.translateToLocal("GT5U.MBTT.Parallel.Singular");
-    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
+    private static final String TT_DynamicSpeedBonus = StatCollector.translateToLocal("GT5U.MBTT.Speed.Additional");
+    private static final String TT_DynamicSpeed = StatCollector.translateToLocal("GT5U.MBTT.Speed.Absolute");
     private static final String TT_DynamicEuEff = StatCollector.translateToLocal("GT5U.MBTT.EuDiscount.Additional");
     private static final String TT_Steam_StaticSteamEff = StatCollector
         .translateToLocal("GT5U.MBTT.SteamDiscount.Base");
@@ -90,7 +91,6 @@ public class MultiblockTooltipBuilder {
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
     private static final String TT_addedBy = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
-    private static final String TT_StructureComplex = StatCollector.translateToLocal("GT5U.MBTT.Structure.Complex");
     private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
     private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
     private static final String TT_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
@@ -211,12 +211,18 @@ public class MultiblockTooltipBuilder {
      * @param tier  Tiered object that determines bonus
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+    public MultiblockTooltipBuilder addDynamicSpeedBonusInfo(float speed, TooltipTier tier) {
         iLines.add(
             String.format(
-                TT_DynamicSpeed,
+                TT_DynamicSpeedBonus,
                 TooltipHelper.speedText("+" + percentageFormat.format(speed)),
                 tier.getValue()));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addDynamicSpeedInfo(float speed, TooltipTier tier) {
+        iLines.add(
+            String.format(TT_DynamicSpeed, TooltipHelper.speedText(percentageFormat.format(speed)), tier.getValue()));
         return this;
     }
 
@@ -1171,7 +1177,6 @@ public class MultiblockTooltipBuilder {
         }
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
-        sLines.add(EnumChatFormatting.WHITE + TT_StructureComplex);
         sLines.add(
             EnumChatFormatting.WHITE + TT_SeeStructure1
                 + EnumChatFormatting.BLUE
@@ -1184,7 +1189,7 @@ public class MultiblockTooltipBuilder {
         // create the final arrays
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
-        // e.getKey() - 1 because 1 dot is meta 0.
+        // e.getKey() - 1 because 1 hint is meta 0.
         hArray = Stream.concat(
             hLines.stream(),
             hBlocks.asMap()

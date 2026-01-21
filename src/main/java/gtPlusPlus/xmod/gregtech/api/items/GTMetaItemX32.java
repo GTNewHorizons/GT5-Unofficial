@@ -18,8 +18,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 
 /**
  * @author Gregorius Techneticies
@@ -66,8 +64,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
                     this.getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     this.getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / GTValues.M));
-                if (tPrefix.mIsUnificatable) {
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / GTValues.M));
+                if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
@@ -88,8 +86,14 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     @Override
     public short[] getRGBa(final ItemStack aStack) {
+        if (this.getDamage(aStack) < 0 || this.getDamage(aStack) >= 32000) {
+            return Materials._NULL.mRGBa;
+        }
         final Materials tMaterial = GregTechAPI.sGeneratedMaterials[this.getDamage(aStack) % 1000];
-        return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+        if (tMaterial == null) {
+            return Materials._NULL.mRGBa;
+        }
+        return tMaterial.mRGBa;
     }
 
     /**
@@ -123,8 +127,8 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
      */
     public final IIconContainer getIconContainer(final int aMetaData, final Materials aMaterial) {
         return (this.mGeneratedPrefixList[aMetaData / 1000] != null)
-            && (this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0)
-                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+            && (this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex() >= 0)
+                ? aMaterial.mIconSet.mTextures[this.mGeneratedPrefixList[aMetaData / 1000].getTextureIndex()]
                 : null;
     }
 
@@ -159,6 +163,7 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
 
     @Override
     public final IIconContainer getIconContainer(final int aMetaData) {
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
             : this.getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
     }
@@ -206,61 +211,13 @@ public abstract class GTMetaItemX32 extends GTMetaItem {
         final int tDamage = this.getDamage(aStack);
         if ((tDamage < 32000) && (this.mGeneratedPrefixList[tDamage / 1000] != null)) {
             return Math
-                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
+                .min(super.getItemStackLimit(aStack), this.mGeneratedPrefixList[tDamage / 1000].getDefaultStackSize());
         }
         return super.getItemStackLimit(aStack);
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-
-        int aMeta = stack.getItemDamage();
-        if (stack.getDisplayName()
-            .contains("Sodium")) {
-            HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);
-        } else if (stack.getDisplayName()
-            .contains("Cadmium")) {
-                HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 150, 80);
-            } else if (stack.getDisplayName()
-                .contains("Lithium")) {
-                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-                } else if (stack.getDisplayName()
-                    .contains("Wrought")) {
-                        HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-                    } else if (stack.getDisplayName()
-                        .contains("Bronze")) {
-                            HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
-                        } else if (stack.getDisplayName()
-                            .contains("Brass")) {
-                                HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 180, 0);
-                            } else if (stack.getDisplayName()
-                                .contains("Invar")) {
-                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
-                                } else {
-                                    if (aMeta > 50 && aMeta != 150) {
-                                        HEX_OxFFFFFF = 0xffffff;
-                                    } else if (stack.getDisplayName()
-                                        .contains("ULV")) {
-                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
-                                        } else if (stack.getDisplayName()
-                                            .contains("LuV")) {
-                                                HEX_OxFFFFFF = 0xffffcc;
-                                            } else if (stack.getDisplayName()
-                                                .contains("ZPM")) {
-                                                    HEX_OxFFFFFF = 0xffe600;
-                                                } else if (stack.getDisplayName()
-                                                    .contains("UV")) {
-                                                        HEX_OxFFFFFF = 0xffb300;
-                                                    } else if (stack.getDisplayName()
-                                                        .contains("MAX")) {
-                                                            HEX_OxFFFFFF = Utils.rgbtoHexValue(
-                                                                MathUtils.randInt(220, 250),
-                                                                MathUtils.randInt(221, 251),
-                                                                MathUtils.randInt(220, 250));
-                                                        } else {
-                                                            HEX_OxFFFFFF = 0xffffff;
-                                                        }
-                                }
-        return HEX_OxFFFFFF;
+        return 0xFFFFFF;
     }
 }

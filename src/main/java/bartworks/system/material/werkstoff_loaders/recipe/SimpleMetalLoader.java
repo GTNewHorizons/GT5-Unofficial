@@ -26,8 +26,6 @@ import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.latheRecipes;
 
-import net.minecraft.item.ItemStack;
-
 import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
@@ -40,8 +38,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 
 public class SimpleMetalLoader implements IWerkstoffRunnable {
 
@@ -82,10 +78,13 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     .addTo(hammerRecipes);
 
                 TextureSet texSet = werkstoff.getTexSet();
-                ITexture texture = SideReference.Side.Client ? TextureFactory.of(
-                    texSet.mTextures[PrefixTextureLinker.blockTexMap.getOrDefault(texSet, block.mTextureIndex)],
-                    werkstoff.getRGBA(),
-                    false) : TextureFactory.of(texSet.mTextures[block.mTextureIndex], werkstoff.getRGBA(), false);
+                ITexture texture = SideReference.Side.Client
+                    ? TextureFactory.of(
+                        texSet.mTextures[PrefixTextureLinker.blockTexMap
+                            .getOrDefault(texSet, (short) block.getTextureIndex())],
+                        werkstoff.getRGBA(),
+                        false)
+                    : TextureFactory.of(texSet.mTextures[block.getTextureIndex()], werkstoff.getRGBA(), false);
                 CoverRegistry.registerDecorativeCover(werkstoff.get(plate), texture);
 
                 return;
@@ -108,21 +107,17 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "hX", 'X', werkstoff.get(plate) });
 
-            benderRecipes.add(
-                new GTRecipe(
-                    true,
-                    new ItemStack[] { werkstoff.get(ingot), GTUtility.getIntegratedCircuit(1) },
-                    new ItemStack[] { werkstoff.get(plate) },
-                    null,
-                    null,
-                    null,
-                    null,
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot))
+                .circuit(1)
+                .itemOutputs(werkstoff.get(plate))
+                .duration(
                     (int) Math.max(
                         werkstoff.getStats()
                             .getMass(),
-                        1L),
-                    24,
-                    0));
+                        1L))
+                .eut(24)
+                .addTo(benderRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 3))
@@ -152,7 +147,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
             if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(werkstoff.get(plate), GTUtility.getIntegratedCircuit(1))
+                    .itemInputs(werkstoff.get(plate))
+                    .circuit(1)
                     .itemOutputs(werkstoff.get(foil, 4))
                     .duration(
                         (int) Math.max(
@@ -164,7 +160,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
             }
 
             GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(ingot), GTUtility.getIntegratedCircuit(10))
+                .itemInputs(werkstoff.get(ingot))
+                .circuit(10)
                 .itemOutputs(werkstoff.get(foil, 4))
                 .duration(
                     (int) Math.max(

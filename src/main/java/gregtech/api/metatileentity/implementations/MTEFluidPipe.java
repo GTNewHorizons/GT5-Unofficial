@@ -42,6 +42,7 @@ import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
@@ -146,7 +147,17 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     @Override
     public byte getTileEntityBaseType() {
-        return (byte) (mMaterial == null ? 4 : (byte) (4) + Math.max(0, Math.min(3, mMaterial.mToolQuality)));
+        final int level = (mMaterial == null) ? 0 : GTUtility.clamp(mMaterial.mToolQuality, 0, 3);
+
+        HarvestTool tool = switch (level) {
+            case 0 -> HarvestTool.WrenchPipeLevel0;
+            case 1 -> HarvestTool.WrenchPipeLevel1;
+            case 2 -> HarvestTool.WrenchPipeLevel2;
+            case 3 -> HarvestTool.WrenchPipeLevel3;
+            default -> throw new IllegalStateException("Unexpected tool quality level: " + level);
+        };
+
+        return tool.toTileEntityBaseType();
     }
 
     @Override
@@ -180,24 +191,24 @@ public class MTEFluidPipe extends MetaPipeEntity {
 
     protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, TextureSet textureSet, short[] rgba,
         boolean connected, int colorIndex) {
-        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex];
+        IIconContainer texture = textureSet.mTextures[OrePrefixes.pipeHuge.getTextureIndex()];
 
         if (!connected) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
         } else if (aPipeAmount >= 9) {
-            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeNonuple.getTextureIndex()];
         } else if (aPipeAmount >= 4) {
-            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeQuadruple.getTextureIndex()];
         } else if (aThickNess < 0.124F) {
-            texture = textureSet.mTextures[OrePrefixes.pipe.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipe.getTextureIndex()];
         } else if (aThickNess < 0.374F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeTiny.getTextureIndex()];
         } else if (aThickNess < 0.499F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeSmall.getTextureIndex()];
         } else if (aThickNess < 0.749F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeMedium.getTextureIndex()];
         } else if (aThickNess < 0.874F) {
-            texture = textureSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex];
+            texture = textureSet.mTextures[OrePrefixes.pipeLarge.getTextureIndex()];
         }
 
         rgba = Dyes.getModulation(colorIndex, rgba);
@@ -456,7 +467,6 @@ public class MTEFluidPipe extends MetaPipeEntity {
         if (isInputDisabledAtSide(side)) {
             mDisableInput &= ~mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("212", "Input enabled"));
-            if (!isConnectedAtSide(side)) connect(side);
         } else {
             mDisableInput |= mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("213", "Input disabled"));

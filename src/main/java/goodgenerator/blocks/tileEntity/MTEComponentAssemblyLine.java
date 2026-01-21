@@ -135,54 +135,55 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'B',
-            ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
-                IntStream.range(0, 14)
-                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                    .collect(Collectors.toList()),
-                -1,
-                MTEComponentAssemblyLine::setCasingTier,
-                MTEComponentAssemblyLine::getCasingTier))
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING.use(
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -1,
+                    MTEComponentAssemblyLine::setCasingTier,
+                    MTEComponentAssemblyLine::getCasingTier)))
         .addElement(
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'N',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputBus)
-                .dot(1)
+                .hint(1)
                 .casingIndex(183)
                 .buildAndChain(GTStructureUtility.ofFrame(Materials.TungstenSteel)))
         .addElement(
             'K',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(OutputBus)
-                .dot(2)
+                .hint(2)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'L',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Energy, ExoticEnergy)
-                .dot(3)
+                .hint(3)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(Maintenance)
-                .dot(4)
+                .hint(4)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'M',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
                 .atLeast(InputHatch)
-                .dot(5)
+                .hint(5)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement('n', GTStructureUtility.ofFrame(Materials.TungstenSteel))
@@ -239,6 +240,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -348,9 +350,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         inputSeparation = !inputSeparation;
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
     }
 
     @Override
@@ -359,9 +361,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

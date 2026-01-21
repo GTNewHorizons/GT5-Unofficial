@@ -2,9 +2,9 @@ package galacticgreg.api;
 
 import net.minecraft.block.Block;
 
-import org.jetbrains.annotations.Nullable;
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 
-public class SpecialBlockComb extends BlockMetaComb {
+public class SpecialBlockComb extends BlockMeta {
 
     private final Enums.AllowedBlockPosition _mBlockPosition;
 
@@ -51,20 +51,20 @@ public class SpecialBlockComb extends BlockMetaComb {
     }
 
     @Override
-    public boolean equals(@Nullable Object other) {
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof SpecialBlockComb otherObj)) return false;
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((_mBlockPosition == null) ? 0 : _mBlockPosition.hashCode());
+        return result;
+    }
 
-        boolean tFlag = true;
-        String otherName = Block.blockRegistry.getNameForObject(otherObj.getBlock());
-        String thisName = Block.blockRegistry.getNameForObject(this.getBlock());
-        if (!otherName.equals(thisName)) tFlag = false;
-
-        if (!(otherObj.getMeta() == this.getMeta())) tFlag = false;
-
-        if (!(otherObj.getBlockPosition() == this.getBlockPosition())) tFlag = false;
-
-        return tFlag;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
+        SpecialBlockComb other = (SpecialBlockComb) obj;
+        if (_mBlockPosition != other._mBlockPosition) return false;
+        return true;
     }
 }

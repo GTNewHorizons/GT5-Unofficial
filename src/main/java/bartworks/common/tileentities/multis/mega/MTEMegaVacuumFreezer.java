@@ -49,7 +49,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -110,9 +109,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
 
     private static final ArrayList<SubspaceCoolingFluid> SUBSPACE_COOLING_FLUIDS = new ArrayList<>(
         Arrays.asList(
-            new SubspaceCoolingFluid(MaterialsUEVplus.SpaceTime, 1, 7500),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Space, 2, 5000),
-            new SubspaceCoolingFluid(MaterialsUEVplus.Eternity, 3, 2500)));
+            new SubspaceCoolingFluid(Materials.SpaceTime, 1, 75),
+            new SubspaceCoolingFluid(Materials.Space, 2, 50),
+            new SubspaceCoolingFluid(Materials.Eternity, 3, 25)));
 
     private SubspaceCoolingFluid currentCoolingFluid = null;
 
@@ -224,7 +223,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
             buildHatchAdder(MTEMegaVacuumFreezer.class)
                 .atLeast(Energy.or(ExoticEnergy), InputHatch, InputBus, OutputHatch, OutputBus, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(x -> x.mCasingFrostProof++, ofBlock(GregTechAPI.sBlockCasings2, 1))))
         // Infinity Cooled Casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 14))
@@ -253,9 +252,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                     + "consuming "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", "7500", 1))
-            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "5000", 2))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", "2500", 3))
+            .addInfo(getCoolantTextFormatted("Molten Spacetime", "75", 1))
+            .addInfo(getCoolantTextFormatted("Spatially Enlarged Fluid", "50", 2))
+            .addInfo(getCoolantTextFormatted("Molten Eternity", "25", 3))
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.DARK_AQUA + "Reinforcing the structure allows the injection of exotic coolants,")
@@ -368,9 +367,9 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
         if (aPlayer.isSneaking()) {
             this.batchMode = !this.batchMode;
             if (this.batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

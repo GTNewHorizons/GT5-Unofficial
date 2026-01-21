@@ -99,7 +99,6 @@ GT5U.machines.miner=采矿机
 GT5U.machines.powersource.power=功率
 GT5U.machines.powersource.steam=蒸汽
 GT5U.machines.pump=泵
-GT5U.machines.separatebus=输入总线已独立
 GT5U.machines.pumpareaset=工作区域设置为
 GT5U.machines.oilfluidpump=石油/流体钻机
 GT5U.machines.minermulti=采矿场
@@ -301,7 +300,7 @@ GT5U.interface.coverTabs.east=东
 # Waila
 GT5U.waila.machine.working_disabled=工作停止
 GT5U.waila.machine.idle=空闲
-GT5U.waila.machine.in_progress=运行中: %,.1fs / %,.1fs (%,.1f%%)
+GT5U.waila.machine.in_progress=%,.1fs / %,.1fs (%,.1f%%)
 GT5U.waila.machine_facing=机器朝向: %s
 GT5U.waila.output_facing=输出方向: %s
 GT5U.waila.facing=方向: %s
@@ -754,37 +753,6 @@ achievement.gt.blockmachines.wireless.receiver.tier.13=UXV无线能源仓
 achievement.gt.blockmachines.wireless.receiver.tier.13.desc=捡起此物品以在NEI内解锁该合成表
 achievement.gt.blockmachines.wireless.receiver.tier.14=MAX无线能源仓
 achievement.gt.blockmachines.wireless.receiver.tier.14.desc=捡起此物品以在NEI内解锁该合成表
-
-achievement.gt.blockmachines.wireless.transmitter.tier.00=ULV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.00.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.01=LV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.01.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.02=MV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.02.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.03=HV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.03.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.04=EV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.04.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.05=IV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.05.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.06=LuV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.06.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.07=ZPM无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.07.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.08=UV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.08.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.09=UHV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.09.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.10=UEV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.10.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.11=UIV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.11.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.12=UMV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.12.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.13=UXV无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=捡起此物品以在NEI内解锁该合成表
-achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX无线动力仓
-achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=捡起此物品以在NEI内解锁该合成表
 
 achievement.gt.blockmachines.multimachine.em.infuser=能量注入仪
 achievement.gt.blockmachines.multimachine.em.infuser.desc=捡起此物品以在NEI内解锁该合成表
@@ -1303,3 +1271,22 @@ achievement.gt.blockmachines.gtpp.multimachine.flotationcell=工业浮选机
 achievement.gt.blockmachines.gtpp.multimachine.flotationcell.desc=[AL]捡起此物品以在NEI内解锁该合成表
 achievement.gt.blockmachines.gtpp.multimachine.isamill=艾萨研磨机
 achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL]捡起此物品以在NEI内解锁该合成表
+
+# Thaumcraft Aspects
+tc.aspect.custom1=平等,平衡,均衡
+tc.aspect.custom2=疯癫,癫狂,狂热
+tc.aspect.custom3=起始,起源,源头
+tc.aspect.custom4=星辰,星座,天国
+tc.aspect.custom5=荣耀,荣誉,声誉
+
+tc.aspect.custom1.name=平衡
+tc.aspect.custom2.name=癫狂
+tc.aspect.custom3.name=起源
+tc.aspect.custom4.name=星辰
+tc.aspect.custom5.name=荣耀
+
+tc.aspect.help.custom1=平衡的事物
+tc.aspect.help.custom2=扭曲的思想
+tc.aspect.help.custom3=新事物的起始
+tc.aspect.help.custom4=宇宙
+tc.aspect.help.custom5=荣耀

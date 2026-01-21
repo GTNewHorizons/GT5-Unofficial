@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -30,14 +29,14 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         super.setLockedFluidName(
-            MaterialsUEVplus.Antimatter.getFluid(1)
+            Materials.Antimatter.getFluid(1)
                 .getFluid()
                 .getName());
     }
 
     @Override
     public void setLockedFluidName(String lockedFluidName) {
-        this.lockedFluidName = MaterialsUEVplus.Antimatter.getFluid(1)
+        this.lockedFluidName = Materials.Antimatter.getFluid(1)
             .getFluid()
             .getName();
         markDirty();
@@ -69,7 +68,10 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         mMode ^= 1;
-        GTUtility.sendChatToPlayer(aPlayer, "Front face input " + (mMode == 1 ? "enabled" : "disabled"));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            mMode == 1 ? "gg.chat.antimatter_output_hatch.front_face_input.enable"
+                : "gg.chat.antimatter_output_hatch.front_face_input.disable");
     }
 
     @Override
@@ -85,6 +87,6 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     @Override
     protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == MaterialsUEVplus.Antimatter.mFluid);
+        return super.createFluidSlot().setFilter(f -> f == Materials.Antimatter.mFluid);
     }
 }

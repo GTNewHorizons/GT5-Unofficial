@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 
+import org.jetbrains.annotations.NotNull;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +23,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -42,7 +43,7 @@ public class BlockBaseModular extends BasicBlock {
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType) {
-        this(material, blockType, material.getRgbAsHex());
+        this(material, blockType, material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex());
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType, final int colour) {
@@ -94,28 +95,32 @@ public class BlockBaseModular extends BasicBlock {
 
     public void registerComponent() {
         Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
+
         if (this.blockMaterial == null) {
             Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return;
         }
-        String aName = blockMaterial.getUnlocalizedName();
+
+        final String name = blockMaterial.getUnlocalizedName();
+
         // Register Component
-        Map<String, ItemStack> aMap = Material.mComponentMap.get(aName);
-        if (aMap == null) {
-            aMap = new HashMap<>();
-        }
-        int fx = getBlockTypeMeta();
-        String aKey = (fx == 0 ? OrePrefixes.block.name()
-            : (fx == 1 ? OrePrefixes.frameGt.name() : OrePrefixes.ore.name()));
-        ItemStack x = aMap.get(aKey);
-        if (x == null) {
-            aMap.put(aKey, new ItemStack(this));
-            Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
-            Material.mComponentMap.put(aName, aMap);
-        } else {
-            // Bad
+        final Map<String, ItemStack> map = Material.mComponentMap.computeIfAbsent(name, x -> new HashMap<>());
+
+        final String key = getKey(getBlockTypeMeta());
+
+        if (map.containsKey(key)) {
             Logger.MATERIALS("Tried to double register a material component.");
+            return;
         }
+
+        Logger.MATERIALS("Registering a material component. Item: [" + name + "] Map: [" + key + "]");
+        map.put(key, new ItemStack(this));
+    }
+
+    private static @NotNull String getKey(int fx) {
+        if (fx == 0) return OrePrefixes.block.getName();
+        if (fx == 1) return OrePrefixes.frameGt.getName();
+        return OrePrefixes.ore.getName();
     }
 
     public int getBlockTypeMeta() {
@@ -194,8 +199,7 @@ public class BlockBaseModular extends BasicBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        if (!Configuration.visual.useGregtechTextures || this.blockMaterial == null
-            || this.thisBlock == BlockTypes.ORE) {
+        if (this.blockMaterial == null || this.thisBlock == BlockTypes.ORE) {
             this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";

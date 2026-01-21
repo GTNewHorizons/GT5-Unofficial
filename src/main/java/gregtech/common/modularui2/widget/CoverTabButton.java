@@ -15,7 +15,8 @@ import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
+import com.cleanroommc.modularui.theme.WidgetThemeKey;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -38,7 +39,11 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
             .onMousePressed(mouseButton -> {
                 if (coverable.getCoverAtSide(side)
                     .hasCoverGUI()) {
-                    panel.openPanel();
+                    if (panel.isPanelOpen()) {
+                        panel.closePanel();
+                    } else {
+                        panel.openPanel();
+                    }
                 }
                 return true;
             })
@@ -74,9 +79,9 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
     }
 
     @Override
-    public WidgetTheme getWidgetThemeInternal(ITheme theme) {
+    public WidgetThemeEntry<?> getWidgetThemeInternal(ITheme theme) {
         Cover cover = coverable.getCoverAtSide(side);
-        String widgetThemeId = cover.hasCoverGUI() ? GTWidgetThemes.BUTTON_COVER_TAB_ENABLED
+        WidgetThemeKey<?> widgetThemeId = cover.hasCoverGUI() ? GTWidgetThemes.BUTTON_COVER_TAB_ENABLED
             : GTWidgetThemes.BUTTON_COVER_TAB_DISABLED;
         return theme.getWidgetTheme(widgetThemeId);
     }

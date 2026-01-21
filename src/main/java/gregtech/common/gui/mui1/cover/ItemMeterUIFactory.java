@@ -79,7 +79,7 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                     .addFollower(
                         new CoverDataFollowerNumericWidget<>(),
                         coverData -> (double) coverData.getThreshold(),
-                        (coverData, state) -> coverData.setThresdhold(state.intValue()),
+                        (coverData, state) -> coverData.setThreshold(state.intValue()),
                         widget -> widget.setBounds(0, maxThreshold)
                             .setScrollValues(1, 64, 1000)
                             .setFocusOnGuiOpen(true)
@@ -110,7 +110,7 @@ public class ItemMeterUIFactory extends CoverUIFactory<CoverItemMeter> {
                 new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.DetectSlot"))
                     .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.ItemTHR"))
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.Item_Meter.ItemThreshold"))
                     .setPos(startX + spaceX * 4 + 9, 4 + startY + spaceY));
     }
 

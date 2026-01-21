@@ -63,7 +63,7 @@ public class BehaviourWrench extends BehaviourNone {
 
         try {
             return handler.handle() && !aWorld.isRemote;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error wrenching", e);
         }
         return false;
@@ -230,7 +230,8 @@ public class BehaviourWrench extends BehaviourNone {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
                 if (operation.getAsBoolean()) {
                     item.doDamage(stack, damage);
-                    GTUtility.sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x, y, z);
+                    GTUtility
+                        .sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x + .5, y + .5, z + .5);
                     return true;
                 }
             }

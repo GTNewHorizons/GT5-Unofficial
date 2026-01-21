@@ -7,9 +7,11 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -100,32 +102,23 @@ public class MTETypeFilter extends MTESpecialFilter {
         }
     }
 
-    private void cyclePrefix(boolean aRightClick) {
-        final OrePrefixes[] ORE_VALUES = OrePrefixes.values();
-        for (int i = 0; i < ORE_VALUES.length; i++) {
-            if (this.mPrefix == ORE_VALUES[i]) {
-                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = ORE_VALUES[i]) {
-                    if (aRightClick) {
-                        do {
-                            i--;
-                            if (i < 0) {
-                                i = ORE_VALUES.length - 1;
-                            }
-                        } while (ORE_VALUES[i].mPrefixedItems.isEmpty());
-                    } else {
-                        do {
-                            i++;
-                            if (i >= ORE_VALUES.length) {
-                                i = 0;
-                            }
-                        } while (ORE_VALUES[i].mPrefixedItems.isEmpty());
-                    }
-                    if (!ORE_VALUES[i].mPrefixedItems.isEmpty() && ORE_VALUES[i].mPrefixInto == ORE_VALUES[i])
-                        mPrefix = ORE_VALUES[i];
-                }
-            }
-            this.mRotationIndex = -1;
-        }
+    private void cyclePrefix(boolean rightClick) {
+        mRotationIndex = -1;
+
+        final int start = IntStream.range(0, OrePrefixes.VALUES.length)
+            .filter(i -> mPrefix == OrePrefixes.VALUES[i])
+            .findFirst()
+            .orElse(0);
+
+        // spotless:off
+        mPrefix = IntStream.range(1, OrePrefixes.VALUES.length)
+            .map(offset -> start + (rightClick ? -offset : offset))                        // search up/down from start
+            .map(index -> (index + OrePrefixes.VALUES.length) % OrePrefixes.VALUES.length) // wrap around
+            .mapToObj(index -> OrePrefixes.VALUES[index])                                  // map to prefix
+            .filter(prefix -> !prefix.mPrefixedItems.isEmpty())                            // only prefixes with items
+            .findFirst()
+            .orElse(mPrefix);                                                              // fallback to current prefix
+        // spotless:on
     }
 
     @Override
@@ -180,9 +173,15 @@ public class MTETypeFilter extends MTESpecialFilter {
     protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
         return (itemTooltip) -> {
             List<String> replacementTooltip = new ArrayList<>();
-            replacementTooltip.add("Filter set to " + mPrefix.mRegularLocalName);
-            replacementTooltip.add("Ore prefix: §e" + mPrefix + "§r");
-            replacementTooltip.add("Filter size: §e" + mPrefix.mPrefixedItems.size() + "§r");
+            replacementTooltip.add(
+                StatCollector
+                    .translateToLocalFormatted("GT5U.tooltip.typefilter.set_to", mPrefix.getDefaultLocalName()));
+            replacementTooltip.add(
+                StatCollector.translateToLocalFormatted("GT5U.tooltip.typefilter.ore_prefix", "§e" + mPrefix + "§r"));
+            replacementTooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.tooltip.typefilter.size",
+                    "§e" + mPrefix.mPrefixedItems.size() + "§r"));
             replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
             return replacementTooltip;
         };

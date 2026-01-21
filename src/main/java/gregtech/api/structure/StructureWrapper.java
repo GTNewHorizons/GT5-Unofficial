@@ -74,7 +74,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             analyzeMaxDefinition();
 
             structureDefinition = provider.compile(definitionText);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             GTMod.GT_FML_LOGGER.error("Could not compile structure", t);
         }
     }
@@ -335,7 +335,7 @@ public class StructureWrapper<MTE extends MTEMultiBlockBase & IAlignment & IStru
             element = HatchElementBuilder.<MTE>builder()
                 .atLeast(hatches)
                 .casingIndex(casing.casing.getTextureId())
-                .dot(casing.dot)
+                .hint(casing.dot)
                 .buildAndChain(element);
         } else {
             element = casing.casing.asElement(casing);

@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
@@ -16,11 +15,8 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ForgeHammerRecipes implements Runnable {
 
@@ -139,18 +135,10 @@ public class ForgeHammerRecipes implements Runnable {
             .eut(16)
             .addTo(hammerRecipes);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
-            .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(20 * INGOTS))
-            .fluidOutputs(MaterialsUEVplus.Space.getMolten(10 * INGOTS), MaterialsUEVplus.Time.getMolten(10 * INGOTS))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UXV)
-            .addTo(hammerRecipes);
-
         if (HardcoreEnderExpansion.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Endium, 1))
                 .duration(16)
                 .eut(10)
                 .addTo(hammerRecipes);

@@ -44,7 +44,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
-import gregtech.common.covers.gui.CoverGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.CoverUIFactory;
 import gregtech.common.text.ClientTickRateFormatter;
 import io.netty.buffer.ByteBuf;
@@ -294,7 +294,7 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      */
     @Override
     public final ModularPanel buildUI(CoverGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        return getCoverGui().createStandalonePanel(syncManager, uiSettings);
+        return getCoverGui().createStandalonePanel(syncManager, uiSettings, guiData);
     }
 
     /**
@@ -304,17 +304,18 @@ public class Cover implements IGuiHolder<CoverGuiData> {
      * @param syncManager sync handler where widget sync handlers should be registered
      * @return UI panel to show
      */
-    public final ModularPanel buildPopUpUI(String panelName, PanelSyncManager syncManager, UISettings uiSettings) {
-        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings);
+    public final ModularPanel buildPopUpUI(CoverGuiData guiData, String panelName, PanelSyncManager syncManager,
+        UISettings uiSettings) {
+        return getCoverGui().createBasePanel(panelName, syncManager, uiSettings, guiData);
     }
 
     /**
      * Override this method to provide a different GUI implementation for your cover in MUI2.
      *
-     * @return The variant of CoverGui that can build a GUI for this cover
+     * @return The variant of CoverBaseGui that can build a GUI for this cover
      */
-    protected @NotNull CoverGui<?> getCoverGui() {
-        return new CoverGui<>(this);
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverBaseGui<>(this);
     }
 
     // endregion

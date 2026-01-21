@@ -79,14 +79,26 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
         try {
             updateEntityProfiled();
-        } catch (Throwable e) {
-            e.printStackTrace();
-            e.printStackTrace(GTLog.err);
+        } catch (Exception e) {
+            GT_FML_LOGGER.error(
+                "Error ticking meta tile entity {} at ({}, {}, {}) in world {}",
+                getMetaTileID(),
+                xCoord,
+                yCoord,
+                zCoord,
+                worldObj.provider.dimensionId,
+                e);
             try {
                 onTickFail();
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-                ex.printStackTrace(GTLog.err);
+            } catch (Exception ex) {
+                GT_FML_LOGGER.error(
+                    "Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}",
+                    getMetaTileID(),
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    e);
             }
         }
 
@@ -134,12 +146,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
                     GTMod.logStackTrace(e);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
             GTMod.logStackTrace(e);
         }
@@ -164,7 +176,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
             try {
                 getMetaTileEntity().loadNBTData(aNBT);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while loading MetaTileEntity.");
                 GTMod.logStackTrace(e);
             }
@@ -172,7 +184,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     protected void sendSoundToPlayers(SoundResource sound, float soundStrength, int soundModulation) {
-        GTUtility.sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord, yCoord, zCoord);
+        GTUtility
+            .sendSoundToPlayers(worldObj, sound, soundStrength, soundModulation, xCoord + .5, yCoord + .5, zCoord + .5);
     }
 
     /**

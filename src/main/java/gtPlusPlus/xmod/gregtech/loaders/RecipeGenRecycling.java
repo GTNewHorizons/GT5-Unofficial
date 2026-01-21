@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.util.ArrayList;
@@ -51,8 +52,9 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static void generateRecipes(final Material material) {
+        if (material == null) return;
 
-        if (material != null) Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
+        Logger.WARNING("Generating Recycling recipes for " + material.getLocalizedName());
 
         final OrePrefixes[] mValidPrefixesAsString = { OrePrefixes.ingot, OrePrefixes.ingotHot, OrePrefixes.nugget,
             OrePrefixes.plate, OrePrefixes.plateDense, OrePrefixes.plateDouble, OrePrefixes.plateTriple,
@@ -62,14 +64,15 @@ public class RecipeGenRecycling implements Runnable {
             OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
             OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
             OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
-            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, };
+            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny,
+            OrePrefixes.dust, };
 
         int mSlotIndex = 0;
         Pair<OrePrefixes, ItemStack>[] mValidPairs = new Pair[mValidPrefixesAsString.length];
 
         for (int r = 0; r < mValidPairs.length; r++) {
             ItemStack temp = getItemStackOfAmountFromOreDictNoBroken(
-                mValidPrefixesAsString[r].name() + StringUtils.sanitizeString(material.getLocalizedName()),
+                mValidPrefixesAsString[r].getName() + StringUtils.sanitizeString(material.getLocalizedName()),
                 1);
             if (temp != null) {
                 mValidPairs[mSlotIndex++] = Pair.of(mValidPrefixesAsString[r], temp.copy());
@@ -101,23 +104,26 @@ public class RecipeGenRecycling implements Runnable {
         }
 
         for (final Pair<OrePrefixes, ItemStack> validPrefix : mValidPairs) {
-            if (material == null || validPrefix == null
-                || (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID)
-                || validPrefix.getKey() == OrePrefixes.ingotHot) {
-                continue;
-            }
+            if (validPrefix == null) continue;
+
+            final OrePrefixes orePrefix = validPrefix.getKey();
+
+            if (material.getState() != MaterialState.SOLID && material.getState() != MaterialState.LIQUID) continue;
+            if (orePrefix == OrePrefixes.ingotHot) continue;
 
             final ItemStack tempStack = validPrefix.getValue();
-            final ItemStack mDust = getDust(material, validPrefix.getKey());
+            final boolean isDustInput = orePrefix == OrePrefixes.dust;
+            final ItemStack mDust = isDustInput ? null : getDust(material, orePrefix);
 
             // Maceration
-            if (tempStack != null && mDust != null) {
+            if (!isDustInput && tempStack != null && mDust != null) {
                 RA.stdBuilder()
                     .itemInputs(tempStack)
                     .itemOutputs(mDust)
                     .eut(2)
                     .duration(20 * SECONDS)
                     .addTo(maceratorRecipes);
+
                 Logger.WARNING(
                     "Recycle Recipe: " + material.getLocalizedName()
                         + " - Success - Recycle "
@@ -127,39 +133,44 @@ public class RecipeGenRecycling implements Runnable {
             }
 
             // Fluid Extractor
-            if (tempStack != null) {
-                int aFluidAmount = (int) ((144 * validPrefix.getKey().mMaterialAmount) / (M * tempStack.stackSize));
-                int aDuration = (int) Math.max(1, (24 * validPrefix.getKey().mMaterialAmount) / M);
-                FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
-                if (fluidOutput != null) {
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(tempStack)
-                        .fluidOutputs(fluidOutput)
-                        .duration(aDuration)
-                        .eut(material.vVoltageMultiplier)
-                        .addTo(fluidExtractionRecipes);
-
-                    Logger.WARNING(
-                        "Fluid Recycle Recipe: " + material.getLocalizedName()
-                            + " - Success - Recycle "
-                            + tempStack.getDisplayName()
-                            + " and obtain "
-                            + aFluidAmount
-                            + "mb of "
-                            + material.getFluidStack(1)
-                                .getLocalizedName()
-                            + ". Time: "
-                            + aDuration
-                            + ", Voltage: "
-                            + material.vVoltageMultiplier);
-                }
+            if (tempStack == null) continue;
+            if (isDustInput && material.requiresBlastFurnace()) {
+                continue;
             }
+
+            final long materialAmount = orePrefix.getMaterialAmount();
+            final int aFluidAmount = (int) ((materialAmount * INGOTS) / (M * tempStack.stackSize));
+            final int aDuration = (int) Math.max(1, (24 * materialAmount) / M);
+            final FluidStack fluidOutput = material.getFluidStack(aFluidAmount);
+
+            if (fluidOutput == null) continue;
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(tempStack)
+                .fluidOutputs(fluidOutput)
+                .duration(aDuration)
+                .eut(material.vVoltageMultiplier)
+                .addTo(fluidExtractionRecipes);
+
+            Logger.WARNING(
+                "Fluid Recycle Recipe: " + material.getLocalizedName()
+                    + " - Success - Recycle "
+                    + tempStack.getDisplayName()
+                    + " and obtain "
+                    + aFluidAmount
+                    + "mb of "
+                    + material.getFluidStack(1)
+                        .getLocalizedName()
+                    + ". Time: "
+                    + aDuration
+                    + ", Voltage: "
+                    + material.vVoltageMultiplier);
         }
 
     }
 
     public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final OrePrefixes aPrefix) {
-        return getDustData(aMaterial, aPrefix.mMaterialAmount);
+        return getDustData(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static Pair<OrePrefixes, ItemStack> getDustData(final Material aMaterial, final long aMaterialAmount) {
@@ -194,7 +205,7 @@ public class RecipeGenRecycling implements Runnable {
     }
 
     public static ItemStack getDust(final Material aMaterial, final OrePrefixes aPrefix) {
-        return aMaterial == null ? null : getDust(aMaterial, aPrefix.mMaterialAmount);
+        return aMaterial == null ? null : getDust(aMaterial, aPrefix.getMaterialAmount());
     }
 
     public static ItemStack getDust(final Material aMaterial, final long aMaterialAmount) {
@@ -232,7 +243,7 @@ public class RecipeGenRecycling implements Runnable {
     public static ItemStack get(final OrePrefixes aPrefix, final Material aMaterial, final ItemStack aReplacement,
         final long aAmount) {
         return get(
-            aPrefix.name() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
+            aPrefix.getName() + StringUtils.sanitizeString(aMaterial.getLocalizedName()),
             aReplacement,
             aAmount,
             false,

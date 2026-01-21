@@ -89,9 +89,9 @@ public class ItemPropolis extends Item {
         tPropolis = getStackForType(PropolisType.Stardust);
         addProcessHV(tPropolis, GTModHandler.getModItem(HardcoreEnderExpansion.ID, "stardust", 1, 0));
         tPropolis = getStackForType(PropolisType.Ectoplasma);
-        addProcessEV(tPropolis, GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EctoplasmaChip", 1, 0));
+        addProcessEV(tPropolis, GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EctoplasmaChip", 1, 0));
         tPropolis = getStackForType(PropolisType.Arcaneshard);
-        addProcessEV(tPropolis, GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArcaneShardChip", 1, 0));
+        addProcessEV(tPropolis, GTModHandler.getModItem(NewHorizonsCoreMod.ID, "ArcaneShardChip", 1, 0));
         tPropolis = getStackForType(PropolisType.Dragonessence);
         addProcessIV(tPropolis, GTModHandler.getModItem(HardcoreEnderExpansion.ID, "essence", 16, 0));
         tPropolis = getStackForType(PropolisType.Enderman);
@@ -99,7 +99,7 @@ public class ItemPropolis extends Item {
         tPropolis = getStackForType(PropolisType.Silverfish);
         addProcessEV(tPropolis, GTModHandler.getModItem(HardcoreEnderExpansion.ID, "silverfish_blood", 1, 0));
         tPropolis = getStackForType(PropolisType.Endium);
-        addProcessHV(tPropolis, GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.HeeEndium, 1));
+        addProcessHV(tPropolis, GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Endium, 1));
         tPropolis = getStackForType(PropolisType.Fireessence);
         addProcessIV(tPropolis, GTModHandler.getModItem(HardcoreEnderExpansion.ID, "essence", 16, 1));
 

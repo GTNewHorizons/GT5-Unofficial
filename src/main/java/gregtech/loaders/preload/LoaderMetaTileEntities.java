@@ -41,13 +41,10 @@ import static gregtech.api.recipe.RecipeMaps.plasmaArcFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.polarizerRecipes;
 import static gregtech.api.recipe.RecipeMaps.recyclerRecipes;
 import static gregtech.api.recipe.RecipeMaps.sifterRecipes;
-import static gregtech.api.recipe.RecipeMaps.slicerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -57,11 +54,15 @@ import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.metatileentity.implementations.MTEHatchBulkCatalystHousing;
+import gregtech.api.metatileentity.implementations.MTEHatchCokeOven;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
+import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
@@ -74,7 +75,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
-import gregtech.api.metatileentity.implementations.MTEWirelessDynamo;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
@@ -139,6 +139,7 @@ import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
+import gregtech.common.tileentities.machines.multi.MTECokeOven;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller1;
 import gregtech.common.tileentities.machines.multi.MTEConcreteBackfiller2;
 import gregtech.common.tileentities.machines.multi.MTEDecayWarehouse;
@@ -147,6 +148,7 @@ import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
@@ -168,11 +170,12 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
+import gregtech.common.tileentities.machines.multi.MTELatex;
+import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
 import gregtech.common.tileentities.machines.multi.MTEMultiLathe;
-import gregtech.common.tileentities.machines.multi.MTEMultiSolidifier;
 import gregtech.common.tileentities.machines.multi.MTENanoForge;
 import gregtech.common.tileentities.machines.multi.MTEOilCracker;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
@@ -184,7 +187,6 @@ import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant1;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant2;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant3;
 import gregtech.common.tileentities.machines.multi.MTEOreDrillingPlant4;
-import gregtech.common.tileentities.machines.multi.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
@@ -200,6 +202,10 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
+import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchDegasifierControl;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensHousing;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchLensIndicator;
@@ -225,6 +231,7 @@ import gregtech.common.tileentities.machines.steam.MTESteamFurnaceBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamFurnaceSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamMaceratorSteel;
+import gregtech.common.tileentities.storage.MTEDebugTank;
 import gregtech.common.tileentities.storage.MTELocker;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gregtech.common.tileentities.storage.MTEQuantumTank;
@@ -264,6 +271,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         + " to use this.";
 
     private static void registerMultiblockControllers() {
+        ItemList.CokeOvenController
+            .set(new MTECokeOven(COKE_OVEN_CONTROLLER.ID, "multimachine.cokeoven", "Coke Oven").getStackForm(1L));
+
         ItemList.Machine_Bricked_BlastFurnace.set(
             new MTEBrickedBlastFurnace(
                 BRICKED_BLAST_FURNACE_CONTROLLER.ID,
@@ -489,6 +499,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1));
         ItemList.PCBFactory.set(
             new MTEPCBFactory(PCB_FACTORY_CONTROLLER.ID, "multimachine.pcbfactory", "PCB Factory").getStackForm(1));
+        ItemList.PCBBioChamber.set(
+            new MTEPCBBioChamber(PCB_BIO_CHAMBER_CONTROLLER.ID, "multimachine.pcbbiochamber", "Bio Chamber")
+                .getStackForm(1));
+        ItemList.PCBCoolingTower.set(
+            new MTEPCBCoolingTower(PCB_COOLING_TOWER_CONTROLLER.ID, "multimachine.pcbcoolingtower", "Cooling Tower")
+                .getStackForm(1));
         ItemList.NanoForge
             .set(new MTENanoForge(NANO_FORGE_CONTROLLER.ID, "multimachine.nanoforge", "Nano Forge").getStackForm(1));
         ItemList.Machine_Multi_DroneCentre
@@ -503,9 +519,23 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Canner
             .set(new MTEMultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro").getStackForm(1));
 
-        ItemList.Machine_Multi_Solidifier.set(
-            new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
+        ItemList.Machine_Fluid_Shaper.set(
+            new MTEFluidShaper(MULTI_FLUID_SHAPER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
+        ItemList.Machine_Mass_Solidifier.set(
+            new MTEMassSolidifier(
+                MULTI_MASS_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.mass_solidifier",
+                "Mass Solidifier").getStackForm(1));
+        ItemList.Machine_Multi_ExoFoundry.set(
+            new MTEExoFoundry(MultiExoFoundryController.ID, "multimachine.exofoundry", "Exo-Foundry").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_ExoFoundry.get(1),
+            chain(
+                GTValues.AUTHORS_SUPPLIER,
+                GTValues.fancyAuthorChrom,
+                GTValues.AND_SUPPLIER,
+                GTValues.AuthorAuynonymous));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -561,11 +591,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_ChamberCentrifuge.get(1),
-            chain(
-                () -> "Authors: ",
-                GTValues.fancyAuthorChrom,
-                () -> EnumChatFormatting.GRAY + " & ",
-                GTValues.AuthorNoc));
+            chain(GTValues.AUTHORS_SUPPLIER, GTValues.fancyAuthorChrom, GTValues.AND_SUPPLIER, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
@@ -582,6 +608,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
                 .getStackForm(1));
+
+        ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
+        addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
@@ -6341,7 +6370,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.macerator.tier.03",
                 "Universal Macerator",
                 3,
-                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                MachineType.MACERATOR.tooltipDescription(),
                 RecipeMaps.maceratorRecipes,
                 1,
                 2,
@@ -6356,7 +6385,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.macerator.tier.04",
                 "Universal Pulverizer",
                 4,
-                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                MachineType.MACERATOR.tooltipDescription(),
                 RecipeMaps.maceratorRecipes,
                 1,
                 3,
@@ -6371,7 +6400,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "basicmachine.macerator.tier.05",
                 "Blend-O-Matic 9001",
                 5,
-                MachineType.MACERATOR_PULVERIZER.tooltipDescription(),
+                MachineType.MACERATOR.tooltipDescription(),
                 RecipeMaps.maceratorRecipes,
                 1,
                 4,
@@ -7649,219 +7678,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     }
 
-    @Deprecated
-    private void registerSlicingMachine() {
-        ItemList.Machine_LV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_LV.ID,
-                "basicmachine.slicer.tier.01",
-                "Basic Slicing Machine",
-                1,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_MV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_MV.ID,
-                "basicmachine.slicer.tier.02",
-                "Advanced Slicing Machine",
-                2,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_HV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_HV.ID,
-                "basicmachine.slicer.tier.03",
-                "Advanced Slicing Machine II",
-                3,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_EV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_EV.ID,
-                "basicmachine.slicer.tier.04",
-                "Advanced Slicing Machine III",
-                4,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.Machine_IV_Slicer.set(
-            new MTEBasicMachineWithRecipe(
-                SLICER_IV.ID,
-                "basicmachine.slicer.tier.05",
-                "Advanced Slicing Machine IV",
-                5,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                RecipeMaps.slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineLuV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_LuV.ID,
-                "basicmachine.slicer.tier.06",
-                "Elite Slicing Machine",
-                6,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineZPM.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_ZPM.ID,
-                "basicmachine.slicer.tier.07",
-                "Elite Slicing Machine II",
-                7,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UV.ID,
-                "basicmachine.slicer.tier.08",
-                "Ultimate Quantum Slicer",
-                8,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUHV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UHV.ID,
-                "basicmachine.slicer.tier.09",
-                "Epic Quantum Slicer",
-                9,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUEV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UEV.ID,
-                "basicmachine.slicer.tier.10",
-                "Epic Quantum Slicer II",
-                10,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUIV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UIV.ID,
-                "basicmachine.slicer.tier.11",
-                "Epic Quantum Slicer III",
-                11,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-        ItemList.SlicingMachineUMV.set(
-            new MTEBasicMachineWithRecipe(
-                SLICING_MACHINE_UMV.ID,
-                "basicmachine.slicer.tier.12",
-                "Epic Quantum Slicer IV",
-                12,
-                ArrayUtils.add(
-                    MachineType.SLICER.tooltipDescription(),
-                    EnumChatFormatting.YELLOW + "DEPRECATED! Will be removed in next major update"),
-
-                slicerRecipes,
-                2,
-                1,
-                false,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "SLICER").getStackForm(1L));
-
-    }
-
     private void registerThermalCentrifuge() {
         ItemList.Machine_LV_ThermalCentrifuge.set(
             new MTEBasicMachineWithRecipe(
@@ -9023,6 +8839,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Hatch_Energy_UXV.set(
             new MTEHatchEnergy(ENERGY_HATCH_UXV.ID, "hatch.energy.tier.13", "UXV Energy Hatch", 13).getStackForm(1L));
+
+        ItemList.DebugEnergyHatch.set(
+            new MTEHatchEnergyDebug(ENERGY_HATCH_DEBUG.ID, "hatch.energy.debug", "Debug Energy Hatch", 14)
+                .getStackForm(1L));
     }
 
     private static void registerInputHatch() {
@@ -9056,6 +8876,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInput(INPUT_HATCH_UXV.ID, "hatch.input.tier.13", "Input Hatch (UXV)", 13).getStackForm(1L));
         ItemList.Hatch_Input_MAX.set(
             new MTEHatchInput(INPUT_HATCH_MAX.ID, "hatch.input.tier.14", "Input Hatch (MAX)", 14).getStackForm(1L));
+        ItemList.Hatch_Input_Debug.set(
+            new MTEHatchInputDebug(INPUT_HATCH_DEBUG.ID, "hatch.input.debug", "Debug Input Hatch", 14)
+                .getStackForm(1L));
     }
 
     private static void registerQuadrupleInputHatch() {
@@ -9180,6 +9003,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchVoidBus(VOID_BUS.ID, "hatch.void_bus.tier.00", "Void Bus").getStackForm(1L));
     }
 
+    private static void registerCokeOvenHatch() {
+        ItemList.CokeOvenHatch
+            .set(new MTEHatchCokeOven(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
+    }
+
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
@@ -9191,6 +9019,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEQuantumTank(QUANTUM_TANK_EV.ID, "quantum.tank.tier.09", "Quantum Tank IV", 9).getStackForm(1L));
         ItemList.Quantum_Tank_IV
             .set(new MTEQuantumTank(QUANTUM_TANK_IV.ID, "quantum.tank.tier.10", "Quantum Tank V", 10).getStackForm(1L));
+        ItemList.Debug_Fluid_Tank
+            .set(new MTEDebugTank(DEBUG_FLUID_TANK.ID, "quantum.tank.debug", "Debug Fluid Tank", 10).getStackForm(1L));
     }
 
     private static void registerQuantumChest() {
@@ -9315,6 +9145,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEHatchInputBus(INPUT_BUS_UV.ID, "hatch.input_bus.tier.08", "Input Bus (UV)", 8).getStackForm(1L));
         ItemList.Hatch_Input_Bus_MAX.set(
             new MTEHatchInputBus(INPUT_BUS_UHV.ID, "hatch.input_bus.tier.09", "Input Bus (UHV)", 9).getStackForm(1L));
+
+        ItemList.Hatch_Input_Bus_Debug.set(
+            new MTEHatchInputBusDebug(INPUT_BUS_DEBUG.ID, "hatch.input_bus.debug", "Debug Input Bus", 9)
+                .getStackForm(1l));
     }
 
     private static void registerOutputBus() {
@@ -10569,99 +10403,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 14).getStackForm(1L));
     }
 
-    private static void registerWirelessDynamoHatch() {
-        ItemList.Wireless_Dynamo_Energy_ULV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_ULV.ID,
-                "hatch.wireless.transmitter.tier.00",
-                "ULV Wireless Energy Dynamo",
-                0).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_LV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_LV.ID,
-                "hatch.wireless.transmitter.tier.01",
-                "LV Wireless Energy Dynamo",
-                1).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_MV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_MV.ID,
-                "hatch.wireless.transmitter.tier.02",
-                "MV Wireless Energy Dynamo",
-                2).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_HV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_HV.ID,
-                "hatch.wireless.transmitter.tier.03",
-                "HV Wireless Energy Dynamo",
-                3).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_EV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_EV.ID,
-                "hatch.wireless.transmitter.tier.04",
-                "EV Wireless Energy Dynamo",
-                4).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_IV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_IV.ID,
-                "hatch.wireless.transmitter.tier.05",
-                "IV Wireless Energy Dynamo",
-                5).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_LuV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_LuV.ID,
-                "hatch.wireless.transmitter.tier.06",
-                "LuV Wireless Energy Dynamo",
-                6).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_ZPM.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_ZPM.ID,
-                "hatch.wireless.transmitter.tier.07",
-                "ZPM Wireless Energy Dynamo",
-                7).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UV.ID,
-                "hatch.wireless.transmitter.tier.08",
-                "UV Wireless Energy Dynamo",
-                8).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UHV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UHV.ID,
-                "hatch.wireless.transmitter.tier.09",
-                "UHV Wireless Energy Dynamo",
-                9).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UEV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UEV.ID,
-                "hatch.wireless.transmitter.tier.10",
-                "UEV Wireless Energy Dynamo",
-                10).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UIV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UIV.ID,
-                "hatch.wireless.transmitter.tier.11",
-                "UIV Wireless Energy Dynamo",
-                11).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UMV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UMV.ID,
-                "hatch.wireless.transmitter.tier.12",
-                "UMV Wireless Energy Dynamo",
-                12).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_UXV.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_UXV.ID,
-                "hatch.wireless.transmitter.tier.13",
-                "UXV Wireless Energy Dynamo",
-                13).getStackForm(1L));
-        ItemList.Wireless_Dynamo_Energy_MAX.set(
-            new MTEWirelessDynamo(
-                WIRELESS_DYNAMO_ENERGY_HATCH_MAX.ID,
-                "hatch.wireless.transmitter.tier.14",
-                "MAX Wireless Energy Dynamo",
-                14).getStackForm(1L));
-    }
-
     private static void registerLightningRods() {
         ItemList.Machine_HV_LightningRod.set(
             new MTELightningRod(LIGHTNING_ROD_HV.ID, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
@@ -10914,6 +10655,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerInputBus();
         registerOutputBus();
         registerVoidBus();
+        registerCokeOvenHatch();
         registerMufflerHatch();
         registerBoiler();
         registerBatteryBuffer1x1();
@@ -10922,7 +10664,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerBatteryBuffer4x4();
         registerCharger4x4();
         registerWirelessEnergyHatch();
-        registerWirelessDynamoHatch();
         registerSteamMachines();
         registerHPSteamMachines();
         registerLocker();
@@ -10991,7 +10732,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPolarizer();
         registerRecycler();
         registerSiftingMachine();
-        registerSlicingMachine();
         registerThermalCentrifuge();
         registerWiremill();
         registerArcFurnace();
@@ -11072,4 +10812,5 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "largemolecularassembler",
                 "Large Molecular Assembler").getStackForm(1));
     }
+
 }

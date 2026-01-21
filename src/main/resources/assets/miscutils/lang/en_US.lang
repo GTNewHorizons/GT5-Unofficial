@@ -97,6 +97,8 @@ gtpp.recipe.multidehydrator=Multiblock Dehydrator
 gtpp.recipe.semifluidgeneratorfuels=Semifluid Generator Fuels
 gtpp.recipe.flotationcell=Flotation Cell
 gtpp.recipe.treefarm=Tree Growth Simulator
+gtpp.recipe.algae_pond=Algae Pond
+gtpp.recipe.multiblockrockbreaker=Boldarnator
 
 # Recipe categories
 gtpp.recipe.category.abs_non_alloy_recipes=ABS Non-Alloy Recipes
@@ -137,6 +139,7 @@ gtpp.nei.tgs.info-1=Output is further boosted
 gtpp.nei.tgs.info-2=by machine energy tier
 gtpp.nei.tgs.info-3=and tool type
 
+gtpp.nei.ap.tier=Algae Pond Tier: %s
 
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
@@ -3653,7 +3656,7 @@ item.CarbonMonoxide.name=Carbon Monoxide Cell
 item.itemCellCarbonMonoxide.name=Carbon Monoxide Cell
 item.acetone.name=Acetone Cell
 item.saltwater.name=Salt Water Cell
-item.BasicAgrichemItem.22.name=Mold (Pellet)
+item.BasicAgrichemItem.22.name=Extruder Shape (Pellet)
 item.BasicAgrichemItem.23.name=Clean Aluminium Mix
 
 # Added 12/12/19
@@ -3932,7 +3935,7 @@ item.SunnariumBit.name=Sunnarium Bit
 sleep.event.okay=You slept well and now feel a little better.
 sleep.event.good=You slept well and now feel much better.
 sleep.event.wellrested=You feel really well rested.
-sleep.event.downsides=The downsides of life no longer effect you.
+sleep.event.downsides=The downsides of life no longer affect you.
 item.miscutils:magicfeather.name=Magical Feather
 
 # Added 10/02/22
@@ -4046,6 +4049,7 @@ gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away 
 gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
 gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
 gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
+gtpp.infodata.multi_block.recipes_done=Recipes Finished: %s
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
 gtpp.infodata.tesseract_generator.frequency=Frequency: %d
 gtpp.infodata.tesseract_generator.status.active=Active
