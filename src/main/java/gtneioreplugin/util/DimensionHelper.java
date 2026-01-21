@@ -46,6 +46,7 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,6 +78,8 @@ public class DimensionHelper {
     public record Dimension(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {}
 
     public static final Map<String, Dimension> REGISTRY = new LinkedHashMap<>();
+    public static final Map<String, String> INTERNAL_TO_ABBR = new HashMap<>();
+    public static final Map<String, String> ABBR_TO_INTERNAL = new HashMap<>();
 
     static {
         // first 2 letters if one word else 1 letter of every word, except
@@ -151,6 +154,8 @@ public class DimensionHelper {
     public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {
         if (!REGISTRY.containsKey(fullName)) {
             REGISTRY.put(fullName, new Dimension(fullName, internalName, trimmedName, abbr, tierKey));
+            INTERNAL_TO_ABBR.put(internalName, abbr);
+            ABBR_TO_INTERNAL.put(abbr, internalName);
         }
     }
 
@@ -210,21 +215,15 @@ public class DimensionHelper {
     }
 
     public static String getDimAbbreviatedName(String internalName) {
-        for (Dimension record : REGISTRY.values()) {
-            if (record.internalName.equals(internalName)) {
-                return record.abbr;
-            }
-        }
+        String abbr = INTERNAL_TO_ABBR.get(internalName);
+        if (abbr != null) return abbr;
         throw new IllegalStateException("InternalName: " + internalName + " has no abbreviated name!");
     }
 
     public static String getFullName(String abbrDimName) {
-        for (Dimension record : REGISTRY.values()) {
-            if (record.abbr.equals(abbrDimName)) {
-                return record.internalName;
-            }
-        }
-        throw new IllegalStateException("String: " + abbrDimName + " has no abbredged name!");
+        String internal = ABBR_TO_INTERNAL.get(abbrDimName);
+        if (internal != null) return internal;
+        throw new IllegalStateException("String: " + abbrDimName + " has no abbreviated name!");
     }
 
     public static String getDimTier(String dimName) {
