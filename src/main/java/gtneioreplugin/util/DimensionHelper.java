@@ -77,6 +77,9 @@ public class DimensionHelper {
     public static final Map<String, DimRecord> REGISTRY = new LinkedHashMap<>();
 
     static {
+        // first 2 letters if one word else 1 letter of every word, except
+        // capital letter in
+        // name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
         // Non GC dimensions in progression order instead of alphabetical
         register("Overworld", OW, "Overworld", "Ow", T0);
         register("Nether", NETHER, "Nether", "Ne", T0);
