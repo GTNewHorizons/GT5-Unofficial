@@ -59,7 +59,7 @@ public class NetheriteRecipes {
                 GTValues.RA.stdBuilder() // Prismarine + Comb
                     .itemInputs(
                         GregtechItemList.RedAlgaeBiomass.get(32),
-                        GTBees.combs.getStackForType(CombType.PRISMATIC, 32))
+                        GTBees.combs.getStackForType(CombType.PRISMATIC, 8))
                     .fluidInputs(Materials.Grade1PurifiedWater.getFluid(8000))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.shard, Materials.Prismarine, 16))
                     .duration(15 * SECONDS)
@@ -361,7 +361,7 @@ public class NetheriteRecipes {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.Netherite_Nanoparticles.get(1),
-                    GTBees.combs.getStackForType(CombType.NETHERITE, 32))
+                    GTBees.combs.getStackForType(CombType.NETHERITE, 8))
                 .circuit(2)
                 .fluidInputs(Materials.HellishMetal.getMolten(1 * INGOTS))
                 .itemOutputs(ItemList.Intensely_Bonded_Netherite_Nanoparticles.get(2))
