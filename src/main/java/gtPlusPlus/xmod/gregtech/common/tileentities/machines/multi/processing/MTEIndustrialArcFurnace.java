@@ -344,12 +344,12 @@ public class MTEIndustrialArcFurnace extends GTPPMultiBlockBase<MTEIndustrialArc
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this) {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this) {
 
             @Override
             protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-                IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("machineMode:0");
+                IntSyncValue machineModeSyncer = syncManager.findSyncHandler("machineMode", IntSyncValue.class);
                 IntSyncValue sizeSyncer = new IntSyncValue(() -> mSize);
                 syncManager.syncValue("arcSize", sizeSyncer);
                 return new CycleButtonWidget() {

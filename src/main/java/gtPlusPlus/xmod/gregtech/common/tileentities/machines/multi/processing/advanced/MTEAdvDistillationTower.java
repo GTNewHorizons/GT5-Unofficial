@@ -435,12 +435,12 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this) {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this) {
 
             @Override
             protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-                IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("machineMode:0");
+                IntSyncValue machineModeSyncer = syncManager.findSyncHandler("machineMode", IntSyncValue.class);
                 IntSyncValue heightSyncer = new IntSyncValue(() -> mHeight);
                 syncManager.syncValue("dangoteHeight", heightSyncer);
                 return new CycleButtonWidget() {
