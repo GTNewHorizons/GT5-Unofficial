@@ -459,6 +459,11 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         return true;
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     private enum DataHatchElement implements IHatchElement<MTEAssemblyLine> {
 
         DataAccess;

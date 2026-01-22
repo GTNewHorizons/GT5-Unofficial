@@ -1186,6 +1186,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 val -> mWormholeEnergy_UI = val));
     }
 
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
     // #endregion
 
 }
