@@ -344,6 +344,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyor hatch) {
             hatch.updateTexture(aBaseCasingIndex);
+            hatch.setMainController(this);
             return vacuumConveyors.addHatch(hatch);
         }
         return false;
