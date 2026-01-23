@@ -248,10 +248,10 @@ public enum CircuitComponent {
         "gt.circuitcomponent.sheet.shirabon",
         () -> GGMaterial.shirabon.get(OrePrefixes.foil, 1)),
 
-    ProcessedFoilSiliconeRubber("gt.circuitcomponent.sheet.siliconerubber", true),
-    ProcessedFoilPolybenzimidazole("gt.circuitcomponent.sheet.polybenzimidazole", true),
-    ProcessedFoilRadoxPolymer("gt.circuitcomponent.sheet.radoxpolymer", true),
-    ProcessedFoilShirabon("gt.circuitcomponent.sheet.shirabon", true),
+    ProcessedFoilSiliconeRubber("gt.circuitcomponent.sheet.processed.siliconerubber", true),
+    ProcessedFoilPolybenzimidazole("gt.circuitcomponent.sheet.processed.polybenzimidazole", true),
+    ProcessedFoilRadoxPolymer("gt.circuitcomponent.sheet.processed.radoxpolymer", true),
+    ProcessedFoilShirabon("gt.circuitcomponent.sheet.processed.shirabon", true),
 
     // Circuit encasement
     OpticalMainframeCasing("gt.circuitcomponent.casing.opticalmainframe", true),
