@@ -187,6 +187,11 @@ public final class CheckRecipeResultRegistry {
         return new ResultInsufficientStartupPowerBigInt(required);
     }
 
+    @Nonnull
+    public static CheckRecipeResult noValidOutputColor(byte color) {
+        return new ResultNoValidOutputColor(color);
+    }
+
     static {
         register(new SimpleCheckRecipeResult(false, "", false));
         register(new ResultInsufficientPower(0));
@@ -197,5 +202,6 @@ public final class CheckRecipeResultRegistry {
         register(new ResultInsufficientStartupPowerBigInt(BigInteger.ZERO));
         register(new ResultMissingItem());
         register(new ResultMissingApiaryFlowers());
+        register(new ResultNoValidOutputColor((byte) 0));
     }
 }
