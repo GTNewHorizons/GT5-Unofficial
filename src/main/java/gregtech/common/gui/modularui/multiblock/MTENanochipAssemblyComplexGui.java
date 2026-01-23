@@ -3,8 +3,11 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -12,16 +15,21 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
@@ -32,7 +40,13 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBaseAdapter;
+import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gtPlusPlus.core.util.math.MathUtils;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
 
@@ -98,7 +112,67 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.createTerminalTextWidget(syncManager, parent).setEnabledIf(flow -> !multiblock.isTalkModeActive);
+        GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> moduleList = syncManager
+            .findSyncHandler("modulesList", GenericListSyncHandler.class);
+        DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START)
+                .coverChildren();
+
+            Object2IntMap<ModuleTypes> moduleAmountMap = new Object2IntOpenHashMap<>();
+            List<Pair<ModuleTypes, Integer>> moduleDisplayList = new ArrayList<>();
+
+            for (MTENanochipAssemblyModuleBase<?> module : moduleList.getValue()) {
+                moduleAmountMap
+                    .put(module.getModuleType(), moduleAmountMap.getOrDefault(module.getModuleType(), 0) + 1);
+            }
+
+            moduleDisplayList = moduleAmountMap.object2IntEntrySet()
+                .stream()
+                .map(a -> Pair.of(a.getKey(), a.getIntValue()))
+                .sorted(
+                    Comparator.comparing(
+                        a -> a.left()
+                            .getName()))
+                .sorted((a, b) -> Integer.compare(b.right(), a.right()))
+                .collect(Collectors.toList());
+
+            for (Pair<ModuleTypes, Integer> modulePair : moduleDisplayList) {
+                if (modulePair == null || modulePair.left() == null) continue;
+
+                listWidget.child(createModuleRow(modulePair));
+            }
+            return listWidget;
+        });
+        moduleList.setChangeListener(() -> moduleListHolder.notifyUpdate(($) -> {}));
+        return super.createTerminalTextWidget(syncManager, parent).child(
+            new DynamicSyncedWidget<>().coverChildren()
+                .syncHandler(moduleListHolder))
+            .setEnabledIf(flow -> !multiblock.isTalkModeActive);
+    }
+
+    private static final int MODULE_DISPLAY_SIZE = 14;
+
+    private Flow createModuleRow(Pair<ModuleTypes, Integer> modulePair) {
+        return Flow.row()
+            .paddingBottom(2)
+            .coverChildren()
+            .child(
+                new ItemDisplayWidget().background(IDrawable.EMPTY)
+                    .disableHoverBackground()
+                    .size(MODULE_DISPLAY_SIZE)
+                    .item(
+                        modulePair.left()
+                            .getDisplayStack()))
+            .child(
+                IKey.str(
+                    modulePair.right() + "x "
+                        + modulePair.left()
+                            .getName())
+                    .scale(0.8f)
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget()
+                    .width(this.getTerminalRowWidth() - MODULE_DISPLAY_SIZE - 32)
+                    .height(MODULE_DISPLAY_SIZE));
     }
 
     @Override
@@ -202,6 +276,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 7)));
         syncManager.syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 8)));
         syncManager.syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 64)));
+
+        GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> linkedModules = new GenericListSyncHandler.Builder<MTENanochipAssemblyModuleBase<?>>()
+            .getter(multiblock::getModules)
+            .setter(multiblock::setModules)
+            .adapter(new MTENanochipAssemblyModuleBaseAdapter())
+            .build();
+
+        syncManager.syncValue("modulesList", linkedModules);
     }
 
     List<String> NOptions = Arrays.asList(
