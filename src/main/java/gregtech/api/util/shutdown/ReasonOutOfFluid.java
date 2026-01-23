@@ -1,5 +1,7 @@
 package gregtech.api.util.shutdown;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,8 +14,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Materials;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class ReasonOutOfFluid implements ShutDownReason {
 

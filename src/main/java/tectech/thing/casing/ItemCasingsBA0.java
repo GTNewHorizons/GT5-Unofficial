@@ -81,8 +81,7 @@ public class ItemCasingsBA0 extends ItemCasings {
                                                                                                                        // multi?
                 break;
             case 9: // "ZPM Superconductor Primary Tesla Windings"
-                tooltip
-                    .add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumber(TierEU.ZPM) + " EU/t"); // Handles
+                tooltip.add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumber(TierEU.ZPM) + " EU/t"); // Handles
                 // up
                 // to
                 tooltip

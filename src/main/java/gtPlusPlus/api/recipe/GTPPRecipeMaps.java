@@ -30,7 +30,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
@@ -101,10 +100,8 @@ public class GTPPRecipeMaps {
             final int duration = recipeInfo.recipe.mDuration;
             return Arrays.asList(
                 StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", formatNumber(eut)),
-                StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.dynamo", formatNumber(duration * eut)),
-                StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.total", formatNumber(duration * eut * 4)));
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.dynamo", formatNumber(duration * eut)),
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.total", formatNumber(duration * eut * 4)));
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nuclearSaltProcessingPlantRecipes = RecipeMapBuilder

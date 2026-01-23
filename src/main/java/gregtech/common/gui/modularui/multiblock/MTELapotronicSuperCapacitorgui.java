@@ -4,8 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.math.BigInteger;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -27,7 +25,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import kekztech.util.Util;

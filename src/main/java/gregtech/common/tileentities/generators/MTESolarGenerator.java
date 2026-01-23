@@ -139,11 +139,8 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                     .setPos(14, 74)
                     .setSize(147, 5))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> formatNumber(clientEU) + "/"
-                            + formatNumber(getBaseMetaTileEntity().getEUCapacity())
-                            + " EU")
+                new TextWidget().setStringSupplier(
+                    () -> formatNumber(clientEU) + "/" + formatNumber(getBaseMetaTileEntity().getEUCapacity()) + " EU")
                     .setTextAlignment(Alignment.Center)
                     .setPos(14, 66)
                     .setSize(147, 5))
