@@ -20,10 +20,9 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public MTENanochipAssemblyModuleBase<?> deserialize(PacketBuffer buffer) throws IOException {
-        if (!buffer.readBoolean() || !buffer.readBoolean()) { // MTE or GTE are null
+        if (!buffer.readBoolean()) { // MTE or GTE are null, module is not formed
             return null;
         }
-
         int x = buffer.readInt();
         int y = buffer.readInt();
         int z = buffer.readInt();
@@ -41,16 +40,15 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public void serialize(PacketBuffer buffer, MTENanochipAssemblyModuleBase module) throws IOException {
-        buffer.writeBoolean(module != null);
-        if (module != null) {
+        if (module != null && module.getBaseMetaTileEntity() != null) {
+            buffer.writeBoolean(true);
             IGregTechTileEntity gte = module.getBaseMetaTileEntity();
-            buffer.writeBoolean(gte != null);
-            if (gte != null) {
-                buffer.writeInt(gte.getXCoord());
-                buffer.writeInt(gte.getYCoord());
-                buffer.writeInt(gte.getZCoord());
-                buffer.writeInt(gte.getWorld().provider.dimensionId);
-            }
+            buffer.writeInt(gte.getXCoord());
+            buffer.writeInt(gte.getYCoord());
+            buffer.writeInt(gte.getZCoord());
+            buffer.writeInt(gte.getWorld().provider.dimensionId);
+        } else {
+            buffer.writeBoolean(false);
         }
     }
 
