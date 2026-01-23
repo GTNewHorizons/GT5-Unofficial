@@ -106,7 +106,13 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, ENCASEMENT_WRAPPER_OFFSET_X, ENCASEMENT_WRAPPER_OFFSET_Y, ENCASEMENT_WRAPPER_OFFSET_Z);
+        buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            trigger,
+            hintsOnly,
+            ENCASEMENT_WRAPPER_OFFSET_X,
+            ENCASEMENT_WRAPPER_OFFSET_Y,
+            ENCASEMENT_WRAPPER_OFFSET_Z);
     }
 
     @Override
@@ -129,7 +135,11 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, ENCASEMENT_WRAPPER_OFFSET_X, ENCASEMENT_WRAPPER_OFFSET_Y, ENCASEMENT_WRAPPER_OFFSET_Z);
+        return checkPiece(
+            STRUCTURE_PIECE_MAIN,
+            ENCASEMENT_WRAPPER_OFFSET_X,
+            ENCASEMENT_WRAPPER_OFFSET_Y,
+            ENCASEMENT_WRAPPER_OFFSET_Z);
     }
 
     @Override
