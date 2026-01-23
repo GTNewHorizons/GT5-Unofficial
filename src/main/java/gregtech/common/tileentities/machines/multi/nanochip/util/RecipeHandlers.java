@@ -478,25 +478,25 @@ public class RecipeHandlers {
             CircuitComponent.ProcessedFoilPolybenzimidazole,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
-            RecipeMaps.nanochipSheetSupervisor);
+            RecipeMaps.nanochipEncasementWrapper);
         addSimpleProcessingRecipe(
             CircuitComponent.FoilSiliconeRubber,
             CircuitComponent.ProcessedFoilSiliconeRubber,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
-            RecipeMaps.nanochipSheetSupervisor);
+            RecipeMaps.nanochipEncasementWrapper);
         addSimpleProcessingRecipe(
             CircuitComponent.FoilRadoxPolymer,
             CircuitComponent.ProcessedFoilRadoxPolymer,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
-            RecipeMaps.nanochipSheetSupervisor);
+            RecipeMaps.nanochipEncasementWrapper);
         addSimpleProcessingRecipe(
             CircuitComponent.FoilShirabon,
             CircuitComponent.ProcessedFoilShirabon,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
-            RecipeMaps.nanochipSheetSupervisor);
+            RecipeMaps.nanochipEncasementWrapper);
     }
 
     public static void populateFinishedCircuitRecipeMaps() {

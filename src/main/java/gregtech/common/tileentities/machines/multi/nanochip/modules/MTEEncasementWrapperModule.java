@@ -1,13 +1,13 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SHEET_SUPERVISOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SHEET_SUPERVISOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SHEET_SUPERVISOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SHEET_SUPERVISOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,13 +30,13 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
-public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTESheetSupervisorModule> {
+public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MTEEncasementWrapperModule> {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    protected static final int SHEET_OFFSET_X = 3;
-    protected static final int SHEET_OFFSET_Y = 6;
-    protected static final int SHEET_OFFSET_Z = 0;
-    protected static final String[][] SHEET_STRING = new String[][] {
+    protected static final int ENCASEMENT_WRAPPER_OFFSET_X = 3;
+    protected static final int ENCASEMENT_WRAPPER_OFFSET_Y = 6;
+    protected static final int ENCASEMENT_WRAPPER_OFFSET_Z = 0;
+    protected static final String[][] ENCASEMENT_WRAPPER_STRUCTURE_STRING = new String[][] {
         { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
@@ -44,9 +44,9 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
         { " BAAAB ", "D     D", "D AAA D", "D     D", "D AAA D", "D     D" },
         { "  BBB  ", " A   A ", " A C A ", "CA   AC", "CA C AC", "CA   AC" },
         { "       ", "  DBD  ", "  DBD  ", " CDBDC ", " CDBDC ", " CDBDC " } };
-    public static final IStructureDefinition<MTESheetSupervisorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
-        .<MTESheetSupervisorModule>builder()
-        .addShape(STRUCTURE_PIECE_MAIN, SHEET_STRING)
+    public static final IStructureDefinition<MTEEncasementWrapperModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
+        .<MTEEncasementWrapperModule>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, ENCASEMENT_WRAPPER_STRUCTURE_STRING)
         // Nanochip Primary Casing
         .addElement('A', Casings.NanochipPrimaryCasing.asElement())
         // Nanochip Secondary Casing
@@ -63,21 +63,21 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SHEET_SUPERVISOR_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SHEET_SUPERVISOR_ACTIVE_GLOW)
+                    .addIcon(OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SHEET_SUPERVISOR)
+                    .addIcon(OVERLAY_FRONT_ENCASEMENT_WRAPPER)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_SHEET_SUPERVISOR_GLOW)
+                    .addIcon(OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
@@ -85,39 +85,39 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
     }
 
-    public MTESheetSupervisorModule(int aID, String aName, String aNameRegional) {
+    public MTEEncasementWrapperModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected MTESheetSupervisorModule(String aName) {
+    protected MTEEncasementWrapperModule(String aName) {
         super(aName);
     }
 
     @Override
     public ModuleTypes getModuleType() {
-        return ModuleTypes.SheetSupervisor;
+        return ModuleTypes.EncasementWrapper;
     }
 
     @Override
-    public IStructureDefinition<MTESheetSupervisorModule> getStructureDefinition() {
+    public IStructureDefinition<MTEEncasementWrapperModule> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, SHEET_OFFSET_X, SHEET_OFFSET_Y, SHEET_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, ENCASEMENT_WRAPPER_OFFSET_X, ENCASEMENT_WRAPPER_OFFSET_Y, ENCASEMENT_WRAPPER_OFFSET_Z);
     }
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
-            SHEET_OFFSET_X,
-            SHEET_OFFSET_Y,
-            SHEET_OFFSET_Z,
+            ENCASEMENT_WRAPPER_OFFSET_X,
+            ENCASEMENT_WRAPPER_OFFSET_Y,
+            ENCASEMENT_WRAPPER_OFFSET_Z,
             elementBudget,
             env,
             false,
@@ -129,14 +129,14 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
         // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, SHEET_OFFSET_X, SHEET_OFFSET_Y, SHEET_OFFSET_Z);
+        return checkPiece(STRUCTURE_PIECE_MAIN, ENCASEMENT_WRAPPER_OFFSET_X, ENCASEMENT_WRAPPER_OFFSET_Y, ENCASEMENT_WRAPPER_OFFSET_Z);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
-            .addInfo("Atomically Supervises your Sheet " + TOOLTIP_CC + "s")
+            .addInfo("Wraps your sheet and framebox " + TOOLTIP_CCs + " into a circuit encasement.")
             .addInfo("Outputs into the VCO with the same color as the input VCI")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
@@ -145,16 +145,17 @@ public class MTESheetSupervisorModule extends MTENanochipAssemblyModuleBase<MTES
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESheetSupervisorModule(this.mName);
+        return new MTEEncasementWrapperModule(this.mName);
     }
 
+    // TODO: This should be removed probably? Encasement wrapper takes 2 different ccs and outputs a circuit encasement
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = "Observed " + unprocessedName;
+        component.fallbackLocalizedName = "Wrapped " + unprocessedName;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.nanochipSheetSupervisor;
+        return RecipeMaps.nanochipEncasementWrapper;
     }
 
 }
