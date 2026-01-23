@@ -2,6 +2,9 @@ package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
 import java.util.Map;
 
+import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,13 +25,6 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
 
     public MTEHatchVacuumConveyorInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-    }
-
-    @Override
-    public void onRemoval() {
-        super.onRemoval();
-
-        VacuumFactoryGrid.INSTANCE.removeElement(this);
     }
 
 
@@ -101,9 +97,18 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        contents = this.getNetwork()
-            .getCircuitComponentPacket();
-        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 20 == VACUUM_MOVE_TICK) {
+                IVacuumStorage[] outputs = this.getNetwork().getComponents(IVacuumStorage.class).toArray(new IVacuumStorage[0]);
+                // only one output per input and they have to be on the same nac (the if check)
+                if (outputs.length != 1) { return; }
+                if(this.mainController != (outputs[0].maincontroller())) { return; }
 
+                CircuitComponentPacket newPacket = outputs[0].extractPacket();
+                this.unifyPacket(newPacket);
+
+            }
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 }
