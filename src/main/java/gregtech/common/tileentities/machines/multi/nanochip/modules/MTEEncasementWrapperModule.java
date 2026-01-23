@@ -169,16 +169,6 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         return new MTEEncasementWrapperModule(this.mName);
     }
 
-    // TODO: This should be removed probably? Encasement wrapper takes 2 different ccs and outputs a circuit encasement
-    public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        if (component == CircuitComponent.FoilSiliconeRubber
-            || component == CircuitComponent.FoilPolybenzimidazole
-            || component == CircuitComponent.FoilShirabon
-            || component == CircuitComponent.FoilRadoxPolymer) {
-            component.fallbackLocalizedName = unprocessedName + "Wrapper Spool";
-        }
-    }
-
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.nanochipEncasementWrapper;
