@@ -88,7 +88,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     protected MTENanochipAssemblyComplex baseMulti;
 
     @Nullable
-    public MTENanochipAssemblyComplex getbaseMulti() {
+    public MTENanochipAssemblyComplex getBaseMulti() {
         return baseMulti;
     }
 
@@ -199,12 +199,12 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.setMainController(this.getbaseMulti());
+            hatch.setMainController(this.getBaseMulti());
             return vacuumConveyorInputs.addHatch(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
-            hatch.setMainController(this.getbaseMulti());
+            hatch.setMainController(this.getBaseMulti());
             return vacuumConveyorOutputs.addHatch(hatch);
         }
         return false;
