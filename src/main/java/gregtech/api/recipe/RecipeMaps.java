@@ -1448,13 +1448,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
         .of("gt.recipe.nanochip.encasementwrapper", NACRecipeMapBackend::new)
-        .maxIO(1, 1, 0, 0)
+        .maxIO(3, 1, 0, 0)
         .minInputs(1, 0)
-        .recipeTransformer(recipe -> {
-            CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
-            CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            MTEEncasementWrapperModule.registerLocalName(input.getLocalizedName(), output);
-        })
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
         .of("gt.recipe.nanochip.biologicalcoordinator", NACRecipeMapBackend::new)
