@@ -1459,7 +1459,6 @@ public final class RecipeMaps {
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            // TODO: This should probably go when the recipes are properly added
             MTEEncasementWrapperModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
