@@ -3056,18 +3056,6 @@ public class GTUtility {
         });
     }
 
-    public static String formatNumbers(BigInteger aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(long aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(double aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
     public static String scientificFormat(long aNumber) {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
         dfs.setExponentSeparator("e");
