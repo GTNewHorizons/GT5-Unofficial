@@ -32,14 +32,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
-import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 
-public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement, IVacuumStorage {
+public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement {
 
     public static final int VACUUM_MOVE_TICK = 17;
     public VacuumFactoryNetwork network;
@@ -71,16 +70,12 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
         super.onColorChangeServer(aColor);
     }
 
-
     @Override
     public byte getColorization() {
         return this.getBaseMetaTileEntity()
             .getColorization();
     }
 
-    public MTENanochipAssemblyComplex getMainController() {
-        return mainController;
-    }
 
     public void setMainController(MTENanochipAssemblyComplex main) {
         this.mainController = main;
@@ -111,6 +106,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
                 }
             }
         }
+    }
+
+
+    @Override
+    public void onRemoval() {
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+        super.onRemoval();
     }
 
     @Override
@@ -239,15 +241,5 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             }
         }
         return info.toArray(new String[] {});
-    }
-
-    @Override
-    public CircuitComponentPacket getcomponentPacket() {
-        return this.contents;
-    }
-
-    @Override
-    public MTENanochipAssemblyComplex getAssemblyComplex() {
-        return mainController;
     }
 }

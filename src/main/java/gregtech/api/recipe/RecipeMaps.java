@@ -96,7 +96,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBiologicalCoordinationModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
