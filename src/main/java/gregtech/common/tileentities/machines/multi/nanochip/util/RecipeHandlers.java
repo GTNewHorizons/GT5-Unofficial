@@ -503,8 +503,8 @@ public class RecipeHandlers {
     public static void registerCasingRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(1),
                 CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(16),
+                CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(1),
                 CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(16))
             .itemOutputs(CircuitComponent.MainframeCasing.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)

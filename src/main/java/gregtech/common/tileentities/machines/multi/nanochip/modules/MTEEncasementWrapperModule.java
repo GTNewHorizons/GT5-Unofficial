@@ -8,8 +8,11 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -56,17 +59,6 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         // Nanochip Glass
         .addElement('D', Casings.NanochipGlass.asElement())
         .build();
-
-    /*
-    thinking: which recipes should this use?
-    - what to do about the bolt & optical fibre cable in optical processor recipe?
-        == add raw CCs for it
-    - what with recipes that have foil but no framebox (all opticals except mainframe)?
-
-    Encasement wrapper recipes:
-        - 1x Foil -> 1x Foil Wrapper Spool
-        - Foil Wrapper Spool + Cut Framebox -> Mainframe Encasing (tiered)
-     */
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
@@ -157,8 +149,14 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
-            .addInfo("Wraps your sheet and framebox " + TOOLTIP_CCs + " into a circuit encasement.")
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
+            .addSeparator()
+            .addInfo("Able to process sheet and framebox " + TOOLTIP_CCs + " into wrapper spools and circuit casings.")
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same color as the input " + TOOLTIP_VCI)
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Constructing strong casings for your circuits since 1849.")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
