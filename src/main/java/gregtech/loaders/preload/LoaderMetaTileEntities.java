@@ -218,7 +218,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingCh
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESheetSupervisorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
@@ -707,11 +707,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
-        ItemList.NanoChipModule_SheetSupervisor.set(
-            new MTESheetSupervisorModule(
-                NANOCHIP_MODULE_SHEET_SUPERVISOR.ID,
-                "multimachine.nanochipmodule.sheetsupervisor",
-                "Atomic Sheet Supervisor").getStackForm(1));
+        ItemList.NanoChipModule_EncasementWrapper.set(
+            new MTEEncasementWrapperModule(
+                NANOCHIP_MODULE_ENCASEMENT_WRAPPER.ID,
+                "multimachine.nanochipmodule.encasementwrapper",
+                "Nanometer Encasement Wrapper").getStackForm(1));
         ItemList.NanoChipModule_BiologicalCoordinator.set(
             new MTEBiologicalCoordinationModule(
                 NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
