@@ -1583,7 +1583,7 @@ GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
 GT5U.gui.text.nac.waiting_for_power=Waiting For Power
-
+GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.

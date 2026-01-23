@@ -377,8 +377,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // Try to find a valid output hatch to see if we have output space available, and error if we don't.
         MTEHatchVacuumConveyorOutput outputHatch = this.vacuumConveyorOutputs.findAnyColoredHatch(this.outputColor);
         if (outputHatch == null) {
-            // TODO: Maybe add a custom result for this
-            return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
+            return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
 
         // Create parallel helper to calculate parallel and consume inputs
