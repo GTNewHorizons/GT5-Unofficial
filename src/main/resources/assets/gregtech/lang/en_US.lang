@@ -3319,7 +3319,7 @@ gt.vajra.tooltip.charge=Can be charged in any %s machine
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
 # NAC circuit components
-gt.circuitcomponent.casing.opticalmainframe=Optical Mainframe Encasement
+gt.circuitcomponent.casing.mainframe=Mainframe Circuit Encasement
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
 gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
 gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool

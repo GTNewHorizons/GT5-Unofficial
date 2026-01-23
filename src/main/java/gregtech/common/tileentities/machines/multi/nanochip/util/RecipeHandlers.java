@@ -503,10 +503,10 @@ public class RecipeHandlers {
     public static void registerCasingRecipes() {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(8),
-                CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(128),
-                CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(128))
-            .itemOutputs(CircuitComponent.OpticalMainframeCasing.getFakeStack(1))
+                CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(1),
+                CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(16),
+                CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(16))
+            .itemOutputs(CircuitComponent.MainframeCasing.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(TierEU.RECIPE_UHV)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
@@ -601,7 +601,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 2),
+                new CircuitComponentStack(CircuitComponent.MainframeCasing, 2),
                 new CircuitComponentStack(CircuitComponent.WetwareComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
@@ -609,8 +609,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
-                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
+                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64)),
             Arrays.asList(
                 FluidRegistry.getFluidStack("molten.indalloy140", 2880),
                 FluidRegistry.getFluidStack("ic2coolant", 10000),
@@ -663,7 +662,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 4),
+                new CircuitComponentStack(CircuitComponent.MainframeCasing, 4),
                 new CircuitComponentStack(CircuitComponent.BiowareComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 24),
@@ -671,8 +670,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 128)),
+                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(2880),
                 Materials.BioMediumSterilized.getFluid(2880),
@@ -734,7 +732,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.OpticalMainframeCasing, 1),
+                new CircuitComponentStack(CircuitComponent.MainframeCasing, 8),
                 new CircuitComponentStack(CircuitComponent.OpticalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 32),
