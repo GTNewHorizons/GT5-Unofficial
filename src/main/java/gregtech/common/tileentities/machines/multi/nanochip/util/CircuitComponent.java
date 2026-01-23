@@ -254,7 +254,7 @@ public enum CircuitComponent {
     ProcessedFoilShirabon("gt.circuitcomponent.sheet.processed.shirabon", true),
 
     // Circuit encasement
-    OpticalMainframeCasing("gt.circuitcomponent.casing.opticalmainframe", true),
+    MainframeCasing("gt.circuitcomponent.casing.mainframe", true),
 
     // Misc
     CableOpticalFiber(
