@@ -85,11 +85,11 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         int sievert = data.sievert;
         boolean isExact = data.isExact;
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", GTUtility.formatNumbers(eut * duration)));
+            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", formatNumber(eut * duration)));
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.usage",
-                GTUtility.formatNumbers(eut),
+                formatNumber(eut),
                 getTierNameWithParentheses(eut)));
 
         recipeInfo.drawText(StatCollector.translateToLocalFormatted("nei.biovat.0.name", GTValues.VN[glassTier]));

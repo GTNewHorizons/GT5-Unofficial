@@ -263,17 +263,17 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
         String[] info = super.getInfoData();
         info[4] = StatCollector.translateToLocalFormatted(
             "gg.scanner.info.generator.generates",
-            EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
+            EnumChatFormatting.RED + formatNumber(this.getPowerFlow() * tEff / 10000)
                 + EnumChatFormatting.RESET);
         info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
             + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
+            + formatNumber(this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
             + " "
             + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
             + " "
             + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(tEff / 100D)
+            + formatNumber(tEff / 100D)
             + EnumChatFormatting.RESET
             + " %";
         return info;

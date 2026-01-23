@@ -232,7 +232,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
         GuiDraw.drawStringC(formatValue(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(formatValue(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-            formatValue(GTUtility.formatNumbers(recipe.amount)),
+            formatValue(formatNumber(recipe.amount)),
             CATEGORY_VALUE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,

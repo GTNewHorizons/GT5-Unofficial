@@ -73,13 +73,13 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
         long duration = recipeInfo.recipe.mDuration;
         recipeInfo.drawText(
             StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.total_line", GTUtility.formatNumbers(eut * duration)));
+                .translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
 
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", GTUtility.formatNumbers(eut)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
 
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", GTUtility.formatNumbers(duration / 20)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20)));
 
     }
 

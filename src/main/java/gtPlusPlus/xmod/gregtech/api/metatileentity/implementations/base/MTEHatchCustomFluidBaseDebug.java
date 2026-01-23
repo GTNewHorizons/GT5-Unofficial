@@ -136,7 +136,7 @@ public class MTEHatchCustomFluidBaseDebug extends MTEHatchCustomFluidBase {
             + "???";
         return new String[] { "Debug Fluid Input for " + (isSteam ? "Steam " : "") + "Multiblocks",
             "Replenishes itself every 30 seconds",
-            "Capacity: " + EnumChatFormatting.WHITE + GTUtility.formatNumbers(getCapacity()) + "L", aFluidName,
+            "Capacity: " + EnumChatFormatting.WHITE + formatNumber(getCapacity()) + "L", aFluidName,
             "Author: " + GREEN + BOLD + "Chrom" };
     }
 

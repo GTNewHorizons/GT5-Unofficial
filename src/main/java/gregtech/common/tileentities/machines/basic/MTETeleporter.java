@@ -187,13 +187,13 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
         return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.x",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetX) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.y",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetY) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.z",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetZ) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.dimension",
                 "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),

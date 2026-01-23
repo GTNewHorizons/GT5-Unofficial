@@ -228,7 +228,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             false);
         GuiDraw.drawStringC(formatValue(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(
-            formatValue(GTUtility.formatNumbers(recipe.amount)),
+            formatValue(formatNumber(recipe.amount)),
             CATEGORY_VALUE_X,
             OUT_AMOUNT_Y,
             TEXT_COLOR,

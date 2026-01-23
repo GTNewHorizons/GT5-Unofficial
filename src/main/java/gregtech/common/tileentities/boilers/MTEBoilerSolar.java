@@ -62,8 +62,8 @@ public class MTEBoilerSolar extends MTEBoiler {
         return String
             .format(
                 localizedDescFormat,
-                GTUtility.formatNumbers(getMaxOutputPerSecond()),
-                GTUtility.formatNumbers(getMinOutputPerSecond()))
+                formatNumber(getMaxOutputPerSecond()),
+                formatNumber(getMinOutputPerSecond()))
             .split("\\R");
     }
 
@@ -250,23 +250,23 @@ public class MTEBoilerSolar extends MTEBoiler {
                 "GT5U.infodata.boiler_solar.heat",
                 String.format(
                     EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getHeatCapacityPercent())),
+                    formatNumber(getHeatCapacityPercent())),
                 String.format(
                     EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getHotTimeSeconds()))),
+                    formatNumber(getHotTimeSeconds()))),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getMinOutputPerSecond())),
+                    formatNumber(getMinOutputPerSecond())),
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getMaxOutputPerSecond()))),
+                    formatNumber(getMaxOutputPerSecond()))),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getProductionPerSecond()))) };
+                    formatNumber(getProductionPerSecond()))) };
     }
 
     public int getHeatCapacityPercent() {

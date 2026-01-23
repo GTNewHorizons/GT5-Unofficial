@@ -60,13 +60,13 @@ public class ItemFluidDisplay extends GTGenericItem {
             if (tToolTipAmount > 0L) {
                 aList.add(
                     EnumChatFormatting.BLUE + StatCollector
-                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", GTUtility.formatNumbers(tToolTipAmount))
+                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatNumber(tToolTipAmount))
                         + EnumChatFormatting.GRAY);
             }
             aList.add(
                 EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
                     "GT5U.tooltip.fluid.temperature",
-                    GTUtility.formatNumbers(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
+                    formatNumber(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.GREEN
                     + StatCollector.translateToLocalFormatted(

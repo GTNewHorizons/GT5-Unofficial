@@ -420,9 +420,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         public String getLocalizedCoordinates() {
             return StatCollector.translateToLocalFormatted(
                 "gt.db.metrics_cover.coords",
-                GTUtility.formatNumbers(x),
-                GTUtility.formatNumbers(y),
-                GTUtility.formatNumbers(z));
+                formatNumber(x),
+                formatNumber(y),
+                formatNumber(z));
         }
 
         @Override

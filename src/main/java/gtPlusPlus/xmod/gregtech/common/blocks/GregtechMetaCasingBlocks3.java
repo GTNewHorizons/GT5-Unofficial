@@ -42,7 +42,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
                 aList.add(
                     StatCollector.translateToLocalFormatted(
                         "gtpp.tooltip.meta_casing.energy_storage",
-                        GTUtility.formatNumbers(capacity)));
+                        formatNumber(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }

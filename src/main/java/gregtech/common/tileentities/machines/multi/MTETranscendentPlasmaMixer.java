@@ -318,7 +318,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
     }
 

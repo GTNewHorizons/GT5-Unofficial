@@ -958,7 +958,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                         aPlayer,
                         StatCollector.translateToLocalFormatted(
                             "eoh.rightclick.wirecutter.2",
-                            GTUtility.formatNumbers(originalAmount - astralArrayAmount)));
+                            formatNumber(originalAmount - astralArrayAmount)));
                 }
             }
         }

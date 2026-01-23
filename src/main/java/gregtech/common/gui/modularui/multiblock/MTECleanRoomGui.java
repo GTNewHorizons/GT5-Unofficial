@@ -27,7 +27,7 @@ public class MTECleanRoomGui extends MTEMultiBlockBaseGui<MTECleanroom> {
             IKey.dynamic(
                 () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                     + ": "
-                    + GTUtility.formatNumbers(efficency.getValue() / 100D)
+                    + formatNumber(efficency.getValue() / 100D)
                     + "%"
             // enabled if active
             )

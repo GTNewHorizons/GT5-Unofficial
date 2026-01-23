@@ -248,22 +248,22 @@ public class Localized {
             }
 
             if (arg instanceof Integer i) {
-                out[idx] = GTUtility.formatNumbers(i);
+                out[idx] = formatNumber(i);
                 continue;
             }
 
             if (arg instanceof Long l) {
-                out[idx] = GTUtility.formatNumbers(l);
+                out[idx] = formatNumber(l);
                 continue;
             }
 
             if (arg instanceof Float f) {
-                out[idx] = GTUtility.formatNumbers(f);
+                out[idx] = formatNumber(f);
                 continue;
             }
 
             if (arg instanceof Double d) {
-                out[idx] = GTUtility.formatNumbers(d);
+                out[idx] = formatNumber(d);
                 continue;
             }
 

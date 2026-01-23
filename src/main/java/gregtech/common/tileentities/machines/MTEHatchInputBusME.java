@@ -1079,7 +1079,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.stocking_bus.min_stack_size",
-                    GTUtility.formatNumbers(minSize)));
+                    formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

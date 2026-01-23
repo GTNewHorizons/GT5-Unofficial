@@ -659,7 +659,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 ret.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.purification_unit_base.success_chance",
-                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                        EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }

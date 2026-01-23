@@ -65,7 +65,7 @@ public class EUOverclockDescriber extends EUNoOverclockDescriber {
             .calculate();
         String original_tier_displayed = shouldShowAmperage(originalPowerCalculator) ? ""
             : GTUtility.getTierNameWithParentheses(originalPowerCalculator.getConsumption());
-        String original_voltage = GTUtility.formatNumbers(originalPowerCalculator.getConsumption());
+        String original_voltage = formatNumber(originalPowerCalculator.getConsumption());
         return StatCollector
             .translateToLocalFormatted("GT5U.nei.display.usage.original", original_voltage, original_tier_displayed);
     }

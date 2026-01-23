@@ -402,13 +402,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public String[] getDescription() {
         if (mTickTime == 20) return new String[] { "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/sec",
-            "Routing Value: %%%" + GTUtility.formatNumbers(mStepSize) };
+            "Routing Value: %%%" + formatNumber(mStepSize) };
         else if (mTickTime % 20 == 0) return new String[] {
             "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + (mTickTime / 20) + "%%% sec",
-            "Routing Value: %%%" + GTUtility.formatNumbers(mStepSize) };
+            "Routing Value: %%%" + formatNumber(mStepSize) };
         else return new String[] {
             "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + mTickTime + "%%% ticks",
-            "Routing Value: %%%" + GTUtility.formatNumbers(mStepSize) };
+            "Routing Value: %%%" + formatNumber(mStepSize) };
     }
 
     private boolean isInventoryEmpty() {

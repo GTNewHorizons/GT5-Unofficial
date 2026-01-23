@@ -174,7 +174,7 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
         currenttip.add(
             translateToLocal("GT5U.machines.computation_hatch.computation") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+                + formatNumber(
                     accessor.getNBTData()
                         .getLong("requiredComputation")));
     }

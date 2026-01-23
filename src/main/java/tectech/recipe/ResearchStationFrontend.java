@@ -56,19 +56,19 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
-                GTUtility.formatNumbers(
+                formatNumber(
                     (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
 
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", GTUtility.formatNumbers(eut * ampere)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut * ampere)));
 
         recipeInfo
-            .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
+            .drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
 
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.min_computation",
-                GTUtility.formatNumbers(minComputationPerSec)));
+                formatNumber(minComputationPerSec)));
     }
 
     @Override

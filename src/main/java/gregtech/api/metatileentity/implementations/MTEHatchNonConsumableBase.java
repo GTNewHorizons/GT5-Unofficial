@@ -161,7 +161,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                 tooltip.add(
                     GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
                         + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tSize)
+                        + formatNumber(tSize)
                         + EnumChatFormatting.GRAY);
             }
         }

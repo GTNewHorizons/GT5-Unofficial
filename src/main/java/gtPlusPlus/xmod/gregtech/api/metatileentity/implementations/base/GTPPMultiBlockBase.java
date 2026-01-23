@@ -278,7 +278,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         mInfo.add(
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi_block.recipes_done",
-                "" + EnumChatFormatting.DARK_GREEN + GTUtility.formatNumbers(this.recipesDone)));
+                "" + EnumChatFormatting.DARK_GREEN + formatNumber(this.recipesDone)));
         return mInfo.toArray(new String[0]);
     }
 

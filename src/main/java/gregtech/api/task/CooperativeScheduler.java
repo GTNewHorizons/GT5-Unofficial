@@ -89,7 +89,7 @@ public final class CooperativeScheduler {
                         + " "
                         + future.task
                         + " took "
-                        + GTUtility.formatNumbers((end - start2) / 1e3)
+                        + formatNumber((end - start2) / 1e3)
                         + " microseconds");
             }
 
@@ -100,7 +100,7 @@ public final class CooperativeScheduler {
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
             GTMod.GT_FML_LOGGER.info(
-                "Task scheduler took " + GTUtility.formatNumbers((System.nanoTime() - start) / 1e3) + " microseconds");
+                "Task scheduler took " + formatNumber((System.nanoTime() - start) / 1e3) + " microseconds");
         }
 
         for (CoopFuture<?> future : newTasks) {

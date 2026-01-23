@@ -176,7 +176,7 @@ public class MTELESU extends MTEMultiBlockBase {
         Collections.addAll(e, dsc);
         e.add(
             StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                + GTUtility.formatNumbers(Configuration.multiblocks.energyPerCell)
+                + formatNumber(Configuration.multiblocks.energyPerCell)
                 + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name")
             .split(";");

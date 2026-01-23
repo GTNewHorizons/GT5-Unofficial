@@ -135,17 +135,17 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.3",
-                GTUtility.formatNumbers(this.getTier(this.thisStack)),
-                GTUtility.formatNumbers(this.getTransferLimit(this.thisStack))));
+                formatNumber(this.getTier(this.thisStack)),
+                formatNumber(this.getTransferLimit(this.thisStack))));
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.4",
-                GTUtility.formatNumbers(this.getCharge(stack)),
+                formatNumber(this.getCharge(stack)),
                 MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.5",
-                GTUtility.formatNumbers(this.secondsLeft(stack))));
+                formatNumber(this.secondsLeft(stack))));
         super.addInformation(stack, aPlayer, list, bool);
     }
 

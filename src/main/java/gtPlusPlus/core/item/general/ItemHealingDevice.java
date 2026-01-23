@@ -136,7 +136,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
         list.add(
             EnumChatFormatting.GREEN + aString2
-                + GTUtility.formatNumbers(EUPerOperation)
+                + formatNumber(EUPerOperation)
                 + aString3
                 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
@@ -149,13 +149,13 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             EnumChatFormatting.GRAY + aTier
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getTier(stack))
+                + formatNumber(this.getTier(stack))
                 + EnumChatFormatting.GRAY
                 + "] "
                 + aInputLimit
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getTransferLimit(stack))
+                + formatNumber(this.getTransferLimit(stack))
                 + EnumChatFormatting.GRAY
                 + aEUT
                 + "]");
@@ -163,12 +163,12 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             EnumChatFormatting.GRAY + aCurrentPower
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getCharge(stack))
+                + formatNumber(this.getCharge(stack))
                 + EnumChatFormatting.GRAY
                 + aEU
                 + "] ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
+                + formatNumber(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
                 + EnumChatFormatting.GRAY
                 + "%]");
         list.add(EnumChatFormatting.GOLD + aString6 + EnumChatFormatting.GRAY);
@@ -316,17 +316,17 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         if (hp > 0 || hunger > 0 || saturation > 0)
             GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
 
-        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
+        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hp) + " hp.");
 
         if (hunger > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
 
         if (saturation > 0) GTUtility
-            .sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
+            .sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
 
         if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
             (EntityPlayer) arg1,
-            "You check it's remaining uses, it has " + GTUtility.formatNumbers(secondsLeft(baubleStack))
+            "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack))
                 + " seconds left.");
 
     }

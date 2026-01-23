@@ -44,6 +44,6 @@ public class SimpleSpecialValueFormatter implements INEISpecialInfoFormatter {
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 translationKey,
-                GTUtility.formatNumbers((long) recipeInfo.recipe.mSpecialValue * multiplier)));
+                formatNumber((long) recipeInfo.recipe.mSpecialValue * multiplier)));
     }
 }

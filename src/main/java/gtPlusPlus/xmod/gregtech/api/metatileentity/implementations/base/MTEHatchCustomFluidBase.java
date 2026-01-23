@@ -36,7 +36,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
+            new String[] { "Fluid Input for Multiblocks", "Capacity: " + formatNumber(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }

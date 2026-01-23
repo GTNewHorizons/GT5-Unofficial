@@ -633,7 +633,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining),
             StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
     }
 }

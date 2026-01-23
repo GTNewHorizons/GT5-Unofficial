@@ -78,7 +78,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public String[] getDescription() {
         return new String[] {
             "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getSlots(mTier)) + " Slots",
+            "Capacity: " + formatNumber(getSlots(mTier)) + " Slots",
             "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
     }
 

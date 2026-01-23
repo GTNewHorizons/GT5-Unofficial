@@ -570,17 +570,17 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             .addInfo("Transcending Dimensional Boundaries.")
             .addInfo(
                 "Takes " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
+                    + formatNumber(max_efficiency_time_in_ticks / (3600 * 20))
                     + EnumChatFormatting.GRAY
                     + " hours of continuous run time to fully breach dimensional")
             .addInfo(
                 "boundaries and achieve maximum efficiency, reducing fuel consumption by up to "
                     + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(100 * maximum_discount)
+                    + formatNumber(100 * maximum_discount)
                     + "%")
             .addInfo(
                 "When no recipe is running, fuel discount decays x" + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(efficiency_decay_rate)
+                    + formatNumber(efficiency_decay_rate)
                     + EnumChatFormatting.GRAY
                     + " as fast as it builds up, draining")
             .addInfo("the total amount of stored runtime")
@@ -931,30 +931,30 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + "------------",
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
+                + formatNumber(mProgresstime)
                 + EnumChatFormatting.RESET
                 + "t / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
+                + formatNumber(mMaxProgresstime)
                 + EnumChatFormatting.RESET
                 + "t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + formatNumber(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(voltage)
+                + formatNumber(voltage)
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + EnumChatFormatting.YELLOW
@@ -968,13 +968,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mHeatingCapacity)
+                + formatNumber(mHeatingCapacity)
                 + EnumChatFormatting.RESET
                 + " K",
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
+                EnumChatFormatting.GREEN + formatNumber(running_time) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + formatNumber(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
                 extraCatalystNeeded),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.plasma_forge.convergence",
@@ -986,13 +986,13 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                             ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
                             : StatCollector.translateToLocalFormatted(
                                 "GT5U.infodata.plasma_forge.convergence.progress",
-                                GTUtility.formatNumbers((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+                                formatNumber((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
 
                     : EnumChatFormatting.RED
                         + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
             StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET,
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }

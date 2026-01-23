@@ -1148,7 +1148,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             currenttip.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.stocking_hatch.min_amount",
-                    GTUtility.formatNumbers(minSize)));
+                    formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

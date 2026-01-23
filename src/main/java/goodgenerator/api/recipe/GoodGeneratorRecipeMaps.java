@@ -42,9 +42,9 @@ public class GoodGeneratorRecipeMaps {
             int maxNKE = recipeInfo.recipe.mSpecialValue / 10000;
             return Arrays.asList(
                 StatCollector.translateToLocal("value.neutron_activator.0"),
-                GTUtility.formatNumbers(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
+                formatNumber(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
                 StatCollector.translateToLocal("value.neutron_activator.1"),
-                GTUtility.formatNumbers(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
+                formatNumber(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
         })
         .build();
     public static final RecipeMap<ExtremeHeatExchangerBackend> extremeHeatExchangerFuels = RecipeMapBuilder

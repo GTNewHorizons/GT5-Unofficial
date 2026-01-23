@@ -53,7 +53,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             aTier,
             4,
             new String[] { "Fluid Output for Multiblocks",
-                "Capacity: " + GTUtility.formatNumbers(8000L * (1L << aTier)) + "L",
+                "Capacity: " + formatNumber(8000L * (1L << aTier)) + "L",
                 "Right click with screwdriver to restrict output",
                 "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });
@@ -427,12 +427,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
                         : mFluid.getLocalizedName())
                     + EnumChatFormatting.RESET),
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid == null ? 0 : mFluid.amount)
+            EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
+                + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET,
             (!isFluidLocked() || lockedFluidName == null)

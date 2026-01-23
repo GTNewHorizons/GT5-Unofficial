@@ -772,9 +772,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
                     : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
             tList.add(
-                "Recorded " + GTUtility.formatNumbers(mMetaTileEntity.mSoundRequests)
+                "Recorded " + formatNumber(mMetaTileEntity.mSoundRequests)
                     + " sound requests in "
-                    + GTUtility.formatNumbers(mTickTimer - mLastCheckTick)
+                    + formatNumber(mTickTimer - mLastCheckTick)
                     + " ticks.");
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;

@@ -223,7 +223,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
             long voltage = V[mTier];
             String voltageString = StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.voltage",
-                GTUtility.formatNumbers(voltage),
+                formatNumber(voltage),
                 GTUtility.getTierNameWithParentheses(voltage));
 
             if (wasOverclocked(calculator)) {
@@ -244,7 +244,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
                 }
             }
             if (amperage > 0) {
-                amperageValue = GTUtility.formatNumbers(amperage);
+                amperageValue = formatNumber(amperage);
             } else {
                 amperageValue = "1/" + denominator;
             }

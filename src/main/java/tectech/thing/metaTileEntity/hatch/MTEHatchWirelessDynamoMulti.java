@@ -42,7 +42,7 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
                 AuthorColen + GRAY + BOLD + " & " + GREEN + BOLD + "Chrom",
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + YELLOW
-                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + formatNumber(aAmp * V[aTier])
                     + GRAY
                     + " EU/t" },
             aAmp);

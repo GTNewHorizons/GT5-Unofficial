@@ -45,10 +45,10 @@ public class ExtremeHeatExchangerFrontend extends RecipeMapFrontend {
             int threshold = recipeInfo.recipe.mSpecialValue;
             String[] description = new String[4];
             description[0] = StatCollector.translateToLocal("value.extreme_heat_exchanger.0") + " "
-                + GTUtility.formatNumbers(Inputs[0].amount)
+                + formatNumber(Inputs[0].amount)
                 + " L/s";
             description[1] = StatCollector.translateToLocal("value.extreme_heat_exchanger.1");
-            description[2] = GTUtility.formatNumbers(Inputs[1].amount) + " L/s";
+            description[2] = formatNumber(Inputs[1].amount) + " L/s";
             if (!Inputs[0].getUnlocalizedName()
                 .contains("plasma")) {
                 description[3] = StatCollector.translateToLocal("value.extreme_heat_exchanger.4") + " "

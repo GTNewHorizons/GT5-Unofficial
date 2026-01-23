@@ -399,17 +399,17 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new String[] {
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.progress",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.energy_hatches",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(storedEnergy) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(maxEnergy) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 getPowerFlow() * eAmpereFlow <= 0 ? "GT5U.infodata.currently_uses"
                     : "tt.infodata.multi.currently_generates",
-                EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(getPowerFlow())) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET),
+                EnumChatFormatting.RED + formatNumber(Math.abs(getPowerFlow())) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + formatNumber(eAmpereFlow) + EnumChatFormatting.RESET),
             StatCollector.translateToLocal("tt.keyphrase.Tier_Rating") + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[getMaxEnergyInputTier_EM()]
@@ -422,7 +422,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 + StatCollector.translateToLocal("tt.keyphrase.Amp_Rating")
                 + " "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eMaxAmpereFlow)
+                + formatNumber(eMaxAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             StatCollector.translateToLocalFormatted(
@@ -440,11 +440,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                 + eSafeVoid,
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.computation",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(eAvailableData) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(eRequiredData) + EnumChatFormatting.RESET),
             StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
     }
 

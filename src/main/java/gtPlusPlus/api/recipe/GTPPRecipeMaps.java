@@ -52,7 +52,7 @@ public class GTPPRecipeMaps {
             recipeInfo -> Collections.singletonList(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.nei.fuel",
-                    GTUtility.formatNumbers(recipeInfo.recipe.mSpecialValue * 3000L))))
+                    formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelter")
@@ -101,7 +101,7 @@ public class GTPPRecipeMaps {
             final long eut = recipeInfo.recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0);
             final int duration = recipeInfo.recipe.mDuration;
             return Arrays.asList(
-                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", GTUtility.formatNumbers(eut)),
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", formatNumber(eut)),
                 StatCollector
                     .translateToLocalFormatted("gtpp.nei.lftr.dynamo", MathUtils.formatNumbers(duration * eut)),
                 StatCollector

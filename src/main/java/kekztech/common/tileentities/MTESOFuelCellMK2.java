@@ -105,7 +105,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(
-                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
+                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
             .addInfo("Steam production requires the SOFC to heat up completely first")

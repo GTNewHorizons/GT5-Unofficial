@@ -387,7 +387,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             currentTip.add(
                 StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(tag.getInteger("tier"))
+                    + formatNumber(tag.getInteger("tier"))
                     + EnumChatFormatting.RESET);
         }
     }

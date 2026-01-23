@@ -181,7 +181,7 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
             StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
     }
 

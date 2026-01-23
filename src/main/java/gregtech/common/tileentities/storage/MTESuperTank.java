@@ -38,7 +38,7 @@ public class MTESuperTank extends MTEDigitalTankBase {
                     + EnumChatFormatting.RESET
                     + " "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(getCapacity())
+                    + formatNumber(getCapacity())
                     + " L"
                     + EnumChatFormatting.RESET };
         }
@@ -47,12 +47,12 @@ public class MTESuperTank extends MTEDigitalTankBase {
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.infodata.digital_tank.stored_fluid"),
             EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid.amount)
+            EnumChatFormatting.GREEN + formatNumber(mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
+                + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET };
     }

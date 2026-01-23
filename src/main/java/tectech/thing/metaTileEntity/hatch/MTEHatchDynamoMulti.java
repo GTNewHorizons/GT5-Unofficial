@@ -160,7 +160,7 @@ public class MTEHatchDynamoMulti extends MTEHatch {
         currenttip.add(
             translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+                + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
                 + EnumChatFormatting.RESET
@@ -171,7 +171,7 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     public String[] getInfoData() {
         return new String[] { translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
             + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(Amperes * V[mTier])
+            + formatNumber(Amperes * V[mTier])
             + EnumChatFormatting.RESET
             + " EU/t" };
     }

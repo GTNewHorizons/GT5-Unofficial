@@ -293,11 +293,11 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             unit++;
         }
 
-        return GTUtility.formatNumbers(amps) + AMP_UNITS[unit];
+        return formatNumber(amps) + AMP_UNITS[unit];
     }
 
     public static String formatUIEUt(double eut) {
-        if (eut < 1_000_000_000) return GTUtility.formatNumbers(eut);
+        if (eut < 1_000_000_000) return formatNumber(eut);
 
         int exp = 0;
 
@@ -306,7 +306,7 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
             exp += 3;
         }
 
-        return GTUtility.formatNumbers(eut) + "e" + exp;
+        return formatNumber(eut) + "e" + exp;
     }
 
     @Override

@@ -43,7 +43,7 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
                 translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(amps * V[tier])
+                    + formatNumber(amps * V[tier])
                     + EnumChatFormatting.RESET
                     + " EU/t" },
             amps);

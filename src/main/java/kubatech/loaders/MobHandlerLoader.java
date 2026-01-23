@@ -240,10 +240,10 @@ public class MobHandlerLoader {
                 Arrays.asList(
                     StatCollector.translateToLocalFormatted(
                         "kubatech.gui.text.usage_line",
-                        GTUtility.formatNumbers(recipe.mEUt)),
+                        formatNumber(recipe.mEUt)),
                     StatCollector.translateToLocalFormatted(
                         "kubatech.gui.text.time_line",
-                        GTUtility.formatNumbers(recipe.mDuration / 20d))));
+                        formatNumber(recipe.mDuration / 20d))));
         }
     }
 }

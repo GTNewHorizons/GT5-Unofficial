@@ -924,12 +924,12 @@ public class MTEFluidPipe extends MetaPipeEntity {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
             EnumChatFormatting.BLUE + "Fluid Capacity: %%%"
-                + GTUtility.formatNumbers(mCapacity * 20L)
+                + formatNumber(mCapacity * 20L)
                 + "%%% L/sec"
                 + EnumChatFormatting.GRAY);
         descriptions.add(
             EnumChatFormatting.RED + "Heat Limit: %%%"
-                + GTUtility.formatNumbers(mHeatResistance)
+                + formatNumber(mHeatResistance)
                 + "%%% K"
                 + EnumChatFormatting.GRAY);
         if (!mGasProof) {
@@ -979,13 +979,13 @@ public class MTEFluidPipe extends MetaPipeEntity {
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
                 + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(mCapacity * 20L)
+                + formatNumber(mCapacity * 20L)
                 + " L/s");
 
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mHeatResistance)
+                + formatNumber(mHeatResistance)
                 + "K");
 
         // Gas handling info

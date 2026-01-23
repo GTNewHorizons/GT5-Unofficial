@@ -86,7 +86,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     private String getEUtDisplay(OverclockCalculator calculator) {
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.usage",
-            GTUtility.formatNumbers(calculator.getConsumption()),
+            formatNumber(calculator.getConsumption()),
             "");
     }
 
@@ -94,7 +94,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
         long voltage = computeVoltageForEURate(calculator.getConsumption());
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.voltage",
-            GTUtility.formatNumbers(voltage),
+            formatNumber(voltage),
             GTUtility.getTierNameWithParentheses(voltage));
     }
 
@@ -103,7 +103,7 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
     }
 
     private String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(1));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(1));
     }
 
 }

@@ -93,7 +93,7 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
     }
 
     private static String formatUIEUt(double eut) {
-        if (eut < 1_000_000_000) return GTUtility.formatNumbers(eut);
+        if (eut < 1_000_000_000) return formatNumber(eut);
 
         int exp = 0;
 
@@ -102,6 +102,6 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
             exp += 3;
         }
 
-        return GTUtility.formatNumbers(eut) + "e" + exp;
+        return formatNumber(eut) + "e" + exp;
     }
 }

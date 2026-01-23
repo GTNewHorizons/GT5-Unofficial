@@ -65,21 +65,21 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
 
         recipeInfo.drawText(
             StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.total_line", GTUtility.formatNumbers(eut * duration)));
+                .translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
 
         recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", GTUtility.formatNumbers(eut)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
 
         if (duration < 20) {
             recipeInfo.drawText(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.gui.text.time_line_with_ticks",
-                    GTUtility.formatNumbers(duration / 20d),
+                    formatNumber(duration / 20d),
                     duration));
         } else {
             recipeInfo.drawText(
                 StatCollector
-                    .translateToLocalFormatted("GT5U.gui.text.time_line", GTUtility.formatNumbers(duration / 20d)));
+                    .translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20d)));
         }
 
         recipeInfo.drawText(

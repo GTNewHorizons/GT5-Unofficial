@@ -40,7 +40,7 @@ public class MTEHatchEnergyTunnel extends MTEHatchEnergyMulti implements IConnec
                 translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(aAmp * V[aTier])
+                    + formatNumber(aAmp * V[aTier])
                     + EnumChatFormatting.RESET
                     + " EU/t", },
             aAmp); // Energy injecting terminal for Multiblocks

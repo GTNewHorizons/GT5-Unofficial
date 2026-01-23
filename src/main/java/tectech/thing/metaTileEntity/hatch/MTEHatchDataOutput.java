@@ -162,7 +162,7 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
 
         NBTTagCompound tag = accessor.getNBTData();
         currenttip.add(
-            translate("tt.keyphrase.Computation_Transmitting", GTUtility.formatNumbers(tag.getLong("computation"))));
+            translate("tt.keyphrase.Computation_Transmitting", formatNumber(tag.getLong("computation"))));
     }
 
     @Override

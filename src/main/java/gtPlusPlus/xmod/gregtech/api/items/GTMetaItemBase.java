@@ -57,7 +57,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
                 aList.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
-                        GTUtility.formatNumbers(tStats[3]),
+                        formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
@@ -70,9 +70,9 @@ public abstract class GTMetaItemBase extends GTGenericItem
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
-                                GTUtility.formatNumbers(tCharge),
-                                GTUtility.formatNumbers(Math.abs(tStats[0])),
-                                GTUtility.formatNumbers(
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(
                                     V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
@@ -88,8 +88,8 @@ public abstract class GTMetaItemBase extends GTGenericItem
                     + EnumChatFormatting.GRAY);
             aList.add(
                 EnumChatFormatting.BLUE
-                    + (GTUtility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
-                        + GTUtility.formatNumbers(tStats[0])
+                    + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / "
+                        + formatNumber(tStats[0])
                         + "L")
                     + EnumChatFormatting.GRAY);
         }

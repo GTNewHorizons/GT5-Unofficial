@@ -423,7 +423,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     private GTTooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
         return mTooltipCache.getData(
             EMIT_ENERGY_TOOLTIP,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(V[mTier])
+            EnumChatFormatting.GREEN + formatNumber(V[mTier])
                 + " ("
                 + GTUtility.getColoredTierNameFromTier(mTier)
                 + EnumChatFormatting.GREEN

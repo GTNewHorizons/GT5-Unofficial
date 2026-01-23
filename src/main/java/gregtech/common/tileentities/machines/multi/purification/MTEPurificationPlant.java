@@ -183,13 +183,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addInfo("Every recipe has a base chance of success. Success rate can be boosted")
             .addInfo("by using a portion of the target output as a secondary input")
             .addInfo(
-                EnumChatFormatting.RED + GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100)
+                EnumChatFormatting.RED + formatNumber(WATER_BOOST_NEEDED_FLUID * 100)
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " of output yield will be consumed in exchange for an")
             .addInfo(
                 "additive " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100)
+                    + formatNumber(WATER_BOOST_BONUS_CHANCE * 100)
                     + "%"
                     + EnumChatFormatting.GRAY
                     + " increase to success")
@@ -498,7 +498,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         ret.add(
             translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET);
         // Show linked purification units and their status
         ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));

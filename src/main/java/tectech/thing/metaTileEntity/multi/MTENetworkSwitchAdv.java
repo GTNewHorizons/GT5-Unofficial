@@ -396,7 +396,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                 .dynamicString(
                     () -> GTUtility.translate(
                         "GT5U.machines.computation_hatch.pending_computation",
-                        GTUtility.formatNumbers(pendingComputation)))
+                        formatNumber(pendingComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));
@@ -405,7 +405,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                 .dynamicString(
                     () -> GTUtility.translate(
                         "GT5U.machines.computation_hatch.wasted_computation",
-                        GTUtility.formatNumbers(wastedComputation)))
+                        formatNumber(wastedComputation)))
                 .setSynced(false)
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> mMaxProgresstime > 0));

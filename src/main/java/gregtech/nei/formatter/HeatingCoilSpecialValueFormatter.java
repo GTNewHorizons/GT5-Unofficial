@@ -24,7 +24,7 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.heat_capacity",
-                GTUtility.formatNumbers(heat),
+                formatNumber(heat),
                 HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
     }
 }
