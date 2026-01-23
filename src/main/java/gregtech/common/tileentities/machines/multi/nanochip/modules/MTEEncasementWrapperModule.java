@@ -57,6 +57,17 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         .addElement('D', Casings.NanochipGlass.asElement())
         .build();
 
+    /*
+    thinking: which recipes should this use?
+    - what to do about the bolt & optical fibre cable in optical processor recipe?
+        == add raw CCs for it
+    - what with recipes that have foil but no framebox (all opticals except mainframe)?
+
+    Encasement wrapper recipes:
+        - 1x Foil -> 1x Foil Wrapper Spool
+        - Foil Wrapper Spool + Cut Framebox -> Mainframe Encasing (tiered)
+     */
+
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
@@ -160,7 +171,12 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
 
     // TODO: This should be removed probably? Encasement wrapper takes 2 different ccs and outputs a circuit encasement
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = "Wrapped " + unprocessedName;
+        if (component == CircuitComponent.FoilSiliconeRubber
+            || component == CircuitComponent.FoilPolybenzimidazole
+            || component == CircuitComponent.FoilShirabon
+            || component == CircuitComponent.FoilRadoxPolymer) {
+            component.fallbackLocalizedName = unprocessedName + "Wrapper Spool";
+        }
     }
 
     @Override

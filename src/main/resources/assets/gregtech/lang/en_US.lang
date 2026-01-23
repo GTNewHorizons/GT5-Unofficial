@@ -3318,6 +3318,9 @@ gt.vajra.tooltip.flavor=Your friendly instant block breaker
 gt.vajra.tooltip.charge=Can be charged in any %s machine
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
+# NAC circuit components
+gt.circuitcomponent.casing.opticalmainframe=Optical Mainframe Encasement
+
 # GT++
 
 GT5U.gui.text.no_water=§7Missing water
