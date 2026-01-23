@@ -66,6 +66,13 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     }
 
     @Override
+    public void onColorChangeServer(byte aColor) {
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onColorChangeServer(aColor);
+    }
+
+
+    @Override
     public byte getColorization() {
         return this.getBaseMetaTileEntity()
             .getColorization();
@@ -171,8 +178,8 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     @Override
     public void onFacingChange() {
-        super.onFacingChange();
         VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onFacingChange();
     }
 
     @Override

@@ -31,12 +31,6 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
         VacuumFactoryGrid.INSTANCE.removeElement(this);
     }
 
-    @Override
-    public void onFacingChange() {
-        super.onFacingChange();
-
-        VacuumFactoryGrid.INSTANCE.addElement(this);
-    }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
