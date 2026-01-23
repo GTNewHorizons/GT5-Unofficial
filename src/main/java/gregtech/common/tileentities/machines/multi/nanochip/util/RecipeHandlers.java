@@ -734,7 +734,7 @@ public class RecipeHandlers {
             TierEU.RECIPE_LuV);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedFrameboxTritanium, 8),
+                new CircuitComponentStack(CircuitComponent.OpticalMainframeCasing, 1),
                 new CircuitComponentStack(CircuitComponent.OpticalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 32),
@@ -742,9 +742,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 128),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 128)),
+                new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(5760),
                 Materials.Radon.getGas(5760),
