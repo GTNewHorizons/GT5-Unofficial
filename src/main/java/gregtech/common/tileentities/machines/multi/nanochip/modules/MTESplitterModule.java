@@ -4,6 +4,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SPLITTER_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
@@ -263,6 +264,12 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             (plural ? EnumChatFormatting.DARK_PURPLE + "s" : "")
             + EnumChatFormatting.GRAY;
         // spotless:on
+    }
+
+    @Override
+    public int getMaxRecipeDuration() {
+        // Not really the actual processing time, which is instant. but this is just for charging EU
+        return 1 * SECONDS;
     }
 
     @Override
