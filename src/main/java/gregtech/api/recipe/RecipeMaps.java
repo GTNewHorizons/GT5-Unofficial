@@ -97,7 +97,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingCh
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
-import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESheetSupervisorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
@@ -1446,14 +1446,15 @@ public final class RecipeMaps {
             MTEOpticalOrganizerModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
-    public static final RecipeMap<NACRecipeMapBackend> nanochipSheetSupervisor = RecipeMapBuilder
-        .of("gt.recipe.nanochip.sheetsupervisor", NACRecipeMapBackend::new)
+    public static final RecipeMap<NACRecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
+        .of("gt.recipe.nanochip.encasementwrapper", NACRecipeMapBackend::new)
         .maxIO(1, 1, 0, 0)
         .minInputs(1, 0)
         .recipeTransformer(recipe -> {
             CircuitComponent output = CircuitComponent.getFromFakeStackUnsafe(recipe.mOutputs[0]);
             CircuitComponent input = CircuitComponent.getFromFakeStackUnsafe(recipe.mInputs[0]);
-            MTESheetSupervisorModule.registerLocalName(input.getLocalizedName(), output);
+            // TODO: This should probably go when the recipes are properly added
+            MTEEncasementWrapperModule.registerLocalName(input.getLocalizedName(), output);
         })
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
