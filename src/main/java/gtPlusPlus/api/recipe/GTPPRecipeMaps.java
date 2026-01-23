@@ -1,5 +1,6 @@
 package gtPlusPlus.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
@@ -26,7 +27,6 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
@@ -50,9 +50,8 @@ public class GTPPRecipeMaps {
         .maxIO(0, 0, 1, 0)
         .neiSpecialInfoFormatter(
             recipeInfo -> Collections.singletonList(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.nei.fuel",
-                    formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
+                StatCollector
+                    .translateToLocalFormatted("GT5U.nei.fuel", formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelter")
@@ -103,9 +102,9 @@ public class GTPPRecipeMaps {
             return Arrays.asList(
                 StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", formatNumber(eut)),
                 StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.dynamo", MathUtils.formatNumbers(duration * eut)),
+                    .translateToLocalFormatted("gtpp.nei.lftr.dynamo", formatNumber(duration * eut)),
                 StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.total", MathUtils.formatNumbers(duration * eut * 4)));
+                    .translateToLocalFormatted("gtpp.nei.lftr.total", formatNumber(duration * eut * 4)));
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nuclearSaltProcessingPlantRecipes = RecipeMapBuilder

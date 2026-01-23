@@ -1,6 +1,7 @@
 package kekztech.common.itemBlocks;
 
 import static com.google.common.math.LongMath.pow;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.util.GTUtility;
 
 public class ItemBlockLapotronicEnergyUnit extends ItemBlock {
 

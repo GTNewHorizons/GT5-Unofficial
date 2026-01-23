@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.List;

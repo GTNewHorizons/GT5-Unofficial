@@ -1,5 +1,6 @@
 package tectech.thing.casing;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
@@ -38,7 +39,7 @@ public class ItemCasingsBA0 extends ItemCasings {
             case 5: // "LuV Superconductor Primary Tesla Windings"
                 tooltip.add(
                     translateToLocal("gt.blockcasingsBA0.0.desc.0") + " "
-                        + formatNumbers(V[aStack.getItemDamage() + 1])
+                        + formatNumber(V[aStack.getItemDamage() + 1])
                         + " EU/t"); // Handles up to
                 tooltip
                     .add(AQUA.toString() + EnumChatFormatting.BOLD + translateToLocal("gt.blockcasingsBA0.0.desc.1")); // What
@@ -81,7 +82,7 @@ public class ItemCasingsBA0 extends ItemCasings {
                 break;
             case 9: // "ZPM Superconductor Primary Tesla Windings"
                 tooltip
-                    .add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumbers(TierEU.ZPM) + " EU/t"); // Handles
+                    .add(translateToLocal("gt.blockcasingsBA0.0.desc.0") + " " + formatNumber(TierEU.ZPM) + " EU/t"); // Handles
                 // up
                 // to
                 tooltip

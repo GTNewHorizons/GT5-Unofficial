@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -15,7 +17,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.TAE;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.MaterialCasings;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -40,9 +41,8 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             if (tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
                 aList.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gtpp.tooltip.meta_casing.energy_storage",
-                        formatNumber(capacity)));
+                    StatCollector
+                        .translateToLocalFormatted("gtpp.tooltip.meta_casing.energy_storage", formatNumber(capacity)));
             }
             super.addInformation(aStack, aPlayer, aList, aF3_H);
         }

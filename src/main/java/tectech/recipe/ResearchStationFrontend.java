@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Collections;
@@ -17,7 +18,6 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
@@ -56,19 +56,15 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
-                formatNumber(
-                    (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
-
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut * ampere)));
+                formatNumber((1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
 
         recipeInfo
-            .drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut * ampere)));
 
-        recipeInfo.drawText(
-            translateToLocalFormatted(
-                "tt.nei.research.min_computation",
-                formatNumber(minComputationPerSec)));
+        recipeInfo.drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
+
+        recipeInfo
+            .drawText(translateToLocalFormatted("tt.nei.research.min_computation", formatNumber(minComputationPerSec)));
     }
 
     @Override

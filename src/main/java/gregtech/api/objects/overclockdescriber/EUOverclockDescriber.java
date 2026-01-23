@@ -1,5 +1,6 @@
 package gregtech.api.objects.overclockdescriber;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
 import javax.annotation.ParametersAreNonnullByDefault;

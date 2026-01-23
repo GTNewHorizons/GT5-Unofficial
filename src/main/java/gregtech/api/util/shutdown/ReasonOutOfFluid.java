@@ -1,6 +1,5 @@
 package gregtech.api.util.shutdown;
 
-
 import java.util.Objects;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.Materials;
+
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class ReasonOutOfFluid implements ShutDownReason {
 
@@ -35,7 +36,7 @@ public class ReasonOutOfFluid implements ShutDownReason {
             StatCollector.translateToLocalFormatted(
                 "GT5U.gui.text.out_of_fluid",
                 requiredFluid.getLocalizedName(),
-                formatNumbers(requiredFluid.amount)));
+                formatNumber(requiredFluid.amount)));
     }
 
     @Override

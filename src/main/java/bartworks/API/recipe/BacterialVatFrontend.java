@@ -1,5 +1,6 @@
 package bartworks.API.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTUtility.getTierNameWithParentheses;
 
@@ -17,7 +18,6 @@ import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -84,8 +84,8 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
         Sievert data = recipeInfo.recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, new Sievert(0, false));
         int sievert = data.sievert;
         boolean isExact = data.isExact;
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.nei.display.total", formatNumber(eut * duration)));
+        recipeInfo
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.total", formatNumber(eut * duration)));
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.usage",

@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GregTech;
 import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
@@ -211,13 +212,13 @@ public class ItemVolumetricFlask extends GTGenericItem
     protected void addAdditionalToolTips(List<String> info, ItemStack stack, EntityPlayer aPlayer) {
         FluidStack fs = getFluid(stack);
         if (fs != null) {
-            info.add(String.format("< %s, %s mB >", GTUtility.getFluidName(fs, true), formatNumbers(fs.amount)));
+            info.add(String.format("< %s, %s mB >", GTUtility.getFluidName(fs, true), formatNumber(fs.amount)));
         } else {
             info.add(
                 String.format(
                     "< %s, %s mB >",
                     StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.empty"),
-                    formatNumbers(getCapacity(stack))));
+                    formatNumber(getCapacity(stack))));
         }
         info.add(StatCollector.translateToLocal("GT5U.tooltip.volumetric_flask.set_volume"));
     }

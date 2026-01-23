@@ -6,6 +6,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.UNDERLINE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.casing.Casings.RadiationProofMachineCasing;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -569,10 +570,10 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
 
         sb.append(" (");
         if (decayRate > 1) {
-            sb.append(formatNumbers(decayRate))
+            sb.append(formatNumber(decayRate))
                 .append("/s)");
         } else {
-            sb.append(formatNumbers(1d / decayRate))
+            sb.append(formatNumber(1d / decayRate))
                 .append("s/ea)");
         }
 
@@ -597,7 +598,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     () -> GTUtility.translate(
                         "GT5U.gui.text.content-entry",
                         isotope == null ? "" : isotope.getDisplayName(),
-                        formatNumbers(storedIsotope)))
+                        formatNumber(storedIsotope)))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> isotope != null)
                 .setSize(179, 10));
@@ -607,14 +608,14 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     () -> GTUtility.translate(
                         "GT5U.gui.text.content-entry",
                         product == null ? "" : product.getDisplayName(),
-                        formatNumbers(storedProduct)))
+                        formatNumber(storedProduct)))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> product != null)
                 .setSize(179, 10));
         screenElements.widget(
             TextWidget
                 .dynamicString(
-                    () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumbers(decayRate), getDecayRate()))
+                    () -> GTUtility.translate("GT5U.gui.text.decay-rate", formatNumber(decayRate), getDecayRate()))
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(w -> decayRate > 0)
                 .setSize(179, 10));

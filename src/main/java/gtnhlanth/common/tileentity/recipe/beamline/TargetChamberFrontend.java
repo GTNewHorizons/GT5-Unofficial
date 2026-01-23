@@ -1,5 +1,7 @@
 package gtnhlanth.common.tileentity.recipe.beamline;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.List;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -84,10 +86,8 @@ public class TargetChamberFrontend extends RecipeMapFrontend {
 
     // todo: use an OverclockDescriber here
     private String getEUtDisplay(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted(
-            "GT5U.nei.display.usage",
-            formatNumber(calculator.getConsumption()),
-            "");
+        return StatCollector
+            .translateToLocalFormatted("GT5U.nei.display.usage", formatNumber(calculator.getConsumption()), "");
     }
 
     private String getVoltageString(OverclockCalculator calculator) {

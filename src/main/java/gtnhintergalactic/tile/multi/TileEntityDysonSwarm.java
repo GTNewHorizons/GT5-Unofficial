@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -46,7 +47,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -469,10 +469,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
             "Modules: " + YELLOW + formatNumber(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-                + formatNumber(powerFactor * 100.0)
-                + "%"
-                + RESET,
+            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET,
             "Theoretical Output: " + YELLOW
                 + formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
                 + RESET

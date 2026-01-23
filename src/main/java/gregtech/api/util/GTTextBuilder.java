@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;

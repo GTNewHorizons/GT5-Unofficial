@@ -1,5 +1,6 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.EU_MULTIPLIER;
 
 import java.util.List;
@@ -50,13 +51,13 @@ public class TranscendentPlasmaMixerFrontend extends RecipeMapFrontend {
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.total",
-                formatNumbers(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)));
+                formatNumber(multiplier * recipeInfo.recipe.mDuration * recipeInfo.recipe.mEUt)));
         // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
         long averageUsage = multiplier * recipeInfo.recipe.mEUt;
         recipeInfo.drawText(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.display.average",
-                formatNumbers(averageUsage),
+                formatNumber(averageUsage),
                 GTUtility.getTierNameWithParentheses(averageUsage)));
     }
 }

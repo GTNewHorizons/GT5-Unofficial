@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
@@ -73,8 +74,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "Stores " + formatNumber(commonSizeCompute(aTier)) + " items",
-                "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
+            new String[] { "Stores " + formatNumber(commonSizeCompute(aTier)) + " items", "Use a screwdriver to enable",
+                "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
     protected static int commonSizeCompute(int tier) {

@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.classic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -48,7 +50,6 @@ import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
-import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 

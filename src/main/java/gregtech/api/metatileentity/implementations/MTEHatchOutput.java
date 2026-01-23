@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
@@ -52,8 +53,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             aNameRegional,
             aTier,
             4,
-            new String[] { "Fluid Output for Multiblocks",
-                "Capacity: " + formatNumber(8000L * (1L << aTier)) + "L",
+            new String[] { "Fluid Output for Multiblocks", "Capacity: " + formatNumber(8000L * (1L << aTier)) + "L",
                 "Right click with screwdriver to restrict output",
                 "Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid",
                 "Restricted Output Hatches are given priority for Multiblock Fluid output" });

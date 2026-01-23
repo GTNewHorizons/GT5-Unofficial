@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -99,8 +100,8 @@ public class ItemBreederCell extends GTGenericItem implements IReactorComponent 
         aList.add(
             translateToLocalFormatted(
                 "gt.item.desc.progress",
-                color2 + formatNumbers(aStack.getItemDamage()) + EnumChatFormatting.RESET,
-                formatNumbers(getMaxDamage())));
+                color2 + formatNumber(aStack.getItemDamage()) + EnumChatFormatting.RESET,
+                formatNumber(getMaxDamage())));
         if (aStack.getItemDamage() > 0) aList.add(EnumChatFormatting.RED + translateToLocal("gt.item.desc.haz_rad"));
     }
 

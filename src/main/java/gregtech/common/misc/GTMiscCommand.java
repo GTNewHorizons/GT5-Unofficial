@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
@@ -26,7 +27,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTMusicSystem;
-import gregtech.api.util.GTUtility;
 import gregtech.commands.GTBaseCommand;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.pollution.Pollution;

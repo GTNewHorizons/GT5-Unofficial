@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;

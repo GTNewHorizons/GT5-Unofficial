@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +61,9 @@ public class ItemFluidDisplay extends GTGenericItem {
             long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
             if (tToolTipAmount > 0L) {
                 aList.add(
-                    EnumChatFormatting.BLUE + StatCollector
-                        .translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatNumber(tToolTipAmount))
+                    EnumChatFormatting.BLUE
+                        + StatCollector
+                            .translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatNumber(tToolTipAmount))
                         + EnumChatFormatting.GRAY);
             }
             aList.add(

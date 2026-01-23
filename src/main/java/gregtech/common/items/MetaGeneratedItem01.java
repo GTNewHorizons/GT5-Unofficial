@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
@@ -1947,9 +1948,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UHV.ID,
                     "Electric Pump (UHV)",
-                    formatNumber(8388608) + PartCoverText
-                        + formatNumber(8388608 * 20)
-                        + PartCoverText2,
+                    formatNumber(8388608) + PartCoverText + formatNumber(8388608 * 20) + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 256L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 256L),
@@ -1960,9 +1959,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UEV.ID,
                     "Electric Pump (UEV)",
-                    formatNumber(16777216) + PartCoverText
-                        + formatNumber(16777216 * 20)
-                        + PartCoverText2,
+                    formatNumber(16777216) + PartCoverText + formatNumber(16777216 * 20) + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1973,9 +1970,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 addItem(
                     Electric_Pump_UIV.ID,
                     "Electric Pump (UIV)",
-                    formatNumber(33554432) + PartCoverText
-                        + formatNumber(33554432 * 20)
-                        + PartCoverText2,
+                    formatNumber(33554432) + PartCoverText + formatNumber(33554432 * 20) + PartCoverText2,
                     new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                     new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1985,9 +1980,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UMV.ID,
                 "Electric Pump (UMV)",
-                formatNumber(67108864) + PartCoverText
-                    + formatNumber(67108864 * 20)
-                    + PartCoverText2,
+                formatNumber(67108864) + PartCoverText + formatNumber(67108864 * 20) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -1996,9 +1989,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_UXV.ID,
                 "Electric Pump (UXV)",
-                formatNumber(134217728) + PartCoverText
-                    + formatNumber(134217728 * 20L)
-                    + PartCoverText2,
+                formatNumber(134217728) + PartCoverText + formatNumber(134217728 * 20L) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2007,9 +1998,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Electric_Pump_MAX.ID,
                 "Electric Pump (MAX)",
-                formatNumber(268435456) + PartCoverText
-                    + formatNumber(268435456 * 20L)
-                    + PartCoverText2,
+                formatNumber(268435456) + PartCoverText + formatNumber(268435456 * 20L) + PartCoverText2,
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 512L),
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 512L),
@@ -2061,82 +2050,38 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.ITER, 16L),
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 16L)));
 
-        ItemList.FluidRegulator_LV.set(
-            addItem(
-                FluidRegulator_LV.ID,
-                "Fluid Regulator (LV)",
-                FRText1 + formatNumber(32 * 20) + FRText2));
-        ItemList.FluidRegulator_MV.set(
-            addItem(
-                FluidRegulator_MV.ID,
-                "Fluid Regulator (MV)",
-                FRText1 + formatNumber(128 * 20) + FRText2));
-        ItemList.FluidRegulator_HV.set(
-            addItem(
-                FluidRegulator_HV.ID,
-                "Fluid Regulator (HV)",
-                FRText1 + formatNumber(512 * 20) + FRText2));
-        ItemList.FluidRegulator_EV.set(
-            addItem(
-                FluidRegulator_EV.ID,
-                "Fluid Regulator (EV)",
-                FRText1 + formatNumber(2048 * 20) + FRText2));
-        ItemList.FluidRegulator_IV.set(
-            addItem(
-                FluidRegulator_IV.ID,
-                "Fluid Regulator (IV)",
-                FRText1 + formatNumber(8192 * 20) + FRText2));
-        ItemList.FluidRegulator_LuV.set(
-            addItem(
-                FluidRegulator_LuV.ID,
-                "Fluid Regulator (LuV)",
-                FRText1 + formatNumber(32768 * 20) + FRText2));
+        ItemList.FluidRegulator_LV
+            .set(addItem(FluidRegulator_LV.ID, "Fluid Regulator (LV)", FRText1 + formatNumber(32 * 20) + FRText2));
+        ItemList.FluidRegulator_MV
+            .set(addItem(FluidRegulator_MV.ID, "Fluid Regulator (MV)", FRText1 + formatNumber(128 * 20) + FRText2));
+        ItemList.FluidRegulator_HV
+            .set(addItem(FluidRegulator_HV.ID, "Fluid Regulator (HV)", FRText1 + formatNumber(512 * 20) + FRText2));
+        ItemList.FluidRegulator_EV
+            .set(addItem(FluidRegulator_EV.ID, "Fluid Regulator (EV)", FRText1 + formatNumber(2048 * 20) + FRText2));
+        ItemList.FluidRegulator_IV
+            .set(addItem(FluidRegulator_IV.ID, "Fluid Regulator (IV)", FRText1 + formatNumber(8192 * 20) + FRText2));
+        ItemList.FluidRegulator_LuV
+            .set(addItem(FluidRegulator_LuV.ID, "Fluid Regulator (LuV)", FRText1 + formatNumber(32768 * 20) + FRText2));
         ItemList.FluidRegulator_ZPM.set(
-            addItem(
-                FluidRegulator_ZPM.ID,
-                "Fluid Regulator (ZPM)",
-                FRText1 + formatNumber(131072 * 20) + FRText2));
-        ItemList.FluidRegulator_UV.set(
-            addItem(
-                FluidRegulator_UV.ID,
-                "Fluid Regulator (UV)",
-                FRText1 + formatNumber(524288 * 20) + FRText2));
+            addItem(FluidRegulator_ZPM.ID, "Fluid Regulator (ZPM)", FRText1 + formatNumber(131072 * 20) + FRText2));
+        ItemList.FluidRegulator_UV
+            .set(addItem(FluidRegulator_UV.ID, "Fluid Regulator (UV)", FRText1 + formatNumber(524288 * 20) + FRText2));
         ItemList.FluidRegulator_UHV
             .set(
-                addItem(
-                    FluidRegulator_UHV.ID,
-                    "Fluid Regulator (UHV)",
-                    FRText1 + formatNumber(8388608 * 20) + FRText2))
+                addItem(FluidRegulator_UHV.ID, "Fluid Regulator (UHV)", FRText1 + formatNumber(8388608 * 20) + FRText2))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
-        ItemList.FluidRegulator_UEV
-            .set(
-                addItem(
-                    FluidRegulator_UEV.ID,
-                    "Fluid Regulator (UEV)",
-                    FRText1 + formatNumber(16777216 * 20) + FRText2))
+        ItemList.FluidRegulator_UEV.set(
+            addItem(FluidRegulator_UEV.ID, "Fluid Regulator (UEV)", FRText1 + formatNumber(16777216 * 20) + FRText2))
             .setRender(new InfinityMetaItemRenderer());
-        ItemList.FluidRegulator_UIV
-            .set(
-                addItem(
-                    FluidRegulator_UIV.ID,
-                    "Fluid Regulator (UIV)",
-                    FRText1 + formatNumber(33554432 * 20) + FRText2))
+        ItemList.FluidRegulator_UIV.set(
+            addItem(FluidRegulator_UIV.ID, "Fluid Regulator (UIV)", FRText1 + formatNumber(33554432 * 20) + FRText2))
             .setRender(new TranscendentalMetaItemRenderer());
         ItemList.FluidRegulator_UMV.set(
-            addItem(
-                FluidRegulator_UMV.ID,
-                "Fluid Regulator (UMV)",
-                FRText1 + formatNumber(67108864 * 20) + FRText2));
+            addItem(FluidRegulator_UMV.ID, "Fluid Regulator (UMV)", FRText1 + formatNumber(67108864 * 20) + FRText2));
         ItemList.FluidRegulator_UXV.set(
-            addItem(
-                FluidRegulator_UXV.ID,
-                "Fluid Regulator (UXV)",
-                FRText1 + formatNumber(134217728 * 20L) + FRText2));
+            addItem(FluidRegulator_UXV.ID, "Fluid Regulator (UXV)", FRText1 + formatNumber(134217728 * 20L) + FRText2));
         ItemList.FluidRegulator_MAX.set(
-            addItem(
-                FluidRegulator_MAX.ID,
-                "Fluid Regulator (MAX)",
-                FRText1 + formatNumber(268435456 * 20L) + FRText2));
+            addItem(FluidRegulator_MAX.ID, "Fluid Regulator (MAX)", FRText1 + formatNumber(268435456 * 20L) + FRText2));
 
         ItemList.FluidFilter.set(
             addItem(FluidFilter.ID, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));

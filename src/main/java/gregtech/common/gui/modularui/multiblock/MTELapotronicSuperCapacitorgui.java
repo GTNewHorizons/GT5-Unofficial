@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -70,15 +71,14 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                 .asWidget())
 
             .child(IKey.dynamic(() -> {
-                String avgString = EnumChatFormatting.GREEN + formatNumber(avgIn.getValue())
-                    .toString() + EnumChatFormatting.WHITE;
+                String avgString = EnumChatFormatting.GREEN + formatNumber(avgIn.getValue()).toString()
+                    + EnumChatFormatting.WHITE;
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in", avgString);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String euOut = EnumChatFormatting.RED + formatNumber(avgOut.getValue())
-                    + EnumChatFormatting.WHITE;
+                String euOut = EnumChatFormatting.RED + formatNumber(avgOut.getValue()) + EnumChatFormatting.WHITE;
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out", euOut);
             })
@@ -96,8 +96,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String lost = EnumChatFormatting.RED + formatNumber(loss.getValue())
-                    .toString();
+                String lost = EnumChatFormatting.RED + formatNumber(loss.getValue()).toString();
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.passive_loss", lost);
             })
@@ -195,13 +194,6 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                         IKey.str(
                             StatCollector.translateToLocalFormatted("gui.kekztech_lapotronicenergyunit.warning.text"))
                             .asWidget()));
-    }
-
-    private String formatNumber(BigInteger aNumber) {
-        // lol random random number thats big (pulled from old ui)
-        return aNumber.compareTo(BigInteger.valueOf(1_000_000_000L)) > 0 ? GTUtility.scientificFormat(aNumber)
-            : formatNumber(aNumber);
-
     }
 
     public String getTimeTo(double avgIn, double avgOut, double passLoss, double cap, double sto) {

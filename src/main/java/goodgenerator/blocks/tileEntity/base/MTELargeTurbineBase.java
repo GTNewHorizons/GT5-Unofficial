@@ -2,6 +2,7 @@
 // The origin one in gt made the abstract method private so i can't imp it.
 package goodgenerator.blocks.tileEntity.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -345,11 +346,7 @@ public abstract class MTELargeTurbineBase extends MTEEnhancedMultiBlockBase<MTEL
         }
         return new String[] {
             // 8 Lines available for information panels
-            tRunning + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t", /* 1 */
+            tRunning + ": " + EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET + " EU/t", /* 1 */
             tMaintainance, /* 2 */
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
                 + EnumChatFormatting.YELLOW

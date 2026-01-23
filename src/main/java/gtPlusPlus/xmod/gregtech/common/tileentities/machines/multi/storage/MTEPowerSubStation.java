@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -687,20 +688,16 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
 
         String storedEnergyText;
         if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText = EnumChatFormatting.RED + formatNumber(this.getEUVar())
-                + EnumChatFormatting.RESET;
+            storedEnergyText = EnumChatFormatting.RED + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
         } else {
-            storedEnergyText = EnumChatFormatting.GREEN + formatNumber(this.getEUVar())
-                + EnumChatFormatting.RESET;
+            storedEnergyText = EnumChatFormatting.GREEN + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
         }
 
         int errorCode = getErrorDisplayID();
         boolean mMaint = (errorCode != 0);
 
         return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
-            "Capacity: " + EnumChatFormatting.YELLOW
-                + formatNumber(this.maxEUStore())
-                + EnumChatFormatting.RESET,
+            "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET,
             "Running Costs: " + EnumChatFormatting.RED
                 + formatNumber(this.computeEnergyTax())
                 + EnumChatFormatting.RESET

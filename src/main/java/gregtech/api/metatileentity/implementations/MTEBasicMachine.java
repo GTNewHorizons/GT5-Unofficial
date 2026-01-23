@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -906,8 +907,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             translateToLocalFormatted(
                 "GT5U.infodata.currently_uses",
                 EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage)
-                    + EnumChatFormatting.RESET) };
+                EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
     }
 
     @Override

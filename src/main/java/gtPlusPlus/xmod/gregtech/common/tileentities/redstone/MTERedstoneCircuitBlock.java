@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.redstone;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

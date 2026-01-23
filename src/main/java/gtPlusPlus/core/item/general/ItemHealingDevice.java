@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.general;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
@@ -135,10 +136,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
         list.add(
-            EnumChatFormatting.GREEN + aString2
-                + formatNumber(EUPerOperation)
-                + aString3
-                + EnumChatFormatting.GRAY);
+            EnumChatFormatting.GREEN + aString2 + formatNumber(EUPerOperation) + aString3 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.RED + aString5 + EnumChatFormatting.GRAY);
 
@@ -318,16 +316,14 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
         if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hp) + " hp.");
 
-        if (hunger > 0)
-            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
+        if (hunger > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
 
-        if (saturation > 0) GTUtility
-            .sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
+        if (saturation > 0)
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
 
         if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
             (EntityPlayer) arg1,
-            "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack))
-                + " seconds left.");
+            "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack)) + " seconds left.");
 
     }
 

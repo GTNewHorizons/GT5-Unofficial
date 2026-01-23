@@ -1,5 +1,6 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -78,7 +79,7 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
         currentTip.add(
             GRAY + translateToLocalFormatted(
                 "GT5U.tooltip.space_project_frontend.item_count",
-                formatNumbers(pStack.realStackSize)));
+                formatNumber(pStack.realStackSize)));
         return currentTip;
     }
 

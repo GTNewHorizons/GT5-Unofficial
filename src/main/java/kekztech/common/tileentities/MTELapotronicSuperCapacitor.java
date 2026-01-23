@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -420,8 +421,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "+ capacitor in the multiblock.")
             .addInfo(
                 "When enabled every " + EnumChatFormatting.BLUE
-                    + GTUtility
-                        .formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
+                    + formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks)
                     + EnumChatFormatting.GRAY
                     + " ticks the LSC will attempt to re-balance against your")
             .addInfo("wireless EU network.")

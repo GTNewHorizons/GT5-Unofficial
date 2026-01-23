@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static tectech.loader.recipe.Godforge.magmatterItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterSpaceFluidItemsForNEI;
 import static tectech.loader.recipe.Godforge.magmatterTimeFluidItemsForNEI;
@@ -22,7 +23,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
@@ -72,14 +72,12 @@ public class GodforgeExoticFrontend extends RecipeMapFrontend {
         long eut = recipeInfo.recipe.mEUt;
         long duration = recipeInfo.recipe.mDuration;
         recipeInfo.drawText(
-            StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
 
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
 
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20)));
+        recipeInfo
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20)));
 
     }
 

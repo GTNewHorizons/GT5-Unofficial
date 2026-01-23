@@ -1,5 +1,7 @@
 package gregtech.api.task;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -15,7 +17,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import gregtech.GTMod;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
 /**
@@ -99,8 +100,8 @@ public final class CooperativeScheduler {
         }
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
-            GTMod.GT_FML_LOGGER.info(
-                "Task scheduler took " + formatNumber((System.nanoTime() - start) / 1e3) + " microseconds");
+            GTMod.GT_FML_LOGGER
+                .info("Task scheduler took " + formatNumber((System.nanoTime() - start) / 1e3) + " microseconds");
         }
 
         for (CoopFuture<?> future : newTasks) {

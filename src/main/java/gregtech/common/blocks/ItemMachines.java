@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
 import static net.minecraft.util.StatCollector.translateToLocal;

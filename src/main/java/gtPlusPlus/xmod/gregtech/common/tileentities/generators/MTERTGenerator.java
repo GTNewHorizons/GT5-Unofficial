@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -114,8 +116,7 @@ public class MTERTGenerator extends MTEBasicGenerator {
                         this.mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     this.mInventory[getStackDisplaySlot()].setStackDisplayName(
                         "Generating: "
-                            + formatNumber(
-                                aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
+                            + formatNumber(aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU())
                             + " EU");
                 }
             } else {

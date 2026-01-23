@@ -1,5 +1,7 @@
 package gregtech.api.recipe.check;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import javax.annotation.Nonnull;

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -465,7 +466,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             if (actualEnergyUsage > 0) {
                 currentTip.add(
                     StatCollector
-                        .translateToLocalFormatted("GTPP.waila.steam.use", formatNumbers(actualEnergyUsage * 20)));
+                        .translateToLocalFormatted("GTPP.waila.steam.use", formatNumber(actualEnergyUsage * 20)));
             }
         }
         currentTip.add(
@@ -479,7 +480,7 @@ public abstract class MTESteamMultiBase<T extends MTESteamMultiBase<T>> extends 
             int tAverageTime = tag.getInteger("averageNS");
             currentTip.add(
                 StatCollector
-                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumbers(tAverageTime)));
+                    .translateToLocalFormatted("GT5U.waila.multiblock.status.cpu_load", formatNumber(tAverageTime)));
         }
         super.getMTEWailaBody(itemStack, currentTip, accessor, config);
     }

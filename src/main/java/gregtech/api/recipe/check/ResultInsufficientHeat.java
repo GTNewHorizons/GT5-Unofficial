@@ -1,5 +1,7 @@
 package gregtech.api.recipe.check;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -11,7 +13,6 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.util.GTUtility;
 
 public class ResultInsufficientHeat implements CheckRecipeResult {
 

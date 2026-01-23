@@ -1,5 +1,7 @@
 package gtnhintergalactic.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,8 +66,7 @@ public class SpaceMiningFrontend extends RecipeMapFrontend {
                         + "-"
                         + data.maxDistance);
                 result.add(GTUtility.translate("ig.nei.spacemining.size") + " " + data.minSize + "-" + data.maxSize);
-                result.add(
-                    GTUtility.translate("tt.nei.research.min_computation", formatNumber(data.computation)));
+                result.add(GTUtility.translate("tt.nei.research.min_computation", formatNumber(data.computation)));
                 result.add(GTUtility.translate("ig.nei.spacemining.weight") + " " + data.recipeWeight);
             }
             return result;

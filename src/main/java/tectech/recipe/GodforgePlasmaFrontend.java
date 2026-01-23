@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
 
@@ -17,7 +18,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
@@ -64,11 +64,9 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
         };
 
         recipeInfo.drawText(
-            StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
 
-        recipeInfo.drawText(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
 
         if (duration < 20) {
             recipeInfo.drawText(
@@ -78,8 +76,7 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
                     duration));
         } else {
             recipeInfo.drawText(
-                StatCollector
-                    .translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20d)));
+                StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20d)));
         }
 
         recipeInfo.drawText(
