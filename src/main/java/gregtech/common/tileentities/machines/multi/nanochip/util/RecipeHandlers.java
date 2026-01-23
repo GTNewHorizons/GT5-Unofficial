@@ -30,8 +30,8 @@ public class RecipeHandlers {
         ModuleRecipeInfo info, long eut, RecipeMap<?> recipeMap) {
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .itemInputs(input.getFakeStack(info.getBaseParallel()))
-            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .itemInputs(input.getFakeStack(1))
+            .itemOutputs(output.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
             .addTo(recipeMap);
@@ -43,9 +43,9 @@ public class RecipeHandlers {
         CircuitComponent output, ModuleRecipeInfo info, long eut, RecipeMap<?> recipeMap) {
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
-            .itemInputs(input.getFakeStack(info.getBaseParallel()))
+            .itemInputs(input.getFakeStack(1))
             .fluidInputs(inputStack)
-            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .itemOutputs(output.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
             .addTo(recipeMap);
@@ -57,8 +57,8 @@ public class RecipeHandlers {
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .metadata(BoardProcessingModuleFluidKey.INSTANCE, fluidType)
-            .itemInputs(input.getFakeStack(info.getBaseParallel()))
-            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .itemInputs(input.getFakeStack(1))
+            .itemOutputs(output.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut)
             .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
@@ -70,27 +70,27 @@ public class RecipeHandlers {
             throw new IllegalArgumentException("No real circuit was defined for given output!");
         }
         ItemStack realOutput = output.realComponent.get();
-        realOutput.stackSize = info.getBaseParallel();
+        realOutput.stackSize = 1;
         ItemStack[] inputsWithRealCircuits = input.stream()
             .map(c -> {
                 if (c.getCircuitComponent().realComponent != null) {
                     ItemStack realCircuit = c.getCircuitComponent().realComponent.get();
-                    realCircuit.stackSize = info.getBaseParallel() * c.getSize();
+                    realCircuit.stackSize = c.getSize();
                     return realCircuit;
                 }
                 return c.getCircuitComponent()
-                    .getFakeStack(info.getBaseParallel() * c.getSize());
+                    .getFakeStack(c.getSize());
             })
             .toArray(ItemStack[]::new);
         ItemStack[] inputsWithFakeCircuits = input.stream()
             .map(
                 c -> c.getCircuitComponent()
-                    .getFakeStack(info.getBaseParallel() * c.getSize()))
+                    .getFakeStack(c.getSize()))
             .toArray(ItemStack[]::new);
         GTRecipeBuilder builder = GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyRecipeInfo.INSTANCE, info)
             .fluidInputs(fluidInputs.toArray(new FluidStack[] {}))
-            .itemOutputs(output.getFakeStack(info.getBaseParallel()))
+            .itemOutputs(output.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(eut);
         // Add real recipe that will actually be utilized in recipe checks
@@ -453,21 +453,21 @@ public class RecipeHandlers {
         // Frame box processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxAluminium,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Grade1PurifiedWater.getFluid(500),
             CircuitComponent.ProcessedFrameboxAluminium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxTritanium,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Grade1PurifiedWater.getFluid(500),
             CircuitComponent.ProcessedFrameboxTritanium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
             CircuitComponent.FrameboxNeutronium,
-            Materials.Grade1PurifiedWater.getFluid(1000),
+            Materials.Grade1PurifiedWater.getFluid(500),
             CircuitComponent.ProcessedFrameboxNeutronium,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
