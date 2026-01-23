@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 
 import java.util.ArrayList;
@@ -507,24 +508,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
     @Override
     public String[] getDescription() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": %%%"
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mVoltage)
-                + " ("
-                + GTUtility.getColoredTierNameFromVoltage(mVoltage)
-                + EnumChatFormatting.GREEN
-                + ")"
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%"
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage)
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.item.cable.loss") + ": %%%"
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mCableLossPerMeter)
-                + EnumChatFormatting.GRAY
-                + "%%% "
-                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt") };
+            translate(
+                "GT5U.item.cable.max_voltage",
+                GTUtility.formatNumbers(mVoltage),
+                GTUtility.getColoredTierNameFromVoltage(mVoltage)),
+            translate("GT5U.item.cable.max_amperage", GTUtility.formatNumbers(mAmperage)),
+            translate("GT5U.item.cable.loss", GTUtility.formatNumbers(mCableLossPerMeter)) };
     }
 
     @Override
@@ -569,18 +558,18 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         final long maxVoltageOut = (mVoltage - mCableLossPerMeter) * mAmperage;
 
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            translate(
                 "GT5U.infodata.cable.amperage",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(currAmp) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mAmperage) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            translate(
                 "GT5U.infodata.cable.voltage_out",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(currVoltage) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxVoltageOut) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            translate(
                 "GT5U.infodata.cable.avg_amperage",
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgAmp) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            translate(
                 "GT5U.infodata.cable.avg_output",
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(avgVoltage) + EnumChatFormatting.RESET) };
     }
@@ -650,23 +639,11 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         IWailaConfigHandler config) {
 
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mVoltage)
-                + " ("
-                + GTUtility.getColoredTierNameFromVoltage(mVoltage)
-                + EnumChatFormatting.GREEN
-                + ")");
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mAmperage));
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.item.cable.loss") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mCableLossPerMeter)
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt"));
+            translate(
+                "GT5U.item.cable.max_voltage",
+                GTUtility.formatNumbers(mVoltage),
+                GTUtility.getColoredTierNameFromVoltage(mVoltage)));
+        currenttip.add(translate("GT5U.item.cable.max_amperage", GTUtility.formatNumbers(mAmperage)));
+        currenttip.add(translate("GT5U.item.cable.loss", GTUtility.formatNumbers(mCableLossPerMeter)));
     }
 }

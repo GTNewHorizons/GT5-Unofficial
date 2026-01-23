@@ -1780,10 +1780,9 @@ GT5U.item.programmed_circuit.tooltip.0=Configuration %s
 GT5U.item.programmed_circuit.tooltip.1=Right click to reconfigure
 GT5U.item.programmed_circuit.tooltip.2=Needs a screwdriver or programming tool
 
-GT5U.item.cable.max_voltage=Max Voltage
-GT5U.item.cable.max_amperage=Max Amperage
-GT5U.item.cable.loss=Loss/Meter/Ampere
-GT5U.item.cable.eu_volt=EU-Volt
+GT5U.item.cable.max_voltage=Max Voltage: §a%s (%s§a)
+GT5U.item.cable.max_amperage=Max Amperage: §e%s
+GT5U.item.cable.loss=Loss/Meter/Ampere: §c%s §7EU-Volt
 GT5U.item.cable.swapped=Cable swapped:
 GT5U.item.tank.locked_to=Content locked to %s
 
