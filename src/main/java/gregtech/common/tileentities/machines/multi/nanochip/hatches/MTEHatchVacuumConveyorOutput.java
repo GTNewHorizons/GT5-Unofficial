@@ -16,7 +16,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactor
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import it.unimi.dsi.fastutil.Pair;
 
-public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
+public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor implements  IVacuumStorage {
 
     public MTEHatchVacuumConveyorOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
@@ -60,20 +60,21 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor {
         return network;
     }
 
-    // SAVE ME
     @Override
-    public CircuitComponentPacket getcomponentPacket() {
-        return this.contents;
+    public CircuitComponentPacket extractPacket() {
+        CircuitComponentPacket outputPacket = this.contents;
+        this.contents = null;
+        return outputPacket;
+    }
+
+    @Override
+    public MTENanochipAssemblyComplex maincontroller() {
+        return this.mainController;
     }
 
     @Override
     public List<Pair<Class<?>, Object>> getComponents() {
         return Collections.singletonList(Pair.of(IVacuumStorage.class, this));
-    }
-
-    @Override
-    public MTENanochipAssemblyComplex getAssemblyComplex() {
-        return this.getMainController();
     }
 
     @Override
