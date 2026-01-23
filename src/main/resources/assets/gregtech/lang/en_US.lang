@@ -2189,6 +2189,8 @@ GT5U.waila.facing.south=SOUTH
 GT5U.waila.facing.west=WEST
 GT5U.waila.facing.east=EAST
 GT5U.waila.facing.unknown=UNKNOWN
+GT5U.waila.shift_for_info=Hold Shift for more info
+GT5U.waila.pipe_throughput=Stacks transferred: %s / %s
 
 GT5U.waila.multiblock.status.incomplete=** INCOMPLETE STRUCTURE **
 GT5U.waila.multiblock.status.efficiency=  Efficiency: %f%%
