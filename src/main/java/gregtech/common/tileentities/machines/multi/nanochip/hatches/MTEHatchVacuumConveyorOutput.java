@@ -16,7 +16,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactor
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import it.unimi.dsi.fastutil.Pair;
 
-public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor implements  IVacuumStorage {
+public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor implements IVacuumStorage {
 
     public MTEHatchVacuumConveyorOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, new String[] {});
