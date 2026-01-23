@@ -8,7 +8,7 @@ public enum ModuleTypes {
     CuttingChamber("Cutting Chamber"),
     EtchingArray("Etching Array"),
     OpticalOrganizer("Optical Organizer"),
-    SheetSupervisor("Sheet Supervisor"),
+    EncasementWrapper("Encasement Wrapper"),
     SMDProcessor("SMD Processor"),
     Splitter("Splitter"),
     SuperconductorSplitter("Superconductor Splitter"),
