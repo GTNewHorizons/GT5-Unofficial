@@ -118,6 +118,7 @@ public class RecipeHandlers {
         registerOpticalRecipes();
         registerSuperconductorRecipes();
         registerFrameBoxRecipes();
+        registerCasingRecipes();
     }
 
     public static void registerConversionRecipes() {
@@ -497,6 +498,18 @@ public class RecipeHandlers {
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipEncasementWrapper);
+    }
+
+    public static void registerCasingRecipes() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(8),
+                CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(128),
+                CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(128))
+            .itemOutputs(CircuitComponent.OpticalMainframeCasing.getFakeStack(1))
+            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(RecipeMaps.nanochipEncasementWrapper);
     }
 
     public static void populateFinishedCircuitRecipeMaps() {

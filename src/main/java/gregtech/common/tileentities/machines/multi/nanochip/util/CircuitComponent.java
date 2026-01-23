@@ -253,6 +253,9 @@ public enum CircuitComponent {
     ProcessedFoilRadoxPolymer("gt.circuitcomponent.sheet.radoxpolymer", true),
     ProcessedFoilShirabon("gt.circuitcomponent.sheet.shirabon", true),
 
+    // Circuit encasement
+    OpticalMainframeCasing("gt.circuitcomponent.casing.opticalmainframe", true),
+
     // Misc
     CableOpticalFiber(
         "gt.circuitcomponent.cable.opticalfiber",
