@@ -639,6 +639,15 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         isTalkModeActive = aNBT.getBoolean("talkMode");
     }
 
+    public List<MTENanochipAssemblyModuleBase<?>> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<MTENanochipAssemblyModuleBase<?>> incomingList) {
+        this.modules.clear();
+        this.modules.addAll(incomingList);
+    }
+
     @Override
     public boolean supportsMaintenanceIssueHoverable() {
         return false;
