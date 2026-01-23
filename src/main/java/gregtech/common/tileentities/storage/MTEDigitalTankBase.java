@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -493,7 +494,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     fluid.amount + "",
                     getRealCapacity() + ""));
         } else {
-            currenttip.add(0, "Tank Empty");
+            currenttip.add(0, StatCollector.translateToLocal("GT5U.waila.digital_tank.empty"));
         }
     }
 
@@ -617,13 +618,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mAllowInputFromOutputSide = val;
                 if (isServer) {
                     if (!mAllowInputFromOutputSide) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_off"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_off");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_on"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_on");
                     }
                 }
             })

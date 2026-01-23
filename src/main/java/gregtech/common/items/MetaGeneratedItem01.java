@@ -680,6 +680,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(addItem(IDMetaItem01.Credit_Platinum.ID, "Industrial Platinum Credit", "512 Credits"));
         ItemList.Credit_Osmium.set(addItem(IDMetaItem01.Credit_Osmium.ID, "Industrial Osmium Credit", "4096 Credits"));
 
+        ItemList.NandChipArray.set(
+            addItem(
+                IDMetaItem01.NandChipArray.ID,
+                "NAND Chip Array",
+                "Chips on Board",
+                "circuitPrimitiveArray",
+                SubTag.NO_UNIFICATION));
         ItemList.Component_Minecart_Wheels_Iron.set(
             addItem(
                 Component_Minecraft_Wheels_Iron.ID,

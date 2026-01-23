@@ -1497,19 +1497,23 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("queen")) {
             currenttip.add(
-                "Current Queen: " + EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.industrial_apiary.current_queen",
+                    EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen"))));
         }
         if (tag.hasKey("dummyProduction")) {
             currenttip.add(
-                "Effective Production: " + EnumChatFormatting.AQUA
-                    + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.industrial_apiary.effective_production",
+                    EnumChatFormatting.AQUA + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
         }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
             for (int i = 0; i < errorNbt.getInteger("size"); i++) {
                 currenttip.add(
-                    "Error: " + EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i)));
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.industrial_apiary.error",
+                        EnumChatFormatting.RED + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
             }
         }
     }

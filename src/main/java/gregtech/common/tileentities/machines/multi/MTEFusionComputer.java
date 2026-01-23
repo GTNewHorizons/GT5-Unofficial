@@ -392,6 +392,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                             mProgresstime = 0;
                             mMaxProgresstime = 0;
                             mEfficiencyIncrease = 0;
+                            recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
                             mLastWorkingTick = mTotalRunTime;
                             if (mOutputFluids != null && mOutputFluids.length > 0) {
                                 try {
@@ -483,7 +484,11 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 + EnumChatFormatting.YELLOW
                 + GTUtility.formatNumbers(plasmaOut)
                 + EnumChatFormatting.RESET
-                + "L/t" };
+                + "L/t",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + recipesDone
+                + EnumChatFormatting.RESET };
     }
 
     @Override

@@ -135,14 +135,15 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'B',
-            ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
-                IntStream.range(0, 14)
-                    .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                    .collect(Collectors.toList()),
-                -1,
-                MTEComponentAssemblyLine::setCasingTier,
-                MTEComponentAssemblyLine::getCasingTier))
+            GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING.use(
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -1,
+                    MTEComponentAssemblyLine::setCasingTier,
+                    MTEComponentAssemblyLine::getCasingTier)))
         .addElement(
             'J',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -239,6 +240,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
             .addMaintenanceHatch("Around the controller", 4)
             .addInputHatch("Bottom left and right corners", 5)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .toolTipFinisher(EnumChatFormatting.AQUA + "MadMan310");
         return tt;
     }
@@ -359,9 +361,9 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

@@ -18,12 +18,12 @@ public enum FoundryModule {
     // spotless:off
     UNSET(
         "Unset", "UN.", "",
-        ItemList.Display_ITS_FREE.get(1),
+        ItemList.Primary_Casing_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_UNSET,
         new Color(0),
         EnumChatFormatting.GRAY,
         0, foundryData -> {}),
-    EXTRA_CASTING_BASINS("Extra Casting Basins", "E.C.B", "extra_casting_basins",
+    EXTRA_CASTING_BASINS("Superdense Casting Basins", "S.C.B", "extra_casting_basins",
         ItemList.Extra_Casting_Basins_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_ECB,
         new Color(174, 174, 102),
@@ -46,7 +46,7 @@ public enum FoundryModule {
         }
     ),
     POWER_EFFICIENT_SUBSYSTEMS(
-        "Power Efficient Subsystems", "P.E.S", "power_efficient_subsystems",
+        "Proto-Volt Stabilizer", "P.V.S", "power_efficient_subsystems",
         ItemList.Power_Efficient_Subsystems_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_PES,
         new Color(10, 143, 38),
@@ -57,7 +57,7 @@ public enum FoundryModule {
         }
     ),
     EFFICIENT_OC(
-        "Efficient Overclocking System", "E.O.C", "eff_oc",
+        "Sentient Overclocker", "S.O.C", "eff_oc",
         ItemList.Efficient_Overclocking_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_EFF_OC,
         new Color(107, 33, 196),
@@ -68,7 +68,7 @@ public enum FoundryModule {
     }
     ),
     STREAMLINED_CASTERS(
-        "Streamlined Casters", "S.L.C", "streamlined_casters",
+        "Streamlined Casting", "S.L.C", "streamlined_casters",
         ItemList.Streamlined_Casters_ExoFoundry.get(1),
         GTGuiTextures.EXOFOUNDRY_SLC,
         new Color(250, 60, 60),

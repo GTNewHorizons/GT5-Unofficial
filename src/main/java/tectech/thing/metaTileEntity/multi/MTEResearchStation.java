@@ -445,7 +445,11 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getComputationRequired()) };
+                + GTUtility.formatNumbers(getComputationRequired()),
+            translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

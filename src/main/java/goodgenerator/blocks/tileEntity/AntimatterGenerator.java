@@ -7,6 +7,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
             setAvgEff(0f);
         }
 
+        recipesDone++;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -245,9 +247,12 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         wirelessEnabled = !wirelessEnabled;
-        GTUtility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wirelessEnabled ? "enabled." : "disabled."));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            wirelessEnabled ? "gg.chat.antimatter_generator.wireless_mode.enable"
+                : "gg.chat.antimatter_generator.wireless_mode.disable");
         if (wirelessEnabled) {
-            GTUtility.sendChatToPlayer(aPlayer, "Wireless only works with UMV Superconductor Base or better.");
+            GTUtility.sendChatTrans(aPlayer, "gg.chat.antimatter_generator.wireless_mode.enable.hint");
         }
     }
 
@@ -452,7 +457,11 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
                 + EnumChatFormatting.RESET
-                + " % ⟩₁₀" };
+                + " % ⟩₁₀",
+            translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     public long getEnergyProduced() {

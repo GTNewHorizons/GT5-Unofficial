@@ -938,7 +938,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         float aX, float aY, float aZ, ItemStack aTool) {
         if (astralArrayAmount != 0) {
             if (recipeRunning) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("eoh.rightclick.wirecutter.1"));
+                GTUtility.sendChatTrans(aPlayer, "eoh.rightclick.wirecutter.1");
             } else {
                 long originalAmount = astralArrayAmount;
                 while (astralArrayAmount >= 64) {

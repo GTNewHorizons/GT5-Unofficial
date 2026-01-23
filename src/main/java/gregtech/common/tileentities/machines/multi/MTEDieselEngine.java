@@ -393,7 +393,11 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

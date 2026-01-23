@@ -119,7 +119,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean cachedActivity = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 3, 2, getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }

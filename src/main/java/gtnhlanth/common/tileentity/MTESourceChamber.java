@@ -344,6 +344,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
+            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET,
             // Beamline-specific
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
                 + ": "

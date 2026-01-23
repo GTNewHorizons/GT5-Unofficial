@@ -176,7 +176,13 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/icons/manualShutdown");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
-    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
+    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_none");
+    public static final UITexture OVERLAY_SOME_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_some");
+    public static final UITexture OVERLAY_ALL_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_all");
+
     // endregion overlay
     // region slot
 

@@ -186,7 +186,11 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET, };
     }
 
     @Override

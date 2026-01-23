@@ -376,7 +376,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     private ItemStack getCleanFilter() {
         if (cleanFilter == null) {
             if (Mods.NewHorizonsCoreMod.isModLoaded()) {
-                cleanFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "item.AdsorptionFilter", 1, 0);
+                cleanFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "AdsorptionFilter", 1, 0);
             }
             if (cleanFilter == null) {
                 // fallback for dev environment
@@ -389,7 +389,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     private ItemStack getDirtyFilter() {
         if (dirtyFilter == null) {
             if (Mods.NewHorizonsCoreMod.isModLoaded()) {
-                dirtyFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "item.AdsorptionFilterDirty", 1, 0);
+                dirtyFilter = GTModHandler.getModItem(Mods.NewHorizonsCoreMod.ID, "AdsorptionFilterDirty", 1, 0);
             }
             if (dirtyFilter == null) {
                 // fallback for dev environment
@@ -630,7 +630,10 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
                     + Integer.toString(getPollutionCleaningRatePerTick(baseEff, mEfficiency / 10000f, isFilterLoaded))
                     + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.has_filter", isFilterLoaded),
-            StatCollector
-                .translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining) };
+            StatCollector.translateToLocalFormatted("GT5U.infodata.air_filter.remaining_cycles", filterUsageRemaining),
+            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 }

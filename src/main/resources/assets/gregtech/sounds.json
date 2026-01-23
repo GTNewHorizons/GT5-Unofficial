@@ -503,11 +503,11 @@
       }
     ]
   },
-  "machines.MTEChamberCentrifuge": {
+  "machines.MTESpinmatron": {
     "category": "block",
     "sounds": [
       {
-        "name": "MTEChamberCentrifuge",
+        "name": "MTESpinmatron",
         "stream": false
       }
     ]

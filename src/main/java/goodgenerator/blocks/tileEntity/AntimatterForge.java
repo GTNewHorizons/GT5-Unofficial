@@ -569,6 +569,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = speed;
+        recipesDone++;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -762,7 +763,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.AQUA
                 + GTUtility.formatNumbers(getAntimatterChange())
                 + EnumChatFormatting.RESET
-                + " L" };
+                + " L",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     public long getAntimatterAmount() {

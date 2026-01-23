@@ -122,8 +122,9 @@ public enum SoundResource {
 
     GT_MACHINES_CHAMBER_CENTRIFUGE(276, GregTech.ID, "machines.MTEChamberCentrifuge"),
 
-    GT_MACHINES_LHC_SPIN_UP(278, GregTech.ID, "machines.LHCSpinUp"),
-    GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
+    GT_MACHINES_LHC_SPIN_UP(277, GregTech.ID, "machines.LHCSpinUp"),
+    GT_MACHINES_SPINMATRON(278, GregTech.ID, "machines.MTESpinmatron"),
+    GT_MACHINES_EXOFOUNDRY(279, GregTech.ID, "machines.MTEExoFoundry"),
 
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),

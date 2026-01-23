@@ -24,6 +24,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,6 +38,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -476,6 +479,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 + " EU/t",
             "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
             "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET,
             "---------------------------------------------" };
     }
 
@@ -485,6 +492,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public double getPowerFactor() {
         WorldProvider provider = this.getBaseMetaTileEntity()
             .getWorld().provider;
+
+        if (!Mods.GalacticraftCore.isModLoaded()) {
+            return 1.0D;
+        }
 
         if (provider instanceof IOrbitDimension orbitDimension) {
             return IGConfig.dysonSwarm.getPowerFactor(orbitDimension.getPlanetToOrbit());

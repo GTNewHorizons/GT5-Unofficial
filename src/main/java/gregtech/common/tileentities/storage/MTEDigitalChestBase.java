@@ -443,12 +443,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         super.getWailaBody(itemStack, currenttip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
-            currenttip.add("Item Count: " + GTUtility.formatNumbers(tag.getLong("itemCount")));
             currenttip.add(
-                "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
-                    .getDisplayName());
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.digital_chest.count",
+                    GTUtility.formatNumbers(tag.getLong("itemCount"))));
+            currenttip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.digital_chest.type",
+                    ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
+                        .getDisplayName()));
         } else {
-            currenttip.add("Chest Empty");
+            currenttip.add(StatCollector.translateToLocal("GT5U.waila.digital_chest.empty"));
         }
     }
 

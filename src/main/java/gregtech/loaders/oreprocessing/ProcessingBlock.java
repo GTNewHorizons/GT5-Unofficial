@@ -79,6 +79,19 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
 
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
+                    .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
             }
 
             else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
@@ -116,6 +129,18 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(
+                            Math.max(
+                                1,
+                                Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
+                    .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
             }

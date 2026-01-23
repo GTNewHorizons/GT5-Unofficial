@@ -100,7 +100,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             aID,
             aName,
             aNameRegional,
-            3,
+            4,
             new String[] { "Fluid Output for Multiblocks", "Stores directly into ME",
                 "Can cache up to 128kL of fluids by default", "Change cache size by inserting a fluid storage cell",
                 "Change ME connection behavior by right-clicking with wire cutter",
@@ -257,9 +257,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                 markDirty();
 
-                GTUtility.sendChatToPlayer(
-                    lastClickedPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
+                GTUtility.sendChatTrans(lastClickedPlayer, "GT5U.hatch.fluid.filter.disable");
             }
         }
     }
@@ -543,8 +541,8 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
-            String.format(
-                "Fluid cache capacity: %s%s L%s",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.output_me.fluid_cache_capacity",
                 EnumChatFormatting.GOLD,
                 GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));

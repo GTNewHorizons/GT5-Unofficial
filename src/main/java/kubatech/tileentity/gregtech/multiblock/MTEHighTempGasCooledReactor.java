@@ -875,8 +875,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("kubatech.chat.forbidden_while_running"));
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         this.empty = !this.empty;

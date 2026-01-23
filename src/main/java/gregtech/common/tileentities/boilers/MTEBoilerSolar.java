@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.boilers;
 
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
-import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
@@ -303,8 +302,8 @@ public class MTEBoilerSolar extends MTEBoiler {
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            String.format(
-                (GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"),
+            GOLD + StatCollector.translateToLocalFormatted(
+                "GT5U.waila.boiler_solar.output",
                 tag.getInteger("calcificationOutput"),
                 tag.getInteger("maxCalcificationOutput")));
 
