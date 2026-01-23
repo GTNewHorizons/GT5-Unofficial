@@ -102,9 +102,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         disconnect();
     }
 
-    public NACRecipeMapBackend getBackend() {
-        return (NACRecipeMapBackend) this.getRecipeMap()
-            .getBackend();
+    public int getMaxRecipeDuration() {
+        return ((NACRecipeMapBackend) (this.getRecipeMap().getBackend())).getMaxDuration();
     }
 
     protected long euBufferSize = TierEU.UV * 4096 * 20;
