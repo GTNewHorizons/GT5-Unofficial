@@ -1635,7 +1635,7 @@ GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
 GT5U.gui.text.nac.waiting_for_power=Waiting For Power
-
+GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
