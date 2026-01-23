@@ -5,7 +5,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 
 public interface IVacuumStorage {
 
-    public CircuitComponentPacket getcomponentPacket();
+    public CircuitComponentPacket extractPacket();
 
-    MTENanochipAssemblyComplex getAssemblyComplex();
+    public MTENanochipAssemblyComplex maincontroller();
+
 }
