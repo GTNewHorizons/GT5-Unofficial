@@ -136,7 +136,6 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
@@ -191,6 +190,7 @@ import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
+import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -584,13 +584,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
 
-        ItemList.Machine_Multi_ChamberCentrifuge.set(
-            new MTEChamberCentrifuge(
-                CHAMBER_CENTRIFUGE_CONTROLLER.ID,
-                "multimachine.chambercentrifuge",
-                "Spinmatron-2737").getStackForm(1));
+        ItemList.Machine_Multi_Spinmatron.set(
+            new MTESpinmatron(SPINMATRON_CONTROLLER.ID, "multimachine.spinmatron", "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
-            ItemList.Machine_Multi_ChamberCentrifuge.get(1),
+            ItemList.Machine_Multi_Spinmatron.get(1),
             chain(GTValues.AUTHORS_SUPPLIER, GTValues.fancyAuthorChrom, GTValues.AND_SUPPLIER, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
