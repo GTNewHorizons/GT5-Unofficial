@@ -1556,7 +1556,7 @@ public enum ItemList implements IItemContainer {
     NanoChipModule_Splitter,
     NanoChipModule_SuperconductorSplitter,
     NanoChipModule_OpticalOrganizer,
-    NanoChipModule_SheetSupervisor,
+    NanoChipModule_EncasementWrapper,
     NanoChipModule_BiologicalCoordinator,
     Hatch_Splitter_Level,
 
