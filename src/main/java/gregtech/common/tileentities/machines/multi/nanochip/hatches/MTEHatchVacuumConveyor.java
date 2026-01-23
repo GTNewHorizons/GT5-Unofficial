@@ -76,7 +76,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             .getColorization();
     }
 
-
     public void setMainController(MTENanochipAssemblyComplex main) {
         this.mainController = main;
     }
@@ -107,7 +106,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             }
         }
     }
-
 
     @Override
     public void onRemoval() {
