@@ -42,7 +42,7 @@ dependencies {
     api("com.falsepattern:endlessids-mc1.7.10:1.6.12:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.1:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.24-1.7.10:dev")
-    api("com.github.GTNewHorizons:waila:1.9.15:dev")
+    api("com.github.GTNewHorizons:waila:1.19.20:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-775-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.39-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.1.5:dev")
