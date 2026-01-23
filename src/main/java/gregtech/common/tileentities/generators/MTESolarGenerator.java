@@ -2,7 +2,6 @@ package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 

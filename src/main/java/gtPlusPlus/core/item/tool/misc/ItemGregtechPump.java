@@ -2,7 +2,6 @@ package gtPlusPlus.core.item.tool.misc;
 
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.BitSet;

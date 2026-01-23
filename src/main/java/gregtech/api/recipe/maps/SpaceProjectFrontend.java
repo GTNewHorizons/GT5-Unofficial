@@ -1,6 +1,5 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 

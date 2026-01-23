@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.godforge.data;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static tectech.util.TTUtility.toExponentForm;
 
 import java.math.BigInteger;

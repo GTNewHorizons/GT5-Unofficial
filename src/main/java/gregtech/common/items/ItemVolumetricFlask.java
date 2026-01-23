@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
 import static ic2.core.util.LiquidUtil.placeFluid;

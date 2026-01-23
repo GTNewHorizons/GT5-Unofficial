@@ -1,7 +1,6 @@
 package tectech.recipe;
 
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.DARK_RED;

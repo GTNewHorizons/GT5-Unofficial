@@ -1,7 +1,6 @@
 package gregtech.api.recipe.maps;
 
 import static gregtech.api.util.GTRecipeConstants.EU_MULTIPLIER;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 

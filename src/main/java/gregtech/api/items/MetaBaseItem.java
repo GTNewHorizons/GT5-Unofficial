@@ -2,7 +2,6 @@ package gregtech.api.items;
 
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 

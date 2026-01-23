@@ -1,6 +1,5 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.Objects;
 

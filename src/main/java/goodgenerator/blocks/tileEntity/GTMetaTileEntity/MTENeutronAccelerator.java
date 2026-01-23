@@ -1,7 +1,6 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
