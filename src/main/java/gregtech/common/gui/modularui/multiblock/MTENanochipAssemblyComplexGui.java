@@ -3,7 +3,6 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -119,9 +118,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 .coverChildren();
 
             Object2IntMap<ModuleTypes> moduleAmountMap = new Object2IntOpenHashMap<>();
-            List<Pair<ModuleTypes, Integer>> moduleDisplayList = new ArrayList<>();
+            List<Pair<ModuleTypes, Integer>> moduleDisplayList;
 
             for (MTENanochipAssemblyModuleBase<?> module : moduleList.getValue()) {
+                if (module == null) continue;
                 moduleAmountMap
                     .put(module.getModuleType(), moduleAmountMap.getOrDefault(module.getModuleType(), 0) + 1);
             }
@@ -137,8 +137,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 .collect(Collectors.toList());
 
             for (Pair<ModuleTypes, Integer> modulePair : moduleDisplayList) {
-                if (modulePair == null || modulePair.left() == null) continue;
-
                 listWidget.child(createModuleRow(modulePair));
             }
             return listWidget;
