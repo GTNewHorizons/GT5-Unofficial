@@ -411,21 +411,21 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public String[] getDescription() {
-        aaaaaaaaaaaaaaaaaaaaaaa
-        if (mTickTime == 20) return new String[] {
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.persecond", getMaxPipeCapacity()),
-            StatCollector.translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", mStepSize) };
-        else if (mTickTime % 20 == 0) return new String[] {
-            StatCollector.translateToLocalFormatted(
+        final String capacity;
+        if (mTickTime == 20) {
+            capacity = StatCollector
+                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.persecond", getMaxPipeCapacity());
+        } else if (mTickTime % 20 == 0) {
+            capacity = StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.itempipe.capacity.second",
                 getMaxPipeCapacity(),
-                mTickTime / 20),
-            StatCollector.translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", mStepSize) };
-        else return new String[] {
-            StatCollector
-                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), mTickTime),
-            StatCollector.translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", mStepSize) };
+                mTickTime / 20);
+        } else {
+            capacity = StatCollector
+                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), mTickTime);
+        }
+        return new String[] { capacity, StatCollector
+            .translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", formatNumber(mStepSize)) };
     }
 
     private boolean isInventoryEmpty() {

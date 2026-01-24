@@ -76,9 +76,8 @@ public class MTETieredTank extends MTEBasicTank {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
-                    StatCollector.translateToLocalFormatted(
-                        "gt.tileentity.tank_amount",
-                        formatNumber(tContents.amount)));
+                    StatCollector
+                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
             }
         }
     }

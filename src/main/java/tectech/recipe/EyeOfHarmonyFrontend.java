@@ -168,8 +168,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             // Energy Input
             switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
-                    StatCollector
-                        .translateToLocalFormatted("EOH.Recipe.EU.In", formatNumber(recipe.getEUStartCost())));
+                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.In", formatNumber(recipe.getEUStartCost())));
                 case Scientific -> result.add(
                     StatCollector
                         .translateToLocalFormatted("EOH.Recipe.EU.In", toExponentForm(recipe.getEUStartCost())));

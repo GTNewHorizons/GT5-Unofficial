@@ -210,7 +210,6 @@ gt.blockmachines.long_distance_fluid_pipeline.desc=Sends fluids over long distan
 gt.blockmachines.long_distance_pipeline.desc=Only one Input and Output are allowed per pipeline\nOnly Input and Output have to be chunkloaded\nTransfer rate is solely limited by input rate\nMinimum distance: %s blocks
 gt.blockmachines.dynamo_hatch.desc=Generating electric Energy from Multiblocks\nPuts out up to 1 Amp
 gt.blockmachines.dynamo_hatch_buffer.desc=Dynamo with internal storage and additional Amp capacity\nDoes not accept more than %sEU/t as input
-gt.blockmachines.dynamo_hatch_wireless.desc=§eDEPRECATED! Will be removed in next major update\n§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block accepts EU into the network.
 gt.blockmachines.energy_hatch.desc=Energy Injector for Multiblocks\nAccepts up to 2 Amps
 gt.blockmachines.energy_hatch_wireless.desc=§7Stores energy globally in a network, up to 2^(2^31) EU.\n§7Does not connect to wires. This block withdraws EU from the network.
 gt.blockmachines.energy_hatch_debug.desc=§7Buffers EU internally\n§7Configure Amps and Voltage in the UI\n§o/gt global_energy_set Develo-... begone!

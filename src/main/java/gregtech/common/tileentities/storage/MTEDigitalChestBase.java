@@ -106,9 +106,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             if (tContents != null && tSize > 0) {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
-                tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
+                tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
             }
         }
     }
