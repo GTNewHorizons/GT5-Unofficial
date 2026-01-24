@@ -2,51 +2,51 @@
   "microwave_ding": {
     "category": "block",
     "subtitle": "tectech.subtitle.microwave_ding",
-    "sounds": [{"name": "microwave_ding","stream": false}]
+    "sounds": [{ "name": "microwave_ding", "stream": false }]
   },
   "fx_scan": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_scan",
-    "sounds": [{"name": "fx_scan","stream": false}]
+    "sounds": [{ "name": "fx_scan", "stream": false }]
   },
   "fx_alarm": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_alarm",
-    "sounds": [{"name": "fx_alarm","stream": false}]
+    "sounds": [{ "name": "fx_alarm", "stream": false }]
   },
   "fx_click": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_click",
-    "sounds": [{"name": "fx_click","stream": false}]
+    "sounds": [{ "name": "fx_click", "stream": false }]
   },
   "fx_lo_freq": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_lo_freq",
-    "sounds": [{"name": "fx_lo_freq","stream": false}]
+    "sounds": [{ "name": "fx_lo_freq", "stream": false }]
   },
   "fx_mid_freq": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_mid_freq",
-    "sounds": [{"name": "fx_mid_freq","stream": false}]
+    "sounds": [{ "name": "fx_mid_freq", "stream": false }]
   },
   "fx_hi_freq": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_hi_freq",
-    "sounds": [{"name": "fx_hi_freq","stream": false}]
+    "sounds": [{ "name": "fx_hi_freq", "stream": false }]
   },
   "fx_noise": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_noise",
-    "sounds": [{"name": "fx_noise","stream": false}]
+    "sounds": [{ "name": "fx_noise", "stream": false }]
   },
   "fx_woo_uu": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_woo_uu",
-    "sounds": [{"name": "fx_woo_uu","stream": false}]
+    "sounds": [{ "name": "fx_woo_uu", "stream": false }]
   },
   "fx_whooum": {
     "category": "block",
     "subtitle": "tectech.subtitle.fx_whooum",
-    "sounds": [{"name": "fx_whooum","stream": false}]
+    "sounds": [{ "name": "fx_whooum", "stream": false }]
   }
 }

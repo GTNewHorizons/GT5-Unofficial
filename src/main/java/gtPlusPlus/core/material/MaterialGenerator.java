@@ -155,7 +155,7 @@ public class MaterialGenerator {
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
 
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
 
         }
@@ -173,7 +173,7 @@ public class MaterialGenerator {
             RecipeGenDustGeneration.addMixerRecipe_Standalone(matInfo);
             new RecipeGenFluids(matInfo);
             new RecipeGenMaterialProcessing(matInfo);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.MATERIALS("Failed to generate some recipes for " + materialName);
             Logger.ERROR("Failed to generate some recipes for " + materialName);
             t.printStackTrace();
@@ -250,7 +250,7 @@ public class MaterialGenerator {
             new RecipeGenDustGeneration(matInfo, disableOptionalRecipes);
             new RecipeGenPlasma(matInfo);
 
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
         }
     }
@@ -307,7 +307,7 @@ public class MaterialGenerator {
                 new RecipeGenOre(matInfo);
             }
 
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             Logger.MATERIALS(
                 "[Error] " + (matInfo != null ? matInfo.getLocalizedName() : "Null Material") + " failed to generate.");
             t.printStackTrace();
@@ -354,7 +354,7 @@ public class MaterialGenerator {
             new RecipeGenDustGeneration(matInfo);
             new RecipeGenRecycling(matInfo);
             new RecipeGenPlasma(matInfo);
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             Logger.MATERIALS(matInfo.getLocalizedName() + " failed to generate.");
             t.printStackTrace();
         }
