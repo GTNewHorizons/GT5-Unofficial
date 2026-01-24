@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -144,7 +145,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor, THTR")
-            .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
+            .addInfo("Needs to be primed with " + formatNumber(HELIUM_NEEDED) + " of helium")
             .addInfo(
                 "Needs a constant supply of " + EnumChatFormatting.AQUA
                     + "coolant"
@@ -166,7 +167,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     + "4800L/t"
                     + EnumChatFormatting.GRAY
                     + " of coolant multiplied by efficiency")
-            .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
+            .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
@@ -345,19 +346,19 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         return new String[] {
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.thtr.progress",
-                GTUtility.formatNumbers(this.mProgresstime / 20),
-                GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
+                formatNumber(this.mProgresstime / 20),
+                formatNumber(this.mMaxProgresstime / 20)),
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.thtr.triso_pebbles",
-                GTUtility.formatNumbers(this.fuelSupply),
-                GTUtility.formatNumbers(this.fuelSupply)),
+                formatNumber(this.fuelSupply),
+                formatNumber(this.fuelSupply)),
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.htr.helium_level",
-                GTUtility.formatNumbers(this.HeliumSupply),
-                GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
+                formatNumber(this.HeliumSupply),
+                formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.thtr.coolant",
-                GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
+                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.htr.problems",
                 String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };

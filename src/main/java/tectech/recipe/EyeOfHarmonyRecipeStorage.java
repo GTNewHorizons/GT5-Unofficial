@@ -52,7 +52,7 @@ public class EyeOfHarmonyRecipeStorage {
         private static final long serialVersionUID = -3501819612517400500L;
 
         {
-            for (String dimAbbreviation : DimensionHelper.DimNameDisplayed) {
+            for (String dimAbbreviation : DimensionHelper.getAllDisplayedNames()) {
                 BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks
                     .get(dimAbbreviation);
 
