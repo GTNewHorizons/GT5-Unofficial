@@ -141,7 +141,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
             .tooltip(
-                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.button.foundry.contributorpanel")))
+                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.contributors.panel.open")))
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .background(GTGuiTextures.PICTURE_EXOFOUNDRY_LOGO)
             .disableHoverBackground()
@@ -160,7 +160,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
             .size(getBasePanelWidth(), getBasePanelHeight() + 20)
             .background(GTGuiTextures.FOUNDRY_BACKGROUND_CONTRIBUTORS);
         panel.child(
-            IKey.lang("gt.blockmachines.multimachine.FOG.contributors")
+            IKey.lang("GT5U.gui.text.contributors.header")
                 .asWidget()
                 .style(EnumChatFormatting.GOLD)
                 .marginTop(8)
@@ -176,13 +176,14 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.projectlead",
+                "GT5U.gui.text.contributors.projectlead",
                 createContributorEntry("Chrom", Color.PURPLE.brighterSafe(2))));
-        contributorColumn.child(createContributorSection("GT5U.gui.text.foundry.programming", createSerenibyssEntry()));
+        contributorColumn
+            .child(createContributorSection("GT5U.gui.text.contributors.programming", createSerenibyssEntry()));
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.textures",
+                "GT5U.gui.text.contributors.textures",
                 createContributorEntry("Auynonymous", 0xFFFD80CF).tooltip(
                     t -> t.scale(0.8f)
                         .addLine(EnumChatFormatting.DARK_GRAY + "Dev my foundry...")),
@@ -192,7 +193,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.rendering",
+                "GT5U.gui.text.contributors.rendering",
                 createContributorEntry("Sisyphus", 0xFF2BCAD9)));
 
         contributorColumn.child(
@@ -224,7 +225,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         contributorColumn.child(
             createContributorSection(
-                "GT5U.gui.text.foundry.playtest",
+                "GT5U.gui.text.contributors.playtesting",
                 createContributorEntry("Scam Run", Color.DEEP_ORANGE.main).tooltip(t -> {
                     t.addLine(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.UNDERLINE + "Members");
                     t.addLine(EnumChatFormatting.DARK_GRAY + "Working");
