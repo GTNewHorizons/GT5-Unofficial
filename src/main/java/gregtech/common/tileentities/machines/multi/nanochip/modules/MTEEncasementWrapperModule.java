@@ -151,7 +151,12 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Able to process sheet and framebox " + TOOLTIP_CCs + " into wrapper spools and circuit casings.")
-            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
+            .addInfo(
+                "Outputs are placed in the " + TOOLTIP_VCO
+                    + " with the same "
+                    + colorString()
+                    + " as the input "
+                    + TOOLTIP_VCI)
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
             .addInfo(

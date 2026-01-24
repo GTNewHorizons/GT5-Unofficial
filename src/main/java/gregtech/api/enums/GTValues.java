@@ -617,12 +617,7 @@ public class GTValues {
         + "Raven";
 
     /*
-     * public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
-     * + EnumChatFormatting.BOLD
-     * + "Not"
-     * + EnumChatFormatting.AQUA
-     * + EnumChatFormatting.BOLD
-     * + "APenguin";
+    
      */
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
@@ -652,8 +647,7 @@ public class GTValues {
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
-    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
-        + "Pure"
+    public static final String StandalonePureBluez = EnumChatFormatting.WHITE + "Pure"
         + EnumChatFormatting.AQUA
         + "B"
         + EnumChatFormatting.DARK_AQUA
@@ -662,6 +656,8 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
+
+    public static final String AuthorPureBluez = "Author: " + StandalonePureBluez;
 
     // for use with the chain
     public static final Supplier<String> AUTHOR_SUPPLIER = () -> "Author: ";
@@ -764,7 +760,13 @@ public class GTValues {
         return emptyAnimatedText(1, 1000, colorList);
     }
 
-    public static final Supplier<String> AuthorNotAPenguin = chain(
+    public static final String StandaloneNotAPenguin = EnumChatFormatting.WHITE + "Not"
+        + EnumChatFormatting.AQUA
+        + "APenguin";
+
+    public static final String AuthorNotAPenguinStatic = "Author: " + EnumChatFormatting.BOLD + StandaloneNotAPenguin;
+
+    public static final Supplier<String> AuthorNotAPenguinAnimated = chain(
         createNotAPenguinLetter(0),
         createNotAPenguinLetter(1),
         createNotAPenguinLetter(2),
