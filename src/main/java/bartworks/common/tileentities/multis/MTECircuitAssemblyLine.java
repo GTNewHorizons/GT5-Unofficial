@@ -560,12 +560,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_KEY)) {
-            tooltip.add(
-                StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
-                    + EnumChatFormatting.YELLOW
-                    + StatCollector.translateToLocal(
-                        GTLanguageManager.getTranslateableItemStackName(
-                            ItemStack.loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Type")))));
+            tooltip.add(StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith",EnumChatFormatting.YELLOW + this.getTypeForDisplay()));
         }
     }
 
@@ -656,10 +651,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             StatCollector.translateToLocal("GT5U.multiblock.runningMode") + " "
                 + EnumChatFormatting.WHITE
                 + StatCollector.translateToLocal("chat.cal.mode." + tag.getInteger(RUNNING_MODE_KEY)));
-        if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(
-            StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
-                + EnumChatFormatting.YELLOW
-                + tag.getString("ImprintedWith"));
+        if (tag.hasKey("ImprintedWith") && tag.getInteger(RUNNING_MODE_KEY) == 0) currenttip.add(StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith",EnumChatFormatting.YELLOW + tag.getString("ImprintedWith")));
     }
 
     @Override
