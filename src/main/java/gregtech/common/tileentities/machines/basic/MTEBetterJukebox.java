@@ -249,7 +249,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
                 playPath = resource;
             } else {
-                resource = record.getRecordResource(record.recordName);
+                resource = record.getRecordResource("records." + record.recordName);
                 playPath = resource;
             }
             currentlyPlaying = record;
@@ -341,10 +341,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                         resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
                         playPath = resource;
                     } else {
-                        resource = record.getRecordResource(record.recordName);
-                        playPath = new ResourceLocation(
-                            resource.getResourceDomain(),
-                            "records." + resource.getResourcePath());
+                        resource = record.getRecordResource("records." + record.recordName);
+                        playPath = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
                     }
                     currentlyPlaying = record;
                     musicSource.setRecord(playPath);
