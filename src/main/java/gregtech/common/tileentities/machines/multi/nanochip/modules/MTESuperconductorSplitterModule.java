@@ -9,7 +9,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
@@ -215,9 +214,19 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Splits your Superconductor " + TOOLTIP_CCs)
-            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
             .addInfo(
-                "Requires " + EnumChatFormatting.RED + "1000 L/s" + EnumChatFormatting.BLUE + " Super Coolant" + EnumChatFormatting.GRAY + " to run")
+                "Outputs are placed in the " + TOOLTIP_VCO
+                    + " with the same "
+                    + colorString()
+                    + " as the input "
+                    + TOOLTIP_VCI)
+            .addInfo(
+                "Requires " + EnumChatFormatting.RED
+                    + "1000 L/s"
+                    + EnumChatFormatting.BLUE
+                    + " Super Coolant"
+                    + EnumChatFormatting.GRAY
+                    + " to run")
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
             .addInfo(

@@ -327,7 +327,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Water Purification Plant").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationPlant.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitClarifier.set(
             new MTEPurificationUnitClarifier(
                 PURIFICATION_UNIT_CLARIFIER.ID,
@@ -335,7 +335,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Clarifier Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitClarifier.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitFlocculator.set(
             new MTEPurificationUnitFlocculation(
                 PURIFICATION_UNIT_FLOCCULATOR.ID,
@@ -343,7 +343,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Flocculation Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitFlocculator.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
             new MTEPurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
@@ -351,7 +351,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "pH Neutralization Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitPhAdjustment.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitOzonation.set(
             new MTEPurificationUnitOzonation(
                 PURIFICATION_UNIT_OZONATION.ID,
@@ -359,7 +359,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Ozonation Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitOzonation.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
             new MTEPurificationUnitPlasmaHeater(
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
@@ -367,7 +367,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitPlasmaHeater.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
             new MTEPurificationUnitUVTreatment(
                 PURIFICATION_UNIT_UV_TREATMENT.ID,
@@ -375,7 +375,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "High Energy Laser Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitUVTreatment.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitDegasifier.set(
             new MTEPurificationUnitDegasser(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
@@ -383,7 +383,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitDegasifier.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitParticleExtractor.set(
             new MTEPurificationUnitBaryonicPerfection(
                 PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
@@ -391,7 +391,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
         addItemTooltip(
             ItemList.Machine_Multi_PurificationUnitParticleExtractor.get(1),
-            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguin));
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Hatch_DegasifierControl.set(
             new MTEHatchDegasifierControl(
                 HATCH_DEGASIFIER_CONTROL.ID,
@@ -664,7 +664,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Nanochip Assembly Complex").getStackForm(1));
         addItemTooltip(
             ItemList.Machine_Multi_NanochipAssemblyComplex.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_AssemblyMatrix.set(
             new MTEAssemblyMatrixModule(
                 NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
@@ -672,7 +672,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Nanochip Assembly Matrix").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_AssemblyMatrix.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_SMDProcessor.set(
             new MTESMDProcessorModule(
                 NANOCHIP_MODULE_SMD_PROCESSOR.ID,
@@ -680,7 +680,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Part Preparation Apparatus").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_SMDProcessor.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
                 NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
@@ -694,7 +694,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Ultra-high Energy Etching Array").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_EtchingArray.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_CuttingChamber.set(
             new MTECuttingChamberModule(
                 NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
@@ -702,13 +702,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Nanoprecision Cutting Chamber").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_CuttingChamber.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_WireTracer.set(
             new MTEWireTracerModule(
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
                 "multimachine.nanochipmodule.wiretracer",
                 "Nanoprecision Wire Tracer").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_WireTracer.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_WireTracer.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_SuperconductorSplitter.set(
             new MTESuperconductorSplitterModule(
                 NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
@@ -716,13 +718,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Superconductive Strand Splitter").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_SuperconductorSplitter.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_Splitter.set(
             new MTESplitterModule(
                 NANOCHIP_MODULE_SPLITTER.ID,
                 "multimachine.nanochipmodule.splitter",
                 "Nanopart Splitter").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_Splitter.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_Splitter.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_OpticalOrganizer.set(
             new MTEOpticalOrganizerModule(
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
@@ -738,7 +742,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Nanometer Encasement Wrapper").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_EncasementWrapper.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
         ItemList.NanoChipModule_BiologicalCoordinator.set(
             new MTEBiologicalCoordinationModule(
                 NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
@@ -746,7 +750,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Accelerated Biological Coordinator").getStackForm(1));
         addItemTooltip(
             ItemList.NanoChipModule_BiologicalCoordinator.get(1),
-            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(

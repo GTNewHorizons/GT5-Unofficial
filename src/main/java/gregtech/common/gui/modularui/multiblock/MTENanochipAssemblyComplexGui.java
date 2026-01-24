@@ -5,10 +5,6 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -44,6 +40,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
@@ -212,7 +209,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         panel.child(
             IKey.lang("GT5U.gui.text.contributors.header")
                 .asWidget()
-                .style(EnumChatFormatting.GOLD)
+                .style(EnumChatFormatting.BOLD)
                 .marginTop(8)
                 .align(Alignment.TopCenter))
             .child(
@@ -221,10 +218,38 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
         Flow contributorColumn = Flow.column()
             .coverChildren()
-            .marginLeft(14)
+            .marginLeft(26)
             .marginTop(24);
 
         panel.child(contributorColumn);
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.contributors.projectlead",
+                createContributorEntry(GTValues.StandaloneNotAPenguin, -1)));
+
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.contributors.programming",
+                createContributorEntry("JurreJelle", Color.INDIGO.brighterSafe(2)),
+                createContributorEntry("FourIsTheNumber", Color.PURPLE.brighterSafe(1)),
+                createContributorEntry(GTValues.StandalonePureBluez, -1),
+                createContributorEntry("TheEpicGamer274", 0xFF2BCAD9),
+                createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
+                createContributorEntry("Serenibyss", 0xFFFFA3FB),
+                createContributorEntry("Chrom", 0xFF9DC183),
+                createContributorEntry("SpicierSpace153", 0xFF13C9D4)));
+
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.contributors.textures",
+                createContributorEntry("Auynonymous", 0xFFFD80CF),
+                createContributorEntry("June", Color.PINK_ACCENT.main)));
+
+        contributorColumn.child(
+            createContributorSection(
+                "GT5U.gui.text.nac.contributors.idea_structure",
+                createContributorEntry("Sampsa", Color.RED.main),
+                createContributorEntry("Deleno", Color.DEEP_ORANGE.main)));
 
         return panel;
     }
@@ -249,31 +274,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         if (color != -1) key.color(color);
         return key.asWidget()
             .anchorLeft(0);
-    }
-
-    private static Widget<?> createSerenibyssEntry() {
-        IKey key = IKey.str("serenibyss")
-            .alignment(Alignment.CenterLeft)
-            .color(0xFFFFA3FB);
-        String url = "https://github.com/Roadhog360/Et-Futurum-Requiem/pull/673#issuecomment-3649833976";
-        return new ButtonWidget<>().background(key)
-            .anchorLeft(0)
-            .size(80, 9)
-            .onMousePressed(d -> {
-                if (Desktop.isDesktopSupported()) {
-                    Desktop desktop = Desktop.getDesktop();
-                    if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                        try {
-                            desktop.browse(new URI(url));
-                        } catch (IOException | URISyntaxException ignored) {}
-                    }
-                }
-                return true;
-            })
-            .tooltip(t -> {
-                t.scale(0.8f);
-                t.addLine(EnumChatFormatting.DARK_GRAY + "Click to open a Github link");
-            });
     }
 
     protected Widget<? extends Widget<?>> createBarWidget(PanelSyncManager syncManager) {
