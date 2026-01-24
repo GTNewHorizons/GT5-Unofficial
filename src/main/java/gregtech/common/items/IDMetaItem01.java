@@ -57,6 +57,7 @@ public enum IDMetaItem01 {
     FluidRegulator_UMV(52),
     FluidRegulator_UXV(53),
     FluidRegulator_MAX(54),
+    NandChipArray(81),
     Component_Minecraft_Wheels_Iron(100),
     Component_Minecraft_Wheels_Steel(101),
     Compressed_Fireclay(110),

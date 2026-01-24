@@ -189,6 +189,7 @@ gt.interact.desc.deny_i_filter_o=Deny input, Filter output
 gt.interact.desc.deny_i_invert_o=Deny input, Invert output
 gt.interact.desc.any_i_filter_o=Permit any input, Filter output
 gt.interact.desc.any_i_invert_o=Permit any input, Invert output
+gt.interact.desc.unknown=UNKNOWN
 gt.interact.desc.mb.idle.1=Hit with Soft Mallet
 gt.interact.desc.mb.idle.2= to (re-)start the Machine
 gt.interact.desc.mb.idle.3= if it doesn't start.
@@ -265,6 +266,8 @@ gt.interact.desc.issue=1 Issue
 gt.interact.desc.issues=%s Issues
 gt.interact.desc.issue_rotor_low=Rotor < 20%%
 gt.interact.desc.issue_rotor_dead=Rotor ≈ 0%%
+gt.interact.desc.filtering_fuild=Filtering Fluid: %s - %s
+gt.interact.desc.ban_screwdriver=Do not attempt to use screwdriver!
 
 # GT++ items
 item.GTPP.air_intake_hatch.name=Air Intake Hatch
@@ -748,6 +751,7 @@ GT5U.maglevHarness.tooltip=Grants creative flight while in range of a MagLev Pyl
 GT5U.maglevHarness.pylons=§9YOU MUST CONSTRUCT ADDITIONAL PYLONS!
 
 GT5U.autoplace.error.no_hatch=§cSuggested to place hatch §4%s§c but none was found
+GT5U.autoplace.error.no_placeable=§cNothing found to place (use gt_hatch 1 to suggest hatches)
 GT5U.autoplace.error.no_mte.id=§cSuggested to place machine with meta ID §4%s§c but none was found
 GT5U.autoplace.error.no_mte.class_name=§cSuggested to place machine with class name §4%d§c but none was found
 GT5U.providesfullhazmatprotection=Provides full hazmat protection.
@@ -1377,8 +1381,9 @@ channels.gregtech.antenna=Decides the of Antenna Casing. Starts at §6T1§r at v
 channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compression Field Generator. Starts at §6Crude Spacetime Compression Field Generator§r at value 1 and ends at §6Gallifreyan Spacetime Compression Field Generator§r at value 9.
 channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
-channels.gregtech.gt_no_hatch=When set, disable automatic hatch placement
+channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.component_casing=Decides the tier of component assemblyline casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling_OFF=§7Liquid Filling: §4OFF
@@ -1743,6 +1748,26 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+# chats
+GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
+GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
+GT5U.chat.machine.batch_mode.enable=Batch Mode: Enabled
+GT5U.chat.machine.batch_mode.disable=Batch Mode: Disabled
+GT5U.chat.turbine.fitting.loose=Fitting: Loose - More Flow
+GT5U.chat.turbine.fitting.tight=Fitting: Tight - More Efficiency
+GT5U.chat.machine.processing.enable=Machine Processing: Enabled
+GT5U.chat.machine.processing.disable=Machine Processing: Disabled
+GT5U.chat.machine.redstone_output_set.strong=Redstone Output at Side %s set to: Strong
+GT5U.chat.machine.redstone_output_set.weak=Redstone Output at Side %s set to: Weak
+GT5U.chat.machine.auto_input.disable=Auto-Input: Disabled
+GT5U.chat.machine.auto_input.enable=Auto-Input: Enabled
+GT5U.chat.machine.auto_output.disable=Auto-Output: Disabled
+GT5U.chat.machine.auto_output.enable=Auto-Output: Enabled
+GT5U.chat.buffer.sort_mode.enable=Sort mode: Enabled
+GT5U.chat.buffer.sort_mode.disable=Sort mode: Disabled
+GT5U.chat.worm_hole_generator.overclocks.enable=Overclocks: §aEnabled§r
+GT5U.chat.worm_hole_generator.overclocks.disable=Overclocks: §cDisabled§r
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -1836,6 +1861,7 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
+GT5U.multiblock.recipesDone=Recipes Finished
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -2170,6 +2196,49 @@ GT5U.waila.multiblock.status.has_problem=** HAS PROBLEMS **
 GT5U.waila.multiblock.status.running_fine=Running Fine
 GT5U.waila.multiblock.status.cpu_load=Average CPU load of ~%s ns
 GT5U.waila.multiblock.status.locked_recipe=Locked Recipe:
+
+GT5U.waila.network=Network: %s
+GT5U.waila.mode=Mode: %s
+GT5U.waila.coke_oven_hatch.mode.input=Input
+GT5U.waila.coke_oven_hatch.mode.output_item=Output Items
+GT5U.waila.coke_oven_hatch.mode.output_fluid=Output Fluids
+GT5U.waila.hatch.color_channel=Color Channel: %s
+GT5U.waila.transformer.step_down=Step Down
+GT5U.waila.transformer.step_up=Step Up
+GT5U.waila.transformer.input=Input:§r %s(%dA)
+GT5U.waila.transformer.output=Output:§r %s(%dA)
+GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
+GT5U.waila.hatch.crafting_input_slave.linked=Linked
+GT5U.waila.hatch.crafting_input_slave.unlinked=Not linked
+GT5U.waila.hatch.crafting_input_slave.bound_to=Bound to %d, %d, %d
+GT5U.waila.hatch.output_bus_me.item_cache_capacity=Item cache capacity: %s%s%s
+GT5U.waila.hatch.output_me.fluid_cache_capacity=Fluid cache capacity: %s%s L%s
+GT5U.waila.industrial_apiary.current_queen=Current Queen: %s
+GT5U.waila.industrial_apiary.effective_production=Effective Production: %s
+GT5U.waila.industrial_apiary.error=Error: %s
+GT5U.waila.long_distance_pipe.input=Pipeline Input
+GT5U.waila.long_distance_pipe.output=Pipeline Output
+GT5U.waila.long_distance_pipe.side=Pipeline Side
+GT5U.waila.long_distance_pipe.not_connected=Not connected
+GT5U.waila.long_distance_pipe.connected_to.input=§aConnected to §6Input§r
+GT5U.waila.long_distance_pipe.connected_to.input.too_close=Connected Input too close
+GT5U.waila.long_distance_pipe.connected_to.output=§aConnected to §9Output§r
+GT5U.waila.long_distance_pipe.connected_to.output.too_close=Connected Output too close
+GT5U.waila.black_hole_compressor.active=Black Hole Active
+GT5U.waila.black_hole_compressor.stability=Stability: %s%%
+GT5U.waila.black_hole_compressor.unstable=BLACK HOLE UNSTABLE
+GT5U.waila.black_hole_compressor.offline=Black Hole Offline
+GT5U.waila.hip_compressor.heat=HIP Heat: %s
+GT5U.waila.pcb.linked_to_bio_chamber_at=Linked to Bio Chamber at: §f%d, %d, %d§r
+GT5U.waila.pcb.linked_to_colling_tower_at=Linked to Cooling Tower at: §f%d, %d, %d§r
+GT5U.waila.pcb.compat_mode=IN COMPAT MODE, PLEASE USE NEW COOLING TOWER AND BIO CHAMBER STRUCTURES
+GT5U.waila.pcb.upgrade_base.linked_to=Linked to PCB Factory at: §f%d, %d, %d§r
+GT5U.waila.base.unlinked=Unlinked
+GT5U.waila.purification_unit_base.linked_to=Linked to Purification Plant at: §f%d, %d, %d§r
+GT5U.waila.digital_chest.count=Item Count: %s
+GT5U.waila.digital_chest.type=Item Type: %s
+GT5U.waila.digital_chest.empty=Chest Empty
+GT5U.waila.digital_tank.empty=Tank Empty
 
 achievement.gettingstartedwithgt=Getting Started with GT
 achievement.gettingstartedwithgt.desc=Craft a wooden pickaxe
@@ -2599,13 +2668,13 @@ gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s35%%§7 speed
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aPower Efficient Subsystems§7 module
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aProto-Volt Stabilizer§7 module
 
 gt.blockmachines.multimachine.foundry.powerefficient.flavor=Stable Current
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip1=- Subtracts %s10%%§7 from Initial EU Cost
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip2=- Multiplies EU cost by %s0.8x
 gt.blockmachines.multimachine.foundry.powerefficient.tooltip3=- Subtracts an additional %s50%%§7 from Initial EU Cost when
-gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Efficient Overclocking System§7 module
+gt.blockmachines.multimachine.foundry.powerefficient.tooltip4=   paired with the §3Sentient Overclocker§7 module
 
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.flavor=Raised Boundary
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip1=- Allows for §dUIV+§7 Recipes to be processed
@@ -2623,7 +2692,7 @@ gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
 gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
 gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
-gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casters §7module
+gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
 gt.blockmachines.multimachine.foundry.hypercooler.tooltip1=- Consumes §bCooling Fluid §7for §dExtra Overclocks
@@ -2636,7 +2705,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eExtra Casting Basins §7module
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
@@ -3336,6 +3405,8 @@ GT5U.tooltip.typefilter.set_to=Filter set to %s
 GT5U.tooltip.typefilter.ore_prefix=Ore prefix: %s
 GT5U.tooltip.typefilter.size=Filter size: %s
 
+GT5U.tooltip.space_project_frontend.item_count=Item Count: %s
+
 GT5U.die.frozen=%s froze to death
 GT5U.die.boiled=%s was boiled alive
 GT5U.die.exploded=%s exploded
@@ -3887,8 +3958,8 @@ achievement.protomatterActivationCoil.0=Protomatter Activation Coil
 achievement.protomatterActivationCoil.0.desc=Pickup this item to see the recipe in NEI
 achievement.antimatterAnnihilationMatrix.0=Antimatter Annihilation Matrix
 achievement.antimatterAnnihilationMatrix.0.desc=Pickup this item to see the recipe in NEI
-achievement.gt.blockmachines.multimachine.chambercentrifuge=Spinmatron-2737
-achievement.gt.blockmachines.multimachine.chambercentrifuge.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.multimachine.spinmatron=Spinmatron-2737
+achievement.gt.blockmachines.multimachine.spinmatron.desc.desc=Pickup this item to see the recipe in NEI
 achievement.tile.super_stock_replenisher=Super Stock Replenisher
 achievement.tile.super_stock_replenisher.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.01.32027=Electric Pump (UXV)
