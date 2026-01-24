@@ -262,7 +262,7 @@ BW.NEI.display.radhatch.2=Время: %s сек
 misc.BatchModeTextOn=Включён пакетный режим
 misc.BatchModeTextOff=Отключён пакетный режим
 
-tooltip.cal.imprintedWith=Imprinted with:
+tooltip.cal.imprintedWith=Imprinted with: %
 chat.cal.mode.0=Режим: Сборочная линия электросхем
 chat.cal.mode.1=Режим: Сборщик электросхем
 #Liquids
