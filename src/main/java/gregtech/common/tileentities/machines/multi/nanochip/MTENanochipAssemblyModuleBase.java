@@ -98,6 +98,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     public MTENanochipAssemblyComplex setBaseMulti(MTENanochipAssemblyComplex baseMulti) {
         this.baseMulti = baseMulti;
+        for (var hatchList : this.vacuumConveyorInputs.allHatches()) {
+            for (var hatch : hatchList) {
+                hatch.setMainController(baseMulti);
+            }
+        }
+        for (var hatchList : this.vacuumConveyorOutputs.allHatches()) {
+            for (var hatch : hatchList) {
+                hatch.setMainController(baseMulti);
+            }
+        }
         return baseMulti;
     }
 
