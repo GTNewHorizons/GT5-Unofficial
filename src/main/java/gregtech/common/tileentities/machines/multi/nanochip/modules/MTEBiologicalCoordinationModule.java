@@ -51,14 +51,14 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
     public static final IStructureDefinition<MTEBiologicalCoordinationModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEBiologicalCoordinationModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, BIO_STRING)
-        // Nanochip Primary Casing
-        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Tritanium Frame Box
         .addElement('C', ofFrame(Materials.Tritanium))
         // Circuit Complex Glass
-        .addElement('D', Casings.NanochipGlass.asElement())
+        .addElement('D', Casings.NanochipComplexGlass.asElement())
         .build();
 
     public MTEBiologicalCoordinationModule(int aID, String aName, String aNameRegional) {
