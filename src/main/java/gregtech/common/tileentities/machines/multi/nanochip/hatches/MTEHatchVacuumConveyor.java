@@ -12,8 +12,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -44,6 +42,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactor
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement {
 
@@ -150,7 +150,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-                                int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setByte("color", (byte) (getColorization() + (byte) 1));
 
@@ -158,7 +158,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-                             IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         byte color = (byte) (accessor.getNBTData()
             .getByte("color") - 1);
