@@ -56,14 +56,14 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         .addShape(STRUCTURE_PIECE_MAIN, CUTTING_STRUCTURE)
         // Neutronium Frame Box
         .addElement('A', ofFrame(Materials.Neutronium))
-        // Nanochip Primary Casing
-        .addElement('B', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('C', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('C', Casings.NanochipReinforcementCasing.asElement())
         // Naquadria-Reinforced Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 12))
         // Nanochip Glass
-        .addElement('E', Casings.NanochipGlass.asElement())
+        .addElement('E', Casings.NanochipComplexGlass.asElement())
 
         .build();
 

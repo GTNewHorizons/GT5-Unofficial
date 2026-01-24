@@ -48,16 +48,16 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
     public static final IStructureDefinition<MTESMDProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESMDProcessorModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SMD_STRING)
-        // Nanochip Primary Casing
-        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // UEV Machine Casings
         .addElement('C', ofBlock(GregTechAPI.sBlockCasingsNH, 10))
         // Radox polymer frame
         .addElement('D', ofFrame(Materials.RadoxPolymer))
         // Nanochip Glass
-        .addElement('E', Casings.NanochipGlass.asElement())
+        .addElement('E', Casings.NanochipComplexGlass.asElement())
         .build();
 
     @Override

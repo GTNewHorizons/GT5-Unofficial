@@ -50,14 +50,14 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
     public static final IStructureDefinition<MTEEncasementWrapperModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEEncasementWrapperModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ENCASEMENT_WRAPPER_STRUCTURE_STRING)
-        // Nanochip Primary Casing
-        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Quantium Frame Box
         .addElement('C', ofFrame(Materials.Quantium))
         // Nanochip Glass
-        .addElement('D', Casings.NanochipGlass.asElement())
+        .addElement('D', Casings.NanochipComplexGlass.asElement())
         .build();
 
     @Override
