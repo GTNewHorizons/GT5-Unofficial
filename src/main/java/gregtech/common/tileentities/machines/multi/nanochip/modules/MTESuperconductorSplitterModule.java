@@ -225,7 +225,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     }
 
     public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = unprocessedName + " Die";
+        component.fallbackLocalizedName = unprocessedName + " Strand";
     }
 
     @Override
