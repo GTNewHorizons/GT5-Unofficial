@@ -18,7 +18,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -117,10 +116,6 @@ public class CommonProxy implements IFuelHandler {
         CompatHandler.runQueuedRecipes();
         Logger.INFO("Registering custom mob drops.");
         registerCustomMobDrops();
-    }
-
-    public void serverStarting(final FMLServerStartingEvent e) {
-        CompatHandler.InitialiseLateHandlerThenAddRecipes();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
