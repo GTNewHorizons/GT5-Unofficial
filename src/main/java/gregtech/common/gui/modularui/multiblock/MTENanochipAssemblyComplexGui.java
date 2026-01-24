@@ -1,8 +1,14 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -13,6 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -27,6 +34,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -36,6 +44,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
@@ -175,8 +184,96 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.makeLogoWidget(syncManager, parent).size(24)
-            .setEnabledIf(a -> !multiblock.isTalkModeActive);
+        IPanelHandler contribPanel = syncManager
+            .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
+        return new ButtonWidget<>().size(24)
+            .marginTop(4)
+            .overlay(IDrawable.EMPTY)
+            .setEnabledIf(a -> !multiblock.isTalkModeActive)
+            .tooltip(
+                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.contributors.panel.open")))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
+            .disableHoverBackground()
+            .onMousePressed(d -> {
+                if (!contribPanel.isPanelOpen()) {
+                    contribPanel.openPanel();
+                } else {
+                    contribPanel.closePanel();
+                }
+                return true;
+            });
+    }
+
+    private ModularPanel openContributorsPanel(ModularPanel parent) {
+        ModularPanel panel = new ModularPanel("contributorsPanel").relative(parent)
+            .size(getBasePanelWidth(), getBasePanelHeight() + 20)
+            .background(GTGuiTextures.BACKGROUND_NANOCHIP);
+        panel.child(
+            IKey.lang("GT5U.gui.text.contributors.header")
+                .asWidget()
+                .style(EnumChatFormatting.GOLD)
+                .marginTop(8)
+                .align(Alignment.TopCenter))
+            .child(
+                ButtonWidget.panelCloseButton()
+                    .background(GTGuiTextures.BUTTON_NANOCHIP));
+
+        Flow contributorColumn = Flow.column()
+            .coverChildren()
+            .marginLeft(14)
+            .marginTop(24);
+
+        panel.child(contributorColumn);
+
+        return panel;
+    }
+
+    private static Flow createContributorSection(String titleKey, Widget<?>... entries) {
+        return new Column().coverChildren()
+            .marginBottom(5)
+            .alignX(0)
+            .child(
+                IKey.lang(titleKey)
+                    .style(EnumChatFormatting.UNDERLINE)
+                    .alignment(Alignment.CenterLeft)
+                    .asWidget()
+                    .marginBottom(2)
+                    .alignX(0))
+            .children(Arrays.asList(entries));
+    }
+
+    private static TextWidget<?> createContributorEntry(String name, int color) {
+        IKey key = IKey.str(name)
+            .alignment(Alignment.CenterLeft);
+        if (color != -1) key.color(color);
+        return key.asWidget()
+            .anchorLeft(0);
+    }
+
+    private static Widget<?> createSerenibyssEntry() {
+        IKey key = IKey.str("serenibyss")
+            .alignment(Alignment.CenterLeft)
+            .color(0xFFFFA3FB);
+        String url = "https://github.com/Roadhog360/Et-Futurum-Requiem/pull/673#issuecomment-3649833976";
+        return new ButtonWidget<>().background(key)
+            .anchorLeft(0)
+            .size(80, 9)
+            .onMousePressed(d -> {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                        try {
+                            desktop.browse(new URI(url));
+                        } catch (IOException | URISyntaxException ignored) {}
+                    }
+                }
+                return true;
+            })
+            .tooltip(t -> {
+                t.scale(0.8f);
+                t.addLine(EnumChatFormatting.DARK_GRAY + "Click to open a Github link");
+            });
     }
 
     protected Widget<? extends Widget<?>> createBarWidget(PanelSyncManager syncManager) {
