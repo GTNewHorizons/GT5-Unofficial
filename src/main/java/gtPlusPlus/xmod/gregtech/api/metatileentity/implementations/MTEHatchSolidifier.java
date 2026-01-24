@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +66,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
             "Fluid Input with Mold for " + EnumChatFormatting.YELLOW
                 + "Fluid Solidifier Multiblocks"
                 + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L",
+            "Capacity: " + formatNumber(getCapacity()) + "L",
             "Added by: " + EnumChatFormatting.AQUA
                 + "Quetz4l - "
                 + EnumChatFormatting.RED
