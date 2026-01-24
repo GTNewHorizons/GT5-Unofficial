@@ -1,5 +1,6 @@
 package gregtech.nei.searchprovider;
 
+import java.util.concurrent.FutureTask;
 import java.util.regex.Pattern;
 
 import net.minecraft.item.ItemStack;
@@ -8,12 +9,36 @@ import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.Material;
 
 public class ChemicalFormulaFilter implements ItemFilter {
 
     private static final ItemStackMap<String> itemSearchNames = new ItemStackMap<>();
+    private static final FutureTask<Void> loadGTPlusPlusMaterial = new FutureTask<>(() -> {
+        Material.mComponentMap.forEach((name, components) -> {
+            Material material = Material.mMaterialsByName.get(name);
+            if (material != null) {
+                String chemicalFormula = material.vChemicalFormula;
+                components.forEach((orePrefix, stack) -> {
+                    synchronized (itemSearchNames) {
+                        itemSearchNames.put(stack, chemicalFormula);
+                    }
+                });
+            }
+        });
+        return null;
+    });
 
     private final Pattern pattern;
+
+    private static void ensureLoadGTPlusPlusMaterials() {
+        loadGTPlusPlusMaterial.run();
+        try {
+            loadGTPlusPlusMaterial.get();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public ChemicalFormulaFilter(Pattern pattern) {
         this.pattern = pattern;
@@ -25,18 +50,8 @@ public class ChemicalFormulaFilter implements ItemFilter {
             .find();
     }
 
-    public static void clearCache() {
-        itemSearchNames.clear();
-    }
-
-    public static void putItem(ItemStack stack) {
-        String chemicalFormula = getChemicalFormula(stack.copy());
-        synchronized (itemSearchNames) {
-            itemSearchNames.put(stack, chemicalFormula);
-        }
-    }
-
     public static String getSearchFormula(ItemStack stack) {
+        ensureLoadGTPlusPlusMaterials();
 
         String chemicalFormula = itemSearchNames.get(stack);
 
