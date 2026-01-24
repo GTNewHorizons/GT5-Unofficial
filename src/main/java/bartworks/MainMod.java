@@ -18,6 +18,7 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
+import bartworks.API.enums.CircuitImprints;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -105,7 +106,8 @@ public final class MainMod {
 
     public MainMod() {
         GregTechAPI.sAfterGTPostload.add(() -> {
-            CircuitImprintLoader.registerItemstacks();
+            CircuitImprints.registerExternalModCircuitsInItemList();
+            CircuitImprints.registerSlicedCircuitsAndImprints();
             for (CircuitWraps wrap : CircuitWraps.values()) {
                 wrap.registerWrap();
                 wrap.registerWrapRecipe();
