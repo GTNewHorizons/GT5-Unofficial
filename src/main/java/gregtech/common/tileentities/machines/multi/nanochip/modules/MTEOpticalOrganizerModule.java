@@ -79,12 +79,12 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
                             .getItem()),
                     MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)
                         .getItemDamage())))
-        // Nanochip Primary Casing
-        .addElement('B', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('C', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('C', Casings.NanochipReinforcementCasing.asElement())
         // Nanochip Glass
-        .addElement('D', Casings.NanochipGlass.asElement())
+        .addElement('D', Casings.NanochipComplexGlass.asElement())
         .build();
 
     @Override

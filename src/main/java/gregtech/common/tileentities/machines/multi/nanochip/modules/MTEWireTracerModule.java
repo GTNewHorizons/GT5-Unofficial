@@ -52,16 +52,16 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
     public static final IStructureDefinition<MTEWireTracerModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEWireTracerModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, WIRE_STRING)
-        // Nanochip Primary Casing
-        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Superconductor UEV Base Sheetmetal
         .addElement('C', ofSheetMetal(Materials.SuperconductorUEVBase))
         // Superconductor UHV Base Framebox
         .addElement('D', ofFrame(Materials.SuperconductorUHVBase))
         // Nanochip Glass
-        .addElement('E', Casings.NanochipGlass.asElement())
+        .addElement('E', Casings.NanochipComplexGlass.asElement())
         .build();
 
     @Override

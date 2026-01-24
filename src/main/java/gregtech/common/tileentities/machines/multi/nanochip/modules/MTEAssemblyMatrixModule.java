@@ -85,14 +85,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                 -1,
                 MTEAssemblyMatrixModule::setCasingTier,
                 MTEAssemblyMatrixModule::getCasingTier))
-        // Nanochip Primary Casing
-        .addElement('C', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('D', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('C', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('D', Casings.NanochipReinforcementCasing.asElement())
         // Naquadah Alloy Frame Box
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
         // Nanochip Glass
-        .addElement('F', Casings.NanochipGlass.asElement())
+        .addElement('F', Casings.NanochipComplexGlass.asElement())
         .addElement('G', ofSheetMetal(Materials.NaquadahAlloy))
 
         .build();

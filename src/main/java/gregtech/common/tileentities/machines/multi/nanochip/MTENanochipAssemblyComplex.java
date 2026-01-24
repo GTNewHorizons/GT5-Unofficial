@@ -90,7 +90,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         + "Nanochip Assembly Complex"
         + EnumChatFormatting.GRAY;
 
-    public static final int CASING_INDEX_WHITE = Casings.NanochipPrimaryCasing.textureId;
+    public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
     public static final int BATCH_SIZE = 10_000;
     public static final int HISTORY_BLOCKS = 100;
@@ -104,16 +104,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .<MTENanochipAssemblyComplex>builder()
         .addShape(STRUCTURE_PIECE_MAIN, AssemblyComplexStructureString.MAIN_STRUCTURE)
         // Exterior Nanochip Casing
-        .addElement('A', Casings.NanochipExteriorCasing.asElement())
+        .addElement('A', Casings.NanochipFirewallProjectionCasing.asElement())
         // Primary Nanochip Casing
-        .addElement('B', Casings.NanochipPrimaryCasing.asElement())
+        .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
         // Secondary Nanochip Casing
-        .addElement('C', Casings.NanochipSecondaryCasing.asElement())
+        .addElement('C', Casings.NanochipReinforcementCasing.asElement())
         // Computational Matrix Casing
-        .addElement('J', Casings.NanochipBrainCasing.asElement())
+        .addElement('J', Casings.NanochipComputationalMatrixCasing.asElement())
         .addElement('D', ofFrame(Materials.Naquadah))
         // Nanochip Glass
-        .addElement('E', Casings.NanochipGlass.asElement())
+        .addElement('E', Casings.NanochipComplexGlass.asElement())
         // Module
         .addElement(
             'F',
@@ -122,7 +122,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(1)
                 // Base casing or assembly module
-                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
 
         // Vacuum conveyor hatches that the main controller cares about go in specific slots & Energy Hatches
         .addElement(
@@ -142,7 +142,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         0))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(2)
-                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
         // Either a white casing block or an ignored hatch (this hatch is on the module)
         .addElement(
             'I',
@@ -150,7 +150,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 .atLeast(ImmutableMap.of(AssemblyHatchElement.IgnoredHatch, 0))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(3)
-                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
         .build();
 
     public static final int MODULE_CONNECT_INTERVAL = 20;
