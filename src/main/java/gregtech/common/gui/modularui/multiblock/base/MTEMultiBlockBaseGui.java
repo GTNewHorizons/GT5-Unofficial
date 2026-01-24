@@ -212,10 +212,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .bottomRel(0, 6, 0)
             .childIf(multiblock.supportsShutdownReasonHoverable(), createShutdownReasonHoverableTerminal(syncManager))
             .childIf(multiblock.supportsMaintenanceIssueHoverable(), createMaintIssueHoverableTerminal(syncManager))
-            .childIf(multiblock.supportsLogo(), makeLogoWidget());
+            .childIf(multiblock.supportsLogo(), makeLogoWidget(syncManager, panel));
     }
 
-    protected Widget<? extends Widget<?>> makeLogoWidget() {
+    protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(18)
             .marginTop(4)
             .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
@@ -990,14 +990,26 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createMaintIssueHoverableTerminal(PanelSyncManager syncManager) {
-        IntSyncValue maintSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maintCount:0");
-        return new DynamicDrawable(
-            () -> maintSyncer.getValue() == 0 ? GTGuiTextures.OVERLAY_NO_MAINTENANCE_ISSUES
-                : IKey.str(EnumChatFormatting.DARK_RED + String.valueOf(maintSyncer.getValue()))).asWidget()
-                    .size(18, 18)
-                    .marginTop(4)
-                    .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
-                    .tooltipAutoUpdate(true);
+        IntSyncValue maintSyncer = syncManager.findSyncHandler("maintCount", IntSyncValue.class);
+        return new DynamicDrawable(() -> {
+            switch (maintSyncer.getIntValue()) {
+                case 0 -> {
+                    return GTGuiTextures.OVERLAY_NO_MAINTENANCE_ISSUES;
+                }
+                case 6 -> {
+                    return GTGuiTextures.OVERLAY_ALL_MAINTENANCE_ISSUES;
+                }
+                default -> {
+                    return GTGuiTextures.OVERLAY_SOME_MAINTENANCE_ISSUES;
+                }
+            }
+        }
+
+        ).asWidget()
+            .size(18, 18)
+            .marginTop(4)
+            .tooltipBuilder(t -> makeMaintenanceHoverableTooltip(t, maintSyncer))
+            .tooltipAutoUpdate(true);
     }
 
     protected void makeMaintenanceHoverableTooltip(RichTooltip t, IntSyncValue maintSyncer) {

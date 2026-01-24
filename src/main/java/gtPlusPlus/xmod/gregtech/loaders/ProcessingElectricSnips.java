@@ -7,13 +7,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class ProcessingElectricSnips implements Runnable {
@@ -109,16 +109,10 @@ public class ProcessingElectricSnips implements Runnable {
             motor = ItemList.Electric_Motor_HV.get(1);
         }
 
-        return RecipeUtils.addShapedRecipe(
-            OrePrefixes.wireFine.get(Materials.Electrum),
-            aInputCutter,
-            OrePrefixes.wireFine.get(Materials.Electrum),
-            MaterialsElements.STANDALONE.WHITE_METAL.getGear(1),
-            motor,
-            MaterialsElements.STANDALONE.WHITE_METAL.getGear(1),
-            OrePrefixes.plate.get(aMaterial),
-            aBattery,
-            OrePrefixes.plate.get(aMaterial),
-            aOutputStack);
+        return GTModHandler.addCraftingRecipe(
+            aOutputStack,
+            new Object[] { "WXW", "GMG", "PBP", 'W', OrePrefixes.wireFine.get(Materials.Electrum), 'X', aInputCutter,
+                'G', MaterialsElements.STANDALONE.WHITE_METAL.getGear(1), 'M', motor, 'P',
+                OrePrefixes.plate.get(aMaterial), 'B', aBattery });
     }
 }

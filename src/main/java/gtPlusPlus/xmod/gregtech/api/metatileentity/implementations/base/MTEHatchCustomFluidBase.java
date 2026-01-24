@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_STEAM_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
 
@@ -20,7 +21,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class MTEHatchCustomFluidBase extends MTEHatch {
 
@@ -37,7 +37,7 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             aNameRegional,
             aTier,
             3,
-            new String[] { "Fluid Input for Multiblocks", "Capacity: " + GTUtility.formatNumbers(aAmount) + "L" });
+            new String[] { "Fluid Input for Multiblocks", "Capacity: " + formatNumber(aAmount) + "L" });
         this.mLockedFluid = aFluid;
         this.mFluidCapacity = aAmount;
     }
@@ -124,8 +124,8 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        if (mLockedStack == null) {
-            mLockedStack = FluidUtils.getFluidStack(mLockedFluid, 1);
+        if (mLockedStack == null && mLockedFluid != null) {
+            mLockedStack = new FluidStack(mLockedFluid, 1);
         }
         int aFluidTemp = 0;
         boolean isSteam = false;
