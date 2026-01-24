@@ -51,16 +51,6 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor impleme
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
-    public VacuumFactoryNetwork getNetwork() {
-        return network;
-    }
-
-    @Override
     public CircuitComponentPacket extractPacket() {
         CircuitComponentPacket outputPacket = this.contents;
         this.contents = null;
@@ -68,18 +58,13 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor impleme
     }
 
     @Override
-    public MTENanochipAssemblyComplex maincontroller() {
+    public MTENanochipAssemblyComplex getMainController() {
         return this.mainController;
     }
 
     @Override
     public List<Pair<Class<?>, Object>> getComponents() {
         return Collections.singletonList(Pair.of(IVacuumStorage.class, this));
-    }
-
-    @Override
-    public void setNetwork(VacuumFactoryNetwork network) {
-        this.network = network;
     }
 
     @Override
