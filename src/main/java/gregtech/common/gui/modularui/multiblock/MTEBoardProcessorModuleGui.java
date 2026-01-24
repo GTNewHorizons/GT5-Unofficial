@@ -21,10 +21,9 @@ import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modularui2.GTWidgetThemes;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
 
-public class MTEBoardProcessorModuleGui extends MTEMultiBlockBaseGui<MTEBoardProcessorModule> {
+public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui<MTEBoardProcessorModule> {
 
     public MTEBoardProcessorModuleGui(MTEBoardProcessorModule multiblock) {
         super(multiblock);
