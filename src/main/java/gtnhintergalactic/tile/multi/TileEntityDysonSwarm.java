@@ -397,15 +397,24 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                    TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE), TextureFactory.builder()
-                        .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+            if (aActive) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER), TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(IGTextures.DYSON_OVERLAY_FRONT_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
