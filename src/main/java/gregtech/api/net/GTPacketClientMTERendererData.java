@@ -29,7 +29,7 @@ public class GTPacketClientMTERendererData extends GTPacket {
 
     @Override
     public byte getPacketID() {
-        return GTPacketTypes.SYNC_TILE_DATA_TO_CLIENT.id;
+        return GTPacketTypes.SYNC_TILE_RENDER_DATA_TO_CLIENT.id;
     }
 
     @Override
