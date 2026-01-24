@@ -375,7 +375,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                 if (this.imprintedItemName == null || this.imprintedStack == null) {
                     this.imprintedStack = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
                     this.imprintedStack.setTagCompound(this.type);
-                    this.imprintedItemName = GTLanguageManager.getTranslateableItemStackName(this.imprintedStack);
+                    this.imprintedItemName = this.imprintedStack.getUnlocalizedName();
                 }
             }
             case CircuitAssembler -> {
