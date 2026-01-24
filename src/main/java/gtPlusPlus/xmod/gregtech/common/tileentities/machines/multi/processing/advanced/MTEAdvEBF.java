@@ -114,6 +114,13 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                     + "900K"
                     + EnumChatFormatting.GRAY
                     + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Bottom center")
             .addCasingInfoMin(mCasingName, 6, false)
