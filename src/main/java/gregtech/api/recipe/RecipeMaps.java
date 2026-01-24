@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
@@ -1340,15 +1341,15 @@ public final class RecipeMaps {
 
             return Arrays.asList(
                 StatCollector.translateToLocal("beamcrafting.energy_A") + ": "
-                    + GTUtility.formatNumbers(minEnergy_A)
+                    + formatNumber(minEnergy_A)
                     + "keV",
 
                 StatCollector.translateToLocal("beamcrafting.energy_B") + ": "
-                    + GTUtility.formatNumbers(minEnergy_B)
+                    + formatNumber(minEnergy_B)
                     + "keV",
 
-                StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + GTUtility.formatNumbers(amount_A),
-                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + GTUtility.formatNumbers(amount_B)
+                StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
+                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B)
 
         );
         }))

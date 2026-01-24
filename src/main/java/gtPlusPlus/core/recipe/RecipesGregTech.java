@@ -595,15 +595,15 @@ public class RecipesGregTech {
                 .duration(3 * MINUTES)
                 .addTo(AssemblyLine);
 
-            // Charge Pack LuV-UV
+            // Charge Pack LuV-UHV
 
             ItemStack[] aChargeResearch = new ItemStack[] { GregtechItemList.Energy_Core_LuV.get(1),
                 GregtechItemList.Energy_Core_ZPM.get(1), GregtechItemList.Energy_Core_UV.get(1),
                 GregtechItemList.Energy_Core_UHV.get(1) };
 
-            ItemStack[] aChargeOutputs = new ItemStack[] { new ItemStack(ModItems.itemChargePack_High_1, 1),
-                new ItemStack(ModItems.itemChargePack_High_2, 1), new ItemStack(ModItems.itemChargePack_High_3, 1),
-                new ItemStack(ModItems.itemChargePack_High_4, 1), };
+            ItemStack[] aChargeOutputs = new ItemStack[] { GregtechItemList.ChargePack_LuV.get(1),
+                GregtechItemList.ChargePack_ZPM.get(1), GregtechItemList.ChargePack_UV.get(1),
+                GregtechItemList.ChargePack_UHV.get(1), };
 
             ItemStack[] aCoilWire = new ItemStack[] { GregtechItemList.DehydratorCoilWireEV.get(64),
                 GregtechItemList.DehydratorCoilWireIV.get(64), GregtechItemList.DehydratorCoilWireLuV.get(64),

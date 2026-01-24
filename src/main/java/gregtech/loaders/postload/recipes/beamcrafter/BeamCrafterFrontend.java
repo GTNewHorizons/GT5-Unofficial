@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes.beamcrafter;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gtnhlanth.common.beamline.Particle.isParticle;
 
 import java.util.List;
@@ -97,12 +98,12 @@ public class BeamCrafterFrontend extends RecipeMapFrontend {
         long eut = calculator.getConsumption();
         return StatCollector.translateToLocalFormatted(
             "GT5U.nei.display.usage",
-            GTUtility.formatNumbers(eut),
+            formatNumber(eut),
             GTUtility.getTierNameWithParentheses(eut));
     }
 
     private String getAmperageString(OverclockCalculator calculator) {
-        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", GTUtility.formatNumbers(1));
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.amperage", formatNumber(1));
     }
 
 }
