@@ -956,6 +956,13 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_64A_MAX,
         OVERLAY_ENERGY_OUT_MULTI_64A_MAXP,
 
+        OVERLAY_ENERGY_OUT_MULTI_256A_UV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UHV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UEV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UIV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UMV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UXV,
+
         OVERLAY_ENERGY_OUT_MULTI_LASER,
         OVERLAY_ENERGY_OUT_MULTI_LASER_ULV,
         OVERLAY_ENERGY_OUT_MULTI_LASER_LV,
@@ -1935,8 +1942,8 @@ public class Textures {
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
         OVERLAY_NANITE_HATCH_GLOW,
-        MACHINE_CASING_CHAMBER_CENTRIFUGE,
-        SIEVE_MESH,
+        SPINMATRON_CASING,
+        SPINMATRON_GRATE,
         NANO_FORGE_CASING_1,
         NANO_FORGE_CASING_2,
         NANO_FORGE_CASING_3,
@@ -2254,6 +2261,22 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UXV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAX),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAXP), };
 
+        public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_256A = {
+            // Base Icon
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            // ULV - ZPM Placeholders
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            // In-Game Textures
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UHV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UEV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UIV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UMV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UXV),
+            // MAX / MAXP placeholders
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UXV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UXV), };
+
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_LASER = {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_ULV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_LV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_MV),
@@ -2517,21 +2540,10 @@ public class Textures {
 
         VOID, // The Empty Texture
         RENDERING_ERROR,
-        WRENCH,
         MORTAR,
-        CROWBAR,
-        JACKHAMMER,
-        WIRE_CUTTER,
-        KNIFE,
-        BUTCHERYKNIFE,
-        SICKLE,
-        SCOOP,
-        GRAFTER,
-        PLUNGER,
         ROLLING_PIN,
         HANDLE_SWORD,
         HANDLE_FILE,
-        HANDLE_SAW,
         HANDLE_SCREWDRIVER,
         HANDLE_BUZZSAW,
         HANDLE_ELECTRIC_SCREWDRIVER,
@@ -2557,22 +2569,9 @@ public class Textures {
         ENERGY_BAR_6,
         ENERGY_BAR_7,
         ENERGY_BAR_8,
-        TURBINE,
-        TURBINE_SMALL,
-        TURBINE_LARGE,
-        TURBINE_HUGE,
         WIRELESS_HEADPHONES,
-        POCKET_MULTITOOL_CLOSED,
-        POCKET_MULTITOOL_BRANCHCUTTER,
-        POCKET_MULTITOOL_FILE,
-        POCKET_MULTITOOL_KNIFE,
-        POCKET_MULTITOOL_SAW,
-        POCKET_MULTITOOL_SCREWDRIVER,
-        POCKET_MULTITOOL_WIRECUTTER,
         HALO,
-        HALO_FUZZY,
-        TROWEL,
-        HANDLE_TROWEL;
+        HALO_FUZZY;
 
         public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
             DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,

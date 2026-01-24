@@ -98,7 +98,6 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed")
-            .addInfo("Requires one Input Hatch that matches the tier of the Casings")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)

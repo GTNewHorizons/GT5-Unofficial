@@ -269,7 +269,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.foil, Materials.RedAlloy, 1L),
                         GTUtility.copyAmount(0, aStack))
-                    .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EtchedLowVoltageWiring", 1L, 0))
+                    .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EtchedLowVoltageWiring", 1L, 0))
                     .duration(10 * SECONDS)
                     .eut(16)
                     .addTo(laserEngraverRecipes);
