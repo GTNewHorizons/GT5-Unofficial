@@ -1,5 +1,7 @@
 package gtnhintergalactic.nei;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Rectangle;
 import java.util.Map;
 
@@ -56,7 +58,7 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
     /** Color of all texts */
     private static final int TEXT_COLOR = 0x404040;
     /** Optional lang key for value formatting */
-    private static final String VALUE_FORMAT_KEY = "ig.nei.elevatorpump.value";
+    private static final String VALUE_FORMAT_KEY = "ig.nei.space.custom.value";
     /** Default value format if VALUE_FORMAT_KEY is not present */
     private static final String DEFAULT_VALUE_FORMAT = "%s";
 
@@ -231,12 +233,8 @@ public class SpacePumpModuleRecipeHandler extends TemplateRecipeHandler {
 
         GuiDraw.drawStringC(formatValue(recipe.planetType), CATEGORY_VALUE_X, PLANET_TYPE_Y, TEXT_COLOR, false);
         GuiDraw.drawStringC(formatValue(recipe.gasType), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(
-            formatValue(GTUtility.formatNumbers(recipe.amount)),
-            CATEGORY_VALUE_X,
-            OUT_AMOUNT_Y,
-            TEXT_COLOR,
-            false);
+        GuiDraw
+            .drawStringC(formatValue(formatNumber(recipe.amount)), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),

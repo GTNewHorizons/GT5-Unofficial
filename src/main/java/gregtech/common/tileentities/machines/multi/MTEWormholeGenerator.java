@@ -966,7 +966,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
 
         // spotless:off
-        tt.addMachineType("Wormhole Generator")
+        tt.addMachineType("Wormhole Generator, MWG")
             .addInfo("Transfers EU between two wormhole generators")
             .addInfo("Wormholes are linked by placing an AE2 Entangled Singularity in each controller slot")
             .addInfo("The transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate")

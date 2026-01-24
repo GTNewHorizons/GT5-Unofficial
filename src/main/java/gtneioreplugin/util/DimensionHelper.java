@@ -44,243 +44,22 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
 import static galacticgreg.api.enums.DimensionDef.DimNames.VEGAB;
 import static galacticgreg.api.enums.DimensionDef.DimNames.VENUS;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.client.resources.I18n;
 
+import com.github.bsideup.jabel.Desugar;
+
+import gregtech.api.util.GTUtility;
+
 public class DimensionHelper {
-
-    public static final String[] DimName = {
-        // Non GC dimensions in progression order instead of alphabetical
-        "Overworld", "Nether", "Twilight", "The End", "EndAsteroid", "dimensionDarkWorld",
-        // T1
-        "GalacticraftCore_Moon",
-        // T2
-        "GalaxySpace_Deimos", "GalacticraftMars_Mars", "GalaxySpace_Phobos",
-        // T3
-        "GalacticraftMars_Asteroids", "GalaxySpace_Callisto", "GalaxySpace_Ceres", "GalaxySpace_Europa",
-        "GalaxySpace_Ganymede", "Ross128b",
-        // T4
-        "GalaxySpace_Io", "GalaxySpace_Mercury", "GalaxySpace_Venus",
-        // T5
-        "GalaxySpace_Enceladus", "GalaxySpace_Miranda", "GalaxySpace_Oberon", "GalaxySpace_Titan", "Ross128ba",
-        // T6
-        "GalaxySpace_Proteus", "GalaxySpace_Triton",
-        // T7
-        "GalaxySpace_Haumea", "GalaxySpace_Kuiperbelt", "GalaxySpace_MakeMake", "GalaxySpace_Pluto",
-        // T8
-        "GalaxySpace_BarnardC", "GalaxySpace_BarnardE", "GalaxySpace_BarnardF", "GalaxySpace_CentauriA",
-        "GalaxySpace_TcetiE", "GalaxySpace_VegaB",
-        // T9
-        "GalacticraftAmunRa_Anubis", "GalacticraftAmunRa_Horus", "GalacticraftAmunRa_Maahes",
-        "GalacticraftAmunRa_MehenBelt", "GalacticraftAmunRa_Neper", "GalacticraftAmunRa_Seth",
-        // T10
-        "Underdark", };
-
-    public static final String[] DimNameTrimmed = Arrays.stream(DimName)
-        .map(
-            n -> n.replaceAll("GalacticraftCore_", "")
-                .replaceAll("GalacticraftMars_", "")
-                .replaceAll("GalaxySpace_", "")
-                .replaceAll("GalacticraftAmunRa_", ""))
-        .toArray(String[]::new);
-
-    public static final String[] DimNameDisplayed = { // first 2 letters if one word else 1 letter of every word, except
-        // capital letter in
-        // name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
-        // Non GC dimensions in progression order instead of alphabetical
-        "Ow", // Overworld
-        "Ne", // Nether
-        "TF", // Twilight
-        "ED", // The End because En = Encalus
-        "EA", // EndAsteroid
-        "Eg", // Everglades
-        // T1
-        "Mo", // GalacticraftCore_Moon
-        // T2
-        "De", // GalaxySpace_Deimos
-        "Ma", // GalacticraftMars_Mars
-        "Ph", // GalaxySpace_Phobos
-        // T3
-        "As", // GalacticraftMars_Asteroids
-        "Ca", // GalaxySpace_Callisto
-        "Ce", // GalaxySpace_Ceres
-        "Eu", // GalaxySpace_Europa
-        "Ga", // GalaxySpace_Ganymede
-        "Rb", // Ross128b
-        // T4
-        "Io", // GalaxySpace_Io
-        "Me", // GalaxySpace_Mercury
-        "Ve", // GalaxySpace_Venus
-        // T5
-        "En", // GalaxySpace_Enceladus
-        "Mi", // GalaxySpace_Miranda
-        "Ob", // GalaxySpace_Oberon
-        "Ti", // GalaxySpace_Titan
-        "Ra", // Ross128ba
-        // T6
-        "Pr", // GalaxySpace_Proteus
-        "Tr", // GalaxySpace_Triton
-        // T7
-        "Ha", // GalaxySpace_Haumea
-        "KB", // GalaxySpace_Kuiperbelt
-        "MM", // GalaxySpace_MakeMake
-        "Pl", // GalaxySpace_Pluto
-        // T8
-        "BC", // GalaxySpace_BarnardC
-        "BE", // GalaxySpace_BarnardE
-        "BF", // GalaxySpace_BarnardF
-        "CB", // GalaxySpace_CentauriA is actually α Centauri Bb
-        "TE", // GalaxySpace_TcetiE
-        "VB", // GalaxySpace_VegaB
-        // T9
-        "An", // GalacticraftAmunRa_Anubis
-        "Ho", // GalacticraftAmunRa_Horus
-        "Mh", // GalacticraftAmunRa_Maahes
-        "MB", // GalacticraftAmunRa_MehenBelt
-        "Np", // GalacticraftAmunRa_Neper
-        "Se", // GalacticraftAmunRa_Seth
-        // T10
-        "DD", // Underdark
-    };
-
-    public static Set<String> getDims(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
-        Set<String> enabledDims = new HashSet<>();
-        Set<String> origNames = oreLayer.allowedDimWithOrigNames;
-
-        for (String dimName : origNames) {
-            String abbr = getDimAbbreviatedName(dimName);
-            if (!origNames.contains(dimName)) {
-                continue;
-            }
-            enabledDims.add(abbr);
-        }
-        return enabledDims;
-    }
-
-    public static String getDimAbbreviatedName(String dimName) {
-        return switch (dimName) {
-            case OW -> "Ow"; // Overworld
-            case NETHER -> "Ne"; // Nether
-            case TWILIGHT_FOREST -> "TF"; // Twilight
-            case THE_END -> "ED"; // The End because En = Encalus
-            case ENDASTEROID -> "EA"; // EndAsteroid
-            case EVERGLADES -> "Eg";
-            // T1
-            case MOON -> "Mo"; // GalacticraftCore_Moon
-            // T2
-            case DEIMOS -> "De"; // GalaxySpace_Deimos
-            case MARS -> "Ma"; // GalacticraftMars_Mars
-            case PHOBOS -> "Ph"; // GalaxySpace_Phobos
-            // T3
-            case ASTEROIDS -> "As"; // GalacticraftMars_Asteroids
-            case CALLISTO -> "Ca"; // GalaxySpace_Callisto
-            case CERES -> "Ce"; // GalaxySpace_Ceres
-            case EUROPA -> "Eu"; // GalaxySpace_Europa
-            case GANYMEDE -> "Ga"; // GalaxySpace_Ganymede
-            case ROSS128B -> "Rb"; // Ross128b
-            // T4
-            case IO -> "Io"; // GalaxySpace_Io
-            case MERCURY -> "Me"; // GalaxySpace_Mercury
-            case VENUS -> "Ve"; // GalaxySpace_Venus
-            // T5
-            case ENCELADUS -> "En"; // GalaxySpace_Enceladus
-            case MIRANDA -> "Mi"; // GalaxySpace_Miranda
-            case OBERON -> "Ob"; // GalaxySpace_Oberon
-            case TITAN -> "Ti"; // GalaxySpace_Titan
-            case ROSS128BA -> "Ra"; // Ross128ba
-            // T6
-            case PROTEUS -> "Pr"; // GalaxySpace_Proteus
-            case TRITON -> "Tr"; // GalaxySpace_Triton
-            // T7
-            case HAUMEA -> "Ha"; // GalaxySpace_Haumea
-            case KUIPERBELT -> "KB"; // GalaxySpace_Kuiperbelt
-            case MAKEMAKE -> "MM"; // GalaxySpace_MakeMake
-            case PLUTO -> "Pl"; // GalaxySpace_Pluto
-            // T8
-            case BARNARDC -> "BC"; // GalaxySpace_BarnardC
-            case BARNARDE -> "BE"; // GalaxySpace_BarnardE
-            case BARNARDF -> "BF"; // GalaxySpace_BarnardF
-            case CENTAURIBB -> "CB"; // GalaxySpace_CentauriA
-            case TCETIE -> "TE"; // GalaxySpace_TcetiE
-            case VEGAB -> "VB"; // GalaxySpace_VegaB
-            // T9
-            case ANUBIS -> "An"; // GalacticraftAmunRa_Anubis
-            case HORUS -> "Ho"; // GalacticraftAmunRa_Horus
-            case MAAHES -> "Mh"; // GalacticraftAmunRa_Maahes
-            case MEHENBELT -> "MB"; // GalacticraftAmunRa_MehenBelt
-            case NEPER -> "Np"; // GalacticraftAmunRa_Neper
-            case SETH -> "Se"; // GalacticraftAmunRa_Seth
-            // T10
-            case DEEPDARK -> "DD"; // Underdark
-            default -> {
-                throw new IllegalStateException("String: " + dimName + " has no abbredged name!");
-            }
-        };
-    }
-
-    public static String getFullName(String abbrDimName) {
-        return switch (abbrDimName) {
-            case "Ow" -> OW; // Overworld
-            case "Ne" -> NETHER; // Nether
-            case "TF" -> TWILIGHT_FOREST; // Twilight
-            case "ED" -> THE_END; // The End because En = Encalus
-            case "EA" -> ENDASTEROID; // EndAsteroid
-            case "Eg" -> EVERGLADES;
-            // T1
-            case "Mo" -> MOON; // GalacticraftCore_Moon
-            // T2
-            case "De" -> DEIMOS; // GalaxySpace_Deimos
-            case "Ma" -> MARS; // GalacticraftMars_Mars
-            case "Ph" -> PHOBOS; // GalaxySpace_Phobos
-            // T3
-            case "As" -> ASTEROIDS; // GalacticraftMars_Asteroids
-            case "Ca" -> CALLISTO; // GalaxySpace_Callisto
-            case "Ce" -> CERES; // GalaxySpace_Ceres
-            case "Eu" -> EUROPA; // GalaxySpace_Europa
-            case "Ga" -> GANYMEDE; // GalaxySpace_Ganymede
-            case "Rb" -> ROSS128B; // Ross128b
-            // T4
-            case "Io" -> IO; // GalaxySpace_Io
-            case "Me" -> MERCURY; // GalaxySpace_Mercury
-            case "Ve" -> VENUS; // GalaxySpace_Venus
-            // T5
-            case "En" -> ENCELADUS; // GalaxySpace_Enceladus
-            case "Mi" -> MIRANDA; // GalaxySpace_Miranda
-            case "Ob" -> OBERON; // GalaxySpace_Oberon
-            case "Ti" -> TITAN; // GalaxySpace_Titan
-            case "Ra" -> ROSS128BA; // Ross128ba
-            // T6
-            case "Pr" -> PROTEUS; // GalaxySpace_Proteus
-            case "Tr" -> TRITON; // GalaxySpace_Triton
-            // T7
-            case "Ha" -> HAUMEA; // GalaxySpace_Haumea
-            case "KB" -> KUIPERBELT; // GalaxySpace_Kuiperbelt
-            case "MM" -> MAKEMAKE; // GalaxySpace_MakeMake
-            case "Pl" -> PLUTO; // GalaxySpace_Pluto
-            // T8
-            case "BC" -> BARNARDC; // GalaxySpace_BarnardC
-            case "BE" -> BARNARDE; // GalaxySpace_BarnardE
-            case "BF" -> BARNARDF; // GalaxySpace_BarnardF
-            case "CB" -> CENTAURIBB; // GalaxySpace_CentauriA
-            case "TE" -> TCETIE; // GalaxySpace_TcetiE
-            case "VB" -> VEGAB; // GalaxySpace_VegaB
-            // T9
-            case "An" -> ANUBIS; // GalacticraftAmunRa_Anubis
-            case "Ho" -> HORUS; // GalacticraftAmunRa_Horus
-            case "Mh" -> MAAHES; // GalacticraftAmunRa_Maahes
-            case "MB" -> MEHENBELT; // GalacticraftAmunRa_MehenBelt
-            case "Np" -> NEPER; // GalacticraftAmunRa_Neper
-            case "Se" -> SETH; // GalacticraftAmunRa_Seth
-            // T10
-            case "DD" -> DEEPDARK; // Underdark
-            default -> {
-                throw new IllegalStateException("String: " + abbrDimName + " has no abbredged name!");
-            }
-        };
-    }
 
     private static final String T0 = "gtnop.tier.0";
     private static final String T1 = "gtnop.tier.1";
@@ -294,22 +73,161 @@ public class DimensionHelper {
     private static final String T9 = "gtnop.tier.9";
     private static final String T10 = "gtnop.tier.10";
 
-    public static String getDimTier(String dimName) {
-        return switch (dimName) {
-            case OW, NETHER, TWILIGHT_FOREST, THE_END, ENDASTEROID, EVERGLADES -> T0;
-            case MOON -> T1;
-            case DEIMOS, MARS, PHOBOS -> T2;
-            case ASTEROIDS, CALLISTO, CERES, EUROPA, GANYMEDE, ROSS128B -> T3;
-            case IO, MERCURY, VENUS -> T4;
-            case ENCELADUS, MIRANDA, OBERON, TITAN, ROSS128BA -> T5;
-            case PROTEUS, TRITON -> T6;
-            case HAUMEA, KUIPERBELT, MAKEMAKE, PLUTO -> T7;
-            case BARNARDC, BARNARDE, BARNARDF, CENTAURIBB, TCETIE, VEGAB -> T8;
-            case ANUBIS, HORUS, MAAHES, MEHENBELT, NEPER, SETH -> T9;
-            case DEEPDARK -> T10;
+    @Desugar
+    public record Dimension(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {}
 
-            default -> T0;
-        };
+    public static final Map<String, Dimension> REGISTRY = new LinkedHashMap<>();
+    public static final Map<String, String> INTERNAL_TO_ABBR = new HashMap<>();
+    public static final Map<String, String> ABBR_TO_INTERNAL = new HashMap<>();
+
+    public static final List<Dimension> ALL_DIMENSIONS = new ArrayList<>();
+    public static final List<String> ALL_DIM_NAMES = new ArrayList<>();
+    public static final List<String> ALL_TRIMMED_NAMES = new ArrayList<>();
+    public static final List<String> ALL_DISPLAYED_NAMES = new ArrayList<>();
+
+    static {
+        // first 2 letters if one word else 1 letter of every word, except
+        // capital letter in
+        // name, then 1rst + capital Moon = Mo, BarnardC = BC, EndAsteroid = EA
+        // Non GC dimensions in progression order instead of alphabetical
+        register("Overworld", OW, "Overworld", "Ow", T0);
+        register("Nether", NETHER, "Nether", "Ne", T0);
+        register("Twilight", TWILIGHT_FOREST, "Twilight", "TF", T0);
+        register("The End", THE_END, "The End", "ED", T0);
+        register("EndAsteroid", ENDASTEROID, "EndAsteroid", "EA", T0);
+        register("dimensionDarkWorld", EVERGLADES, "dimensionDarkWorld", "Eg", T0);
+
+        // T1
+        register("GalacticraftCore_Moon", MOON, "Moon", "Mo", T1);
+
+        // T2
+        register("GalaxySpace_Deimos", DEIMOS, "De", "De", T2);
+        register("GalacticraftMars_Mars", MARS, "Mars", "Ma", T2);
+        register("GalaxySpace_Phobos", PHOBOS, "Phobos", "Ph", T2);
+
+        // T3
+        register("GalacticraftMars_Asteroids", ASTEROIDS, "Asteroids", "As", T3);
+        register("GalaxySpace_Callisto", CALLISTO, "Callisto", "Ca", T3);
+        register("GalaxySpace_Ceres", CERES, "Ceres", "Ce", T3);
+        register("GalaxySpace_Europa", EUROPA, "Europa", "Eu", T3);
+        register("GalaxySpace_Ganymede", GANYMEDE, "Ganymede", "Ga", T3);
+        register("Ross128b", ROSS128B, "Ross128b", "Rb", T3);
+
+        // T4
+        register("GalaxySpace_Io", IO, "Io", "Io", T4);
+        register("GalaxySpace_Mercury", MERCURY, "Mercury", "Me", T4);
+        register("GalaxySpace_Venus", VENUS, "Venus", "Ve", T4);
+
+        // T5
+        register("GalaxySpace_Enceladus", ENCELADUS, "Enceladus", "En", T5);
+        register("GalaxySpace_Miranda", MIRANDA, "Miranda", "Mi", T5);
+        register("GalaxySpace_Oberon", OBERON, "Oberon", "Ob", T5);
+        register("GalaxySpace_Titan", TITAN, "Titan", "Ti", T5);
+        register("Ross128ba", ROSS128BA, "Ross128ba", "Ra", T5);
+
+        // T6
+        register("GalaxySpace_Proteus", PROTEUS, "Proteus", "Pr", T6);
+        register("GalaxySpace_Triton", TRITON, "Triton", "Tr", T6);
+
+        // T7
+        register("GalaxySpace_Haumea", HAUMEA, "Haumea", "Ha", T7);
+        register("GalaxySpace_Kuiperbelt", KUIPERBELT, "Kuiperbelt", "KB", T7);
+        register("GalaxySpace_MakeMake", MAKEMAKE, "MakeMake", "MM", T7);
+        register("GalaxySpace_Pluto", PLUTO, "Pluto", "Pl", T7);
+
+        // T8
+        register("GalaxySpace_BarnardC", BARNARDC, "BarnardC", "BC", T8);
+        register("GalaxySpace_BarnardE", BARNARDE, "BarnardE", "BE", T8);
+        register("GalaxySpace_BarnardF", BARNARDF, "BarnardF", "BF", T8);
+        register("GalaxySpace_CentauriA", CENTAURIBB, "CentauriA", "CB", T8);
+        register("GalaxySpace_TcetiE", TCETIE, "TcetiE", "TE", T8);
+        register("GalaxySpace_VegaB", VEGAB, "VegaB", "VB", T8);
+
+        // T9
+        register("GalacticraftAmunRa_Anubis", ANUBIS, "Anubis", "An", T9);
+        register("GalacticraftAmunRa_Horus", HORUS, "Horus", "Ho", T9);
+        register("GalacticraftAmunRa_Maahes", MAAHES, "Maahes", "Mh", T9);
+        register("GalacticraftAmunRa_MehenBelt", MEHENBELT, "MehenBelt", "MB", T9);
+        register("GalacticraftAmunRa_Neper", NEPER, "Neper", "Np", T9);
+        register("GalacticraftAmunRa_Seth", SETH, "Seth", "Se", T9);
+
+        // T10
+        register("Underdark", DEEPDARK, "Underdark", "DD", T10);
+    }
+
+    public static void register(String fullName, String internalName, String trimmedName, String abbr, String tierKey) {
+        if (!REGISTRY.containsKey(fullName)) {
+            Dimension dim = new Dimension(fullName, internalName, trimmedName, abbr, tierKey);
+            REGISTRY.put(fullName, dim);
+            INTERNAL_TO_ABBR.put(internalName, abbr);
+            ABBR_TO_INTERNAL.put(abbr, internalName);
+
+            ALL_DIM_NAMES.add(fullName);
+            ALL_TRIMMED_NAMES.add(trimmedName);
+            ALL_DISPLAYED_NAMES.add(abbr);
+            ALL_DIMENSIONS.add(dim);
+        }
+    }
+
+    public static int getIndex(String dimName) {
+        int index = ALL_DIM_NAMES.indexOf(dimName);
+        return GTUtility.max(index, 0);
+    }
+
+    public static int getIndexByAbbr(String abbr) {
+        int index = ALL_DISPLAYED_NAMES.indexOf(abbr);
+        return GTUtility.max(index, 0);
+    }
+
+    public static Dimension getByIndex(int index) {
+        if (index < 0 || index >= ALL_DIMENSIONS.size()) return null;
+        return ALL_DIMENSIONS.get(index);
+    }
+
+    public static Collection<Dimension> getAllDim() {
+        return REGISTRY.values();
+    }
+
+    public static List<String> getAllDimNames() {
+        return ALL_DIM_NAMES;
+    }
+
+    public static List<String> getAllTrimmedNames() {
+        return ALL_TRIMMED_NAMES;
+    }
+
+    public static List<String> getAllDisplayedNames() {
+        return ALL_DISPLAYED_NAMES;
+    }
+
+    public static Set<String> getDims(GT5OreLayerHelper.OreLayerWrapper oreLayer) {
+        Set<String> enabledDims = new HashSet<>();
+        Set<String> origNames = oreLayer.allowedDimWithOrigNames;
+
+        for (String dimName : origNames) {
+            Dimension record = REGISTRY.get(dimName);
+            if (record != null) {
+                enabledDims.add(record.abbr);
+            }
+        }
+        return enabledDims;
+    }
+
+    public static String getDimAbbreviatedName(String internalName) {
+        String abbr = INTERNAL_TO_ABBR.get(internalName);
+        if (abbr != null) return abbr;
+        throw new IllegalStateException("InternalName: " + internalName + " has no abbreviated name!");
+    }
+
+    public static String getFullName(String abbrDimName) {
+        String internal = ABBR_TO_INTERNAL.get(abbrDimName);
+        if (internal != null) return internal;
+        throw new IllegalStateException("String: " + abbrDimName + " has no abbreviated name!");
+    }
+
+    public static String getDimTier(String dimName) {
+        Dimension record = REGISTRY.get(dimName);
+        return record == null ? T0 : record.tierKey;
     }
 
     /**

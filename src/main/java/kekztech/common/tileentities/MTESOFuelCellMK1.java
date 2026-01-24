@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -104,7 +105,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         tt.addMachineType("Gas Turbine")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(
-                "Consumes up to " + GTUtility.formatNumbers(EU_PER_TICK * 20)
+                "Consumes up to " + formatNumber(EU_PER_TICK * 20)
                     + "EU worth of fuel with up to 100% efficiency each second")
             .addInfo("Steam production requires the SOFC to heat up completely first")
             .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
