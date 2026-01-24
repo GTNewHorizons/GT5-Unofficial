@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 
 import java.util.ArrayList;
@@ -12,8 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +19,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.ExoticEnergyInputHelper;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
@@ -120,77 +116,6 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
         if (lEUt > 0) {
             lEUt = (-lEUt);
         }
-    }
-
-    @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatch tHatch : getExoticAndNormalEnergyHatchList()) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        long voltage = getAverageInputVoltage();
-        long amps = getMaxInputAmps();
-
-        return new String[] {
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(voltage)
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + amps
-                + " A)"
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(voltage)]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET, };
     }
 
     @Override

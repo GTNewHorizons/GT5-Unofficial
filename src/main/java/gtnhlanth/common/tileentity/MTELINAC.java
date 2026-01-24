@@ -1,7 +1,6 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -43,11 +42,9 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -459,130 +456,80 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : mEnergyHatches) {
-            if (tHatch.isValid()) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
-            }
-        }
-
+    public void getExtraInfoData(ArrayList<String> info) {
         BeamInformation information = this.getInputInformation();
         if (information == null) {
             information = new BeamInformation(0, 0, 0, 0);
         }
 
-        return new String[] {
-            // from super()
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + getMaxInputAmps()
-                + "A)"
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 Pollution not included */
-            // Beamline-specific
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
-                + EnumChatFormatting.DARK_RED
-                + machineTemp
-                + EnumChatFormatting.RESET
-                + " K", // e.g. "137 K"
-            StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant usage:
-                + EnumChatFormatting.AQUA
-                + (length)
-                + EnumChatFormatting.RESET
-                + " kL/s", // e.g. "24 kL/s
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron
-                                        // (e-)"
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + information.getEnergy()
-                + EnumChatFormatting.RESET
-                + " keV", // e.g. "10240 keV"
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + information.getFocus()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + information.getRate(),
+        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET);
 
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(this.outputParticleID)
-                    .getLocalisedName()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + this.outputEnergy
-                + EnumChatFormatting.RESET
-                + " keV",
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + this.outputFocus
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + this.outputRate };
+        info.add(StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
+            + EnumChatFormatting.DARK_RED
+            + machineTemp
+            + EnumChatFormatting.RESET
+            + " K");
+
+        info.add(StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant usage:
+            + EnumChatFormatting.AQUA
+            + (length)
+            + EnumChatFormatting.RESET
+            + " kL/s");
+
+        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+            + ": "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
+            + EnumChatFormatting.GOLD
+            + Particle.getParticleFromId(information.getParticleId())
+            .getLocalisedName() // e.g. "Electron
+            // (e-)"
+            + " "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+            + EnumChatFormatting.DARK_RED
+            + information.getEnergy()
+            + EnumChatFormatting.RESET
+            + " keV");
+
+        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+            + EnumChatFormatting.BLUE
+            + information.getFocus()
+            + " "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + information.getRate());
+
+        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
+            + ": "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
+            + EnumChatFormatting.GOLD
+            + Particle.getParticleFromId(this.outputParticleID)
+            .getLocalisedName()
+            + " "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+            + EnumChatFormatting.DARK_RED
+            + this.outputEnergy
+            + EnumChatFormatting.RESET
+            + " keV");
+
+        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+            + EnumChatFormatting.BLUE
+            + this.outputFocus
+            + " "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + this.outputRate);
     }
 
     @Override

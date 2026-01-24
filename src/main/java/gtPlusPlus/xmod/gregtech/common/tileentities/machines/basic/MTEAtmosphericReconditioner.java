@@ -743,8 +743,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> aTooltipSuper = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         int mAirSides = getFreeSpaces();
         int reduction = 0;
 
@@ -756,26 +755,18 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 * Math.max((tTier - 2), 1);
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
-            aTooltipSuper.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
                     reduction));
         } catch (Exception t) {
-            aTooltipSuper.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
                     mPollutionReduction));
         }
-        aTooltipSuper.add(
+        info.add(
             StatCollector.translateToLocalFormatted("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
-
-        String[] mBuiltOutput = new String[aTooltipSuper.size()];
-        int aIndex = 0;
-        for (String i : aTooltipSuper) {
-            mBuiltOutput[aIndex++] = i;
-        }
-
-        return mBuiltOutput;
     }
 
     @Override

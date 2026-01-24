@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -271,8 +272,8 @@ public class MTEFrothFlotationCell extends GTPPMultiBlockBase<MTEFrothFlotationC
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Locked material: " + lockedMaterialName };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Locked material: " + lockedMaterialName);
     }
 
     @Override

@@ -402,9 +402,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        ArrayList<String> mInfo = new ArrayList<>();
-        mInfo.add(StatCollector.translateToLocalFormatted("GTPP.multiblock.ap.tier", this.tier));
-        return mInfo.toArray(new String[0]);
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocalFormatted("GTPP.multiblock.ap.tier", this.tier));
     }
 }

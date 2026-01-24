@@ -657,86 +657,26 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatch tHatch : getExoticAndNormalEnergyHatchList()) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        long voltage = getAverageInputVoltage();
-        long amps = getMaxInputAmps();
-
+    public void getExtraInfoData(ArrayList<String> info) {
         int mCurrentParallel = 0;
-        return new String[] {
-            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(voltage)
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + amps
-                + " A)"
-                + translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(voltage)]
-                + EnumChatFormatting.RESET,
-            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.GREEN
-                + mMaxParallel
-                + ", "
-                + translateToLocal("GT5U.multiblock.curparallelism")
-                + ": "
-                + EnumChatFormatting.GREEN
-                + mCurrentParallel,
-            /* 7 */ translateToLocal("GT5U.multiblock.upgrades") + ": "
-                + EnumChatFormatting.GREEN
-                + (mBioChamber == null ? "" : "Bio Chamber ")
-                + (mBioChamber != null && mCoolingTower != null ? ", " : "")
-                + EnumChatFormatting.GREEN
-                + (mCoolingTower == null ? ""
-                    : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
-                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
-            /* 8 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
+
+        info.add(translateToLocal("GT5U.multiblock.parallelism") + ": "
+            + EnumChatFormatting.GREEN
+            + mMaxParallel
+            + ", "
+            + translateToLocal("GT5U.multiblock.curparallelism")
+            + ": "
+            + EnumChatFormatting.GREEN
+            + mCurrentParallel);
+
+        info.add(translateToLocal("GT5U.multiblock.upgrades") + ": "
+            + EnumChatFormatting.GREEN
+            + (mBioChamber == null ? "" : "Bio Chamber ")
+            + (mBioChamber != null && mCoolingTower != null ? ", " : "")
+            + EnumChatFormatting.GREEN
+            + (mCoolingTower == null ? ""
+            : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
+            + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""));
     }
 
     @Override

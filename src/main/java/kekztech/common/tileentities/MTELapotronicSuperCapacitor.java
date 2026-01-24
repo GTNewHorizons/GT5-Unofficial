@@ -884,73 +884,72 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public String[] getInfoData() {
+    public void getExtraInfoData(ArrayList<String> info) {
         NumberFormat nf = NumberFormat.getNumberInstance();
         int secInterval = DURATION_AVERAGE_TICKS / 20;
 
-        final ArrayList<String> ll = new ArrayList<>();
-        ll.add(
+        info.add(
             EnumChatFormatting.YELLOW + translateToLocal("kekztech.infodata.operational_data")
                 + EnumChatFormatting.RESET);
-        ll.add(translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
-        ll.add(
+        info.add(translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_stored",
                 toStandardForm(stored)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
                 toPercentageFrom(stored, capacity)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
                 nf.format(capacity)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
                 toStandardForm(capacity)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_in",
                 GTUtility.formatNumbers(inputLastTick)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_out",
                 GTUtility.formatNumbers(outputLastTick)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",
                 nf.format(energyInputValues.avgLong()),
                 secInterval));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.sec",
                 nf.format(energyOutputValues.avgLong()),
                 secInterval));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.min5",
                 nf.format(energyInputValues5m.avgLong())));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.min5",
                 nf.format(energyOutputValues5m.avgLong())));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.hour1",
                 nf.format(energyInputValues1h.avgLong())));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.hour1",
                 nf.format(energyOutputValues1h.avgLong())));
 
-        ll.add(getTimeTo());
+        info.add(getTimeTo());
 
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.multi.maintenance_status",
                 ((super.getRepairStatus() == super.getIdealStatus())
@@ -958,7 +957,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                         + EnumChatFormatting.RESET
                     : EnumChatFormatting.RED + translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
                         + EnumChatFormatting.RESET)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_mode",
                 (wireless_mode
@@ -968,37 +967,34 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     : EnumChatFormatting.RED
                         + translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled")
                         + EnumChatFormatting.RESET)));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[9] + GTValues.VN[9] + EnumChatFormatting.RESET,
                 getUHVCapacitorCount()));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[10] + GTValues.VN[10] + EnumChatFormatting.RESET,
                 getUEVCapacitorCount()));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[11] + GTValues.VN[11] + EnumChatFormatting.RESET,
                 getUIVCapacitorCount()));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[12] + GTValues.VN[12] + EnumChatFormatting.RESET,
                 getUMVCapacitorCount()));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                 EnumChatFormatting.RED + nf.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid))));
-        ll.add(
+        info.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                 EnumChatFormatting.RED + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid))));
-
-        final String[] a = new String[ll.size()];
-        return ll.toArray(a);
     }
 
     // Method to format time in seconds, minutes, days, and years

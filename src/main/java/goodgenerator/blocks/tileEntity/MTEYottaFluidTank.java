@@ -368,8 +368,7 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
     }
 
     @Override
-    public String[] getInfoData() {
-        final ArrayList<String> info = new ArrayList<>();
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(
             translateToLocal("scanner.info.YOTTank.1") + " "
                 + translateToLocal(
@@ -395,8 +394,6 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             StatCollector.translateToLocal("scanner.info.YOTTank.3") + " "
                 + EnumChatFormatting.YELLOW
                 + formatNumber(getLockedFluidName()));
-        final String[] a = new String[info.size()];
-        return info.toArray(a);
     }
 
     private String getPercent() {

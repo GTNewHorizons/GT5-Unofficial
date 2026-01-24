@@ -414,95 +414,39 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-
-        for (MTEHatchEnergy tHatch : mEnergyHatches) {
-            if (tHatch.isValid()) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
-            }
-        }
-
+    public void getExtraInfoData(ArrayList<String> info) {
         BeamInformation information = this.getInputInformation();
         if (information == null) {
             information = new BeamInformation(0, 0, 0, 0);
         }
 
-        return new String[] {
-            // from super()
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 Pollution not included */
-            // Beamline-specific
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron
-                                        // (e-)"
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + information.getEnergy() * 1000 // In line with the synchrotron's output
-                + EnumChatFormatting.RESET
-                + " eV", // e.g. "10240 eV"
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + information.getFocus()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + information.getRate() };
+        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+            + ": "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
+            + EnumChatFormatting.GOLD
+            + Particle.getParticleFromId(information.getParticleId())
+            .getLocalisedName() // e.g. "Electron
+            // (e-)"
+            + " "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+            + EnumChatFormatting.DARK_RED
+            + information.getEnergy() * 1000 // In line with the synchrotron's output
+            + EnumChatFormatting.RESET
+            + " eV");
+
+        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+            + EnumChatFormatting.BLUE
+            + information.getFocus()
+            + " "
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + information.getRate());
     }
 
     private String createMaskText(String text) {

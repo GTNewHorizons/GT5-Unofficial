@@ -537,18 +537,17 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> ll = new ArrayList<>();
+    public void getExtraInfoData(ArrayList<String> info) {
         NumberFormat nf = NumberFormat.getNumberInstance();
 
-        ll.add(
+        info.add(
             EnumChatFormatting.YELLOW
                 + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
                 + EnumChatFormatting.RESET);
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
-                ll.add(
+                info.add(
                     MessageFormat.format(
                         "{0} - {1}: {2}L ({3}%)",
                         i,
@@ -562,24 +561,24 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 String percentage = capacityPerFluid > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerFluid)
                     : "";
 
-                ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
+                info.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
             }
         }
-        ll.add(
+        info.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
                 + EnumChatFormatting.RESET);
-        ll.add(
+        info.add(
             StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
-        ll.add(
+        info.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "kekztech.infodata.tank.tfft.per_fluid_capacity",
                 nf.format(capacityPerFluid)));
-        ll.add(
+        info.add(
             StatCollector
                 .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
-        ll.add(
+        info.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "kekztech.infodata.multi.maintenance_status",
                 ((getRepairStatus() == getIdealStatus())
@@ -589,9 +588,6 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     : EnumChatFormatting.RED
                         + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
                         + EnumChatFormatting.RESET)));
-        ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
-
-        return ll.toArray(new String[0]);
     }
 
     @Override

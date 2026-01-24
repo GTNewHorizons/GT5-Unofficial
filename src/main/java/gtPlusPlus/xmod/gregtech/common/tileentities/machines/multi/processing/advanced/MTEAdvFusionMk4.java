@@ -25,6 +25,8 @@ import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
+import java.util.ArrayList;
+
 public class MTEAdvFusionMk4 extends MTEFusionComputer {
 
     public MTEAdvFusionMk4(int aID, String aName, String aNameRegional) {
@@ -161,27 +163,5 @@ public class MTEAdvFusionMk4 extends MTEFusionComputer {
             }
         }
         return true;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        String tier = "IV";
-        float plasmaOut = 0;
-        int powerRequired = 0;
-        if (this.mLastRecipe != null) {
-            powerRequired = this.mLastRecipe.mEUt;
-            if (this.mLastRecipe.getFluidOutput(0) != null) {
-                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration;
-            }
-        }
-
-        return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
-            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
     }
 }

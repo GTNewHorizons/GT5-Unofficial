@@ -319,11 +319,11 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Large Semifluid Generator", "Current Output: " + lEUt * mEfficiency / 10000 + " EU/t",
-            "Fuel Consumption: " + fuelConsumption + "L/t", "Fuel Value: " + fuelValue + " EU/L",
-            "Fuel Remaining: " + fuelRemaining + " Litres", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Current Output: " + lEUt * mEfficiency / 10000 + " EU/t");
+        info.add("Fuel Consumption: " + fuelConsumption + "L/t");
+        info.add("Fuel Value: " + fuelValue + " EU/L");
+        info.add( "Fuel Remaining: " + fuelRemaining + " Litres");
     }
 
     @Override

@@ -1104,21 +1104,17 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public String[] getInfoData() {
-        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
-
-        data.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             translateToLocalFormatted(
                 "tt.infodata.multi.energy_hatches",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(energyCapacity) + EnumChatFormatting.RESET));
-        data.add(
+        info.add(
             translateToLocalFormatted(
                 "tt.infodata.multi.current_output",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + GTUtility.formatNumbers(outputCurrentMax) + EnumChatFormatting.RESET));
-
-        return data.toArray(new String[0]);
     }
 
     @Override

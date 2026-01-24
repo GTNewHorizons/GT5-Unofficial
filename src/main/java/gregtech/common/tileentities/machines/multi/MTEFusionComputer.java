@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -445,50 +446,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
         turnCasingActive(false);
-    }
-
-    @Override
-    public String[] getInfoData() {
-        String tier = tier() == 6 ? EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET
-            : tier() == 7 ? EnumChatFormatting.YELLOW + "II" + EnumChatFormatting.RESET
-                : tier() == 8 ? EnumChatFormatting.GRAY + "III" + EnumChatFormatting.RESET : "IV";
-        float plasmaOut = 0;
-        int powerRequired = 0;
-        if (this.mLastRecipe != null) {
-            powerRequired = this.mLastRecipe.mEUt;
-            if (this.mLastRecipe.getFluidOutput(0) != null) {
-                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration;
-            }
-        }
-
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
-                + " "
-                + EnumChatFormatting.RESET
-                + tier,
-            StatCollector.translateToLocal("GT5U.fusion.req") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(powerRequired)
-                + EnumChatFormatting.RESET
-                + "EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mEUStore)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEUStore())
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(plasmaOut)
-                + EnumChatFormatting.RESET
-                + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + recipesDone
-                + EnumChatFormatting.RESET };
     }
 
     @Override

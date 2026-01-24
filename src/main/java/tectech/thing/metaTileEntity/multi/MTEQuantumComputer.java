@@ -559,20 +559,18 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         if (wirelessModeEnabled) {
             WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
                 .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
-            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.enabled"));
-            data.add(
+            info.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.enabled"));
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.qc.total_wireless_computation",
                     "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
         } else {
-            data.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.disabled"));
+            info.add(StatCollector.translateToLocal("tt.infodata.qc.wireless_mode.disabled"));
         }
-        return data.toArray(new String[] {});
     }
 
     private enum RackHatchElement implements IHatchElement<MTEQuantumComputer> {

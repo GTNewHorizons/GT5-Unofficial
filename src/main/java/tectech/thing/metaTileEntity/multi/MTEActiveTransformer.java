@@ -10,7 +10,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -349,15 +348,11 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
-
-        lines.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
-        lines.add(MessageFormat.format("Last 5 seconds: {0} EU/t", transferredLast5Secs));
-        lines.add(MessageFormat.format("Last 30 seconds: {0} EU/t", transferredLast30Secs));
-        lines.add(MessageFormat.format("Last minute: {0} EU/t", transferredLast1Min));
-
-        return lines.toArray(new String[0]);
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
+        info.add(MessageFormat.format("Last 5 seconds: {0} EU/t", transferredLast5Secs));
+        info.add(MessageFormat.format("Last 30 seconds: {0} EU/t", transferredLast30Secs));
+        info.add(MessageFormat.format("Last minute: {0} EU/t", transferredLast1Min));
     }
 
     @Override

@@ -388,11 +388,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return PollutionConfig.pollutionPerSecondMultiIsaMill;
     }
 
-    @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "IsaMill Grinding Machine", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
-    }
 
     @Override
     public String getMachineType() {

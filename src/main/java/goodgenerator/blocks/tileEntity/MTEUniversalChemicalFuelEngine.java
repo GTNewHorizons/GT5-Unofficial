@@ -259,13 +259,12 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public String[] getInfoData() {
-        String[] info = super.getInfoData();
-        info[4] = StatCollector.translateToLocalFormatted(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocalFormatted(
             "gg.scanner.info.generator.generates",
             EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
-                + EnumChatFormatting.RESET);
-        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+                + EnumChatFormatting.RESET));
+        info.add(StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
             + EnumChatFormatting.RED
             + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
             + EnumChatFormatting.RESET
@@ -275,8 +274,7 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
             + EnumChatFormatting.YELLOW
             + GTUtility.formatNumbers(tEff / 100D)
             + EnumChatFormatting.RESET
-            + " %";
-        return info;
+            + " %");
     }
 
     void addAutoEnergy() {

@@ -26,7 +26,6 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1574,9 +1573,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        str.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             GOLD.toString() + STRIKETHROUGH
                 + "-------------"
                 + RESET
@@ -1587,33 +1585,33 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 + STRIKETHROUGH
                 + "-------------");
         if (spacetimeCompressionFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.spacetime_compression.grade.none"));
+            info.add(StatCollector.translateToLocal("tt.infodata.eoh.spacetime_compression.grade.none"));
         } else {
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.spacetime_compression.grade",
                     CommonValues.getLocalizedEohTierFancyNames(spacetimeCompressionFieldMetadata) + RESET,
                     "" + YELLOW + (spacetimeCompressionFieldMetadata + 1) + RESET));
         }
         if (timeAccelerationFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.time_dilation.grade.none"));
+            info.add(StatCollector.translateToLocal("tt.infodata.eoh.time_dilation.grade.none"));
         } else {
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.time_dilation.grade",
                     CommonValues.getLocalizedEohTierFancyNames(timeAccelerationFieldMetadata) + RESET,
                     "" + YELLOW + (timeAccelerationFieldMetadata + 1) + RESET));
         }
         if (stabilisationFieldMetadata < 0) {
-            str.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation.grade.none"));
+            info.add(StatCollector.translateToLocal("tt.infodata.eoh.stabilisation.grade.none"));
         } else {
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.stabilisation.grade",
                     CommonValues.getLocalizedEohTierFancyNames(stabilisationFieldMetadata) + RESET,
                     "" + YELLOW + (stabilisationFieldMetadata + 1) + RESET));
         }
-        str.add(
+        info.add(
             GOLD.toString() + STRIKETHROUGH
                 + "-----------------"
                 + RESET
@@ -1624,12 +1622,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 + STRIKETHROUGH
                 + "----------------");
         validFluidMap.forEach(
-            (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
-        str.add(
+            (key, value) -> info.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
+        info.add(
             BLUE + StatCollector.translateToLocal(
                 "tt.infodata.eoh.astral_array_fabricators") + RESET + " : " + RED + formatNumbers(astralArrayAmount));
         if (recipeRunning) {
-            str.add(
+            info.add(
                 GOLD.toString() + STRIKETHROUGH
                     + "-----------------"
                     + RESET
@@ -1639,26 +1637,26 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     + " "
                     + STRIKETHROUGH
                     + "-----------------");
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.success_chance",
                     RED + formatNumbers(100 * successChance) + RESET + "%"));
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.recipe_yield",
                     RED + formatNumbers(100 * yield) + RESET + "%"));
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.effective_astral_array_fabricators",
                     RED + formatNumbers(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))));
-            str.add(
+            info.add(
                 StatCollector
                     .translateToLocalFormatted("tt.infodata.eoh.total_parallel", RED + formatNumbers(parallelAmount)));
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.eu_output",
                     RED + toStandardForm(outputEU_BigInt) + RESET));
-            str.add(
+            info.add(
                 StatCollector
                     .translateToLocalFormatted("tt.infodata.eoh.eu_input", RED + toStandardForm(usedEU.abs()) + RESET));
             int currentMaxProgresstime = Math.max(maxProgresstime(), 1);
@@ -1666,7 +1664,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 FluidStackLong starMatterOutput = new FluidStackLong(
                     starMatter.fluidStack,
                     (long) (starMatter.amount * yield * successChance * parallelAmount));
-                str.add(
+                info.add(
                     StatCollector.translateToLocalFormatted(
                         "tt.infodata.eoh.avg_output",
                         starMatterOutput.fluidStack.getLocalizedName(),
@@ -1676,7 +1674,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
                     Materials.RawStarMatter.getFluid(0),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
-                str.add(
+                info.add(
                     StatCollector.translateToLocalFormatted(
                         "tt.infodata.eoh.avg_output",
                         stellarPlasmaOutput.fluidStack.getLocalizedName(),
@@ -1686,13 +1684,12 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             BigInteger euPerTick = (outputEU_BigInt.subtract(usedEU.abs()))
                 .divide(BigInteger.valueOf(currentMaxProgresstime));
 
-            str.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.estimated_eu",
                     RED + toStandardForm(euPerTick) + RESET));
         }
-        str.add(GOLD.toString() + STRIKETHROUGH + "-----------------------------------------------------");
-        return str.toArray(new String[0]);
+        info.add(GOLD.toString() + STRIKETHROUGH + "-----------------------------------------------------");
     }
 
     @Override

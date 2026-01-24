@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.multi.base;
 
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -380,72 +379,16 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * scanner gives it
      */
     @Override
-    public String[] getInfoData() { // TODO Do it
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.progress",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.energy_hatches",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                getPowerFlow() * eAmpereFlow <= 0 ? "GT5U.infodata.currently_uses"
-                    : "tt.infodata.multi.currently_generates",
-                EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(getPowerFlow())) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("tt.keyphrase.Tier_Rating") + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[getMaxEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.GREEN
-                + VN[getMinEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("tt.keyphrase.Amp_Rating")
-                + " "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eMaxAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.problems_efficiency",
-                "" + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET,
-                "" + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %"),
-            StatCollector.translateToLocalFormatted("tt.keyword.PowerPass") + ": "
-                + EnumChatFormatting.BLUE
-                + ePowerPass
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToFallback("tt.keyword.SafeVoid")
-                + ": "
-                + EnumChatFormatting.BLUE
-                + eSafeVoid,
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.computation",
                 EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
+                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET));
+
+        return info.toArray(new String[0]);
     }
 
     /**

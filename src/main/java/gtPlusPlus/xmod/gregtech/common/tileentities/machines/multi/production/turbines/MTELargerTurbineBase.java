@@ -555,7 +555,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     }
 
     @Override
-    public String[] getExtraInfoData() {
+    public void getExtraInfoData(ArrayList<String> info) {
         String tRunning = mMaxProgresstime > 0
             ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
                 + EnumChatFormatting.RESET
@@ -581,64 +581,49 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .append("% | ");
         }
 
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+        info.add(            tRunning + ": "
+            + EnumChatFormatting.RED
+            + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+            + EnumChatFormatting.RESET
+            + " EU/t");
 
-        boolean aIsSteam = this.getClass()
-            .getName()
-            .toLowerCase()
-            .contains("steam");
+        info.add(tRunning + ": "
+            + EnumChatFormatting.RED
+            + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+            + EnumChatFormatting.RESET
+            + " EU/t");
 
-        return new String[] {
-            // 8 Lines available for information panels
-            tRunning + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            tMaintenance,
-            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers((mEfficiency / 100F))
-                + EnumChatFormatting.RESET
-                + "%",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
+        info.add(tMaintenance);
+        info.add(StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
+            + EnumChatFormatting.YELLOW
+            + GTUtility.formatNumbers((mEfficiency / 100F))
+            + EnumChatFormatting.RESET
+            + "%");
+        info.add(StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
             // Divides optimal flow by 1000 if it's a dense steam
-                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
-                + EnumChatFormatting.RESET
-                + " L/"
-                + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
-                + EnumChatFormatting.YELLOW
-                + " ("
-                + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
-                + ")",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(storedFluid)
-                + EnumChatFormatting.RESET
-                + "L",
-            StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage,
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %" };
+            + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
+            + EnumChatFormatting.RESET
+            + " L/"
+            + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
+            + EnumChatFormatting.YELLOW
+            + " ("
+            + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")
+            : StatCollector.translateToLocal("GT5U.turbine.tight"))
+            + ")");
+
+        info.add(StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatNumbers(storedFluid)
+            + EnumChatFormatting.RESET
+            + "L");
+
+        info.add(StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage);
+
+        info.add(StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+            + EnumChatFormatting.GREEN
+            + getAveragePollutionPercentage()
+            + EnumChatFormatting.RESET
+            + " %");
     }
 
     @Override

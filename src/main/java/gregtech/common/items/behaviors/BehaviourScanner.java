@@ -16,12 +16,14 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourScanner();
     private final String mTooltip = GTLanguageManager
         .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
+    private final ScannerHelper.ScannerConfig scannerConfig = new ScannerHelper.ScannerConfig();
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
@@ -31,7 +33,7 @@ public class BehaviourScanner extends BehaviourNone {
             final ArrayList<String> tList = new ArrayList<>();
             if (aItem.use(
                 aStack,
-                GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
+                ScannerHelper.init(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ, scannerConfig),
                 aPlayer)) {
                 final int tList_sS = tList.size();
                 tNBT.setInteger("dataLinesCount", tList_sS);

@@ -458,12 +458,12 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector
+            .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime));
+
+        info.add(StatCollector
+            .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()));
     }
 
     @SideOnly(Side.CLIENT)

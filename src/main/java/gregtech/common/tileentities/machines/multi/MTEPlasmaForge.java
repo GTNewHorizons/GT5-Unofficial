@@ -20,6 +20,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
@@ -904,97 +905,36 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     }
 
     @Override
-    public String[] getInfoData() {
-
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-
-        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        long voltage = getAverageInputVoltage();
-        long amps = getMaxInputAmps();
-
+    public void getExtraInfoData(ArrayList<String> info) {
         // Calculate discount to make sure it is shown properly even when machine is off but decaying
         recalculateDiscount();
 
-        return new String[] {
-            EnumChatFormatting.STRIKETHROUGH + "------------"
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(voltage)
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + EnumChatFormatting.YELLOW
-                + amps
-                + EnumChatFormatting.RESET
-                + "A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(voltage)]
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mHeatingCapacity)
-                + EnumChatFormatting.RESET
-                + " K",
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
-                extraCatalystNeeded),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.plasma_forge.convergence",
-                (convergence
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
-                        + EnumChatFormatting.RESET
-                        + (discount == maximum_discount
-                            ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
-                            : StatCollector.translateToLocalFormatted(
-                                "GT5U.infodata.plasma_forge.convergence.progress",
-                                GTUtility.formatNumbers((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+        info.add(StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(mHeatingCapacity)
+            + EnumChatFormatting.RESET
+            + " K");
 
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))),
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET,
-            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
+        info.add(StatCollector.translateToLocalFormatted(
+            "GT5U.infodata.plasma_forge.ticks_run_fuel_discount",
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(running_time) + EnumChatFormatting.RESET,
+            EnumChatFormatting.RED + GTUtility.formatNumbers(100 * (1 - discount)) + EnumChatFormatting.RESET + "%",
+            extraCatalystNeeded));
+
+        info.add(StatCollector.translateToLocalFormatted(
+            "GT5U.infodata.plasma_forge.convergence",
+            (convergence
+                ? EnumChatFormatting.GREEN
+                + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.active")
+                + EnumChatFormatting.RESET
+                + (discount == maximum_discount
+                ? StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.achieved")
+                : StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.plasma_forge.convergence.progress",
+                GTUtility.formatNumbers((max_efficiency_time_in_ticks - running_time) / (20 * 60))))
+
+                : EnumChatFormatting.RED
+                + StatCollector.translateToLocal("GT5U.infodata.plasma_forge.convergence.inactive"))));
     }
 
     private void recalculateDiscount() {

@@ -328,7 +328,6 @@ scanner.info.UX.0=Параллель работает
 scanner.info.CASS.tier=Тир корпуса:
 scanner.info.CASS.tier.none=Отсутствует!
 
-gg.scanner.info.antimatter_forge=Кузница антиматерии
 gg.scanner.info.les.parallel=Параллель:
 gg.scanner.info.les.node_power=Сила узла ауры:
 gg.scanner.info.les.purification_efficiency=Эффективность очистки:

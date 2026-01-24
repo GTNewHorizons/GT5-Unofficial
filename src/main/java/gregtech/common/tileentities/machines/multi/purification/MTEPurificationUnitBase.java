@@ -643,11 +643,10 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     }
 
     @Override
-    public String[] getInfoData() {
-        var ret = new ArrayList<String>();
+    public void getExtraInfoData(ArrayList<String> info) {
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
-            ret.add(
+            info.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.purification_unit_base.linked_at",
                     controllerX,
@@ -656,7 +655,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
-                ret.add(
+                info.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.purification_unit_base.success_chance",
                         EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
@@ -664,12 +663,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                             + EnumChatFormatting.RESET));
             }
 
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
-        ret.add(
+        } else info.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.parallel.current",
                 "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
-        return ret.toArray(new String[0]);
     }
 
     @Override

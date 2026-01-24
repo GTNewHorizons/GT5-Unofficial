@@ -33,6 +33,8 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+import java.util.ArrayList;
+
 public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implements ISurvivalConstructable {
 
     protected GTRecipe lastRecipeToBuffer;
@@ -160,21 +162,6 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
         return 2 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
     }
 
-    @Override
-    public String[] getExtraInfoData() {
-        final String running = (this.mMaxProgresstime > 0 ? "Auto-Crafter running" : "Auto-Crafter stopped");
-        final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
-        String tSpecialText;
-
-        if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
-            tSpecialText = "Currently processing: " + lastRecipeToBuffer.mOutputs[0].getDisplayName();
-        } else {
-            tSpecialText = "Currently processing: Nothing";
-        }
-
-        return new String[] { "Large Scale Auto-Assembler v1.01c", running, maintenance, tSpecialText };
-    }
 
     @Override
     public boolean supportsInputSeparation() {

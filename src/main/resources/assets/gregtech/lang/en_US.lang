@@ -1845,6 +1845,7 @@ GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
+GT5U.multiblock.owned_by=Owned by
 GT5U.multiblock.Progress=Progress
 GT5U.multiblock.efficiency=Efficiency
 GT5U.multiblock.problems=Problems
@@ -1862,6 +1863,10 @@ GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
 GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.totalRunHours=Total run hours
+GT5U.multiblock.totalRunMinutes=Total run minutes
+GT5U.multiblock.totalRunSeconds=Total run seconds
+GT5U.multiblock.totalRunTicks=Total run ticks
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -3428,6 +3433,80 @@ GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
+# Scanner info
+GT5U.scanner.title_block=Block Info
+GT5U.scanner.title_tank=Tank Info
+GT5U.scanner.title_reactor=Reactor Info
+GT5U.scanner.title_debug=Debug Info
+GT5U.scanner.title_machine=Machine Info
+GT5U.scanner.title_custom=Custom Info
+GT5U.scanner.title_side=Side Info
+GT5U.scanner.title_wrench=Wrench Info
+GT5U.scanner.title_ic2=IC2 Info
+GT5U.scanner.title_cover=Cover Info
+GT5U.scanner.title_energy=Energy Info
+GT5U.scanner.title_crop=Crop Info
+GT5U.scanner.title_leaves=Leaves Info
+GT5U.scanner.title_chunk=Chunk Info
+
+GT5U.scanner.error_block=An exception was thrown while fetching this block's info
+GT5U.scanner.error_tank=An exception was thrown while fetching this tile's fluid tank info
+GT5U.scanner.error_reactor=An exception was thrown while fetching this reactor's info
+GT5U.scanner.error_debug=An exception was thrown while fetching this block's debug info
+GT5U.scanner.error_machine=An exception was thrown while fetching this machine's info
+GT5U.scanner.error_side=An exception was thrown while fetching this device's alignment info
+GT5U.scanner.error_wrench=An exception was thrown while fetching this device's IC@ wrenchability
+GT5U.scanner.error_ic2=An exception was thrown while fetching this device's info
+GT5U.scanner.error_cover=An exception was thrown while fetching this device's covers
+GT5U.scanner.error_device_energy=An exception was thrown while fetching this device's energy info
+GT5U.scanner.error_crop=An exception was thrown while fetching this crop's info
+GT5U.scanner.error_leaves=An exception was thrown while fetching this leaves' info
+
+GT5U.scanner.name=Name:
+GT5U.scanner.metadata=MetaData:
+GT5U.scanner.hardness=Hardness:
+GT5U.scanner.blast_resistance=Blast Resistance:
+GT5U.scanner.beacon=Is valid Beacon Pyramid Material
+GT5U.scanner.pos=Position
+GT5U.scanner.x=X:
+GT5U.scanner.y=Y:
+GT5U.scanner.z=Z:
+GT5U.scanner.tank=Tank
+GT5U.scanner.heat=Heat:
+GT5U.scanner.hem=Heating Modifier:
+GT5U.scanner.side=Extended Facing:
+GT5U.scanner.facing=Facing:
+GT5U.scanner.chance=Chance:
+GT5U.scanner.wrench_yes=You can remove this with a Wrench
+GT5U.scanner.wrench_no=You can NOT remove this with a Wrench
+GT5U.scanner.conduction_loss=Conduction Loss:
+GT5U.scanner.contained_energy=Contained Energy:
+GT5U.scanner.eu=EU
+GT5U.scanner.max_in=Max IN:
+GT5U.scanner.max_out=Max OUT:
+GT5U.scanner.at=at
+GT5U.scanner.a=A
+GT5U.scanner.energy=Energy:
+GT5U.scanner.crop_name=Crop name:
+GT5U.scanner.growth=Growth:
+GT5U.scanner.gain=Gain:
+GT5U.scanner.resistance=Resistance:
+GT5U.scanner.fertilizer=Fertilizer:
+GT5U.scanner.water=Water:
+GT5U.scanner.weed_ex=Weed-Ex:
+GT5U.scanner.scan_level=Scan-Level:
+GT5U.scanner.nutrients=Nutrients:
+GT5U.scanner.humidity=Humidity:
+GT5U.scanner.air_quality=Air-Quality:
+GT5U.scanner.attributes=Attributes:
+GT5U.scanner.discovered=Discovered by:
+GT5U.scanner.nothing=Nothing
+GT5U.scanner.pollution_yes=Pollution in Chunk:
+GT5U.scanner.pollution_no=No Pollution in Chunk! HAYO!
+GT5U.scanner.gibbl=gibbl
+
+
+
 # info data
 GT5U.infodata.no_network=No Network
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
@@ -3511,7 +3590,6 @@ GT5U.infodata.air_filter.pollution_reduction=Pollution reduction: %s gibbl/t
 GT5U.infodata.air_filter.remaining_cycles=remaining cycles for the filter (if present): %d
 
 GT5U.infodata.diesel_engine=Diesel Engine
-GT5U.infodata.extreme_diesel_engine=Extreme Diesel Engine
 GT5U.infodata.fusion_reactor_mk=Fusion Reactor MK
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s

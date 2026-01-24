@@ -20,7 +20,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.simpleWasherRecipes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -758,16 +757,13 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     }
 
     @Override
-    public String[] getInfoData() {
-        List<String> informationData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
             + EnumChatFormatting.BLUE
             + getCurrentParallelism()
-            + EnumChatFormatting.RESET;
-        informationData.add(parallelism);
-        informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
-        informationData.addAll(getDisplayMode(sMode));
-        return informationData.toArray(new String[0]);
+            + EnumChatFormatting.RESET);
+        info.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+        info.addAll(getDisplayMode(sMode));
     }
 
     @Override

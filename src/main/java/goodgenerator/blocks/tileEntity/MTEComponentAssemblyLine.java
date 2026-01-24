@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -248,20 +249,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEComponentAssemblyLine(mName);
-    }
-
-    /**
-     * Changes and adds new information to the default info data for the scanner.
-     */
-    @Override
-    public String[] getInfoData() {
-        String[] origin = super.getInfoData();
-        String[] ret = new String[origin.length + 1];
-        System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1]
-                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
-        return ret;
     }
 
     @Override

@@ -407,61 +407,30 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(this.euLastCycle)
+            + EnumChatFormatting.RESET
+            + " EU");
 
-        for (MTEHatch tHatch : mExoticEnergyHatches) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        // Prevent -Value when long overflow
-        if (storedEnergy < 0) storedEnergy = Long.MAX_VALUE;
-        if (maxEnergy < 0) maxEnergy = Long.MAX_VALUE;
+        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
+            + EnumChatFormatting.AQUA
+            + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
+            + EnumChatFormatting.RESET
+            + " %");
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_generator")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(this.euLastCycle)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-                + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-                + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
-                + EnumChatFormatting.RESET
-                + " % ⟩₁₀",
-            translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+            + EnumChatFormatting.AQUA
+            + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+            + EnumChatFormatting.RESET
+            + " % ⟩₁₀");
+
+        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+            + EnumChatFormatting.AQUA
+            + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+            + EnumChatFormatting.RESET
+            + " % ⟩₁₀");
     }
 
     public long getEnergyProduced() {

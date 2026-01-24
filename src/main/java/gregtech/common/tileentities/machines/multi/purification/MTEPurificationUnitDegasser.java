@@ -765,8 +765,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.purification_unit_degasser.control_signal",
@@ -798,7 +797,6 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 controlSignal.getBit(3) && isBit3Satisfied().satisfied ? new ControlBitStatus(null, true)
                     : isBit2Satisfied()));
         info.add(generateInfoStringForBit(3, isBit3Satisfied()));
-        return info.toArray(new String[] {});
     }
 
     private enum SpecialHatchElement implements IHatchElement<MTEPurificationUnitDegasser> {

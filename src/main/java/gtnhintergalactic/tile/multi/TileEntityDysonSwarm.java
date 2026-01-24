@@ -16,6 +16,7 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -466,24 +467,20 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-                + GTUtility.formatNumbers(powerFactor * 100.0)
-                + "%"
-                + RESET,
-            "Theoretical Output: " + YELLOW
-                + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
-                + RESET
-                + " EU/t",
-            "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET,
-            "---------------------------------------------" };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET);
+
+        info.add("Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
+            + GTUtility.formatNumbers(powerFactor * 100.0)
+            + "%"
+            + RESET);
+
+        info.add("Theoretical Output: " + YELLOW
+            + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
+            + RESET
+            + " EU/t");
+
+        info.add("Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t");
     }
 
     /******************

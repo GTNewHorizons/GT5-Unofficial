@@ -521,38 +521,27 @@ public class MTEExoticModule extends MTEBaseModule {
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> str = new ArrayList<>();
-        str.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.progress",
-                GREEN + formatNumbers(mProgresstime / 20) + RESET,
-                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
-        str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.currently_using",
-                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt * actualParallel) : "0") + RESET));
-        str.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.max_parallel",
                 RESET + formatNumbers(getActualParallel())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.parallel.current",
                 RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(getActualParallel()) : "0")));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.recipe_time",
                 RESET + formatNumbers(getSpeedBonus())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.energy",
                 RESET + formatNumbers(getEnergyDiscount())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
                 RESET + formatNumbers(getOverclockTimeFactor())));
-        return str.toArray(new String[0]);
     }
 
 }

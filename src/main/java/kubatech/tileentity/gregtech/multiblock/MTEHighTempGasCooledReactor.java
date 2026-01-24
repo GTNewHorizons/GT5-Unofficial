@@ -818,15 +818,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> ll = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        ll.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
                 + EnumChatFormatting.GOLD
                 + (empty ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
                     : StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")));
-        ll.addAll(Arrays.asList(getReactorInfoText().split("\n")));
-        return ll.toArray(new String[0]);
+        info.addAll(Arrays.asList(getReactorInfoText().split("\n")));
     }
 
     @Override

@@ -280,17 +280,6 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        int powerRequired = 0;
-        if (this.mLastRecipe != null) {
-            powerRequired = this.mLastRecipe.mEUt;
-        }
-
-        return new String[] { "COMET - Compact Cyclotron MK I", "EU Required: " + powerRequired + "EU/t",
-            "Stored EU: " + this.getEUVar() + " / " + maxEUStore() };
-    }
-
-    @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
     }

@@ -337,67 +337,30 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("GT5U.engine.output") + ": "
+            + EnumChatFormatting.RED
+            + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
+            + EnumChatFormatting.RESET
+            + " EU/t");
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.diesel_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                    + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(fuelRemaining)
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
+            + EnumChatFormatting.YELLOW
+            + GTUtility.formatNumbers(fuelConsumption)
+            + EnumChatFormatting.RESET
+            + " L/t");
+
+        info.add(StatCollector.translateToLocal("GT5U.engine.value") + ": "
+            + EnumChatFormatting.YELLOW
+            + GTUtility.formatNumbers(fuelValue)
+            + EnumChatFormatting.RESET
+            + " EU/L");
+
+        info.add(StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+            + EnumChatFormatting.GOLD
+            + GTUtility.formatNumbers(fuelRemaining)
+            + EnumChatFormatting.RESET
+            + " L");
     }
 
     @Override

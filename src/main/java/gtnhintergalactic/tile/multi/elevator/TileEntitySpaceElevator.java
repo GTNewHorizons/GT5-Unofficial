@@ -696,19 +696,6 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     // region Misc
 
     /**
-     * Get the information data of this controller
-     *
-     * @return String, that contains the provided information data
-     */
-    @Override
-    public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
-            "---------------------------------------------" };
-    }
-
-    /**
      * @return True as the elevator doesn't have maintenance issues
      */
     @Override

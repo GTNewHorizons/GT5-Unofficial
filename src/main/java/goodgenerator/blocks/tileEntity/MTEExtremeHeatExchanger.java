@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -342,43 +343,19 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
-    public String[] getInfoData() {
+    public void getExtraInfoData(ArrayList<String> info) {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
-        return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(this.mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(tThreshold)
-                + EnumChatFormatting.RESET
-                + " L/s",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(StatCollector.translateToLocal("scanner.info.XHE.0") + " "
+            + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+            + GTUtility.formatNumbers(this.mEUt)
+            + EnumChatFormatting.RESET
+            + " EU/t");
+
+        info.add(StatCollector.translateToLocal("scanner.info.XHE.1") + " "
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(tThreshold)
+            + EnumChatFormatting.RESET
+            + " L/s");
     }
 
     @Override

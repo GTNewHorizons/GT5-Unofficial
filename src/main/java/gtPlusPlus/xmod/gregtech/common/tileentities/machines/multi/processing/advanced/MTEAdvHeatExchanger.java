@@ -9,6 +9,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -434,45 +435,18 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.steam")
-                + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(superheated ? -2 * lEUt : -lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-                + superheated
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-                + StatCollector.translateToLocal("GT5U.LHE.threshold")
-                + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(superheated_threshold)
-                + EnumChatFormatting.RESET };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
+            + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
+            + superheated
+            + EnumChatFormatting.RESET);
+
+        info.add(StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
+            + StatCollector.translateToLocal("GT5U.LHE.threshold")
+            + ": "
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(superheated_threshold)
+            + EnumChatFormatting.RESET);
     }
 
     @Override

@@ -53,6 +53,8 @@ import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
+import java.util.ArrayList;
+
 public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> implements ISurvivalConstructable {
 
     protected int mFuelRemaining = 0;
@@ -122,15 +124,12 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        final String tRunning = (this.mMaxProgresstime > 0 ? "Reactor running" : "Reactor stopped");
-        final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
-            : "Needs Maintainance");
-
-        return new String[] { "Liquid Fluoride Thorium Reactor", tRunning, tMaintainance,
-            "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
-            "Current Efficiency: " + (this.mEfficiency / 5) + "%", "Current Efficiency (Raw): " + (this.mEfficiency),
-            "It requires you to have 100% Efficiency." };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Current Output: " + this.lEUt + " EU/t");
+        info.add("Fuel Remaining: " + this.mFuelRemaining + " Litres");
+        info.add("Current Efficiency: " + (this.mEfficiency / 5) + "%");
+        info.add("Current Efficiency (Raw): " + (this.mEfficiency));
+        info.add("It requires you to have 100% Efficiency.");
     }
 
     @Override

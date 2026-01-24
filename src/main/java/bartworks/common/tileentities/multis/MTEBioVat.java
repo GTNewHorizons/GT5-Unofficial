@@ -765,26 +765,21 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public String[] getInfoData() {
-        final String[] baseInfoData = super.getInfoData();
-        final String[] infoData = new String[baseInfoData.length + 2];
-        System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
-        // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
-        // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
-        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
             + EnumChatFormatting.GREEN
             + (this.mMachine
-                ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
-                    * 100
-                : -1)
+            ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
+            * 100
+            : -1)
             + EnumChatFormatting.RESET
-            + " %";
-        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": "
+            + " %");
+
+        info.add(StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": "
             + EnumChatFormatting.GREEN
             + (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100
             + EnumChatFormatting.RESET
-            + " %";
-        return infoData;
+            + " %");
     }
 
     @Override

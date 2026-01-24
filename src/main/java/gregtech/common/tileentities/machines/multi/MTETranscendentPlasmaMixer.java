@@ -21,6 +21,7 @@ import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRA
 import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -300,27 +301,28 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumbers(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + (mMaxProgresstime == 0 ? "0"
-                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
-                + EnumChatFormatting.RESET };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+            + EnumChatFormatting.GREEN
+            + formatNumbers(mProgresstime / 20)
+            + EnumChatFormatting.RESET
+            + " s / "
+            + EnumChatFormatting.YELLOW
+            + formatNumbers(mMaxProgresstime / 20)
+            + EnumChatFormatting.RESET
+            + " s");
+
+        info.add(StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+            + EnumChatFormatting.RED
+            + (mMaxProgresstime == 0 ? "0"
+            : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
+            + EnumChatFormatting.RESET
+            + " EU/t");
+
+        info.add(StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+            + EnumChatFormatting.GREEN
+            + GTUtility.formatNumbers(recipesDone)
+            + EnumChatFormatting.RESET);
     }
 
     @Override

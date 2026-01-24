@@ -62,6 +62,8 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
+import java.util.ArrayList;
+
 public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor>
     implements ISurvivalConstructable {
 
@@ -341,26 +343,29 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.progress",
-                GTUtility.formatNumbers(this.mProgresstime / 20),
-                GTUtility.formatNumbers(this.mMaxProgresstime / 20)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.triso_pebbles",
-                GTUtility.formatNumbers(this.fuelSupply),
-                GTUtility.formatNumbers(this.fuelSupply)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.helium_level",
-                GTUtility.formatNumbers(this.HeliumSupply),
-                GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.coolant",
-                GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.thtr.progress",
+            GTUtility.formatNumbers(this.mProgresstime / 20),
+            GTUtility.formatNumbers(this.mMaxProgresstime / 20)));
+
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.thtr.triso_pebbles",
+            GTUtility.formatNumbers(this.fuelSupply),
+            GTUtility.formatNumbers(this.fuelSupply)));
+
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.htr.helium_level",
+            GTUtility.formatNumbers(this.HeliumSupply),
+            GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)));
+
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.thtr.coolant",
+            GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolingPerTick)));
+
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.htr.problems",
+            String.valueOf(this.getIdealStatus() - this.getRepairStatus())));
     }
 
     @Override

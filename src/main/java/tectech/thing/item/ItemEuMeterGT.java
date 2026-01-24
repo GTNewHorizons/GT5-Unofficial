@@ -23,6 +23,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.ScannerHelper;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.Reference;
 import tectech.TecTech;
@@ -31,6 +32,7 @@ import tectech.util.CommonValues;
 public class ItemEuMeterGT extends Item {
 
     public static ItemEuMeterGT INSTANCE;
+    private final ScannerHelper.ScannerConfig scannerConfig = new ScannerHelper.ScannerConfig();
 
     private ItemEuMeterGT() {
         setMaxStackSize(1);
@@ -142,7 +144,7 @@ public class ItemEuMeterGT extends Item {
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {
                     ArrayList<String> tList = new ArrayList<>();
-                    GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
+                    ScannerHelper.init(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ, scannerConfig);
                     for (String str : tList) {
                         GTUtility.sendChatToPlayer(aPlayer, str);
                     }

@@ -12,6 +12,7 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -470,17 +471,10 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
         }
     }
 
-    /**
-     * @return Info data stick of this controller
-     */
     @Override
-    public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET, "Depth: " + YELLOW + depth + RESET,
-            "Fluid: " + YELLOW + fluid.amount + RESET + "L/s " + BLUE + fluid.getLocalizedName() + RESET,
-            "EU/t required: " + YELLOW + GTUtility.formatNumbers(-mEUt) + RESET + " EU/t",
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
-            "---------------------------------------------" };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Depth: " + YELLOW + depth + RESET);
+        info.add("Fluid: " + YELLOW + fluid.amount + RESET + "L/s " + BLUE + fluid.getLocalizedName() + RESET);
     }
 
     @Override

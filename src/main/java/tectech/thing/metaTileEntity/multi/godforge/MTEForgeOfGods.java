@@ -706,25 +706,23 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        str.add(SCANNER_INFO_BAR);
-        str.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(SCANNER_INFO_BAR);
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.fog.rings",
                 "" + EnumChatFormatting.GOLD + data.getRingAmount()));
-        str.add(
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.fog.upgrades.unlocked",
                 "" + EnumChatFormatting.GOLD
                     + data.getUpgrades()
                         .getTotalActiveUpgrades()));
-        str.add(
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.fog.connected",
                 "" + EnumChatFormatting.GOLD + moduleHatches.size()));
-        str.add(SCANNER_INFO_BAR);
-        return str.toArray(new String[0]);
+        info.add(SCANNER_INFO_BAR);
     }
 
     @Override
