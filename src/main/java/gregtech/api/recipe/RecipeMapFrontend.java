@@ -248,20 +248,23 @@ public class RecipeMapFrontend {
         if (recipe.owners != null) {
             if (recipe.owners.size() > 1) {
                 recipeInfo.drawText(
-                    EnumChatFormatting.ITALIC + StatCollector.translateToLocal("GT5U.recipes.recipe_by.original")
-                        + recipe.owners.get(0)
-                            .getName());
+                    EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
+                        "GT5U.recipes.recipe_by.original",
+                        recipe.owners.get(0)
+                            .getName()));
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     recipeInfo.drawText(
-                        EnumChatFormatting.ITALIC + StatCollector.translateToLocal("GT5U.recipes.recipe_by.modified")
-                            + recipe.owners.get(i)
-                                .getName());
+                        EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
+                            "GT5U.recipes.recipe_by.modified",
+                            recipe.owners.get(i)
+                                .getName()));
                 }
             } else if (!recipe.owners.isEmpty()) {
                 recipeInfo.drawText(
-                    EnumChatFormatting.ITALIC + StatCollector.translateToLocal("GT5U.recipes.recipe_by")
-                        + recipe.owners.get(0)
-                            .getName());
+                    EnumChatFormatting.ITALIC + StatCollector.translateToLocalFormatted(
+                        "GT5U.recipes.recipe_by",
+                        recipe.owners.get(0)
+                            .getName()));
             }
         }
         if (recipe.stackTraces != null && !recipe.stackTraces.isEmpty()) {
@@ -306,7 +309,7 @@ public class RecipeMapFrontend {
             currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume_parallel"));
         } else if (pStack.isChanceBased()) {
             String key = "GT5U.recipes.chance." + (pStack.isInput() ? "consume" : "output");
-            currentTip.add(GRAY + StatCollector.translateToLocal(key) + pStack.getChanceText());
+            currentTip.add(GRAY + StatCollector.translateToLocalFormatted(key, pStack.getChanceText()));
         }
         return currentTip;
     }
@@ -315,7 +318,7 @@ public class RecipeMapFrontend {
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isChanceBased()) {
             String key = "GT5U.recipes.chance." + (pStack.isInput() ? "consume" : "output");
-            currentTip.add(GRAY + StatCollector.translateToLocal(key) + pStack.getChanceText());
+            currentTip.add(GRAY + StatCollector.translateToLocalFormatted(key, pStack.getChanceText()));
         }
         return currentTip;
     }
