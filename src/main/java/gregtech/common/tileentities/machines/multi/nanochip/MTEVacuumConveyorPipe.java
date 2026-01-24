@@ -73,23 +73,6 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
-        ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
-    public boolean renderInside(ForgeDirection side) {
-        return false;
-    }
-
-    @Override
     public byte getTileEntityBaseType() {
         return 4;
     }
@@ -109,36 +92,6 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
         onPostTick(aBaseMetaTileEntity, 31);
         super.onFirstTick(aBaseMetaTileEntity);
     }
-
-    // @Override
-    // public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    // if (aBaseMetaTileEntity.isServerSide()) {
-    // if ((aTick & 31) == 31) {
-    // if (TecTech.RANDOM.nextInt(15) == 0) {
-    // NetworkDispatcher.INSTANCE.sendToAllAround(
-    // new PipeActivityMessage.PipeActivityData(this),
-    // new NetworkRegistry.TargetPoint(
-    // aBaseMetaTileEntity.getWorld().provider.dimensionId,
-    // aBaseMetaTileEntity.getXCoord(),
-    // aBaseMetaTileEntity.getYCoord(),
-    // aBaseMetaTileEntity.getZCoord(),
-    // 256));
-    // }
-    //
-    // mConnections = 0;
-    // byte myColor = aBaseMetaTileEntity.getColorization();
-    // if (aBaseMetaTileEntity.getColorization() < 0) {
-    // return;
-    // }
-    // for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-    //
-    // }
-    // } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
-    // .changeDetected() == 4) {
-    // aBaseMetaTileEntity.issueTextureUpdate();
-    // }
-    // }
-    // }
 
     @Override
     public float getCollisionThickness() {
@@ -258,7 +211,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
                     wasActionPerformed = true;
 
-                    currentPipeBase = (IGregTechTileEntity) nextPipeBase;
+                    currentPipeBase = nextPipeBase;
                     currentPipe = nextPipe;
 
                 }
@@ -302,7 +255,8 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     @Override
-    public void onColorChangeServer(byte aColor) {
+    public void onColorChangeServer(byte color) {
         VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onColorChangeServer(color);
     }
 }
