@@ -87,10 +87,10 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     public static final IStructureDefinition<MTEEtchingArrayModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEEtchingArrayModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ETCHING_STRUCTURE)
-        // Nanochip Primary Casing
-        .addElement('A', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Infinity Cooled Casings
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 14))
         // Particle Beam Guidance Pipe Casing
@@ -100,7 +100,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         // Non-Photonic Matter Exclusion Glass
         .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 3))
         // Nanochip Glass
-        .addElement('G', Casings.NanochipGlass.asElement())
+        .addElement('G', Casings.NanochipComplexGlass.asElement())
         // Beamline input
         .addElement(
             'H',

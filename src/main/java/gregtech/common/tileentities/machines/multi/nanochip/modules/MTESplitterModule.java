@@ -72,15 +72,15 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public static final IStructureDefinition<MTESplitterModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTESplitterModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, SPLITTER_STRUCTURE)
-        // Nanochip Primary Casing
+        // Nanochip Mesh Interface Casing
         .addElement(
             'A',
             buildHatchAdder(MTESplitterModule.class).hint(2)
-                .casingIndex(Casings.NanochipPrimaryCasing.getTextureId())
+                .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .atLeast(SpecialHatchElement.redstoneHatch)
-                .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
-        // Nanochip Secondary Casing
-        .addElement('B', Casings.NanochipSecondaryCasing.asElement())
+                .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
+        // Nanochip Reinforcement Casing
+        .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Kevlar FrameBox
         .addElement('C', ofFrame(Materials.Kevlar))
         .build();

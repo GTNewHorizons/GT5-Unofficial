@@ -2952,11 +2952,11 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
     Wrap_LivingBioChips,
-    PrimaryNanochipCasing,
-    SecondaryNanochipCasing,
-    ComputationalMatrixCasing,
-    ExteriorNanochipCasing,
-    CircuitComplexGlass,
+    MeshInterfaceNanochipCasing,
+    ReinforcementNanochipCasing,
+    ComputationalMatrixNanochipCasing,
+    FirewallProjectionNanochipCasing,
+    ComplexNanochipGlass,
 
     // semicolon after the comment to reduce merge conflicts
     ;
