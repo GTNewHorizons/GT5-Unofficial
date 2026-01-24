@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
@@ -2519,15 +2520,15 @@ public class GTUtility {
                 + EnumChatFormatting.RESET
                 + " X: "
                 + EnumChatFormatting.AQUA
-                + formatNumbers(aX)
+                + formatNumber(aX)
                 + EnumChatFormatting.RESET
                 + " Y: "
                 + EnumChatFormatting.AQUA
-                + formatNumbers(aY)
+                + formatNumber(aY)
                 + EnumChatFormatting.RESET
                 + " Z: "
                 + EnumChatFormatting.AQUA
-                + formatNumbers(aZ)
+                + formatNumber(aZ)
                 + EnumChatFormatting.RESET
                 + " D: "
                 + EnumChatFormatting.AQUA
@@ -2574,11 +2575,11 @@ public class GTUtility {
                         GTUtility.trans("167", "Tank ") + i
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount))
+                            + formatNumber((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount))
                             + EnumChatFormatting.RESET
                             + " L / "
                             + EnumChatFormatting.YELLOW
-                            + formatNumbers(tTanks[i].capacity)
+                            + formatNumber(tTanks[i].capacity)
                             + EnumChatFormatting.RESET
                             + " L "
                             + EnumChatFormatting.GOLD
@@ -2613,7 +2614,7 @@ public class GTUtility {
         if (Pollution.hasPollution(currentChunk)) {
             tList.add(
                 GTUtility.trans("202", "Pollution in Chunk: ") + EnumChatFormatting.RED
-                    + formatNumbers(Pollution.getPollution(currentChunk))
+                    + formatNumber(Pollution.getPollution(currentChunk))
                     + EnumChatFormatting.RESET
                     + GTUtility.trans("203", " gibbl"));
         } else {
@@ -2631,7 +2632,7 @@ public class GTUtility {
                     + EnumChatFormatting.RESET
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + formatNumbers(tFluid.amount)
+                    + formatNumber(tFluid.amount)
                     + EnumChatFormatting.RESET
                     + " L");
             else tList.add(
@@ -2745,35 +2746,35 @@ public class GTUtility {
             if (tTileEntity instanceof IBasicEnergyContainer energyContainer && energyContainer.getEUCapacity() > 0) {
                 tList.add(
                     GTUtility.trans("179", "Max IN: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputVoltage())
+                        + formatNumber(energyContainer.getInputVoltage())
                         + " ("
                         + GTValues.VN[getTier(energyContainer.getInputVoltage())]
                         + ") "
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("182", " EU at ")
                         + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputAmperage())
+                        + formatNumber(energyContainer.getInputAmperage())
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("183", " A"));
                 tList.add(
                     GTUtility.trans("181", "Max OUT: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputVoltage())
+                        + formatNumber(energyContainer.getOutputVoltage())
                         + " ("
                         + GTValues.VN[getTier(energyContainer.getOutputVoltage())]
                         + ") "
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("182", " EU at ")
                         + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputAmperage())
+                        + formatNumber(energyContainer.getOutputAmperage())
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("183", " A"));
                 tList.add(
                     GTUtility.trans("184", "Energy: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(energyContainer.getStoredEU())
+                        + formatNumber(energyContainer.getStoredEU())
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(energyContainer.getEUCapacity())
+                        + formatNumber(energyContainer.getEUCapacity())
                         + EnumChatFormatting.RESET
                         + " EU");
             }
@@ -2817,11 +2818,11 @@ public class GTUtility {
                 int tValue = 0;
                 if (0 < (tValue = progress.getMaxProgress())) tList.add(
                     GTUtility.trans("178", "Progress/Load: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(progress.getProgress())
+                        + formatNumber(progress.getProgress())
                         + EnumChatFormatting.RESET
                         + " / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(tValue)
+                        + formatNumber(tValue)
                         + EnumChatFormatting.RESET);
             }
         } catch (Exception e) {
@@ -2853,11 +2854,11 @@ public class GTUtility {
                 rEUAmount += 200;
                 tList.add(
                     GTUtility.trans("176", "Contained Energy: ") + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getStored())
+                        + formatNumber(storage.getStored())
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getCapacity())
+                        + formatNumber(storage.getCapacity())
                         + EnumChatFormatting.RESET
                         + " EU");
             }
@@ -2940,11 +2941,11 @@ public class GTUtility {
                 rEUAmount += 500;
                 tList.add(
                     GTUtility.trans("168", "Heat: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(reactor.getHeat())
+                        + formatNumber(reactor.getHeat())
                         + EnumChatFormatting.RESET
                         + " / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(reactor.getMaxHeat())
+                        + formatNumber(reactor.getMaxHeat())
                         + EnumChatFormatting.RESET);
                 tList.add(
                     GTUtility.trans("169", "HEM: ") + EnumChatFormatting.YELLOW
@@ -3055,18 +3056,6 @@ public class GTUtility {
             numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
             return numberFormat;
         });
-    }
-
-    public static String formatNumbers(BigInteger aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(long aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(double aNumber) {
-        return getDecimalFormat().format(aNumber);
     }
 
     public static String scientificFormat(long aNumber) {
@@ -4606,13 +4595,13 @@ public class GTUtility {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
                 amountText + EnumChatFormatting.GOLD
-                    + formatNumbers(amount)
+                    + formatNumber(amount)
                     + (isLiquid ? "L" : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perTickText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perTick))
+                    + formatNumber(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4625,7 +4614,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perSecond))
+                    + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4638,7 +4627,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perMinute))
+                    + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
                     + (perMinute > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4651,7 +4640,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perHour))
+                    + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
                     + (perHour > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4664,7 +4653,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perDay))
+                    + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
                     + (perDay > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["

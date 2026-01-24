@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
@@ -31,7 +32,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
 import gregtech.common.WirelessComputationPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -174,7 +174,7 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
         currenttip.add(
             translateToLocal("GT5U.machines.computation_hatch.computation") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+                + formatNumber(
                     accessor.getNBTData()
                         .getLong("requiredComputation")));
     }
