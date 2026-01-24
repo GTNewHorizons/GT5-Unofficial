@@ -1,9 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -96,6 +94,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
+        // initializes the panel so that it can be called in the gregos text response system.
+        syncManager.panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(panel), true);
         textList.setEnabledIf(a -> multiblock.isTalkModeActive)
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
@@ -181,25 +181,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler contribPanel = syncManager
-            .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
-        return new ButtonWidget<>().size(24)
-            .marginTop(4)
-            .overlay(IDrawable.EMPTY)
-            .setEnabledIf(a -> !multiblock.isTalkModeActive)
-            .tooltip(
-                t -> t.addLine(EnumChatFormatting.AQUA + translateToLocal("GT5U.gui.text.contributors.panel.open")))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
-            .disableHoverBackground()
-            .onMousePressed(d -> {
-                if (!contribPanel.isPanelOpen()) {
-                    contribPanel.openPanel();
-                } else {
-                    contribPanel.closePanel();
-                }
-                return true;
-            });
+        return super.makeLogoWidget(syncManager, parent).size(24)
+            .setEnabledIf(a -> !multiblock.isTalkModeActive);
     }
 
     private ModularPanel openContributorsPanel(ModularPanel parent) {
@@ -237,7 +220,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 createContributorEntry("Nockyx", Color.YELLOW.brighterSafe(1)),
                 createContributorEntry("Serenibyss", 0xFFFFA3FB),
                 createContributorEntry("Chrom", 0xFF9DC183),
-                createContributorEntry("SpicierSpace153", 0xFF13C9D4)));
+                createContributorEntry("SpicierSpace153", 0xFF0096FF)));
 
         contributorColumn.child(
             createContributorSection(
@@ -337,7 +320,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
-        return new TerminalTextFieldWidget(textList, syncManager).setFocusOnGuiOpen(true)
+        return new TerminalTextFieldWidget(textList, syncManager, panel).setFocusOnGuiOpen(true)
             .size(getTerminalRowWidth() - 27, 14);
     }
 
@@ -437,29 +420,21 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         "Cubefury",
         "Cooking");
 
-    public String getGREGOSResponse(String currentText) {
+    public String getGREGOSResponse(String currentText, PanelSyncManager syncManager, ModularPanel parent) {
         return switch (currentText.toLowerCase()) {
             case "help" -> "List of commands: contributors, gregos, joke, nac, clear";
-            case "contributors" -> EnumChatFormatting.YELLOW + "Lead:\n"
-                + EnumChatFormatting.RESET
-                + " NotAPenguin\n"
-                + EnumChatFormatting.YELLOW
-                + "Programming:\n"
-                + EnumChatFormatting.RESET
-                + " JurreJelle\n FourIsTheNumber\n PureBluez\n TheEpicGamer274\n Nockyx\n Serenibyss\n Chrom\n SpicierSpace153\n"
-                + EnumChatFormatting.YELLOW
-                + "Textures:\n"
-                + EnumChatFormatting.RESET
-                + " June\n "
-                + " Auynonymous\n"
-                + EnumChatFormatting.YELLOW
-                + "Idea:\n"
-                + EnumChatFormatting.RESET
-                + " Sampsa\n"
-                + EnumChatFormatting.YELLOW
-                + "Structure:\n"
-                + EnumChatFormatting.RESET
-                + " Deleno";
+            case "contributors" -> {
+                IPanelHandler contribPanel = syncManager
+                    .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
+                if (!contribPanel.isPanelOpen()) {
+                    contribPanel.openPanel();
+                    yield "Opening Panel...";
+                } else {
+                    contribPanel.closePanel();
+                    yield "Closing Panel...";
+                }
+            }
+
             case "hi" -> "Hello.";
             case "fastfetch" -> "\n" + "\n"
                 + "       ====+%       \n"
@@ -554,11 +529,14 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
         TerminalTextListWidget list;
         PanelSyncManager syncManager;
+        ModularPanel parentPanel;
 
-        public TerminalTextFieldWidget(TerminalTextListWidget parent, PanelSyncManager manager) {
+        public TerminalTextFieldWidget(TerminalTextListWidget parent, PanelSyncManager manager,
+            ModularPanel parentPanel) {
             super();
             list = parent;
             syncManager = manager;
+            this.parentPanel = parentPanel;
         }
 
         @Override
@@ -577,7 +555,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 this.handler.clear();
                 if (!checkForKeywords(text) && multiblock.isTalkModeActive) {
                     list.child(createPlayerTextWidget(text));
-                    list.child(createResponseTextWidget(getGREGOSResponse(text)));
+                    list.child(createResponseTextWidget(getGREGOSResponse(text, syncManager, parentPanel)));
                     if (text.equals("clear")) {
                         list.removeAll();
                     }
