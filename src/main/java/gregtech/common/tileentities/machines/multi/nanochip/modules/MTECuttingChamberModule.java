@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMBER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMBER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMBER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMBER_GLOW;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
@@ -13,8 +13,6 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
-import gregtech.api.GregTechAPI;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,7 +20,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -35,7 +35,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECuttingChamberModule> {
 
@@ -55,21 +54,13 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
     public static final IStructureDefinition<MTECuttingChamberModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTECuttingChamberModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, CUTTING_STRUCTURE)
-        // Celestial Tungsten Framebox
-        .addElement(
-            'A',
-            lazy(
-                t -> ofBlock(
-                    Block.getBlockFromItem(
-                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
-                            .getItem()),
-                    MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
-                        .getItemDamage())))
+        // Neutronium Frame Box
+        .addElement('A', ofFrame(Materials.Neutronium))
         // Nanochip Primary Casing
         .addElement('B', Casings.NanochipPrimaryCasing.asElement())
         // Nanochip Secondary Casing
         .addElement('C', Casings.NanochipSecondaryCasing.asElement())
-        //Naquadria-Reinforced Water Plant Casing
+        // Naquadria-Reinforced Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 12))
         // Nanochip Glass
         .addElement('E', Casings.NanochipGlass.asElement())
