@@ -7,8 +7,6 @@ import gregtech.api.factory.standard.StandardFactoryNetwork;
 public class VacuumFactoryNetwork
     extends StandardFactoryNetwork<VacuumFactoryNetwork, VacuumFactoryElement, VacuumFactoryGrid> {
 
-    public boolean isUpdated;
-
     @Override
     public Collection<VacuumFactoryElement> getElements() {
         return super.getElements();
