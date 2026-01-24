@@ -1199,7 +1199,7 @@ public class Material implements IOreMaterial {
             if (x != null) {
                 return x;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         // Logger.MATERIALS("Failed getting the Ore Block for "+this.getLocalizedName()+".");
@@ -1600,7 +1600,7 @@ public class Material implements IOreMaterial {
             } else {
                 return Materials.Steel.mRGBa;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return Materials.Steel.mRGBa;
         }

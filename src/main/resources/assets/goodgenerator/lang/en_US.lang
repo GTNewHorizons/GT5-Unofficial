@@ -494,6 +494,15 @@ yottank.chat.voidExcessDisabled=Void Excess Disabled
 preciseassembler.chat.0=Precise Mode
 preciseassembler.chat.1=Normal Mode
 essentiaoutputhatch.chat.0=Cleared.
+gg.chat.antimatter_generator.wireless_mode.enable=Wireless network mode enabled.
+gg.chat.antimatter_generator.wireless_mode.disable=Wireless network mode disabled..
+gg.chat.antimatter_generator.wireless_mode.enable.hint=Wireless only works with UMV Superconductor Base or better.
+gg.chat.antimatter_output_hatch.front_face_input.enable=Front face input enabled
+gg.chat.antimatter_output_hatch.front_face_input.disable=Front face input disabled.
+gg.chat.ae_modes.no_access=NO_ACCESS
+gg.chat.ae_modes.read=READ
+gg.chat.ae_modes.write=WRITE
+gg.chat.ae_modes.read_write=READ_WRITE
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor

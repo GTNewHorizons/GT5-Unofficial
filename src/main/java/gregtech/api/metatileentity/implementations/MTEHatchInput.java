@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_IN_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_COLORS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_IN;
@@ -143,7 +144,10 @@ public class MTEHatchInput extends MTEHatch {
             .getByte("color");
         if (color >= 0 && color < 16) {
             currenttip.add(
-                "Color Channel: " + Dyes.VALUES[color].formatting + Dyes.VALUES[color].mName + EnumChatFormatting.GRAY);
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()
+                        + EnumChatFormatting.GRAY));
         }
     }
 
@@ -198,8 +202,7 @@ public class MTEHatchInput extends MTEHatch {
         if (!getBaseMetaTileEntity().getCoverAtSide(side)
             .isGUIClickable()) return;
         disableFilter = !disableFilter;
-        GTUtility
-            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.disableFilter." + disableFilter));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + disableFilter);
     }
 
     @Override
@@ -209,7 +212,7 @@ public class MTEHatchInput extends MTEHatch {
             .splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", GTUtility.formatNumbers(getCapacity()));
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.input_hatch_multislot.desc",
-            GTUtility.formatNumbers(getCapacityPerTank(mTier, slots)),
+            formatNumber(getCapacityPerTank(mTier, slots)),
             slots);
     }
 }

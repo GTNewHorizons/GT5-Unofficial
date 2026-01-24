@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import java.util.HashSet;
 import java.util.Set;
 
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -28,6 +29,9 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
     }
 
     private void generateRecipes(final Material material) {
+        if (material.vVoltageMultiplier > TierEU.RECIPE_IV) {
+            return;
+        }
         Logger.WARNING("Generating Shaped Crafting recipes for " + material.getDefaultLocalName()); // TODO
 
         // Single Plate Shaped/Shapeless

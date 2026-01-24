@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -67,7 +67,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumbers(commonSizeCompute(aTier))),
+                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
@@ -120,7 +120,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
                     StatCollector
-                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumbers(tContents.amount)));
+                        .translateToLocalFormatted("gt.tileentity.tank_amount", formatNumber(tContents.amount)));
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
@@ -487,7 +487,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     fluid.amount + "",
                     getRealCapacity() + ""));
         } else {
-            currenttip.add(0, "Tank Empty");
+            currenttip.add(0, StatCollector.translateToLocal("GT5U.waila.digital_tank.empty"));
         }
     }
 
@@ -611,13 +611,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mAllowInputFromOutputSide = val;
                 if (isServer) {
                     if (!mAllowInputFromOutputSide) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_off"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_off");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_on"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_on");
                     }
                 }
             })

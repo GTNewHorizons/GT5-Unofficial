@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -91,7 +92,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         aList.add(
                             translateToLocalFormatted(
                                 "gt.tileentity.eup_in",
-                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
+                                formatNumber(tTileEntity.getInputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(inputTier)));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
@@ -99,19 +100,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         aList.add(
                             translateToLocalFormatted(
                                 "gt.tileentity.eup_out",
-                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
+                                formatNumber(tTileEntity.getOutputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(outputTier)));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
                             translateToLocalFormatted(
                                 "gt.tileentity.eup_amount",
-                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
+                                formatNumber(tTileEntity.getOutputAmperage())));
                     }
                     aList.add(
                         translateToLocalFormatted(
                             "gt.tileentity.eup_store",
-                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
+                            formatNumber(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
@@ -132,7 +133,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                             Dyes.get(aNBT.getByte("mColor") - 1).mName));
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             aList.add("§cAn exception was thrown while getting this item's info.§r");
             aList.add(e.getLocalizedMessage());
             GT_FML_LOGGER.error("addInformation", e);

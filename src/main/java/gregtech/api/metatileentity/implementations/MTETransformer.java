@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -273,7 +274,8 @@ public class MTETransformer extends MTETieredMachineBlock {
         currenttip.add(
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
+                (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
+                    : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
                 GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
                 tag.getLong("maxAmperesIn"),
@@ -283,15 +285,15 @@ public class MTETransformer extends MTETieredMachineBlock {
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
-                String.format(
-                    GOLD + "Input:" + RESET + " %s(%dA)",
+                GOLD + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.input",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
-                String.format(
-                    BLUE + "Output:" + RESET + " %s(%dA)",
+                BLUE + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.output",
                     GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));

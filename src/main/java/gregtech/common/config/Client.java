@@ -7,6 +7,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
+import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 
 @Config(modid = Mods.ModIDs.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
 @Config.LangKey("GT5U.gui.config.client")
@@ -232,6 +233,11 @@ public class Client {
         @Config.Name("Render Powerfail Notifications")
         public boolean renderPowerfailNotifications;
 
+        @Config.DefaultFloat(1.0f)
+        @Config.Name("Powerfail Icon Size")
+        @Config.RangeFloat(min = 0.1f, max = 10f)
+        public float powerfailIconSize;
+
         @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
         @Config.DefaultInt(0)
         @Config.Name("Powerfail Notification Timeout")
@@ -255,6 +261,30 @@ public class Client {
         @Config.Comment("if true, enables showing voltage tier of transformer for Waila, instead of raw voltage number.")
         @Config.DefaultBoolean(false)
         public boolean wailaAverageNS;
+
+        @Config.Comment({ "First color (in hex RGB) of the progress bar.",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("3333DA")
+        public String ProgressBarCustomColor1;
+
+        @Config.Comment({ "Second color (in hex RGB) of the progress bar.",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("2020D0")
+        public String ProgressBarCustomColor2;
+
+        @Config.Comment({ "First color (in hex RGB) of the progress bar's border (top and left).",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("505050")
+        public String ProgressCustomBorderColor1;
+
+        @Config.Comment({ "Second color (in hex RGB) of the progress bar's border (bottom and right).",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("505050")
+        public String ProgressCustomBorderColor2;
+
+        @Config.Comment({ "The color preset of the waila progress bar", "Set to Custom to specify your own color" })
+        @Config.DefaultEnum("Green")
+        public TTRenderGTProgressBar.ProgressBarColor ProgressBarColor = TTRenderGTProgressBar.ProgressBarColor.Green;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")

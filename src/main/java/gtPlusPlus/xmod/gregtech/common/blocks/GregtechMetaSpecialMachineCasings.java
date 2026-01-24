@@ -34,6 +34,7 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
     public GregtechMetaSpecialMachineCasings() {
         super(SpecialCasingItemBlock.class, "gtplusplus.blockspecialcasings.2", MaterialCasings.INSTANCE);
         TAE.registerTexture(84, TextureFactory.of(this, 2));
+        TAE.registerTexture(100, TextureFactory.of(this, 3));
 
         GregtechItemList.Casing_Machine_Custom_1.set(new ItemStack(this, 1, 0));
         GregtechItemList.Casing_Machine_Custom_2.set(new ItemStack(this, 1, 1));
@@ -47,7 +48,7 @@ public class GregtechMetaSpecialMachineCasings extends GregtechMetaCasingBlocksA
             case 0 -> Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
             case 2 -> TexturesGtBlock.Casing_Material_Laurenium.getIcon();
-            case 3 -> Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
+            case 3 -> TexturesGtBlock.Casing_Material_Botmium.getIcon();
             default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
         };
     }

@@ -23,8 +23,8 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
@@ -34,7 +34,6 @@ import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class RecipeGenOre extends RecipeGenBase {
 
@@ -432,7 +431,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);
                     Logger.MATERIALS("[Electrolyzer] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
@@ -546,7 +545,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);;
                     Logger.MATERIALS("[Dehydrator] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 
@@ -620,82 +619,30 @@ public class RecipeGenOre extends RecipeGenBase {
 
         // Shaped Crafting
 
-        RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer.name(),
-            null,
-            null,
-            material.getCrushedPurified(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            material.getDustPurified(1));
+        GTModHandler.addCraftingRecipe(
+            material.getDustPurified(1),
+            new Object[] { "h  ", "P  ", "   ", 'P', material.getCrushedPurified(1) });
 
-        RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer.name(),
-            null,
-            null,
-            material.getCrushed(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            material.getDustImpure(1));
+        GTModHandler.addCraftingRecipe(
+            material.getDustImpure(1),
+            new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushed(1) });
 
-        RecipeUtils.addShapedRecipe(
-            ToolDictNames.craftingToolHardHammer.name(),
-            null,
-            null,
-            material.getCrushedCentrifuged(1),
-            null,
-            null,
-            null,
-            null,
-            null,
-            matDust);
+        GTModHandler
+            .addCraftingRecipe(matDust, new Object[] { "h  ", "C  ", "   ", 'C', material.getCrushedCentrifuged(1) });
 
         final ItemStack smallDust = material.getSmallDust(1);
         final ItemStack tinyDust = material.getTinyDust(1);
 
-        if (RecipeUtils.addShapedRecipe(
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            tinyDust,
-            matDust)) {
-            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Success");
-        } else {
-            Logger.WARNING("9 Tiny dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Failed");
+        if (tinyDust != null) {
+            GTModHandler.addCraftingRecipe(matDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(material.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', matDust });
         }
 
-        if (RecipeUtils
-            .addShapedRecipe(matDust, null, null, null, null, null, null, null, null, material.getTinyDust(9))) {
-            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getDefaultLocalName() + " - Success");
-        } else {
-            Logger.WARNING("9 Tiny dust from 1 Recipe: " + material.getDefaultLocalName() + " - Failed");
+        if (smallDust != null) {
+            GTModHandler.addCraftingRecipe(matDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler
+                .addCraftingRecipe(material.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', matDust });
         }
-
-        if (RecipeUtils
-            .addShapedRecipe(smallDust, smallDust, null, smallDust, smallDust, null, null, null, null, matDust)) {
-            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Success");
-        } else {
-            Logger.WARNING("4 Small dust to 1 Dust Recipe: " + material.getDefaultLocalName() + " - Failed");
-        }
-
-        if (RecipeUtils
-            .addShapedRecipe(null, matDust, null, null, null, null, null, null, null, material.getSmallDust(4))) {
-            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getDefaultLocalName() + " - Success");
-        } else {
-            Logger.WARNING("4 Small dust from 1 Dust Recipe: " + material.getDefaultLocalName() + " - Failed");
-        }
-
     }
 
     public static ItemStack getTinyDust(Material m) {

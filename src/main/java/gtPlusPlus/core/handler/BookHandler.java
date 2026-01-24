@@ -8,11 +8,11 @@ import com.github.bsideup.jabel.Desugar;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTSplit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
@@ -196,29 +196,25 @@ public class BookHandler {
                     This structure is used to produce the Molten Salts required to run a Liquid Fluorine Thorium Reactor [LFTR].""" });
     }
 
-    public static ItemStack ItemBookWritten_ThermalBoiler;
-    public static ItemStack ItemBookWritten_NuclearManual;
-    public static ItemStack ItemBookWritten_ModularBaubles;
-    public static ItemStack ItemBookWritten_MultiPowerStorage;
-
     public static void runLater() {
-        ItemBookWritten_ThermalBoiler = new ItemStack(ModItems.itemCustomBook, 1, 0);
-        ItemBookWritten_MultiPowerStorage = new ItemStack(ModItems.itemCustomBook, 1, 1);
-        ItemBookWritten_ModularBaubles = new ItemStack(ModItems.itemCustomBook, 1, 2);
-        ItemBookWritten_NuclearManual = new ItemStack(ModItems.itemCustomBook, 1, 4);
-
         // Multiblock Manuals
-        RecipeUtils.addShapelessGregtechRecipe(
-            new ItemStack[] { new ItemStack(Items.writable_book), new ItemStack(Items.lava_bucket) },
-            ItemBookWritten_ThermalBoiler);
-        RecipeUtils.addShapelessGregtechRecipe(
+
+        // Thermal Boiler
+        GTModHandler.addShapelessCraftingRecipe(
+            new ItemStack(ModItems.itemCustomBook, 1, 0),
+            new ItemStack[] { new ItemStack(Items.writable_book), new ItemStack(Items.lava_bucket) });
+
+        // Power Substation
+        GTModHandler.addShapelessCraftingRecipe(
+            new ItemStack(ModItems.itemCustomBook, 1, 1),
             new ItemStack[] { new ItemStack(Items.writable_book),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) },
-            ItemBookWritten_MultiPowerStorage);
-        RecipeUtils.addShapelessGregtechRecipe(
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Tin, 1) });
+
+        // Nuclear Manual
+        GTModHandler.addShapelessCraftingRecipe(
+            new ItemStack(ModItems.itemCustomBook, 1, 4),
             new ItemStack[] { new ItemStack(Items.writable_book),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) },
-            ItemBookWritten_NuclearManual);
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) });
 
         for (int meta : mBookMap.keySet()) {
             ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);

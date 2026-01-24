@@ -3,7 +3,6 @@ package gtneioreplugin.plugin.gregtech5;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.client.resources.I18n;
@@ -15,7 +14,6 @@ import codechicken.nei.PositionedStack;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.OrePrefixes.ParsedOreDictName;
 import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.util.GTUtility;
 import gregtech.common.ores.OreManager;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 import gtneioreplugin.util.DimensionHelper;
@@ -191,7 +189,12 @@ public class PluginGT5VeinStat extends PluginGT5Base {
     private String[] getDimNameArrayFromVeinName(String veinName) {
         OreLayerWrapper oreLayer = GT5OreLayerHelper.getVeinByName(veinName);
         String[] dims = oreLayer.abbrDimNames.toArray(new String[0]);
-        Arrays.sort(dims, Comparator.comparingInt(s -> GTUtility.indexOf(DimensionHelper.DimNameDisplayed, s)));
+
+        Arrays.sort(dims, (a, b) -> {
+            int indexA = DimensionHelper.getIndexByAbbr(a);
+            int indexB = DimensionHelper.getIndexByAbbr(b);
+            return Integer.compare(indexA, indexB);
+        });
         return dims;
     }
 

@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTAuthors.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
@@ -1234,7 +1236,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             .widget(
                 new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
                     .setGTTooltip(() -> {
-                        final String energyreq = GTUtility.formatNumbers(
+                        final String energyreq = formatNumber(
                             (int) ((float) MTEIndustrialApiary.baseEUtUsage * getEnergyModifier() * getAcceleration())
                                 + getAdditionalEnergyUsage());
                         // The localization in Forestry is written like this.
@@ -1296,7 +1298,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     () -> mTooltipCache.getUncachedTooltipData(
                         mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
                         getAcceleration(),
-                        GTUtility.formatNumbers(getAdditionalEnergyUsage())))
+                        formatNumber(getAdditionalEnergyUsage())))
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> mSpeed = val),
                     builder,
@@ -1498,19 +1500,23 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("queen")) {
             currenttip.add(
-                "Current Queen: " + EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.industrial_apiary.current_queen",
+                    EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen"))));
         }
         if (tag.hasKey("dummyProduction")) {
             currenttip.add(
-                "Effective Production: " + EnumChatFormatting.AQUA
-                    + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.industrial_apiary.effective_production",
+                    EnumChatFormatting.AQUA + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
         }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
             for (int i = 0; i < errorNbt.getInteger("size"); i++) {
                 currenttip.add(
-                    "Error: " + EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i)));
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.industrial_apiary.error",
+                        EnumChatFormatting.RED + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
             }
         }
     }

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SCHEST_GLOW;
@@ -72,8 +73,8 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
             aNameRegional,
             aTier,
             3,
-            new String[] { "Stores " + GTUtility.formatNumbers(commonSizeCompute(aTier)) + " items",
-                "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
+            new String[] { "Stores " + formatNumber(commonSizeCompute(aTier)) + " items", "Use a screwdriver to enable",
+                "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
     protected static int commonSizeCompute(int tier) {
@@ -107,7 +108,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
                 tooltip.add(
                     StatCollector
-                        .translateToLocalFormatted("gt.tileentity.chest_amount", GTUtility.formatNumbers(tSize)));
+                        .translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
             }
         }
     }
@@ -345,17 +346,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     + EnumChatFormatting.RESET
                     + " "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(getMaxItemCount())
+                    + formatNumber(getMaxItemCount())
                     + EnumChatFormatting.RESET };
         }
         return new String[] { EnumChatFormatting.BLUE + localizedChestName() + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.infodata.digital_chest.stored_items"),
             EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(getItemCount())
+            EnumChatFormatting.GREEN + formatNumber(getItemCount())
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxItemCount())
+                + formatNumber(getMaxItemCount())
                 + EnumChatFormatting.RESET };
     }
 
@@ -437,12 +438,17 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         super.getWailaBody(itemStack, currenttip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
-            currenttip.add("Item Count: " + GTUtility.formatNumbers(tag.getLong("itemCount")));
             currenttip.add(
-                "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
-                    .getDisplayName());
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.digital_chest.count",
+                    formatNumber(tag.getLong("itemCount"))));
+            currenttip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.digital_chest.type",
+                    ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
+                        .getDisplayName()));
         } else {
-            currenttip.add("Chest Empty");
+            currenttip.add(StatCollector.translateToLocal("GT5U.waila.digital_chest.empty"));
         }
     }
 

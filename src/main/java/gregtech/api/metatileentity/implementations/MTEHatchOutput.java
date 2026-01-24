@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
@@ -420,12 +421,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
                         : mFluid.getLocalizedName())
                     + EnumChatFormatting.RESET),
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid == null ? 0 : mFluid.amount)
+            EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
+                + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET,
             (!isFluidLocked() || lockedFluidName == null)
@@ -464,6 +465,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public String[] getDescription() {
         return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", GTUtility.formatNumbers(getCapacity()));
+            .splitLocalizedFormatted("gt.blockmachines.output_hatch.desc", formatNumber(getCapacity()));
     }
 }

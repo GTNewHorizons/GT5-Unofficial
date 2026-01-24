@@ -2,6 +2,8 @@ package tectech.thing.metaTileEntity.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -127,7 +129,7 @@ public class MTEHatchWirelessDynamoMulti extends MTEHatchDynamoMulti {
             new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorChrom),
                 translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
                     + YELLOW
-                    + GTUtility.formatNumbers(maxAmperes * V[mTier])
+                    + formatNumber(maxAmperes * V[mTier])
                     + GRAY
                     + " EU/t" });
     }

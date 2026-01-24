@@ -22,7 +22,6 @@ package gregtech.common.tileentities.machines.long_distance;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static mcp.mobius.waila.api.SpecialChars.BLUE;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
-import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static mcp.mobius.waila.api.SpecialChars.YELLOW;
@@ -388,18 +387,26 @@ public abstract class MTELongDistancePipelineBase extends MTEBasicHullNonElectri
         final boolean hasOutput = tag.getBoolean("hasOutput");
         final boolean hasOutputTooClose = tag.getBoolean("hasOutputTooClose");
 
-        if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
-        else if (side == facing.getOpposite()) currentTip.add(BLUE + "Pipeline Output" + RESET);
-        else currentTip.add("Pipeline Side");
+        if (side == facing)
+            currentTip.add(GOLD + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.input") + RESET);
+        else if (side == facing.getOpposite())
+            currentTip.add(BLUE + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.output") + RESET);
+        else currentTip.add(StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.side"));
 
         if (!hasInput && !hasInputTooClose && !hasOutput && !hasOutputTooClose) {
-            currentTip.add(YELLOW + "Not connected" + RESET);
+            currentTip
+                .add(YELLOW + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.not_connected") + RESET);
         }
 
-        if (hasInput) currentTip.add(GREEN + "Connected to " + GOLD + "Input" + RESET);
-        else if (hasInputTooClose) currentTip.add(RED + "Connected Input too close" + RESET);
-        else if (hasOutput) currentTip.add(GREEN + "Connected to " + BLUE + "Output" + RESET);
-        else if (hasOutputTooClose) currentTip.add(RED + "Connected Output too close" + RESET);
+        if (hasInput)
+            currentTip.add(StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.input"));
+        else if (hasInputTooClose) currentTip.add(
+            RED + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.input.too_close") + RESET);
+        else if (hasOutput)
+            currentTip.add(StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.output"));
+        else if (hasOutputTooClose) currentTip.add(
+            RED + StatCollector.translateToLocal("GT5U.waila.long_distance_pipe.connected_to.output.too_close")
+                + RESET);
 
         super.getWailaBody(itemStack, currentTip, accessor, config);
     }

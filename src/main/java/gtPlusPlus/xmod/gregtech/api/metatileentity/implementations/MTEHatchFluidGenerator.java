@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -16,7 +21,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
@@ -45,7 +49,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         return GTSplit.splitLocalizedFormattedWithSuffix(
             "gt.blockmachines.input_hatch_generator.desc",
             getCustomTooltip(),
-            GTUtility.formatNumbers(getCapacity()),
+            GTUtility.formatNumber(getCapacity()),
             GTUtility.getColoredTierNameFromTier(mTier));
     }
 
@@ -123,7 +127,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         if (!doesHatchMeetConditionsToGenerate()) {
             return false;
         }
-        int aFillAmount = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
+        int aFillAmount = this.fill(new FluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
         if (aFillAmount > 0) {
             if (this.getBaseMetaTileEntity()
                 .isClientSide()) {

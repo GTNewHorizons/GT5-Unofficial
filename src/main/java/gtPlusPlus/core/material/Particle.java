@@ -138,6 +138,10 @@ public class Particle {
     }
 
     public static ItemStack getBaseParticle(Particle aParticle) {
+        return getBaseParticle(aParticle, 1);
+    }
+
+    public static ItemStack getBaseParticle(Particle aParticle, int amount) {
         String aPartName = StringUtils.sanitizeString(aParticle.mParticleName.toLowerCase());
         for (String g : gtPlusPlus.core.item.chemistry.StandardBaseParticles.NameToMetaMap.keySet()) {
             if (g.toLowerCase()
@@ -146,7 +150,7 @@ public class Particle {
                 if (meta == null) {
                     meta = 0;
                 }
-                return new ItemStack(ModItems.itemStandarParticleBase, 1, meta);
+                return new ItemStack(ModItems.itemStandarParticleBase, amount, meta);
             }
         }
         return null;

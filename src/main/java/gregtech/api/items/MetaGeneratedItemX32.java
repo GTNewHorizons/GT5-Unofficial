@@ -83,8 +83,14 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     @Override
     public short[] getRGBa(ItemStack aStack) {
-        Materials tMaterial = getMaterial(getDamage(aStack));
-        return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+        if (getDamage(aStack) < 0 || getDamage(aStack) >= 32000) {
+            return Materials._NULL.mRGBa;
+        }
+        Materials tMaterial = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
+        if (tMaterial == null) {
+            return Materials._NULL.mRGBa;
+        }
+        return tMaterial.mRGBa;
     }
 
     /**
@@ -149,12 +155,14 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         final Materials materials = getMaterial(aMetaData);
         return materials == null ? null : getIconContainer(aMetaData, materials);
     }
 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
+        if (aMetaData < 0 || aMetaData >= 32000) return null;
         final Materials materials = getMaterial(aMetaData);
         return materials == null ? null : materials.renderer;
     }
@@ -204,6 +212,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (getDamage(aStack) < 0 || getDamage(aStack) >= 32000) return;
         final int damage = aStack.getItemDamage();
         final Materials material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);

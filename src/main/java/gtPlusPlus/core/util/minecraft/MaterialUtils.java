@@ -169,7 +169,7 @@ public class MaterialUtils {
                         + " | Valid RGB? "
                         + (hasValidRGBA(rgba)));
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.mName);
             t.printStackTrace();
         }

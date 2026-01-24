@@ -23,7 +23,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
@@ -127,7 +126,7 @@ public class RecipeGenMaterialProcessing extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", mCellCount);
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);
                     Logger.MATERIALS("[Centrifuge] Recipe now requires " + mCellCount + " empty cells as input.");
                 }
 

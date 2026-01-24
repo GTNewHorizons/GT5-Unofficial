@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gregtech.api.enums.Mods.Translocator;
@@ -474,7 +475,6 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         if (isInputDisabledAtSide(side)) {
             mDisableInput &= ~mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("212", "Input enabled"));
-            if (!isConnectedAtSide(side)) connect(side);
         } else {
             mDisableInput |= mask;
             GTUtility.sendChatToPlayer(entityPlayer, GTUtility.trans("213", "Input disabled"));
@@ -933,11 +933,11 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         descriptions.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.fluidpipe.capacity.desc",
-                GTUtility.formatNumbers(mCapacity * 20L)));
+                GTUtility.formatNumber(mCapacity * 20L)));
         descriptions.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.fluidpipe.heat.desc",
-                GTUtility.formatNumbers(mHeatResistance)));
+                GTUtility.formatNumber(mHeatResistance)));
         if (!mGasProof) {
             descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }
@@ -986,13 +986,13 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.capacity") + ": "
                 + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(mCapacity * 20L)
+                + formatNumber(mCapacity * 20L)
                 + " L/s");
 
         currenttip.add(
             StatCollector.translateToLocal("GT5U.item.pipe.heat_resistance") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(mHeatResistance)
+                + formatNumber(mHeatResistance)
                 + "K");
 
         // Gas handling info

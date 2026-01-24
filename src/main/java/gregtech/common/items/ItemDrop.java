@@ -131,7 +131,7 @@ public class ItemDrop extends Item {
         addProcessMV(
             tDrop,
             Materials.FierySteel.getFluid(200L),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
         tDrop = getStackForType(DropType.LAPIS);

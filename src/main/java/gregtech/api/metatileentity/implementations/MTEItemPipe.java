@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
@@ -410,6 +411,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public String[] getDescription() {
+        aaaaaaaaaaaaaaaaaaaaaaa
         if (mTickTime == 20) return new String[] {
             StatCollector
                 .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.persecond", getMaxPipeCapacity()),

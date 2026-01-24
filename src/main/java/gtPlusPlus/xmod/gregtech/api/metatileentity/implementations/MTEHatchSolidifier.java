@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +71,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         return Utils.splitLocalizedFormattedWithAuthor(
             "gt.blockmachines.input_hatch_solidifier.desc",
             GTAuthors.AuthorQuetz4l,
-            GTUtility.formatNumbers(getCapacity()));
+            formatNumber(getCapacity()));
     }
 
     public static ItemStack findMatchingMold(ItemStack stack) {
@@ -117,7 +119,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
         }
         try {
             this.setInventorySlotContents(moldSlot, phantom);
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         markDirty();
         GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
     }

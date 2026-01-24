@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
@@ -99,7 +100,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     boolean hadCell = false;
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 3, null, 1);
+        super(aID, aName, aNameRegional, 4, null, 1);
     }
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -251,9 +252,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
                 markDirty();
 
-                GTUtility.sendChatToPlayer(
-                    lastClickedPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.fluid.filter.disable"));
+                GTUtility.sendChatTrans(lastClickedPlayer, "GT5U.hatch.fluid.filter.disable");
             }
         }
     }
@@ -537,10 +536,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
-            String.format(
-                "Fluid cache capacity: %s%s L%s",
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.output_me.fluid_cache_capacity",
                 EnumChatFormatting.GOLD,
-                GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
+                formatNumber(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
     }
 
@@ -581,7 +580,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         "%s: %s%s L%s",
                         stack.getLocalizedName(),
                         EnumChatFormatting.GOLD,
-                        GTUtility.formatNumbers(stackTag.getLong("Amount")),
+                        formatNumber(stackTag.getLong("Amount")),
                         EnumChatFormatting.RESET));
             }
 
@@ -730,9 +729,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + GTUtility.formatNumbers(getCacheCapacity())
-                    + " L"
-                    + EnumChatFormatting.RESET));
+                EnumChatFormatting.GOLD + formatNumber(getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
         if (fluidCache.isEmpty()) {
             ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
         } else {
@@ -744,7 +741,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     s.getFluidStack()
                         .getLocalizedName() + ": "
                         + EnumChatFormatting.GOLD
-                        + GTUtility.formatNumbers(s.getStackSize())
+                        + formatNumber(s.getStackSize())
                         + " L"
                         + EnumChatFormatting.RESET);
                 if (++counter > 100) break;

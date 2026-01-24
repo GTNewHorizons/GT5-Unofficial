@@ -202,7 +202,7 @@ public class BaseItemComponent extends Item {
                     list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
             }
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -270,7 +270,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-        } catch (Throwable t) {
+        } catch (Exception t) {
 
         }
         return this.componentColour;

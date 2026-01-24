@@ -41,7 +41,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.tileentities.misc.MTESolarHeater;
@@ -559,8 +558,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
                     int aFluidAmount = Math.min(aFluid.amount, this.mHeatLevel);
 
                     this.mHeatLevel -= aFluidAmount;
-                    this.depleteInput(FluidUtils.getFluidStack(mColdSalt, aFluidAmount));
-                    this.addOutput(FluidUtils.getFluidStack(mHotSalt, aFluidAmount));
+                    this.depleteInput(new FluidStack(mColdSalt, aFluidAmount));
+                    this.addOutput(new FluidStack(mHotSalt, aFluidAmount));
                     this.mHeatLevel = Math.max(this.mHeatLevel, 0);
 
                     break;

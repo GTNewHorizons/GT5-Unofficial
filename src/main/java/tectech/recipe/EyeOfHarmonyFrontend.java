@@ -1,7 +1,7 @@
 package tectech.recipe;
 
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
@@ -83,9 +83,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
         // Draw tooltip on planet item.
         if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
             currentTip.add(
-                EnumChatFormatting.GRAY + translateToLocalFormatted(
-                    "tt.nei.eoh.total_items",
-                    formatNumbers(currentRecipe.getSumOfItems())));
+                EnumChatFormatting.GRAY
+                    + translateToLocalFormatted("tt.nei.eoh.total_items", formatNumber(currentRecipe.getSumOfItems())));
             return currentTip;
         }
 
@@ -98,7 +97,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             currentTip.add(
                 EnumChatFormatting.GRAY + translateToLocalFormatted(
                     "tt.nei.eoh.item_count",
-                    formatNumbers(
+                    formatNumber(
                         currentRecipe.getItemStackToTrueStackSizeMap()
                             .get(stack))));
         }
@@ -145,10 +144,10 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.Hydrogen.In",
-                    formatNumbers(recipe.getHydrogenRequirement())));
+                    formatNumber(recipe.getHydrogenRequirement())));
             result.add(
                 StatCollector
-                    .translateToLocalFormatted("EOH.Recipe.Helium.In", formatNumbers(recipe.getHydrogenRequirement())));
+                    .translateToLocalFormatted("EOH.Recipe.Helium.In", formatNumber(recipe.getHydrogenRequirement())));
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.SpacetimeTier",
@@ -157,7 +156,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             // Energy Output
             switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
-                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", formatNumbers(recipe.getEUOutput())));
+                    StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", formatNumber(recipe.getEUOutput())));
                 case Scientific -> result.add(
                     StatCollector.translateToLocalFormatted("EOH.Recipe.EU.Out", toExponentForm(recipe.getEUOutput())));
                 case SI -> result.add(
@@ -170,7 +169,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
                     StatCollector
-                        .translateToLocalFormatted("EOH.Recipe.EU.In", formatNumbers(recipe.getEUStartCost())));
+                        .translateToLocalFormatted("EOH.Recipe.EU.In", formatNumber(recipe.getEUStartCost())));
                 case Scientific -> result.add(
                     StatCollector
                         .translateToLocalFormatted("EOH.Recipe.EU.In", toExponentForm(recipe.getEUStartCost())));
@@ -183,11 +182,11 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.BaseRecipeChance",
-                    formatNumbers(100 * recipe.getBaseRecipeSuccessChance())));
+                    formatNumber(100 * recipe.getBaseRecipeSuccessChance())));
             result.add(
                 StatCollector.translateToLocalFormatted(
                     "EOH.Recipe.RecipeEnergyEfficiency",
-                    formatNumbers(100 * recipe.getRecipeEnergyEfficiency())));
+                    formatNumber(100 * recipe.getRecipeEnergyEfficiency())));
 
             if (recipe.getOutputItems()
                 .size() > maxItemsToRender) {

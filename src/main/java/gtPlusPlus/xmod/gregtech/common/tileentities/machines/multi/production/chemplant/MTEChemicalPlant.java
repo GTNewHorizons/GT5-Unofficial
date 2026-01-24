@@ -69,7 +69,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -578,7 +577,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
-                    addOutputPartial(CI.getEmptyCatalyst(1));
+                    addOutputPartial(GregtechItemList.EmptyCatalystCarrier.get(1));
                     aStack.stackSize -= 1;
                     return aStack.stackSize == 0;
                 } else {
@@ -658,8 +657,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public void updateSlots() {
         super.updateSlots();
         for (MTEHatchCatalysts h : mCatalystBuses) {
-            h.updateSlots();
             h.tryFillUsageSlots();
+            h.updateSlots();
         }
     }
 

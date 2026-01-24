@@ -345,18 +345,14 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        if (tag.getBoolean("cooling")) currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.RED
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
-        else currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.AQUA
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hip_compressor.heat",
+                "" + (tag.getBoolean("cooling") ? EnumChatFormatting.RED : EnumChatFormatting.AQUA)
+                    + EnumChatFormatting.BOLD
+                    + tag.getInteger("heat")
+                    + "%"
+                    + EnumChatFormatting.RESET));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
@@ -121,7 +122,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean cachedActivity = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 3, SLOT_COUNT * 2 + 2, null);
+        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, null);
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
@@ -1079,9 +1080,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
             currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_bus.min_stack_size",
-                    GTUtility.formatNumbers(minSize)));
+                StatCollector
+                    .translateToLocalFormatted("GT5U.waila.stocking_bus.min_stack_size", formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

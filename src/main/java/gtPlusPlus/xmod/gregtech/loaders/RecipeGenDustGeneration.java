@@ -26,7 +26,6 @@ import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
 
 public class RecipeGenDustGeneration extends RecipeGenBase {
 
@@ -48,52 +47,13 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack smallDust = M.getSmallDust(1);
         final ItemStack tinyDust = M.getTinyDust(1);
         if (tinyDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                tinyDust,
-                normalDust)) {
-                Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getDefaultLocalName() + " - Success");
-            } else {
-                Logger.INFO("9 Tiny dust to 1 Dust Recipe: " + M.getDefaultLocalName() + " - Failed");
-            }
-
-            if (RecipeUtils
-                .addShapedRecipe(normalDust, null, null, null, null, null, null, null, null, M.getTinyDust(9))) {
-                Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getDefaultLocalName() + " - Success");
-            } else {
-                Logger.INFO("9 Tiny dust from 1 Recipe: " + M.getDefaultLocalName() + " - Failed");
-            }
+            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "TTT", "TTT", "TTT", 'T', tinyDust });
+            GTModHandler.addCraftingRecipe(M.getTinyDust(9), new Object[] { "D  ", "   ", "   ", 'D', normalDust });
         }
 
         if (smallDust != null && normalDust != null) {
-            if (RecipeUtils.addShapedRecipe(
-                smallDust,
-                smallDust,
-                null,
-                smallDust,
-                smallDust,
-                null,
-                null,
-                null,
-                null,
-                normalDust)) {
-                Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getDefaultLocalName() + " - Success");
-            } else {
-                Logger.INFO("4 Small dust to 1 Dust Recipe: " + M.getDefaultLocalName() + " - Failed");
-            }
-            if (RecipeUtils
-                .addShapedRecipe(null, normalDust, null, null, null, null, null, null, null, M.getSmallDust(4))) {
-                Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getDefaultLocalName() + " - Success");
-            } else {
-                Logger.INFO("4 Small dust from 1 Dust Recipe: " + M.getDefaultLocalName() + " - Failed");
-            }
+            GTModHandler.addCraftingRecipe(normalDust, new Object[] { "SS ", "SS ", "   ", 'S', smallDust });
+            GTModHandler.addCraftingRecipe(M.getSmallDust(4), new Object[] { " D ", "   ", "   ", 'D', normalDust });
         }
     }
 

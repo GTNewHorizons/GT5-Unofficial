@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -156,7 +157,7 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                     StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
                 tooltip.add(
                     StatCollector
-                        .translateToLocalFormatted("gt.tileentity.chest_amount", GTUtility.formatNumbers(tSize)));
+                        .translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
             }
         }
     }

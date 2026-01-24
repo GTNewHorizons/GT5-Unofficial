@@ -35,7 +35,7 @@ public class ItemCasingsSpacetime extends ItemCasings {
                 tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tt.eoh.spacetime.standard.tooltip.0",
-                        formatNumbers(pow(10, 5 + aStack.getItemDamage()))));
+                        formatNumber(pow(10, 5 + aStack.getItemDamage()))));
                 tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("tt.eoh.spacetime.standard.tooltip.1", aStack.getItemDamage() + 1));
