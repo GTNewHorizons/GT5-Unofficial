@@ -13,6 +13,7 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
+import gregtech.api.GregTechAPI;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -44,11 +45,11 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
     protected static final int CUTTING_OFFSET_Z = 0;
     protected static final String[][] CUTTING_STRUCTURE = new String[][] {
         { "       ", "       ", "       ", " A   A ", " A   A " },
-        { "  CCC  ", " BBBBB ", " CEEEC ", "ACEEECA", "ACEDECA" },
-        { " CCDCC ", "B     B", "B     B", "B     B", "B  D  B" },
-        { " DDDDD ", "BCCCCCB", "EAAAAAE", "E     E", "EDDDDDE" },
-        { " CCDCC ", "B     B", "B     B", "B     B", "B  D  B" },
-        { "  CCC  ", " BBBBB ", " CEEEC ", "ACEEECA", "ACEDECA" },
+        { "  CCC  ", " BBBBB ", " CEEEC ", "ACEEECA", "ACEEECA" },
+        { " CCDCC ", "B     B", "B     B", "B     B", "B DDD B" },
+        { " DDDDD ", "BCCCCCB", "EAAAAAE", "E     E", "E DDD E" },
+        { " CCDCC ", "B     B", "B     B", "B     B", "B DDD B" },
+        { "  CCC  ", " BBBBB ", " CEEEC ", "ACEEECA", "ACEEECA" },
         { "       ", "       ", "       ", " A   A ", " A   A " } };
 
     public static final IStructureDefinition<MTECuttingChamberModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
@@ -68,10 +69,11 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         .addElement('B', Casings.NanochipPrimaryCasing.asElement())
         // Nanochip Secondary Casing
         .addElement('C', Casings.NanochipSecondaryCasing.asElement())
-        // Bulk Production Frame
-        .addElement('D', Casings.BulkProductionFrame.asElement(null))
+        //Naquadria-Reinforced Water Plant Casing
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 12))
         // Nanochip Glass
         .addElement('E', Casings.NanochipGlass.asElement())
+
         .build();
 
     @Override
