@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -48,10 +49,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
@@ -102,6 +103,24 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
             .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of " + mHotFuelName + " per second during operation")
             .addInfo("Constructed exactly the same as a normal EBF")
+            .addInfo(
+                "Reduces " + TooltipHelper.effText("EU Usage")
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "5%"
+                    + EnumChatFormatting.GRAY
+                    + " every "
+                    + EnumChatFormatting.RED
+                    + "900K"
+                    + EnumChatFormatting.GRAY
+                    + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Bottom center")
             .addCasingInfoMin(mCasingName, 6, false)
@@ -122,7 +141,7 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
     public String[] getExtraInfoData() {
         return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
             + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(mHeatingCapacity.getHeat())
+            + formatNumber(mHeatingCapacity.getHeat())
             + EnumChatFormatting.RESET
             + " K" };
     }
