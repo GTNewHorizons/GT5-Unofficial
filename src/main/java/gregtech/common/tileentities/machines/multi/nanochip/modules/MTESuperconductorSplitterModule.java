@@ -227,7 +227,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Input Hatch")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override

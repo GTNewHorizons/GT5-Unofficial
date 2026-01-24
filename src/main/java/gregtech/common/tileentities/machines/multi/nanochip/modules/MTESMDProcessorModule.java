@@ -151,7 +151,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
                     + "Processing the core logical components of circuits requires a lot of thought")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override

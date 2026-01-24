@@ -211,7 +211,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                     + "item in the NAC control center, or processed further into a higher tier circuit")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override
