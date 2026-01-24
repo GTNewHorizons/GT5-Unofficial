@@ -27,7 +27,6 @@ import net.minecraftforge.common.ChestGenHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
@@ -62,6 +61,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
+import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -102,7 +102,6 @@ import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
-import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
 import gregtech.loaders.load.FissionFuelLoader;
@@ -340,6 +339,8 @@ public class GTMod {
 
         GTUIInfos.init();
 
+        IBlockWithClientMeta.register();
+
         for (Runnable tRunnable : GregTechAPI.sAfterGTPreload) {
             tRunnable.run();
         }
@@ -351,8 +352,6 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onInitialization(FMLInitializationEvent event) {
-        DataRegistry.registerDataManager(new ClientMetaManager(), 1000);
-
         if (GregTechAPI.sLoadStarted) {
             return;
         }

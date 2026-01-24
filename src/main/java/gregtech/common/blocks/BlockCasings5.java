@@ -38,8 +38,6 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
-import gregtech.api.net.ClientMetaTrackerRegistry;
-import gregtech.api.net.GTCoilTrackerAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTCoilTracker;
@@ -80,8 +78,6 @@ public class BlockCasings5 extends BlockCasingsAbstract
             GTStructureChannels.HEATING_COIL
                 .registerAsIndicator(new ItemStack(this, 1, i), getCoilHeat(i).ordinal() - 1);
         }
-
-        ClientMetaTrackerRegistry.register(this, new GTCoilTrackerAccess());
     }
 
     @Override
