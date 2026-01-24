@@ -6,11 +6,16 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -140,8 +145,15 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
-            .addInfo("Traces your Wire " + TOOLTIP_CC + "s")
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
+            .addSeparator()
+            .addInfo("Traces your Wire " + TOOLTIP_CCs)
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");

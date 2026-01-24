@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
@@ -150,12 +151,13 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Able to process sheet and framebox " + TOOLTIP_CCs + " into wrapper spools and circuit casings.")
-            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same color as the input " + TOOLTIP_VCI)
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""
                     + EnumChatFormatting.ITALIC
-                    + "Constructing strong casings for your circuits since 1849.")
+                    + "Constructing strong casings for your circuits since 1984.")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .toolTipFinisher("GregTech");
