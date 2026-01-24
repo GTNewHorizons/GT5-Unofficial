@@ -63,6 +63,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
+import gtnhlanth.common.register.LanthItemList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -91,10 +92,10 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         .addElement('A', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing
         .addElement('B', Casings.NanochipReinforcementCasing.asElement())
-        // Infinity Cooled Casings
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 14))
-        // Particle Beam Guidance Pipe Casing
-        .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 14))
+        // Shielded Accelerator Casing
+        .addElement('C', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+        // Target Holder Casing
+        .addElement('D', ofBlock(LanthItemList.TARGET_HOLDER, 0))
         // Enriched Holmium Frame box
         .addElement('E', ofFrame(Materials.EnrichedHolmium))
         // Non-Photonic Matter Exclusion Glass
