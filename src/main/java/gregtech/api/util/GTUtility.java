@@ -1084,9 +1084,7 @@ public class GTUtility {
     }
 
     public static boolean isEmptyFluidContainer(ItemStack itemStack) {
-        return sEmptyContainerToFluidToData.keySet()
-            .stream()
-            .anyMatch(it -> it.isStackEqual(itemStack));
+        return sEmptyContainerToFluidToData.containsKey(new GTItemStack(itemStack));
     }
 
     public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
