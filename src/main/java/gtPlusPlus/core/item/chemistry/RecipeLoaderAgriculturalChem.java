@@ -31,8 +31,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.BioRecipes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -299,9 +297,9 @@ public class RecipeLoaderAgriculturalChem {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.reeds, 32), new ItemStack(ModItems.dustCalciumCarbonate, 2))
+            .itemInputs(new ItemStack(Items.reeds, 32), GregtechItemList.CalciumCarbonateDust.get(2))
             .circuit(5)
-            .fluidInputs(FluidUtils.getHotWater(2_000))
+            .fluidInputs(GTModHandler.getHotWater(2_000))
             .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -323,11 +321,9 @@ public class RecipeLoaderAgriculturalChem {
                 .addTo(chemicalPlantRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get("cropSugarbeet", 4),
-                    new ItemStack(ModItems.dustCalciumCarbonate, 2))
+                .itemInputs(GTOreDictUnificator.get("cropSugarbeet", 4), GregtechItemList.CalciumCarbonateDust.get(2))
                 .circuit(5)
-                .fluidInputs(FluidUtils.getHotWater(2_000))
+                .fluidInputs(GTModHandler.getHotWater(2_000))
                 .fluidOutputs(new FluidStack(GTPPFluids.FermentationBase, 2_000))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -389,10 +385,10 @@ public class RecipeLoaderAgriculturalChem {
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
                 GregtechItemList.DriedEarthDust.get(1),
-                ItemUtils.getItemStackOfAmountFromOreDict("dustTinyAmmoniumNitrate", 1))
+                GregtechItemList.TinyAmmoniumNitrateDust.get(1))
             .outputChances(2500, 2500, 750, 1000, 5000, 250)
             .fluidInputs(Materials.SulfuricAcid.getFluid(250))
-            .fluidOutputs(FluidUtils.getFluidStack("sulfuricapatite", 50))
+            .fluidOutputs(new FluidStack(GTPPFluids.SulfuricApatiteMix, 50))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(centrifugeRecipes);

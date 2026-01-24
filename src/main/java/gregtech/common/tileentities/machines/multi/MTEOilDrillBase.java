@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.debugDriller;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -127,8 +128,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             // work
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
-                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
+                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
+                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -329,6 +330,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
         FluidStack pumpedOil = pumpOil(speed, false);
         mOilFlow = pumpedOil.amount * batchMultiplier;
+        // Multiblock base already includes 1 parallel
+        recipesDone += batchMultiplier - 1;
         return ValidationResult.of(ValidationType.VALID, pumpedOil.amount == 0 ? null : pumpedOil);
     }
 
@@ -381,9 +384,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
-                    + GTUtility.formatNumbers(chunkRangeConfig)
+                    + formatNumber(chunkRangeConfig)
                     + " x "
-                    + GTUtility.formatNumbers(chunkRangeConfig)
+                    + formatNumber(chunkRangeConfig)
                     + EnumChatFormatting.RESET
                     + " "
                     + StatCollector.translateToLocal("GT5U.machines.chunks"),
@@ -392,8 +395,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                     EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET),
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.oil_drill.drilling_flow",
-                    EnumChatFormatting.GREEN + GTUtility.formatNumbers(getFlowRatePerTick())
-                        + EnumChatFormatting.RESET)));
+                    EnumChatFormatting.GREEN + formatNumber(getFlowRatePerTick()) + EnumChatFormatting.RESET)));
         l.addAll(Arrays.asList(super.getInfoData()));
         return l.toArray(new String[0]);
     }
