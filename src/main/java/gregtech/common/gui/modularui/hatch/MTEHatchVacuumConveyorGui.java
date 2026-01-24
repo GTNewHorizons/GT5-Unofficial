@@ -53,6 +53,8 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponen
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import it.unimi.dsi.fastutil.Pair;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumConveyor> {
 
     public MTEHatchVacuumConveyorGui(MTEHatchVacuumConveyor VC) {
@@ -192,7 +194,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .tooltip(t -> {
                 if (!syncManager.isClient()) return; // needed since this runs on server and crashes
                 t.addStringLines(item.getTooltip(syncManager.getPlayer(), false))
-                    .addLine(EnumChatFormatting.DARK_GRAY + "Amount: " + GTUtility.formatNumbers(amount));
+                    .addLine(EnumChatFormatting.DARK_GRAY + "Amount: " + formatNumber(amount));
             });
     }
 

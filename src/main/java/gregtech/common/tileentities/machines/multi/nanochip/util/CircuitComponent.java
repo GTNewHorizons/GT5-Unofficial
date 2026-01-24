@@ -138,27 +138,27 @@ public enum CircuitComponent {
     ProcessedBioProcessingUnit("gt.circuitcomponent.processed.board.bioprocessingunit", true),
 
     // Wafers and chips
-    WaferNanoCPU(
-        "gt.circuitcomponent.waferNanoCPU",
-        () -> ItemList.Circuit_Wafer_NanoCPU.get(1)),
-    WaferRAM(
-        "gt.circuitcomponent.waferram",
-        () -> ItemList.Circuit_Wafer_Ram.get(1)),
-    WaferNOR(
-        "gt.circuitcomponent.wafernor",
-        () -> ItemList.Circuit_Wafer_NOR.get(1)),
-    WaferNAND(
-        "gt.circuitcomponent.wafernand",
-        () -> ItemList.Circuit_Wafer_NAND.get(1)),
-    WaferASOC(
-        "gt.circuitcomponent.waferasoc",
-        () -> ItemList.Circuit_Wafer_SoC2.get(1)),
-    WaferPikoPIC(
-        "gt.circuitcomponent.waferpikopic",
-        () -> ItemList.Circuit_Wafer_PPIC.get(1)),
-    WaferQuantumPIC(
-        "gt.circuitcomponent.waferquantumpic",
-        () -> ItemList.Circuit_Wafer_QPIC.get(1)),
+    ChipNanoCPU(
+        "gt.circuitcomponent.chipNanoCPU",
+        () -> ItemList.Circuit_Chip_NanoCPU.get(1)),
+    ChipRAM(
+        "gt.circuitcomponent.chipram",
+        () -> ItemList.Circuit_Chip_Ram.get(1)),
+    ChipNOR(
+        "gt.circuitcomponent.chipnor",
+        () -> ItemList.Circuit_Chip_NOR.get(1)),
+    ChipNAND(
+        "gt.circuitcomponent.chipnand",
+        () -> ItemList.Circuit_Chip_NAND.get(1)),
+    ChipASOC(
+        "gt.circuitcomponent.chipasoc",
+        () -> ItemList.Circuit_Chip_SoC2.get(1)),
+    ChipPikoPIC(
+        "gt.circuitcomponent.chippikopic",
+        () -> ItemList.Circuit_Chip_PPIC.get(1)),
+    ChipQuantumPIC(
+        "gt.circuitcomponent.chipquantumpic",
+        () -> ItemList.Circuit_Chip_QPIC.get(1)),
     WaferPico(
         "gt.circuitcomponent.waferpico",
         () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1, 0, new ItemStack(Blocks.fire))),

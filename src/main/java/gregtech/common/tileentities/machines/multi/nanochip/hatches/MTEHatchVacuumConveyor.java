@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_HATCH_ACTIVE;
@@ -246,7 +247,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
                         .getLocalizedName()
                         + ": "
                         + EnumChatFormatting.WHITE
-                        + GTUtility.formatNumbers(component.getValue()));
+                        + formatNumber(component.getValue()));
             }
         }
         return info.toArray(new String[] {});
