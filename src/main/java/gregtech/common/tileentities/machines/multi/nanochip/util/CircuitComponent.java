@@ -20,7 +20,7 @@ import tectech.thing.CustomItemList;
 public enum CircuitComponent {
 
     // When adding to this list, PLEASE only add to the end!
-    // The ordinals are used as item ids for the fake items, so adding in the middle will break saved state!
+    // The ordinals are used azs item ids for the fake items, so adding in the middle will break saved state!
 
     // spotless:off
 
@@ -376,14 +376,20 @@ public enum CircuitComponent {
         this(unlocalizedName, null, isProcessed, (byte) 0);
     }
 
-    // Internal constructor
+    private static final String PROCESSED_DIRECTORY = "processed/";
+
+    /**
+     * Internal constructor
+     * images are stored in gregtech/textures/items/gt.circuitcomponent
+     * processed components are found in the processed subdirectory
+     */
     CircuitComponent(String unlocalizedName, Supplier<ItemStack> realComponent, boolean isProcessed, byte circuitTier) {
         this.unlocalizedName = unlocalizedName;
         this.realComponent = realComponent;
         this.isProcessed = isProcessed;
         this.circuitTier = circuitTier;
 
-        this.iconString = name().toLowerCase();
+        this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
         codechicken.nei.api.API.hideItem(getFakeStack(1));
     }
 
