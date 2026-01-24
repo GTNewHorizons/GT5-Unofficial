@@ -68,14 +68,14 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         .addElement('A', ofBlock(GregTechAPI.sSolenoidCoilCasings, 7))
         // UEV Solenoid
         .addElement('B', ofBlock(GregTechAPI.sSolenoidCoilCasings, 8))
-        // Nanochip Primary Casing
-        .addElement('C', Casings.NanochipPrimaryCasing.asElement())
-        // Nanochip Secondary Casing
-        .addElement('D', Casings.NanochipSecondaryCasing.asElement())
+        // Nanochip Mesh Interface Casing
+        .addElement('C', Casings.NanochipMeshInterfaceCasing.asElement())
+        // Nanochip Reinforcement Casing
+        .addElement('D', Casings.NanochipReinforcementCasing.asElement())
         // Naquadria Frame box
         .addElement('E', ofFrame(Materials.Naquadria))
         // Nanochip Glass
-        .addElement('F', Casings.NanochipGlass.asElement())
+        .addElement('F', Casings.NanochipComplexGlass.asElement())
         .build();
 
     @Override
