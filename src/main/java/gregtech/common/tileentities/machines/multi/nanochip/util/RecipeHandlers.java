@@ -352,49 +352,49 @@ public class RecipeHandlers {
     public static void registerCuttingRecipes() {
         // Wafer cutting processing recipes
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferNanoCPU,
+            CircuitComponent.ChipNanoCPU,
             Materials.Lubricant.getFluid(250),
             CircuitComponent.ProcessedChipNanoCPU,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferRAM,
+            CircuitComponent.ChipRAM,
             Materials.Lubricant.getFluid(67),
             CircuitComponent.ProcessedChipRAM,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferNOR,
+            CircuitComponent.ChipNOR,
             Materials.Lubricant.getFluid(135),
             CircuitComponent.ProcessedChipNOR,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferNAND,
+            CircuitComponent.ChipNAND,
             Materials.Lubricant.getFluid(135),
             CircuitComponent.ProcessedChipNAND,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferASOC,
+            CircuitComponent.ChipASOC,
             Materials.Lubricant.getFluid(250),
             CircuitComponent.ProcessedChipASOC,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferPikoPIC,
+            CircuitComponent.ChipPikoPIC,
             Materials.Lubricant.getFluid(375),
             CircuitComponent.ProcessedChipPikoPIC,
             ModuleRecipeInfo.Medium,
             TierEU.RECIPE_LV,
             RecipeMaps.nanochipCuttingChamber);
         addSimpleProcessingRecipe(
-            CircuitComponent.WaferQuantumPIC,
+            CircuitComponent.ChipQuantumPIC,
             Materials.Lubricant.getFluid(500),
             CircuitComponent.ProcessedChipQuantumPIC,
             ModuleRecipeInfo.Medium,
