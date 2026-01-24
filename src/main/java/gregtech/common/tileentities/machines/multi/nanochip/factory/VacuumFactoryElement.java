@@ -7,8 +7,8 @@ import gregtech.api.factory.IFactoryElement;
 public interface VacuumFactoryElement
     extends IFactoryElement<VacuumFactoryElement, VacuumFactoryNetwork, VacuumFactoryGrid> {
 
-    public boolean canConnectOnSide(ForgeDirection side);
+    boolean canConnectOnSide(ForgeDirection side);
 
-    public byte getColorization();
+    byte getColorization();
 
 }

@@ -65,15 +65,21 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     }
 
     @Override
+    public void onUnload() {
+        super.onUnload();
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+    }
+
+    @Override
     public void onColorChangeServer(byte aColor) {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
         super.onColorChangeServer(aColor);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
     public void onFacingChange() {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
         super.onFacingChange();
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -84,14 +90,14 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
 
     @Override
     public void onRemoval() {
-        VacuumFactoryGrid.INSTANCE.removeElement(this);
         super.onRemoval();
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
     }
 
     @Override
     public void onFirstTick(IGregTechTileEntity base) {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
         super.onFirstTick(base);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
