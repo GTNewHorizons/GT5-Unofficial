@@ -64,14 +64,10 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_X = 3;
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
-    protected static final String[][] ASSEMBLY_STRING = new String[][] {
-        { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
-        { "  CFC  ", " D   D ", "DB   BD", " DEEED " },
-        { " CFFFC ", "B     B", "D     D", "BE   EB" },
-        { " FFDFF ", "F  G  F", "F  G  F", "FE G EF" },
-        { " CFFFC ", "B     B", "D     D", "BE   EB" },
-        { "  CFC  ", " D   D ", "DB   BD", " DEEED " },
-        { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
+    protected static final String[][] ASSEMBLY_STRING = new String[][] { { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { " FFDFF ", "F  G  F", "F  G  F", "FE G EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
     private int machineTier = -1;
     public static final IStructureDefinition<MTEAssemblyMatrixModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEAssemblyMatrixModule>builder()
