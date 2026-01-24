@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.outputme;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 
@@ -288,7 +289,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             String.format(
                 "Fluid cache capacity: %s%s L%s",
                 EnumChatFormatting.GOLD,
-                GTUtility.formatNumbers(tag.getLong("cacheCapacity")),
+                formatNumber(tag.getLong("cacheCapacity")),
                 EnumChatFormatting.RESET));
     }
 
@@ -329,7 +330,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         "%s: %s%s L%s",
                         stack.getLocalizedName(),
                         EnumChatFormatting.GOLD,
-                        GTUtility.formatNumbers(stackTag.getLong("Amount")),
+                        formatNumber(stackTag.getLong("Amount")),
                         EnumChatFormatting.RESET));
             }
 
@@ -480,9 +481,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         ss.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
-                EnumChatFormatting.GOLD + GTUtility.formatNumbers(provider.getCacheCapacity())
-                    + " L"
-                    + EnumChatFormatting.RESET));
+                EnumChatFormatting.GOLD + formatNumber(provider.getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
         List<IAEFluidStack> fluidList = provider.getCacheList();
         if (fluidList.isEmpty()) {
             ss.add(StatCollector.translateToLocal("GT5U.infodata.hatch.output_me.empty"));
@@ -495,7 +494,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                         s.getFluidStack()
                             .getLocalizedName() + ": "
                             + EnumChatFormatting.GOLD
-                            + GTUtility.formatNumbers(s.getStackSize())
+                            + formatNumber(s.getStackSize())
                             + " L"
                             + EnumChatFormatting.RESET);
                 });
