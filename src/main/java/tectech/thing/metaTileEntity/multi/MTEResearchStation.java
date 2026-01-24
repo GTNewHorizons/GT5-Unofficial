@@ -717,7 +717,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             "GT5U.gui.text.research_progress",
                             (computationRequired - computationRemaining) / 20L,
                             computationRequired / 20L,
-                            GTUtility.formatNumbers(
+                            formatNumber(
                                 100d * ((double) (computationRequired - computationRemaining)
                                     / (double) computationRequired)));
                     })
