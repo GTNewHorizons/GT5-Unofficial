@@ -26,11 +26,11 @@ public class ILocSerManager {
         ILocSer instance = factory.get();
         String id = instance.getId();
         if (id == null || id.isEmpty()) {
-            throw new IllegalArgumentException("Chat component ID must be non-null and non-empty.");
+            throw new IllegalArgumentException("LocSer ID must be non-null and non-empty.");
         }
 
         if (REGISTRY.putIfAbsent(id, factory) != null) {
-            throw new IllegalArgumentException("Chat component with id '" + id + "' is already registered.");
+            throw new IllegalArgumentException("LocSer with id '" + id + "' is already registered.");
         }
     }
 
@@ -38,7 +38,7 @@ public class ILocSerManager {
         String id = NetworkUtils.readStringSafe(buffer);
         Supplier<? extends ILocSer> constructor = REGISTRY.get(id);
         if (constructor == null) {
-            GTMod.GT_FML_LOGGER.error("Unknown locser id: {}", id);
+            GTMod.GT_FML_LOGGER.error("Unknown LocSer id: {}", id);
             return new LocSerError();
         }
 
