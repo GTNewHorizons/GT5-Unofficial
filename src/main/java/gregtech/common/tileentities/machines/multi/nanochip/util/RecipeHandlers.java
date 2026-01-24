@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.common.powergoggles.PowerGogglesConstants.SECONDS;
 
 import java.util.Arrays;
 import java.util.List;
@@ -129,8 +130,8 @@ public class RecipeHandlers {
             GTValues.RA.stdBuilder()
                 .itemInputs(cc.realComponent.get())
                 .itemOutputs(cc.getFakeStack(1))
-                .duration(1 * TICKS)
-                .eut(0)
+                .duration(5 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
                 .addTo(RecipeMaps.nanochipConversionRecipes);
         }
     }
