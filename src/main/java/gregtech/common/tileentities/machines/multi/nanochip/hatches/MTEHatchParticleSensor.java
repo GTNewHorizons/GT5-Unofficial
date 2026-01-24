@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
@@ -67,9 +68,13 @@ public class MTEHatchParticleSensor extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Can be installed in the NAC Etching Array.",
-            "Outputs Redstone Signal based on requested particle.", "Positron = 12 Strength", "Alpha = 10 Strength",
-            "Electron = 2 Strength", };
+        return new String[] {
+            "Can be installed in the " + EnumChatFormatting.GREEN + "Ultra-high Energy Etching Array",
+            "Redstone signal strength varies based on requested particle",
+            EnumChatFormatting.RED + "12" + EnumChatFormatting.GRAY + " strength => " + EnumChatFormatting.WHITE + "Positron",
+            EnumChatFormatting.RED + "10" + EnumChatFormatting.GRAY + " strength => " + EnumChatFormatting.WHITE + "Alpha",
+            EnumChatFormatting.RED + "2" + EnumChatFormatting.GRAY + " strength => " + EnumChatFormatting.WHITE + "Electron"
+        };
     }
 
     public void updateRedstoneOutput(int requiredParticle) {

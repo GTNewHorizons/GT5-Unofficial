@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_CO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_COORDINATION_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_COORDINATION_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
@@ -146,8 +147,8 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Coordinates your living " + TOOLTIP_CC + "s")
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
-            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same color as the input " + TOOLTIP_VCI)
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""

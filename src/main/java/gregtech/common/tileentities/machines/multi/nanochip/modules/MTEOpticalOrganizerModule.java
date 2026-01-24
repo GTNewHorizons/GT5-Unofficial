@@ -6,9 +6,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGAN
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW;
+import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -165,8 +169,9 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
-            .addInfo("Optimizes your Optical " + TOOLTIP_CC + "s")
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
+            .addSeparator()
+            .addInfo("Optimizes your Optical " + TOOLTIP_CCs)
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
             .addSeparator()
             .addInfo(
                 "Requires 2 " + EnumChatFormatting.AQUA
@@ -193,7 +198,8 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
                     + "Waters"
                     + EnumChatFormatting.GRAY
                     + " in the same pair do NOT stack!")
-
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addSeparator()
             // scuffed but works i guess.
             .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, "0.8x Water Cost", TooltipHelper.SPEED_COLOR))
             .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, "0.6x Water Cost", TooltipHelper.SPEED_COLOR))
@@ -201,6 +207,11 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, "1.8x Speed", EnumChatFormatting.WHITE))
             .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, "0.8x EU", TooltipHelper.PARALLEL_COLOR))
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, "0.5x EU", TooltipHelper.PARALLEL_COLOR))
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "Mix and match your preferred flavor of water to optimize your optical circuit parts")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .addInputHatch("Any base casing", 2)

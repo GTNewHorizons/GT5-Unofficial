@@ -235,9 +235,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Convert items to " + TOOLTIP_CCs + " in the control room by placing them in a colored input bus")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
-                    + "5 seconds"
+                    + "5"
                     + EnumChatFormatting.GRAY
-                    + ", all items in "
+                    + " seconds, all items in "
                     + coloredString()
                     + " input buses are placed")
             .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + colorString())

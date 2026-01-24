@@ -7,9 +7,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -189,11 +192,10 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
-            .addInfo("Outputs are placed into the VCO with the color of the first input in NEI")
-            .addSeparator()
-            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
             .addInfo("Maximum allowed recipe tier is determined by")
             .addInfo("the tier of the " + EnumChatFormatting.WHITE + "Component Assembly Line Casing")
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""
