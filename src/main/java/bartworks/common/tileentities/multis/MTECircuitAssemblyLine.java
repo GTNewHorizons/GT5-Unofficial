@@ -289,8 +289,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         this.type = aNBT.getCompoundTag(IMPRINT_KEY);
-        this.imprintedItemName = this.type == null ? ""
-            : GTLanguageManager.getTranslateableItemStackName(ItemStack.loadItemStackFromNBT(this.type));
+        this.imprintedItemName = this.type == null ? "" : ItemStack.loadItemStackFromNBT(this.type).getUnlocalizedName();
         mode = Mode.fromIndex(aNBT.getInteger(RUNNING_MODE_KEY));
         if (aNBT.hasKey(LENGTH_KEY)) {
             length = aNBT.getInteger(LENGTH_KEY);
