@@ -24,7 +24,6 @@ import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public abstract class TileEntityBaseFluidCollector extends TileEntityBase implements IFluidHandler {
 
@@ -193,7 +192,7 @@ public abstract class TileEntityBaseFluidCollector extends TileEntityBase implem
                 int aFluidAmount = onPostTick(aEntity);
                 aFluidAmount = Math
                     .max(Math.min(this.tank.getCapacity() - this.tank.getFluidAmount(), aFluidAmount), 1);
-                this.tank.fill(FluidUtils.getFluidStack(fluidToProvide(), aFluidAmount), true);
+                this.tank.fill(new FluidStack(fluidToProvide(), aFluidAmount), true);
             } else {
                 ItemStack aDirtStack = GTUtility.copyAmount(1, itemToSpawnInWorldIfTankIsFull());
 

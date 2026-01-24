@@ -136,7 +136,6 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
@@ -148,6 +147,7 @@ import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
@@ -170,11 +170,11 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.multi.MTELatex;
+import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
 import gregtech.common.tileentities.machines.multi.MTEMultiLathe;
-import gregtech.common.tileentities.machines.multi.MTEMultiSolidifier;
 import gregtech.common.tileentities.machines.multi.MTENanoForge;
 import gregtech.common.tileentities.machines.multi.MTEOilCracker;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
@@ -190,6 +190,7 @@ import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
+import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -201,6 +202,7 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
@@ -517,9 +519,23 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Canner
             .set(new MTEMultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro").getStackForm(1));
 
-        ItemList.Machine_Multi_Solidifier.set(
-            new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
+        ItemList.Machine_Fluid_Shaper.set(
+            new MTEFluidShaper(MULTI_FLUID_SHAPER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
+        ItemList.Machine_Mass_Solidifier.set(
+            new MTEMassSolidifier(
+                MULTI_MASS_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.mass_solidifier",
+                "Mass Solidifier").getStackForm(1));
+        ItemList.Machine_Multi_ExoFoundry.set(
+            new MTEExoFoundry(MultiExoFoundryController.ID, "multimachine.exofoundry", "Exo-Foundry").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_ExoFoundry.get(1),
+            chain(
+                GTValues.AUTHORS_SUPPLIER,
+                GTValues.fancyAuthorChrom,
+                GTValues.AND_SUPPLIER,
+                GTValues.AuthorAuynonymous));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -568,18 +584,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
 
-        ItemList.Machine_Multi_ChamberCentrifuge.set(
-            new MTEChamberCentrifuge(
-                CHAMBER_CENTRIFUGE_CONTROLLER.ID,
-                "multimachine.chambercentrifuge",
-                "Spinmatron-2737").getStackForm(1));
+        ItemList.Machine_Multi_Spinmatron.set(
+            new MTESpinmatron(SPINMATRON_CONTROLLER.ID, "multimachine.spinmatron", "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
-            ItemList.Machine_Multi_ChamberCentrifuge.get(1),
-            chain(
-                () -> "Authors: ",
-                GTValues.fancyAuthorChrom,
-                () -> EnumChatFormatting.GRAY + " & ",
-                GTValues.AuthorNoc));
+            ItemList.Machine_Multi_Spinmatron.get(1),
+            chain(GTValues.AUTHORS_SUPPLIER, GTValues.fancyAuthorChrom, GTValues.AND_SUPPLIER, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")

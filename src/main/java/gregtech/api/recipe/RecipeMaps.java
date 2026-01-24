@@ -59,6 +59,7 @@ import gregtech.api.recipe.maps.EFRSmokingBackend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
+import gregtech.api.recipe.maps.FoundryModuleFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
@@ -1315,8 +1316,13 @@ public final class RecipeMaps {
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
+            b.copy()
+                .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
                 .duration(aDuration)
+                .build()
+                .ifPresent(ret::add);
+            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
+                .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);
             return ret;
@@ -1647,4 +1653,15 @@ public final class RecipeMaps {
         })
         .build();
 
+    public static final RecipeMap<RecipeMapBackend> foundryFakeModuleCostRecipes = RecipeMapBuilder
+        .of("gt.recipe.foundry_modules")
+        .maxIO(12, 1, 0, 0)
+        .addSpecialTexture(87, 38, 30, 13, GTUITextures.PICTURE_ARROW_GRAY)
+        .dontUseProgressBar()
+        .neiTransferRect(87, 38, 30, 13)
+        .frontend(FoundryModuleFrontend::new)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
+                .setHeight(100))
+        .build();
 }

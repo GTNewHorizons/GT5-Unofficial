@@ -343,6 +343,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
+        lastParallel = finalParallel;
 
         // for scanner
         setCurrentParallelism(finalParallel);
@@ -429,8 +430,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mProgresstime >= mMaxProgresstime - 1 && mMaxProgresstime > 0) {
+            // Multiblock base already includes 1 parallel
+            this.recipesDone += lastParallel - 1;
+        }
+        super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
     private boolean checkTypes(int aID, IntOpenHashSet... aTables) {

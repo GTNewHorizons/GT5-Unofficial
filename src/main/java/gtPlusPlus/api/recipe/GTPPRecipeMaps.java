@@ -1,5 +1,6 @@
 package gtPlusPlus.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
@@ -12,10 +13,12 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -26,11 +29,9 @@ import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
@@ -51,9 +52,8 @@ public class GTPPRecipeMaps {
         .maxIO(0, 0, 1, 0)
         .neiSpecialInfoFormatter(
             recipeInfo -> Collections.singletonList(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.nei.fuel",
-                    GTUtility.formatNumbers(recipeInfo.recipe.mSpecialValue * 3000L))))
+                StatCollector
+                    .translateToLocalFormatted("GT5U.nei.fuel", formatNumber(recipeInfo.recipe.mSpecialValue * 3000L))))
         .build();
     public static final RecipeMap<RecipeMapBackend> quantumForceTransformerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.quantumforcesmelter")
@@ -104,11 +104,9 @@ public class GTPPRecipeMaps {
             final long eut = recipeInfo.recipe.getMetadataOrDefault(LFTR_OUTPUT_POWER, 0);
             final int duration = recipeInfo.recipe.mDuration;
             return Arrays.asList(
-                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", GTUtility.formatNumbers(eut)),
-                StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.dynamo", MathUtils.formatNumbers(duration * eut)),
-                StatCollector
-                    .translateToLocalFormatted("gtpp.nei.lftr.total", MathUtils.formatNumbers(duration * eut * 4)));
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.power", formatNumber(eut)),
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.dynamo", formatNumber(duration * eut)),
+                StatCollector.translateToLocalFormatted("gtpp.nei.lftr.total", formatNumber(duration * eut * 4)));
         })
         .build();
     public static final RecipeMap<RecipeMapBackend> nuclearSaltProcessingPlantRecipes = RecipeMapBuilder
@@ -293,8 +291,10 @@ public class GTPPRecipeMaps {
         .frontend(TGSFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
-        .of("gt.recipe.multiblockrockbreaker")
-        .maxIO(2, 1, 0, 0)
-        .disableRegisterNEI()
+        .of("gtpp.recipe.multiblockrockbreaker")
+        .maxIO(3, 1, 2, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
+        .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
+        .frontend(MultiblockRockBreakerFrontend::new)
         .build();
 }
