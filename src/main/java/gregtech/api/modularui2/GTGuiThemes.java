@@ -338,8 +338,8 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_NANOCHIP_PRESSED,
             Dyes.MACHINE_METAL.toInt())
         .color(Dyes.dyeWhite.toInt())
-        .textColor(new Color(0xF3CFC6).getRGB())
-        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xF3CFC6).getRGB())
+        .textColor(new Color(0xFFDBE0).getRGB())
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xFFDBE0).getRGB())
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 }

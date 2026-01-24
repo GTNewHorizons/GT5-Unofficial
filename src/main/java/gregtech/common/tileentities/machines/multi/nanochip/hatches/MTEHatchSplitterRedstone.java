@@ -80,10 +80,8 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Can be installed in a Splitter module for Nanochip Assembly Complex",
-            "Allows for Redstone Input for rules control"
-        };
+        return new String[] { "Can be installed in a Splitter module for Nanochip Assembly Complex",
+            "Allows for Redstone Input for rules control" };
     }
 
     @Override
