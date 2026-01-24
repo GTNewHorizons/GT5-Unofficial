@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,15 +47,12 @@ import appeng.items.storage.ItemBasicStorageCell;
 import appeng.util.item.AEItemStack;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import it.unimi.dsi.fastutil.Pair;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumConveyor> {
 

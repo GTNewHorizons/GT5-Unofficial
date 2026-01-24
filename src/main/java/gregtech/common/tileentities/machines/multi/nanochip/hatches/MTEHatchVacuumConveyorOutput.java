@@ -12,7 +12,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
-import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import it.unimi.dsi.fastutil.Pair;
 

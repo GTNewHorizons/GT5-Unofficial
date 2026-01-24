@@ -30,7 +30,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchVacuumConveyorGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryElement;
@@ -135,7 +134,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             }
         }
     }
-
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
@@ -244,10 +242,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
             for (Map.Entry<CircuitComponent, Long> component : components.entrySet()) {
                 info.add(
                     EnumChatFormatting.YELLOW + component.getKey()
-                        .getLocalizedName()
-                        + ": "
-                        + EnumChatFormatting.WHITE
-                        + formatNumber(component.getValue()));
+                        .getLocalizedName() + ": " + EnumChatFormatting.WHITE + formatNumber(component.getValue()));
             }
         }
         return info.toArray(new String[] {});
