@@ -1,6 +1,6 @@
 package gregtech.api.util.shutdown;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.Objects;
 
@@ -30,7 +30,7 @@ public class ReasonOutOfStuff implements ShutDownReason {
     @Override
     public String getDisplayString() {
         return Objects.requireNonNull(
-            StatCollector.translateToLocalFormatted("GT5U.gui.text.out_of_stuff", required, formatNumbers(amount)));
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.out_of_stuff", required, formatNumber(amount)));
     }
 
     @Override
