@@ -59,8 +59,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     protected static final int BOARD_OFFSET_Y = 4;
     protected static final int BOARD_OFFSET_Z = 0;
     protected static final String[][] BOARD_STRING = new String[][] { { "       ", " A   A ", " A   A ", " B   B " },
-        { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "  A A  ", "CBCCCBC", "DEDDDED", "DEDDDED" },
-        { "   A   ", "CBCCCBC", "DEDADED", "DEDADED" }, { "  A A  ", "CBCCCBC", "DEDDDED", "DEDDDED" },
+        { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "  A A  ", "CBCCCBC", "D DDD D", "D DDD D" },
+        { "   A   ", "CBCCCBC", "D DAD D", "D DAD D" }, { "  A A  ", "CBCCCBC", "D DDD D", "D DDD D" },
         { " A   A ", "CCC CCC", "DDD DDD", "DDD DDD" }, { "       ", " A   A ", " A   A ", " B   B " } };
     public static final IStructureDefinition<MTEBoardProcessorModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEBoardProcessorModule>builder()
@@ -81,8 +81,6 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         .addElement('C', Casings.NanochipSecondaryCasing.asElement())
         // Nanochip Glass
         .addElement('D', Casings.NanochipGlass.asElement())
-        // Source block of flowing ender
-        .addElement('E', lazy(unused -> ofBlock(blockFluidEnder, 0)))
         .build();
 
     @Override
