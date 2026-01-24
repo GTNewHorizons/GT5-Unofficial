@@ -36,6 +36,7 @@ public class CircuitComponentPacket {
 
     // Accept more circuit components from a new packet
     public void unifyWith(CircuitComponentPacket other) {
+        if(other == null) return;
         for (Map.Entry<CircuitComponent, Long> entry : other.components.entrySet()) {
             components.merge(entry.getKey(), entry.getValue(), Long::sum);
         }
