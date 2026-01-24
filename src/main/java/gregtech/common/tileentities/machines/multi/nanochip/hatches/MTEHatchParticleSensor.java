@@ -68,13 +68,23 @@ public class MTEHatchParticleSensor extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] {
-            "Can be installed in the " + EnumChatFormatting.GREEN + "Ultra-high Energy Etching Array",
+        return new String[] { "Can be installed in the " + EnumChatFormatting.GREEN + "Ultra-high Energy Etching Array",
             "Redstone signal strength varies based on requested particle",
-            EnumChatFormatting.RED + "12" + EnumChatFormatting.GRAY + " strength => " + EnumChatFormatting.WHITE + "Positron",
-            EnumChatFormatting.RED + "10" + EnumChatFormatting.GRAY + " strength => " + EnumChatFormatting.WHITE + "Alpha",
-            EnumChatFormatting.RED + "2" + EnumChatFormatting.GRAY + " strength => " + EnumChatFormatting.WHITE + "Electron"
-        };
+            EnumChatFormatting.RED + "12"
+                + EnumChatFormatting.GRAY
+                + " strength => "
+                + EnumChatFormatting.WHITE
+                + "Positron",
+            EnumChatFormatting.RED + "10"
+                + EnumChatFormatting.GRAY
+                + " strength => "
+                + EnumChatFormatting.WHITE
+                + "Alpha",
+            EnumChatFormatting.RED + "2"
+                + EnumChatFormatting.GRAY
+                + " strength => "
+                + EnumChatFormatting.WHITE
+                + "Electron" };
     }
 
     public void updateRedstoneOutput(int requiredParticle) {

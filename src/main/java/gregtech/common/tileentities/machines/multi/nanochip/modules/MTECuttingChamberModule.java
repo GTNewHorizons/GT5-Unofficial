@@ -9,7 +9,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMB
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
@@ -156,10 +155,17 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Cuts your Wafer " + TOOLTIP_CCs)
-            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
+            .addInfo(
+                "Outputs are placed in the " + TOOLTIP_VCO
+                    + " with the same "
+                    + colorString()
+                    + " as the input "
+                    + TOOLTIP_VCI)
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
-            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.ITALIC
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
                     + "After all those cutting machines, it's still not small enough?!")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Input Hatch")
