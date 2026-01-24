@@ -457,7 +457,7 @@ public final class GTMusicSystem {
                             .forEach(resources::add);
                     } else {
                         final ResourceLocation res = record.getRecordResource("records." + record.recordName);
-                        resources.add(new ResourceLocation(res.getResourceDomain(), res.getResourcePath()));
+                        resources.add(res);
                     }
                     for (final ResourceLocation res : resources) {
                         try {

@@ -342,7 +342,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                         playPath = resource;
                     } else {
                         resource = record.getRecordResource("records." + record.recordName);
-                        playPath = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+                        playPath = resource;
                     }
                     currentlyPlaying = record;
                     musicSource.setRecord(playPath);
