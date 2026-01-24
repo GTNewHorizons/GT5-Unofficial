@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuis;
@@ -67,7 +68,7 @@ public class MTEDigitalTankBaseGui {
             .child(new TextWidget<>(new DynamicKey(() -> {
                 if (fluidTankSyncHandler.getValue() != null && fluidTankSyncHandler.getValue()
                     .getFluid() != null) {
-                    return IKey.str(GTUtility.formatNumbers(fluidTankSyncHandler.getValue().amount));
+                    return IKey.str(NumberFormatUtil.formatNumber(fluidTankSyncHandler.getValue().amount));
                 }
                 return IKey.str("0");
             })).color(machine.getColorTextWhite())
