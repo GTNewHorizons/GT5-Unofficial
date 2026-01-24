@@ -211,6 +211,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             for (List<ItemStack> l : aeJobs.subList(0, Math.min(parallel, aeJobs.size()))) {
                 outputs.addAll(l);
             }
+            // Multiblock base already includes 1 parallel
+            recipesDone += aeJobs.size() - 1;
             if (!outputs.isEmpty()) {
                 aeJobs.subList(0, Math.min(parallel, aeJobs.size()))
                     .clear();
