@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -173,25 +171,6 @@ public class ItemFluidDisplay extends GTGenericItem {
                 }
             }
         }
-    }
-
-    @Nullable
-    public static FluidStack getFluidStackFromItem(@Nullable ItemStack stack) {
-        if (stack == null) return null;
-
-        Fluid fluid = FluidRegistry.getFluid(stack.getItemDamage());
-        if (fluid == null) return null;
-
-        int amount = 1;
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt != null) {
-            long displayAmount = nbt.getLong("mFluidDisplayAmount");
-            if (displayAmount > 0) {
-                amount = (int) Math.min(Integer.MAX_VALUE, displayAmount);
-            }
-        }
-
-        return new FluidStack(fluid, amount);
     }
 
     public static boolean isCell(ItemStack tItemStack) {

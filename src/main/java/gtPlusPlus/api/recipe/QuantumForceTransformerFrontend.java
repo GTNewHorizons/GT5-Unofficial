@@ -1,6 +1,13 @@
 package gtPlusPlus.api.recipe;
 
+import static gregtech.api.util.GTUtility.trans;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+
+import java.util.List;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.item.ItemStack;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -9,6 +16,7 @@ import gregtech.api.recipe.maps.LargeNEIFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEQuantumForceTransformer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -25,6 +33,14 @@ public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
 
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        for (PositionedStack stack : neiCachedRecipe.mInputs) {
+            if (stack instanceof GTNEIDefaultHandler.FixedPositionedStack fixedPositionedStack) {
+                if (fixedPositionedStack.isFluid()) continue;
+                if (!MTEChemicalPlant.isCatalyst(stack.item)) continue;
+                super.drawNEIOverlayText("NC(P)", stack);
+            }
+        }
+
         // Replicates the default behaviour, but since we cannot actually modify the mChance variable we need to
         // essentially re-implement it.
         int chance = MTEQuantumForceTransformer.getBaseOutputChance(neiCachedRecipe.mRecipe);
@@ -35,5 +51,20 @@ public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
             }
         }
         super.drawNEIOverlays(neiCachedRecipe);
+    }
+
+    @Override
+    public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        for (PositionedStack catalyst : neiCachedRecipe.mInputs) {
+            if (catalyst instanceof GTNEIDefaultHandler.FixedPositionedStack fixedPositionedStack) {
+                if (fixedPositionedStack.isFluid()) continue;
+                if (stack != catalyst.item) continue;
+                if (!MTEChemicalPlant.isCatalyst(catalyst.item)) continue;
+                currentTip.add(GRAY + trans("151.3", "Considered in parallel calculation, but not get consumed"));
+                return currentTip;
+            }
+        }
+        return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
     }
 }

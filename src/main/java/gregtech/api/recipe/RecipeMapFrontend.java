@@ -302,6 +302,8 @@ public class RecipeMapFrontend {
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) {
             currentTip.add(GRAY + trans("151", "Does not get consumed in the process"));
+        } else if (pStack.isNotConsumedParallel()) {
+            currentTip.add(GRAY + trans("151.3", "Considered in parallel calculation, but not get consumed"));
         } else if (pStack.isChanceBased()) {
             String key = pStack.isInput() ? "150.1" : "150";
             String def = pStack.isInput() ? "Consume Chance: " : "Output Chance: ";
@@ -336,6 +338,8 @@ public class RecipeMapFrontend {
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
         if (stack.isNotConsumed()) {
             drawNEIOverlayText("NC", stack);
+        } else if (stack.isNotConsumedParallel()) {
+            drawNEIOverlayText("NC(P)", stack);
         } else if (stack.isChanceBased()) {
             drawNEIOverlayText(stack.getChanceText(), stack);
         }

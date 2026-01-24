@@ -69,7 +69,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.items.ItemFluidDisplay;
 
 public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
@@ -550,10 +549,20 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             return chanceFormat.format((float) mChance / 10000);
         }
 
+        public boolean isNotConsumedParallel() {
+            if (!mIsInput) return false;
+            if (isFluid()) {
+                FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(item);
+                if (fluidStack == null) return false;
+                return mChance == 0;
+            }
+            return mChance == 0;
+        }
+
         public boolean isNotConsumed() {
             if (!mIsInput) return false;
             if (isFluid()) {
-                FluidStack fluidStack = ItemFluidDisplay.getFluidStackFromItem(item);
+                FluidStack fluidStack = GTUtility.getFluidFromDisplayStack(item);
                 if (fluidStack == null) return false;
                 return fluidStack.amount == 0;
             }

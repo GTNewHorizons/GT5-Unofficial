@@ -284,6 +284,9 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
+        addStringLocalization(
+            "Interaction_DESCRIPTION_Index_151.3",
+            "Considered in parallel calculation, but not get consumed");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.4", "Successfully locked Fluid to %s");
         addStringLocalization("Interaction_DESCRIPTION_Index_152", "Total: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_153", "Usage: ");
