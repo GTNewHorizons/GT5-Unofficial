@@ -81,8 +81,8 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
                 .buildAndChain(Casings.NanochipPrimaryCasing.asElement()))
         // Nanochip Secondary Casing
         .addElement('B', Casings.NanochipSecondaryCasing.asElement())
-        // Epoxy Resin Casing
-        .addElement('C', ofFrame(Materials.EpoxidFiberReinforced))
+        // Kevlar FrameBox
+        .addElement('C', ofFrame(Materials.Kevlar))
         .build();
 
     @Override
