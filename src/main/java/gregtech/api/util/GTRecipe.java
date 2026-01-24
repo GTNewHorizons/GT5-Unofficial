@@ -68,17 +68,21 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     public FluidStack[] mFluidInputs, mFluidOutputs;
     /**
-     * These arrays describe the % chance of presence/obtention for each respective input or output.
+     * These arrays define the chance behavior for each respective input or output.
      * Values range from 1 to 10000 (10000 = 100%).
-     * * Logic & Constraints:
+     * Logic & Constraints:
      * 1. If an array is null, all corresponding items/fluids default to 100% chance.
      * 2. If defined, the length of each 'Chances' array must be >= the length of its
-     * corresponding content array (mInput, mOutput, mFluidInput, or mFluidOutput).
-     * 3. Mapping:
-     * - mInputChances -> Maps to mInputs (Chance to be consumed or required)
-     * - mOutputChances -> Maps to mOutputs (Chance to be produced)
-     * - mFluidInputChances -> Maps to mFluidInputs (Chance to be consumed)
-     * - mFluidOutputChances -> Maps to mFluidOutputs (Chance to be produced)
+     * corresponding content array (mInputs, mOutputs, mFluidInputs, or mFluidOutputs).
+     * Mapping:
+     * - mInputChances -> Maps to mInputs
+     * (Input must always be present to start the recipe; chance controls whether it is consumed.)
+     * - mOutputChances -> Maps to mOutputs
+     * (Chance for each output to be produced.)
+     * - mFluidInputChances -> Maps to mFluidInputs
+     * (Chance for each fluid input to be consumed.)
+     * - mFluidOutputChances -> Maps to mFluidOutputs
+     * (Chance for each fluid output to be produced.)
      */
     @Nullable
     public int[] mInputChances, mOutputChances, mFluidInputChances, mFluidOutputChances;
