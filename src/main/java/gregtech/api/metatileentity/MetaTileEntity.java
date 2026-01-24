@@ -772,7 +772,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return "";

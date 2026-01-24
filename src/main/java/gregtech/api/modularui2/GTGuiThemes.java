@@ -1,5 +1,7 @@
 package gregtech.api.modularui2;
 
+import java.awt.Color;
+
 import gregtech.api.enums.Dyes;
 import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPTextureIds;
 
@@ -268,6 +270,23 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
         .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL.getFullName(), GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
+    public static final GTGuiTheme EXOFOUNDRY = GTGuiTheme.builder("exofoundry")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_FOUNDRY)
+        .itemSlot(GTTextureIds.SLOT_ITEM_FOUNDRY)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .button(GTTextureIds.BUTTON_FOUNDRY)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_FOUNDRY,
+            GTTextureIds.BUTTON_FOUNDRY_PRESSED,
+            Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.dyeWhite.toInt())
+        .textColor(new Color(0xBDA44A).getRGB())
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xBDA44A).getRGB())
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
+        .build();
+
     public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:primitive")
         .parent(STANDARD)
         .panel(GTTextureIds.BACKGROUND_COKE_OVEN)

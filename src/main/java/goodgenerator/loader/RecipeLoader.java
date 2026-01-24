@@ -1072,7 +1072,7 @@ public class RecipeLoader {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedGoldChip", 16),
+                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         GGMaterial.signalium.get(OrePrefixes.bolt, 32),
@@ -1087,7 +1087,7 @@ public class RecipeLoader {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
                         ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
-                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedGoldChip", 16),
+                        GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedGoldChip", 16),
                         ItemList.Circuit_Chip_SoC2.get(8),
                         ItemList.Circuit_Chip_NOR.get(32),
                         GGMaterial.signalium.get(OrePrefixes.bolt, 32),
@@ -1525,10 +1525,10 @@ public class RecipeLoader {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(1_000))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Thorium, 1))
-            .fluidOutputs(GGMaterial.thorium232Tetrafluoride.getFluidOrGas(750))
-            .duration(5 * SECONDS)
+            .fluidInputs(MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(4_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1))
+            .fluidOutputs(GGMaterial.thorium232Tetrafluoride.getFluidOrGas(3_000))
+            .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(centrifugeRecipes);
 
