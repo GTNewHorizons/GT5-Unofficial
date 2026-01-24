@@ -9,12 +9,19 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VACUUM_PIPE_PORT;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -139,6 +146,26 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
                 }
             }
         }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+                                int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setByte("color", (byte) (getColorization() + (byte) 1));
+
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        byte color = (byte) (accessor.getNBTData()
+            .getByte("color") - 1);
+        if (color >= 0 && color < 16) currenttip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hatch.color_channel",
+                Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName() + EnumChatFormatting.GRAY));
     }
 
     @Override
