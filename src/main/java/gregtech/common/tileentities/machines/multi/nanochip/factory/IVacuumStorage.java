@@ -7,6 +7,6 @@ public interface IVacuumStorage {
 
     public CircuitComponentPacket extractPacket();
 
-    public MTENanochipAssemblyComplex maincontroller();
+    public MTENanochipAssemblyComplex getMainController();
 
 }

@@ -11,8 +11,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
-import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryGrid;
-import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 
@@ -50,12 +48,6 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
-    @Override
-    public void onFirstTick(IGregTechTileEntity base) {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
-        super.onFirstTick(base);
-    }
-
     // Try to consume a stack of fake input items from this hatch. Returns the amount of items consumed.
     public int tryConsume(ItemStack stack) {
         if (contents == null) return 0;
@@ -79,16 +71,6 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
     }
 
     @Override
-    public VacuumFactoryNetwork getNetwork() {
-        return network;
-    }
-
-    @Override
-    public void setNetwork(VacuumFactoryNetwork network) {
-        this.network = network;
-    }
-
-    @Override
     public boolean canConnectOnSide(ForgeDirection side) {
         return side == getBaseMetaTileEntity().getFrontFacing();
     }
@@ -104,7 +86,7 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
                 if (outputs.length != 1) {
                     return;
                 }
-                if (this.mainController != (outputs[0].maincontroller())) {
+                if (this.mainController != (outputs[0].getMainController())) {
                     return;
                 }
 

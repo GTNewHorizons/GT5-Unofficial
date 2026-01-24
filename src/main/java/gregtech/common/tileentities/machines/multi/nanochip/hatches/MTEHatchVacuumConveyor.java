@@ -71,9 +71,37 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     }
 
     @Override
+    public void onFacingChange() {
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onFacingChange();
+    }
+
+    @Override
     public byte getColorization() {
         return this.getBaseMetaTileEntity()
             .getColorization();
+    }
+
+    @Override
+    public void onRemoval() {
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+        super.onRemoval();
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity base) {
+        VacuumFactoryGrid.INSTANCE.addElement(this);
+        super.onFirstTick(base);
+    }
+
+    @Override
+    public VacuumFactoryNetwork getNetwork() {
+        return network;
+    }
+
+    @Override
+    public void setNetwork(VacuumFactoryNetwork network) {
+        this.network = network;
     }
 
     public void setMainController(MTENanochipAssemblyComplex main) {
@@ -107,17 +135,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
         }
     }
 
-    @Override
-    public void onRemoval() {
-        VacuumFactoryGrid.INSTANCE.removeElement(this);
-        super.onRemoval();
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity base) {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
-        super.onFirstTick(base);
-    }
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
@@ -174,12 +191,6 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
         if (this.contents != null) {
             aNBT.setTag("vacuumContents", this.contents.writeToNBT());
         }
-    }
-
-    @Override
-    public void onFacingChange() {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
-        super.onFacingChange();
     }
 
     @Override
