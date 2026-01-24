@@ -3552,11 +3552,7 @@ public class GTUtility {
         }
 
         public static String getProspectionBookTitle(int aDim, int aX, int aY, int aZ) {
-            return getProspectionBookTitle(
-                formatNumber(aDim),
-                formatNumber(aX),
-                formatNumber(aY),
-                formatNumber(aZ));
+            return getProspectionBookTitle(formatNumber(aDim), formatNumber(aX), formatNumber(aY), formatNumber(aZ));
         }
 
         public static String getProspectionBookTitle(String aDim, String aX, String aY, String aZ) {
