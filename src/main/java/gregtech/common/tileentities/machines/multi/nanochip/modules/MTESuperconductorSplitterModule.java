@@ -72,8 +72,8 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         .addElement('C', Casings.NanochipPrimaryCasing.asElement())
         // Nanochip Secondary Casing
         .addElement('D', Casings.NanochipSecondaryCasing.asElement())
-        // Naquadah Frame box
-        .addElement('E', ofFrame(Materials.Naquadah))
+        // Naquadria Frame box
+        .addElement('E', ofFrame(Materials.Naquadria))
         // Nanochip Glass
         .addElement('F', Casings.NanochipGlass.asElement())
         .build();
