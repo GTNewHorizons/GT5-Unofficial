@@ -250,7 +250,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                 playPath = resource;
             } else {
                 resource = record.getRecordResource(record.recordName);
-                playPath = new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath());
+                playPath = resource;
             }
             currentlyPlaying = record;
             // Assume a safe disc duration of 500 seconds if not known in the registry
