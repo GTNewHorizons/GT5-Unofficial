@@ -147,7 +147,12 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addInfo(NAC_MODULE)
             .addSeparator()
             .addInfo("Coordinates your living " + TOOLTIP_CC + "s")
-            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
+            .addInfo(
+                "Outputs are placed in the " + TOOLTIP_VCO
+                    + " with the same "
+                    + colorString()
+                    + " as the input "
+                    + TOOLTIP_VCI)
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
             .addInfo(
