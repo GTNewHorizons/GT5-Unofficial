@@ -425,13 +425,6 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
         .build();
-    public static final RecipeMap<FluidCannerBackend> fluidCannerRecipes = RecipeMapBuilder
-        .of("gt.recipe.fluidcanner", FluidCannerBackend::new)
-        .maxIO(1, 1, 1, 1)
-        .minInputs(1, 0)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_CANISTER : null)
-        .progressBar(GTUITextures.PROGRESSBAR_CANNER)
-        .build();
     public static final RecipeMap<RecipeMapBackend> brewingRecipes = RecipeMapBuilder.of("gt.recipe.brewer")
         .maxIO(1, 0, 1, 1)
         .minInputs(1, 1)
@@ -972,7 +965,7 @@ public final class RecipeMaps {
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
         .build();
     public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
-        .maxIO(2, 2, 0, 0)
+        .maxIO(2, 2, 1, 1)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
@@ -985,6 +978,16 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CANNER)
         .build();
+    /*
+    public static final RecipeMap<FluidCannerBackend> cannerRecipes = RecipeMapBuilder
+        .of("gt.recipe.fluidcanner", FluidCannerBackend::new)
+        .maxIO(1, 1, 1, 1)
+        .minInputs(1, 0)
+        .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_CANISTER : null)
+        .progressBar(GTUITextures.PROGRESSBAR_CANNER)
+        .build();
+
+     */
     public static final RecipeMap<RecipeMapBackend> latheRecipes = RecipeMapBuilder.of("gt.recipe.lathe")
         .maxIO(1, 2, 0, 0)
         .minInputs(1, 0)
