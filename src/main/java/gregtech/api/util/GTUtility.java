@@ -3497,7 +3497,7 @@ public class GTUtility {
 
                 String tPageText = getProspectionFrontPage(
                     tPos,
-                    tOils == null ? "0" : formatNumbers(tOils.length),
+                    tOils == null ? "0" : formatNumber(tOils.length),
                     tRadius);
                 tNBTList.appendTag(new NBTTagString(tPageText));
 
@@ -3553,10 +3553,10 @@ public class GTUtility {
 
         public static String getProspectionBookTitle(int aDim, int aX, int aY, int aZ) {
             return getProspectionBookTitle(
-                formatNumbers(aDim),
-                formatNumbers(aX),
-                formatNumbers(aY),
-                formatNumbers(aZ));
+                formatNumber(aDim),
+                formatNumber(aX),
+                formatNumber(aY),
+                formatNumber(aZ));
         }
 
         public static String getProspectionBookTitle(String aDim, String aX, String aY, String aZ) {
