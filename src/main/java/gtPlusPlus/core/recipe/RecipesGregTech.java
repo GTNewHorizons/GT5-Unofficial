@@ -1189,7 +1189,7 @@ public class RecipesGregTech {
 
             if (NewHorizonsCoreMod.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 2L, 0))
+                    .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 2L, 0))
                     .circuit(18)
                     .itemOutputs(getModItem(Backpack.ID, "tannedLeather", 1))
                     .fluidInputs(new FluidStack(GTPPFluids.Ethylbenzene, 1_000))
