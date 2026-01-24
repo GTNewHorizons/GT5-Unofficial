@@ -167,6 +167,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
         mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, mEfficiencyDecrease = 1000;
+    public long recipesDone = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
     public ItemStack[] mOutputItems = null;
