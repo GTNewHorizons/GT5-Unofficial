@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
@@ -18,6 +19,7 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,10 +29,16 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.SyncHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -40,6 +48,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -59,6 +74,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -71,6 +87,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -106,10 +123,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
         translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
-                                                                              // Computer casing
+        // Computer casing
         translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
         translateToLocal("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or Advanced
-                                                                              // Computer Casing
+        // Computer Casing
     };
     // endregion
 
@@ -278,7 +295,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+                                 int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3],
                 new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
@@ -466,7 +483,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+                                        ItemStack aTool) {
         setMachineMode(nextMachineMode());
         GTUtility
             .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
@@ -740,22 +757,22 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         }
 
         return new String[] { translateToLocal("tt.keyphrase.Energy_Hatches") + ":",
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy)
+            EnumChatFormatting.GREEN + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             (mEUt <= 0 ? translateToLocal("tt.keyphrase.Probably_uses") + ": "
                 : translateToLocal("tt.keyphrase.Probably_makes") + ": ") + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(Math.abs(mEUt))
+                + formatNumber(Math.abs(mEUt))
                 + EnumChatFormatting.RESET
                 + " EU/t "
                 + translateToLocal("tt.keyword.at")
                 + " "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(eAmpereFlow)
+                + formatNumber(eAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             translateToLocal("tt.keyphrase.Tier_Rating") + ": "
@@ -770,7 +787,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + translateToLocal("tt.keyphrase.Amp_Rating")
                 + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eMaxAmpereFlow)
+                + formatNumber(eMaxAmpereFlow)
                 + EnumChatFormatting.RESET
                 + " A",
             translateToLocal("tt.keyword.Problems") + ": "
@@ -795,23 +812,23 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + eSafeVoid,
             translateToLocal("tt.keyphrase.Computation_Available") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(this.eAvailableData)
+                + formatNumber(this.eAvailableData)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.eRequiredData)
+                + formatNumber(this.eRequiredData)
                 + EnumChatFormatting.RESET,
             translateToLocal("tt.keyphrase.Computation_Remaining") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(this.computationRemaining / 20L)
+                + formatNumber(this.computationRemaining / 20L)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getComputationRequired()),
+                + formatNumber(getComputationRequired()),
             translateToLocalFormatted("tt.infodata.multi.connection_health", connectionStatus),
             translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET };
     }
     // endregion scanner output
@@ -842,19 +859,19 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             "GT5U.gui.text.research_progress",
                             getComputationConsumed(),
                             getComputationRequired(),
-                            GTUtility.formatNumbers(getComputationProgress())))
+                            formatNumber(getComputationProgress())))
                     .setTextAlignment(Alignment.CenterLeft)
                     .setEnabled(widget -> this.computationRequired > 0 && this.researchOutputForGUI != null))
             .widget(new TextWidget().setStringSupplier(() -> {
-                if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
-                    return EnumChatFormatting.YELLOW
-                        + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
+                    if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
+                        return EnumChatFormatting.YELLOW
+                            + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
+                            + EnumChatFormatting.RESET;
+                    }
+                    return EnumChatFormatting.RED
+                        + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
                         + EnumChatFormatting.RESET;
-                }
-                return EnumChatFormatting.RED
-                    + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
-                    + EnumChatFormatting.RESET;
-            })
+                })
                 .setTextAlignment(Alignment.CenterLeft)
                 .setEnabled(
                     widget -> this.computationRequired > 0 && this.researchOutputForGUI != null
@@ -892,10 +909,89 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     // endregion gui
 
+    // region MUI2
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<MTEResearchStation>(this) {
+
+            @Override
+            protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
+                                                                      ModularPanel parent) {
+
+                GenericSyncValue<ItemStack> outputSyncer = new GenericSyncValue<>(
+                    () -> researchOutputForGUI,
+                    val -> researchOutputForGUI = val,
+                    com.gtnewhorizons.modularui.common.internal.network.NetworkUtils::readItemStack,
+                    com.gtnewhorizons.modularui.common.internal.network.NetworkUtils::writeItemStack,
+                    (a, b) -> GTUtility.areStacksEqual(a,b,true) && a.stackSize == b.stackSize,
+                    null);
+
+                LongSyncValue computationReqSyncer = new LongSyncValue(() -> computationRequired, val -> computationRequired = val);
+                LongSyncValue computationRemSyncer = new LongSyncValue(() -> computationRemaining, val -> computationRemaining = val);
+                IntSyncValue ticksUntilPacketLossFailSyncger = new IntSyncValue(() -> ticksUntilPacketLossFail, val -> ticksUntilPacketLossFail = val);
+
+
+                syncManager.syncValue("outputName", outputSyncer);
+                syncManager.syncValue("computationRequired", computationReqSyncer);
+                syncManager.syncValue("computationRemaining", computationRemSyncer);
+                syncManager.syncValue("ticksUntilPacketLossFail", ticksUntilPacketLossFailSyncger);
+
+                ListWidget<IWidget, ?> terminal = super.createTerminalTextWidget(syncManager, parent);
+                terminal.child(
+                        IKey.dynamic(
+                                () -> {
+                                    if (researchOutputForGUI == null) return "";
+                                    return StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", researchOutputForGUI.getDisplayName());
+                                }
+                            )
+                            .asWidget()
+                            .setEnabledIf(
+                                ignored -> outputSyncer.getValue() != null))
+                    .child(IKey.dynamic(
+                        () -> StatCollector.translateToLocalFormatted(
+                                "GT5U.gui.text.research_progress",
+                                getComputationConsumed(),
+                                getComputationRequired(),
+                                formatNumber(getComputationProgress()))
+                        )
+                        .asWidget()
+                        .setEnabledIf(ignored -> computationRequired > 0 && researchOutputForGUI != null)
+                    )
+                    .child(IKey.dynamic(() -> {
+                            if (ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
+                                return EnumChatFormatting.YELLOW
+                                    + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
+                                    + EnumChatFormatting.RESET;
+                            }
+                            return EnumChatFormatting.RED
+                                + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
+                                + EnumChatFormatting.RESET;
+
+                        })
+                        .asWidget()
+                        .setEnabledIf(
+                            ignored -> computationRequired > 0 && researchOutputForGUI != null
+                                && ticksUntilPacketLossFail < PACKET_LOSS_FULL_WINDOW));
+                return terminal;
+            }
+        }.withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RESEARCH,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SCANNER);
+    }
+
+    @Override
+    protected boolean useMui2() {
+
+        return true;
+    }
+
+    // endregion MUI2
+
     // region waila
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
+                                int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", this.mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
@@ -906,21 +1002,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
+                             IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-
-        if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.incomplete") + RESET);
-        }
-        String efficiency = RESET + StatCollector
-            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
-        if (tag.getBoolean("hasProblems")) {
-            currentTip
-                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
-        } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip
-                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
-        }
         currentTip.add(getMachineModeName(tag.getInteger("machineMode")));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
