@@ -282,7 +282,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
             .addStructureInfo("Any control room base casing - Output bus")
             .addStructureInfo("Any control room base casing - Energy Hatch")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override
