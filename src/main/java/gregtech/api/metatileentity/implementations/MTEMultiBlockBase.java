@@ -120,10 +120,12 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.ItemEjectionHelper;
-import gregtech.api.util.LocSer;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.api.util.locser.ILocSerManager;
+import gregtech.api.util.locser.LocSerFluidName;
+import gregtech.api.util.locser.LocSerItemName;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
@@ -2347,13 +2349,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
-                        "  " + LocSer.decodeFromBytes(tag.getByteArray("outputItemB" + i))
-                            .display() + " x " + formatNumber(tag.getInteger("outputItemCount" + i)));
+                        "  " + ILocSerManager.decodeFromBytes(tag.getByteArray("outputItemB" + i))
+                            .localize() + " x " + formatNumber(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     currentTip.add(
-                        "  " + LocSer.decodeFromBytes(tag.getByteArray("outputFluidB" + i))
-                            .display() + " x " + formatNumber(tag.getInteger("outputFluidCount" + i)) + "L");
+                        "  " + ILocSerManager.decodeFromBytes(tag.getByteArray("outputFluidB" + i))
+                            .localize() + " x " + formatNumber(tag.getInteger("outputFluidCount" + i)) + "L");
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
@@ -2418,10 +2420,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
-                tag.setByteArray(
-                    "outputItemB" + index,
-                    LocSer.itemStackName(stack)
-                        .encodeToBytes());
+                tag.setByteArray("outputItemB" + index, new LocSerItemName(stack).encodeToBytes());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2431,10 +2430,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (FluidStack stack : mOutputFluids) {
                 if (stack == null) continue;
-                tag.setByteArray(
-                    "outputFluidB" + index,
-                    LocSer.fluidStackName(stack)
-                        .encodeToBytes());
+                tag.setByteArray("outputFluidB" + index, new LocSerFluidName(stack).encodeToBytes());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }

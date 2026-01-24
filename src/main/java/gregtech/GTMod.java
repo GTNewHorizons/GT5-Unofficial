@@ -73,7 +73,6 @@ import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
-import gregtech.api.util.ChatComponentLocalized;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -82,6 +81,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.locser.ChatComponentLocSer;
 import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
@@ -328,7 +328,7 @@ public class GTMod {
 
         new LoaderCircuitBehaviors().run();
 
-        ChatComponentCustomRegistry.register(ChatComponentLocalized::new);
+        ChatComponentCustomRegistry.register(ChatComponentLocSer::new);
 
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();

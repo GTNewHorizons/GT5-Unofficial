@@ -43,6 +43,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.locser.LocSerNumber;
 
 public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIWidgets {
 
@@ -295,7 +296,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
             if (mTargetStackSize == 0) {
                 GTUtility.sendChatTrans(aPlayer, "GT5U.chat.buffer.not_regulate");
             } else {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.buffer.regulate", mTargetStackSize);
+                GTUtility.sendChatLocSer(aPlayer, "GT5U.chat.buffer.regulate", new LocSerNumber(mTargetStackSize));
             }
         }
     }

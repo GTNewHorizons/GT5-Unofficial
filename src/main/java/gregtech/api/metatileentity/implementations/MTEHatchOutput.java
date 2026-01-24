@@ -11,9 +11,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -38,9 +36,11 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.ChatComponentLocalized;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.locser.ILocSer;
+import gregtech.api.util.locser.LocSerFluidName;
+import gregtech.api.util.locser.LocSerFormat;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
 
 public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockable, IAddUIWidgets {
@@ -198,7 +198,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         } else {
             mMode = (byte) ((mMode + 1) % 10);
         }
-        final IChatComponent inBrackets;
+        final ILocSer inBrackets;
         switch (mMode) {
             case 0 -> {
                 GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_steam_item");
@@ -236,29 +236,29 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
+                    inBrackets = new LocSerFormat("GT5U.chat.hatch.output.in_brackets.none");
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    inBrackets = new ChatComponentLocalized(this.getDrainableStack());
+                    inBrackets = new LocSerFluidName(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.items_and_specific_fluid", inBrackets);
+                GTUtility.sendChatLocSer(aPlayer, "GT5U.chat.hatch.output.items_and_specific_fluid", inBrackets);
             }
             case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
+                    inBrackets = new LocSerFormat("GT5U.chat.hatch.output.in_brackets.none");
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    inBrackets = new ChatComponentLocalized(this.getDrainableStack());
+                    inBrackets = new LocSerFluidName(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.specific_fluid", inBrackets);
+                GTUtility.sendChatLocSer(aPlayer, "GT5U.chat.hatch.output.specific_fluid", inBrackets);
             }
         }
     }
@@ -278,23 +278,20 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     .getName())) {
                 String fluidName = getLockedFluidName();
                 FluidStack fluidStack = FluidRegistry.getFluidStack(fluidName, 1);
-                GTUtility.sendChatTrans(
+                GTUtility.sendChatLocSer(
                     aPlayer,
                     "GT5U.chat.hatch.output.fluid.already_locked",
-                    fluidStack == null ? new ChatComponentTranslation(fluidName)
-                        : new ChatComponentLocalized(fluidStack));
+                    fluidStack == null ? new LocSerFormat(fluidName) : new LocSerFluidName(fluidStack));
             } else {
                 setLockedFluidName(
                     tFluid.getFluid()
                         .getName());
-                if (mMode == 8) GTUtility.sendChatTrans(
+                if (mMode == 8) GTUtility.sendChatLocSer(
                     aPlayer,
                     "GT5U.chat.hatch.output.items_and_specific_fluid",
-                    new ChatComponentLocalized(tFluid));
-                else GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.specific_fluid",
-                    new ChatComponentLocalized(tFluid));
+                    new LocSerFluidName(tFluid));
+                else GTUtility
+                    .sendChatLocSer(aPlayer, "GT5U.chat.hatch.output.specific_fluid", new LocSerFluidName(tFluid));
             }
             return true;
         }
@@ -391,8 +388,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     .getName());
             final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
-            GTUtility
-                .sendChatTrans(player, "GT5U.chat.hatch.output.fluid.locked_to", new ChatComponentLocalized(mFluid));
+            GTUtility.sendChatLocSer(player, "GT5U.chat.hatch.output.fluid.locked_to", new LocSerFluidName(mFluid));
             playerThatLockedfluid = null;
         }
     }

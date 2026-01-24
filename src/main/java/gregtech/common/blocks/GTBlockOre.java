@@ -375,7 +375,8 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
                         GTOreAdapter.INSTANCE.getBlock(info)
                             .getBlockMeta(),
                         3);
-                    GTUtility.sendChatTrans(player, "GT5U.chat.ore.set_ore_natural_flag", info.isNatural);
+                    GTUtility
+                        .sendChatTrans(player, "GT5U.chat.ore.set_ore_natural_flag", String.valueOf(info.isNatural));
                 }
 
                 return true;

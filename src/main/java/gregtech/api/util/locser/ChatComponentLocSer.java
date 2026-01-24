@@ -1,7 +1,4 @@
-package gregtech.api.util;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+package gregtech.api.util.locser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -10,28 +7,20 @@ import com.google.gson.JsonObject;
 import com.gtnewhorizon.gtnhlib.chat.AbstractChatComponentCustom;
 
 /**
- * A chat component that represents a localized message.
+ * A chat component that wraps an ILocSer for localization.
  *
- * @see LocSer
+ * @see ILocSer
  */
-public class ChatComponentLocalized extends AbstractChatComponentCustom {
+public class ChatComponentLocSer extends AbstractChatComponentCustom {
 
-    private LocSer localized;
+    private ILocSer localized;
 
-    public ChatComponentLocalized() {
-        this.localized = new LocSer();
+    public ChatComponentLocSer() {
+        this.localized = new LocSerError();
     }
 
-    public ChatComponentLocalized(LocSer localized) {
+    public ChatComponentLocSer(ILocSer localized) {
         this.localized = localized;
-    }
-
-    public ChatComponentLocalized(ItemStack aStack) {
-        this(LocSer.itemStackName(aStack));
-    }
-
-    public ChatComponentLocalized(FluidStack aStack) {
-        this(LocSer.fluidStackName(aStack));
     }
 
     @Override
@@ -46,7 +35,7 @@ public class ChatComponentLocalized extends AbstractChatComponentCustom {
         final JsonObject obj = jsonElement.getAsJsonObject();
         final String base64 = obj.get("loc")
             .getAsString();
-        this.localized = LocSer.decodeFromBase64(base64);
+        this.localized = ILocSerManager.decodeFromBase64(base64);
     }
 
     @Override
@@ -56,11 +45,11 @@ public class ChatComponentLocalized extends AbstractChatComponentCustom {
 
     @Override
     protected AbstractChatComponentCustom copySelf() {
-        return new ChatComponentLocalized(this.localized);
+        return new ChatComponentLocSer(this.localized);
     }
 
     @Override
     public String getUnformattedTextForChat() {
-        return this.localized.display();
+        return this.localized.localize();
     }
 }

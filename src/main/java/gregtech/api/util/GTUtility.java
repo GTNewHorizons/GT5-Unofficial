@@ -190,6 +190,9 @@ import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
+import gregtech.api.util.locser.ChatComponentLocSer;
+import gregtech.api.util.locser.ILocSer;
+import gregtech.api.util.locser.LocSerFormat;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
@@ -532,30 +535,39 @@ public class GTUtility {
     }
 
     /**
-     * Send a translated chat message to the player.
+     * Send a translated chat message to the player. Only accept String args.
+     * For advanced usage, use {@link GTUtility#sendChatLocSer}.
      *
      * @param player     The player who will receive the message.
      * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
-     *                   placeholder '%s'; otherwise, it cannot be translated.
-     * @param args       Substitutions for `%s` in the translation. `IChatComponent` will be handled properly, others
-     *                   will be converted to String
+     *                   placeholder '%s' or positioned one '%1$s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation.
      */
-    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
-        // FIXME：
-        // should have a better translation component to:
-        // 1. process format stacks;
-        // 2. accept placeholders other than '%s', at least positional ones like '%1$s'
-        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
+    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, String... args) {
+        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, (Object[]) args));
     }
 
     /**
-     * Send a chat component to the player.
-     * We use this method to ensure future compatibility.
-     * When we have a better translation component, we can modify the chat component sent to the player through this
-     * function.
+     * Send a localized chat message to the player. Support stacking the format.
+     *
+     * @see ILocSer
+     * @see GTUtility#processFormatStacks(String)
+     *
+     * @param player     The player who will receive the message.
+     * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
+     *                   placeholder '%s' or positioned one '%1$s'; otherwise, it cannot be translated.
+     * @param args       Substitutions for `%s` in the translation.
+     */
+    public static void sendChatLocSer(EntityPlayer player, @Nonnull String messageKey, ILocSer... args) {
+        player.addChatComponentMessage(new ChatComponentLocSer(new LocSerFormat(messageKey, args)));
+    }
+
+    /**
+     * Send a chat component to the player. Sometimes we need it to send complex messages,
+     * such as multiple chat components in a single line.
      *
      * @param player    The player who will receive the message.
-     * @param component The chat component to send.
+     * @param component The chat component to be sent.
      */
     public static void sendChatComp(EntityPlayer player, @Nonnull IChatComponent component) {
         player.addChatComponentMessage(component);
@@ -668,6 +680,18 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static String wrapStack(String message) {
+        return FORMAT_PUSH_STACK + message + FORMAT_POP_STACK;
+    }
+
+    public static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
+        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
+        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
+
+    public static String getUnlocalizedSideName(ForgeDirection side) {
+        return GTUtility.COVER_DIRECTION_NAMES[side.ordinal()];
     }
 
     public static void checkAvailabilities() {
