@@ -1377,7 +1377,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 1L, 0),
+                getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 1L, 0),
                 new ItemStack(Items.lead, 1, 32767))
             .itemOutputs(new ItemStack(Items.name_tag, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(1 * HALF_INGOTS))
@@ -1653,7 +1653,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3),
-                getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 1L, 0))
+                getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 1L, 0))
             .itemOutputs(new ItemStack(Items.book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -1681,7 +1681,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Paper_Printed_Pages.get(1),
-                getModItem(NewHorizonsCoreMod.ID, "item.ArtificialLeather", 1L, 0))
+                getModItem(NewHorizonsCoreMod.ID, "ArtificialLeather", 1L, 0))
             .itemOutputs(new ItemStack(Items.written_book, 1, 0))
             .fluidInputs(Materials.Glue.getFluid(20))
             .duration(1 * SECONDS + 12 * TICKS)
@@ -6139,7 +6139,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.FR_Casing_Sturdy.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1))
             .circuit(1)
-            .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1L, 0))
+            .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1L, 0))
             .fluidInputs(Materials.SeedOil.getFluid(250))
             .duration(5 * SECONDS)
             .eut(16)
@@ -6151,7 +6151,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.FR_Casing_Sturdy.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1))
             .circuit(1)
-            .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1L, 0))
+            .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1L, 0))
             .fluidInputs(Materials.Lubricant.getFluid(125))
             .duration(5 * SECONDS)
             .eut(16)
@@ -6169,7 +6169,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1),
+                getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.AnyCopper, 10))
             .circuit(10)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 7))
@@ -6179,7 +6179,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1),
+                getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 10))
             .circuit(10)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 8))
@@ -6189,7 +6189,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(NewHorizonsCoreMod.ID, "item.EngineCore", 1),
+                getModItem(NewHorizonsCoreMod.ID, "EngineCore", 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 10))
             .circuit(10)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 9))
@@ -6278,7 +6278,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.SteelBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "SteelBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 15))
             .duration(20 * SECONDS)
@@ -6316,7 +6316,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Polyethylene, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.AluminiumBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "AluminiumBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
             .duration(40 * SECONDS)
@@ -6354,7 +6354,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.StainlessSteelBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "StainlessSteelBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 5))
             .duration(20 * SECONDS)
@@ -6392,7 +6392,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.TitaniumBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "TitaniumBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 8))
             .duration(40 * SECONDS)
@@ -6430,7 +6430,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.TungstenSteelBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "TungstenSteelBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 11))
             .duration(20 * SECONDS)
@@ -6468,7 +6468,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NiobiumTitanium, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.ChromeBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "ChromeBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 14))
             .duration(40 * SECONDS)
@@ -6506,7 +6506,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Enderium, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.IridiumBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "IridiumBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 1L, 2))
             .duration(20 * SECONDS)
@@ -6544,7 +6544,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.OsmiumBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "OsmiumBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 1L, 5))
             .duration(40 * SECONDS)
@@ -6582,7 +6582,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Neutronium, 2),
-                getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumBars", 2))
+                getModItem(NewHorizonsCoreMod.ID, "NeutroniumBars", 2))
             .circuit(22)
             .itemOutputs(getModItem(Railcraft.ID, "machine.eta", 1L, 8))
             .duration(20 * SECONDS)
@@ -6735,7 +6735,7 @@ public class AssemblerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 4),
-                ItemList.Shape_Extruder_Wire.get(16))
+                ItemList.Shape_Extruder_Rod.get(16))
             .itemOutputs(ItemList.Spinneret.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * INGOTS))
             .duration(2 * MINUTES)

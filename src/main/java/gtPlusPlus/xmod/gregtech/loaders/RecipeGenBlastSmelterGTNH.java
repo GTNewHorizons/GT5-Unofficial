@@ -22,7 +22,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
@@ -175,7 +174,7 @@ public class RecipeGenBlastSmelterGTNH {
                 FluidStack tempFluid = getFluidFromIngot(R);
                 if (tempFluid != null) {
                     // Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
-                    mMoltenStack = FluidUtils.getFluidStack(tempFluid, mMoltenCount * 144);
+                    mMoltenStack = new FluidStack(tempFluid, mMoltenCount * 144);
                 } else {
                     Logger.MACHINE_INFO("[ABS] Failed to get Fluid from Cache.");
                 }

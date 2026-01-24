@@ -233,6 +233,11 @@ public class Client {
         @Config.Name("Render Powerfail Notifications")
         public boolean renderPowerfailNotifications;
 
+        @Config.DefaultFloat(1.0f)
+        @Config.Name("Powerfail Icon Size")
+        @Config.RangeFloat(min = 0.1f, max = 10f)
+        public float powerfailIconSize;
+
         @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
         @Config.DefaultInt(0)
         @Config.Name("Powerfail Notification Timeout")
