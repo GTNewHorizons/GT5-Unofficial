@@ -465,7 +465,6 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
 
-
         // Electron Cell
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, Particle.getBaseParticle(Particle.ELECTRON))
@@ -623,13 +622,19 @@ public class RecipesGregTech {
             FluidStack[] aFluid3_ChargePack = new FluidStack[] { MaterialsAlloy.INCONEL_792.getFluidStack(32 * INGOTS),
                 MaterialsAlloy.ARCANITE.getFluidStack(32 * INGOTS), MaterialsAlloy.LAFIUM.getFluidStack(32 * INGOTS) };
 
+            ItemStack[] aGemBatteries = new ItemStack[] { GregtechItemList.Battery_Casing_Gem_1.get(2),
+                GregtechItemList.Battery_Casing_Gem_2.get(2), GregtechItemList.Battery_Casing_Gem_3.get(2),
+                GregtechItemList.Battery_Casing_Gem_4.get(2),
+
+            };
+
             int aCurrSlot = 0;
             for (int h = 6; h < 9; h++) {
                 GTValues.RA.stdBuilder()
                     .metadata(RESEARCH_ITEM, aChargeResearch[aCurrSlot])
                     .metadata(SCANNING, new Scanning(30 * SECONDS, GTValues.VP[aCurrSlot + 5]))
                     .itemInputs(
-                        GTUtility.copyAmount(2, aGemBatteries[aCurrSlot]),
+                        aGemBatteries[aCurrSlot],
                         aCoilWire[aCurrSlot],
                         aTieredPlates_ChargePack[aCurrSlot],
                         aTieredCircuits0_ChargePack[aCurrSlot],
@@ -676,7 +681,6 @@ public class RecipesGregTech {
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(AssemblyLine);
-
 
         // Electron Cell
         GTValues.RA.stdBuilder()

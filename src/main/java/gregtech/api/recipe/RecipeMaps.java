@@ -1340,13 +1340,9 @@ public final class RecipeMaps {
             Particle particle_B = Particle.getParticleFromId(metadata.particleID_B);
 
             return Arrays.asList(
-                StatCollector.translateToLocal("beamcrafting.energy_A") + ": "
-                    + formatNumber(minEnergy_A)
-                    + "keV",
+                StatCollector.translateToLocal("beamcrafting.energy_A") + ": " + formatNumber(minEnergy_A) + "keV",
 
-                StatCollector.translateToLocal("beamcrafting.energy_B") + ": "
-                    + formatNumber(minEnergy_B)
-                    + "keV",
+                StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
 
                 StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
                 StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B)
