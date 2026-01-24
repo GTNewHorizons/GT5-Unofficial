@@ -41,7 +41,7 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_COMPRESSION("spacetime_compression", "Spacetime Compression Field Generator Tier"),
     EOH_STABILISATION("stabilisation", "Stabilisation Field Generator Tier"),
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
-    NO_HATCH("gt_no_hatch", ""),
+    HATCH("gt_hatch", "Hatch placement"),
     TFFT_FIELD("field", "Storage Field Tier"),
     EIC_PISTON("piston_block", "Metal Block Tier"),
     ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),

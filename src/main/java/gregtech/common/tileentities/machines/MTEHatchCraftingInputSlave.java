@@ -297,12 +297,18 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add((tag.getBoolean("linked") ? "Linked" : "Not linked"));
+        currenttip.add(
+            StatCollector.translateToLocal(
+                tag.getBoolean("linked") ? "GT5U.waila.hatch.crafting_input_slave.linked"
+                    : "GT5U.waila.hatch.crafting_input_slave.unlinked"));
 
         if (tag.hasKey("masterX")) {
             currenttip.add(
-                "Bound to " + tag
-                    .getInteger("masterX") + ", " + tag.getInteger("masterY") + ", " + tag.getInteger("masterZ"));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.crafting_input_slave.bound_to",
+                    tag.getInteger("masterX"),
+                    tag.getInteger("masterY"),
+                    tag.getInteger("masterZ")));
         }
 
         if (tag.hasKey("masterName")) {

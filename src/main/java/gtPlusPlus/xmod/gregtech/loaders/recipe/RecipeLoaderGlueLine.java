@@ -30,6 +30,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -298,7 +299,7 @@ public class RecipeLoaderGlueLine {
                 Materials.Graphite.getDust(64),
                 ItemList.Circuit_Silicon_Wafer4.get(1L))
             .circuit(2)
-            .itemOutputs(Materials.Graphene.getDust(128))
+            .itemOutputs(GTUtility.copyAmountUnsafe(128, Materials.Graphene.getDust(1)))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -314,7 +315,7 @@ public class RecipeLoaderGlueLine {
                 Materials.Graphite.getDust(64),
                 Materials.Graphite.getDust(64),
                 Materials.Graphite.getDust(64))
-            .itemOutputs(Materials.Graphene.getDust(512))
+            .itemOutputs(GTUtility.copyAmountUnsafe(512, Materials.Graphene.getDust(1)))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -431,7 +432,7 @@ public class RecipeLoaderGlueLine {
                 .itemInputs(
                     getModItem(Mods.GalacticraftMars.ID, "item.itemBasicAsteroids", 1, 7),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
-                    getModItem(Mods.NewHorizonsCoreMod.ID, "item.TungstenString", 8))
+                    getModItem(Mods.NewHorizonsCoreMod.ID, "TungstenString", 8))
                 .circuit(1)
                 .itemOutputs(getModItem(Mods.GalaxySpace.ID, "item.ThermalClothT2", 1))
                 .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(576))
