@@ -701,8 +701,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .startsWith("Producing"); insertIdx++) {}
         if (tag.hasKey("optimizedItem"))
             currentTip.add(insertIdx++, "Optimized for: " + tag.getString("optimizedItem"));
-        if (tag.hasKey("speedBoost")) currentTip
-            .add(insertIdx, "Speed boost: §b" + formatNumber((100 * tag.getDouble("speedBoost"))) + "%");
+        if (tag.hasKey("speedBoost"))
+            currentTip.add(insertIdx, "Speed boost: §b" + formatNumber((100 * tag.getDouble("speedBoost"))) + "%");
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
                 currentTip.add(insertIdx, EnumChatFormatting.GREEN + "Connected To Main Complex");
