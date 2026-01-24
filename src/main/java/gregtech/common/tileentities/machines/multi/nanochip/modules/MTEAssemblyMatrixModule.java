@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
@@ -63,10 +64,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_X = 3;
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
-    protected static final String[][] ASSEMBLY_STRING = new String[][] { { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
-        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
-        { " FFDFF ", "F  E  F", "F  A  F", "FE   EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
-        { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
+    protected static final String[][] ASSEMBLY_STRING = new String[][] {
+        { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " },
+        { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { " FFDFF ", "F  G  F", "F  G  F", "FE G EF" },
+        { " CFFFC ", "B     B", "D     D", "BE   EB" },
+        { "  CFC  ", " D   D ", "DB   BD", " DEEED " },
+        { "       ", "  BFB  ", " DDFDD ", "  BFB  " } };
     private int machineTier = -1;
     public static final IStructureDefinition<MTEAssemblyMatrixModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEAssemblyMatrixModule>builder()
@@ -92,6 +97,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         .addElement('E', ofFrame(Materials.NaquadahAlloy))
         // Nanochip Glass
         .addElement('F', Casings.NanochipGlass.asElement())
+        .addElement('G', ofSheetMetal(Materials.NaquadahAlloy))
 
         .build();
 
