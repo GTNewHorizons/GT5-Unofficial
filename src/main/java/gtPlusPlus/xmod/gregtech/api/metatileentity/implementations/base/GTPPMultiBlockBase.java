@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.lang.reflect.Method;
@@ -275,7 +276,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi_block.total_time.in_ticks",
                 "" + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime));
-
+        mInfo.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.recipes_done",
+                "" + EnumChatFormatting.DARK_GREEN + formatNumber(this.recipesDone)));
         return mInfo.toArray(new String[0]);
     }
 

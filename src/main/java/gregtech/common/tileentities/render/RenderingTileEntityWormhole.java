@@ -12,7 +12,7 @@ import gtneioreplugin.util.DimensionHelper;
 
 public class RenderingTileEntityWormhole extends AbstractRenderingTileEntity {
 
-    public int dimID = 0;
+    public int dimIndex = 0;
 
     public double targetRadius = 0;
 
@@ -23,14 +23,18 @@ public class RenderingTileEntityWormhole extends AbstractRenderingTileEntity {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("dimID", dimID);
+        compound.setInteger("dimIndex", dimIndex);
         compound.setDouble("targetRadius", targetRadius);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        dimID = compound.getInteger("dimID");
+        if (compound.hasKey("dimIndex")) {
+            dimIndex = compound.getInteger("dimIndex");
+        } else {
+            dimIndex = compound.getInteger("dimID");
+        }
         targetRadius = compound.getDouble("targetRadius");
     }
 
@@ -40,16 +44,13 @@ public class RenderingTileEntityWormhole extends AbstractRenderingTileEntity {
             .map(WorldProvider::getDimensionName)
             .orElse(null);
         if (dimName == null) return 0;
-        for (int i = 0; i < DimensionHelper.DimName.length; i++) {
-            if (dimName.equals(DimensionHelper.DimName[i])) return i;
-        }
-        return 0;
+        return DimensionHelper.getIndex(dimName);
     }
 
     public void setDimFromWorld(World target) {
         int newName = getDimFromWorld(target);
-        if (target != null & dimID != newName) {
-            dimID = newName;
+        if (target != null & dimIndex != newName) {
+            dimIndex = newName;
             this.markDirty();
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         }
@@ -62,7 +63,11 @@ public class RenderingTileEntityWormhole extends AbstractRenderingTileEntity {
     }
 
     public Block getBlock() {
-        return ModBlocks.getBlock(DimensionHelper.DimNameDisplayed[dimID]);
+        DimensionHelper.Dimension record = DimensionHelper.getByIndex(dimIndex);
+        if (record == null) {
+            return null;
+        }
+        return ModBlocks.getBlock(record.abbr());
     }
 
 }
