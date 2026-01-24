@@ -156,7 +156,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
                     + "Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override

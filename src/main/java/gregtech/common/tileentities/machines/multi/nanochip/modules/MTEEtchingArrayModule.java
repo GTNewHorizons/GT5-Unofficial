@@ -387,7 +387,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .addOtherStructurePart("Beamline Input Hatch", addHintNumber(1))
             .addOtherStructurePart("Particle Indicator", addHintNumber(2))
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override
