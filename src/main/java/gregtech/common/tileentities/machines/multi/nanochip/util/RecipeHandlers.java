@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.common.powergoggles.PowerGogglesConstants.SECONDS;
 
 import java.util.Arrays;
