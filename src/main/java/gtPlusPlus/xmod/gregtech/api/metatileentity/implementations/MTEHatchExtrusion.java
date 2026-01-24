@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -78,7 +80,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public String[] getDescription() {
         return new String[] {
             "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getSlots(mTier)) + " Slots",
+            "Capacity: " + formatNumber(getSlots(mTier)) + " Slots",
             "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
     }
 

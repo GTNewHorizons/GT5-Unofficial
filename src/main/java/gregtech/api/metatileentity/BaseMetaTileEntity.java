@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -26,8 +27,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -772,9 +773,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
                     : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
             tList.add(
-                "Recorded " + GTUtility.formatNumbers(mMetaTileEntity.mSoundRequests)
+                "Recorded " + formatNumber(mMetaTileEntity.mSoundRequests)
                     + " sound requests in "
-                    + GTUtility.formatNumbers(mTickTimer - mLastCheckTick)
+                    + formatNumber(mTickTimer - mLastCheckTick)
                     + " ticks.");
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
@@ -1422,20 +1423,21 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             if (aPlayer.isSneaking()) {
                                 mInputDisabled = !mInputDisabled;
                                 if (mInputDisabled) mOutputDisabled = !mOutputDisabled;
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatComp(
                                     aPlayer,
-                                    GTUtility.trans("086", "Auto-Input: ") + (mInputDisabled
-                                        ? GTUtility.trans("087", "Disabled")
-                                        : GTUtility.trans("088", "Enabled") + GTUtility.trans("089", "  Auto-Output: ")
-                                            + (mOutputDisabled ? GTUtility.trans("087", "Disabled")
-                                                : GTUtility.trans("088", "Enabled"))));
+                                    new ChatComponentTranslation(
+                                        mInputDisabled ? "GT5U.chat.machine.auto_input.disable"
+                                            : "GT5U.chat.machine.auto_input.enable").appendText("  ")
+                                                .appendSibling(
+                                                    new ChatComponentTranslation(
+                                                        mOutputDisabled ? "GT5U.chat.machine.auto_output.disable"
+                                                            : "GT5U.chat.machine.auto_output.enable")));
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                GTUtility.sendChatToPlayer(
+                                GTUtility.sendChatTrans(
                                     aPlayer,
-                                    StatCollector.translateToLocal(
-                                        mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off"));
+                                    mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
                             }
                             if (tCurrentItem.stackSize == 0)
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
@@ -1453,12 +1455,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 enableWorking();
                             }
                             {
-                                String tChat = GTUtility.trans("090", "Machine Processing: ")
-                                    + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
-                                        : GTUtility.trans("087", "Disabled"));
-                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText())
-                                    tChat = getMetaTileEntity().getAlternativeModeText();
-                                GTUtility.sendChatToPlayer(aPlayer, tChat);
+                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
+                                    // FIXME: localize it
+                                    GTUtility.sendChatToPlayer(aPlayer, getMetaTileEntity().getAlternativeModeText());
+                                } else {
+                                    GTUtility.sendChatTrans(
+                                        aPlayer,
+                                        isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                            : "GT5U.chat.machine.processing.disable");
+                                }
                             }
                             sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                             if (tCurrentItem.stackSize == 0)
@@ -1474,12 +1479,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= wrenchingSide.flag;
-                            GTUtility.sendChatToPlayer(
+                            // FIXME: localize wrenchingSide
+                            GTUtility.sendChatTrans(
                                 aPlayer,
-                                GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
-                                    + GTUtility.trans("092", " set to: ")
-                                    + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
-                                        : GTUtility.trans("094", "Weak")));
+                                (mStrongRedstone & wrenchingSide.flag) != 0
+                                    ? "GT5U.chat.machine.redstone_output_set.strong"
+                                    : "GT5U.chat.machine.redstone_output_set.weak",
+                                wrenchingSide);
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                             issueBlockUpdate();
                         }
@@ -1535,9 +1541,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                         sendSoundToPlayers(SoundResource.IC2_TOOLS_DRILL_DRILL_SOFT, 1.0F, 1);
 
                                     } else {
-                                        GTUtility.sendChatToPlayer(
-                                            aPlayer,
-                                            StatCollector.translateToLocal("gt.cover.info.chat.tick_rate_not_allowed"));
+                                        GTUtility.sendChatTrans(aPlayer, "gt.cover.info.chat.tick_rate_not_allowed");
                                     }
                                     if (tCurrentItem.stackSize == 0)
                                         ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
