@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
@@ -57,10 +58,10 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
         .addElement('A', Casings.NanochipPrimaryCasing.asElement())
         // Nanochip Secondary Casing
         .addElement('B', Casings.NanochipSecondaryCasing.asElement())
-        // UEV Machine Casings
-        .addElement('C', ofBlock(GregTechAPI.sBlockCasingsNH, 10))
-        // Radox polymer frame
-        .addElement('D', ofFrame(Materials.Vinteum))
+        // Superconductor UEV Base Sheetmetal
+        .addElement('C', ofSheetMetal(Materials.SuperconductorUEVBase))
+        // Superconductor UHV Base Framebox
+        .addElement('D', ofFrame(Materials.SuperconductorUHVBase))
         // Nanochip Glass
         .addElement('E', Casings.NanochipGlass.asElement())
         .build();
