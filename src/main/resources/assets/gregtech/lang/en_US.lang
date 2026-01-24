@@ -3327,6 +3327,8 @@ gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
 # NAC circuit components
 gt.circuitcomponent.casing.mainframe=Mainframe Circuit Encasement
+gt.circuitcomponent.casing.pico=Pico Circuit Encasement
+gt.circuitcomponent.casing.quantum=Quantum Circuit Encasement
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
 gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
 gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
