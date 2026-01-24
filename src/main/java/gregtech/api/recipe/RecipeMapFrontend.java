@@ -1,6 +1,5 @@
 package gregtech.api.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -248,18 +248,18 @@ public class RecipeMapFrontend {
         if (recipe.owners != null) {
             if (recipe.owners.size() > 1) {
                 recipeInfo.drawText(
-                    EnumChatFormatting.ITALIC + trans("273", "Original Recipe by: ")
+                    EnumChatFormatting.ITALIC + StatCollector.translateToLocal("GT5U.recipes.recipe_by.original")
                         + recipe.owners.get(0)
                             .getName());
                 for (int i = 1; i < recipe.owners.size(); i++) {
                     recipeInfo.drawText(
-                        EnumChatFormatting.ITALIC + trans("274", "Modified by: ")
+                        EnumChatFormatting.ITALIC + StatCollector.translateToLocal("GT5U.recipes.recipe_by.modified")
                             + recipe.owners.get(i)
                                 .getName());
                 }
             } else if (!recipe.owners.isEmpty()) {
                 recipeInfo.drawText(
-                    EnumChatFormatting.ITALIC + trans("272", "Recipe by: ")
+                    EnumChatFormatting.ITALIC + StatCollector.translateToLocal("GT5U.recipes.recipe_by")
                         + recipe.owners.get(0)
                             .getName());
             }
@@ -301,13 +301,12 @@ public class RecipeMapFrontend {
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isNotConsumed()) {
-            currentTip.add(GRAY + trans("151", "Does not get consumed in the process"));
+            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume"));
         } else if (pStack.isNotConsumedParallel()) {
-            currentTip.add(GRAY + trans("151.3", "Considered in parallel calculation, but not get consumed"));
+            currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume_parallel"));
         } else if (pStack.isChanceBased()) {
-            String key = pStack.isInput() ? "150.1" : "150";
-            String def = pStack.isInput() ? "Consume Chance: " : "Output Chance: ";
-            currentTip.add(GRAY + trans(key, def) + pStack.getChanceText());
+            String key = "GT5U.recipes.chance." + (pStack.isInput() ? "consume" : "output");
+            currentTip.add(GRAY + StatCollector.translateToLocal(key) + pStack.getChanceText());
         }
         return currentTip;
     }
@@ -315,9 +314,8 @@ public class RecipeMapFrontend {
     protected List<String> handleNEIItemOutputTooltip(List<String> currentTip,
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         if (pStack.isChanceBased()) {
-            String key = pStack.isInput() ? "150.1" : "150";
-            String def = pStack.isInput() ? "Consume Chance: " : "Output Chance: ";
-            currentTip.add(GRAY + trans(key, def) + pStack.getChanceText());
+            String key = "GT5U.recipes.chance." + (pStack.isInput() ? "consume" : "output");
+            currentTip.add(GRAY + StatCollector.translateToLocal(key) + pStack.getChanceText());
         }
         return currentTip;
     }

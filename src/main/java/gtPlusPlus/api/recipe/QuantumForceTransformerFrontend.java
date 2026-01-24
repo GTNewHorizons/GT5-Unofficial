@@ -1,6 +1,5 @@
 package gtPlusPlus.api.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.List;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -61,7 +61,7 @@ public class QuantumForceTransformerFrontend extends LargeNEIFrontend {
                 if (fixedPositionedStack.isFluid()) continue;
                 if (stack != catalyst.item) continue;
                 if (!MTEChemicalPlant.isCatalyst(catalyst.item)) continue;
-                currentTip.add(GRAY + trans("151.3", "Considered in parallel calculation, but not get consumed"));
+                currentTip.add(GRAY + StatCollector.translateToLocal("GT5U.recipes.not_consume_parallel"));
                 return currentTip;
             }
         }
