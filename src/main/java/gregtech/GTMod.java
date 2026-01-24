@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.SetMultimap;
+import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -72,6 +73,7 @@ import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
 import gregtech.api.threads.RunnableMachineUpdate;
 import gregtech.api.util.AssemblyLineServer;
+import gregtech.api.util.ChatComponentLocalized;
 import gregtech.api.util.GTForestryCompat;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
@@ -325,6 +327,8 @@ public class GTMod {
         new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
+
+        ChatComponentCustomRegistry.register(ChatComponentLocalized::new);
 
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();

@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -37,6 +38,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.ChatComponentLocalized;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.widget.FluidLockWidget;
@@ -196,7 +198,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         } else {
             mMode = (byte) ((mMode + 1) % 10);
         }
-        final String inBrackets;
+        final IChatComponent inBrackets;
         switch (mMode) {
             case 0 -> {
                 GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid_steam_item");
@@ -234,39 +236,29 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = "GT5U.chat.hatch.output.in_brackets.none";
+                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    String inBracketsMayNull = this.getDrainableStack()
-                        .getUnlocalizedName();
-                    inBrackets = inBracketsMayNull == null ? "" : inBracketsMayNull;
+                    inBrackets = new ChatComponentLocalized(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.items_and_specific_fluid",
-                    new ChatComponentTranslation(inBrackets));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.items_and_specific_fluid", inBrackets);
             }
             case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
-                    inBrackets = "GT5U.chat.hatch.output.in_brackets.none";
+                    inBrackets = new ChatComponentTranslation("GT5U.chat.hatch.output.in_brackets.none");
                 } else {
                     this.setLockedFluidName(
                         this.getDrainableStack()
                             .getFluid()
                             .getName());
-                    String inBracketsMayNull = this.getDrainableStack()
-                        .getUnlocalizedName();
-                    inBrackets = inBracketsMayNull == null ? "" : inBracketsMayNull;
+                    inBrackets = new ChatComponentLocalized(this.getDrainableStack());
                 }
-                GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.specific_fluid",
-                    new ChatComponentTranslation(inBrackets));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.specific_fluid", inBrackets);
             }
         }
     }
@@ -284,14 +276,13 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             if (getLockedFluidName() != null && !getLockedFluidName().equals(
                 tFluid.getFluid()
                     .getName())) {
-                FluidStack fluidStack = FluidRegistry.getFluidStack(getLockedFluidName(), 1);
-                String fluidUnlocalizedName = fluidStack != null
-                    ? (fluidStack.getUnlocalizedName() == null ? "" : fluidStack.getUnlocalizedName())
-                    : "GT5U.machines.hatch_output.lockfluid.empty";
+                String fluidName = getLockedFluidName();
+                FluidStack fluidStack = FluidRegistry.getFluidStack(fluidName, 1);
                 GTUtility.sendChatTrans(
                     aPlayer,
                     "GT5U.chat.hatch.output.fluid.already_locked",
-                    new ChatComponentTranslation(fluidUnlocalizedName));
+                    fluidStack == null ? new ChatComponentTranslation(fluidName)
+                        : new ChatComponentLocalized(fluidStack));
             } else {
                 setLockedFluidName(
                     tFluid.getFluid()
@@ -299,13 +290,11 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 if (mMode == 8) GTUtility.sendChatTrans(
                     aPlayer,
                     "GT5U.chat.hatch.output.items_and_specific_fluid",
-                    new ChatComponentTranslation(
-                        tFluid.getUnlocalizedName() == null ? "" : tFluid.getUnlocalizedName()));
+                    new ChatComponentLocalized(tFluid));
                 else GTUtility.sendChatTrans(
                     aPlayer,
                     "GT5U.chat.hatch.output.specific_fluid",
-                    new ChatComponentTranslation(
-                        tFluid.getUnlocalizedName() == null ? "" : tFluid.getUnlocalizedName()));
+                    new ChatComponentLocalized(tFluid));
             }
             return true;
         }
@@ -402,10 +391,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     .getName());
             final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
-            GTUtility.sendChatTrans(
-                player,
-                "GT5U.chat.hatch.output.fluid.locked_to",
-                new ChatComponentTranslation(mFluid.getUnlocalizedName() == null ? "" : mFluid.getUnlocalizedName()));
+            GTUtility
+                .sendChatTrans(player, "GT5U.chat.hatch.output.fluid.locked_to", new ChatComponentLocalized(mFluid));
             playerThatLockedfluid = null;
         }
     }

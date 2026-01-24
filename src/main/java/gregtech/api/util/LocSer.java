@@ -1,88 +1,72 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
+import java.util.Base64;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.GTMod;
-import gregtech.api.enums.ChatMessage;
-import gregtech.api.net.GTPacketChat;
 import io.netty.buffer.Unpooled;
 
 /**
  * A data structure that represents an unlocalized message.
- * Use `PacketBuffer` rather than `ByteBuf` which is used by the `Localized`
+ * Can be encoded to / decoded from bytes or base64 for easy network transmission.
+ * Use `display` function to get the localized and formatted string.
+ * Use `PacketBuffer` rather than `ByteBuf` and `ByteArrayDataInput` which is used by the `Localized`. So we can reuse
+ * the serialization utilities in `NetworkUtils`.
  *
  * @see Localized
- * @see GTPacketChat
- * @see ChatMessage
- * @see GTUtility#processFormatStacks(String)
- * @see GTTextBuilder
+ * @see ChatComponentLocalized
  */
-public class LocalizedP {
+public class LocSer {
 
-    public enum LPType {
+    protected enum LSType {
 
-        Key((byte) 0),
+        FormatString((byte) 0),
         ItemStackName((byte) 1),
         FluidStackName((byte) 2),
         Invalid((byte) 7);
 
         public final byte value;
 
-        LPType(byte aByte) {
+        LSType(byte aByte) {
             this.value = aByte;
         }
     }
 
     public Object key;
     public Object[] args;
-    public LPType type;
+    public LSType type;
 
-    private LocalizedP() {}
+    public LocSer() {}
 
-    private LocalizedP(Object key, LPType type) {
+    protected LocSer(Object key, LSType type) {
         this.key = key;
         this.args = new Object[0];
         this.type = type;
     }
 
     /** Localizes a lang key directly */
-    public LocalizedP(String key, Object... args) {
+    public LocSer(String key, Object... args) {
         this.key = key;
         this.args = args;
-        this.type = LPType.Key;
+        this.type = LSType.FormatString;
     }
 
-    public static LocalizedP itemStackName(ItemStack stack) {
-        return new LocalizedP(stack, LPType.ItemStackName);
+    public static LocSer itemStackName(@NotNull ItemStack stack) {
+        return new LocSer(stack, LSType.ItemStackName);
     }
 
-    public static LocalizedP fluidStackName(FluidStack stack) {
-        return new LocalizedP(stack, LPType.FluidStackName);
-    }
-
-    public void encode(PacketBuffer buffer) {
-        if (type == LPType.ItemStackName && key instanceof ItemStack stack) {
-            buffer.writeByte(type.value);
-            NetworkUtils.writeItemStack(buffer, stack);
-        } else if (type == LPType.FluidStackName && key instanceof FluidStack stack) {
-            buffer.writeByte(type.value);
-            NetworkUtils.writeFluidStack(buffer, stack);
-        } else if (type == LPType.Key && key instanceof String k) {
-            buffer.writeByte(type.value);
-            NetworkUtils.writeStringSafe(buffer, k);
-            buffer.writeInt(args.length);
-            for (Object arg : args) {
-                encodeArg(buffer, arg);
-            }
-        } else {
-            buffer.writeByte(LPType.Invalid.value);
-            GTMod.GT_FML_LOGGER.error("Attempted to encode invalid key");
-        }
+    public static LocSer fluidStackName(@NotNull FluidStack stack) {
+        return new LocSer(stack, LSType.FluidStackName);
     }
 
     public byte[] encodeToBytes() {
@@ -93,21 +77,59 @@ public class LocalizedP {
         return data;
     }
 
+    public String encodeToBase64() {
+        byte[] data = encodeToBytes();
+        return Base64.getEncoder()
+            .encodeToString(data);
+    }
+
+    public static LocSer decodeFromBytes(byte[] data) {
+        LocSer localized = new LocSer();
+        localized.decode(new PacketBuffer(Unpooled.wrappedBuffer(data)));
+        return localized;
+    }
+
+    public static LocSer decodeFromBase64(String base64) {
+        byte[] data = Base64.getDecoder()
+            .decode(base64);
+        return decodeFromBytes(data);
+    }
+
+    public void encode(PacketBuffer buffer) {
+        if (type == LSType.ItemStackName && key instanceof ItemStack stack) {
+            buffer.writeByte(type.value);
+            NetworkUtils.writeItemStack(buffer, stack);
+        } else if (type == LSType.FluidStackName && key instanceof FluidStack stack) {
+            buffer.writeByte(type.value);
+            NetworkUtils.writeFluidStack(buffer, stack);
+        } else if (type == LSType.FormatString && key instanceof String k) {
+            buffer.writeByte(type.value);
+            NetworkUtils.writeStringSafe(buffer, k);
+            buffer.writeInt(args.length);
+            for (Object arg : args) {
+                encodeArg(buffer, arg);
+            }
+        } else {
+            buffer.writeByte(LSType.Invalid.value);
+            GTMod.GT_FML_LOGGER.error("Attempted to encode invalid key");
+        }
+    }
+
     public void decode(PacketBuffer buffer) {
-        this.type = LPType.values()[buffer.readByte()];
-        if (this.type == LPType.Invalid) {
+        this.type = LSType.values()[buffer.readByte()];
+        if (this.type == LSType.Invalid) {
             return;
-        } else if (this.type == LPType.Key) {
+        } else if (this.type == LSType.FormatString) {
             this.key = NetworkUtils.readStringSafe(buffer);
-        } else if (this.type == LPType.ItemStackName) {
+        } else if (this.type == LSType.ItemStackName) {
             this.key = NetworkUtils.readItemStack(buffer);
-        } else if (this.type == LPType.FluidStackName) {
+        } else if (this.type == LSType.FluidStackName) {
             this.key = NetworkUtils.readFluidStack(buffer);
         } else {
             throw new IllegalStateException("Unexpected value: " + this.type);
         }
 
-        if (this.type == LPType.Key) {
+        if (this.type == LSType.FormatString) {
             this.args = new Object[buffer.readInt()];
             for (int i = 0; i < args.length; i++) {
                 args[i] = decodeArg(buffer);
@@ -115,12 +137,6 @@ public class LocalizedP {
         } else {
             this.args = new Object[0];
         }
-    }
-
-    public static LocalizedP decodeFromBytes(byte[] data) {
-        LocalizedP localized = new LocalizedP();
-        localized.decode(new PacketBuffer(Unpooled.wrappedBuffer(data)));
-        return localized;
     }
 
     /**
@@ -140,11 +156,11 @@ public class LocalizedP {
      */
     public String localize(ArgProcessor argProcessor) {
         // §s and §t are format stack codes, see processFormatStacks for more info
-        if (type == LPType.ItemStackName && key instanceof ItemStack stack) {
+        if (type == LSType.ItemStackName && key instanceof ItemStack stack) {
             return "§s" + stack.getDisplayName() + "§t";
-        } else if (type == LPType.FluidStackName && key instanceof FluidStack stack) {
+        } else if (type == LSType.FluidStackName && key instanceof FluidStack stack) {
             return "§s" + stack.getLocalizedName() + "§t";
-        } else if (type == LPType.Key && key instanceof String k) {
+        } else if (type == LSType.FormatString && key instanceof String k) {
             return "§s" + GTUtility.translate(k, argProcessor.process(args)) + "§t";
         } else {
             return "<localize error>";
@@ -153,7 +169,7 @@ public class LocalizedP {
 
     @Override
     public String toString() {
-        return localize(LocalizedP::processArgs);
+        return localize(LocSer::processArgs);
     }
 
     public String display() {
@@ -199,7 +215,7 @@ public class LocalizedP {
             return;
         }
 
-        if (arg instanceof LocalizedP l) {
+        if (arg instanceof LocSer l) {
             buffer.writeByte(TYPE_LOCALIZED);
 
             l.encode(buffer);
@@ -233,7 +249,7 @@ public class LocalizedP {
                 return NetworkUtils.readStringSafe(buffer);
             }
             case TYPE_LOCALIZED -> {
-                LocalizedP l = new LocalizedP();
+                LocSer l = new LocSer();
                 l.decode(buffer);
                 return l;
             }
@@ -248,28 +264,28 @@ public class LocalizedP {
         for (int idx = 0; idx < args.length; idx++) {
             Object arg = args[idx];
 
-            if (arg instanceof LocalizedP l) {
-                out[idx] = l.localize(LocalizedP::processArgs);
+            if (arg instanceof LocSer l) {
+                out[idx] = l.localize(LocSer::processArgs);
                 continue;
             }
 
             if (arg instanceof Integer i) {
-                out[idx] = GTUtility.formatNumbers(i);
+                out[idx] = formatNumber(i);
                 continue;
             }
 
             if (arg instanceof Long l) {
-                out[idx] = GTUtility.formatNumbers(l);
+                out[idx] = formatNumber(l);
                 continue;
             }
 
             if (arg instanceof Float f) {
-                out[idx] = GTUtility.formatNumbers(f);
+                out[idx] = formatNumber(f);
                 continue;
             }
 
             if (arg instanceof Double d) {
-                out[idx] = GTUtility.formatNumbers(d);
+                out[idx] = formatNumber(d);
                 continue;
             }
 
