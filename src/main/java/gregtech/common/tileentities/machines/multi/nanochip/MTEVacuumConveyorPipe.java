@@ -88,9 +88,14 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
-        onPostTick(aBaseMetaTileEntity, 31);
         super.onFirstTick(aBaseMetaTileEntity);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    public void onUnload() {
+        VacuumFactoryGrid.INSTANCE.removeElement(this);
+        super.onUnload();
     }
 
     @Override
@@ -132,7 +137,20 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     }
 
     @Override
-    public void onNeighbourChanged(VacuumFactoryElement neighbour) {
+    public void onEdgeAdded(VacuumFactoryElement adjacent) {
+        VacuumFactoryElement.super.onEdgeAdded(adjacent);
+        mCheckConnections = true;
+    }
+
+    @Override
+    public void onEdgeRemoved(VacuumFactoryElement adjacent) {
+        VacuumFactoryElement.super.onEdgeRemoved(adjacent);
+        mCheckConnections = true;
+    }
+
+    @Override
+    public void onEdgeChanged(VacuumFactoryElement adjacent) {
+        VacuumFactoryElement.super.onEdgeChanged(adjacent);
         mCheckConnections = true;
     }
 
@@ -166,7 +184,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
             disconnect(side);
             GTUtility.sendChatTrans(entityPlayer, GTUtility.trans("215", "Disconnected"));
         }
-        VacuumFactoryGrid.INSTANCE.addElement(this);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -256,7 +274,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     public void onColorChangeServer(byte color) {
-        VacuumFactoryGrid.INSTANCE.addElement(this);
         super.onColorChangeServer(color);
+        VacuumFactoryGrid.INSTANCE.updateElement(this);
     }
 }
