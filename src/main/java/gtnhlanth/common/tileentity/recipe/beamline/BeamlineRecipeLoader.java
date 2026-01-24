@@ -241,7 +241,7 @@ public class BeamlineRecipeLoader {
             .metadata(
                 TARGET_CHAMBER_METADATA,
                 TargetChamberMetadata.builder(focusItem)
-                    .particleID(1)
+                    .particleID(PHOTON.getId())
                     .amount(36)
                     .energy(6, 14, 1)
                     .minFocus(70)
