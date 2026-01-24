@@ -382,6 +382,15 @@
       }
     ]
   },
+  "machines.MTEExoFoundry": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTEExoFoundry",
+        "stream": false
+      }
+    ]
+  },
   "maintenance.MaintenanceAutoHatch": {
     "category": "block",
     "sounds": [
@@ -485,11 +494,11 @@
       }
     ]
   },
-  "machines.MTEChamberCentrifuge": {
+  "machines.MTESpinmatron": {
     "category": "block",
     "sounds": [
       {
-        "name": "MTEChamberCentrifuge",
+        "name": "MTESpinmatron",
         "stream": false
       }
     ]

@@ -175,7 +175,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                     return true;
                 }
                 return false;
-            } catch (final Throwable t) {
+            } catch (final Exception t) {
                 return false;
             }
         }
@@ -210,7 +210,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint {
                 }
             }
             return returnStack;
-        } catch (final Throwable t) {
+        } catch (final Exception t) {
             return null;
         }
     }

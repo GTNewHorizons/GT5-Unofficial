@@ -1,30 +1,40 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.ItemTransfer;
+import com.gtnewhorizon.gtnhlib.item.StandardInventoryIterator;
+import com.gtnewhorizon.gtnhlib.util.data.ItemId;
 
+import gregtech.api.implementation.items.GTItemSink;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchNbtConsumableGui;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import it.unimi.dsi.fastutil.ints.IntIterators;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
 public abstract class MTEHatchNbtConsumable extends MTEHatch {
 
-    private final int inputSlotCount;
-    private final int totalSlotCount;
-    private final boolean allowDuplicateUsageTypes;
+    protected final int inputSlotCount;
+    protected final int totalSlotCount;
+    protected final boolean allowDuplicateUsageTypes;
 
     public MTEHatchNbtConsumable(int aID, String aName, String aNameRegional, int aTier, int aInputSlots,
         String aDescription, boolean aAllowDuplicateTypes) {
@@ -74,74 +84,84 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         return true;
     }
 
-    public abstract String getNameGUI();
+    @Override
+    protected void onContentsChanged(int slot) {
+        super.onContentsChanged(slot);
+
+        // Make hasInventoryBeenModified return true
+        markDirty();
+    }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         validateUsageSlots();
+
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            fillStacksIntoFirstSlots();
             tryFillUsageSlots();
+            updateSlots();
         }
     }
 
-    public final void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++) {
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
-                mInventory[i] = null;
-            }
-            // Only moves items in the first four slots
-            if (i <= getSlotID_LastInput()) {
-                fillStacksIntoFirstSlots();
-            }
-        }
+    public void updateSlots() {
+        // These call markDirty, which makes hasInventoryBeenModified return true
+
+        // Remove any zero-sized stacks
+        GTUtility.cleanInventory(this);
+
+        // Compact the input slots
+        GTUtility.compactInventory(this, 0, getLastInputSlot());
+
+        // Compact the usage slots
+        GTUtility.compactInventory(this, getFirstUsageSlot(), getLastUsageSlot());
     }
 
     protected void validateUsageSlots() {
-        for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
-            if (mInventory[i] != null && mInventory[i].stackSize < 1) {
+        for (int i = getFirstUsageSlot(); i < getLastUsageSlot(); i++) {
+            ItemStack stack = mInventory[i];
+
+            if (stack != null && mInventory[i].stackSize < 1) {
                 mInventory[i] = null;
                 this.markDirty();
             }
         }
     }
 
-    // Only moves items in the first four slots
-    protected final void fillStacksIntoFirstSlots() {
-        GTUtility.compactInventory(this, 0, getSlotID_LastInput() + 1);
+    @Override
+    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return slot >= getFirstUsageSlot() ? 1 : super.getStackSizeLimit(slot, stack);
     }
 
-    public final void tryFillUsageSlots() {
-        int aSlotSpace = (inputSlotCount - getContentUsageSlots().size());
-        if (aSlotSpace > 0) {
-            Logger.INFO("We have empty usage slots. " + aSlotSpace);
-            for (int i = getSlotID_FirstInput(); i <= getSlotID_LastInput(); i++) {
-                ItemStack aStackToTryMove = mInventory[i];
-                if (aStackToTryMove != null && isItemValidForUsageSlot(aStackToTryMove)) {
-                    Logger.INFO("Trying to move stack from input slot " + i);
-                    if (moveItemFromStockToUsageSlots(aStackToTryMove)) {
-                        Logger.INFO("Updating Slots.");
-                        updateSlots();
-                    }
-                }
-            }
-        }
+    public void tryFillUsageSlots() {
+        ItemSource source = getItemSource(ForgeDirection.UNKNOWN);
+        ItemSink sink = new LimitingItemSink(ForgeDirection.UNKNOWN);
+
+        ItemTransfer transfer = new ItemTransfer();
+
+        transfer.source(source);
+        transfer.sink(sink);
+
+        transfer.setSourceSlots(IntIterators.unwrap(IntIterators.fromTo(getFirstInputSlot(), getLastInputSlot())));
+        transfer.setSinkSlots(IntIterators.unwrap(IntIterators.fromTo(getFirstUsageSlot(), getLastUsageSlot())));
+
+        transfer.setStacksToTransfer(getLastUsageSlot() - getFirstUsageSlot());
+
+        transfer.transfer();
     }
 
-    private int getSlotID_FirstInput() {
+    protected int getFirstInputSlot() {
         return 0;
     }
 
-    private int getSlotID_LastInput() {
-        return inputSlotCount - 1;
-    }
-
-    private int getSlotID_FirstUsage() {
+    protected int getLastInputSlot() {
         return inputSlotCount;
     }
 
-    private int getSlotID_LastUsage() {
-        return totalSlotCount - 1;
+    protected int getFirstUsageSlot() {
+        return inputSlotCount;
+    }
+
+    protected int getLastUsageSlot() {
+        return totalSlotCount;
     }
 
     public final ArrayList<ItemStack> getContentUsageSlots() {
@@ -154,60 +174,6 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
         return aItems;
     }
 
-    public final boolean moveItemFromStockToUsageSlots(ItemStack aStack) {
-        return moveItemFromStockToUsageSlots(aStack, allowDuplicateUsageTypes);
-    }
-
-    public final boolean moveItemFromStockToUsageSlots(ItemStack aStack, boolean aAllowMultiOfSameTypeInUsageSlots) {
-        if (aStack != null) {
-            if (aStack.stackSize > 0) {
-
-                if (!isItemValidForUsageSlot(aStack)) {
-                    Logger.INFO("Stack not valid: " + ItemUtils.getItemName(aStack));
-                    return false;
-                }
-
-                // Copy the input stack into a new object
-                ItemStack aStackToMove = aStack.copy();
-                // Set stack size of stack to move to 1.
-                aStackToMove.stackSize = 1;
-                // Did we set a stack in the usage slots?
-                boolean aDidSet = false;
-                // Did we find another of this item already in the usage slots?
-                boolean aFoundMatching = false;
-                // Continue processing with our new stack
-                // First check for duplicates
-                for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
-                    if (mInventory[i] != null) {
-                        if (GTUtility.areStacksEqual(aStackToMove, mInventory[i], true)) {
-                            Logger.INFO("Found matching stack in slot " + i + ".");
-                            aFoundMatching = true;
-                            break;
-                        }
-                    }
-                }
-                // Then Move stack to Usage slots
-                for (int i = getSlotID_FirstUsage(); i <= getSlotID_LastUsage(); i++) {
-                    if (mInventory[i] == null) {
-                        if (!aFoundMatching || aAllowMultiOfSameTypeInUsageSlots) {
-                            mInventory[i] = aStackToMove;
-                            aDidSet = true;
-                            Logger.INFO("Moving new stack to usage slots.");
-                            break;
-                        }
-                    }
-                }
-                if (aDidSet) {
-                    Logger.INFO("Depleting input stack size by 1.");
-                    // Depleted one from the original input stack
-                    aStack.stackSize--;
-                }
-                return aDidSet;
-            }
-        }
-        return false;
-    }
-
     @Override
     public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -217,35 +183,17 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
     @Override
     public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return side == getBaseMetaTileEntity().getFrontFacing() && isItemValidForUsageSlot(aStack)
-            && aIndex < inputSlotCount;
+        if (side != aBaseMetaTileEntity.getFrontFacing()) return false;
+        if (aIndex >= getFirstUsageSlot()) return false;
+        if (!isItemValidForInputSlot(aStack)) return false;
+
+        return true;
     }
 
     /**
-     * Items that get compared when checking for Usage Slot validity. Can return an empty map if
-     * isItemValidForUsageSlot() is overridden.
-     *
-     * @return
+     * Checks if the given item is valid for the input slots.
      */
-    public abstract ArrayList<ItemStack> getItemsValidForUsageSlots();
-
-    /**
-     * Checks if the given item is valid for Usage Slots. Can be overridden for easier handling if you already have
-     * methods to check this.
-     *
-     * @param aStack
-     * @return
-     */
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        if (aStack != null) {
-            for (ItemStack aValid : getItemsValidForUsageSlots()) {
-                if (GTUtility.areStacksEqual(aStack, aValid, true)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    public abstract boolean isItemValidForInputSlot(ItemStack aStack);
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -255,5 +203,63 @@ public abstract class MTEHatchNbtConsumable extends MTEHatch {
     @Override
     protected boolean useMui2() {
         return true;
+    }
+
+    private class LimitingItemSink extends GTItemSink {
+
+        private final ForgeDirection side;
+        private int[] allowedSlots;
+
+        public LimitingItemSink(ForgeDirection side) {
+            super(MTEHatchNbtConsumable.this, side);
+            this.side = side;
+        }
+
+        @Override
+        public void resetSink() {
+            super.resetSink();
+            allowedSlots = null;
+        }
+
+        @Override
+        public void setAllowedSinkSlots(int @Nullable [] slots) {
+            this.allowedSlots = slots;
+        }
+
+        @Override
+        public @NotNull StandardInventoryIterator sinkIterator() {
+            Set<ItemStack> stored = new ObjectOpenCustomHashSet<>(ItemId.STACK_ITEM_META_STRATEGY);
+
+            for (int i = getFirstUsageSlot(); i < getLastUsageSlot(); i++) {
+                if (mInventory[i] != null) {
+                    stored.add(mInventory[i]);
+                }
+            }
+
+            return new StandardInventoryIterator(inv, side, getSlots(), this.allowedSlots) {
+
+                @Override
+                protected boolean canAccess(ItemStack stack, int slot) {
+                    return canInsert(stack, slot);
+                }
+
+                @Override
+                protected boolean canInsert(ItemStack stack, int slot) {
+                    return !stored.contains(stack);
+                }
+
+                @Override
+                protected int getSlotStackLimit(int slot, ItemStack stack) {
+                    return LimitingItemSink.this.getSlotStackLimit(slot, stack);
+                }
+
+                @Override
+                protected void setInventorySlotContents(int slot, ItemStack stack) {
+                    super.setInventorySlotContents(slot, stack);
+
+                    stored.add(stack);
+                }
+            };
+        }
     }
 }
