@@ -55,6 +55,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
@@ -234,6 +236,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.NANOCHIP;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTENanochipAssemblyModuleBaseGui(this);
     }
 
     protected static class ItemInputInformation {
