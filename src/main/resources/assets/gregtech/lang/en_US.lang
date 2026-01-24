@@ -1603,9 +1603,13 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+
+# NAC Keys
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
 GT5U.gui.text.nac.waiting_for_power=Waiting For Power
 GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
+
+GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
@@ -1785,6 +1789,14 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+GT5U.gui.text.contributors.panel.open=Open Contributor List
+GT5U.gui.text.contributors.header=Contributors
+GT5U.gui.text.contributors.projectlead=Project Lead
+GT5U.gui.text.contributors.programming=Programming
+GT5U.gui.text.contributors.textures=Textures
+GT5U.gui.text.contributors.rendering=Rendering
+GT5U.gui.text.contributors.structure=Structure
+GT5U.gui.text.contributors.playtesting=Playtesting
 # chats
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
@@ -2764,15 +2776,9 @@ gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
 GT5U.gui.text.foundry.modules.installed=Showing Installed Modules
 GT5U.gui.button.foundrymoduleselect=Toggle Module Selection Terminal
-GT5U.gui.button.foundry.contributorpanel=Open Contributor List
 
-GT5U.gui.text.foundry.projectlead=Project Lead
-GT5U.gui.text.foundry.programming=Programming
-GT5U.gui.text.foundry.textures=Textures
-GT5U.gui.text.foundry.rendering=Rendering
 GT5U.gui.text.foundry.structure=Structure Architect
 GT5U.gui.text.foundry.idea=Original Idea
-GT5U.gui.text.foundry.playtest=Playtesting
 
 GT5U.gui.text.foundry.pairings.activity.on=This pairing is §aactive
 GT5U.gui.text.foundry.pairings.activity.off=This pairing is §cinactive
