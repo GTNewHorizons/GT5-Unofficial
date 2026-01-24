@@ -160,7 +160,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
                     + "Constructing strong casings for your circuits since 1984.")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
-            .toolTipFinisher("GregTech");
+            .toolTipFinisher();
     }
 
     @Override
