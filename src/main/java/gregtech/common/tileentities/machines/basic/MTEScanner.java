@@ -153,7 +153,7 @@ public class MTEScanner extends MTEBasicMachine {
                         this.mEUt = 1;
                         return 2;
                     }
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     if (D1) {
                         e.printStackTrace(GTLog.err);
                     }

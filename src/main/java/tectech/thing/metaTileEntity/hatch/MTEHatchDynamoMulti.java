@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -18,7 +19,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.util.CommonValues;
@@ -67,7 +67,11 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         if (maxAmperes > 64) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            // Laser hatches are separate classes, so detect by type instead of amperage.
+            if (this instanceof MTEHatchDynamoTunnel) {
+                return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            }
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_256A[mTier + 1] };
         } else if (maxAmperes > 16) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
         } else if (maxAmperes > 4) {
@@ -82,7 +86,10 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         if (maxAmperes > 64) {
-            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            if (this instanceof MTEHatchDynamoTunnel) {
+                return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
+            }
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_256A[mTier + 1] };
         } else if (maxAmperes > 16) {
             return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
         } else if (maxAmperes > 4) {
@@ -153,7 +160,7 @@ public class MTEHatchDynamoMulti extends MTEHatch {
         currenttip.add(
             translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+                + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
                 + EnumChatFormatting.RESET
@@ -164,7 +171,7 @@ public class MTEHatchDynamoMulti extends MTEHatch {
     public String[] getInfoData() {
         return new String[] { translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
             + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(Amperes * V[mTier])
+            + formatNumber(Amperes * V[mTier])
             + EnumChatFormatting.RESET
             + " EU/t" };
     }

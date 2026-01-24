@@ -25,9 +25,7 @@ public class FishTrapHandler {
             if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(itemName, 1) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1))
-                    .itemOutputs(
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
-                        ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1))
+                    .itemOutputs(Materials.MeatRaw.getDust(1), Materials.Bone.getDustTiny(1))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
                     .eut(2)
@@ -49,9 +47,7 @@ public class FishTrapHandler {
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1))
-                .itemOutputs(
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1),
-                    ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1))
+                .itemOutputs(Materials.MeatRaw.getDust(1), Materials.Bone.getDustTiny(1))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
