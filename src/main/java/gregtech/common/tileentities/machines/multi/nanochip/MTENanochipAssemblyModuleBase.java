@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -103,7 +104,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     public int getMaxRecipeDuration() {
-        return ((NACRecipeMapBackend) (this.getRecipeMap().getBackend())).getMaxDuration();
+        return ((NACRecipeMapBackend) (this.getRecipeMap()
+            .getBackend())).getMaxDuration();
     }
 
     protected long euBufferSize = TierEU.UV * 4096 * 20;
@@ -427,12 +429,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setLong("bufferSize", this.euBufferSize);
+        aNBT.setBoolean("connected", this.isConnected);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.euBufferSize = aNBT.getLong("bufferSize");
+        this.isConnected = aNBT.getBoolean("connected");
     }
 
     @Override
@@ -673,6 +677,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 "speedBoost",
                 this.getBonusSpeedModifier() * Math.min(10, getSpeedModifierForOutput(optimizedEntry.getKey())));
         }
+        tag.setBoolean("connected", isConnected());
+
     }
 
     @Override
@@ -689,5 +695,13 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             currentTip.add(insertIdx++, "Optimized for: " + tag.getString("optimizedItem"));
         if (tag.hasKey("speedBoost")) currentTip
             .add(insertIdx, "Speed boost: §b" + GTUtility.formatNumbers((100 * tag.getDouble("speedBoost"))) + "%");
+        if (tag.hasKey("connected")) {
+            if (tag.getBoolean("connected")) {
+                currentTip.add(insertIdx, EnumChatFormatting.GREEN + "Connected To Main Complex");
+            } else {
+                currentTip.add(insertIdx, EnumChatFormatting.RED + "Disconnected from Main Complex");
+            }
+
+        }
     }
 }

@@ -1,14 +1,17 @@
 package gregtech.api.recipe.check;
 
-import gregtech.api.enums.Dyes;
+import java.util.Objects;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import gregtech.api.enums.Dyes;
 
 public class ResultNoValidOutputColor implements CheckRecipeResult {
+
     private byte color;
 
     ResultNoValidOutputColor(byte color) {
@@ -27,12 +30,10 @@ public class ResultNoValidOutputColor implements CheckRecipeResult {
 
     @Override
     public @NotNull String getDisplayString() {
-        String dyeName = Dyes.get(color).getLocalizedDyeName();
-        return Objects.requireNonNull(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.nac.no_valid_hatch_color",
-                dyeName
-            ));
+        String dyeName = Dyes.get(color)
+            .getLocalizedDyeName();
+        return Objects
+            .requireNonNull(StatCollector.translateToLocalFormatted("GT5U.gui.text.nac.no_valid_hatch_color", dyeName));
     }
 
     @Override

@@ -662,19 +662,25 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_ASSEMBLY_CONTROLLER.ID,
                 "multimachine.nanochipassemblycomplex",
                 "Nanochip Assembly Complex").getStackForm(1));
-        addItemTooltip(ItemList.Machine_Multi_NanochipAssemblyComplex.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.Machine_Multi_NanochipAssemblyComplex.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_AssemblyMatrix.set(
             new MTEAssemblyMatrixModule(
                 NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
                 "multimachine.nanochipmodule.assemblymatrix",
                 "Nanochip Assembly Matrix").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_AssemblyMatrix.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_AssemblyMatrix.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_SMDProcessor.set(
             new MTESMDProcessorModule(
                 NANOCHIP_MODULE_SMD_PROCESSOR.ID,
                 "multimachine.nanochipmodule.smdprocessor",
                 "Part Preparation Apparatus").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_SMDProcessor.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_SMDProcessor.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_BoardProcessor.set(
             new MTEBoardProcessorModule(
                 NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
@@ -686,13 +692,17 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_ETCHING_ARRAY.ID,
                 "multimachine.nanochipmodule.etchingarray",
                 "Ultra-high Energy Etching Array").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_EtchingArray.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_EtchingArray.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_CuttingChamber.set(
             new MTECuttingChamberModule(
                 NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
                 "multimachine.nanochipmodule.cuttingchamber",
                 "Nanoprecision Cutting Chamber").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_CuttingChamber.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_CuttingChamber.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_WireTracer.set(
             new MTEWireTracerModule(
                 NANOCHIP_MODULE_WIRE_TRACER.ID,
@@ -704,7 +714,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
                 "multimachine.nanochipmodule.superconductorsplitter",
                 "Superconductive Strand Splitter").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_SuperconductorSplitter.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_SuperconductorSplitter.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_Splitter.set(
             new MTESplitterModule(
                 NANOCHIP_MODULE_SPLITTER.ID,
@@ -716,19 +728,25 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
                 "multimachine.nanochipmodule.opticalorganizer",
                 "Optically Optimized Organizer").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_OpticalOrganizer.get(1), chain(() -> "Author: ", GTValues.fancyAuthorChrom));
+        addItemTooltip(
+            ItemList.NanoChipModule_OpticalOrganizer.get(1),
+            chain(() -> "Author: ", GTValues.fancyAuthorChrom));
         ItemList.NanoChipModule_EncasementWrapper.set(
             new MTEEncasementWrapperModule(
                 NANOCHIP_MODULE_ENCASEMENT_WRAPPER.ID,
                 "multimachine.nanochipmodule.encasementwrapper",
                 "Nanometer Encasement Wrapper").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_EncasementWrapper.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_EncasementWrapper.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
         ItemList.NanoChipModule_BiologicalCoordinator.set(
             new MTEBiologicalCoordinationModule(
                 NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
                 "multimachine.nanochipmodule.biologicalcoordinator",
                 "Accelerated Biological Coordinator").getStackForm(1));
-        addItemTooltip(ItemList.NanoChipModule_BiologicalCoordinator.get(1), chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
+        addItemTooltip(
+            ItemList.NanoChipModule_BiologicalCoordinator.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguin));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
