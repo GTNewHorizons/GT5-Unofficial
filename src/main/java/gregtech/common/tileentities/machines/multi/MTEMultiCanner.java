@@ -50,9 +50,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanner> implements ISurvivalConstructable {
 
-    private static final int MACHINEMODE_CANNER = 0;
-    private static final int MACHINEMODE_FLUIDCANNER = 1;
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMultiCanner> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMultiCanner>builder()
@@ -134,8 +131,7 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Canner, Fluid Canner")
-            .addInfo("Use screwdriver to switch mode")
+        tt.addMachineType("Canner")
             .addBulkMachineInfo(8, 2f, 1)
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
             .beginStructureBlock(7, 5, 7, true)
@@ -176,8 +172,6 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 2, 2)) return false;
         return mCasingAmount >= 85;
-
-        // All checks passed!
     }
 
     @Override
@@ -193,57 +187,12 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_FLUIDCANNER) ? RecipeMaps.fluidCannerRecipes : RecipeMaps.cannerRecipes;
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.fluidCannerRecipes, RecipeMaps.cannerRecipes);
+        return RecipeMaps.cannerRecipes;
     }
 
     @Override
     public int getRecipeCatalystPriority() {
         return -10;
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("fluidMode")) {
-            machineMode = aNBT.getBoolean("fluidMode") ? MACHINEMODE_FLUIDCANNER : MACHINEMODE_CANNER;
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        setMachineMode(nextMachineMode());
-        GTUtility
-            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
-    }
-
-    @Override
-    public void setMachineModeIcons() {
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
-    }
-
-    @Override
-    public String getMachineModeName() {
-        return translateToLocal("GT5U.MULTI_CANNER.mode." + machineMode);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("mode", getMachineModeName());
     }
 
     @Override
@@ -264,12 +213,5 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
-    }
-
-    @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER,
-            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 }
