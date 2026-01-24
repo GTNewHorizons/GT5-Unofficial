@@ -243,8 +243,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public String getTypeForDisplay() {
 
         if (!isImprinted()) return "";
-        return GTLanguageManager.getTranslation(
-            GTLanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
+        return CircuitImprintLoader.getStackFromTag(this.type).getDisplayName();
     }
 
     private NBTTagCompound type = new NBTTagCompound();
