@@ -255,6 +255,8 @@ public enum CircuitComponent {
 
     // Circuit encasement
     MainframeCasing("gt.circuitcomponent.casing.mainframe", true),
+    PicoCircuitCasing("gt.circuitcomponent.casing.pico", true),
+    QuantumCircuitCasing("gt.circuitcomponent.casing.quantum", true),
 
     // Misc
     CableOpticalFiber(
