@@ -73,7 +73,7 @@ import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings12;
-import gregtech.common.gui.modularui.multiblock.MTEChamberCentrifugeGui;
+import gregtech.common.gui.modularui.multiblock.MTESpinmatronGui;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tools.ToolTurbineHuge;
@@ -85,8 +85,7 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
-public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEChamberCentrifuge>
-    implements ISurvivalConstructable {
+public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron> implements ISurvivalConstructable {
 
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
@@ -115,7 +114,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     private boolean staticAnimations = false;
     // spotless:off
 
-    private static final IStructureDefinition<MTEChamberCentrifuge> STRUCTURE_DEFINITION = StructureDefinition.<MTEChamberCentrifuge>builder()
+    private static final IStructureDefinition<MTESpinmatron> STRUCTURE_DEFINITION = StructureDefinition.<MTESpinmatron>builder()
         .addShape(
             STRUCTURE_TIER_1,
             transpose(
@@ -204,12 +203,11 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         //spotless:on
         .addElement(
             'A',
-            buildHatchAdder(MTEChamberCentrifuge.class)
+            buildHatchAdder(MTESpinmatron.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, ExoticEnergy)
                 .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(9))
                 .hint(1)
-                .buildAndChain(
-                    onElementPass(MTEChamberCentrifuge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
+                .buildAndChain(onElementPass(MTESpinmatron::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings12, 9))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0)) // PBI Pipe Casing
         .addElement('C', ofBlock(GregTechAPI.sBlockGlass1, 6)) // Central Grate Casing
         .addElement('D', chainAllGlasses())
@@ -242,16 +240,16 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
         .build();
 
-    public MTEChamberCentrifuge(final int aID, final String aName, final String aNameRegional) {
+    public MTESpinmatron(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEChamberCentrifuge(String aName) {
+    public MTESpinmatron(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEChamberCentrifuge> getStructureDefinition() {
+    public IStructureDefinition<MTESpinmatron> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
@@ -345,7 +343,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEChamberCentrifuge(this.mName);
+        return new MTESpinmatron(this.mName);
     }
 
     @Override
@@ -762,8 +760,8 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
     }
 
     @Override
-    protected @NotNull MTEChamberCentrifugeGui getGui() {
-        return new MTEChamberCentrifugeGui(this);
+    protected @NotNull MTESpinmatronGui getGui() {
+        return new MTESpinmatronGui(this);
     }
 
     public int getRP() {
@@ -808,7 +806,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
 
     @Override
     protected SoundResource getActivitySoundLoop() {
-        return SoundResource.GT_MACHINES_CHAMBER_CENTRIFUGE;
+        return SoundResource.GT_MACHINES_SPINMATRON;
     }
 
     @Override
@@ -846,22 +844,21 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
         return true;
     }
 
-    private enum CentrifugeHatchElement implements IHatchElement<MTEChamberCentrifuge> {
+    private enum CentrifugeHatchElement implements IHatchElement<MTESpinmatron> {
 
-        ROTOR_ASSEMBLY(MTEChamberCentrifuge::addTurbineHatch, MTEHatchTurbine.class) {
+        ROTOR_ASSEMBLY(MTESpinmatron::addTurbineHatch, MTEHatchTurbine.class) {
 
             @Override
-            public long count(MTEChamberCentrifuge mteChamberCentrifuge) {
-                return mteChamberCentrifuge.turbineRotorHatchList.size();
+            public long count(MTESpinmatron mteSpinmatron) {
+                return mteSpinmatron.turbineRotorHatchList.size();
             }
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEChamberCentrifuge> adder;
+        private final IGTHatchAdder<MTESpinmatron> adder;
 
         @SafeVarargs
-        CentrifugeHatchElement(IGTHatchAdder<MTEChamberCentrifuge> adder,
-            Class<? extends IMetaTileEntity>... mteClasses) {
+        CentrifugeHatchElement(IGTHatchAdder<MTESpinmatron> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -871,7 +868,7 @@ public class MTEChamberCentrifuge extends MTEExtendedPowerMultiBlockBase<MTECham
             return mteClasses;
         }
 
-        public IGTHatchAdder<? super MTEChamberCentrifuge> adder() {
+        public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
         }
     }

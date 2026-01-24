@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.List;
@@ -230,11 +231,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
+                    "Average CPU load of ~" + formatNumber(tAverageTime / samples)
                         + "ns over "
-                        + GTUtility.formatNumbers(samples)
+                        + formatNumber(samples)
                         + " ticks with worst time of "
-                        + GTUtility.formatNumbers(tWorstTime)
+                        + formatNumber(tWorstTime)
                         + "ns.");
             }
         } else {
