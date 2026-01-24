@@ -1840,19 +1840,19 @@ public class MachineLoader implements Runnable {
                 .getStackForm(1L));
         addItemTooltip(
             Machine_Multi_ForgeOfGods.get(1),
-            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_SmeltingModule.set(
             new MTESmeltingModule(HelioflarePowerForge.ID, "multimachine.em.smelting_module", "Helioflare Power Forge")
                 .getStackForm(1L));
         addItemTooltip(
             Machine_Multi_SmeltingModule.get(1),
-            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_MoltenModule.set(
             new MTEMoltenModule(HeliofluxMeltingCore.ID, "multimachine.em.molten_module", "Helioflux Melting Core")
                 .getStackForm(1L));
         addItemTooltip(
             Machine_Multi_MoltenModule.get(1),
-            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_PlasmaModule.set(
             new MTEPlasmaModule(
                 HeliothermalPlasmaFabricator.ID,
@@ -1860,13 +1860,13 @@ public class MachineLoader implements Runnable {
                 "Heliothermal Plasma Fabricator").getStackForm(1L));
         addItemTooltip(
             Machine_Multi_PlasmaModule.get(1),
-            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
         Machine_Multi_QuarkGluonPlasmaModule.set(
             new MTEExoticModule(HeliofusionExoticizer.ID, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
                 .getStackForm(1L));
         addItemTooltip(
             Machine_Multi_QuarkGluonPlasmaModule.get(1),
-            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
+            GTAuthors.buildAuthorsWithFormatSupplier(GTAuthors.AuthorCloud));
 
         // ===================================================================================================
         // Hatches

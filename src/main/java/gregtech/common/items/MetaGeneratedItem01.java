@@ -3499,7 +3499,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
         int aDamage = aItemEntity.getEntityItem()
             .getItemDamage();
-        if ((aDamage < 32000) && (aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
+        if (Materials.isMaterialItem(aDamage) && (!aItemEntity.worldObj.isRemote)) {
             Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 int tX = MathHelper.floor_double(aItemEntity.posX);
@@ -3558,7 +3558,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         if (blockClicked == Blocks.cauldron && metadata > 0) {
             final int damage = oldItemStack.getItemDamage();
 
-            if ((damage < 32000) && (damage >= 0)) {
+            if (Materials.isMaterialItem(damage)) {
                 final Materials oldMaterial = GregTechAPI.sGeneratedMaterials[(damage % 1000)];
                 final OrePrefixes oldPrefix = this.mGeneratedPrefixList[(damage / 1000)];
                 final ItemStack newItemStack = getCauldronWashingResult(oldPrefix, oldMaterial, oldItemStack.stackSize);
@@ -3623,7 +3623,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int aDamage = aStack.getItemDamage();
-        if ((aDamage < 32000) && (aDamage >= 0)) {
+        if (Materials.isMaterialItem(aDamage)) {
             Materials aMaterial = GregTechAPI.sGeneratedMaterials[(aDamage % 1000)];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];

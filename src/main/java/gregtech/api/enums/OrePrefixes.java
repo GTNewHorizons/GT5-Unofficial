@@ -2869,4 +2869,12 @@ public class OrePrefixes {
     public String getLocalizedNameForItem(Materials materials) {
         return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
     }
+
+    public static String getLocalizedNameForItem(String prefix, String materialName) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix), materialName);
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix, formatString), materialName);
+    }
 }

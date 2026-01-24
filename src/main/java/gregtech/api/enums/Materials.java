@@ -2007,6 +2007,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             this.getLocalizedName()).replace("%temp", "%s");
     }
 
+    public static boolean isMaterialItem(int meta) {
+        return meta >= 0 && meta < 32000;
+    }
+
+    public static boolean isMaterialItem(@NotNull ItemStack stack) {
+        return isMaterialItem(stack.getItemDamage());
+    }
+
     @Override
     public boolean generatesPrefix(OrePrefixes prefix) {
         return prefix.doGenerateItem(this);

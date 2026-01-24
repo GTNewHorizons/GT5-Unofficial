@@ -113,10 +113,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     /** Returns null for item damage out of bounds. */
     private Materials getMaterial(int damage) {
-        if (damage < 0) {
-            return null;
-        }
-        if (damage >= 32000) {
+        if (!Materials.isMaterialItem(damage)) {
             return null;
         }
         return GregTechAPI.sGeneratedMaterials[damage % 1_000];
@@ -206,7 +203,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) return;
+        if (!Materials.isMaterialItem(aStack)) return;
         final int damage = aStack.getItemDamage();
         final Materials material = getMaterial(damage);
         final OrePrefixes prefix = getOrePrefix(damage);

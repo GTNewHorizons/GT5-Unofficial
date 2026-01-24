@@ -343,7 +343,10 @@ public class GTAuthors {
     }
 
     @SafeVarargs
-    public static Supplier<String> buildAuthorsSupplierWithFormat(Supplier<String>... authors) {
-        return () -> buildAuthorsWithFormat(Arrays.stream(authors).map(Supplier::get).toArray(String[]::new));
+    public static Supplier<String> buildAuthorsWithFormatSupplier(Supplier<String>... authors) {
+        return () -> buildAuthorsWithFormat(
+            Arrays.stream(authors)
+                .map(Supplier::get)
+                .toArray(String[]::new));
     }
 }

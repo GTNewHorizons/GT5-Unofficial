@@ -9,7 +9,6 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import org.jetbrains.annotations.NotNull;
@@ -171,9 +170,7 @@ public class BlockBaseModular extends BasicBlock {
 
     @Override
     public String getLocalizedName() {
-        return StatCollector.translateToLocalFormatted(
-            OrePrefixes.getOreprefixKey(getProperName(), "%s"),
-            this.blockMaterial.getLocalizedName());
+        return OrePrefixes.getLocalizedNameForItem(getProperName(), "%s", this.blockMaterial.getLocalizedName());
     }
 
     @Override

@@ -229,10 +229,8 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
         if (defaultLocalName.contains(oreprefixNameRemovedFormat)) {
             if (String.format(oreprefixName, materialName)
                 .equals(defaultLocalName)) {
-                localizedName = () -> StatCollector.translateToLocalFormatted(
-                    OrePrefixes.getOreprefixKey(oreprefixName)
-                        .replace("%s", "material"),
-                    StatCollector.translateToLocal(key));
+                localizedName = () -> OrePrefixes
+                    .getLocalizedNameForItem(oreprefixName, "%s", StatCollector.translateToLocal(key));
                 return true;
             }
         }

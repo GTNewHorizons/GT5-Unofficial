@@ -159,9 +159,7 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return StatCollector.translateToLocalFormatted(
-            OrePrefixes.getOreprefixKey(componentType.getName(), "@"),
-            translatedMaterialName.get());
+        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", translatedMaterialName.get());
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
