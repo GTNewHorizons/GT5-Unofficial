@@ -9,9 +9,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.Arrays;
@@ -338,7 +342,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             ETCHING_OFFSET_X,
@@ -364,8 +368,21 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("NAC Module")
             .addInfo(NAC_MODULE)
-            .addInfo("Etches your Chip " + TOOLTIP_CC + "s")
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
+            .addSeparator()
+            .addInfo("Uses beamline particles to etch your Chip " + TOOLTIP_CCs)
+            .addInfo("Outputs are placed in the " + TOOLTIP_VCO + " with the same " + colorString() + " as the input " + TOOLTIP_VCI)
+            .addInfo("Every " + EnumChatFormatting.RED + "5" + EnumChatFormatting.GRAY + " seconds, picks a random particle between "
+            + EnumChatFormatting.WHITE + "Positron" + EnumChatFormatting.GRAY + ", "
+            + EnumChatFormatting.WHITE + "Electron" + EnumChatFormatting.GRAY + " and "
+            + EnumChatFormatting.WHITE + "Alpha")
+            .addInfo("Use the " + EnumChatFormatting.YELLOW + "Particle Indicator Hatch" + EnumChatFormatting.GRAY + " to read out this particle")
+            .addInfo("To start a recipe, the correct particle must be present in the " + EnumChatFormatting.YELLOW + "Beamline Input Hatch")
+            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.LIGHT_PURPLE + ""
+                    + EnumChatFormatting.ITALIC
+                    + "The energy of a particle accelerator is used to etch even finer details into your chips")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
             .addOtherStructurePart("Beamline Input Hatch", addHintNumber(1))
