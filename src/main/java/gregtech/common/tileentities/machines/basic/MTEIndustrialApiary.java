@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.basic;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTAuthors.AuthorKuba;
-import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY_ACTIVE;

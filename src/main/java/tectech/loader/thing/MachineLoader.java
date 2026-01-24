@@ -1838,25 +1838,35 @@ public class MachineLoader implements Runnable {
         Machine_Multi_ForgeOfGods.set(
             new MTEForgeOfGods(ForgeoftheGods.ID, "multimachine.em.forge_of_gods", "Forge of the Gods")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_ForgeOfGods.get(1), GTAuthors.AuthorCloudSupplier);
+        addItemTooltip(
+            Machine_Multi_ForgeOfGods.get(1),
+            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
         Machine_Multi_SmeltingModule.set(
             new MTESmeltingModule(HelioflarePowerForge.ID, "multimachine.em.smelting_module", "Helioflare Power Forge")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_SmeltingModule.get(1), GTAuthors.AuthorCloudSupplier);
+        addItemTooltip(
+            Machine_Multi_SmeltingModule.get(1),
+            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
         Machine_Multi_MoltenModule.set(
             new MTEMoltenModule(HeliofluxMeltingCore.ID, "multimachine.em.molten_module", "Helioflux Melting Core")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_MoltenModule.get(1), GTAuthors.AuthorCloudSupplier);
+        addItemTooltip(
+            Machine_Multi_MoltenModule.get(1),
+            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
         Machine_Multi_PlasmaModule.set(
             new MTEPlasmaModule(
                 HeliothermalPlasmaFabricator.ID,
                 "multimachine.em.plasma_module",
                 "Heliothermal Plasma Fabricator").getStackForm(1L));
-        addItemTooltip(Machine_Multi_PlasmaModule.get(1), GTAuthors.AuthorCloudSupplier);
+        addItemTooltip(
+            Machine_Multi_PlasmaModule.get(1),
+            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
         Machine_Multi_QuarkGluonPlasmaModule.set(
             new MTEExoticModule(HeliofusionExoticizer.ID, "multimachine.em.exotic_module", "Heliofusion Exoticizer")
                 .getStackForm(1L));
-        addItemTooltip(Machine_Multi_QuarkGluonPlasmaModule.get(1), GTAuthors.AuthorCloudSupplier);
+        addItemTooltip(
+            Machine_Multi_QuarkGluonPlasmaModule.get(1),
+            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
 
         // ===================================================================================================
         // Hatches

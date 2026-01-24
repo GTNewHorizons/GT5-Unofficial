@@ -208,8 +208,8 @@ public class MTEHatchInput extends MTEHatch {
     @Override
     public String[] getDescription() {
         final int slots = mInventory.length;
-        if (slots == 3) return GTSplit
-            .splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", GTUtility.formatNumbers(getCapacity()));
+        if (slots == 3)
+            return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch.desc", formatNumber(getCapacity()));
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.input_hatch_multislot.desc",
             formatNumber(getCapacityPerTank(mTier, slots)),

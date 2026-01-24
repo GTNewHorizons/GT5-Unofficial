@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.StringUtils;
@@ -17,13 +19,6 @@ import gregtech.api.util.StringUtils;
  * Pretty formatting for author names.
  */
 public class GTAuthors {
-
-    private static final String[] formattingCodes;
-    static {
-        // a list specifically for random selection of formatting codes.
-        formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE,
-            YELLOW, WHITE, OBFUSCATED, UNDERLINE };
-    }
 
     public static final String AuthorColen = "" + EnumChatFormatting.DARK_RED
         + EnumChatFormatting.BOLD
@@ -116,8 +111,6 @@ public class GTAuthors {
             DARK_AQUA + "\u0B83",
             DARK_AQUA + OBFUSCATED + BOLD + "X",
             DARK_AQUA + BOLD + "\u29BC"));
-    public static final Supplier<String> AuthorCloudSupplier = () -> StatCollector
-        .translateToLocalFormatted("gt.author", AuthorCloud.get());
     public static final String AuthorQuerns = EnumChatFormatting.RED + "Querns";
     public static final String AuthorSilverMoon = EnumChatFormatting.AQUA + "SilverMoon";
     public static final String AuthorTheEpicGamer274 = EnumChatFormatting.DARK_AQUA + "TheEpicGamer274";
@@ -207,8 +200,8 @@ public class GTAuthors {
             int prependedFormattingCodes = 1 + random.nextInt(2);
             for (int codeStep = 0; codeStep < prependedFormattingCodes; codeStep++) {
                 // adds fun formatting codes
-                int randIndex = random.nextInt(formattingCodes.length);
-                builder.append(formattingCodes[randIndex]);
+                int randIndex = random.nextInt(GTValues.formattingCodes.length);
+                builder.append(GTValues.formattingCodes[randIndex]);
             }
             // checks if its the correct positon to insert a special unicode character, injects if so, otherwise adds
             // the letter
@@ -244,6 +237,98 @@ public class GTAuthors {
         };
     }
 
+    // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
+    private static Supplier<String> emptyAnimatedText(int posstep, int delay, String... formattingArray) {
+        String text = " ";
+        if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
+
+        final int finalDelay = Math.max(delay, 1);
+        final int finalPosstep = Math.max(posstep, 0);
+
+        return () -> {
+            StringBuilder sb = new StringBuilder(text.length() * 3);
+            int offset = (int) ((System.currentTimeMillis() / finalDelay) % formattingArray.length);
+            for (int i = 0; i < text.length(); i++) {
+                char c = text.charAt(i);
+                int indexColorArray = (i * finalPosstep + formattingArray.length - offset) % formattingArray.length;
+                sb.append(formattingArray[indexColorArray]);
+                sb.append(c);
+            }
+            return sb.toString()
+                .replaceAll("\\s", "");
+        };
+    }
+
+    public static final Supplier<String> AuthorAuynonymous = chain(
+        createAuynonymousLetter(0),
+        createAuynonymousLetter(1),
+        createAuynonymousLetter(2),
+        createAuynonymousLetter(3),
+        createAuynonymousLetter(4),
+        createAuynonymousLetter(5),
+        createAuynonymousLetter(6),
+        createAuynonymousLetter(7),
+        createAuynonymousLetter(8),
+        createAuynonymousLetter(9),
+        createAuynonymousLetter(10));
+
+    private static Supplier<String> createAuynonymousLetter(int index) {
+        final String[] letters = new String[] { "A", "u", "y", "n", "o", "n", "y", "m", "o", "u", "s" };
+        String[] colorList = new String[letters.length];
+        final String letter = letters[index];
+        for (int i = 0; i < letters.length; i++) {
+            colorList[i] = LIGHT_PURPLE
+                + (i == (letters.length - index - 1) ? EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "<3"
+                    : letter);
+        }
+        return emptyAnimatedText(1, 1000, colorList);
+    }
+
+    public static final Supplier<String> AuthorSerenibyss = chain(
+        getAuthorSerenibyssLetter("S", 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
+        getAuthorSerenibyssLetter("e", 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
+        getAuthorSerenibyssLetter("r", 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
+        getAuthorSerenibyssLetter("e", 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
+        getAuthorSerenibyssLetter("n", 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("i", 1, AQUA, 15, WHITE, 21, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("b", 13, WHITE, 19, LIGHT_PURPLE, 23, WHITE),
+        getAuthorSerenibyssLetter("y", 2, AQUA, 8, LIGHT_PURPLE, 24, WHITE),
+        getAuthorSerenibyssLetter("s", 5, AQUA, 16, WHITE, 26, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("s", 4, LIGHT_PURPLE, 7, WHITE, 28, AQUA));
+
+    private static Supplier<String> getAuthorSerenibyssLetter(String letter, Object... switchParams) {
+        int[] switchIntervals = new int[switchParams.length / 2];
+        String[] colors = new String[switchParams.length / 2];
+        for (int i = 0; i < switchParams.length; i += 2) {
+            switchIntervals[i / 2] = (int) switchParams[i];
+            colors[i / 2] = (String) switchParams[i + 1];
+        }
+
+        String[] colorAlternator = new String[30];
+        int index = switchIntervals[0];
+        int switchIndex = 0;
+        boolean obfuscated = false;
+        do {
+            String color;
+            if (ArrayUtils.contains(switchIntervals, index)) {
+                obfuscated = true;
+                color = colors[switchIndex] + OBFUSCATED;
+            } else if (obfuscated) {
+                obfuscated = false;
+                switchIndex++;
+                if (switchIndex == colors.length) switchIndex = 0;
+                color = colors[switchIndex];
+            } else {
+                color = colors[switchIndex];
+            }
+            colorAlternator[index] = color;
+            index++;
+            if (index == 30) index = 0;
+        } while (index != switchIntervals[0]);
+
+        return animatedText(letter, 1, 250, colorAlternator);
+    }
+
     public static String formatAuthors(String... authors) {
         return StringUtils.formatList(
             Arrays.stream(authors)
@@ -255,5 +340,10 @@ public class GTAuthors {
         if (authors == null || authors.length == 0) return "";
         return StatCollector
             .translateToLocalFormatted("gt.author" + (authors.length == 1 ? "" : "s"), formatAuthors(authors));
+    }
+
+    @SafeVarargs
+    public static Supplier<String> buildAuthorsSupplierWithFormat(Supplier<String>... authors) {
+        return () -> buildAuthorsWithFormat(Arrays.stream(authors).map(Supplier::get).toArray(String[]::new));
     }
 }

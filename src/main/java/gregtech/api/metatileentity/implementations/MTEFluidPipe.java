@@ -931,13 +931,11 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public String[] getDescription() {
         List<String> descriptions = new ArrayList<>();
         descriptions.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.fluidpipe.capacity.desc",
-                GTUtility.formatNumber(mCapacity * 20L)));
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.capacity.desc", formatNumber(mCapacity * 20L)));
         descriptions.add(
-            StatCollector.translateToLocalFormatted(
-                "gt.blockmachines.fluidpipe.heat.desc",
-                GTUtility.formatNumber(mHeatResistance)));
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.fluidpipe.heat.desc", formatNumber(mHeatResistance)));
         if (!mGasProof) {
             descriptions.add(StatCollector.translateToLocal("gt.blockmachines.fluidpipe.no_gas_proof.desc"));
         }

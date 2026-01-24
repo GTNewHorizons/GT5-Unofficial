@@ -1488,7 +1488,9 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
     }
 
     private void registerAllAnimatedTooltips() {
-        addItemTooltip(ItemList.Transdimensional_Alignment_Matrix.get(1), GTAuthors.AuthorCloudSupplier);
+        addItemTooltip(
+            ItemList.Transdimensional_Alignment_Matrix.get(1),
+            GTAuthors.buildAuthorsSupplierWithFormat(GTAuthors.AuthorCloud));
     }
 
     private void initOreDictUnificatorEntries() {

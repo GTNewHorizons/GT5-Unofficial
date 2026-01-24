@@ -26,7 +26,6 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -59,8 +58,8 @@ public class MTEBoilerSolar extends MTEBoiler {
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.boiler.solar.desc",
-            GTUtility.formatNumber(getMaxOutputPerSecond()),
-            GTUtility.formatNumber(getMinOutputPerSecond()));
+            formatNumber(getMaxOutputPerSecond()),
+            formatNumber(getMinOutputPerSecond()));
     }
 
     public int getMinOutputPerSecond() {

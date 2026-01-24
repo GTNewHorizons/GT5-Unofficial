@@ -1,6 +1,7 @@
 package tectech.thing.casing;
 
 import static com.google.common.math.LongMath.pow;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
 
 import java.util.List;
