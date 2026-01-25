@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
@@ -38,6 +39,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -557,17 +559,15 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     public void getExtraInfoData(ArrayList<String> info) {
         String tRunning = mMaxProgresstime > 0
             ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
-                + EnumChatFormatting.RESET
+            + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
-                + EnumChatFormatting.RESET;
-
+            + EnumChatFormatting.RESET;
         String tMaintenance = getIdealStatus() == getRepairStatus()
             ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                + EnumChatFormatting.RESET
+            + EnumChatFormatting.RESET
             : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                + EnumChatFormatting.RESET;
+            + EnumChatFormatting.RESET;
         int tDura;
-
         StringBuilder aTurbineDamage = new StringBuilder();
         for (MTEHatchTurbine aHatch : this.getFullTurbineAssemblies()) {
             ItemStack aTurbine = aHatch.getTurbine();
@@ -575,7 +575,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(aTurbine)
                     * (MetaGeneratedTool.getToolDamage(aTurbine)) + 1));
             aTurbineDamage.append(EnumChatFormatting.RED)
-                .append(GTUtility.formatNumbers(tDura))
+                .append(formatNumber(tDura))
                 .append(EnumChatFormatting.RESET)
                 .append("% | ");
         }
@@ -583,14 +583,14 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         info.add(
             tRunning + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+                + formatNumber(((lEUt * mEfficiency) / 10000))
                 + EnumChatFormatting.RESET
                 + " EU/t");
 
         info.add(
             tRunning + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+                + formatNumber(((lEUt * mEfficiency) / 10000))
                 + EnumChatFormatting.RESET
                 + " EU/t");
 
@@ -598,25 +598,25 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         info.add(
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers((mEfficiency / 100F))
+                + formatNumber((mEfficiency / 100F))
                 + EnumChatFormatting.RESET
                 + "%");
         info.add(StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
-        // Divides optimal flow by 1000 if it's a dense steam
-            + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
+            // Divides optimal flow by 1000 if it's a dense steam
+            + formatNumber(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
             + EnumChatFormatting.RESET
             + " L/"
             + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
             + EnumChatFormatting.YELLOW
             + " ("
             + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                : StatCollector.translateToLocal("GT5U.turbine.tight"))
+            : StatCollector.translateToLocal("GT5U.turbine.tight"))
             + ")");
 
         info.add(
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(storedFluid)
+                + formatNumber(storedFluid)
                 + EnumChatFormatting.RESET
                 + "L");
 

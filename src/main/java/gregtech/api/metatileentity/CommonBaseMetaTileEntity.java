@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.List;
@@ -237,13 +238,13 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 tList.add(
                     padding + "Average: "
                         + color
-                        + GTUtility.formatNumbers(finalAverageTime)
+                        + formatNumber(finalAverageTime)
                         + EnumChatFormatting.RESET
                         + "ns");
                 tList.add(
                     padding + "Worst: "
                         + color
-                        + GTUtility.formatNumbers(finalWorstTime)
+                        + formatNumber(finalWorstTime)
                         + EnumChatFormatting.RESET
                         + "ns");
             }

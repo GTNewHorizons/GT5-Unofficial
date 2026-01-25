@@ -1,6 +1,8 @@
 package tectech.thing.metaTileEntity.multi.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -11,6 +13,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.YELLOW;
 import static tectech.thing.casing.BlockGTCasingsTT.texturePage;
 
 import java.util.ArrayList;
@@ -34,9 +38,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -334,8 +336,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
                 "tt.gui.tooltip.full_led_desc.in.id",
-                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
-                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + hatchNo + YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + YELLOW,
                 parametrization.getStatusIn(hatchNo, paramID).name.get()));
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
@@ -354,8 +356,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
                 "tt.gui.tooltip.full_led_desc.out.id",
-                "" + EnumChatFormatting.AQUA + hatchNo + EnumChatFormatting.YELLOW,
-                "" + EnumChatFormatting.AQUA + paramID + EnumChatFormatting.YELLOW,
+                "" + EnumChatFormatting.AQUA + hatchNo + YELLOW,
+                "" + EnumChatFormatting.AQUA + paramID + YELLOW,
                 parametrization.getStatusOut(hatchNo, paramID).name.get()));
         list.add(
             EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
@@ -375,9 +377,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             .toolTipFinisher();
     }
 
-    /**
-     * scanner gives it
-     */
     @Override
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
@@ -385,8 +384,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.computation",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET));
+                EnumChatFormatting.GREEN + formatNumber(eAvailableData) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(eRequiredData) + EnumChatFormatting.RESET));
 
         return info.toArray(new String[0]);
     }
@@ -879,9 +878,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
-        if (getBaseMetaTileEntity().isClientSide()) {
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
-        }
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 

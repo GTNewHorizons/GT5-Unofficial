@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -48,7 +49,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -348,14 +348,14 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         info.add(
             StatCollector.translateToLocal("scanner.info.XHE.0") + " "
                 + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(this.mEUt)
+                + formatNumber(this.mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t");
 
         info.add(
             StatCollector.translateToLocal("scanner.info.XHE.1") + " "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(tThreshold)
+                + formatNumber(tThreshold)
                 + EnumChatFormatting.RESET
                 + " L/s");
     }

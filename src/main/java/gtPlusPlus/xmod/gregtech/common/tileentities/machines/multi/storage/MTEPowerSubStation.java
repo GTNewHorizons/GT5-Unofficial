@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -681,58 +682,42 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         String mode;
         if (mIsOutputtingPower) {
             mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
-        } else {
-            mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
+                info.add(
+                    "Capacity: " + EnumChatFormatting.YELLOW
+                        + formatNumber(this.maxEUStore())
+                        + EnumChatFormatting.RESET);
+                info.add(
+                    "Running Costs: " + EnumChatFormatting.RED
+                        + formatNumber(this.computeEnergyTax())
+                        + EnumChatFormatting.RESET
+                        + " EU/t");
+                info.add("Controller Mode: " + mode);
+                info.add(
+                    "Average Input: " + EnumChatFormatting.BLUE
+                        + formatNumber(this.getAverageEuAdded())
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                info.add(
+                    "Average Output: " + EnumChatFormatting.GOLD
+                        + formatNumber(this.getAverageEuConsumed())
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                info.add(
+                    "Total Input: " + EnumChatFormatting.BLUE
+                        + formatNumber(this.mTotalEnergyAdded)
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                info.add(
+                    "Total Output: " + EnumChatFormatting.GOLD
+                        + formatNumber(this.mTotalEnergyConsumed)
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                info.add(
+                    "Total Costs: " + EnumChatFormatting.RED
+                        + formatNumber(this.mTotalEnergyLost)
+                        + EnumChatFormatting.RESET
+                        + " EU");
         }
-
-        String storedEnergyText;
-        if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText = EnumChatFormatting.RED + GTUtility.formatNumbers(this.getEUVar())
-                + EnumChatFormatting.RESET;
-        } else {
-            storedEnergyText = EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.getEUVar())
-                + EnumChatFormatting.RESET;
-        }
-
-        int errorCode = getErrorDisplayID();
-        boolean mMaint = (errorCode != 0);
-
-        info.add("Stored EU: " + storedEnergyText);
-        info.add(
-            "Capacity: " + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.maxEUStore())
-                + EnumChatFormatting.RESET);
-        info.add(
-            "Running Costs: " + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(this.computeEnergyTax())
-                + EnumChatFormatting.RESET
-                + " EU/t");
-        info.add("Controller Mode: " + mode);
-        info.add(
-            "Average Input: " + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(this.getAverageEuAdded())
-                + EnumChatFormatting.RESET
-                + " EU");
-        info.add(
-            "Average Output: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(this.getAverageEuConsumed())
-                + EnumChatFormatting.RESET
-                + " EU");
-        info.add(
-            "Total Input: " + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(this.mTotalEnergyAdded)
-                + EnumChatFormatting.RESET
-                + " EU");
-        info.add(
-            "Total Output: " + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(this.mTotalEnergyConsumed)
-                + EnumChatFormatting.RESET
-                + " EU");
-        info.add(
-            "Total Costs: " + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(this.mTotalEnergyLost)
-                + EnumChatFormatting.RESET
-                + " EU");
     }
 
     @Override

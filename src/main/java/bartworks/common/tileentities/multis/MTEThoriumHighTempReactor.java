@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -25,8 +26,6 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
-
-import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -63,6 +62,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+
+import java.util.ArrayList;
 
 public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor>
     implements ISurvivalConstructable {
@@ -146,7 +147,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("High Temperature Reactor, THTR")
-            .addInfo("Needs to be primed with " + GTUtility.formatNumbers(HELIUM_NEEDED) + " of helium")
+            .addInfo("Needs to be primed with " + formatNumber(HELIUM_NEEDED) + " of helium")
             .addInfo(
                 "Needs a constant supply of " + EnumChatFormatting.AQUA
                     + "coolant"
@@ -168,7 +169,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     + "4800L/t"
                     + EnumChatFormatting.GRAY
                     + " of coolant multiplied by efficiency")
-            .addInfo("Uses " + GTUtility.formatNumbers(powerUsage) + " EU/t")
+            .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
@@ -344,33 +345,19 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.progress",
-                GTUtility.formatNumbers(this.mProgresstime / 20),
-                GTUtility.formatNumbers(this.mMaxProgresstime / 20)));
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.thtr.triso_pebbles",
+            formatNumber(this.fuelSupply),
+            formatNumber(this.fuelSupply)));
 
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.triso_pebbles",
-                GTUtility.formatNumbers(this.fuelSupply),
-                GTUtility.formatNumbers(this.fuelSupply)));
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.htr.helium_level",
+            formatNumber(this.HeliumSupply),
+            formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)));
 
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.helium_level",
-                GTUtility.formatNumbers(this.HeliumSupply),
-                GTUtility.formatNumbers(MTEThoriumHighTempReactor.HELIUM_NEEDED)));
-
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.coolant",
-                GTUtility.formatNumbers(this.mProgresstime == 0 ? 0 : this.coolingPerTick)));
-
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())));
+        info.add(StatCollector.translateToLocalFormatted(
+            "BW.infoData.thtr.coolant",
+            formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)));
     }
 
     @Override

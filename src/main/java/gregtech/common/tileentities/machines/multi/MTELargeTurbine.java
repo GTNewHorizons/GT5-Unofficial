@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -358,35 +359,31 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
         int tDura = 0;
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof MetaGeneratedTool01) {
-            tDura = GTUtility.safeInt(
-                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(mInventory[1])
-                    * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
-        }
+            info.add(
+                StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + formatNumber(GTUtility.safeInt((long) realOptFlow))
+                    + EnumChatFormatting.RESET
+                    + " L/" // based on processing time uses ticks or seconds (for plasma)
+                    + (this.mMaxProgresstime == 1 ? 't' : 's'));
 
-        info.add(
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
-                + EnumChatFormatting.RESET
-                + " L/" // based on processing time uses ticks or seconds (for plasma)
-                + (this.mMaxProgresstime == 1 ? 't' : 's'));
-
-        info.add(
-            EnumChatFormatting.YELLOW + " ("
-                + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
+            info.add(
+                EnumChatFormatting.YELLOW + " ("
+                    + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
                     : StatCollector.translateToLocal("GT5U.turbine.tight"))
-                + ")");
+                    + ")");
 
-        info.add(
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(storedFluid)
-                + EnumChatFormatting.RESET
-                + "L");
+            info.add(
+                StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                    + EnumChatFormatting.GOLD
+                    + formatNumber(storedFluid)
+                    + EnumChatFormatting.RESET
+                    + "L");
 
-        info.add(
-            StatCollector.translateToLocal(
-                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%");
+            info.add(
+                StatCollector.translateToLocal(
+                    "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%");
+        }
     }
 
     public boolean hasTurbine() {

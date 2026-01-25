@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
@@ -10,9 +11,6 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static mcp.mobius.waila.api.SpecialChars.GREEN;
-import static mcp.mobius.waila.api.SpecialChars.RED;
-import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -29,7 +27,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -37,14 +34,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -58,6 +57,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -71,6 +72,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -78,6 +80,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
@@ -92,9 +95,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     // region variables
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
     private GTRecipe.RecipeAssemblyLine tRecipe;
-    private static final String assembly = "Assembly line";
-    private static final String scanner = "Scanner";
-    private String machineType = assembly;
+    private final static int MACHINE_MODE_RESEARCH = 0;
+    private final static int MACHINE_MODE_SCANNER = 1;
     private ItemStack holdItem;
     private long computationRemaining, computationRequired;
 
@@ -155,9 +157,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                     + EnumChatFormatting.DARK_BLUE
                     + "Tech"
                     + EnumChatFormatting.WHITE
-                    + ' '
-                    + machineType
-                    + " Recipe Generator");
+                    + " Assembly Line Recipe Generator");
         AssemblyLineUtils.setAssemblyLineRecipeOnDataStick(mInventory[1], tRecipe);
     }
 
@@ -213,8 +213,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
             boolean isDataStick = ItemList.Tool_DataStick.isStackEqual(controllerStack, false, true);
             boolean isDataOrb = ItemList.Tool_DataOrb.isStackEqual(controllerStack, false, true);
             if (isDataStick || isDataOrb) {
-                switch (machineType) {
-                    case scanner -> {
+                switch (machineMode) {
+                    case 1 -> {
                         if (isDataStick) {
                             for (GTRecipe.RecipeAssemblyLine assRecipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
                                 if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
@@ -278,7 +278,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                             }
                         }
                     }
-                    case assembly -> {
+                    case 0 -> {
                         for (GTRecipe.RecipeAssemblyLine assRecipe : TecTechRecipeMaps.researchableALRecipeList) {
                             if (GTUtility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                                 tRecipe = assRecipe;
@@ -360,79 +360,22 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(
-            (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
-                : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(Math.abs(mEUt))
-                + EnumChatFormatting.RESET
-                + " EU/t "
-                + translateToLocalFormatted("tt.keyword.at", clientLocale)
-                + " "
-                + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(eAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A");
-
-        info.add(
-            translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[getMaxEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.GREEN
-                + VN[getMinEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
-                + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eMaxAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A");
-
-        info.add(
-            translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %");
-
-        info.add(
-            translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
-                + EnumChatFormatting.BLUE
-                + ePowerPass
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
-                + ": "
-                + EnumChatFormatting.BLUE
-                + eSafeVoid);
-
-        info.add(
-            translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eAvailableData)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(eRequiredData)
-                + EnumChatFormatting.RESET);
+        info.add(translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
+            + EnumChatFormatting.GREEN
+            + formatNumber(eAvailableData)
+            + EnumChatFormatting.RESET
+            + " / "
+            + EnumChatFormatting.YELLOW
+            + formatNumber(eRequiredData)
+            + EnumChatFormatting.RESET);
 
         info.add(translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":");
 
-        info.add(
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(computationRemaining / 20L)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getComputationRequired()));
+        info.add(EnumChatFormatting.GREEN + formatNumber(computationRemaining / 20L)
+            + EnumChatFormatting.RESET
+            + " / "
+            + EnumChatFormatting.YELLOW
+            + formatNumber(getComputationRequired()));
     }
 
     @Override
@@ -467,7 +410,6 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         super.saveNBTData(aNBT);
         aNBT.setLong("eComputationRemaining", computationRemaining);
         aNBT.setLong("eComputationRequired", computationRequired);
-        aNBT.setString("eMachineType", machineType);
         if (holdItem != null) {
             aNBT.setTag("eHold", holdItem.writeToNBT(new NBTTagCompound()));
         } else {
@@ -480,7 +422,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         super.loadNBTData(aNBT);
         computationRemaining = aNBT.getLong("eComputationRemaining");
         computationRequired = aNBT.getLong("eComputationRequired");
-        machineType = aNBT.hasKey("eMachineType") ? aNBT.getString("eMachineType") : assembly;
+        if (aNBT.hasKey("eMachineType")) {
+            if (aNBT.getString("eMachineType")
+                .equals("Assembly line")) machineMode = MACHINE_MODE_RESEARCH;
+            else machineMode = MACHINE_MODE_SCANNER;
+            aNBT.removeTag("eMachineType");
+        }
         if (aNBT.hasKey("eHold")) {
             holdItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eHold"));
         } else {
@@ -581,14 +528,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
-        switch (machineType) {
-            case scanner -> machineType = assembly;
-            case assembly -> machineType = scanner;
-        }
-        aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation(
-                "gt.blockmachines.multimachine.em.research.mode." + machineType.replace(" ", "_")));
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Nonnull
@@ -598,45 +540,24 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
-                new TextWidget().setStringSupplier(
-                    () -> StatCollector.translateToLocalFormatted("GT5U.gui.text.researching_item", clientOutputName))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.research_progress",
-                            getComputationConsumed(),
-                            getComputationRequired(),
-                            GTUtility.formatNumbers(getComputationProgress())))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(
-                        widget -> computationRequired > 0 && clientOutputName != null && !clientOutputName.isEmpty()))
-            .widget(new FakeSyncWidget.LongSyncer(() -> computationRequired, aLong -> computationRequired = aLong))
-            .widget(new FakeSyncWidget.LongSyncer(() -> computationRemaining, aLong -> computationRemaining = aLong))
-            .widget(new FakeSyncWidget.StringSyncer(() -> {
-                if (tRecipe != null && tRecipe.mOutput != null) {
-                    return tRecipe.mOutput.getDisplayName();
-                }
-                return "";
-            }, aString -> clientOutputName = aString));
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("hasProblems", (getIdealStatus() - getRepairStatus()) > 0);
         tag.setFloat("efficiency", mEfficiency / 100.0F);
         tag.setBoolean("incompleteStructure", (getErrorDisplayID() & 64) != 0);
-        tag.setString("machineType", machineType);
+        tag.setString("mode", getMachineModeName());
         tag.setLong("computation", getComputationConsumed());
         tag.setLong("computationRequired", getComputationRequired());
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("GT5U.RESEARCH_STATION.mode." + machineMode);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
     }
 
     private long getComputationConsumed() {
@@ -655,24 +576,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-
-        if (tag.getBoolean("incompleteStructure")) {
-            currentTip.add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.incomplete") + RESET);
-        }
-        String efficiency = RESET + StatCollector
-            .translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
-        if (tag.getBoolean("hasProblems")) {
-            currentTip
-                .add(RED + StatCollector.translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
-        } else if (!tag.getBoolean("incompleteStructure")) {
-            currentTip
-                .add(GREEN + StatCollector.translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
-        }
-        currentTip.add(
-            StatCollector.translateToLocal(
-                "gt.blockmachines.multimachine.em.research.mode." + tag.getString("machineType")
-                    .replace(" ", "_")));
         currentTip.add(
             StatCollector.translateToLocalFormatted(
                 "gt.blockmachines.multimachine.em.research.computation",
@@ -704,6 +609,60 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     @Override
     public String[] getStructureDescription(ItemStack stackSize) {
         return description;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<MTEResearchStation>(this) {
+
+            @Override
+            protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
+                ModularPanel parent) {
+                StringSyncValue outputSyncer = new StringSyncValue(() -> {
+                    if (tRecipe == null || tRecipe.mOutput == null) return "";
+                    return tRecipe.mOutput.getDisplayName();
+                });
+                LongSyncValue computationReqSyncer = new LongSyncValue(() -> computationRequired);
+                LongSyncValue computationRemSyncer = new LongSyncValue(() -> computationRemaining);
+                syncManager.syncValue("outputName", outputSyncer);
+                syncManager.syncValue("computationRequired", computationReqSyncer);
+                syncManager.syncValue("computationRemaining", computationRemSyncer);
+
+                ListWidget<IWidget, ?> terminal = super.createTerminalTextWidget(syncManager, parent);
+                terminal.child(
+                    IKey.dynamic(
+                        () -> StatCollector
+                            .translateToLocalFormatted("GT5U.gui.text.researching_item", outputSyncer.getStringValue()))
+                        .asWidget()
+                        .setEnabledIf(
+                            ignored -> !outputSyncer.getStringValue()
+                                .isEmpty()))
+                    .child(IKey.dynamic(() -> {
+                        long computationRemaining = computationRemSyncer.getLongValue();
+                        long computationRequired = computationReqSyncer.getLongValue();
+
+                        return StatCollector.translateToLocalFormatted(
+                            "GT5U.gui.text.research_progress",
+                            (computationRequired - computationRemaining) / 20L,
+                            computationRequired / 20L,
+                            formatNumber(
+                                100d * ((double) (computationRequired - computationRemaining)
+                                    / (double) computationRequired)));
+                    })
+                        .asWidget()
+                        .setEnabledIf(
+                            ignored -> !outputSyncer.getStringValue()
+                                .isEmpty()));
+                return terminal;
+            }
+        }.withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RESEARCH,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SCANNER);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     private enum HolderHatchElement implements IHatchElement<MTEResearchStation> {

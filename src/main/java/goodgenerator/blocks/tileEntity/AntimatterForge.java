@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -52,7 +53,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -169,7 +169,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("Converts protomatter into antimatter")
             .addInfo("Use screwdriver to disable rendering")
             .addInfo(
-                "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
+                "Passively consumes " + formatNumber(BASE_CONSUMPTION)
                     + " + ("
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
@@ -192,7 +192,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
-                    + GTUtility.formatNumbers(activeBaseMult)
+                    + formatNumber(activeBaseMult)
                     + ")^("
                     + activeBaseExp
                     + " - "
@@ -388,7 +388,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
+                                 int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
@@ -432,7 +432,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
                     .isValid()
                     || amOutputHatches.get(i)
-                        .getFluid() == null)
+                    .getFluid() == null)
                     continue;
                 antimatterStored[i] = amOutputHatches.get(i)
                     .getFluid()
@@ -486,8 +486,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
             antimatterStored[i] = hatchEmpty ? ZERO_ANTIMATTER.copy()
                 : amOutputHatches.get(i)
-                    .getFluid()
-                    .copy();
+                .getFluid()
+                .copy();
             totalAntimatterAmount += antimatterStored[i].amount;
             minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
         }
@@ -612,7 +612,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     private int distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount,
-        long protomatterAmount) {
+                                            long protomatterAmount) {
         double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
@@ -713,28 +713,28 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         info.add(
             StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
                 + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(getAntimatterAmount())
+                + formatNumber(getAntimatterAmount())
                 + EnumChatFormatting.RESET
                 + " L");
 
         info.add(
             StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getPassiveConsumption())
+                + formatNumber(getPassiveConsumption())
                 + EnumChatFormatting.RESET
                 + " EU/t");
 
         info.add(
             StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(getActiveConsumption())
+                + formatNumber(getActiveConsumption())
                 + EnumChatFormatting.RESET
                 + " EU/t");
 
         info.add(
             StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(getAntimatterChange())
+                + formatNumber(getAntimatterChange())
                 + EnumChatFormatting.RESET
                 + " L");
     }
@@ -803,7 +803,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+                                        ItemStack aTool) {
         this.canRender = !this.canRender;
         if (!this.canRender) {
             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.disableRender"));
