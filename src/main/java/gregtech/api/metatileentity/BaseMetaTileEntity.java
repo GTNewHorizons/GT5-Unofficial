@@ -1213,7 +1213,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected boolean hasValidMetaTileEntity() {
+    protected final boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
@@ -2238,8 +2238,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-
-        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
+        return mMetaTileEntity instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
     }
