@@ -94,7 +94,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
-    public static final int BATCH_SIZE = 10_000;
+    public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
