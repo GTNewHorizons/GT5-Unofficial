@@ -24,7 +24,7 @@ public enum CircuitImprint {
     Mainframe(11, ItemList.Circuit_Elite, ItemList.SlicedCircuit_Mainframe, ItemList.CircuitImprint_Mainframe, Mods.GregTech),
     NanoProcessor(12, ItemList.Circuit_Nanoprocessor, ItemList.SlicedCircuit_NanoProcessor, ItemList.CircuitImprint_NanoProcessor, Mods.GregTech),
     NanoAssembly(13, ItemList.Circuit_Nanocomputer, ItemList.SlicedCircuit_NanoAssembly, ItemList.CircuitImprint_NanoAssembly, Mods.GregTech),
-    NanoSupercomputer(14, ItemList.Circuit_Nanocomputer, ItemList.SlicedCircuit_NanoAssembly, ItemList.CircuitImprint_NanoAssembly, Mods.GregTech),
+    NanoSupercomputer(14, ItemList.Circuit_Elitenanocomputer, ItemList.SlicedCircuit_NanoSupercomputer, ItemList.CircuitImprint_NanoSupercomputer, Mods.GregTech),
     NanoMainframe(15, ItemList.Circuit_Master, ItemList.SlicedCircuit_NanoMainframe, ItemList.CircuitImprint_NanoMainframe, Mods.GregTech),
     QuantumProcessor(16, ItemList.Circuit_Quantumprocessor, ItemList.SlicedCircuit_QuantumProcessor, ItemList.CircuitImprint_QuantumProcessor, Mods.GregTech),
     QuantumAssembly(17, ItemList.Circuit_Quantumcomputer, ItemList.SlicedCircuit_QuantumAssembly, ItemList.CircuitImprint_QuantumAssembly, Mods.GregTech),
