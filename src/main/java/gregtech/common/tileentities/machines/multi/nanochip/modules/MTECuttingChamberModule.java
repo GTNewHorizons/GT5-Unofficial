@@ -156,10 +156,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
                     + TOOLTIP_VCI)
             .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Measure once, cut twice.")
+            .addInfo(EnumChatFormatting.LIGHT_PURPLE + "" + EnumChatFormatting.ITALIC + "Measure once, cut twice.")
             .addStructureInfo("Any base casing - Vacuum Conveyor Input")
             .addStructureInfo("Any base casing - Input Hatch")
             .addStructureInfo("Any base casing - Vacuum Conveyor Output")
