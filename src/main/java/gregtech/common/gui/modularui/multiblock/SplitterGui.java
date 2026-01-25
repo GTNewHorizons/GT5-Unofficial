@@ -211,8 +211,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
             .value(syncManager.getOrCreateSyncHandler(type.name(), i, BooleanSyncValue.class,
                 () -> new BooleanSyncValue(() -> rule.enabledWidget == type, bool -> {
                     if (bool) {
-                        rule.enabledWidget = type;
-                        syncer.setValue(rules);
+                        syncer.getValue().get(i).enabledWidget = type;
+                        syncer.setValue(syncer.getValue());
                     }
                 })))
             .size(16);
