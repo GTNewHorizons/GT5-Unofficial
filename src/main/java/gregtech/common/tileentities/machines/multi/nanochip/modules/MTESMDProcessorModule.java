@@ -115,7 +115,7 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             SMD_OFFSET_X,

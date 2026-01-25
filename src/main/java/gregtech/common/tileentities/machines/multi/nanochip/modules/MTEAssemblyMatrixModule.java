@@ -167,7 +167,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             ASSEMBLY_OFFSET_X,
