@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -235,7 +234,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 TOOLTIP_CCs + " can only exist in the perfect environment present in"
                     + EnumChatFormatting.WHITE
                     + " Vacuum Conveyor Hatches")
-            .addInfo("Convert items to " + TOOLTIP_CCs + " in the control room by placing them in a " + coloredString() + " input bus")
+            .addInfo(
+                "Convert items to " + TOOLTIP_CCs
+                    + " in the control room by placing them in a "
+                    + coloredString()
+                    + " input bus")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "5"
@@ -638,13 +641,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         if (currentBlock != null) {
             aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
         }
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        addToHistory((byte) 3, 10000);
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
