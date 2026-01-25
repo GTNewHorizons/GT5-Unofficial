@@ -1,7 +1,11 @@
 package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static kubatech.api.Variables.numberFormat;
 
+import net.minecraft.util.EnumChatFormatting;
+
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.drawable.IRichTextBuilder;
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -44,6 +48,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
     @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
 
+        DoubleSyncValue impurity = syncManager.findSyncHandler("impurity", DoubleSyncValue.class);
+
         final FluidStackTank fluidTank = new FluidStackTank(
             multiblock::getStoredFluid,
             multiblock::setStoredFluid,
@@ -67,8 +73,20 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                     .controlsAmount(false))
             .alwaysShowFull(false)
             .size(36, 94)
-            .tooltipBuilder(IRichTextBuilder::clearText)
-            .pos(376, 71);
+            .tooltipBuilder(t -> {
+                t.clearText();
+                t.addLine(
+                    EnumChatFormatting.BLUE + "Immersion Fluid: "
+                        + EnumChatFormatting.GRAY
+                        + fluidTank.getFluid()
+                            .getLocalizedName());
+                t.addLine(
+                    EnumChatFormatting.GREEN + "Impurity: "
+                        + numberFormat.format(impurity.getDoubleValue() * 100)
+                        + "%");
+            })
+            .background(IDrawable.EMPTY)
+            .pos(151, 0);
 
         return new Row().size(getTerminalWidgetWidth(), getTerminalWidgetHeight())
             .paddingTop(4)
