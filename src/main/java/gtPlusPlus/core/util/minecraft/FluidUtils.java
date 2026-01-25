@@ -1,6 +1,6 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -307,7 +307,7 @@ public class FluidUtils {
                 .fluidInputs(new FluidStack(rFluid, aFluidAmount))
                 .duration(4)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
         }
         return rFluid;
     }
