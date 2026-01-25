@@ -47,9 +47,9 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
@@ -228,7 +228,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        int recipeTier = GTUtility.getTier(recipe.mEUt);
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 0);
         int machineTier = getCasingTier();
         if (machineTier + 1 >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);

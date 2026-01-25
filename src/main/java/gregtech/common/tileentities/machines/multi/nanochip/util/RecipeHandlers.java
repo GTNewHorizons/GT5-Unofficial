@@ -17,6 +17,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
+import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.recipe.metadata.NanochipAssemblyRecipeInfo;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
@@ -65,7 +66,7 @@ public class RecipeHandlers {
     }
 
     private static void addAssemblyMatrixRecipe(List<CircuitComponentStack> input, List<FluidStack> fluidInputs,
-        CircuitComponent output, ModuleRecipeInfo info, long eut) {
+        CircuitComponent output, ModuleRecipeInfo info, long eut, int recipeTier) {
         if (output.realComponent == null) {
             throw new IllegalArgumentException("No real circuit was defined for given output!");
         }
@@ -96,11 +97,13 @@ public class RecipeHandlers {
         // Add real recipe that will actually be utilized in recipe checks
         builder.copy()
             .hidden()
+            .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
             .itemInputs(inputsWithFakeCircuits)
             .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
         // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
         builder.copy()
             .fake()
+            .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
             .itemInputs(inputsWithRealCircuits)
             .itemOutputs(realOutput)
             .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
@@ -526,7 +529,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 72)),
             CircuitComponent.CrystalProcessor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
@@ -538,7 +542,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.CrystalAssembly,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardMultifiberglassElite, 1),
@@ -550,7 +555,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 75)),
             CircuitComponent.CrystalComputer,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedFrameboxAluminium, 2),
@@ -562,7 +568,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 288)),
             CircuitComponent.CrystalMainframe,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedNeuroProcessingUnit, 1),
@@ -574,7 +581,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 72)),
             CircuitComponent.WetwareProcessor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
@@ -586,7 +594,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.WetwareAssembly,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 2),
@@ -598,7 +607,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.WetwareComputer,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.MainframeCasing, 2),
@@ -616,7 +626,8 @@ public class RecipeHandlers {
                 Materials.Radon.getGas(2500)),
             CircuitComponent.WetwareMainframe,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBioProcessingUnit, 1),
@@ -628,7 +639,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 72)),
             CircuitComponent.BiowareProcessor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 1),
@@ -640,7 +652,8 @@ public class RecipeHandlers {
             Arrays.asList(FluidRegistry.getFluidStack("molten.indalloy140", 144)),
             CircuitComponent.BiowareAssembly,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 2),
@@ -659,7 +672,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(10000)),
             CircuitComponent.BiowareComputer,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.MainframeCasing, 4),
@@ -677,7 +691,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(20000)),
             CircuitComponent.BiowareMainframe,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedChipOpticalCPU, 1),
@@ -689,7 +704,8 @@ public class RecipeHandlers {
             Arrays.asList(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(288)),
             CircuitComponent.OpticalProcessor,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardOptical, 1),
@@ -708,7 +724,8 @@ public class RecipeHandlers {
                 FluidRegistry.getFluidStack("oganesson", 500)),
             CircuitComponent.OpticalAssembly,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardOptical, 2),
@@ -729,7 +746,8 @@ public class RecipeHandlers {
                 FluidRegistry.getFluidStack("oganesson", 1000)),
             CircuitComponent.OpticalComputer,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.MainframeCasing, 8),
@@ -748,7 +766,8 @@ public class RecipeHandlers {
                 FluidRegistry.getFluidStack("oganesson", 2000)),
             CircuitComponent.OpticalMainframe,
             ModuleRecipeInfo.Fast,
-            TierEU.RECIPE_LuV);
+            TierEU.RECIPE_LuV,
+            14);
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             addAssemblyMatrixRecipe(
@@ -771,7 +790,8 @@ public class RecipeHandlers {
                     Materials.Osmium.getMolten(8 * INGOTS)),
                 CircuitComponent.PicoCircuit,
                 ModuleRecipeInfo.Fast,
-                TierEU.RECIPE_LuV);
+                TierEU.RECIPE_LuV,
+                10);
 
             addAssemblyMatrixRecipe(
                 Arrays.asList(
@@ -792,7 +812,8 @@ public class RecipeHandlers {
                     Materials.Osmium.getMolten(16 * INGOTS)),
                 CircuitComponent.QuantumCircuit,
                 ModuleRecipeInfo.Fast,
-                TierEU.RECIPE_LuV);
+                TierEU.RECIPE_LuV,
+                10);
         }
     }
 }
