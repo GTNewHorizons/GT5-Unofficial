@@ -232,6 +232,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     protected int ImpurityFluidAmount;
     private int ImpurityThreshold = 1000;
     protected double ImpurityPercentage;
+    private int ImpurityIncrease = 100;
 
     protected static final HashSet<Fluid> LegalFluids = new HashSet<>(Arrays.asList(Materials.IronIIIChloride.mFluid));
 
@@ -240,6 +241,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
 
         if (StoredFluid == null) {
+            return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
+        }
+
+        if (ImpurityPercentage == 1) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
@@ -254,12 +259,14 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @Override
     public void endRecipeProcessing() {
         if (StoredFluid != null && ImpurityFluid != null) {
-            ProcessedItems += mOutputItems[0].stackSize;
-            if (ProcessedItems >= ImpurityThreshold) {
-                ProcessedItems -= ImpurityThreshold;
-                ImpurityFluidAmount += 100;
-                ImpurityFluid.amount = ImpurityFluidAmount;
-                ImpurityPercentage = (double) ImpurityFluidAmount / Capacity;
+            if (mOutputItems != null) {
+                ProcessedItems += mOutputItems[0].stackSize;
+                if (ProcessedItems >= ImpurityThreshold) {
+                    ProcessedItems -= ImpurityThreshold;
+                    ImpurityFluidAmount += Math.min(ImpurityIncrease, FluidAmount - ImpurityFluidAmount);
+                    ImpurityFluid.amount = ImpurityFluidAmount;
+                    ImpurityPercentage = (double) ImpurityFluidAmount / FluidAmount;
+                }
             }
         }
         super.endRecipeProcessing();
@@ -296,6 +303,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             ImpurityFluid = null;
             FluidAmount = 0;
             ImpurityFluidAmount = 0;
+            ImpurityPercentage = 0;
+
         }
     }
 
