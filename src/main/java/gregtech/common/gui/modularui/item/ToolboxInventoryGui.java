@@ -1,14 +1,23 @@
 package gregtech.common.gui.modularui.item;
 
+import java.util.function.Supplier;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.api.ITheme;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.ISynced;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.factory.inventory.InventoryTypes;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -17,8 +26,10 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.items.ItemToolbox;
 import gregtech.crossmod.backhand.Backhand;
+import ic2.api.item.IElectricItem;
 
 public class ToolboxInventoryGui {
 
@@ -78,9 +89,8 @@ public class ToolboxInventoryGui {
 
         for (final ItemToolbox.SlotDefinition slot : ItemToolbox.SlotDefinition.values()) {
 
-            final IWidget widget = new ItemSlot()
+            final IWidget widget = new CustomItemSlot(() -> itemHandler, slot)
                 .slot(new ModularSlot(itemHandler, slot.getSlotID()).slotGroup(SLOT_GROUP_SYNC_NAME))
-                .background(slot.getBackground())
                 .addTooltipLine(getTooltip(slot));
 
             widget.flex()
@@ -115,5 +125,51 @@ public class ToolboxInventoryGui {
                 StatCollector.translateToLocal("GT5U.gui.text.toolbox.slot_title." + key),
                 StatCollector.translateToLocal("GT5U.gui.text.toolbox.tooltip." + key))
             .replace("\\n", "\n");
+    }
+
+    private static class CustomItemSlot extends ItemSlot {
+
+        private static final UITexture[] BLANK_SLOT_TEXTURE = { GTGuiTextures.SLOT_ITEM_STANDARD };
+
+        private final Supplier<IItemHandler> itemHandlerSupplier;
+        private final ItemToolbox.SlotDefinition slot;
+
+        public CustomItemSlot(final Supplier<IItemHandler> itemHandlerSupplier, final ItemToolbox.SlotDefinition slot) {
+            super();
+
+            this.itemHandlerSupplier = itemHandlerSupplier;
+            this.slot = slot;
+        }
+
+        /**
+         * Allows the background to dynamically remove the tool outline if there's a tool in the slot.
+         */
+        @Override
+        public @Nullable IDrawable getCurrentBackground(final ITheme theme, final WidgetThemeEntry<?> widgetTheme) {
+            final IItemHandler itemHandler = this.itemHandlerSupplier.get();
+
+            if (itemHandler != null && !slot.isGeneric()) {
+                final int slotID = slot.getSlotID();
+                final ItemStack stackInSlot = itemHandler.getStackInSlot(slotID);
+
+                if (stackInSlot == null) {
+                    if (!slot.isGeneric() && slotID > 0 || slotID < GTGuiTextures.OVERLAY_TOOLBOX_SLOTS.length) {
+                        return IDrawable.of(
+                            new UITexture[] { GTGuiTextures.SLOT_ITEM_STANDARD,
+                                GTGuiTextures.OVERLAY_TOOLBOX_SLOTS[slotID] });
+                    }
+                }
+            }
+
+            return IDrawable.of(BLANK_SLOT_TEXTURE);
+        }
+
+        @Override
+        public void buildTooltip(final ItemStack stack, final RichTooltip tooltip) {
+            super.buildTooltip(stack, tooltip);
+            if (stack != null && stack.getItem() instanceof final IElectricItem item && item.getMaxCharge(stack) > 0) {
+                tooltip.add(StatCollector.translateToLocal("GT5U.gui.text.toolbox.tooltip.no_charge_while_open"));
+            }
+        }
     }
 }

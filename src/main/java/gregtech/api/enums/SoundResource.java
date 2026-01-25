@@ -123,6 +123,9 @@ public enum SoundResource {
     GT_MACHINES_CHAMBER_CENTRIFUGE(276, GregTech.ID, "machines.MTEChamberCentrifuge"),
     GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
 
+    GT_TOOLBOX_OPEN(278, GregTech.ID, "items.ToolboxOpen"),
+    GT_TOOLBOX_CLOSE(279, GregTech.ID, "items.ToolboxClose"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 

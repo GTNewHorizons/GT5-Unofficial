@@ -1767,6 +1767,7 @@ GT5U.gui.text.toolbox.tooltip.6=Needs soldering wire, will pull from toolbox
 GT5U.gui.text.toolbox.tooltip.7=Add battery to charge all electric tools inside\nOnly works when toolbox is closed\nBattery can receive wireless charge
 GT5U.gui.text.toolbox.tooltip.8=Add healing axe to make toolbox restore hunger when held
 GT5U.gui.text.toolbox.tooltip.generic=Holds whatever you want
+GT5U.gui.text.toolbox.tooltip.no_charge_while_open=§l§cNOTE: §rCharging disabled while open
 
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them

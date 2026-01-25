@@ -68,11 +68,6 @@ public enum Mixin implements IMixins {
             .addCommonMixins("minecraft.ItemToolMaterialMixin")
             .setApplyIf(() -> Gregtech.general.changedWoodenVanillaTools)
             .setPhase(Phase.EARLY)),
-    PickBlockTrap(
-        new MixinBuilder(
-            "Fires a PickBlockEvent when the user tries to pick block")
-            .addClientMixins("minecraft.MinecraftMixin_PickBlockTrap")
-            .setPhase(Phase.EARLY)),
 
     GTWorldgenSortingFix(new MixinBuilder("Forces GTWorldgenerator to the end of the world gen list")
         .addCommonMixins("forge.GameRegistryMixin")

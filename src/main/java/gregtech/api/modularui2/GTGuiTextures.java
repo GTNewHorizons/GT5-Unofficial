@@ -10,8 +10,10 @@ import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
+import com.google.common.collect.ImmutableList;
 
 import bartworks.MainMod;
+import gregtech.common.items.ItemToolbox;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
 import kekztech.KekzCore;
 
@@ -480,6 +482,24 @@ public final class GTGuiTextures {
         .location(MODID, "gui/overlay_button/safe_void_on")
         .canApplyTheme()
         .build();
+
+    public static final UITexture[] OVERLAY_TOOLBOX_SLOTS;
+    static {
+        ImmutableList.Builder<UITexture> builder = ImmutableList.builder();
+        for (ItemToolbox.SlotDefinition slot : ItemToolbox.SlotDefinition.values()) {
+            if (slot.isGeneric()) {
+                continue;
+            }
+
+            builder.add(
+                UITexture.builder()
+                    .location(GregTech.ID, "gui/overlay_slot/toolbox_slot" + slot.getSlotID())
+                    .build());
+        }
+
+        OVERLAY_TOOLBOX_SLOTS = builder.build()
+            .toArray(new UITexture[0]);
+    }
     // endregion slot overlay
 
     // region progressbar

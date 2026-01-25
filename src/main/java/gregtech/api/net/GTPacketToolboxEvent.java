@@ -11,6 +11,8 @@ import net.minecraft.world.IBlockAccess;
 
 import com.google.common.io.ByteArrayDataInput;
 
+import gregtech.api.enums.SoundResource;
+import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemToolbox;
 import io.netty.buffer.ByteBuf;
 
@@ -84,6 +86,27 @@ public class GTPacketToolboxEvent extends GTPacket {
                 itemStack.setTagCompound(tag);
 
                 player.inventory.setInventorySlotContents(slot, itemStack);
+                GTUtility.sendSoundToPlayers(
+                    player.worldObj,
+                    SoundResource.GT_TOOLBOX_OPEN,
+                    2.0F,
+                    1,
+                    player.posX,
+                    player.posY,
+                    player.posZ);
+            }
+        },
+
+        CHANGE_ACTIVE_TOOL() {
+
+            @Override
+            void execute(final EntityPlayerMP player, final ItemStack itemStack, final int slot) {
+                final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound()
+                    : new NBTTagCompound();
+                tag.setInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY, slot);
+                player.inventory.setInventorySlotContents(slot, itemStack);
+
+                // TODO: Play sound (toolbox jangling as you rummage around or something)
             }
         },
 

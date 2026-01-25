@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -32,9 +31,9 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.item.IMiddleClickItem;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.ToolboxInventoryGui;
@@ -94,7 +93,7 @@ public class ItemToolbox extends GTGenericItem
                 // If the toolbox is open, don't charge items to prevent syncing issues.
 
                 final ItemStack battery = handler.extractItem(SlotDefinition.BATTERY.getSlotID(), 1, true);
-                if (battery != null && battery.getItem() instanceof final ic2.api.item.IElectricItem batteryItem) {
+                if (battery != null && battery.getItem() instanceof final IElectricItem batteryItem) {
                     shouldUpdate = getElectricManager(battery).map(batteryManager -> {
                         boolean dirty = false;
                         double remainingCharge = batteryManager.discharge(
@@ -184,29 +183,41 @@ public class ItemToolbox extends GTGenericItem
 
         if (data.getUsedItemStack() != null) {
             syncManager.addOpenListener(player -> {
+                // Despite the javadoc's insistence, this function only runs on the client.
+                // Keeping this check in here just in case it gets fixed upstream, so it doesn't break later.
                 if (player.worldObj.isRemote) {
                     GTValues.NW.sendToServer(new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.UI_OPEN, slot));
-                    // TODO: Play sound
                 }
             })
                 .addCloseListener(player -> {
-                    if (player.worldObj.isRemote) {
-                        // TODO: Play Sound
-                    } else {
-                        // Retrieve stack from player again
+                    if (!player.worldObj.isRemote) {
+                        // Retrieve stack from player again. Persist the toolbox contents and allow charging again.
                         final ItemStack toolbox = player.inventory.getStackInSlot(slot);
                         final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound()
                             : new NBTTagCompound();
                         tag.setTag(CONTENTS_NBT_KEY, stackHandler.serializeNBT());
                         tag.setBoolean(TOOLBOX_OPEN_NBT_KEY, false);
 
-                        if (tag.hasKey(CURRENT_TOOL_NBT_KEY)
-                            && stackHandler.getStackInSlot(tag.getInteger(CURRENT_TOOL_NBT_KEY)) == null) {
-                            tag.removeTag(CURRENT_TOOL_NBT_KEY);
+                        // Unselect the active tool if it was removed from the toolbox.
+                        if (tag.hasKey(CURRENT_TOOL_NBT_KEY)) {
+                            final int selectedToolSlot = tag.getInteger(CURRENT_TOOL_NBT_KEY);
+                            if (selectedToolSlot >= 0 && selectedToolSlot < stackHandler.getSlots()
+                                && stackHandler.getStackInSlot(selectedToolSlot) == null) {
+                                tag.removeTag(CURRENT_TOOL_NBT_KEY);
+                            }
                         }
 
                         toolbox.setTagCompound(tag);
                         player.inventory.setInventorySlotContents(data.getSlotIndex(), toolbox);
+
+                        GTUtility.sendSoundToPlayers(
+                            player.worldObj,
+                            SoundResource.GT_TOOLBOX_CLOSE,
+                            1.0F,
+                            1,
+                            player.posX,
+                            player.posY,
+                            player.posZ);
                     }
                 });
         }
@@ -342,10 +353,17 @@ public class ItemToolbox extends GTGenericItem
             this.isGeneric = isGeneric;
         }
 
-        public boolean test(final ItemStack aStack) {
-            // TODO: Do not allow toolboxes in any slot
+        public boolean test(final ItemStack stack) {
+            if (stack == null) {
+                return false;
+            }
+
+            if (stack.getItem() instanceof ItemToolbox) {
+                return false;
+            }
+
             // TODO: Also do not allow single-use tools in the tool slots
-            return itemStackTest.test(aStack);
+            return itemStackTest.test(stack);
         }
 
         public int getSlotID() {
@@ -359,10 +377,6 @@ public class ItemToolbox extends GTGenericItem
 
         public int getColumn() {
             return slot % ROW_WIDTH;
-        }
-
-        public UITexture getBackground() {
-            return GTGuiTextures.SLOT_ITEM_STANDARD;
         }
 
         /**
@@ -465,16 +479,6 @@ public class ItemToolbox extends GTGenericItem
                 .map(SlotDefinition::isGeneric)
                 .map(x -> x ? 64 : 1)
                 .orElse(64);
-        }
-
-        @Override
-        public NBTTagCompound serializeNBT() {
-            return super.serializeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(final NBTTagCompound nbt) {
-            super.deserializeNBT(nbt);
         }
     }
 

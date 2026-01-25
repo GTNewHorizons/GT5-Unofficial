@@ -6,12 +6,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
 
+import com.gtnewhorizon.gtnhlib.event.PickBlockEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.item.IMiddleClickItem;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.common.events.PickBlockEvent;
 import gregtech.crossmod.backhand.Backhand;
 
 public final class GTMouseEventHandler {
