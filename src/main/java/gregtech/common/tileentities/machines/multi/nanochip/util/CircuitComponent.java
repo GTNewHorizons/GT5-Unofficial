@@ -316,9 +316,10 @@ public enum CircuitComponent {
 
     // Circuit encasement
     // IDs: 1800-1899
-    MainframeCasing(1800, "gt.circuitcomponent.casing.mainframe", true),
-    PicoCircuitCasing(1801, "gt.circuitcomponent.casing.pico", true),
-    QuantumCircuitCasing(1802, "gt.circuitcomponent.casing.quantum", true),
+    BasicMainframeCasing(1800, "gt.circuitcomponent.casing.basicmainframe", true),
+    AdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.advancedmainframe", true),
+    PicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", true),
+    QuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", true),
 
     // Misc
     // IDs: 1900-1999
