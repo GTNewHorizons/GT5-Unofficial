@@ -265,7 +265,6 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         int index) {
         List<SplitterRule> rules = syncer.getValue();
         SplitterRule rule = rules.get(index);
-        syncManager.registerSlotGroup("phantomshits", 3);
         // TODO: make it work
         return SlotGroupWidget.builder()
             .matrix("III", "III")
@@ -281,7 +280,6 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                                 .changeListener((newItem, onlyAmountChanged, client, init) -> {
 
                                 })
-                                .slotGroup("phantomshits")
                                 .accessibility(true, false))));
             })
             .build()
