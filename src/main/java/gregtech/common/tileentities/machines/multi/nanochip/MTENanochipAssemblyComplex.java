@@ -232,7 +232,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 TOOLTIP_CCs + " can only exist in the perfect environment present in"
                     + EnumChatFormatting.WHITE
                     + " Vacuum Conveyor Hatches")
-            .addInfo("Convert items to " + TOOLTIP_CCs + " in the control room by placing them in a colored input bus")
+            .addInfo("Convert items to " + TOOLTIP_CCs + " in the control room by placing them in a " + coloredString() + " input bus")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "5"
