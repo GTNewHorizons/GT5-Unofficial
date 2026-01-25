@@ -4,6 +4,7 @@ import java.util.concurrent.FutureTask;
 import java.util.regex.Pattern;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
@@ -20,9 +21,10 @@ public class ChemicalFormulaFilter implements ItemFilter {
             Material material = Material.mMaterialsByName.get(name);
             if (material != null) {
                 String chemicalFormula = material.vChemicalFormula;
+                String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
                 components.forEach((orePrefix, stack) -> {
                     synchronized (itemSearchNames) {
-                        itemSearchNames.put(stack, chemicalFormula);
+                        itemSearchNames.put(stack, sanitizedFormula);
                     }
                 });
             }
@@ -32,6 +34,14 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
     public ChemicalFormulaFilter(Pattern pattern) {
         this.pattern = pattern;
+    }
+
+    private static String sanitizeFormula(String formula) {
+        return EnumChatFormatting.getTextWithoutFormattingCodes(formula);
+    }
+
+    private static boolean isValidFormula(String formula) {
+        return !formula.equals("?");
     }
 
     private static void ensureLoadGTPlusPlusMaterials() {
@@ -56,6 +66,11 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
         if (chemicalFormula == null) {
             chemicalFormula = getChemicalFormula(stack.copy());
+            if (isValidFormula(chemicalFormula)) {
+                chemicalFormula = sanitizeFormula(chemicalFormula);
+            } else {
+                chemicalFormula = "";
+            }
 
             synchronized (itemSearchNames) {
                 itemSearchNames.put(stack, chemicalFormula);
