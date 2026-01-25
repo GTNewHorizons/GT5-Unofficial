@@ -1058,7 +1058,6 @@ GT5U.machines.miner=Miner
 GT5U.machines.powersource.power=power
 GT5U.machines.powersource.steam=пар
 GT5U.machines.pump=Помпа
-GT5U.machines.separatebus=Input buses are separated
 GT5U.machines.pumpareaset=Pumping area set to
 GT5U.machines.oilfluidpump=Oil/Fluid Pump
 GT5U.machines.minermulti=Мультиблочный шахтёр

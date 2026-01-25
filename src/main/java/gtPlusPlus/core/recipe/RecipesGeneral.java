@@ -69,7 +69,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
@@ -185,7 +184,7 @@ public class RecipesGeneral {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2))
             .circuit(16)
             .itemOutputs(GregtechItemList.PestKiller.get(1))
-            .fluidInputs(FluidUtils.getFluidStack("ic2hotwater", 500))
+            .fluidInputs(GTModHandler.getHotWater(500))
             .duration(1 * MINUTES)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);

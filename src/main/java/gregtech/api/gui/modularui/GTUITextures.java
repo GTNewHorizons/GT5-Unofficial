@@ -481,6 +481,8 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray");
     public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_%s");
+    public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture
+        .fullImage(GregTech.ID, "gui/picture/exofoundry_logo");
     public static final UITexture PICTURE_INFORMATION = UITexture
         .fullImage(GregTech.ID, "gui/picture/information_symbol");
     public static final UITexture PICTURE_STALLED_ELECTRICITY = UITexture

@@ -14,6 +14,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DrawableStack;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -47,11 +57,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
@@ -60,13 +72,14 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
     implements ISurvivalConstructable {
 
-    private Mode mMode = Mode.DistillationTower;
-
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
     protected static final String STRUCTURE_PIECE_TOP_HINT = "topHint";
     protected static final int DT_MODE_MAX_PARALLELS = 12;
+
+    private static final int MACHINEMODE_TOWER = 0;
+    private static final int MACHINEMODE_DISTILLERY = 1;
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
@@ -262,7 +275,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         boolean check = mTopLayerFound && mHeight >= 2 && checkHatch();
         if (check && mHeight < 11) {
             // force the mode to DT if not in full height
-            mMode = Mode.DistillationTower;
+            machineMode = MACHINEMODE_TOWER;
             mLastRecipe = null;
         }
         return check;
@@ -270,7 +283,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return mMode.getRecipeMap();
+        return (machineMode == MACHINEMODE_TOWER) ? RecipeMaps.distillationTowerRecipes : RecipeMaps.distilleryRecipes;
     }
 
     @Nonnull
@@ -287,20 +300,17 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        if (this.mMode == Mode.Distillery)
+        if (machineMode == MACHINEMODE_DISTILLERY)
             return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
         return PollutionConfig.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mMode", (byte) mMode.ordinal());
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mMode = Mode.VALUES[aNBT.getByte("mMode")];
+        if (aNBT.hasKey("mMode")) {
+            machineMode = aNBT.getInteger("mMode");
+            aNBT.removeTag("mMode");
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -310,9 +320,9 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             GTUtility.sendChatToPlayer(aPlayer, "Cannot switch mode if not in full height.");
             return;
         }
-        mMode = mMode.next();
-        GTUtility.sendChatToPlayer(aPlayer, "Now running in " + mMode + " Mode.");
-        mLastRecipe = null;
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
@@ -330,7 +340,7 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     protected void addFluidOutputs(FluidStack[] outputFluids) {
-        if (mMode == Mode.DistillationTower) {
+        if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
             for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
                 FluidStack tStack = outputFluids[i].copy();
@@ -363,16 +373,14 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setEuModifier(mMode == Mode.Distillery ? 0.15F : 1F);
-        logic.setSpeedBonus(mMode == Mode.Distillery ? 1F / 2F : 1F / 3.5F);
+        logic.setEuModifier(machineMode == MACHINEMODE_DISTILLERY ? 0.15F : 1F);
+        logic.setSpeedBonus(machineMode == MACHINEMODE_DISTILLERY ? 1F / 2F : 1F / 3.5F);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return switch (mMode) {
-            case DistillationTower -> DT_MODE_MAX_PARALLELS;
-            case Distillery -> 8 * GTUtility.getTier(this.getMaxInputVoltage());
-        };
+        return machineMode == MACHINEMODE_TOWER ? DT_MODE_MAX_PARALLELS
+            : 8 * GTUtility.getTier(this.getMaxInputVoltage());
     }
 
     @Override
@@ -409,27 +417,6 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
                     .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canFillFluid())));
     }
 
-    private enum Mode {
-
-        DistillationTower(RecipeMaps.distillationTowerRecipes),
-        Distillery(RecipeMaps.distilleryRecipes),;
-
-        static final Mode[] VALUES = values();
-        private final RecipeMap<?> recipeMap;
-
-        Mode(RecipeMap<?> recipeMap) {
-            this.recipeMap = recipeMap;
-        }
-
-        public RecipeMap<?> getRecipeMap() {
-            return recipeMap;
-        }
-
-        public Mode next() {
-            return VALUES[(ordinal() + 1) % VALUES.length];
-        }
-    }
-
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
@@ -439,6 +426,44 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + mMode.ordinal());
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_ADV_DISTILLATION_TOWER.mode." + machineMode);
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this) {
+
+            @Override
+            protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
+                IntSyncValue machineModeSyncer = syncManager.findSyncHandler("machineMode", IntSyncValue.class);
+                IntSyncValue heightSyncer = new IntSyncValue(() -> mHeight);
+                syncManager.syncValue("dangoteHeight", heightSyncer);
+                return new CycleButtonWidget() {
+
+                    @NotNull
+                    @Override
+                    public Result onMousePressed(int mouseButton) {
+                        if (heightSyncer.getIntValue() < 11) return Result.IGNORE;
+                        return super.onMousePressed(mouseButton);
+                    }
+                }.size(18, 18)
+                    .syncHandler("machineMode")
+                    .length(machineModeIcons.size())
+                    .overlay(new DynamicDrawable(() -> {
+                        UITexture mode = getMachineModeIcon(machineModeSyncer.getValue());
+                        return heightSyncer.getIntValue() < 11
+                            ? new DrawableStack(mode, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN)
+                            : mode;
+                    }))
+                    .tooltipBuilder(this::createModeSwitchTooltip);
+            }
+        }.withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER,
+            GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DISTILLING);
     }
 }

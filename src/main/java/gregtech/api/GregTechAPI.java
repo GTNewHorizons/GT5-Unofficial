@@ -182,8 +182,8 @@ public class GregTechAPI {
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
         sBlockCasings8, sBlockCasings9, sBlockCasings10, sBlockCasings11, sBlockCasings12, sBlockCasings13,
-        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsSE, sBlockCasingsSEMotor, sBlockCasingsDyson,
-        sBlockCasingsSiphon;
+        sSolenoidCoilCasings, sBlockCasingsNH, sBlockCasingsFoundry, sBlockCasingsSE, sBlockCasingsSEMotor,
+        sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFrames;
@@ -344,7 +344,7 @@ public class GregTechAPI {
     public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         try {
             return new BaseMetaTileEntity();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.println("GTMod: Fatal Error occurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GTLog.err);
             throw new RuntimeException(e);
