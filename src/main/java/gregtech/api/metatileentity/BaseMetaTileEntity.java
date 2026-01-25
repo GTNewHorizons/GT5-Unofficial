@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -772,9 +773,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
                     : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
             tList.add(
-                "Recorded " + GTUtility.formatNumbers(mMetaTileEntity.mSoundRequests)
+                "Recorded " + formatNumber(mMetaTileEntity.mSoundRequests)
                     + " sound requests in "
-                    + GTUtility.formatNumbers(mTickTimer - mLastCheckTick)
+                    + formatNumber(mTickTimer - mLastCheckTick)
                     + " ticks.");
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
@@ -1211,7 +1212,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected boolean hasValidMetaTileEntity() {
+    protected final boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
@@ -2237,8 +2238,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-
-        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
+        return mMetaTileEntity instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
     }

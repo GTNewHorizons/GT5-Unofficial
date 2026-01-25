@@ -13,6 +13,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public interface IGregtechWailaProvider {
 
+    default ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        return null;
+    }
+
     default void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {}
 
