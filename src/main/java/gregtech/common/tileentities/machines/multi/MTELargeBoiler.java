@@ -17,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -160,7 +159,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
-        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumbers(500.0 / getEfficiencyIncrease())))
+        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
             .addController("Front bottom")
@@ -551,14 +550,14 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
             currentTip.add(
                 translateToLocalFormatted(
                     "GT5U.waila.energy.produce_steam",
-                    formatNumbers(-tag.getLong("energyUsage") * 40L / (isSuperheated() ? superToNormalSteam : 1)),
+                    formatNumber(-tag.getLong("energyUsage") * 40L / (isSuperheated() ? superToNormalSteam : 1)),
                     isSuperheated() ? translateToLocal("GT5U.machines.large_boiler.gui.shsteam")
                         : translateToLocal("GT5U.machines.large_boiler.gui.steam")));
             long actualEnergyUsage = tag.getLong("energyUsage");
             currentTip.add(
                 translateToLocalFormatted(
                     "GT5U.waila.energy.steam_to_eu",
-                    formatNumbers(-actualEnergyUsage),
+                    formatNumber(-actualEnergyUsage),
                     GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
         }
         currentTip.add(
