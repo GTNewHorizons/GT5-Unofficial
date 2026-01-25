@@ -21,6 +21,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -402,9 +404,25 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        if (aBaseMetaTileEntity.isClientSide())
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+        data.setByte(
+            "eRotation",
+            (byte) mExtendedFacing.getRotation()
+                .getIndex());
+        data.setByte(
+            "eFlip",
+            (byte) mExtendedFacing.getFlip()
+                .getIndex());
+        return data;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onDescriptionPacket(NBTTagCompound data) {
+        mExtendedFacing = ExtendedFacing.of(
+            getBaseMetaTileEntity().getFrontFacing(),
+            Rotation.byIndex(data.getByte("eRotation")),
+            Flip.byIndex(data.getByte("eFlip")));
     }
 }
