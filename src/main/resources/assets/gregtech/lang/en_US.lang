@@ -2152,6 +2152,10 @@ nei.options.tools.dump.gt5u.recipe_lockings=Recipe locking missing supports
 nei.options.tools.dump.gt5u.warn_env=You're outside of the pack. Some IDs present in the full pack might be missing in this dump.
 nei.options.tools.dump.gt5u.mode.0=Free
 nei.options.tools.dump.gt5u.mode.1=Used
+nei.options.inventory.search.chemicalFormulaSearchMode=Chemical Formula Search
+nei.options.inventory.search.chemicalFormulaSearchMode.0=Always
+nei.options.inventory.search.chemicalFormulaSearchMode.1=Prefix: %s
+nei.options.inventory.search.chemicalFormulaSearchMode.2=Never
 
 # Waila
 GT5U.waila.cover=Cover (%s): %s
