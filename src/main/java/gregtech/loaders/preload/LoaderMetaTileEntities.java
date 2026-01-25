@@ -24,7 +24,6 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fermentingRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -2862,7 +2861,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Basic Fluid Canner",
                 1,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2877,7 +2876,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Fluid Canner",
                 2,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2892,7 +2891,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Quick Fluid Canner",
                 3,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2907,7 +2906,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Turbo Fluid Canner",
                 4,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2922,7 +2921,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Instant Fluid Canner",
                 5,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2937,7 +2936,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Elite Fluid Canner",
                 6,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2952,7 +2951,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Elite Fluid Canner II",
                 7,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2967,7 +2966,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Ultimate Liquid Can Actuator",
                 8,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2982,7 +2981,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator",
                 9,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2997,7 +2996,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator II",
                 10,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -3012,7 +3011,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator III",
                 11,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -3027,7 +3026,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator IV",
                 12,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -8599,7 +8598,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8614,7 +8613,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8629,7 +8628,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8644,7 +8643,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8659,7 +8658,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8674,7 +8673,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8689,7 +8688,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8704,7 +8703,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8719,7 +8718,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8734,7 +8733,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8749,7 +8748,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8764,7 +8763,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
