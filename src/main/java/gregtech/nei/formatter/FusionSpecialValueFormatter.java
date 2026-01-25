@@ -1,9 +1,13 @@
 package gregtech.nei.formatter;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -20,6 +24,32 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
 
     public static final FusionSpecialValueFormatter INSTANCE = new FusionSpecialValueFormatter();
     private static final long M = 1000000;
+    public static final String ZERO_STRING = "0";
+    public static final String[] UNITS = { "", "K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q" };
+    public static final BigDecimal THOUSAND_DEC = BigDecimal.valueOf(1000);
+    public static final DecimalFormat DF = new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
+
+    public static String shortFormat(long value) {
+        double number = value;
+        int unitIndex = 0;
+        while (Math.abs(number) >= 1000 && unitIndex < UNITS.length - 1) {
+            number /= 1000;
+            unitIndex++;
+        }
+        return DF.format(number) + UNITS[unitIndex];
+    }
+
+    public static String shortFormat(BigInteger value) {
+        BigDecimal decimal = new BigDecimal(value);
+        int unitIndex = 0;
+
+        while (decimal.compareTo(THOUSAND_DEC) >= 0 && unitIndex < UNITS.length - 1) {
+            decimal = decimal.divide(THOUSAND_DEC, 2, RoundingMode.HALF_UP);
+            unitIndex++;
+        }
+
+        return DF.format(decimal) + UNITS[unitIndex];
+    }
 
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
@@ -27,8 +57,10 @@ public class FusionSpecialValueFormatter implements INEISpecialInfoFormatter {
         int voltage = recipeInfo.recipe.mEUt;
         int tier = getFusionTier(euToStart, voltage);
 
+        Test.test();
+
         return Collections
-            .singletonList(StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", formatNumber(euToStart), tier));
+            .singletonList(StatCollector.translateToLocalFormatted("GT5U.nei.start_eu", shortFormat(euToStart), tier));
     }
 
     public static int getFusionTier(long startupPower, long voltage) {
