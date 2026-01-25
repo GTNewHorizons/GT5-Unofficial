@@ -3,7 +3,9 @@ package gregtech.api.util.scanner;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
-import static gregtech.api.util.GTUtility.*;
+import static gregtech.api.util.GTUtility.getFluidName;
+import static gregtech.api.util.GTUtility.translate;
+import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
