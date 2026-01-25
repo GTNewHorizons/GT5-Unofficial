@@ -1,20 +1,14 @@
 package gregtech.nei;
 
-import java.util.HashSet;
-
-import bartworks.API.enums.CircuitImprint;
-import bartworks.MainMod;
-import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import bartworks.API.recipe.BartWorksRecipeMaps;
+import bartworks.API.enums.CircuitImprint;
 import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.recipe.ShapelessRecipeHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.recipes.CALImprintRecipe;
 
@@ -66,7 +60,7 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
     }
 
     private void loadAllRecipes(@Nullable ItemStack cal) {
-        for (CircuitImprint entry : CircuitImprint.values()){
+        for (CircuitImprint entry : CircuitImprint.values()) {
             if (entry.sourceMod.isModLoaded()) loadRecipe(cal, entry); // Avoid the handler to crash in dev
         }
     }
@@ -75,10 +69,6 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
         ItemStack inputCAL = GTUtility.copyAmount(1, (cal == null) ? ItemRegistry.cal : cal);
         ItemStack outputCAL = CALImprintRecipe.installImprint(inputCAL, circuitImprint);
 
-        arecipes.add(
-            new CachedShapelessRecipe(
-                new Object[] { inputCAL, circuitImprint.imprint.get(1) }, outputCAL
-                )
-        );
+        arecipes.add(new CachedShapelessRecipe(new Object[] { inputCAL, circuitImprint.imprint.get(1) }, outputCAL));
     }
 }

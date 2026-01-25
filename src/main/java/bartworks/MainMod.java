@@ -18,7 +18,6 @@ import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
 
-import bartworks.API.enums.CircuitImprint;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -27,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
+import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
