@@ -1,12 +1,15 @@
 package gregtech.common.tileentities.machines.multi.nanochip.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByteArray;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 
 import com.google.common.primitives.Bytes;
@@ -26,6 +29,20 @@ public class SplitterRule {
             this.channel = channel;
             this.level = level;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return (obj instanceof RedstoneMode mode) && this.channel == mode.channel && this.level == mode.level;
+        }
+    }
+
+    public enum FilterType {
+
+        COLOR,
+        REDSTONE,
+        ITEM;
+
+        FilterType() {}
     }
 
     public List<Byte> inputColors;
@@ -34,12 +51,16 @@ public class SplitterRule {
     public RedstoneMode redstoneMode = null;
     // Optional set of filtering items this rule should only apply to.
     public Set<ItemStack> filterStacks = null;
+    // Used by the Splitter UI to determine which widget to show on the input side
+    public FilterType enabledWidget = FilterType.COLOR;
 
-    public SplitterRule(List<Byte> inputs, List<Byte> outputs, RedstoneMode redstoneMode, Set<ItemStack> filterStacks) {
+    public SplitterRule(List<Byte> inputs, List<Byte> outputs, RedstoneMode redstoneMode, Set<ItemStack> filterStacks,
+        FilterType enabledWidget) {
         this.inputColors = inputs;
         this.outputColors = outputs;
         this.redstoneMode = redstoneMode;
         this.filterStacks = filterStacks;
+        this.enabledWidget = enabledWidget;
     }
 
     // True if this rule can apply to the given itemstack
@@ -80,12 +101,15 @@ public class SplitterRule {
             }
             compound.setTag("filterStacks", filterStackList);
         }
+        compound.setTag("enabled", new NBTTagInt(enabledWidget.ordinal()));
         return compound;
     }
 
     public static SplitterRule loadFromNBT(NBTTagCompound compound) {
-        List<Byte> inputs = Bytes.asList(compound.getByteArray("inputs"));
-        List<Byte> outputs = Bytes.asList(compound.getByteArray("outputs"));
+        List<Byte> inputs = new ArrayList<>();
+        List<Byte> outputs = new ArrayList<>();
+        for (byte value : compound.getByteArray("inputs")) inputs.add(value);
+        for (byte value : compound.getByteArray("outputs")) outputs.add(value);
         RedstoneMode redstoneMode = null;
         if (compound.hasKey("channel")) {
             int channel = compound.getInteger("channel");
@@ -103,6 +127,16 @@ public class SplitterRule {
                 filterStacks.add(stack);
             }
         }
-        return new SplitterRule(inputs, outputs, redstoneMode, filterStacks);
+        FilterType enabled = FilterType.values()[compound.getInteger("enabled")];
+        return new SplitterRule(inputs, outputs, redstoneMode, filterStacks, enabled);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof SplitterRule rule) && this.inputColors.equals(rule.inputColors)
+            && this.outputColors.equals(rule.outputColors)
+            && Objects.equals(this.redstoneMode, rule.redstoneMode)
+            && Objects.equals(this.filterStacks, rule.filterStacks)
+            && this.enabledWidget == rule.enabledWidget;
     }
 }
