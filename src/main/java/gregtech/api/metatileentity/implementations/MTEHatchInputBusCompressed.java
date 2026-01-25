@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.EnumChatFormatting.GOLD;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
@@ -380,8 +381,7 @@ public class MTEHatchInputBusCompressed extends MTEHatchInputBus
 
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 for (IAEItemStack stored : inv.getStorageList()) {
-                    tooltip
-                        .add(stored.getDisplayName() + " x " + GOLD + GTUtility.formatNumbers(stored.getStackSize()));
+                    tooltip.add(stored.getDisplayName() + " x " + GOLD + formatNumber(stored.getStackSize()));
                 }
             } else {
                 tooltip.add(GTUtility.translate("GT5U.gui.text.compressed_bus_stored_items"));
