@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import forestry.core.circuits.Circuit;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -186,6 +187,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
         return checkPiece(STRUCTURE_PIECE_MAIN, ASSEMBLY_OFFSET_X, ASSEMBLY_OFFSET_Y, ASSEMBLY_OFFSET_Z);
+    }
+
+    @Override
+    public boolean addItemOutputs(ItemStack[] outputItems) {
+        for (ItemStack stack : outputItems) {
+            CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
+            if (circuitComponent != null && baseMulti != null) {
+                baseMulti.addToHistory(circuitComponent.circuitTier, stack.stackSize);
+            }
+        }
+        return super.addItemOutputs(outputItems);
     }
 
     @Override

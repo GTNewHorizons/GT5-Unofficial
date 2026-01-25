@@ -516,6 +516,15 @@ public class RecipeHandlers {
     }
 
     public static void populateFinishedCircuitRecipeMaps() {
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 1)),
+            Arrays.asList(Materials.Iron.getFluid(1)),
+            CircuitComponent.CrystalProcessor,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LuV,
+            10);
+
         // Circuit assembly line replacements
         // TODO: Tweak EU/t
         addAssemblyMatrixRecipe(
