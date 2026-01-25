@@ -53,8 +53,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             aNameRegional,
             aTier,
             4,
-            new String[] {
-                GTUtility.nestParams("gt.te.output_hatch.desc", formatNumber(8000L * (1L << aTier))) });
+            new String[] { GTUtility.nestParams("gt.te.output_hatch.desc", formatNumber(8000L * (1L << aTier))) });
     }
 
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

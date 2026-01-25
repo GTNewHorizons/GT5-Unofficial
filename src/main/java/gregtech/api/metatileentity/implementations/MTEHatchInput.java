@@ -44,8 +44,7 @@ public class MTEHatchInput extends MTEHatch {
             aNameRegional,
             aTier,
             4,
-            new String[] {
-                GTUtility.nestParams("gt.te.input_hatch.desc", formatNumber(8000L * (1L << aTier))) });
+            new String[] { GTUtility.nestParams("gt.te.input_hatch.desc", formatNumber(8000L * (1L << aTier))) });
     }
 
     public MTEHatchInput(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {

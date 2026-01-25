@@ -103,8 +103,7 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                 "gt.backfiller.tips",
                 getRadius(),
                 GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
-                baseCycleTime < 20 ? formatNumber(baseCycleTime)
-                    : formatNumber(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime) : formatNumber(baseCycleTime / 20.0),
                 baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
             .addController("front_bottom_middle")
