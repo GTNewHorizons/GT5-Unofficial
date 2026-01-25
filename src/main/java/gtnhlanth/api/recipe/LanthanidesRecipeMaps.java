@@ -49,7 +49,7 @@ public class LanthanidesRecipeMaps {
 
     public static final RecipeMap<RecipeMapBackend> sourceChamberRecipes = RecipeMapBuilder.of("gtnhlanth.recipe.sc")
         .minInputs(0, 0)
-        .maxIO(1, 2, 0, 0)
+        .maxIO(1, 2, 1, 0)
         .amperage(1)
         .frontend(SourceChamberFrontend::new)
         .progressBar(GTUITextures.PROGRESSBAR_ASSEMBLY_LINE_1)
@@ -71,7 +71,7 @@ public class LanthanidesRecipeMaps {
 
                 StatCollector.translateToLocal("beamline.energy") + ": <="
                     + formatNumber(Math.min(maxEnergy, particle.maxSourceEnergy()))
-                    + " keV",
+                    + " keV", // todo: make this look nicer for GeV
 
                 StatCollector.translateToLocal("beamline.focus") + ": " + formatNumber(focus),
 

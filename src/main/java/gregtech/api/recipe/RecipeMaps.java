@@ -1,5 +1,6 @@
 package gregtech.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
@@ -33,6 +34,7 @@ import java.util.Optional;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -83,17 +85,22 @@ import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
+import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.multi.purification.PurifiedWaterHelpers;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterFrontend;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gregtech.nei.formatter.FuelSpecialValueFormatter;
 import gregtech.nei.formatter.FusionSpecialValueFormatter;
 import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtnhlanth.common.beamline.Particle;
+import gtnhlanth.common.register.LanthItemList;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import tectech.thing.CustomItemList;
@@ -1306,6 +1313,57 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
         .build();
+
+    public static final RecipeMetadataKey<BeamCrafterMetadata> BEAMCRAFTER_METADATA = SimpleRecipeMetadataKey
+        .create(BeamCrafterMetadata.class, "beamcrafter_metadata");
+
+    public static final RecipeMap<RecipeMapBackend> beamcrafterRecipes = RecipeMapBuilder
+        .of("gt.recipe.beamcrafter", RecipeMapBackend::new)
+        .minInputs(0, 0)
+        .frontend(BeamCrafterFrontend::new)
+        .neiSpecialInfoFormatter(((recipeInfo) -> {
+            BeamCrafterMetadata metadata = recipeInfo.recipe.getMetadata(BEAMCRAFTER_METADATA);
+            if (metadata == null) return Collections.emptyList();
+
+            float minEnergy_A = metadata.minEnergy_A;
+            float minEnergy_B = metadata.minEnergy_B;
+
+            float amount_A = metadata.amount_A;
+            float amount_B = metadata.amount_B;
+
+            Particle particle_A = Particle.getParticleFromId(metadata.particleID_A);
+            Particle particle_B = Particle.getParticleFromId(metadata.particleID_B);
+
+            return Arrays.asList(
+                StatCollector.translateToLocal("beamcrafting.energy_A") + ": " + formatNumber(minEnergy_A) + "keV",
+
+                StatCollector.translateToLocal("beamcrafting.energy_B") + ": " + formatNumber(minEnergy_B) + "keV",
+
+                StatCollector.translateToLocal("beamcrafting.amount_A") + ": " + formatNumber(amount_A),
+                StatCollector.translateToLocal("beamcrafting.amount_B") + ": " + formatNumber(amount_B)
+
+        );
+        }))
+        .neiItemInputsGetter(recipe -> {
+            BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
+            if (metadata == null) return GTValues.emptyItemStackArray;
+            ItemStack particleStack_A = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_A);
+            ItemStack particleStack_B = new ItemStack(LanthItemList.PARTICLE_ITEM, 1, metadata.particleID_B);
+
+            List<ItemStack> ret = new ArrayList<>();
+            ret.addAll(Arrays.asList(recipe.mInputs));
+            ret.add(particleStack_A);
+            ret.add(particleStack_B);
+
+            return ret.toArray(new ItemStack[0]);
+        })
+        .progressBarPos(70, 22)
+        .neiTransferRect(100, 22, 28, 18)
+        .maxIO(4, 2, 2, 2)
+        .progressBar(GTUITextures.PROGRESSBAR_BEAMCRAFTER)
+        .progressBarSize(50, 30)
+        .build();
+
     public static final RecipeMap<RecipeMapBackend> cauldronRecipe = RecipeMapBuilder
         .of("gt.recipe.cauldron", RecipeMapBackend::new)
         .maxIO(1, 1, 1, 0)
