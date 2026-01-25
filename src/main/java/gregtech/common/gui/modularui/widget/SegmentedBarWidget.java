@@ -33,7 +33,9 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
 
     public void createTooltip(RichTooltip builder) {
         for (SegmentInfo segment : segments) {
-            builder.addLine(segment.label + ": " + segment.valueSupplier.get());
+            if (segment.valueSupplier.get() > 0) {
+                builder.addLine(segment.label + ": " + segment.valueSupplier.get());
+            }
         }
     }
 
