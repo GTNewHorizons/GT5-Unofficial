@@ -506,6 +506,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public void addToHistory(byte type, int amount) {
         if (currentBlock == null) currentBlock = new CircuitBatch();
+
+        int leftover = currentBlock.add(type, amount);
+
         // If the current block is full, store to history. Push the oldest block if needed.
         if (currentBlock.isFull()) {
             circuitHistory.add(currentBlock);
@@ -515,23 +518,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             currentBlock = new CircuitBatch();
         }
 
-        currentBlock.add(type, amount);
+        // Recursively call addToHistory to clear leftovers evenly
+        if (leftover > 0) addToHistory(type, leftover);
     }
 
     public int getCurrentBlockSize() {
-        int total = 0;
-        if (currentBlock != null) {
-            total += currentBlock.primitives;
-            total += currentBlock.crystals;
-            total += currentBlock.wetwares;
-            total += currentBlock.bios;
-            total += currentBlock.opticals;
-            total += currentBlock.exotics;
-            total += currentBlock.cosmics;
-            total += currentBlock.temporals;
-            total += currentBlock.specials;
-        }
-        return total;
+        return currentBlock == null ? 0 : currentBlock.total;
     }
 
     public int getTotalCircuit(byte type) {
