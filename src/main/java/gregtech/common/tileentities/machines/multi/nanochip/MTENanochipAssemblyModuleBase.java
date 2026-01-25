@@ -123,8 +123,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected long euBufferSize = TierEU.UV * 4096 * 20;
 
-    protected final Map<CircuitComponent, Long> processedItemCounts = new HashMap<>();
-
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorOutput> vacuumConveyorOutputs = new VacuumConveyorHatchMap<>();
 
@@ -416,10 +414,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             this.mOutputItems = parallelHelper.getItemOutputs();
 
             addVCOutput(mOutputItems[0], outputHatch);
-            CircuitComponent fakeItem = CircuitComponent.tryGetFromFakeStack(mOutputItems[0]);
-            incrementProcessedItemCounts(fakeItem, mOutputItems[0].stackSize);
-            this.processingLogic.setSpeedBonus(
-                1F / this.getBonusSpeedModifier() * Math.min(10, Math.max(1, 1 + getSpeedModifierForOutput(fakeItem))));
+            this.processingLogic.setSpeedBonus(1F / this.getBonusSpeedModifier());
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = recipe.mDuration;
@@ -465,26 +460,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return aProcessingLogic;
     }
 
-    private void incrementProcessedItemCounts(CircuitComponent type, long amount) {
-        if (!this.processedItemCounts.containsKey(type)) this.processedItemCounts.put(type, 0L);
-        this.processedItemCounts.put(type, this.processedItemCounts.get(type) + amount);
-    }
-
-    private double getSpeedModifierForOutput(CircuitComponent output) {
-        if (!this.processedItemCounts.containsKey(output)) {
-            throw new IllegalArgumentException("This item isn't in the item counts for the multi!");
-        }
-        double loss = 0;
-        for (Map.Entry<CircuitComponent, Long> c : this.processedItemCounts.entrySet()) {
-            if (c.getKey()
-                .equals(output)) continue;
-            double thisLoss = Math.log(Math.log(c.getValue()) / Math.log(5000)) / Math.log(1.1);
-            if (thisLoss > 0) loss += 2 * thisLoss;
-        }
-        long count = this.processedItemCounts.get(output);
-        return Math.log(Math.log(count) / Math.log(5000)) / Math.log(1.1) - loss;
-    }
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && isConnected) {
@@ -512,8 +487,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return false;
         }
     }
-
-    protected static final int BASE_PARALLEL = 1024;
 
     /**
      * Determines the maximum parallel for use in {@see createParallelHelper}
@@ -681,20 +654,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-
-        Map.Entry<CircuitComponent, Long> optimizedEntry = processedItemCounts.entrySet()
-            .stream()
-            .max(Map.Entry.comparingByValue())
-            .orElse(null);
-        if (optimizedEntry != null) {
-            tag.setString(
-                "optimizedItem",
-                optimizedEntry.getKey()
-                    .getLocalizedName());
-            tag.setDouble(
-                "speedBoost",
-                this.getBonusSpeedModifier() * Math.min(10, getSpeedModifierForOutput(optimizedEntry.getKey())));
-        }
         tag.setBoolean("connected", isConnected());
 
     }
@@ -705,19 +664,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         super.getWailaBody(itemStack, currentTip, accessor, config);
 
         NBTTagCompound tag = accessor.getNBTData();
-
-        int insertIdx = 0;
-        for (; insertIdx < currentTip.size() && !currentTip.get(insertIdx)
-            .startsWith("Producing"); insertIdx++) {}
-        if (tag.hasKey("optimizedItem"))
-            currentTip.add(insertIdx++, "Optimized for: " + tag.getString("optimizedItem"));
-        if (tag.hasKey("speedBoost"))
-            currentTip.add(insertIdx, "Speed boost: §b" + formatNumber((100 * tag.getDouble("speedBoost"))) + "%");
         if (tag.hasKey("connected")) {
             if (tag.getBoolean("connected")) {
-                currentTip.add(insertIdx, EnumChatFormatting.GREEN + "Connected To Main Complex");
+                currentTip.add(EnumChatFormatting.GREEN + "Connected To NAC");
             } else {
-                currentTip.add(insertIdx, EnumChatFormatting.RED + "Disconnected from Main Complex");
+                currentTip.add(EnumChatFormatting.RED + "Disconnected from NAC");
             }
 
         }
