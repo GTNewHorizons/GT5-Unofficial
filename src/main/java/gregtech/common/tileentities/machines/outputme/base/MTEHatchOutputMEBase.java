@@ -265,13 +265,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
-    private <StackType extends IAEStack<StackType>> OutputMonitorHandler<StackType> wrap(
-        final IMEInventoryHandler<StackType> h, final AccessRestriction myAccess) {
+    private <StackType extends IAEStack<StackType>> OutputMonitorHandler<StackType> wrap(final IMEInventoryHandler h,
+        final AccessRestriction myAccess) {
         if (h == null) {
             return null;
         }
 
-        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getChannel());
+        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getStackType());
         ih.setPriority(this.myPriority);
         ih.setBaseAccess(myAccess);
 
