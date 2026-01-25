@@ -15,7 +15,7 @@ import gtPlusPlus.core.material.Material;
 public class ChemicalFormulaFilter implements ItemFilter {
 
     private final Pattern pattern;
-    private static final ItemStackMap<String> itemSearchNames = new ItemStackMap<>();
+    private static final ItemStackMap<String> formulaCache = new ItemStackMap<>();
     private static final FutureTask<Void> loadGTPlusPlusMaterial = new FutureTask<>(() -> {
         Material.mComponentMap.forEach((name, components) -> {
             Material material = Material.mMaterialsByName.get(name);
@@ -23,8 +23,8 @@ public class ChemicalFormulaFilter implements ItemFilter {
                 String chemicalFormula = material.vChemicalFormula;
                 String sanitizedFormula = isValidFormula(chemicalFormula) ? sanitizeFormula(chemicalFormula) : "";
                 components.forEach((orePrefix, stack) -> {
-                    synchronized (itemSearchNames) {
-                        itemSearchNames.put(stack, sanitizedFormula);
+                    synchronized (formulaCache) {
+                        formulaCache.put(stack, sanitizedFormula);
                     }
                 });
             }
@@ -41,7 +41,7 @@ public class ChemicalFormulaFilter implements ItemFilter {
     }
 
     private static boolean isValidFormula(String formula) {
-        return !formula.equals("?");
+        return !("?".equals(formula) || "??".equals(formula));
     }
 
     private static void ensureLoadGTPlusPlusMaterials() {
@@ -62,18 +62,18 @@ public class ChemicalFormulaFilter implements ItemFilter {
     public static String getSearchFormula(ItemStack stack) {
         ensureLoadGTPlusPlusMaterials();
 
-        String chemicalFormula = itemSearchNames.get(stack);
+        String chemicalFormula = formulaCache.get(stack);
 
         if (chemicalFormula == null) {
-            chemicalFormula = getChemicalFormula(stack.copy());
+            chemicalFormula = getChemicalFormula(stack);
             if (isValidFormula(chemicalFormula)) {
                 chemicalFormula = sanitizeFormula(chemicalFormula);
             } else {
                 chemicalFormula = "";
             }
 
-            synchronized (itemSearchNames) {
-                itemSearchNames.put(stack, chemicalFormula);
+            synchronized (formulaCache) {
+                formulaCache.put(stack, chemicalFormula);
             }
         }
 
