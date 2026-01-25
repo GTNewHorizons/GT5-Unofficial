@@ -13,6 +13,7 @@ import gtPlusPlus.core.material.Material;
 
 public class ChemicalFormulaFilter implements ItemFilter {
 
+    private final Pattern pattern;
     private static final ItemStackMap<String> itemSearchNames = new ItemStackMap<>();
     private static final FutureTask<Void> loadGTPlusPlusMaterial = new FutureTask<>(() -> {
         Material.mComponentMap.forEach((name, components) -> {
@@ -29,7 +30,9 @@ public class ChemicalFormulaFilter implements ItemFilter {
         return null;
     });
 
-    private final Pattern pattern;
+    public ChemicalFormulaFilter(Pattern pattern) {
+        this.pattern = pattern;
+    }
 
     private static void ensureLoadGTPlusPlusMaterials() {
         loadGTPlusPlusMaterial.run();
@@ -38,10 +41,6 @@ public class ChemicalFormulaFilter implements ItemFilter {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public ChemicalFormulaFilter(Pattern pattern) {
-        this.pattern = pattern;
     }
 
     @Override
