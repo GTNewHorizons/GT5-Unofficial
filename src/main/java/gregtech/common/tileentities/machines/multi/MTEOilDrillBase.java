@@ -16,7 +16,6 @@ import static gregtech.common.UndergroundOil.undergroundOil;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 

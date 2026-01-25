@@ -388,7 +388,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-                                 int colorIndex, boolean aActive, boolean aRedstone) {
+        int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_ANTIMATTER)
             .extFacing()
@@ -432,7 +432,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
                     .isValid()
                     || amOutputHatches.get(i)
-                    .getFluid() == null)
+                        .getFluid() == null)
                     continue;
                 antimatterStored[i] = amOutputHatches.get(i)
                     .getFluid()
@@ -486,8 +486,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
             antimatterStored[i] = hatchEmpty ? ZERO_ANTIMATTER.copy()
                 : amOutputHatches.get(i)
-                .getFluid()
-                .copy();
+                    .getFluid()
+                    .copy();
             totalAntimatterAmount += antimatterStored[i].amount;
             minAntimatterAmount = Math.min(minAntimatterAmount, antimatterStored[i].amount);
         }
@@ -612,7 +612,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     private int distributeAntimatterToHatch(List<AntimatterOutputHatch> hatches, long totalAntimatterAmount,
-                                            long protomatterAmount) {
+        long protomatterAmount) {
         double coeff = Math.pow((totalAntimatterAmount), 0.5 + modifiers[CONTAINMENT_ID]);
         int difference = 0;
 
@@ -803,7 +803,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-                                        ItemStack aTool) {
+        ItemStack aTool) {
         this.canRender = !this.canRender;
         if (!this.canRender) {
             aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.antimatter_forge.disableRender"));

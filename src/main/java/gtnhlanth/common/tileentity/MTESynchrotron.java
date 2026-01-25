@@ -1,8 +1,6 @@
 package gtnhlanth.common.tileentity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -839,78 +837,91 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             information = new BeamInformation(0, 0, 0, 0);
         }
 
-        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // Machine Focus:
-            + EnumChatFormatting.BLUE
-            + machineFocus
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.focus") + ": " // Machine Focus:
+                + EnumChatFormatting.BLUE
+                + machineFocus
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
-            + EnumChatFormatting.DARK_RED
-            + machineTemp
-            + EnumChatFormatting.RESET
-            + " K");
+        info.add(
+            StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
+                + EnumChatFormatting.DARK_RED
+                + machineTemp
+                + EnumChatFormatting.RESET
+                + " K");
 
-        info.add(StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant Usage:
-            + EnumChatFormatting.AQUA
-            + 32
-            + EnumChatFormatting.RESET
-            + " kL/s");
+        info.add(
+            StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant Usage:
+                + EnumChatFormatting.AQUA
+                + 32
+                + EnumChatFormatting.RESET
+                + " kL/s");
 
-        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-            + ": "
-            + EnumChatFormatting.RESET);
+        info.add(
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+                + ": "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-            + EnumChatFormatting.GOLD
-            + Particle.getParticleFromId(information.getParticleId())
-            .getLocalisedName() // e.g. "Electron
-            // (e-)"
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
+                + EnumChatFormatting.GOLD
+                + Particle.getParticleFromId(information.getParticleId())
+                    .getLocalisedName() // e.g. "Electron
+                // (e-)"
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-            + EnumChatFormatting.DARK_RED
-            + information.getEnergy()
-            + EnumChatFormatting.RESET
-            + " keV");
+        info.add(
+            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+                + EnumChatFormatting.DARK_RED
+                + information.getEnergy()
+                + EnumChatFormatting.RESET
+                + " keV");
 
-        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-            + EnumChatFormatting.BLUE
-            + information.getFocus()
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+                + EnumChatFormatting.BLUE
+                + information.getFocus()
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + information.getRate());
+        info.add(
+            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+                + EnumChatFormatting.LIGHT_PURPLE
+                + information.getRate());
 
-        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
-            + ": "
-            + EnumChatFormatting.RESET);
+        info.add(
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
+                + ": "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
-            + EnumChatFormatting.GOLD
-            + Particle.getParticleFromId(this.outputParticleID)
-            .getLocalisedName()
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
+                + EnumChatFormatting.GOLD
+                + Particle.getParticleFromId(this.outputParticleID)
+                    .getLocalisedName()
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-            + EnumChatFormatting.DARK_RED
-            + this.outputEnergy * 1000
-            + EnumChatFormatting.RESET
-            + " eV");
+        info.add(
+            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+                + EnumChatFormatting.DARK_RED
+                + this.outputEnergy * 1000
+                + EnumChatFormatting.RESET
+                + " eV");
 
-        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-            + EnumChatFormatting.BLUE
-            + this.outputFocus
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+                + EnumChatFormatting.BLUE
+                + this.outputFocus
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + this.outputRate);
+        info.add(
+            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+                + EnumChatFormatting.LIGHT_PURPLE
+                + this.outputRate);
     }
 
     @Override

@@ -27,6 +27,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,8 +64,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-
-import java.util.ArrayList;
 
 public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThoriumHighTempReactor>
     implements ISurvivalConstructable {
@@ -345,19 +345,22 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocalFormatted(
-            "BW.infoData.thtr.triso_pebbles",
-            formatNumber(this.fuelSupply),
-            formatNumber(this.fuelSupply)));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.thtr.triso_pebbles",
+                formatNumber(this.fuelSupply),
+                formatNumber(this.fuelSupply)));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "BW.infoData.htr.helium_level",
-            formatNumber(this.HeliumSupply),
-            formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.htr.helium_level",
+                formatNumber(this.HeliumSupply),
+                formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "BW.infoData.thtr.coolant",
-            formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.thtr.coolant",
+                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)));
     }
 
     @Override

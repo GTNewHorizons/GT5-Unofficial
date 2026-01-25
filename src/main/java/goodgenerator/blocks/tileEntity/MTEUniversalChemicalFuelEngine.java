@@ -261,7 +261,8 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocalFormatted(
+        info.add(
+            StatCollector.translateToLocalFormatted(
                 "gg.scanner.info.generator.generates",
                 EnumChatFormatting.RED + formatNumber(this.getPowerFlow() * tEff / 10000) + EnumChatFormatting.RESET));
     }

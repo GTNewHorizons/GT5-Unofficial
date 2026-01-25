@@ -2208,11 +2208,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 + formatNumber(metaID)
                 + EnumChatFormatting.RESET
                 + (getBaseMetaTileEntity().canAccessData()
-                ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
+                    ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
                 + (getBaseMetaTileEntity().getMetaTileEntity() == null
-                ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
-                : " "));
+                    ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
+                    : " "));
 
         if (mProgresstime > 0) {
             info.add(

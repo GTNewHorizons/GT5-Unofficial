@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -18,7 +17,6 @@ import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_BRIDGE_CASING;
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_INJECTION_CASING;
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRANS_CASING;
-import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -28,7 +26,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;

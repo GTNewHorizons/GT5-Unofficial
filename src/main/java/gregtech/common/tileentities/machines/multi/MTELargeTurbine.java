@@ -370,7 +370,7 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
             info.add(
                 EnumChatFormatting.YELLOW + " ("
                     + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
+                        : StatCollector.translateToLocal("GT5U.turbine.tight"))
                     + ")");
 
             info.add(

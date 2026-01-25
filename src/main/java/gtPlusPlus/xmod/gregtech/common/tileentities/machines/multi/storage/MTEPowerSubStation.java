@@ -682,41 +682,39 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
         String mode;
         if (mIsOutputtingPower) {
             mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
-                info.add(
-                    "Capacity: " + EnumChatFormatting.YELLOW
-                        + formatNumber(this.maxEUStore())
-                        + EnumChatFormatting.RESET);
-                info.add(
-                    "Running Costs: " + EnumChatFormatting.RED
-                        + formatNumber(this.computeEnergyTax())
-                        + EnumChatFormatting.RESET
-                        + " EU/t");
-                info.add("Controller Mode: " + mode);
-                info.add(
-                    "Average Input: " + EnumChatFormatting.BLUE
-                        + formatNumber(this.getAverageEuAdded())
-                        + EnumChatFormatting.RESET
-                        + " EU");
-                info.add(
-                    "Average Output: " + EnumChatFormatting.GOLD
-                        + formatNumber(this.getAverageEuConsumed())
-                        + EnumChatFormatting.RESET
-                        + " EU");
-                info.add(
-                    "Total Input: " + EnumChatFormatting.BLUE
-                        + formatNumber(this.mTotalEnergyAdded)
-                        + EnumChatFormatting.RESET
-                        + " EU");
-                info.add(
-                    "Total Output: " + EnumChatFormatting.GOLD
-                        + formatNumber(this.mTotalEnergyConsumed)
-                        + EnumChatFormatting.RESET
-                        + " EU");
-                info.add(
-                    "Total Costs: " + EnumChatFormatting.RED
-                        + formatNumber(this.mTotalEnergyLost)
-                        + EnumChatFormatting.RESET
-                        + " EU");
+            info.add(
+                "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET);
+            info.add(
+                "Running Costs: " + EnumChatFormatting.RED
+                    + formatNumber(this.computeEnergyTax())
+                    + EnumChatFormatting.RESET
+                    + " EU/t");
+            info.add("Controller Mode: " + mode);
+            info.add(
+                "Average Input: " + EnumChatFormatting.BLUE
+                    + formatNumber(this.getAverageEuAdded())
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Average Output: " + EnumChatFormatting.GOLD
+                    + formatNumber(this.getAverageEuConsumed())
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Total Input: " + EnumChatFormatting.BLUE
+                    + formatNumber(this.mTotalEnergyAdded)
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Total Output: " + EnumChatFormatting.GOLD
+                    + formatNumber(this.mTotalEnergyConsumed)
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Total Costs: " + EnumChatFormatting.RED
+                    + formatNumber(this.mTotalEnergyLost)
+                    + EnumChatFormatting.RESET
+                    + " EU");
         }
     }
 

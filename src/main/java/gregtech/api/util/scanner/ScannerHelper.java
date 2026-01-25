@@ -1,5 +1,6 @@
 package gregtech.api.util.scanner;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.util.GTUtility.*;
@@ -234,12 +235,12 @@ public class ScannerHelper {
                             + " "
                             + i + ": "
                             + EnumChatFormatting.GOLD
-                            + formatNumbers((tanks[i].fluid == null ? 0 : tanks[i].fluid.amount))
+                            + formatNumber((tanks[i].fluid == null ? 0 : tanks[i].fluid.amount))
                             + "L"
                             + EnumChatFormatting.WHITE
                             + " / "
                             + EnumChatFormatting.GOLD
-                            + formatNumbers(tanks[i].capacity)
+                            + formatNumber(tanks[i].capacity)
                             + "L"
                             + EnumChatFormatting.WHITE
                             + " "
@@ -267,11 +268,11 @@ public class ScannerHelper {
                 list.add(trans("heat")
                     + " "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(reactor.getHeat())
+                    + formatNumber(reactor.getHeat())
                     + EnumChatFormatting.WHITE
                     + " / "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(reactor.getMaxHeat())
+                    + formatNumber(reactor.getMaxHeat())
                     + EnumChatFormatting.WHITE
                     + " "
                     + trans("hem")
@@ -409,13 +410,13 @@ public class ScannerHelper {
                 resultList.add(trans("contained_energy")
                     + " "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(storage.getStored())
+                    + formatNumber(storage.getStored())
                     + " "
                     + trans("eu")
                     + EnumChatFormatting.WHITE
                     + " / "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(storage.getCapacity())
+                    + formatNumber(storage.getCapacity())
                     + " "
                     + trans("eu"));
             }
@@ -457,7 +458,7 @@ public class ScannerHelper {
                 list.add(trans("max_in")
                     + " "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(energyContainer.getInputVoltage())
+                    + formatNumber(energyContainer.getInputVoltage())
                     + EnumChatFormatting.WHITE
                     + " ("
                     + GTValues.VN[getTier(energyContainer.getInputVoltage())]
@@ -468,13 +469,13 @@ public class ScannerHelper {
                     + trans("at")
                     + EnumChatFormatting.GOLD
                     + " "
-                    + formatNumbers(energyContainer.getInputAmperage())
+                    + formatNumber(energyContainer.getInputAmperage())
                     + " "
                     + trans("a"));
                 list.add(trans("max_out")
                     + " "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(energyContainer.getOutputVoltage())
+                    + formatNumber(energyContainer.getOutputVoltage())
                     + EnumChatFormatting.WHITE
                     + " ("
                     + GTValues.VN[getTier(energyContainer.getOutputVoltage())]
@@ -485,18 +486,18 @@ public class ScannerHelper {
                     + trans("at")
                     + EnumChatFormatting.GOLD
                     + " "
-                    + formatNumbers(energyContainer.getOutputAmperage())
+                    + formatNumber(energyContainer.getOutputAmperage())
                     + trans("a"));
                 list.add(trans("energy")
                     + " "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(energyContainer.getStoredEU())
+                    + formatNumber(energyContainer.getStoredEU())
                     + " "
                     + trans("eu")
                     + EnumChatFormatting.WHITE
                     + " / "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(energyContainer.getEUCapacity())
+                    + formatNumber(energyContainer.getEUCapacity())
                     + " "
                     + trans("eu"));
             }
@@ -623,7 +624,7 @@ public class ScannerHelper {
             list.add(trans("pollution_yes")
                 + " "
                 + EnumChatFormatting.RED
-                + formatNumbers(Pollution.getPollution(currentChunk))
+                + formatNumber(Pollution.getPollution(currentChunk))
                 + EnumChatFormatting.RESET
                 + trans("gibbl"));
         } else {
@@ -639,7 +640,7 @@ public class ScannerHelper {
                     + fluid.getLocalizedName()
                     + ": "
                     + EnumChatFormatting.GOLD
-                    + formatNumbers(fluid.amount)
+                    + formatNumber(fluid.amount)
                     + " L");
             }
             else {

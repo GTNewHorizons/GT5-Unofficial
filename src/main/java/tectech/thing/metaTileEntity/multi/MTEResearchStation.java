@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
@@ -57,7 +56,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -80,7 +78,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
@@ -360,22 +357,24 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(eAvailableData)
-            + EnumChatFormatting.RESET
-            + " / "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(eRequiredData)
-            + EnumChatFormatting.RESET);
+        info.add(
+            translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(eAvailableData)
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(eRequiredData)
+                + EnumChatFormatting.RESET);
 
         info.add(translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":");
 
-        info.add(EnumChatFormatting.GREEN + formatNumber(computationRemaining / 20L)
-            + EnumChatFormatting.RESET
-            + " / "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(getComputationRequired()));
+        info.add(
+            EnumChatFormatting.GREEN + formatNumber(computationRemaining / 20L)
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(getComputationRequired()));
     }
 
     @Override

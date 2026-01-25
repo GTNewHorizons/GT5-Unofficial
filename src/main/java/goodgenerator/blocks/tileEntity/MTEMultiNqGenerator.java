@@ -246,8 +246,7 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
         info.add(
             StatCollector.translateToLocalFormatted(
                 "gg.scanner.info.generator.generates",
-                EnumChatFormatting.RED + formatNumber(Math.abs(this.trueOutput))
-                    + EnumChatFormatting.RESET));
+                EnumChatFormatting.RED + formatNumber(Math.abs(this.trueOutput)) + EnumChatFormatting.RESET));
 
         info.add(
             StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "

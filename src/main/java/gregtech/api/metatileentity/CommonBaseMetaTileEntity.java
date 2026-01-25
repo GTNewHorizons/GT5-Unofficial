@@ -236,17 +236,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
                 tList.add("CPU Load (25 ticks)");
                 tList.add(
-                    padding + "Average: "
-                        + color
-                        + formatNumber(finalAverageTime)
-                        + EnumChatFormatting.RESET
-                        + "ns");
-                tList.add(
-                    padding + "Worst: "
-                        + color
-                        + formatNumber(finalWorstTime)
-                        + EnumChatFormatting.RESET
-                        + "ns");
+                    padding + "Average: " + color + formatNumber(finalAverageTime) + EnumChatFormatting.RESET + "ns");
+                tList.add(padding + "Worst: " + color + formatNumber(finalWorstTime) + EnumChatFormatting.RESET + "ns");
             }
         } else {
             startTimeStatistics();
