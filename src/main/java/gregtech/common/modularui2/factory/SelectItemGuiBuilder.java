@@ -175,7 +175,7 @@ public class SelectItemGuiBuilder {
                 .height(18)
                 .top(22));
         panel.child(
-            new SlotLikeButtonWidget(() -> selected > -1 ? choices.get(selected) : null)
+            new SlotLikeButtonWidget(() -> selected > DESELECTED ? choices.get(selected) : null)
                 .background(
                     GTGuiTextures.SLOT_ITEM_DARK,
                     new DynamicDrawable(

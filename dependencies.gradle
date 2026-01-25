@@ -55,7 +55,7 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.10.3-GTNH:dev")
 
-    compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.78:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.78:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:Angelica:2.0.0-alpha11:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.9:dev") { transitive = false }
