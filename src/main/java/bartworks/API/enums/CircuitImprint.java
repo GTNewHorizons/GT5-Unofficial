@@ -1,9 +1,11 @@
 package bartworks.API.enums;
 
+import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,5 +105,11 @@ public enum CircuitImprint {
                 IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.put(entry.circuit.get(1).getUnlocalizedName(), entry);
                 IMPRINT_LOOKUPS_BY_IDS.put(entry.id, entry);
             }
+        }
+
+        public static CircuitImprint findCircuitImprintByImprintStack(ItemStack imprint){
+            if (!MTECircuitAssemblyLine.isValidImprint(imprint)) return null;
+            String circuitName = ItemStack.loadItemStackFromNBT(imprint.getTagCompound()).getUnlocalizedName();
+            return CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(circuitName);
         }
 }

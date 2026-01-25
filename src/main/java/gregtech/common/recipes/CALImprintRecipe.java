@@ -1,5 +1,6 @@
 package gregtech.common.recipes;
 
+import bartworks.API.enums.CircuitImprint;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -30,9 +31,9 @@ public class CALImprintRecipe implements IRecipe {
         if (getItemCount(inv) > getRecipeSize()) return false;
 
         ItemStack cal = findCAL(inv);
-        ItemStack imprint = findImprint(inv);
+        CircuitImprint circuitImprint = findCircuitImprint(inv);
 
-        return cal != null && imprint != null;
+        return cal != null && circuitImprint != null;
     }
 
     @Override
@@ -40,14 +41,11 @@ public class CALImprintRecipe implements IRecipe {
         if (getItemCount(inv) > getRecipeSize()) return null;
 
         ItemStack cal = findCAL(inv);
-        ItemStack imprint = findImprint(inv);
+        CircuitImprint circuitImprint = findCircuitImprint(inv);
 
-        if (cal == null || imprint == null) return null;
+        if (cal == null || circuitImprint == null) return null;
 
-        cal = GTUtility.copyAmount(1, cal);
-        imprint = GTUtility.copyAmount(1, imprint);
-
-        return installImprint(cal, imprint);
+        return installImprint(cal, circuitImprint);
     }
 
     @Override
@@ -82,72 +80,67 @@ public class CALImprintRecipe implements IRecipe {
             ItemStack stack = inv.getStackInSlot(i);
 
             if (!isCAL(stack)) continue;
-            if (getCircuitFromCAL(stack) != null) continue;
+            if (getCircuitImprintFromCAL(stack) != null) continue;
 
-            return stack;
+            return GTUtility.copyAmount(1, stack);
         }
 
         return null;
     }
 
-    private static ItemStack findImprint(InventoryCrafting inv) {
+    private static CircuitImprint findCircuitImprint(InventoryCrafting inv) {
         int size = inv.getSizeInventory();
 
         for (int i = 0; i < size; i++) {
             ItemStack stack = inv.getStackInSlot(i);
 
-            if (stack == null || stack.getItem() == null) continue;
-
-            if (getCircuitFromImprint(stack) == null) continue;
-
-            return stack;
+            CircuitImprint circuitImprint = CircuitImprint.findCircuitImprintByImprintStack(stack);
+            if (circuitImprint == null) continue;
+            return circuitImprint;
         }
 
         return null;
     }
 
-    public static ItemStack installImprint(@NotNull ItemStack cal, @NotNull ItemStack imprint) {
-        NBTTagCompound tag = cal.getTagCompound();
+    public static ItemStack installImprint(@NotNull ItemStack cal, @NotNull CircuitImprint circuitImprint) {
+        ItemStack imprintedCAL = GTUtility.copyAmount(1, cal);
+        NBTTagCompound tag = imprintedCAL.getTagCompound();
 
         if (tag == null) {
             tag = new NBTTagCompound();
-            cal.setTagCompound(tag);
+            imprintedCAL.setTagCompound(tag);
         }
 
-        tag.setTag(MTECircuitAssemblyLine.IMPRINT_KEY, imprint.getTagCompound());
+        tag.setInteger(MTECircuitAssemblyLine.IMPRINT_ID_KEY, circuitImprint.id);
 
-        return cal;
+        return imprintedCAL;
     }
 
     public static boolean isCAL(@Nullable ItemStack stack) {
         return ItemMachines.getMetaTileEntity(stack) instanceof MTECircuitAssemblyLine;
     }
 
-    public static ItemStack getImprintForCircuit(@NotNull ItemStack circuit) {
-        ItemStack imprint = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
-
-        imprint.setTagCompound(circuit.writeToNBT(new NBTTagCompound()));
-
-        return imprint;
-    }
-
-    public static ItemStack getCircuitFromCAL(@NotNull ItemStack cal) {
+    public static CircuitImprint getCircuitImprintFromCAL(@NotNull ItemStack cal){
         if (!isCAL(cal)) return null;
 
         NBTTagCompound tag = cal.getTagCompound();
 
-        if (tag == null || !tag.hasKey(MTECircuitAssemblyLine.IMPRINT_KEY)) return null;
+        if (tag == null) return null;
 
-        return ItemStack.loadItemStackFromNBT(tag.getCompoundTag(MTECircuitAssemblyLine.IMPRINT_KEY));
-    }
+        // old tag
+        if (tag.hasKey(MTECircuitAssemblyLine.IMPRINT_KEY)){
+            String name = ItemStack.loadItemStackFromNBT(tag.getCompoundTag(MTECircuitAssemblyLine.IMPRINT_KEY)).getUnlocalizedName();
+            if (CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.containsKey(name)) {
+                return CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(name);
+            }
+        }
+        else if (tag.hasKey(MTECircuitAssemblyLine.IMPRINT_ID_KEY)){
+            int id = tag.getInteger(MTECircuitAssemblyLine.IMPRINT_ID_KEY);
+            if (CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.containsKey(id)){
+                return CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(id);
+            }
+        }
 
-    public static ItemStack getCircuitFromImprint(@Nullable ItemStack imprint) {
-        if (imprint == null) return null;
-        if (imprint.getItem() == null) return null;
-        if (!(imprint.getItem() instanceof BWMetaItems.BW_GT_MetaGenCircuits)) return null;
-        if (imprint.getItemDamage() != 0) return null;
-        if (imprint.getTagCompound() == null) return null;
-
-        return ItemStack.loadItemStackFromNBT(imprint.getTagCompound());
+        return null;
     }
 }

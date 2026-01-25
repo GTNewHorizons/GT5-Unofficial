@@ -105,10 +105,13 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
-        GregTechAPI.sAfterGTPostload.add(() -> {
+        GregTechAPI.sBeforeGTPostload.add(() -> {
             CircuitImprint.registerExternalModCircuitsInItemList();
             CircuitImprint.registerSlicedCircuitsAndImprints();
             CircuitImprint.populateImprintLookups();
+        });
+
+        GregTechAPI.sAfterGTPostload.add(() -> {
             for (CircuitWraps wrap : CircuitWraps.values()) {
                 wrap.registerWrap();
                 wrap.registerWrapRecipe();

@@ -2,6 +2,9 @@ package gregtech.nei;
 
 import java.util.HashSet;
 
+import bartworks.API.enums.CircuitImprint;
+import bartworks.MainMod;
+import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -43,46 +46,39 @@ public class GTNEIImprintHandler extends ShapelessRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        ItemStack circuit = CALImprintRecipe.getCircuitFromCAL(result);
+        CircuitImprint circuitImprint = CALImprintRecipe.getCircuitImprintFromCAL(result);
 
-        if (circuit != null) {
-            loadRecipe(null, CALImprintRecipe.getImprintForCircuit(circuit));
+        if (circuitImprint != null) {
+            loadRecipe(null, circuitImprint);
         }
     }
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        if (CALImprintRecipe.isCAL(ingredient) && CALImprintRecipe.getCircuitFromCAL(ingredient) == null) {
-            loadAllRecipes(ingredient);
+        if (CALImprintRecipe.isCAL(ingredient) && CALImprintRecipe.getCircuitImprintFromCAL(ingredient) == null) {
+            loadAllRecipes(GTUtility.copyAmount(1, ingredient));
         }
 
-        if (CALImprintRecipe.getCircuitFromImprint(ingredient) != null) {
-            loadRecipe(null, ingredient);
+        CircuitImprint circuitImprint = CircuitImprint.findCircuitImprintByImprintStack(ingredient);
+        if (circuitImprint != null) {
+            loadRecipe(null, circuitImprint);
         }
     }
 
     private void loadAllRecipes(@Nullable ItemStack cal) {
-        HashSet<GTUtility.ItemId> addedImprints = new HashSet<>();
-
-        for (GTRecipe recipe : BartWorksRecipeMaps.circuitAssemblyLineRecipes.getAllRecipes()) {
-            ItemStack imprint = (ItemStack) recipe.mSpecialItems;
-            ItemStack circuit = CALImprintRecipe.getCircuitFromImprint(imprint);
-
-            if (imprint == null) continue;
-            if (circuit == null) continue;
-
-            if (!addedImprints.add(GTUtility.ItemId.create(circuit))) continue;
-
-            loadRecipe(cal, imprint);
+        for (CircuitImprint entry : CircuitImprint.values()){
+            if (entry.sourceMod.isModLoaded()) loadRecipe(cal, entry); // Avoid the handler to crash in dev
         }
     }
 
-    private void loadRecipe(@Nullable ItemStack cal, @NotNull ItemStack imprint) {
-        if (cal == null) cal = ItemRegistry.cal;
+    private void loadRecipe(@Nullable ItemStack cal, @NotNull CircuitImprint circuitImprint) {
+        ItemStack inputCAL = GTUtility.copyAmount(1, (cal == null) ? ItemRegistry.cal : cal);
+        ItemStack outputCAL = CALImprintRecipe.installImprint(inputCAL, circuitImprint);
 
         arecipes.add(
             new CachedShapelessRecipe(
-                new Object[] { GTUtility.copyAmount(1, cal), GTUtility.copyAmount(1, imprint), },
-                CALImprintRecipe.installImprint(GTUtility.copyAmount(1, cal), imprint)));
+                new Object[] { inputCAL, circuitImprint.imprint.get(1) }, outputCAL
+                )
+        );
     }
 }

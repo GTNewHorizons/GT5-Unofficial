@@ -123,6 +123,10 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
+    /**
+     * This field correspond to the old way of storing imprints in CALs. This is left for backward compatible purposes.
+     * This has been deprecated during the 2.9 dev cycle.
+     */
     @Deprecated
     public static final String IMPRINT_KEY = "Type";
     public static final String IMPRINT_ID_KEY = "id_imprint";
@@ -258,7 +262,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         return this.circuitImprint != null;
     }
 
-    private boolean isValidImprint(ItemStack stack){
+    public static boolean isValidImprint(ItemStack stack){
         return GTUtility.isStackValid(stack) &&
             GTUtility.areStacksEqual(stack, CircuitImprint.NANDChipArray.imprint.get(1), true) &&
             stack.getTagCompound() != null;
