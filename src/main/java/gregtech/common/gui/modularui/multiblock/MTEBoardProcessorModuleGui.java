@@ -75,11 +75,15 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             .size(36, 94)
             .tooltipBuilder(t -> {
                 t.clearText();
-                t.addLine(
-                    EnumChatFormatting.BLUE + "Immersion Fluid: "
-                        + EnumChatFormatting.GRAY
-                        + fluidTank.getFluid()
-                            .getLocalizedName());
+                if (fluidTank.getFluid() != null) {
+                    t.addLine(
+                        EnumChatFormatting.BLUE + "Immersion Fluid: "
+                            + EnumChatFormatting.GRAY
+                            + fluidTank.getFluid()
+                                .getLocalizedName());
+                } else {
+                    t.addLine(EnumChatFormatting.BLUE + "Empty");
+                }
                 t.addLine(
                     EnumChatFormatting.GREEN + "Impurity: "
                         + numberFormat.format(impurity.getDoubleValue() * 100)
