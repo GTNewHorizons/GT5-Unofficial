@@ -1,11 +1,10 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -49,7 +47,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyM
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
-import gtPlusPlus.core.material.MaterialsElements;
 
 // todo look over and cleanup. the functionality is present
 public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTEOpticalOrganizerModule> {
@@ -69,16 +66,8 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     public static final IStructureDefinition<MTEOpticalOrganizerModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEOpticalOrganizerModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, OPTICAL_STRING)
-        // Hypogen Frame Box
-        .addElement(
-            'A',
-            lazy(
-                t -> ofBlock(
-                    Block.getBlockFromItem(
-                        MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)
-                            .getItem()),
-                    MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)
-                        .getItemDamage())))
+        // Awakened Draconium Frame Box
+        .addElement('A', ofFrame(Materials.DraconiumAwakened))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing

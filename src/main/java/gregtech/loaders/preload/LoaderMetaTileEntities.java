@@ -10964,7 +10964,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HATCH_SPLITTER_LEVEL.ID,
                 "hatch.splitter.redstone",
                 "Splitter Redstone Input",
-                11).getStackForm(1));
+                10).getStackForm(1));
 
         ItemList.VacuumConveyorPipe.set(
             new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
@@ -11155,7 +11155,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 HATCH_PARTICLE_SENSOR.ID,
                 "hatch.particleindicator",
                 "Particle Indicator Hatch",
-                8).getStackForm(1L));
+                10).getStackForm(1L));
     }
 
 }
