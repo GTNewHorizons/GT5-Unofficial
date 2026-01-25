@@ -133,6 +133,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private int glassTier = -1;
 
     private CircuitImprint circuitImprint;
+    private String test;
 
     private static final IStructureDefinition<MTECircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECircuitAssemblyLine>builder()
@@ -585,7 +586,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder
-            .widget(new FakeSyncWidget.StringSyncer(() -> this.circuitImprint.circuit.get(1).getDisplayName(), val -> {}));
+            .widget(new FakeSyncWidget.StringSyncer(() -> this.circuitImprint != null ? this.circuitImprint.circuit.get(1).getDisplayName() : "", val -> {}));
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mode == Mode.CircuitAssembler, this::setMode)
                 .setTextureGetter(
