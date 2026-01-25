@@ -39,6 +39,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
+import bartworks.API.enums.CircuitImprint;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -62,8 +63,6 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
-import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
@@ -84,7 +83,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -126,14 +124,15 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
     public static final String IMPRINT_KEY = "Type";
+    public static final String IMPRINT_ID_KEY = "id";
     protected static final String LENGTH_KEY = "Length";
     protected static final String RUNNING_MODE_KEY = "RunningMode";
 
     private int length;
     private Mode mode = Mode.CircuitAssemblyLine;
     private int glassTier = -1;
-    private String imprintedItemName;
-    private ItemStack imprintedStack;
+
+    private CircuitImprint circuitImprint;
 
     private static final IStructureDefinition<MTECircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECircuitAssemblyLine>builder()
@@ -243,10 +242,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public String getTypeForDisplay() {
 
         if (!isImprinted()) return "";
-        return CircuitImprintLoader.getStackFromTag(this.type).getDisplayName();
+        return this.circuitImprint.circuit.get(1).getDisplayName();
     }
-
-    private NBTTagCompound type = new NBTTagCompound();
 
     public MTECircuitAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -257,22 +254,30 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     public boolean isImprinted() {
-        return !this.type.hasNoTags();
+        return this.circuitImprint != null;
+    }
+
+    private boolean isValidImprint(ItemStack stack){
+        return GTUtility.isStackValid(stack) &&
+            GTUtility.areStacksEqual(stack, CircuitImprint.NANDChipArray.imprint.get(1), true) &&
+            stack.getTagCompound() != null;
     }
 
     private boolean imprintMachine(ItemStack itemStack) {
         if (isImprinted()) return true;
-        if (!GTUtility.isStackValid(itemStack)) return false;
-        if (itemStack.getItem() instanceof BWMetaItems.BW_GT_MetaGenCircuits && itemStack.getItemDamage() == 0
-            && itemStack.getTagCompound() != null) {
-            this.type = itemStack.getTagCompound();
-            itemStack.stackSize -= 1;
-            if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
-                mInventory[getControllerSlotIndex()] = null;
+        if (isValidImprint(itemStack)) {
+            ItemStack imprintedCircuit = ItemStack.loadItemStackFromNBT(itemStack.getTagCompound());
+            if (imprintedCircuit != null) {
+                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(imprintedCircuit.getUnlocalizedName());
+
+                itemStack.stackSize -= 1;
+                if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
+                    mInventory[getControllerSlotIndex()] = null;
+                }
+                this.getBaseMetaTileEntity()
+                    .issueBlockUpdate();
+                return true;
             }
-            this.getBaseMetaTileEntity()
-                .issueBlockUpdate();
-            return true;
         }
         return false;
     }
@@ -287,8 +292,19 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.type = aNBT.getCompoundTag(IMPRINT_KEY);
-        this.imprintedItemName = this.type == null ? "" : ItemStack.loadItemStackFromNBT(this.type).getUnlocalizedName();
+        if (aNBT.hasKey(IMPRINT_KEY)) {// old NBT migration code
+            String name = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(IMPRINT_KEY)).getUnlocalizedName();
+            if (CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.containsKey(name)) {
+                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(name);
+            }
+        }
+        else{
+            // IDs here will make sure we never shift again
+            if (aNBT.hasKey(IMPRINT_ID_KEY)){
+                int circuitID = aNBT.getInteger(IMPRINT_ID_KEY);
+                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(circuitID);
+            }
+        }
         mode = Mode.fromIndex(aNBT.getInteger(RUNNING_MODE_KEY));
         if (aNBT.hasKey(LENGTH_KEY)) {
             length = aNBT.getInteger(LENGTH_KEY);
@@ -298,13 +314,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
+        if (isImprinted()) aNBT.setInteger(IMPRINT_ID_KEY, this.circuitImprint.id);
         super.setItemNBT(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (isImprinted()) aNBT.setTag(IMPRINT_KEY, this.type);
+        if (isImprinted()) aNBT.setInteger(IMPRINT_KEY, this.circuitImprint.id);
         aNBT.setInteger(RUNNING_MODE_KEY, mode.index);
         aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
@@ -370,12 +386,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public CheckRecipeResult checkProcessing() {
         switch (mode) {
             case CircuitAssemblyLine -> {
-                if (!isImprinted() && !this.imprintMachine(this.getControllerSlot()))
+                if (!this.imprintMachine(this.getControllerSlot())) {// Imprint check embedded in it
                     return SimpleCheckRecipeResult.ofFailure("no_imprint");
-                if (this.imprintedItemName == null || this.imprintedStack == null) {
-                    this.imprintedStack = new ItemStack(BWMetaItems.getCircuitParts(), 1, 0);
-                    this.imprintedStack.setTagCompound(this.type);
-                    this.imprintedItemName = this.imprintedStack.getUnlocalizedName();
                 }
             }
             case CircuitAssembler -> {
@@ -390,7 +402,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setSpecialSlotItem(this.imprintedStack);
+        logic.setSpecialSlotItem(this.circuitImprint.imprint.get(1));
     }
 
     @Override
@@ -573,7 +585,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder
-            .widget(new FakeSyncWidget.StringSyncer(() -> this.imprintedItemName, val -> this.imprintedItemName = val));
+            .widget(new FakeSyncWidget.StringSyncer(() -> this.circuitImprint.circuit.get(1).getDisplayName(), val -> {}));
         builder.widget(
             new CycleButtonWidget().setToggle(() -> mode == Mode.CircuitAssembler, this::setMode)
                 .setTextureGetter(
