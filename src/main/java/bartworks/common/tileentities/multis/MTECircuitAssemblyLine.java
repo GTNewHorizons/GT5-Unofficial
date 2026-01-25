@@ -124,7 +124,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
     public static final String IMPRINT_KEY = "Type";
-    public static final String IMPRINT_ID_KEY = "id";
+    public static final String IMPRINT_ID_KEY = "id_imprint";
     protected static final String LENGTH_KEY = "Length";
     protected static final String RUNNING_MODE_KEY = "RunningMode";
 
@@ -133,7 +133,6 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private int glassTier = -1;
 
     private CircuitImprint circuitImprint;
-    private String test;
 
     private static final IStructureDefinition<MTECircuitAssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
         .<MTECircuitAssemblyLine>builder()
