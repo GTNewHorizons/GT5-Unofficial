@@ -540,6 +540,8 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_STANDARD)
         .build();
+    public static final UITexture PROGRESSBAR_NANOCHIP_CALIBRATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip_calibration");
     private static final SteamTextureRegisterer PROGRESSBAR_FUEL_STEAM = SteamTextureRegisterer.builder()
         .location("gui/progressbar/fuel_%s")
         .fullImage()
@@ -551,8 +553,6 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
         .build();
-    public static final UITexture PROGRESSBAR_NANOCHIP_CALIBRATION = UITexture
-        .fullImage(MainMod.MOD_ID, "GUI/progressbar/nanochip_calibration");
     public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_plasma");
     public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND = UITexture

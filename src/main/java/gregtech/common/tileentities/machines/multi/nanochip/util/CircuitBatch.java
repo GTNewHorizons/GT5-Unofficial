@@ -4,6 +4,7 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 
 public class CircuitBatch {
 
+    public int total;
     public int primitives;
     public int crystals;
     public int wetwares;
@@ -15,11 +16,17 @@ public class CircuitBatch {
     public int specials;
 
     public boolean isFull() {
-        return (primitives + crystals + wetwares + bios + exotics + opticals + cosmics + temporals + specials)
-            >= BATCH_SIZE;
+        return total >= BATCH_SIZE;
     }
 
-    public void add(byte type, int amount) {
+    // Returns leftover if total exceeds BATCH_SIZE
+    public int add(byte type, int amount) {
+        int leftover = 0;
+        if (total + amount > BATCH_SIZE) {
+            leftover = total + amount - BATCH_SIZE;
+            amount = BATCH_SIZE - total;
+        }
+        total += amount;
         switch (type) {
             case 1 -> primitives += amount;
             case 2 -> crystals += amount;
@@ -31,6 +38,7 @@ public class CircuitBatch {
             case 8 -> temporals += amount;
             case 64 -> specials += amount;
         }
+        return leftover;
     }
 
 }
