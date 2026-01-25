@@ -276,11 +276,12 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(this.mHeatingCapacity)
-            + EnumChatFormatting.RESET
-            + " K");
+        info.add(
+            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(this.mHeatingCapacity)
+                + EnumChatFormatting.RESET
+                + " K");
     }
 
     @Override

@@ -2,7 +2,6 @@ package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -41,7 +40,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -420,33 +418,38 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             information = new BeamInformation(0, 0, 0, 0);
         }
 
-        info.add(EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-            + ": "
-            + EnumChatFormatting.RESET);
+        info.add(
+            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
+                + ": "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-            + EnumChatFormatting.GOLD
-            + Particle.getParticleFromId(information.getParticleId())
-            .getLocalisedName() // e.g. "Electron
-            // (e-)"
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
+                + EnumChatFormatting.GOLD
+                + Particle.getParticleFromId(information.getParticleId())
+                    .getLocalisedName() // e.g. "Electron
+                // (e-)"
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-            + EnumChatFormatting.DARK_RED
-            + information.getEnergy() * 1000 // In line with the synchrotron's output
-            + EnumChatFormatting.RESET
-            + " eV");
+        info.add(
+            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
+                + EnumChatFormatting.DARK_RED
+                + information.getEnergy() * 1000 // In line with the synchrotron's output
+                + EnumChatFormatting.RESET
+                + " eV");
 
-        info.add(StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-            + EnumChatFormatting.BLUE
-            + information.getFocus()
-            + " "
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
+                + EnumChatFormatting.BLUE
+                + information.getFocus()
+                + " "
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + information.getRate());
+        info.add(
+            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
+                + EnumChatFormatting.LIGHT_PURPLE
+                + information.getRate());
     }
 
     private String createMaskText(String text) {

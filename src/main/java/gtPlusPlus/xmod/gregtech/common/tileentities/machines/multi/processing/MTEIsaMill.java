@@ -388,7 +388,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return PollutionConfig.pollutionPerSecondMultiIsaMill;
     }
 
-
     @Override
     public String getMachineType() {
         return "Grinding Machine, IGM";

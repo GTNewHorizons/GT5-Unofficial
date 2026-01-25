@@ -363,27 +363,30 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
                     * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
         }
 
-        info.add(StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
-            + EnumChatFormatting.RESET
-            + " L/" // based on processing time uses ticks or seconds (for plasma)
-            + (this.mMaxProgresstime == 1 ? 't' : 's'));
+        info.add(
+            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(GTUtility.safeInt((long) realOptFlow))
+                + EnumChatFormatting.RESET
+                + " L/" // based on processing time uses ticks or seconds (for plasma)
+                + (this.mMaxProgresstime == 1 ? 't' : 's'));
 
-        info.add(EnumChatFormatting.YELLOW
-            + " ("
-            + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
-            : StatCollector.translateToLocal("GT5U.turbine.tight"))
-            + ")");
+        info.add(
+            EnumChatFormatting.YELLOW + " ("
+                + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
+                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
+                + ")");
 
-        info.add(StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatNumbers(storedFluid)
-            + EnumChatFormatting.RESET
-            + "L");
+        info.add(
+            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(storedFluid)
+                + EnumChatFormatting.RESET
+                + "L");
 
-        info.add(StatCollector.translateToLocal(
-            "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%");
+        info.add(
+            StatCollector.translateToLocal(
+                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%");
     }
 
     public boolean hasTurbine() {

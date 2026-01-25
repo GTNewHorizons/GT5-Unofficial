@@ -120,11 +120,12 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(mHeatingCapacity.getHeat())
-            + EnumChatFormatting.RESET
-            + " K");
+        info.add(
+            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(mHeatingCapacity.getHeat())
+                + EnumChatFormatting.RESET
+                + " K");
     }
 
     @Override

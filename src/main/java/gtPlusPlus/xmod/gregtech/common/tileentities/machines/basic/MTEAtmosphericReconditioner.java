@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import net.minecraft.entity.player.EntityPlayer;

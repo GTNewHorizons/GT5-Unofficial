@@ -13,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -338,29 +336,33 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("GT5U.engine.output") + ": "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(
+            StatCollector.translateToLocal("GT5U.engine.output") + ": "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
+                + EnumChatFormatting.RESET
+                + " EU/t");
 
-        info.add(StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(fuelConsumption)
-            + EnumChatFormatting.RESET
-            + " L/t");
+        info.add(
+            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(fuelConsumption)
+                + EnumChatFormatting.RESET
+                + " L/t");
 
-        info.add(StatCollector.translateToLocal("GT5U.engine.value") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(fuelValue)
-            + EnumChatFormatting.RESET
-            + " EU/L");
+        info.add(
+            StatCollector.translateToLocal("GT5U.engine.value") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(fuelValue)
+                + EnumChatFormatting.RESET
+                + " EU/L");
 
-        info.add(StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatNumbers(fuelRemaining)
-            + EnumChatFormatting.RESET
-            + " L");
+        info.add(
+            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(fuelRemaining)
+                + EnumChatFormatting.RESET
+                + " L");
     }
 
     @Override

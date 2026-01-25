@@ -1261,24 +1261,26 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-            + EnumChatFormatting.GREEN
-            + (this.setupPhase == 0 ? this.mode.getName()
-            : (this.setupPhase == 1
-            ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
-            : StatCollector
-            .translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.output")))
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
+                + EnumChatFormatting.GREEN
+                + (this.setupPhase == 0 ? this.mode.getName()
+                    : (this.setupPhase == 1
+                        ? StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.input")
+                        : StatCollector.translateToLocal("kubatech.infodata.eig.running_mode.setup_mode.output")))
+                + EnumChatFormatting.RESET);
 
         info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.water", waterUsage));
         info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eig.uses.weedex", weedEXUsage));
-        info.add(StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
-            + this.maxSeedTypes
-            + EnumChatFormatting.RESET);
-        info.add(StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
-            + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-            + this.buckets.size()
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("kubatech.infodata.eig.max_slots") + EnumChatFormatting.GREEN
+                + this.maxSeedTypes
+                + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("kubatech.infodata.eig.used_slots")
+                + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
+                + this.buckets.size()
+                + EnumChatFormatting.RESET);
 
         for (EIGBucket bucket : buckets) {
             info.add(bucket.getInfoData());

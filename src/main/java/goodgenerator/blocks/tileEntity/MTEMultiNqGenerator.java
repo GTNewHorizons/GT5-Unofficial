@@ -242,21 +242,24 @@ public class MTEMultiNqGenerator extends MTETooltipMultiBlockBaseEM implements I
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "gg.scanner.info.generator.generates",
-            EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(this.trueOutput)) + EnumChatFormatting.RESET));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gg.scanner.info.generator.generates",
+                EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(this.trueOutput))
+                    + EnumChatFormatting.RESET));
 
-        info.add(StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
-            + EnumChatFormatting.RED
-            + (this.getIdealStatus() - this.getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
-            + " "
-            + EnumChatFormatting.YELLOW
-            + trueEff
-            + EnumChatFormatting.RESET
-            + " %");
+        info.add(
+            StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+                + EnumChatFormatting.RED
+                + (this.getIdealStatus() - this.getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
+                + " "
+                + EnumChatFormatting.YELLOW
+                + trueEff
+                + EnumChatFormatting.RESET
+                + " %");
     }
 
     public boolean consumeFuel(FluidStack target, FluidStack[] input) {

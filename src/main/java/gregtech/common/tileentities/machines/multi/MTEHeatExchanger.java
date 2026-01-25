@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -51,8 +53,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-
-import java.util.ArrayList;
 
 public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger> implements ISurvivalConstructable {
 
@@ -426,25 +426,28 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-            + StatCollector.translateToLocal("GT5U.LHE.steam")
-            + ": "
-            + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-            + GTUtility.formatNumbers(superheated ? -2L * mEUt : -mEUt)
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
+                + StatCollector.translateToLocal("GT5U.LHE.steam")
+                + ": "
+                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                + GTUtility.formatNumbers(superheated ? -2L * mEUt : -mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t");
 
-        info.add(StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-            + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-            + superheated
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
+                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
+                + superheated
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-            + StatCollector.translateToLocal("GT5U.LHE.threshold")
-            + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(superheated_threshold)
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
+                + StatCollector.translateToLocal("GT5U.LHE.threshold")
+                + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(superheated_threshold)
+                + EnumChatFormatting.RESET);
     }
 
     @Override

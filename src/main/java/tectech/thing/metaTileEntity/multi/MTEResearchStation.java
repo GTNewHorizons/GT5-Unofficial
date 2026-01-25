@@ -58,7 +58,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -79,7 +78,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
@@ -362,73 +360,79 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add((mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
-            : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(Math.abs(mEUt))
-            + EnumChatFormatting.RESET
-            + " EU/t "
-            + translateToLocalFormatted("tt.keyword.at", clientLocale)
-            + " "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(eAmpereFlow)
-            + EnumChatFormatting.RESET
-            + " A");
+        info.add(
+            (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
+                : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(Math.abs(mEUt))
+                + EnumChatFormatting.RESET
+                + " EU/t "
+                + translateToLocalFormatted("tt.keyword.at", clientLocale)
+                + " "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(eAmpereFlow)
+                + EnumChatFormatting.RESET
+                + " A");
 
-        info.add(translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
-            + EnumChatFormatting.YELLOW
-            + VN[getMaxEnergyInputTier_EM()]
-            + EnumChatFormatting.RESET
-            + " / "
-            + EnumChatFormatting.GREEN
-            + VN[getMinEnergyInputTier_EM()]
-            + EnumChatFormatting.RESET
-            + " "
-            + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
-            + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(eMaxAmpereFlow)
-            + EnumChatFormatting.RESET
-            + " A");
+        info.add(
+            translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[getMaxEnergyInputTier_EM()]
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.GREEN
+                + VN[getMinEnergyInputTier_EM()]
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
+                + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(eMaxAmpereFlow)
+                + EnumChatFormatting.RESET
+                + " A");
 
-        info.add(translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
-            + EnumChatFormatting.RED
-            + (getIdealStatus() - getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + mEfficiency / 100.0F
-            + EnumChatFormatting.RESET
-            + " %");
+        info.add(
+            translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %");
 
-        info.add(translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
-            + EnumChatFormatting.BLUE
-            + ePowerPass
-            + EnumChatFormatting.RESET
-            + " "
-            + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
-            + ": "
-            + EnumChatFormatting.BLUE
-            + eSafeVoid);
+        info.add(
+            translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
+                + EnumChatFormatting.BLUE
+                + ePowerPass
+                + EnumChatFormatting.RESET
+                + " "
+                + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
+                + ": "
+                + EnumChatFormatting.BLUE
+                + eSafeVoid);
 
-        info.add(translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(eAvailableData)
-            + EnumChatFormatting.RESET
-            + " / "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(eRequiredData)
-            + EnumChatFormatting.RESET);
+        info.add(
+            translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(eAvailableData)
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(eRequiredData)
+                + EnumChatFormatting.RESET);
 
         info.add(translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":");
 
-        info.add(EnumChatFormatting.GREEN + GTUtility.formatNumbers(computationRemaining / 20L)
-            + EnumChatFormatting.RESET
-            + " / "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(getComputationRequired()));
+        info.add(
+            EnumChatFormatting.GREEN + GTUtility.formatNumbers(computationRemaining / 20L)
+                + EnumChatFormatting.RESET
+                + " / "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(getComputationRequired()));
     }
 
     @Override

@@ -3,7 +3,6 @@ package gregtech.common.tileentities.machines.multi.pcb;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -660,23 +659,25 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
     public void getExtraInfoData(ArrayList<String> info) {
         int mCurrentParallel = 0;
 
-        info.add(translateToLocal("GT5U.multiblock.parallelism") + ": "
-            + EnumChatFormatting.GREEN
-            + mMaxParallel
-            + ", "
-            + translateToLocal("GT5U.multiblock.curparallelism")
-            + ": "
-            + EnumChatFormatting.GREEN
-            + mCurrentParallel);
+        info.add(
+            translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.GREEN
+                + mMaxParallel
+                + ", "
+                + translateToLocal("GT5U.multiblock.curparallelism")
+                + ": "
+                + EnumChatFormatting.GREEN
+                + mCurrentParallel);
 
-        info.add(translateToLocal("GT5U.multiblock.upgrades") + ": "
-            + EnumChatFormatting.GREEN
-            + (mBioChamber == null ? "" : "Bio Chamber ")
-            + (mBioChamber != null && mCoolingTower != null ? ", " : "")
-            + EnumChatFormatting.GREEN
-            + (mCoolingTower == null ? ""
-            : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
-            + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""));
+        info.add(
+            translateToLocal("GT5U.multiblock.upgrades") + ": "
+                + EnumChatFormatting.GREEN
+                + (mBioChamber == null ? "" : "Bio Chamber ")
+                + (mBioChamber != null && mCoolingTower != null ? ", " : "")
+                + EnumChatFormatting.GREEN
+                + (mCoolingTower == null ? ""
+                    : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
+                + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""));
     }
 
     @Override

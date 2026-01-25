@@ -19,7 +19,6 @@ import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.annotation.Nullable;
 

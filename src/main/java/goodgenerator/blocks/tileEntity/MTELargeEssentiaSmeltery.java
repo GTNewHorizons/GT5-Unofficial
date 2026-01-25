@@ -6,7 +6,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -232,30 +231,31 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
-            + EnumChatFormatting.YELLOW
-            + Math.round(this.mParallel)
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
+                + EnumChatFormatting.YELLOW
+                + Math.round(this.mParallel)
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("gg.scanner.info.les.node_power")
-            + " "
-            + EnumChatFormatting.RED
-            + this.nodePower
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("gg.scanner.info.les.node_power") + " "
+                + EnumChatFormatting.RED
+                + this.nodePower
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency")
-            + " "
-            + EnumChatFormatting.AQUA
-            + this.nodePurificationEfficiency
-            + "%"
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency") + " "
+                + EnumChatFormatting.AQUA
+                + this.nodePurificationEfficiency
+                + "%"
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("gg.scanner.info.les.speed_up")
-            + " "
-            + EnumChatFormatting.GRAY
-            + this.nodeIncrease
-            + "%"
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("gg.scanner.info.les.speed_up") + " "
+                + EnumChatFormatting.GRAY
+                + this.nodeIncrease
+                + "%"
+                + EnumChatFormatting.RESET);
     }
 
     @Override

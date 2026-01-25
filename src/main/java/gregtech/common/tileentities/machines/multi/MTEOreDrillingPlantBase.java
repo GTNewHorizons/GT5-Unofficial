@@ -762,17 +762,19 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     public void getExtraInfoData(ArrayList<String> info) {
         final String diameter = GTUtility.formatNumbers(chunkRadiusConfig * 2L);
 
-        info.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
-            + EnumChatFormatting.RESET);
+        info.add(
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-            + EnumChatFormatting.GREEN
-            + diameter
-            + "x"
-            + diameter
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("GT5U.machines.chunks"));
+        info.add(
+            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                + EnumChatFormatting.GREEN
+                + diameter
+                + "x"
+                + diameter
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.machines.chunks"));
     }
 
     @Override

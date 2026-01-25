@@ -38,7 +38,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -581,26 +580,29 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 .append("% | ");
         }
 
-        info.add(            tRunning + ": "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(
+            tRunning + ": "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+                + EnumChatFormatting.RESET
+                + " EU/t");
 
-        info.add(tRunning + ": "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(
+            tRunning + ": "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+                + EnumChatFormatting.RESET
+                + " EU/t");
 
         info.add(tMaintenance);
-        info.add(StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers((mEfficiency / 100F))
-            + EnumChatFormatting.RESET
-            + "%");
+        info.add(
+            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers((mEfficiency / 100F))
+                + EnumChatFormatting.RESET
+                + "%");
         info.add(StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
-            // Divides optimal flow by 1000 if it's a dense steam
+        // Divides optimal flow by 1000 if it's a dense steam
             + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
             + EnumChatFormatting.RESET
             + " L/"
@@ -608,22 +610,24 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             + EnumChatFormatting.YELLOW
             + " ("
             + (isLooseMode() ? StatCollector.translateToLocal("GT5U.turbine.loose")
-            : StatCollector.translateToLocal("GT5U.turbine.tight"))
+                : StatCollector.translateToLocal("GT5U.turbine.tight"))
             + ")");
 
-        info.add(StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatNumbers(storedFluid)
-            + EnumChatFormatting.RESET
-            + "L");
+        info.add(
+            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(storedFluid)
+                + EnumChatFormatting.RESET
+                + "L");
 
         info.add(StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage);
 
-        info.add(StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-            + EnumChatFormatting.GREEN
-            + getAveragePollutionPercentage()
-            + EnumChatFormatting.RESET
-            + " %");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + getAveragePollutionPercentage()
+                + EnumChatFormatting.RESET
+                + " %");
     }
 
     @Override

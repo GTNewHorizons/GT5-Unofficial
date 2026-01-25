@@ -30,7 +30,6 @@ public interface IGregTechDeviceInformation {
         return GTValues.emptyStringArray;
     }
 
-
     default void getExtraInfoData(ArrayList<String> info) {}
 
     /**

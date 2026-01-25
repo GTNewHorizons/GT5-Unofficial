@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
@@ -226,13 +227,25 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             // tick time zero means it has not been updated yet
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
+                int finalAverageTime = (int) (tAverageTime / samples);
+                int finalWorstTime = (int) tWorstTime;
+                EnumChatFormatting color = finalAverageTime < 50_000 ? EnumChatFormatting.GREEN
+                    : finalAverageTime < 100_000 ? EnumChatFormatting.GOLD : EnumChatFormatting.RED;
+                String padding = "     ";
+
+                tList.add("CPU Load (25 ticks)");
                 tList.add(
-                    "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
-                        + "ns over "
-                        + GTUtility.formatNumbers(samples)
-                        + " ticks with worst time of "
-                        + GTUtility.formatNumbers(tWorstTime)
-                        + "ns.");
+                    padding + "Average: "
+                        + color
+                        + GTUtility.formatNumbers(finalAverageTime)
+                        + EnumChatFormatting.RESET
+                        + "ns");
+                tList.add(
+                    padding + "Worst: "
+                        + color
+                        + GTUtility.formatNumbers(finalWorstTime)
+                        + EnumChatFormatting.RESET
+                        + "ns");
             }
         } else {
             startTimeStatistics();

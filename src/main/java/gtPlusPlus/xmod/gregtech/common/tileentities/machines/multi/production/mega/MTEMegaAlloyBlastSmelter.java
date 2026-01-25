@@ -13,7 +13,8 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.validMTEList;
+
+import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -57,8 +57,6 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import java.util.ArrayList;
 
 public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTEMegaAlloyBlastSmelter>
     implements ISurvivalConstructable {
@@ -320,17 +318,20 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         int moreSpeed = (int) ((1 - speedBonus) * 100);
         int lessEnergy = (int) ((1 - energyDiscount) * 100);
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "gtpp.infodata.abs.mega.parallels",
-            "" + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.abs.mega.parallels",
+                "" + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "gtpp.infodata.abs.mega.speed_bonus",
-            "" + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.abs.mega.speed_bonus",
+                "" + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "gtpp.infodata.abs.mega.energy_discount",
-            "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.abs.mega.energy_discount",
+                "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET));
     }
 
     @Override

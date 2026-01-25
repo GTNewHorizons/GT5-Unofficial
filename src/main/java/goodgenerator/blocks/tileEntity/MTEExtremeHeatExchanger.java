@@ -345,17 +345,19 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
-        info.add(StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-            + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-            + GTUtility.formatNumbers(this.mEUt)
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(
+            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
+                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                + GTUtility.formatNumbers(this.mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t");
 
-        info.add(StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(tThreshold)
-            + EnumChatFormatting.RESET
-            + " L/s");
+        info.add(
+            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(tThreshold)
+                + EnumChatFormatting.RESET
+                + " L/s");
     }
 
     @Override

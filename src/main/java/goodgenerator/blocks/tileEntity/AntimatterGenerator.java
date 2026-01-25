@@ -7,7 +7,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -408,29 +407,33 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(this.euLastCycle)
-            + EnumChatFormatting.RESET
-            + " EU");
+        info.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.0") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(this.euLastCycle)
+                + EnumChatFormatting.RESET
+                + " EU");
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
-            + EnumChatFormatting.AQUA
-            + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
-            + EnumChatFormatting.RESET
-            + " %");
+        info.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(Math.ceil(this.annihilationEfficiency * 100))
+                + EnumChatFormatting.RESET
+                + " %");
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-            + EnumChatFormatting.AQUA
-            + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
-            + EnumChatFormatting.RESET
-            + " % ⟩₁₀");
+        info.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+                + EnumChatFormatting.RESET
+                + " % ⟩₁₀");
 
-        info.add(StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
-            + EnumChatFormatting.AQUA
-            + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
-            + EnumChatFormatting.RESET
-            + " % ⟩₁₀");
+        info.add(
+            StatCollector.translateToLocal("gui.AntimatterGenerator.1") + ": ⟨ "
+                + EnumChatFormatting.AQUA
+                + GTUtility.formatNumbers(Math.ceil(this.avgEffCache * 100))
+                + EnumChatFormatting.RESET
+                + " % ⟩₁₀");
     }
 
     public long getEnergyProduced() {

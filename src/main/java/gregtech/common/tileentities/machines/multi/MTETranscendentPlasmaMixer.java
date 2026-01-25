@@ -302,27 +302,30 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumbers(mProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s / "
-            + EnumChatFormatting.YELLOW
-            + formatNumbers(mMaxProgresstime / 20)
-            + EnumChatFormatting.RESET
-            + " s");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s");
 
-        info.add(StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-            + EnumChatFormatting.RED
-            + (mMaxProgresstime == 0 ? "0"
-            : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
-            + EnumChatFormatting.RESET
-            + " EU/t");
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + (mMaxProgresstime == 0 ? "0"
+                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
+                + EnumChatFormatting.RESET
+                + " EU/t");
 
-        info.add(StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(recipesDone)
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(recipesDone)
+                + EnumChatFormatting.RESET);
     }
 
     @Override

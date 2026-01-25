@@ -511,7 +511,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
         return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
-
     protected long energyStorageCache;
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 

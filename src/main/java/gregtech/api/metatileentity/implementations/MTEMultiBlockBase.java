@@ -4,12 +4,7 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.check.SingleRecipeCheck.getDisplayString;
-import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.api.util.GTUtility.formatShortenedLong;
-import static gregtech.api.util.GTUtility.min;
-import static gregtech.api.util.GTUtility.truncateText;
-import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTUtility.*;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -2175,6 +2170,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         long minutes = TimeUnit.SECONDS.toMinutes(seconds);
         long hours = TimeUnit.SECONDS.toHours(seconds);
         String ownerName = "None";
+        int metaID = 0;
 
         // spotless:off
         String timeValue =
@@ -2191,6 +2187,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         if (getBaseMetaTileEntity() != null) {
             ownerName = getBaseMetaTileEntity().getOwnerName();
+            metaID = getBaseMetaTileEntity().getMetaTileID();
         }
 
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
@@ -2202,15 +2199,28 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         info.add(translateToLocal("GT5U.multiblock.owned_by") + ": " + EnumChatFormatting.GOLD + ownerName);
 
         info.add(
-            translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumbers(mProgresstime / 20)
+            "Meta-ID: " + EnumChatFormatting.GOLD
+                + GTUtility.formatNumbers(metaID)
                 + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumbers(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s");
+                + (getBaseMetaTileEntity().canAccessData()
+                    ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
+                + (getBaseMetaTileEntity().getMetaTileEntity() == null
+                    ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
+                    : " "));
+
+        if (mProgresstime > 0) {
+            info.add(
+                translateToLocal("GT5U.multiblock.Progress") + ": "
+                    + EnumChatFormatting.GREEN
+                    + formatNumbers(mProgresstime / 20)
+                    + EnumChatFormatting.RESET
+                    + " s / "
+                    + EnumChatFormatting.YELLOW
+                    + formatNumbers(mMaxProgresstime / 20)
+                    + EnumChatFormatting.RESET
+                    + " s");
+        }
 
         info.add(
             translateToLocal("GT5U.multiblock.energy") + ": "
@@ -2223,12 +2233,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 + EnumChatFormatting.RESET
                 + " EU");
 
-        info.add(
-            translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumbers(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t");
+        if (getActualEnergyUsage() > 0) {
+            info.add(
+                translateToLocal("GT5U.multiblock.usage") + ": "
+                    + EnumChatFormatting.RED
+                    + formatNumbers(getActualEnergyUsage())
+                    + EnumChatFormatting.RESET
+                    + " EU/t");
+        }
 
         info.add(
             translateToLocal("GT5U.multiblock.mei") + ": "

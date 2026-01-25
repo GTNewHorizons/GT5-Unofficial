@@ -460,13 +460,14 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         return new MTECircuitAssemblyLine(this.mName);
     }
 
-
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        if (this.getTypeForDisplay().isEmpty()) {
-            info.add(StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
-                + EnumChatFormatting.YELLOW
-                + this.getTypeForDisplay());
+        if (this.getTypeForDisplay()
+            .isEmpty()) {
+            info.add(
+                StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                    + EnumChatFormatting.YELLOW
+                    + this.getTypeForDisplay());
         }
     }
 

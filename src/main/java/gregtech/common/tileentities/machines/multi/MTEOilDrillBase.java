@@ -15,7 +15,6 @@ import static gregtech.common.UndergroundOil.undergroundOil;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -377,26 +376,29 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump")
-            + EnumChatFormatting.RESET);
+        info.add(
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.oilfluidpump")
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(chunkRangeConfig)
-            + " x "
-            + GTUtility.formatNumbers(chunkRangeConfig)
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("GT5U.machines.chunks"));
+        info.add(
+            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(chunkRangeConfig)
+                + " x "
+                + GTUtility.formatNumbers(chunkRangeConfig)
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.machines.chunks"));
 
-        info.add(StatCollector.translateToLocalFormatted(
-            "GT5U.infodata.oil_drill.drilling_fluid",
-            EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET));
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.infodata.oil_drill.drilling_fluid",
+                EnumChatFormatting.GREEN + getFluidName() + EnumChatFormatting.RESET));
 
-        info.add(StatCollector.translateToLocalFormatted(
+        info.add(
+            StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.oil_drill.drilling_flow",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getFlowRatePerTick())
-                    + EnumChatFormatting.RESET));
+                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getFlowRatePerTick()) + EnumChatFormatting.RESET));
     }
 
     @Override

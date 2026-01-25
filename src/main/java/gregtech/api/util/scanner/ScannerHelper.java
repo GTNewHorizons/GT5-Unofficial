@@ -1,4 +1,4 @@
-package gregtech.api.util;
+package gregtech.api.util.scanner;
 
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.E;
@@ -31,6 +31,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.events.BlockScanningEvent;
 import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.tileentity.*;
+import gregtech.api.util.GTLog;
 import gregtech.common.pollution.Pollution;
 import ic2.api.crops.ICropTile;
 import ic2.api.energy.tile.IEnergyConductor;
@@ -47,8 +48,8 @@ public class ScannerHelper {
     // endregion
 
     // region init
-    public static int init(ArrayList<String> list, EntityPlayer player, World world, int scanLevel, int x, int y, int z,
-        ForgeDirection side, float clickX, float clickY, float clickZ, ScannerConfig scannerConfig) {
+    public static int scan(ArrayList<String> list, EntityPlayer player, World world, int scanLevel, int x, int y, int z,
+        ForgeDirection side, float clickX, float clickY, float clickZ) {
         if (list == null) return 0;
 
         final ArrayList<String> resultList = new ArrayList<>();
@@ -57,24 +58,63 @@ public class ScannerHelper {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         int euAmount = 0;
 
-        addBaseInfo(player, world, x, y, z, resultList, tileEntity, block);
-
-        if (tileEntity != null) {
-            euAmount += addFluidHandlerInfo(side, resultList, tileEntity);
-            euAmount += addReactorInfo(resultList, tileEntity);
-            euAmount += addAlignmentInfo(resultList, tileEntity);
-            euAmount += addWrenchInfo(player, resultList, tileEntity);
-            euAmount += addIC2Info(resultList, tileEntity);
-            euAmount += addCoverableInfo(side, resultList, tileEntity);
-            addEnergyContainerInfo(resultList, tileEntity);
-            addMachineInfo(resultList, tileEntity);
-            addCustomInfo(resultList, tileEntity);
-            euAmount += addIC2CropInfo(resultList, tileEntity);
-            euAmount += addForestryLeavesInfo(resultList, tileEntity);
+        if (ScannerConfig.showBaseInfo) {
+            addBaseInfo(player, world, x, y, z, resultList, tileEntity, block);
         }
 
-        addChunkInfo(resultList, currentChunk, player);
-        euAmount += addDebuggableBlockInfo(player, x, y, z, resultList, block);
+        if (tileEntity != null) {
+            if (ScannerConfig.showFluidHandlerInfo) {
+                euAmount += addFluidHandlerInfo(side, resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showReactorInfo) {
+                euAmount += addReactorInfo(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showAlignmentInfo) {
+                euAmount += addAlignmentInfo(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showWrenchInfo) {
+                euAmount += addWrenchInfo(player, resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showIC2Info) {
+                euAmount += addIC2Info(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showCoverableInfo) {
+                euAmount += addCoverableInfo(side, resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showEnergyContainerInfo) {
+                addEnergyContainerInfo(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showMachineInfo) {
+                addMachineInfo(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showCustomInfo) {
+                addCustomInfo(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showIC2CropInfo) {
+                euAmount += addIC2CropInfo(resultList, tileEntity);
+            }
+
+            if (ScannerConfig.showForestryLeavesInfo) {
+                euAmount += addForestryLeavesInfo(resultList, tileEntity);
+            }
+        }
+
+        if (ScannerConfig.showChunkInfo) {
+            addChunkInfo(resultList, currentChunk, player);
+        }
+
+        if (ScannerConfig.showDebugInfo) {
+            euAmount += addDebuggableBlockInfo(player, x, y, z, resultList, block);
+        }
 
         final BlockScanningEvent event = new BlockScanningEvent(
             world,
@@ -252,7 +292,7 @@ public class ScannerHelper {
             if (block instanceof IDebugableBlock debugableBlock) {
                 euAmount += 500;
                 final ArrayList<String> temp = debugableBlock.getDebugInfo(player, x, y, z, 3);
-                if (temp != null) {
+                if (temp != null && !temp.isEmpty()) {
                     list.add(addTitle(trans("title_debug")));
                     list.addAll(temp);
                 }
@@ -613,12 +653,5 @@ public class ScannerHelper {
         }
     }
     //spotless:on
-    // endregion
-
-    // region Scanner config
-    public static class ScannerConfig {
-
-        public boolean showChunkInfo = true;
-    }
     // endregion
 }

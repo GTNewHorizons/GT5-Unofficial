@@ -25,8 +25,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -470,15 +468,17 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public void getExtraInfoData(ArrayList<String> info) {
         info.add("Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET);
 
-        info.add("Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-            + GTUtility.formatNumbers(powerFactor * 100.0)
-            + "%"
-            + RESET);
+        info.add(
+            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
+                + GTUtility.formatNumbers(powerFactor * 100.0)
+                + "%"
+                + RESET);
 
-        info.add("Theoretical Output: " + YELLOW
-            + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
-            + RESET
-            + " EU/t");
+        info.add(
+            "Theoretical Output: " + YELLOW
+                + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
+                + RESET
+                + " EU/t");
 
         info.add("Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t");
     }

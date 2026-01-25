@@ -436,17 +436,19 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-            + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-            + superheated
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
+                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
+                + superheated
+                + EnumChatFormatting.RESET);
 
-        info.add(StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-            + StatCollector.translateToLocal("GT5U.LHE.threshold")
-            + ": "
-            + EnumChatFormatting.GREEN
-            + GTUtility.formatNumbers(superheated_threshold)
-            + EnumChatFormatting.RESET);
+        info.add(
+            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
+                + StatCollector.translateToLocal("GT5U.LHE.threshold")
+                + ": "
+                + EnumChatFormatting.GREEN
+                + GTUtility.formatNumbers(superheated_threshold)
+                + EnumChatFormatting.RESET);
     }
 
     @Override

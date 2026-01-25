@@ -323,7 +323,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         info.add("Current Output: " + lEUt * mEfficiency / 10000 + " EU/t");
         info.add("Fuel Consumption: " + fuelConsumption + "L/t");
         info.add("Fuel Value: " + fuelValue + " EU/L");
-        info.add( "Fuel Remaining: " + fuelRemaining + " Litres");
+        info.add("Fuel Remaining: " + fuelRemaining + " Litres");
     }
 
     @Override

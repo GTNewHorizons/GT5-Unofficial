@@ -260,21 +260,23 @@ public class MTEUniversalChemicalFuelEngine extends MTETooltipMultiBlockBaseEM
 
     @Override
     public void getExtraInfoData(ArrayList<String> info) {
-        info.add(StatCollector.translateToLocalFormatted(
-            "gg.scanner.info.generator.generates",
-            EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
-                + EnumChatFormatting.RESET));
-        info.add(StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
-            + EnumChatFormatting.RED
-            + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
-            + " "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(tEff / 100D)
-            + EnumChatFormatting.RESET
-            + " %");
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "gg.scanner.info.generator.generates",
+                EnumChatFormatting.RED + GTUtility.formatNumbers(this.getPowerFlow() * tEff / 10000)
+                    + EnumChatFormatting.RESET));
+        info.add(
+            StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
+                + EnumChatFormatting.RED
+                + GTUtility.formatNumbers(this.getIdealStatus() - this.getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
+                + " "
+                + EnumChatFormatting.YELLOW
+                + GTUtility.formatNumbers(tEff / 100D)
+                + EnumChatFormatting.RESET
+                + " %");
     }
 
     void addAutoEnergy() {
