@@ -509,7 +509,14 @@ public class RecipeHandlers {
                 CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(16),
                 CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(1),
                 CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(16))
-            .itemOutputs(CircuitComponent.MainframeCasing.getFakeStack(1))
+            .itemOutputs(CircuitComponent.AdvancedMainframeCasing.getFakeStack(1))
+            .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(RecipeMaps.nanochipEncasementWrapper);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(CircuitComponent.ProcessedFrameboxAluminium.getFakeStack(2))
+            .itemOutputs(CircuitComponent.BasicMainframeCasing.getFakeStack(1))
             .duration(ModuleRecipeInfo.MODULE_RECIPE_TIME)
             .eut(TierEU.RECIPE_UHV)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
@@ -589,7 +596,7 @@ public class RecipeHandlers {
             10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedFrameboxAluminium, 2),
+                new CircuitComponentStack(CircuitComponent.BasicMainframeCasing, 1),
                 new CircuitComponentStack(CircuitComponent.CrystalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
@@ -641,7 +648,7 @@ public class RecipeHandlers {
             10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.MainframeCasing, 2),
+                new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 2),
                 new CircuitComponentStack(CircuitComponent.WetwareComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 16),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
@@ -706,7 +713,7 @@ public class RecipeHandlers {
             10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.MainframeCasing, 4),
+                new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 4),
                 new CircuitComponentStack(CircuitComponent.BiowareComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 24),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 24),
@@ -780,7 +787,7 @@ public class RecipeHandlers {
             10);
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.MainframeCasing, 8),
+                new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 8),
                 new CircuitComponentStack(CircuitComponent.OpticalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 32),
