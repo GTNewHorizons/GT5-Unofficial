@@ -876,6 +876,8 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_SIEVERT)
         .build();
+    public static final UITexture PROGRESSBAR_NANOCHIP_CALIBRATION = UITexture
+        .fullImage(MainMod.MOD_ID, "GUI/progressbar/nanochip_calibration");
     public static final UITexture PROGRESSBAR_GODFORGE_PLASMA = UITexture
         .fullImage(MODID, "gui/progressbar/godforge_plasma");
     public static final UITexture PROGRESSBAR_GODFORGE_MILESTONE_BACKGROUND = UITexture
