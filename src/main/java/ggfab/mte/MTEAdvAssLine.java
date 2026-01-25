@@ -44,7 +44,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -304,44 +303,20 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, AAL")
-            .addInfo("Assembly Line with item pipelining")
-            .addInfo("All fluids are consumed at the start of the recipe")
-            .addInfo("Recipe tier is limited by the lowest Energy Hatch tier")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Runs imperfect overclocks until Energy Hatch tier")
-            .addInfo("Additional overclocks are increasingly more expensive")
-            .addInfo(
-                EnumChatFormatting.AQUA
-                    + "Multiplier = 4^(Regular Overclocks) × 4.3 × 4.6 × … × (4 + 0.3 × Extra Overclocks)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                EnumChatFormatting.AQUA + "Power usage = Multiplier × (Active Slices) × (Recipe EU/t)"
-                    + EnumChatFormatting.GRAY)
-            .addInfo("Overclocking assumes all recipe slices are active")
-            .addInfo(EnumChatFormatting.BOLD + "Does not overclock beyond 1 tick")
-            .addSeparator(EnumChatFormatting.GOLD, 67)
-            .addInfo("Constructed identically to the Assembly Line")
+        tt.addMachineType("machtype.adv_assline")
+            .addInfo("gt.adv_assline.tips")
             .addTecTechHatchInfo()
             .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
-            .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-            .addController("Either Grate on layer 3 of the first slice")
-            .addEnergyHatch("Any layer 4 casing", 1)
-            .addMaintenanceHatch("Any layer 1 casing", 3)
-            .addInputBus("As specified on layer 1", 4)
-            .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any Grate Machine Casing NOT on the first slice",
-                2)
+            .addStructureInfo("gt.adv_assline.info")
+            .addController("gt.adv_assline.info.controller")
+            .addEnergyHatch("gt.adv_assline.info.energy", 1)
+            .addMaintenanceHatch("gt.adv_assline.info.i_hatch", 3)
+            .addInputBus("gt.adv_assline.info.i_bus", 4)
+            .addInputHatch("gt.adv_assline.info.i_hatch", 3)
+            .addOutputBus("gt.adv_assline.info.o_bus", 3)
+            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.adv_assline.info.dataaccess", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(EnumChatFormatting.GRAY, 67);
+            .toolTipFinisher(EnumChatFormatting.GOLD);
         return tt;
     }
 

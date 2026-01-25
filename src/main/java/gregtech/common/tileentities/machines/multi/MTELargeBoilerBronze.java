@@ -27,16 +27,6 @@ public class MTELargeBoilerBronze extends MTELargeBoiler {
     }
 
     @Override
-    public String getCasingMaterial() {
-        return "Bronze";
-    }
-
-    @Override
-    public String getCasingBlockType() {
-        return "Plated Bricks";
-    }
-
-    @Override
     public Block getCasingBlock() {
         return GregTechAPI.sBlockCasings1;
     }

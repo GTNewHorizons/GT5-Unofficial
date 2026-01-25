@@ -168,7 +168,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge")
             .addInfo("Must be part of a Godforge to function")
             .addInfo("Used for extreme temperature matter ionization")
-            .addSeparator(EnumChatFormatting.AQUA, 74)
+            .addSeparator(EnumChatFormatting.AQUA)
             .addInfo("The third module of the Godforge, this module infuses materials with extreme amounts")
             .addInfo("of heat, ionizing and turning them into plasma directly. Not all plasmas can be produced")
             .addInfo("right away, some of them require certain upgrades to be unlocked")
@@ -187,7 +187,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .toolTipFinisher(EnumChatFormatting.AQUA);
         return tt;
     }
 
