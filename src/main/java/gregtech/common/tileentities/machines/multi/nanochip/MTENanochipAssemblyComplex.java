@@ -26,8 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -627,12 +630,34 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("talkMode", this.isTalkModeActive);
+        NBTTagList history = new NBTTagList();
+        for (CircuitBatch batch : circuitHistory) {
+            history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
+        }
+        aNBT.setTag("history", history);
+        if (currentBlock != null) {
+            aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        addToHistory((byte) 3, 10000);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isTalkModeActive = aNBT.getBoolean("talkMode");
+        NBTTagList history = aNBT.getTagList("history", 11);
+        for (Object rawTag : history.tagList) {
+            if (rawTag instanceof NBTTagIntArray batch) {
+                circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
+            }
+        }
+        currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {

@@ -41,4 +41,22 @@ public class CircuitBatch {
         return leftover;
     }
 
+    public int[] writeToIntArray() {
+        return new int[] { primitives, crystals, wetwares, bios, opticals, exotics, cosmics, temporals, specials };
+    }
+
+    public CircuitBatch() {}
+
+    public CircuitBatch(int[] history) {
+        primitives = history[0];
+        crystals = history[1];
+        wetwares = history[2];
+        bios = history[3];
+        opticals = history[4];
+        exotics = history[5];
+        cosmics = history[6];
+        temporals = history[7];
+        specials = history[8];
+
+    }
 }
