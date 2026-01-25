@@ -7,7 +7,6 @@ import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
@@ -25,6 +24,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -546,7 +546,7 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(ItemList.RodExcitedUranium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(fluidCannerRecipes);
+            .addTo(RecipeMaps.cannerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.RodExcitedUranium.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
@@ -599,7 +599,7 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(ItemList.RodExcitedPlutonium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(fluidCannerRecipes);
+            .addTo(RecipeMaps.cannerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.RodExcitedPlutonium.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
