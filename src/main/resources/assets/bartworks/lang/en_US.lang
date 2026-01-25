@@ -262,7 +262,7 @@ BW.NEI.display.radhatch.2=Time: %s s
 misc.BatchModeTextOn=Batch recipes
 misc.BatchModeTextOff=Don't batch recipes
 
-tooltip.cal.imprintedWith=Imprinted with: %
+tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
 #Liquids
