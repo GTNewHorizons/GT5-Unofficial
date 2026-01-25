@@ -1864,6 +1864,8 @@ GT5U.hatch.fluid.filter.enable=Fluid output filter set to: %s
 GT5U.hatch.item.filter.enable=Item output filter set to: %s
 GT5U.hatch.fluid.filter.disable=Fluid output filtering disabled
 GT5U.hatch.item.filter.disable=Item output filtering disabled
+GT5U.hatch.filter.none=Filter Empty
+GT5U.hatch.filter.tooltip.0=§6Left-Click§8 to remove
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter

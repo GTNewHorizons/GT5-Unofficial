@@ -97,6 +97,13 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
 
+    public static final UITexture BACKGROUND_SCREEN_BLACK = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/screen_black")
+        .imageSize(16, 16)
+        .adaptable(2)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_BLACK)
+        .build();
+
     public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(MODID, "gui/background/screen_blue")
         .imageSize(90, 72)
@@ -409,6 +416,31 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS_ALL = UITexture.builder()
         .canApplyTheme()
         .location(GregTech.ID, "gui/overlay_button/void_excess_all")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_FLUID = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/autooutput_fluid")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/lock")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/input_from_output_side")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_EXCESS = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/tank_void_excess")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_TANK_VOID_ALL = UITexture.builder()
+        .canApplyTheme()
+        .fullImage()
+        .location(GregTech.ID, "gui/overlay_button/tank_void_all")
         .build();
     public static final UITexture OVERLAY_BUTTON_INPUT_SEPARATION_ON = fullImage(
         GregTech.ID,
