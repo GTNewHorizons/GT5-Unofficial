@@ -2,6 +2,7 @@ package gregtech.loaders.postload;
 
 import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.BauxiteRefineChain;
+import gregtech.loaders.postload.chains.NACRecipes;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
 import gregtech.loaders.postload.chains.PurifiedWaterRecipes;
@@ -122,5 +123,6 @@ public class MachineRecipeLoader implements Runnable {
         NaniteChain.run();
         PCBFactoryRecipes.load();
         PurifiedWaterRecipes.run();
+        new NACRecipes().run();
     }
 }
