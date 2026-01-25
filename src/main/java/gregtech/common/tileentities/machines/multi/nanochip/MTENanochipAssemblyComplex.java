@@ -489,18 +489,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realComponent != null) {
-                            if (currentBlock == null) currentBlock = new CircuitBatch();
-                            // If the current block is full, store to history. Push the oldest block if needed.
-                            if (currentBlock.isFull()) {
-                                circuitHistory.add(currentBlock);
-                                if (circuitHistory.size() > HISTORY_BLOCKS) {
-                                    circuitHistory.poll();
-                                }
-                                currentBlock = new CircuitBatch();
-                            }
-
-                            currentBlock.add(component.circuitTier, (int) Math.min(Integer.MAX_VALUE, amount));
-
                             lEUt -= (amount * EU_MULTIPLIER);
                             ItemStack toOutput = GTUtility.copyAmountUnsafe(
                                 (int) Math.min(Integer.MAX_VALUE, amount),
@@ -516,6 +504,36 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
+    public void addToHistory(byte type, int amount) {
+        if (currentBlock == null) currentBlock = new CircuitBatch();
+        // If the current block is full, store to history. Push the oldest block if needed.
+        if (currentBlock.isFull()) {
+            circuitHistory.add(currentBlock);
+            if (circuitHistory.size() > HISTORY_BLOCKS) {
+                circuitHistory.poll();
+            }
+            currentBlock = new CircuitBatch();
+        }
+
+        currentBlock.add(type, amount);
+    }
+
+    public int getCurrentBlockSize() {
+        int total = 0;
+        if (currentBlock != null) {
+            total += currentBlock.primitives;
+            total += currentBlock.crystals;
+            total += currentBlock.wetwares;
+            total += currentBlock.bios;
+            total += currentBlock.opticals;
+            total += currentBlock.exotics;
+            total += currentBlock.cosmics;
+            total += currentBlock.temporals;
+            total += currentBlock.specials;
+        }
+        return total;
+    }
+
     public int getTotalCircuit(byte type) {
         int total = 0;
         for (CircuitBatch batch : circuitHistory) {
@@ -529,19 +547,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 case 7 -> total += batch.cosmics;
                 case 8 -> total += batch.temporals;
                 case 64 -> total += batch.specials;
-            }
-        }
-        if (currentBlock != null) {
-            switch (type) {
-                case 1 -> total += currentBlock.primitives;
-                case 2 -> total += currentBlock.crystals;
-                case 3 -> total += currentBlock.wetwares;
-                case 4 -> total += currentBlock.bios;
-                case 5 -> total += currentBlock.opticals;
-                case 6 -> total += currentBlock.exotics;
-                case 7 -> total += currentBlock.cosmics;
-                case 8 -> total += currentBlock.temporals;
-                case 64 -> total += currentBlock.specials;
             }
         }
         return total;
