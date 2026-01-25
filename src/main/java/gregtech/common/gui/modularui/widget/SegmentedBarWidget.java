@@ -49,7 +49,12 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
 
         GuiDraw.drawRect(0, 0, area.width, area.height, Color.BLACK.main);
         for (SegmentInfo segment : segments) {
-            int segWidth = Math.max(borderSize, (int) (((double) segment.valueSupplier.get() / maximum) * area.width));
+
+            // If segment value is zero, display nothing. Otherwise, display size relative to maximum with minimum 1
+            // pixel.
+            int segValue = segment.valueSupplier.get();
+            int segWidth = segValue <= 0 ? 0 : Math.max(borderSize, (int) (((double) segValue / maximum) * area.width));
+
             GuiDraw.drawHorizontalGradientRect(
                 start,
                 borderSize,
