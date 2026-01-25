@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -103,7 +104,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("machtype.gas_turbine")
-            .addInfo("gt.so_fuel_cell.tips.1", GTUtility.formatNumbers(EU_PER_TICK * 20))
+            .addInfo("gt.so_fuel_cell.tips.1", formatNumber(EU_PER_TICK * 20))
             .addInfo("gt.so_fuel_cell_ii.tips.1")
             .addInfo(
                 "gt.so_fuel_cell.tips.2",

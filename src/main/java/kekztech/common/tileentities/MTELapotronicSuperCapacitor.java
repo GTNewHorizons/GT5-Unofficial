@@ -1,5 +1,6 @@
 package kekztech.common.tileentities;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -392,7 +393,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         tt.addMachineType("machtype.energy_storage", "LSC")
             .addInfo(
                 "gt.lapo_super_capacitor.tips.1",
-                GTUtility.formatNumbers(max_passive_drain_eu_per_tick_per_uhv_cap),
+                formatNumber(max_passive_drain_eu_per_tick_per_uhv_cap),
                 GTValues.TIER_COLORS[9],
                 GTValues.VN[9])
             .addTecTechHatchInfo()
@@ -401,8 +402,8 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 "gt.lapo_super_capacitor.tips.2",
                 GTValues.TIER_COLORS[9],
                 GTValues.VN[9],
-                GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
-                GTUtility.formatNumbers(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
+                formatNumber(ItemBlockLapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks),
+                formatNumber(ItemBlockLapotronicEnergyUnit.LSC_wireless_eu_cap))
             .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
             .addStructureInfo("gt.lapo_super_capacitor.info.height")
             .addController("front_bottom_middle")
@@ -853,11 +854,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         ll.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_in",
-                GTUtility.formatNumbers(inputLastTick)));
+                formatNumber(inputLastTick)));
         ll.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.eu_out",
-                GTUtility.formatNumbers(outputLastTick)));
+                formatNumber(outputLastTick)));
         ll.add(
             translateToLocalFormatted(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",

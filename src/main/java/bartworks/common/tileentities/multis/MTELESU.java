@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,7 +177,7 @@ public class MTELESU extends MTEMultiBlockBase {
         Collections.addAll(e, dsc);
         e.add(
             StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                + GTUtility.formatNumbers(Configuration.multiblocks.energyPerCell)
+                + formatNumber(Configuration.multiblocks.energyPerCell)
                 + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name")
             .split(";");

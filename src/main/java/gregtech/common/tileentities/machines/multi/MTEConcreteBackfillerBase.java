@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -102,8 +103,8 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
                 "gt.backfiller.tips",
                 getRadius(),
                 GTUtility.getColoredTierNameFromTier((byte) getMinTier()),
-                baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime)
-                    : GTUtility.formatNumbers(baseCycleTime / 20.0),
+                baseCycleTime < 20 ? formatNumber(baseCycleTime)
+                    : formatNumber(baseCycleTime / 20.0),
                 baseCycleTime < 20 ? "gt.time.tick.plural" : "gt.time.second.plural")
             .beginStructureBlock(3, 7, 3, false)
             .addController("front_bottom_middle")

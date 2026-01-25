@@ -20,12 +20,12 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.AuthorPxx500;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -315,18 +315,18 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         tt.addMachineType("machtype.htgr")
             .addInfo(
                 "gt.htgr.tips",
-                formatNumbers(CONVERSION_FACTOR * 100),
-                formatNumbers(POWER_USAGE),
-                formatNumbers(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1),
-                formatNumbers(HELIUM_LOST_PER_CYCLE * 100),
-                formatNumbers(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED),
-                formatNumbers(BASE_PROCESSING_TIME / 20),
-                formatNumbers((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20),
-                formatNumbers(COOLANT_SPEEDUP * 20 * 100),
-                formatNumbers(WATER_SPEEDUP * 20 * 100),
-                formatNumbers(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100)),
-                formatNumbers(COOLANT_PER_PELLET),
-                formatNumbers(WATER_PER_PELLET))
+                formatNumber(CONVERSION_FACTOR * 100),
+                formatNumber(POWER_USAGE),
+                formatNumber(POWER_PENALTY_WHEN_MINIMUM_HELIUM + 1),
+                formatNumber(HELIUM_LOST_PER_CYCLE * 100),
+                formatNumber(100 * MIN_HELIUM_NEEDED / HELIUM_NEEDED),
+                formatNumber(BASE_PROCESSING_TIME / 20),
+                formatNumber((BASE_PROCESSING_TIME + SCALING_PROCESSING_TIME) / 20),
+                formatNumber(COOLANT_SPEEDUP * 20 * 100),
+                formatNumber(WATER_SPEEDUP * 20 * 100),
+                formatNumber(((COOLANT_SPEEDUP + WATER_SPEEDUP) * 20 * 100)),
+                formatNumber(COOLANT_PER_PELLET),
+                formatNumber(WATER_PER_PELLET))
             .beginStructureBlock(29, 16, 18, true)
             .addController("front_center")
             .addInputHatch("gt.htgr.info.i_hatch.a", 1)
@@ -717,7 +717,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     "kubatech.infodata.htgr.stored_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    formatNumbers(entry.getValue())))
+                    formatNumber(entry.getValue())))
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
@@ -729,26 +729,26 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     "kubatech.infodata.htgr.burned_fuel_entry",
                     entry.getKey()
                         .getLocalizedNameForItem("%material"),
-                    formatNumbers(entry.getValue() * 100d)))
+                    formatNumber(entry.getValue() * 100d)))
                 .append("\n");
         }
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.helium_supply",
-                    formatNumbers(this.heliumSupply)))
+                    formatNumber(this.heliumSupply)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.coolant_per_tick",
-                    formatNumbers(this.heliumSupply)))
+                    formatNumber(this.heliumSupply)))
             .append("\n");
         sb.append(EnumChatFormatting.WHITE)
             .append(
                 StatCollector.translateToLocalFormatted(
                     "kubatech.infodata.htgr.water_per_tick",
-                    formatNumbers(this.heliumSupply)))
+                    formatNumber(this.heliumSupply)))
             .append("\n");
         return sb.toString();
     }

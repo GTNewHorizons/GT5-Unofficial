@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -212,15 +213,24 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstone) {
         if (side == facing) {
-            if (active)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
-                    TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT), TextureFactory.builder()
-                        .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+            if (active) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON), TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_SIPHON),
-                TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(IGTextures.SIPHON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(IGTextures.SIPHON_OVERLAY_FRONT_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -467,7 +477,7 @@ public class TileEntityPlanetaryGasSiphon extends MTEEnhancedMultiBlockBase<Tile
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET, "Depth: " + YELLOW + depth + RESET,
             "Fluid: " + YELLOW + fluid.amount + RESET + "L/s " + BLUE + fluid.getLocalizedName() + RESET,
-            "EU/t required: " + YELLOW + GTUtility.formatNumbers(-mEUt) + RESET + " EU/t",
+            "EU/t required: " + YELLOW + formatNumber(-mEUt) + RESET + " EU/t",
             "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
                 : RED + "Has problems" + RESET),
             "---------------------------------------------" };

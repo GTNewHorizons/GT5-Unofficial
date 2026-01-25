@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
-import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -82,7 +82,7 @@ public class BWItemRenderer implements IItemRenderer {
                 GL11.glBlendFunc(770, 771);
                 final Tessellator tess = Tessellator.instance;
                 if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
-                    if (aMetaData < CircuitImprintLoader.reverseIDs)
+                    if (aMetaData < CircuitWraps.getMinimalID())
                         ItemRenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     else {
                         for (int i = 0; i < 4; i++) {
@@ -98,7 +98,7 @@ public class BWItemRenderer implements IItemRenderer {
                                 -1.0F);
                         }
                     }
-                } else if (aMetaData < CircuitImprintLoader.reverseIDs) {
+                } else if (aMetaData < CircuitWraps.getMinimalID()) {
                     ItemRenderer.renderItemIn2D(
                         tess,
                         tIcon.getMaxU(),

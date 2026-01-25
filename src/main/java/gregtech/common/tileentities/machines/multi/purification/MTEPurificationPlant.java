@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -168,8 +169,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             .addSeparator()
             .addInfo(
                 "gt.purification_plant.tips.3",
-                GTUtility.formatNumbers(WATER_BOOST_NEEDED_FLUID * 100),
-                GTUtility.formatNumbers(WATER_BOOST_BONUS_CHANCE * 100))
+                formatNumber(WATER_BOOST_NEEDED_FLUID * 100),
+                formatNumber(WATER_BOOST_BONUS_CHANCE * 100))
             .addSeparator()
             .addInfo("gt.purification_plant.tips.4")
             .addSeparator()
@@ -443,7 +444,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
         ret.add(
             translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET);
         // Show linked purification units and their status
         ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));

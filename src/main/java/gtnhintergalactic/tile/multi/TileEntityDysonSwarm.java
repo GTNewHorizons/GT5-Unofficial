@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -46,7 +47,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -397,15 +397,24 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                    TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE), TextureFactory.builder()
-                        .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+            if (aActive) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER), TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(IGTextures.DYSON_OVERLAY_FRONT_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -466,20 +475,17 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-                + GTUtility.formatNumbers(powerFactor * 100.0)
-                + "%"
-                + RESET,
+            "Modules: " + YELLOW + formatNumber(moduleCount) + RESET,
+            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET,
             "Theoretical Output: " + YELLOW
-                + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
+                + formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
                 + RESET
                 + " EU/t",
-            "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
+            "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
+            "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
             StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(recipesDone)
+                + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET,
             "---------------------------------------------" };
     }

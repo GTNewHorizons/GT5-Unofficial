@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.translate;
 import static gregtech.api.util.tooltip.TooltipMarkupProcessor.INDENT_MARK;
@@ -126,7 +127,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         aList.add(
                             translateToLocalFormatted(
                                 "gt.tileentity.eup_in",
-                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
+                                formatNumber(tTileEntity.getInputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(inputTier)));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
@@ -134,19 +135,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                         aList.add(
                             translateToLocalFormatted(
                                 "gt.tileentity.eup_out",
-                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
+                                formatNumber(tTileEntity.getOutputVoltage()),
                                 GTUtility.getColoredTierNameFromTier(outputTier)));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
                             translateToLocalFormatted(
                                 "gt.tileentity.eup_amount",
-                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
+                                formatNumber(tTileEntity.getOutputAmperage())));
                     }
                     aList.add(
                         translateToLocalFormatted(
                             "gt.tileentity.eup_store",
-                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
+                            formatNumber(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();

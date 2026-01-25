@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -8,7 +9,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMultiplier;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -957,7 +957,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                         aPlayer,
                         StatCollector.translateToLocalFormatted(
                             "eoh.rightclick.wirecutter.2",
-                            GTUtility.formatNumbers(originalAmount - astralArrayAmount)));
+                            formatNumber(originalAmount - astralArrayAmount)));
                 }
             }
         }
@@ -984,21 +984,21 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         tt.addMachineType("machtype.eoh")
             .addInfo(
                 "gt.eoh.tips",
-                formatNumbers(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100),
-                formatNumbers(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100),
-                formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100),
-                formatNumbers(
+                formatNumber(SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE * 100),
+                formatNumber(TIME_ACCEL_DECREASE_CHANCE_PER_TIER * 100),
+                formatNumber(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100),
+                formatNumber(
                     STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * TOTAL_CASING_TIERS_WITH_POWER_PENALTY
                         * 100),
-                formatNumbers(MOLTEN_SPACETIME_PER_FAILURE_TIER),
+                formatNumber(MOLTEN_SPACETIME_PER_FAILURE_TIER),
                 SPACETIME_FAILURE_BASE,
                 Materials.SpaceTime.getLocalizedName(),
-                formatNumbers(ASTRAL_ARRAY_LIMIT),
-                formatNumbers(PARALLEL_FOR_FIRST_ASTRAL_ARRAY),
-                formatNumbers(CONSTANT_FOR_LOG),
-                formatNumbers(PARALLEL_MULTIPLIER_CONSTANT),
-                formatNumbers(POWER_DIVISION_CONSTANT),
-                formatNumbers(POWER_INCREASE_CONSTANT),
+                formatNumber(ASTRAL_ARRAY_LIMIT),
+                formatNumber(PARALLEL_FOR_FIRST_ASTRAL_ARRAY),
+                formatNumber(CONSTANT_FOR_LOG),
+                formatNumber(PARALLEL_MULTIPLIER_CONSTANT),
+                formatNumber(POWER_DIVISION_CONSTANT),
+                formatNumber(POWER_INCREASE_CONSTANT),
                 Materials.RawStarMatter.getLocalizedName())
             .beginStructureBlock(33, 33, 33, false)
             .addCasingInfoExactly("gt.blockcasingsBA0.11.name", 896)
@@ -1509,10 +1509,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                 + STRIKETHROUGH
                 + "----------------");
         validFluidMap.forEach(
-            (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumbers(value)));
+            (key, value) -> str.add(BLUE + key.getLocalizedName() + RESET + " : " + RED + formatNumber(value)));
         str.add(
             BLUE + StatCollector.translateToLocal(
-                "tt.infodata.eoh.astral_array_fabricators") + RESET + " : " + RED + formatNumbers(astralArrayAmount));
+                "tt.infodata.eoh.astral_array_fabricators") + RESET + " : " + RED + formatNumber(astralArrayAmount));
         if (recipeRunning) {
             str.add(
                 GOLD.toString() + STRIKETHROUGH
@@ -1527,18 +1527,18 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
             str.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.success_chance",
-                    RED + formatNumbers(100 * successChance) + RESET + "%"));
+                    RED + formatNumber(100 * successChance) + RESET + "%"));
             str.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.recipe_yield",
-                    RED + formatNumbers(100 * yield) + RESET + "%"));
+                    RED + formatNumber(100 * yield) + RESET + "%"));
             str.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.effective_astral_array_fabricators",
-                    RED + formatNumbers(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))));
+                    RED + formatNumber(Math.min(astralArrayAmount, ASTRAL_ARRAY_LIMIT))));
             str.add(
                 StatCollector
-                    .translateToLocalFormatted("tt.infodata.eoh.total_parallel", RED + formatNumbers(parallelAmount)));
+                    .translateToLocalFormatted("tt.infodata.eoh.total_parallel", RED + formatNumber(parallelAmount)));
             str.add(
                 StatCollector.translateToLocalFormatted(
                     "tt.infodata.eoh.eu_output",
@@ -1555,8 +1555,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     StatCollector.translateToLocalFormatted(
                         "tt.infodata.eoh.avg_output",
                         starMatterOutput.fluidStack.getLocalizedName(),
-                        RED + formatNumbers(starMatterOutput.amount) + RESET,
-                        YELLOW + formatNumbers(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
+                        RED + formatNumber(starMatterOutput.amount) + RESET,
+                        YELLOW + formatNumber(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
                     Materials.RawStarMatter.getFluid(0),
@@ -1565,8 +1565,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     StatCollector.translateToLocalFormatted(
                         "tt.infodata.eoh.avg_output",
                         stellarPlasmaOutput.fluidStack.getLocalizedName(),
-                        RED + formatNumbers(stellarPlasmaOutput.amount) + RESET,
-                        YELLOW + formatNumbers(stellarPlasmaOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
+                        RED + formatNumber(stellarPlasmaOutput.amount) + RESET,
+                        YELLOW + formatNumber(stellarPlasmaOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
             }
             BigInteger euPerTick = (outputEU_BigInt.subtract(usedEU.abs()))
                 .divide(BigInteger.valueOf(currentMaxProgresstime));
@@ -1642,7 +1642,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
                     1,
                     GTLanguageManager
                         .addStringLocalization("EOH_Controller_AstralArrayAmount", "Stored Astral Arrays: ") + AQUA
-                        + formatNumbers(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
+                        + formatNumber(nbt.getLong(ASTRAL_ARRAY_AMOUNT_NBT_TAG)));
             }
         }
     }

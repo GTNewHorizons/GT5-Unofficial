@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
@@ -53,7 +54,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             aTier,
             4,
             new String[] {
-                GTUtility.nestParams("gt.te.output_hatch.desc", GTUtility.formatNumbers(8000L * (1L << aTier))) });
+                GTUtility.nestParams("gt.te.output_hatch.desc", formatNumber(8000L * (1L << aTier))) });
     }
 
     public MTEHatchOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -424,12 +425,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
                         : mFluid.getLocalizedName())
                     + EnumChatFormatting.RESET),
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(mFluid == null ? 0 : mFluid.amount)
+            EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
                 + " "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getCapacity())
+                + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET,
             (!isFluidLocked() || lockedFluidName == null)

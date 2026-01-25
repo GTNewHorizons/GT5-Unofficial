@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -16,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 
@@ -129,15 +129,15 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         if (isSuperheated()) {
             tt.addInfo(
                 "gt.mb_boiler.tips.1a",
-                formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / 20f) / superToNormalSteam)),
-                formatNumbers((getEUt() * 40L) / superToNormalSteam)); // ?
+                formatNumber((getEUt() * 40) * ((runtimeBoost(20) / 20f) / superToNormalSteam)),
+                formatNumber((getEUt() * 40L) / superToNormalSteam)); // ?
         } else {
             tt.addInfo(
                 "gt.mb_boiler.tips.1b",
-                formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f)),
-                formatNumbers(getEUt() * 40L)); // ?
+                formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f)),
+                formatNumber(getEUt() * 40L)); // ?
         }
-        tt.addInfo("gt.mb_boiler.tips.2", formatNumbers(500.0 / getEfficiencyIncrease())) // ? check semifluid again
+        tt.addInfo("gt.mb_boiler.tips.2", formatNumber(500.0 / getEfficiencyIncrease())) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
             .addController("front_bottom_middle")
