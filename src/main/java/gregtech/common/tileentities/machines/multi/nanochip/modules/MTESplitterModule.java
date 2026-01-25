@@ -66,7 +66,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         { " A A   ", "CBBBBBC" }, { "   AA  ", " CBBBC " } };
 
     public List<SplitterRule> rules = new ArrayList<>();
-    public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(1);
+    public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(64*6 , 1);
     public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
 

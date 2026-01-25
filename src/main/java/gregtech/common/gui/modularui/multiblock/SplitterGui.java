@@ -102,9 +102,6 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         ModularPanel ui = new ModularPanel("gt:splitter:rules_manager").child(ButtonWidget.panelCloseButton());
         GenericSyncValue<List<SplitterRule>> rulesSyncer = (GenericSyncValue<List<SplitterRule>>) syncManager
             .getSyncHandlerFromMapKey("rules:0");
-        multiblock.phantomHolder.setSize(
-            rulesSyncer.getValue()
-                .size() * 6);
         DynamicSyncHandler rulesHandler = new DynamicSyncHandler().widgetProvider((manager, packet) -> {
             if (packet == null) return new EmptyWidget();
             return createRuleManagerList(SplitterRuleListAdapter.deserializePacket(packet), manager);
@@ -268,6 +265,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         int index) {
         List<SplitterRule> rules = syncer.getValue();
         SplitterRule rule = rules.get(index);
+        syncManager.registerSlotGroup("phantomshits", 3);
         // TODO: make it work
         return SlotGroupWidget.builder()
             .matrix("III", "III")
@@ -283,6 +281,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                                 .changeListener((newItem, onlyAmountChanged, client, init) -> {
 
                                 })
+                                .slotGroup("phantomshits")
                                 .accessibility(true, false))));
             })
             .build()
