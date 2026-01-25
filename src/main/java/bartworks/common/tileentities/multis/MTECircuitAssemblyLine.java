@@ -123,6 +123,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     private static final String STRUCTURE_PIECE_LAST = "last";
 
     private static final int MINIMUM_CIRCUIT_ASSEMBLER_LENGTH = 5;
+    @Deprecated
     public static final String IMPRINT_KEY = "Type";
     public static final String IMPRINT_ID_KEY = "id_imprint";
     protected static final String LENGTH_KEY = "Length";
@@ -320,7 +321,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        if (isImprinted()) aNBT.setInteger(IMPRINT_KEY, this.circuitImprint.id);
+        if (isImprinted()) aNBT.setInteger(IMPRINT_ID_KEY, this.circuitImprint.id);
         aNBT.setInteger(RUNNING_MODE_KEY, mode.index);
         aNBT.setInteger(LENGTH_KEY, length);
         super.saveNBTData(aNBT);
@@ -571,8 +572,11 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_KEY)) {
-            tooltip.add(StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith",EnumChatFormatting.YELLOW + this.getTypeForDisplay()));
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey(IMPRINT_ID_KEY)) {
+            CircuitImprint imprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(stack.stackTagCompound.getInteger(IMPRINT_ID_KEY));
+            if (imprint != null) {
+                tooltip.add(StatCollector.translateToLocalFormatted("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + imprint.circuit.get(1).getDisplayName()));
+            }
         }
     }
 
