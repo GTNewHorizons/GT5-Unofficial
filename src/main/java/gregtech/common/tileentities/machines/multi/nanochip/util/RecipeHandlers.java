@@ -516,11 +516,32 @@ public class RecipeHandlers {
     }
 
     public static void populateFinishedCircuitRecipeMaps() {
+        // TODO: dummy recipes
         addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 1)),
+            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 1)),
             Arrays.asList(Materials.Iron.getFluid(1)),
             CircuitComponent.CrystalProcessor,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LuV,
+            10);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDResistor, 1)),
+            Arrays.asList(Materials.Iron.getFluid(1)),
+            CircuitComponent.OpticalProcessor,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LuV,
+            10);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 1)),
+            Arrays.asList(Materials.Iron.getFluid(1)),
+            CircuitComponent.BiowareProcessor,
+            ModuleRecipeInfo.Fast,
+            TierEU.RECIPE_LuV,
+            10);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 1)),
+            Arrays.asList(Materials.Iron.getFluid(1)),
+            CircuitComponent.WetwareProcessor,
             ModuleRecipeInfo.Fast,
             TierEU.RECIPE_LuV,
             10);
