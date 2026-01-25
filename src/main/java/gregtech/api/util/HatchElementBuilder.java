@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
+import blockrenderer6343.client.world.ClientFakePlayer;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
@@ -509,7 +510,8 @@ public class HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive) {
+                if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive
+                    && !(env.getActor() instanceof ClientFakePlayer)) {
                     String type = getHint();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
