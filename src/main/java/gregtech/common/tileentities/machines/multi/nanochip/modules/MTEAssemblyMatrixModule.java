@@ -228,7 +228,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 0);
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1) -1;
         int machineTier = getCasingTier();
         if (machineTier + 1 >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
