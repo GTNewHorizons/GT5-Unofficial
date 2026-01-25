@@ -18,6 +18,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -34,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureElementChain;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate;
 
-import blockrenderer6343.client.world.ClientFakePlayer;
 import gnu.trove.TIntCollection;
 import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.set.hash.TIntHashSet;
@@ -479,6 +479,13 @@ public class HatchElementBuilder<T> {
                 return tHint;
             }
 
+            private boolean isBlockRendererActor(AutoPlaceEnvironment env) {
+                final EntityPlayer actor = env.getActor();
+                return actor != null && "blockrenderer6343.client.world.ClientFakePlayer".equals(
+                    actor.getClass()
+                        .getName());
+            }
+
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
@@ -510,8 +517,7 @@ public class HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive
-                    && !(env.getActor() instanceof ClientFakePlayer)) {
+                if (!GTStructureChannels.HATCH.hasValue(trigger) && !mExclusive && !isBlockRendererActor(env)) {
                     String type = getHint();
                     env.getChatter()
                         .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_placeable", type));
