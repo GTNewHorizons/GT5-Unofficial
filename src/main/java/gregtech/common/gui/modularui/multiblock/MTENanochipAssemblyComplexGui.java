@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
 
@@ -8,8 +9,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import net.minecraft.util.EnumChatFormatting;
 
+import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
@@ -315,13 +319,24 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .coverChildren()
                     .childPadding(6)
                     .child(createTalkTextField(panel, syncManager))
-                    .child(createBarWidget(syncManager)))
+                    .child(createBarWidget(syncManager))
+                    .child(createCalibrationProgressBar(syncManager)))
+
             .child(createButtonColumn(panel, syncManager));
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
         return new TerminalTextFieldWidget(textList, syncManager, panel).setFocusOnGuiOpen(true)
             .size(getTerminalRowWidth() - 27, 14);
+    }
+
+    protected Widget<? extends Widget<?>> createCalibrationProgressBar(PanelSyncManager syncManager) {
+        return new ProgressWidget()
+            .progress((double) syncManager.findSyncHandler("currentBlock", IntSyncValue.class).getValue() / BATCH_SIZE)
+            .texture(PROGRESSBAR_NANOCHIP_CALIBRATION, 16)
+            .direction(ProgressWidget.Direction.CIRCULAR_CW)
+            .size(16, 16)
+            .tooltipDynamic(tt -> tt.add(String.valueOf(BATCH_SIZE)));
     }
 
     @Override
@@ -354,6 +369,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 7)));
         syncManager.syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 8)));
         syncManager.syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 64)));
+
+        syncManager.syncValue("currentBlock", new IntSyncValue(multiblock::getCurrentBlockSize));
 
         GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> linkedModules = new GenericListSyncHandler.Builder<MTENanochipAssemblyModuleBase<?>>()
             .getter(multiblock::getModules)
