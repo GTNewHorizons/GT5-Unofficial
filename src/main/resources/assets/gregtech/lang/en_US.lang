@@ -1334,6 +1334,7 @@ GT5U.machines.output_bus.invalid=Invalid Data Stick config
 GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
 GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
 GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
+GT5U.machines.dronecentre.forceturnoff=Successfully turn off all machines and disable all covers!
 GT5U.machines.dronecentre.noconnection=No valid connection
 GT5U.machines.dronecentre.enableRender=Enable Drone Render
 GT5U.machines.dronecentre.disableRender=Disable Drone Render
@@ -1430,14 +1431,17 @@ GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.button.drone_setname=Set custom name for machine
 GT5U.gui.button.drone_highlight=Highlight machine in the world
-GT5U.gui.button.drone_outofrange=§4Machine is too far, drone control system not available!
 GT5U.gui.button.drone_open_list=Open Machine List
-GT5U.gui.button.drone_poweron_all=Turn ON ALL machines, no matter how remote
-GT5U.gui.button.drone_poweroff_all=Turn OFF ALL machines, no matter how remote
+GT5U.gui.button.drone_poweron_all=Turn ON ALL machines
+GT5U.gui.button.drone_poweroff_all=Turn OFF ALL machines (Press Shift to disable machine control covers)
 GT5U.gui.button.drone_name=Sort by §3name
 GT5U.gui.button.drone_distance=Sort by §3distance
-GT5U.gui.button.drone_error=Sort by §3shutdown status
-GT5U.gui.button.drone_showLocalName=Show localized name
+GT5U.gui.button.drone_status=Sort by §3shutdown status
+GT5U.gui.button.drone_searchoriname=Also search original name
+GT5U.gui.button.drone_production=Open production panel
+GT5U.gui.button.drone_editmode=Group edit mode
+GT5U.gui.button.drone_pause=Auto update connection list
+GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
@@ -1525,6 +1529,22 @@ GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
+GT5U.gui.text.drone_no_connection=No any connection
+GT5U.gui.text.drone_active_production=Active production recorder
+GT5U.gui.text.drone_maxrecord=Max record：
+GT5U.gui.text.drone_production_connection=Connection
+GT5U.gui.text.drone_production_power=Power
+GT5U.gui.text.drone_production_item=Item
+GT5U.gui.text.drone_production_fluid=Fluid
+GT5U.gui.text.drone_connectionCount=Total connections: %s
+GT5U.gui.text.drone_power_total=Total EU consumed in last %s:
+GT5U.gui.text.drone_connectionList=Connected machine list
+GT5U.gui.text.drone_average=Average EU consumed in last %s
+GT5U.gui.text.drone_item_total=Total item produced in last %s:
+GT5U.gui.text.drone_fluid_total=Total fluid produced in last %s:
+GT5U.gui.text.drone_key=Set connection key
+GT5U.gui.text.drone_warning_text=§4Warning: §7This machine is under attack.
+GT5U.gui.text.drone_remote_text=Remote centre status:
 GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
 GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
@@ -1591,6 +1611,7 @@ GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
 GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 
 
+
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
@@ -1630,6 +1651,11 @@ GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
+
+GT5U.gui.tooltip.drone_active_production=[Warning] This function is experimental and may reduce performance.
+GT5U.gui.tooltip.drone_maxrecord=Set max record quota. Each output from every machine consumes one quota. [Warning] Large numbers may cause performance issues!
+GT5U.gui.tooltip.drone_production_refresh=Refresh production info [Auto update every 10s]
+GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone center with the same key
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
 GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
@@ -1781,6 +1807,7 @@ GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
 GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
 
+GT5U.gui.chat.bindcentre=Successfully bind drone centre.
 # chats
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
@@ -3464,6 +3491,9 @@ GT5U.tooltip.volumetric_flask.set_volume=Rightclick on air to set volume (only w
 GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
+
+GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
+GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 
 # info data
 GT5U.infodata.no_network=No Network
