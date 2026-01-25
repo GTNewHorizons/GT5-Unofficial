@@ -223,14 +223,29 @@ public class GTUtility {
      */
     private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
 
-    /**
+    /*
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
      * Stuff over there.
      */
+
+    /**
+     * All catched fluid container data.
+     */
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
 
+    /**
+     * Associates the filled container item with the fluid container data.
+     */
     private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
+
+    /**
+     * Associates the empty container item with a map mapping fluid names to the associated fluid container data.
+     */
     private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
+
+    /**
+     * Associates the name of the fluid with all filled container items.
+     */
     private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
     /**
      * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
@@ -1047,44 +1062,30 @@ public class GTUtility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         sFluidToContainers.clear();
-        for (FluidContainerData tData : sFluidContainerList) {
-            String fluidName = tData.fluid.getFluid()
+        for (FluidContainerData data : sFluidContainerList) {
+            String fluidName = data.fluid.getFluid()
                 .getName();
-            sFilledContainerToData.put(new GTItemStack(tData.filledContainer), tData);
-            Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
-                .get(new GTItemStack(tData.emptyContainer));
-            List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
-            if (tFluidToContainer == null) {
-                sEmptyContainerToFluidToData
-                    .put(new GTItemStack(tData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-            }
-            tFluidToContainer.put(fluidName, tData);
-            if (tContainers == null) {
-                tContainers = new ArrayList<>();
-                tContainers.add(tData.filledContainer);
-                sFluidToContainers.put(fluidName, tContainers);
-            } else tContainers.add(tData.filledContainer);
+            sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
+            sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
+                .put(fluidName, data);
+            sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+                .add(data.filledContainer);
         }
     }
 
-    public static void addFluidContainerData(FluidContainerData aData) {
-        String fluidName = aData.fluid.getFluid()
+    public static void addFluidContainerData(FluidContainerData data) {
+        String fluidName = data.fluid.getFluid()
             .getName();
-        sFluidContainerList.add(aData);
-        sFilledContainerToData.put(new GTItemStack(aData.filledContainer), aData);
-        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
-            .get(new GTItemStack(aData.emptyContainer));
-        List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
-        if (tFluidToContainer == null) {
-            sEmptyContainerToFluidToData
-                .put(new GTItemStack(aData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-        }
-        tFluidToContainer.put(fluidName, aData);
-        if (tContainers == null) {
-            tContainers = new ArrayList<>();
-            tContainers.add(aData.filledContainer);
-            sFluidToContainers.put(fluidName, tContainers);
-        } else tContainers.add(aData.filledContainer);
+        sFluidContainerList.add(data);
+        sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
+        sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
+            .put(fluidName, data);
+        sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+            .add(data.filledContainer);
+    }
+
+    public static boolean isEmptyFluidContainer(ItemStack itemStack) {
+        return sEmptyContainerToFluidToData.containsKey(new GTItemStack(itemStack));
     }
 
     public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {

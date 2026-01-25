@@ -56,13 +56,13 @@ public class GTCoilTracker {
      * Ref counter to make sure there aren't any race conditions/conflicts when deactivating coils. {packed x,y,z: ref
      * count}
      */
-    public final Long2IntOpenHashMap activeBlocks = new Long2IntOpenHashMap();
+    private final Long2IntOpenHashMap activeBlocks = new Long2IntOpenHashMap();
 
     /**
      * Used to send active coils when the player views a new chunk. {packed chunk x,0,chunk z: set of packed x,y,z
      * active coils}
      */
-    public final Long2ReferenceOpenHashMap<LongSet> activeBlocksByChunk = new Long2ReferenceOpenHashMap<>();
+    private final Long2ReferenceOpenHashMap<LongSet> activeBlocksByChunk = new Long2ReferenceOpenHashMap<>();
 
     /**
      * Used to sync activations to clients in one packet. [packed x,y,z]
@@ -258,7 +258,7 @@ public class GTCoilTracker {
 
     /**
      * Checks whether a specific coil in a specific world is active or not.
-     *
+     * 
      * @return True when active, false otherwise.
      */
     public static boolean isCoilActive(World world, int x, int y, int z) {
@@ -271,9 +271,5 @@ public class GTCoilTracker {
         int refs = tracker.activeBlocks.get(coord);
 
         return refs > 0;
-    }
-
-    public static GTCoilTracker getTracker(World world) {
-        return TRACKERS.get(world);
     }
 }

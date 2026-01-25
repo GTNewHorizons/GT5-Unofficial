@@ -160,10 +160,10 @@ public class RecipeGenFluidCanning implements Runnable {
 
     private void addFluidCannerRecipe(GTRecipe aRecipe) {
         boolean result;
-        int aCount1 = getMapSize(RecipeMaps.fluidCannerRecipes);
+        int aCount1 = getMapSize(RecipeMaps.cannerRecipes);
         int aCount2 = aCount1;
-        RecipeMaps.fluidCannerRecipes.addRecipe(aRecipe);
-        aCount1 = getMapSize(RecipeMaps.fluidCannerRecipes);
+        RecipeMaps.cannerRecipes.addRecipe(aRecipe);
+        aCount1 = getMapSize(RecipeMaps.cannerRecipes);
         if (aCount1 <= aCount2) {
             Logger.INFO(
                 "[ERROR] Failed adding Canning recipe for " + ItemUtils.getArrayStackNames(aRecipe.mInputs)
