@@ -1774,7 +1774,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         public void accept(GTBeeDefinition dis) {
             IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, LEAD, 7);
             if (NewHorizonsCoreMod.isModLoaded())
-                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.Ledox"), 0);
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Ledox"), 0);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(35, "Europa")); // Europa Dim
         }
     }),
@@ -1791,7 +1791,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
             public void accept(GTBeeDefinition dis) {
                 IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, getSpecies(EXTRABEES, "freezing"), 7);
                 if (NewHorizonsCoreMod.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.CallistoColdIce"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "CallistoColdIce"), 0);
                 tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(45, "Callisto")); // Callisto
                 // Dim
             }
@@ -1809,7 +1809,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         public void accept(GTBeeDefinition dis) {
             IBeeMutationCustom tMutation = dis.registerMutation(IO, MITHRIL, 6);
             if (NewHorizonsCoreMod.isModLoaded())
-                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.Mytryl"), 0);
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Mytryl"), 0);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(36, "IO")); // IO Dim
         }
     }),
@@ -1826,7 +1826,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         public void accept(GTBeeDefinition dis) {
             IBeeMutationCustom tMutation = dis.registerMutation(VENUS, OSMIUM, 6);
             if (NewHorizonsCoreMod.isModLoaded())
-                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.Quantinum"), 0);
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Quantinum"), 0);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(39, "Venus")); // Venus Dim
         }
     }),
@@ -1877,7 +1877,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
             public void accept(GTBeeDefinition dis) {
                 IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
                 if (NewHorizonsCoreMod.isModLoaded()) tMutation
-                    .requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.MysteriousCrystal"), 0);
+                    .requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "MysteriousCrystalBlock"), 0);
                 tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
                 // Dim
             }
@@ -1896,7 +1896,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
             public void accept(GTBeeDefinition dis) {
                 IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
                 if (NewHorizonsCoreMod.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.BlackPlutonium"), 0);
+                    tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "BlackPlutonium"), 0);
                 tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
             }
         }),
@@ -1998,7 +1998,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(MARS, DESH, 15);
         if (NewHorizonsCoreMod.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.Ledox"), 0);
+            tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Ledox"), 0);
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteroids")); // Asteroid Dim
     }),
     IO(GTBranchDefinition.PLANET, "IO", true, new Color(0x734B2E), new Color(0xe5701b), beeSpecies -> {
@@ -2061,7 +2061,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(JUPITER, LEDOX, 25, 2);
         if (NewHorizonsCoreMod.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.Quantinum"), 0);
+            tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "Quantinum"), 0);
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteriods")); // Asteriods Dim
     }),
     ENCELADUS(GTBranchDefinition.PLANET, "Enceladus", true, new Color(0xD2A472), new Color(0x193fa0), beeSpecies -> {
@@ -2135,7 +2135,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(URANUS, ORIHARUKON, 7);
         if (NewHorizonsCoreMod.isModLoaded())
-            tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.MysteriousCrystal"), 0);
+            tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "MysteriousCrystalBlock"), 0);
         tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(30, "Asteroids")); // Asteroids Dim
     }),
     PROTEUS(GTBranchDefinition.PLANET, "Proteus", true, new Color(0x334CFF), new Color(0x592610), beeSpecies -> {
