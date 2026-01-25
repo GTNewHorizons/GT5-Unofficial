@@ -16,6 +16,7 @@ package bartworks.common.tileentities.classic;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -50,6 +51,7 @@ import bartworks.API.ITileHasDifferentTextureSides;
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
+import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.pollution.PollutionConfig;
 
@@ -105,8 +107,21 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
         if (this.fuelstack != null && this.fuel == 0) {
             this.fuel = this.maxfuel = TileEntityFurnace.getItemBurnTime(this.fuelstack);
             --this.fuelstack.stackSize;
-            if (this.fuelstack.stackSize <= 0) this.fuelstack = fuelstack.getItem()
+
+            assert fuelstack.getItem() != null;
+            ItemStack containerItem = fuelstack.getItem()
                 .getContainerItem(fuelstack);
+            if (this.fuelstack.stackSize <= 0) {
+                this.fuelstack = containerItem;
+            } else {
+                // drop the container to the world if there's more fuels left in the slot
+                GTUtility.dropItemsOrClusters(
+                    worldObj,
+                    0.5F + xCoord,
+                    1.5F + yCoord,
+                    0.5F + zCoord,
+                    Collections.singletonList(containerItem));
+            }
         }
     }
 
@@ -185,8 +200,9 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
+    public boolean canExtractItem(int index, ItemStack item, int side) {
+        // allow extracting leftover items of fuels like buckets
+        return GTUtility.isEmptyFluidContainer(item);
     }
 
     @Override
