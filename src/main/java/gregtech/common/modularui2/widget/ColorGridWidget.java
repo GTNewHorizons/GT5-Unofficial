@@ -2,6 +2,7 @@ package gregtech.common.modularui2.widget;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.util.EnumChatFormatting;
 
@@ -25,9 +26,8 @@ import gregtech.api.enums.Dyes;
  */
 public class ColorGridWidget extends Column {
 
-    // TODO: consider changing this to Set
     public List<Byte> selected = new ArrayList<>();
-    public Runnable onToggle;
+    public Consumer<List<Byte>> onToggle;
     public int maxSelected = 16;
     public int buttonSize = 9;
     public int buttonPadding = 1;
@@ -35,6 +35,7 @@ public class ColorGridWidget extends Column {
 
     public ColorGridWidget() {
         super();
+        this.coverChildren();
     }
 
     /**
@@ -103,7 +104,7 @@ public class ColorGridWidget extends Column {
      *              grid checked for excess
      * @return this
      */
-    public ColorGridWidget onButtonToggled(Runnable toRun) {
+    public ColorGridWidget onButtonToggled(Consumer<List<Byte>> toRun) {
         onToggle = toRun;
         return this;
     }
@@ -148,7 +149,7 @@ public class ColorGridWidget extends Column {
             public @NotNull Result onMousePressed(int mouseButton) {
                 Result result = super.onMousePressed(mouseButton);
                 onToggled();
-                onToggle.run();
+                onToggle.accept(selected);
                 return result;
             }
         }.background(false, drawButton(Color.multiply(color, 0.5F, false)))
@@ -180,12 +181,10 @@ public class ColorGridWidget extends Column {
                 .getChildren()
                 .get(target % 4);
             if (!(targetChild instanceof ColorGridButton button)) return;
-            // target locked; disable the child
             button.setState(0, true);
         }
     }
 
-    // TODO: figure out how to word what the i represents in these. i got no clue what to put down
     /**
      * @return The name of the current selected color at i.
      */

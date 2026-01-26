@@ -128,6 +128,12 @@ public final class GTGuiTextures {
         .adaptable(4)
         .name(GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
         .build();
+    public static final UITexture BACKGROUND_NANOCHIP_RULE_POPUP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_rule")
+        .imageSize(188, 70)
+        .adaptable(4)
+        .canApplyTheme()
+        .build();
 
     public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
         .location(GregTech.ID, "gui/background/contributors_foundry")

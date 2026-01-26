@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,9 +64,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         { "  AA A ", "CBBBBBC" }, { "   ACA ", "BBBBBBB" }, { "AA A A ", "BBBBBBB" }, { " ACA AA", "BBBBBBB" },
         { " A A   ", "CBBBBBC" }, { "   AA  ", " CBBBC " } };
 
-    // Maps the "id" of a rule to the rule it represents. Don't use this to lookup output colors, use
-    // Splitter$getOutputColors instead.
-    public Map<Integer, SplitterRule> rules = new HashMap<>();
+    public List<SplitterRule> rules = new ArrayList<>();
     public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
 
@@ -164,8 +163,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     public List<Byte> getGetOutputColors(byte color, ItemStack item) {
         Set<Byte> set = new HashSet<>();
-        for (Map.Entry<Integer, SplitterRule> entry : rules.entrySet()) {
-            SplitterRule rule = entry.getValue();
+        for (SplitterRule rule : rules) {
             if (rule.appliesTo(color, item, redstoneChannelInfo)) continue;
             set.addAll(rule.outputColors);
         }
@@ -358,30 +356,24 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        rules = loadRulesTagList(aNBT.getTagList("rules", new NBTTagCompound().getId()));
-
+        rules = loadRulesTagList(aNBT.getTagList("rules", Constants.NBT.TAG_COMPOUND));
     }
 
     public NBTTagList createRulesTagList() {
         NBTTagList list = new NBTTagList();
-        for (Map.Entry<Integer, SplitterRule> entry : rules.entrySet()) {
-            SplitterRule rule = entry.getValue();
-            NBTTagCompound compound = rule.saveToNBT();
-            list.appendTag(compound);
+        for (SplitterRule rule : rules) {
+            list.appendTag(rule.saveToNBT());
         }
         return list;
     }
 
-    public Map<Integer, SplitterRule> loadRulesTagList(NBTTagList tagList) {
-        Map<Integer, SplitterRule> map = new HashMap<>();
-        int id = 0;
-        for (Object a : tagList.tagList) {
-            if (!(a instanceof NBTTagCompound compound)) continue;
-            SplitterRule rule = SplitterRule.loadFromNBT(compound);
-            map.put(id, rule);
-            id++;
+    public List<SplitterRule> loadRulesTagList(NBTTagList tagList) {
+        List<SplitterRule> list = new ArrayList<>();
+        for (int i = 0; i < tagList.tagCount(); i++) {
+            NBTTagCompound ruleTag = tagList.getCompoundTagAt(i);
+            list.add(SplitterRule.loadFromNBT(ruleTag));
         }
-        return map;
+        return list;
     }
 
     @Override
