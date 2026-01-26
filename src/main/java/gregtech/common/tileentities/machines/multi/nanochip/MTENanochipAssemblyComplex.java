@@ -72,6 +72,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacu
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitBatch;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
@@ -95,8 +96,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
+    public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
+
+    public CircuitCalibration.CalibrationThreshold currentThreshold;
 
     // For usage in the GUI
     public boolean isTalkModeActive = false;
@@ -508,7 +512,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public void addToHistory(byte type, int amount) {
-        amount = Math.min(amount, BATCH_SIZE * HISTORY_BLOCKS);
+        amount = Math.min(amount, CALIBRATION_MAX);
         if (currentBlock == null) currentBlock = new CircuitBatch();
 
         int leftover = currentBlock.add(type, amount);
@@ -520,10 +524,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 circuitHistory.poll();
             }
             currentBlock = new CircuitBatch();
+            // Update calibration
+            currentThreshold = CircuitCalibration.getCurrentCalibration(this);
         }
 
         // Recursively call addToHistory to clear leftovers evenly
         if (leftover > 0) addToHistory(type, leftover);
+    }
+
+    public String getCalibrationTitle() {
+        if (currentThreshold == null) return "Standard";
+        return currentThreshold.title;
     }
 
     public int getCurrentBlockSize() {
@@ -648,6 +659,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
             }
         }
+        currentThreshold = CircuitCalibration.getCurrentCalibration(this);
         currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
     }
 
