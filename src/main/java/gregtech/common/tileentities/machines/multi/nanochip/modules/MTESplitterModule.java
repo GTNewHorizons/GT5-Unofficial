@@ -168,7 +168,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public List<Byte> getGetOutputColors(byte color, ItemStack item) {
         Set<Byte> set = new HashSet<>();
         for (SplitterRule rule : rules) {
-            if (rule.appliesTo(color, item, redstoneChannelInfo)) continue;
+            if (!rule.appliesTo(color, item, redstoneChannelInfo)) continue;
             set.addAll(rule.outputColors);
         }
         return new ArrayList<>(set);
@@ -289,6 +289,12 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
+        // Update redstone channel state
+        redstoneChannelInfo.clear();
+        for (var hatch : redstoneHatches) {
+            redstoneChannelInfo.set(hatch.getChannel(), hatch.getRedstoneInput());
+        }
+
         // First step in recipe checking is finding all inputs we have to deal with.
         // As a result of this process, we also get the colors of the hatch each item is found in, which
         // we will use for routing the outputs
@@ -388,6 +394,10 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     public static class RedstoneChannelInfo {
 
         private Map<Integer, Integer> levels = new HashMap<>();
+
+        public void clear() {
+            levels.clear();
+        }
 
         public int get(int channel) {
             return levels.getOrDefault(channel, 0);
