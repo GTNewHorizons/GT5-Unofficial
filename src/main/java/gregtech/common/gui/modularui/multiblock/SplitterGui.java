@@ -197,7 +197,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                 .posRel(0.8F, 0.5F)
                 .marginTop(23)
                 .coverChildren())
-            .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD)
+            .background(GTGuiTextures.BACKGROUND_NANOCHIP_RULE_POPUP)
             .widthRel(1F)
             .height(70)
             .margin(4, 8, 4, 4);
