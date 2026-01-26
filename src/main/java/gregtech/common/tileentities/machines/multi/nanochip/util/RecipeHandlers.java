@@ -21,7 +21,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
-import gregtech.api.util.GTRecipeBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -60,43 +59,19 @@ public class RecipeHandlers {
         ItemStack realOutput = output.realComponent.get();
         realOutput.stackSize = 1;
 
-        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
-            .fluidInputs(fluidInputs.toArray(new FluidStack[] {}))
-            .itemOutputs(output.getFakeStack(1))
-            .duration(duration)
-            .eut(eut);
-
-        // Add real recipe that will actually be utilized in recipe checks
-        ItemStack[] inputsWithFakeCircuits = input.stream()
+        ItemStack[] inputs = input.stream()
             .map(
                 c -> c.getCircuitComponent()
                     .getFakeStack(c.getSize()))
             .toArray(ItemStack[]::new);
 
-        builder.copy()
-            .hidden()
+        GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
-            .itemInputs(inputsWithFakeCircuits)
-            .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
-
-        // Add fake recipe that the user can see in NEI but will never actually be used for recipe checks
-        ItemStack[] inputsWithRealCircuits = input.stream()
-            .map(c -> {
-                if (c.getCircuitComponent().realComponent != null) {
-                    ItemStack realCircuit = c.getCircuitComponent().realComponent.get();
-                    realCircuit.stackSize = c.getSize();
-                    return realCircuit;
-                }
-                return c.getCircuitComponent()
-                    .getFakeStack(c.getSize());
-            })
-            .toArray(ItemStack[]::new);
-
-        builder.copy()
-            .fake()
-            .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
-            .itemInputs(inputsWithRealCircuits)
-            .itemOutputs(realOutput)
+            .itemInputs(inputs)
+            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+            .itemOutputs(output.getFakeStack(1))
+            .duration(duration)
+            .eut(eut)
             .addTo(RecipeMaps.nanochipAssemblyMatrixRecipes);
     }
 
