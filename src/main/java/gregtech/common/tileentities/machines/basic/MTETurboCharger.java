@@ -59,8 +59,9 @@ public class MTETurboCharger extends MTECharger {
 
     @Override
     protected boolean forceCharge() {
-        assert getBaseMetaTileEntity() != null;
-        return !getBaseMetaTileEntity().isAllowedToWork();
+        IGregTechTileEntity te = getBaseMetaTileEntity();
+        if (te == null) return false;
+        return !te.isAllowedToWork();
     }
 
     @Override
