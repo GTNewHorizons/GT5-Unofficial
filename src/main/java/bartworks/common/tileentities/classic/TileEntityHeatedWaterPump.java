@@ -111,15 +111,19 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             ItemStack containerItem = fuelstack.getItem()
                 .getContainerItem(fuelstack);
 
-            if (this.fuelstack.stackSize <= 0) {
-                // replace with the container item
-                this.fuelstack = containerItem;
-            } else if (containerItem != null) {
-                // drop the container to the world if there's more fuels left in the slot
-                GTUtility.dropItemToBlockPos(worldObj, xCoord, yCoord + 1, zCoord, containerItem);
-            } else {
-                // fuel's consumed and there's no container
-                this.fuelstack = null;
+            if (fuelstack.stackSize <= 0) {
+                // clear the fuelstack if the fuels are all consumed
+                fuelstack = null;
+            }
+
+            if (containerItem != null) {
+                if (fuelstack == null) {
+                    // replace with the container item
+                    fuelstack = containerItem;
+                } else {
+                    // drop the container to the world if there's more fuels left in the slot
+                    GTUtility.dropItemToBlockPos(worldObj, xCoord, yCoord + 1, zCoord, containerItem);
+                }
             }
         }
     }
