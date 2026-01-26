@@ -885,7 +885,8 @@ public class GTUtility {
      * @param stack    the stack to spawn
      * @param noMotion {@code true} to remove the initial motion when spawned to the world
      */
-    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack, boolean noMotion) {
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack,
+        boolean noMotion) {
         if (isStackInvalid(stack)) return;
         EntityItem entity = new EntityItem(world, x, y, z, stack);
         if (noMotion) {
@@ -917,8 +918,8 @@ public class GTUtility {
      * @param positionShift {@code true} to add a small random shift to the position
      * @param noMotion      {@code true} to remove the initial motion when spawned to the world
      */
-    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack, boolean positionShift,
-        boolean noMotion) {
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack,
+        boolean positionShift, boolean noMotion) {
         if (isStackInvalid(stack)) return;
         double x1, y1, z1;
         if (positionShift) {
