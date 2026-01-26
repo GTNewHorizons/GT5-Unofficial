@@ -239,9 +239,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1) - 1;
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
         int machineTier = getCasingTier();
-        if (machineTier + 1 >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (machineTier >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
     }
 
@@ -254,7 +254,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("tier", machineTier + 1);
+        tag.setInteger("tier", machineTier);
     }
 
     @Override
@@ -275,7 +275,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (machineTier >= 0 ? GTValues.VN[machineTier + 1]
+            + (machineTier >= 0 ? GTValues.VN[machineTier]
                 : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
