@@ -16,7 +16,6 @@ package bartworks.common.tileentities.classic;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -115,12 +114,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
                 this.fuelstack = containerItem;
             } else {
                 // drop the container to the world if there's more fuels left in the slot
-                GTUtility.dropItemsOrClusters(
-                    worldObj,
-                    0.5F + xCoord,
-                    1.5F + yCoord,
-                    0.5F + zCoord,
-                    Collections.singletonList(containerItem));
+                GTUtility.dropItemToBlockPos(worldObj, xCoord, yCoord + 1, zCoord, containerItem);
             }
         }
     }
