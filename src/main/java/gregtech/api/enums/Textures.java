@@ -1,10 +1,12 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Textures.GlobalIcons.RENDERING_ERROR;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -21,8 +23,66 @@ public class Textures {
     public static final String _OVERLAY = "_OVERLAY";
     public static final String ICONSETS = "iconsets";
 
+    // spotless:off
+    public enum InvisibleIcon implements IIcon {
+        INVISIBLE_ICON;
+
+        @Override public int    getIconWidth()  { return 1; }
+        @Override public int    getIconHeight() { return 1; }
+        @Override public float  getMinU()       { return 0.999f; }
+        @Override public float  getMaxU()       { return 1.0f;   }
+        @Override public float  getMinV()       { return 0.999f; }
+        @Override public float  getMaxV()       { return 1.0f;   }
+        @Override public float  getInterpolatedU(double u)  { return 1.0f; }
+        @Override public float  getInterpolatedV(double v)  { return 1.0f; }
+
+        @Override public String getIconName()   { return "invisible"; }
+    }
+    // spotless:on
+
+    public enum GlobalIcons implements IIconContainer {
+
+        RENDERING_ERROR(null, null),
+        VOID(InvisibleIcon.INVISIBLE_ICON, InvisibleIcon.INVISIBLE_ICON);
+
+        IIcon mIcon, mOverlay;
+
+        GlobalIcons(IIcon icon, IIcon overlay) {
+            mIcon = icon;
+            mOverlay = overlay;
+        }
+
+        @Override
+        public IIcon getIcon() {
+            if (mIcon == null) mIcon = getMissingNo();
+            return mIcon;
+        }
+
+        @Override
+        public IIcon getOverlayIcon() {
+            if (mOverlay == null) mOverlay = getMissingNo();
+            return mOverlay;
+        }
+
+        @Override
+        public ResourceLocation getTextureFile() {
+            return TextureMap.locationItemsTexture;
+        }
+
+        private static IIcon getMissingNo() {
+            return ((TextureMap) Minecraft.getMinecraft()
+                .getTextureManager()
+                .getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+        }
+    }
+
     public enum BlockIcons implements IIconContainer, Runnable {
 
+        // RENDERING_ERROR,
+
+        //
+        // VOID // The Empty Texture
+        // ,
         // ADDED
         MACHINE_UEV_SIDE,
         MACHINE_UIV_SIDE,
@@ -2483,12 +2543,10 @@ public class Textures {
         public void run() {
             final String name = this.toString();
             final ResourceLocation resLoc = GregTech.getResourceLocation(TEXTURES_BLOCKS + ICONSETS, name + ".png");
-            if (optionalResource && !ResourceUtils.resourceExists(resLoc)) {
-                // Icons with a fallback are optional and later replaced with their fallback
-                mIcon = VOID.getIcon();
-            } else {
-                mIcon = GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath(ICONSETS, name));
-            }
+            // Icons with a fallback are optional and later replaced with their fallback
+            mIcon = !optionalResource || ResourceUtils.resourceExists(resLoc)
+                ? GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath(ICONSETS, name))
+                : InvisibleIcon.INVISIBLE_ICON;
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -2510,11 +2568,9 @@ public class Textures {
 
             @Override
             public void run() {
-                if (optionalResource && !ResourceUtils.resourceExists(getResourceLocation(mIconName))) {
-                    mIcon = VOID.getIcon();
-                } else {
-                    mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
-                }
+                mIcon = optionalResource && !ResourceUtils.resourceExists(getResourceLocation(mIconName))
+                    ? InvisibleIcon.INVISIBLE_ICON
+                    : GregTechAPI.sBlockIcons.registerIcon(mIconName);
                 // This makes the block _OVERLAY icon totally optional
                 if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
                     mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
@@ -2565,8 +2621,6 @@ public class Textures {
 
     public enum ItemIcons implements IIconContainer, Runnable {
 
-        VOID, // The Empty Texture
-        RENDERING_ERROR,
         MORTAR,
         ROLLING_PIN,
         HANDLE_SWORD,
@@ -2631,12 +2685,21 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = ResourceUtils.resourceExists(GregTech.getResourceLocation(ICONSETS, this + ".png"))
-                ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this.toString()))
-                : VOID.getIcon();
-            mOverlay = ResourceUtils.resourceExists(GregTech.getResourceLocation(ICONSETS, this + _OVERLAY + ".png"))
-                ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(ICONSETS, this + _OVERLAY))
-                : VOID.getOverlayIcon();
+            final String iconPath = GregTech.getResourcePath(ICONSETS, this.toString());
+            final ResourceLocation iconResource = getResourceLocation(iconPath);
+            mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sItemIcons.registerIcon(iconPath)
+                : InvisibleIcon.INVISIBLE_ICON;
+            final String overlayPath = GregTech.getResourcePath(ICONSETS, this + _OVERLAY);
+            mOverlay = ResourceUtils.resourceExists(getResourceLocation(overlayPath))
+                ? GregTechAPI.sItemIcons.registerIcon(overlayPath)
+                : InvisibleIcon.INVISIBLE_ICON;
+        }
+
+        private static ResourceLocation getResourceLocation(String iconPath) {
+            final int semicolon = iconPath.indexOf(':');
+            final String domain = iconPath.substring(0, semicolon);
+            final String path = "textures/items/" + iconPath.substring(semicolon + 1) + ".png";
+            return new ResourceLocation(domain, path);
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -2666,13 +2729,15 @@ public class Textures {
 
             @Override
             public void run() {
-                mIcon = ResourceUtils.resourceExists(GregTech.getResourceLocation(mIconName + ".png"))
-                    ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName))
-                    : VOID.getIcon();
+                final String iconPath = GregTech.getResourcePath(mIconName);
+                final ResourceLocation iconResource = getResourceLocation(iconPath);
+                mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sItemIcons.registerIcon(iconPath)
+                    : InvisibleIcon.INVISIBLE_ICON;
 
-                mOverlay = ResourceUtils.resourceExists(GregTech.getResourceLocation(mIconName + _OVERLAY + ".png"))
-                    ? GregTechAPI.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + _OVERLAY))
-                    : VOID.getOverlayIcon();
+                final String overlayPath = GregTech.getResourcePath(mIconName + _OVERLAY);
+                mOverlay = ResourceUtils.resourceExists(getResourceLocation(overlayPath))
+                    ? GregTechAPI.sItemIcons.registerIcon(overlayPath)
+                    : InvisibleIcon.INVISIBLE_ICON;
             }
         }
     }

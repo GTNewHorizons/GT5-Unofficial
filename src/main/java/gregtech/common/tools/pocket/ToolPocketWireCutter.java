@@ -27,7 +27,7 @@ public class ToolPocketWireCutter extends ToolWireCutter {
         return aIsToolHead
             ? MetaGeneratedTool
                 .getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolWireCutter]
-            : Textures.ItemIcons.VOID;
+            : Textures.GlobalIcons.VOID;
     }
 
     @Override

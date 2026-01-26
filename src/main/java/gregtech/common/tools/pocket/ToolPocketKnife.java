@@ -26,7 +26,7 @@ public class ToolPocketKnife extends ToolKnife {
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolKnife]
-            : Textures.ItemIcons.VOID;
+            : Textures.GlobalIcons.VOID;
     }
 
     @Override
