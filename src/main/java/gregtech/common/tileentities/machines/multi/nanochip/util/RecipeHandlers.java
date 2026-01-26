@@ -115,7 +115,7 @@ public class RecipeHandlers {
                 .itemInputs(cc.realComponent.get())
                 .itemOutputs(cc.getFakeStack(1))
                 .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_UHV)
+                .eut(0)
                 .addTo(RecipeMaps.nanochipConversionRecipes);
         }
     }
