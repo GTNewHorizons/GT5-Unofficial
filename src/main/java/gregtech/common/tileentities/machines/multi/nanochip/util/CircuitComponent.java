@@ -51,12 +51,12 @@ public enum CircuitComponent {
         "gt.circuitcomponent.cable.opticalfiber",
         () -> CustomItemList.DATApipe.get(1)),
 
-    ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", true),
-    ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", true),
-    ProcessedWireLumiium(102, "gt.circuitcomponent.processed.wirelumiium", true),
-    ProcessedWireLanthanum(103, "gt.circuitcomponent.processed.wirelanthanum", true),
-    ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", true),
-    ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", true),
+    ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
+    ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
+    ProcessedWireLumiium(102, "gt.circuitcomponent.processed.wirelumiium", () -> WireLumiium, true),
+    ProcessedWireLanthanum(103, "gt.circuitcomponent.processed.wirelanthanum", () -> WireLanthanum, true),
+    ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", () -> WireSpacetime, true),
+    ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", () -> CableOpticalFiber, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -121,21 +121,21 @@ public enum CircuitComponent {
         "gt.circuitcomponent.xsmd.diode",
         () -> ItemList.Circuit_Parts_DiodeXSMD.get(1)),
 
-    ProcessedSMDResistor(300, "gt.circuitcomponent.processed.smd.resistor", true),
-    ProcessedSMDTransistor(301, "gt.circuitcomponent.processed.smd.transistor", true),
-    ProcessedSMDInductor(302, "gt.circuitcomponent.processed.smd.inductor", true),
-    ProcessedSMDCapacitor(303, "gt.circuitcomponent.processed.smd.capacitor", true),
-    ProcessedSMDDiode(304, "gt.circuitcomponent.processed.smd.diode", true),
-    ProcessedAdvSMDResistor(310, "gt.circuitcomponent.processed.asmd.resistor", true),
-    ProcessedAdvSMDTransistor(311, "gt.circuitcomponent.processed.asmd.transistor", true),
-    ProcessedAdvSMDInductor(312, "gt.circuitcomponent.processed.asmd.inductor", true),
-    ProcessedAdvSMDCapacitor(313, "gt.circuitcomponent.processed.asmd.capacitor", true),
-    ProcessedAdvSMDDiode(314, "gt.circuitcomponent.processed.asmd.diode", true),
-    ProcessedOpticalSMDResistor(320, "gt.circuitcomponent.processed.xsmd.resistor", true),
-    ProcessedOpticalSMDTransistor(321, "gt.circuitcomponent.processed.xsmd.transistor", true),
-    ProcessedOpticalSMDInductor(322, "gt.circuitcomponent.processed.xsmd.inductor", true),
-    ProcessedOpticalSMDCapacitor(323, "gt.circuitcomponent.processed.xsmd.capacitor", true),
-    ProcessedOpticalSMDDiode(324, "gt.circuitcomponent.processed.xsmd.diode", true),
+    ProcessedSMDResistor(300, "gt.circuitcomponent.processed.smd.resistor", () -> SMDResistor, true),
+    ProcessedSMDTransistor(301, "gt.circuitcomponent.processed.smd.transistor", () -> SMDTransistor, true),
+    ProcessedSMDInductor(302, "gt.circuitcomponent.processed.smd.inductor", () -> SMDInductor, true),
+    ProcessedSMDCapacitor(303, "gt.circuitcomponent.processed.smd.capacitor", () -> SMDCapacitor, true),
+    ProcessedSMDDiode(304, "gt.circuitcomponent.processed.smd.diode", () -> SMDDiode, true),
+    ProcessedAdvSMDResistor(310, "gt.circuitcomponent.processed.asmd.resistor", () -> AdvSMDResistor, true),
+    ProcessedAdvSMDTransistor(311, "gt.circuitcomponent.processed.asmd.transistor", () -> AdvSMDTransistor, true),
+    ProcessedAdvSMDInductor(312, "gt.circuitcomponent.processed.asmd.inductor", () -> AdvSMDInductor, true),
+    ProcessedAdvSMDCapacitor(313, "gt.circuitcomponent.processed.asmd.capacitor", () -> AdvSMDCapacitor, true),
+    ProcessedAdvSMDDiode(314, "gt.circuitcomponent.processed.asmd.diode", () -> AdvSMDDiode, true),
+    ProcessedOpticalSMDResistor(320, "gt.circuitcomponent.processed.xsmd.resistor", () -> OpticalSMDResistor, true),
+    ProcessedOpticalSMDTransistor(321, "gt.circuitcomponent.processed.xsmd.transistor", () -> OpticalSMDTransistor, true),
+    ProcessedOpticalSMDInductor(322, "gt.circuitcomponent.processed.xsmd.inductor", () -> OpticalSMDInductor, true),
+    ProcessedOpticalSMDCapacitor(323, "gt.circuitcomponent.processed.xsmd.capacitor", () -> OpticalSMDCapacitor, true),
+    ProcessedOpticalSMDDiode(324, "gt.circuitcomponent.processed.xsmd.diode", () -> OpticalSMDDiode, true),
 
     // Boards
     // IDs: 400-499 CC, 500-599 PC
@@ -168,13 +168,13 @@ public enum CircuitComponent {
         "gt.circuitcomponent.livingbiochip",
         () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
 
-    ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", true),
-    ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", true),
-    ProcessedBoardBioMutated(502, "gt.circuitcomponent.processed.board.biomutated", true),
-    ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", true),
-    ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", true),
-    ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", true),
-    ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", true),
+    ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", () -> BoardMultifiberglassElite, true),
+    ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", () -> BoardWetwareLifesupport, true),
+    ProcessedBoardBioMutated(502, "gt.circuitcomponent.processed.board.biomutated", () -> BoardBioMutated, true),
+    ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", () -> BoardOptical, true),
+    ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", () -> NeuroProcessingUnit, true),
+    ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", () -> BioProcessingUnit, true),
+    ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", () -> LivingBioChip, true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -211,14 +211,14 @@ public enum CircuitComponent {
         "gt.circuitcomponent.waferpico",
         () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
 
-    ProcessedChipNanoCPU(700, "gt.circuitcomponent.processed.chipnanocpu", true),
-    ProcessedChipRAM(701, "gt.circuitcomponent.processed.chipram", true),
-    ProcessedChipNOR(702, "gt.circuitcomponent.processed.chipnor", true),
-    ProcessedChipNAND(703, "gt.circuitcomponent.processed.chipnand", true),
-    ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", true),
-    ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", true),
-    ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", true),
-    ProcessedChipPico(707, "gt.circuitcomponent.processed.chippico", true),
+    ProcessedChipNanoCPU(700, "gt.circuitcomponent.processed.chipnanocpu", () -> ChipNanoCPU, true),
+    ProcessedChipRAM(701, "gt.circuitcomponent.processed.chipram", () -> ChipRAM, true),
+    ProcessedChipNOR(702, "gt.circuitcomponent.processed.chipnor", () -> ChipNOR, true),
+    ProcessedChipNAND(703, "gt.circuitcomponent.processed.chipnand", () -> ChipNAND, true),
+    ProcessedChipASOC(704, "gt.circuitcomponent.processed.chipasoc", () -> ChipASOC, true),
+    ProcessedChipPikoPIC(705, "gt.circuitcomponent.processed.chippikopic", () -> ChipPikoPIC, true),
+    ProcessedChipQuantumPIC(706, "gt.circuitcomponent.processed.chipquantumpic", () -> ChipQuantumPIC, true),
+    ProcessedChipPico(707, "gt.circuitcomponent.processed.chippico", () -> WaferPico, true),
 
     // Crystal components
     // IDs: 800-899 CC, 900-999 PC
@@ -239,10 +239,10 @@ public enum CircuitComponent {
         "gt.circuitcomponent.chiprawadvancedcrystal",
         () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
 
-    ProcessedChipCrystalCPU(900, "gt.circuitcomponent.processed.chipcrystalcpu", true),
-    ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", true),
-    ProcessedChipLivingCrystal(902, "gt.circuitcomponent.processed.chiplivingcrystal", true),
-    ProcessedChipRawAdvancedCrystal(903, "gt.circuitcomponent.processed.chiprawadvancedcrystal", true),
+    ProcessedChipCrystalCPU(900, "gt.circuitcomponent.processed.chipcrystalcpu", () -> ChipCrystalCPU, true),
+    ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", () -> ChipCrystalSoC, true),
+    ProcessedChipLivingCrystal(902, "gt.circuitcomponent.processed.chiplivingcrystal", () -> ChipLivingCrystal, true),
+    ProcessedChipRawAdvancedCrystal(903, "gt.circuitcomponent.processed.chiprawadvancedcrystal", () -> ChipRawAdvancedCrystal, true),
 
     // Optical components
     // IDs: 1000-1099 CC, 1100-1199 PC
@@ -255,8 +255,8 @@ public enum CircuitComponent {
         "gt.circuitcomponent.opticalram",
         () -> ItemList.Optically_Compatible_Memory.get(1)),
 
-    ProcessedChipOpticalCPU(1100, "gt.circuitcomponent.processed.opticalcpu", true),
-    ProcessedOpticalRAM(1101, "gt.circuitcomponent.processed.opticalram", true),
+    ProcessedChipOpticalCPU(1100, "gt.circuitcomponent.processed.opticalcpu", () -> ChipOpticalCPU, true),
+    ProcessedOpticalRAM(1101, "gt.circuitcomponent.processed.opticalram", () -> OpticalRAM, true),
 
     // Superconductors
     // IDs: 1200-1299 CC, 1300-1399 PC
@@ -289,13 +289,13 @@ public enum CircuitComponent {
         "gt.circuitcomponent.superconductorumv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1)),
 
-    ProcessedSuperconductorLuV(1300, "gt.circuitcomponent.processed.superconductorluv", true),
-    ProcessedSuperconductorZPM(1301, "gt.circuitcomponent.processed.superconductorzpm", true),
-    ProcessedSuperconductorUV(1302, "gt.circuitcomponent.processed.superconductoruv", true),
-    ProcessedSuperconductorUHV(1303, "gt.circuitcomponent.processed.superconductoruhv", true),
-    ProcessedSuperconductorUEV(1304, "gt.circuitcomponent.processed.superconductoruev", true),
-    ProcessedSuperconductorUIV(1305, "gt.circuitcomponent.processed.superconductoruiv", true),
-    ProcessedSuperconductorUMV(1306, "gt.circuitcomponent.processed.superconductorumv", true),
+    ProcessedSuperconductorLuV(1300, "gt.circuitcomponent.processed.superconductorluv", () -> SuperconductorLuV, true),
+    ProcessedSuperconductorZPM(1301, "gt.circuitcomponent.processed.superconductorzpm", () -> SuperconductorZPM, true),
+    ProcessedSuperconductorUV(1302, "gt.circuitcomponent.processed.superconductoruv", () -> SuperconductorUV, true),
+    ProcessedSuperconductorUHV(1303, "gt.circuitcomponent.processed.superconductoruhv", () -> SuperconductorUHV, true),
+    ProcessedSuperconductorUEV(1304, "gt.circuitcomponent.processed.superconductoruev", () -> SuperconductorUEV, true),
+    ProcessedSuperconductorUIV(1305, "gt.circuitcomponent.processed.superconductoruiv", () -> SuperconductorUIV, true),
+    ProcessedSuperconductorUMV(1306, "gt.circuitcomponent.processed.superconductorumv", () -> SuperconductorUMV, true),
 
     // Frameboxes
     // IDs: 1400-1499 CC, 1500-1599 PC
@@ -312,9 +312,9 @@ public enum CircuitComponent {
         "gt.circuitcomponent.frame.neutronium",
         () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1)),
 
-    ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", true),
-    ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", true),
-    ProcessedFrameboxNeutronium(1502, "gt.circuitcomponent.processed.frame.neutronium", true),
+    ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
+    ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", () -> FrameboxTritanium, true),
+    ProcessedFrameboxNeutronium(1502, "gt.circuitcomponent.processed.frame.neutronium", () -> FrameboxNeutronium, true),
 
     // Foils
     // IDs: 1600-1699 CC, 1700-1799 PC
@@ -335,17 +335,17 @@ public enum CircuitComponent {
         "gt.circuitcomponent.sheet.shirabon",
         () -> GGMaterial.shirabon.get(OrePrefixes.foil, 1)),
 
-    ProcessedFoilSiliconeRubber(1700, "gt.circuitcomponent.sheet.processed.siliconerubber", true),
-    ProcessedFoilPolybenzimidazole(1701, "gt.circuitcomponent.sheet.processed.polybenzimidazole", true),
-    ProcessedFoilRadoxPolymer(1702, "gt.circuitcomponent.sheet.processed.radoxpolymer", true),
-    ProcessedFoilShirabon(1703, "gt.circuitcomponent.sheet.processed.shirabon", true),
+    ProcessedFoilSiliconeRubber(1700, "gt.circuitcomponent.sheet.processed.siliconerubber", () -> FoilSiliconeRubber, true),
+    ProcessedFoilPolybenzimidazole(1701, "gt.circuitcomponent.sheet.processed.polybenzimidazole", () -> FoilPolybenzimidazole, true),
+    ProcessedFoilRadoxPolymer(1702, "gt.circuitcomponent.sheet.processed.radoxpolymer", () -> FoilRadoxPolymer, true),
+    ProcessedFoilShirabon(1703, "gt.circuitcomponent.sheet.processed.shirabon", () -> FoilShirabon, true),
 
     // Circuit encasement
     // IDs: 1800-1899
-    BasicMainframeCasing(1800, "gt.circuitcomponent.casing.basicmainframe", true),
-    AdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.advancedmainframe", true),
-    PicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", true),
-    QuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", true),
+    BasicMainframeCasing(1800, "gt.circuitcomponent.casing.basicmainframe", null, true),
+    AdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.advancedmainframe", null, true),
+    PicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", null, true),
+    QuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", null, true),
 
     // Bolts
     // IDs: 1900-1999 CC, 2000-2099 PC
@@ -378,13 +378,13 @@ public enum CircuitComponent {
         "gt.circuitcomponent.bolt.chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getBolt(1)),
 
-    ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", true),
-    ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", true),
-    ProcessedBoltNeutronium(2002, "gt.circuitcomponent.bolt.processed.neutronium", true),
-    ProcessedBoltIndium(2003, "gt.circuitcomponent.bolt.processed.indium", true),
-    ProcessedBoltYttriumBariumCuprate(2004, "gt.circuitcomponent.bolt.processed.yttriumbariumcuprate", true),
-    ProcessedBoltCosmicNeutronium(2005, "gt.circuitcomponent.bolt.processed.cosmicneutronium", true),
-    ProcessedBoltChromaticGlass(2006, "gt.circuitcomponent.bolt.processed.chromaticglass", true),
+    ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
+    ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
+    ProcessedBoltNeutronium(2002, "gt.circuitcomponent.bolt.processed.neutronium", () -> BoltNeutronium, true),
+    ProcessedBoltIndium(2003, "gt.circuitcomponent.bolt.processed.indium", () -> BoltIndium, true),
+    ProcessedBoltYttriumBariumCuprate(2004, "gt.circuitcomponent.bolt.processed.yttriumbariumcuprate", () -> BoltYttriumBariumCuprate, true),
+    ProcessedBoltCosmicNeutronium(2005, "gt.circuitcomponent.bolt.processed.cosmicneutronium", () -> BoltCosmicNeutronium, true),
+    ProcessedBoltChromaticGlass(2006, "gt.circuitcomponent.bolt.processed.chromaticglass", () -> BoltChromaticGlass, true),
 
     // Circuits
     // IDs: 2100-2199
@@ -481,7 +481,11 @@ public enum CircuitComponent {
     public String fallbackLocalizedName = null;
 
     public final String iconString;
+
+    // CC -> real item association
     public final Supplier<ItemStack> realComponent;
+    // PC -> CC association
+    public final Supplier<CircuitComponent> componentForProcessed;
     public final boolean isProcessed;
 
     // Tier used for calibration
@@ -489,7 +493,7 @@ public enum CircuitComponent {
 
     // CC constructor
     CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent) {
-        this(id, unlocalizedName, realComponent, false, (byte) 0);
+        this(id, unlocalizedName, realComponent, null, false, (byte) 0);
     }
 
     // CC constructor with tier, used for circuits
@@ -506,12 +510,12 @@ public enum CircuitComponent {
     // 64 - Special Temporary circuits - Piko/Quantum
 
     CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent, byte circuitTier) {
-        this(id, unlocalizedName, realComponent, false, circuitTier);
+        this(id, unlocalizedName, realComponent, null, false, circuitTier);
     }
 
     // PC constructor
-    CircuitComponent(int id, String unlocalizedName, boolean isProcessed) {
-        this(id, unlocalizedName, null, isProcessed, (byte) 0);
+    CircuitComponent(int id, String unlocalizedName, Supplier<CircuitComponent> ccSupplier, boolean isProcessed) {
+        this(id, unlocalizedName, null, ccSupplier, isProcessed, (byte) 0);
     }
 
     private static final String PROCESSED_DIRECTORY = "processed/";
@@ -521,11 +525,12 @@ public enum CircuitComponent {
      * images are stored in gregtech/textures/items/gt.circuitcomponent
      * processed components are found in the processed subdirectory
      */
-    CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent, boolean isProcessed,
-        byte circuitTier) {
+    CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent,
+        Supplier<CircuitComponent> ccSupplier, boolean isProcessed, byte circuitTier) {
         this.metaId = id;
         this.unlocalizedName = unlocalizedName;
         this.realComponent = realComponent;
+        this.componentForProcessed = ccSupplier;
         this.isProcessed = isProcessed;
         this.circuitTier = circuitTier;
 
