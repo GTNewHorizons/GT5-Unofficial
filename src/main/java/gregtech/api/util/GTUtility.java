@@ -885,7 +885,7 @@ public class GTUtility {
      * @param stack    the stack to spawn
      * @param noMotion {@code true} to remove the initial motion when spawned to the world
      */
-    public static void dropItem(World world, double x, double y, double z, ItemStack stack, boolean noMotion) {
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack, boolean noMotion) {
         if (isStackInvalid(stack)) return;
         EntityItem entity = new EntityItem(world, x, y, z, stack);
         if (noMotion) {
@@ -900,7 +900,7 @@ public class GTUtility {
     /**
      * @see #dropItem(World, double, double, double, ItemStack, boolean)
      */
-    public static void dropItem(World world, double x, double y, double z, ItemStack stack) {
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack) {
         dropItem(world, x, y, z, stack, false);
     }
 
@@ -917,8 +917,9 @@ public class GTUtility {
      * @param positionShift {@code true} to add a small random shift to the position
      * @param noMotion      {@code true} to remove the initial motion when spawned to the world
      */
-    public static void dropItemToBlockPos(World world, int x, int y, int z, ItemStack stack, boolean positionShift,
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack, boolean positionShift,
         boolean noMotion) {
+        if (isStackInvalid(stack)) return;
         double x1, y1, z1;
         if (positionShift) {
             // shift the position to drop, but always inside the block pos
@@ -937,7 +938,7 @@ public class GTUtility {
     /**
      * @see #dropItemToBlockPos(World, int, int, int, ItemStack, boolean, boolean)
      */
-    public static void dropItemToBlockPos(World world, int x, int y, int z, ItemStack stack) {
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack) {
         dropItemToBlockPos(world, x, y, z, stack, false, false);
     }
 
