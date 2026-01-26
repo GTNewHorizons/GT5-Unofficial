@@ -2672,7 +2672,6 @@ public enum ItemList implements IItemContainer {
     NameRemover,
     Hatch_Nanite,
     Hatch_Catalyst_Bulk,
-    Hatch_Particle_Sensor,
     Machine_Multi_AirFilterT1,
     Machine_Multi_AirFilterT2,
     Machine_Multi_AirFilterT3,
