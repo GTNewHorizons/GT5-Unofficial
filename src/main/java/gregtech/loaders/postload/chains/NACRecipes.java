@@ -174,19 +174,6 @@ public class NACRecipes implements Runnable {
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
-        // Particle Indicator Hatch
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_UEV.get(1),
-                ItemList.Cover_AdvancedRedstoneTransmitter.get(1),
-                ItemList.Emitter_UHV.get(1),
-                GTUtility.copyAmount(4, LanthItemList.BEAMLINE_PIPE))
-            .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * INGOTS))
-            .itemOutputs(ItemList.Hatch_Particle_Sensor.get(1))
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_UHV)
-            .addTo(assemblerRecipes);
-
         // Nanochip Assembly Complex
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_OpticalMainframe.get(1), // todo check that this isn't already used
