@@ -524,20 +524,20 @@ public enum CircuitComponent {
 
     public static class CircuitComponentStack {
 
-        private final CircuitComponent mCircuitComponent;
-        private final int mSize;
+        private final CircuitComponent circuitComponent;
+        private final int size;
 
-        public CircuitComponentStack(CircuitComponent mCircuitComponent, int mSize) {
-            this.mCircuitComponent = mCircuitComponent;
-            this.mSize = mSize;
+        public CircuitComponentStack(CircuitComponent circuitComponent, int size) {
+            this.circuitComponent = circuitComponent;
+            this.size = size;
         }
 
         public CircuitComponent getCircuitComponent() {
-            return mCircuitComponent;
+            return circuitComponent;
         }
 
         public int getSize() {
-            return mSize;
+            return size;
         }
     }
 }
