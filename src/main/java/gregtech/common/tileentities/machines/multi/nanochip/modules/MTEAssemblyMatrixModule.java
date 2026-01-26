@@ -78,7 +78,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         .addElement(
             'B',
             ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
                 IntStream.range(0, 14)
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
