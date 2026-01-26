@@ -247,29 +247,34 @@ public enum CircuitComponent {
         1201,
         "gt.circuitcomponent.superconductorzpm",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 1)),
-    SuperconductorUHV(
+    SuperconductorUV(
         1202,
-        "gt.circuitcomponent.superconductoruhv",
+        "gt.circuitcomponent.superconductoruv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 1)),
-    SuperconductorUEV(
+    SuperconductorUHV(
         1203,
-        "gt.circuitcomponent.superconductoruev",
+        "gt.circuitcomponent.superconductoruhv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1)),
-    SuperconductorUIV(
+    SuperconductorUEV(
         1204,
-        "gt.circuitcomponent.superconductoruiv",
+        "gt.circuitcomponent.superconductoruev",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 1)),
-    SuperconductorUMV(
+    SuperconductorUIV(
         1205,
-        "gt.circuitcomponent.superconductorumv",
+        "gt.circuitcomponent.superconductoruiv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1)),
+    SuperconductorUMV(
+        1206,
+        "gt.circuitcomponent.superconductorumv",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1)),
 
     ProcessedSuperconductorLuV(1300, "gt.circuitcomponent.processed.superconductorluv", true),
     ProcessedSuperconductorZPM(1301, "gt.circuitcomponent.processed.superconductorzpm", true),
-    ProcessedSuperconductorUHV(1302, "gt.circuitcomponent.processed.superconductoruhv", true),
-    ProcessedSuperconductorUEV(1303, "gt.circuitcomponent.processed.superconductoruev", true),
-    ProcessedSuperconductorUIV(1304, "gt.circuitcomponent.processed.superconductoruiv", true),
-    ProcessedSuperconductorUMV(1305, "gt.circuitcomponent.processed.superconductorumv", true),
+    ProcessedSuperconductorUV(1302, "gt.circuitcomponent.processed.superconductoruv", true),
+    ProcessedSuperconductorUHV(1303, "gt.circuitcomponent.processed.superconductoruhv", true),
+    ProcessedSuperconductorUEV(1304, "gt.circuitcomponent.processed.superconductoruev", true),
+    ProcessedSuperconductorUIV(1305, "gt.circuitcomponent.processed.superconductoruiv", true),
+    ProcessedSuperconductorUMV(1306, "gt.circuitcomponent.processed.superconductorumv", true),
 
     // Frameboxes
     // IDs: 1400-1499 CC, 1500-1599 PC
