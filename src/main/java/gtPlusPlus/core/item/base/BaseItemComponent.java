@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Textures.GlobalIcons.RENDERING_ERROR;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -332,7 +333,7 @@ public class BaseItemComponent extends Item {
         final String iconPath = getCorrectTextures();
         final ResourceLocation iconResource = getResourceLocation(iconPath);
         this.base = ResourceUtils.resourceExists(iconResource) ? i.registerIcon(iconPath)
-            : Textures.InvisibleIcon.INVISIBLE_ICON;
+            : RENDERING_ERROR.getIcon();;
 
         final String overlayPath = getCorrectTextures() + "_OVERLAY";
         final ResourceLocation overlayResource = getResourceLocation(overlayPath);

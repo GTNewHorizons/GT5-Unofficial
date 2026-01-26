@@ -2688,7 +2688,7 @@ public class Textures {
             final String iconPath = GregTech.getResourcePath(ICONSETS, this.toString());
             final ResourceLocation iconResource = getResourceLocation(iconPath);
             mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sItemIcons.registerIcon(iconPath)
-                : InvisibleIcon.INVISIBLE_ICON;
+                : RENDERING_ERROR.getIcon();
             final String overlayPath = GregTech.getResourcePath(ICONSETS, this + _OVERLAY);
             mOverlay = ResourceUtils.resourceExists(getResourceLocation(overlayPath))
                 ? GregTechAPI.sItemIcons.registerIcon(overlayPath)
@@ -2732,7 +2732,7 @@ public class Textures {
                 final String iconPath = GregTech.getResourcePath(mIconName);
                 final ResourceLocation iconResource = getResourceLocation(iconPath);
                 mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sItemIcons.registerIcon(iconPath)
-                    : InvisibleIcon.INVISIBLE_ICON;
+                    : RENDERING_ERROR.getIcon();
 
                 final String overlayPath = GregTech.getResourcePath(mIconName + _OVERLAY);
                 mOverlay = ResourceUtils.resourceExists(getResourceLocation(overlayPath))
