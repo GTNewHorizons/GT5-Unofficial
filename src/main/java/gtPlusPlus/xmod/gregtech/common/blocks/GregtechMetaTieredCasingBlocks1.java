@@ -72,6 +72,6 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         if (aMeta < 10) {
             return TexturesGtBlock.TIERED_MACHINE_HULLS[aMeta].getIcon();
         }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 }

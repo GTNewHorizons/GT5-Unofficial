@@ -91,7 +91,7 @@ public class GregtechMetaSpecialMultiCasings2 extends GregtechMetaCasingBlocksAb
             case 5 -> TexturesGtBlock.Casing_Modulator_2.getIcon();
             case 6 -> TexturesGtBlock.Casing_Modulator_3.getIcon();
             case 7 -> TexturesGtBlock.Casing_Modulator_4.getIcon();
-            default -> Textures.BlockIcons.RENDERING_ERROR.getIcon();
+            default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
     }
 }
