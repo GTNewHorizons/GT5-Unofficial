@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
@@ -298,24 +299,6 @@ public class RecipeHandlers {
             20 * TICKS,
             RecipeMaps.nanochipCuttingChamber);
 
-        // Neutronium
-        addSimpleProcessingRecipe(
-            CircuitComponent.BoltNeutronium,
-            Materials.Lubricant.getFluid(20),
-            CircuitComponent.ProcessedBoltNeutronium,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipCuttingChamber);
-
-        // Indium
-        addSimpleProcessingRecipe(
-            CircuitComponent.BoltIndium,
-            Materials.Lubricant.getFluid(20),
-            CircuitComponent.ProcessedBoltIndium,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipCuttingChamber);
-
         // Yttrium Barium Cuprate
         addSimpleProcessingRecipe(
             CircuitComponent.BoltYttriumBariumCuprate,
@@ -342,10 +325,60 @@ public class RecipeHandlers {
             ModuleRecipeInfo.LowTier,
             20 * TICKS,
             RecipeMaps.nanochipCuttingChamber);
+
+        // Frame box recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxAluminium,
+            Materials.Grade1PurifiedWater.getFluid(500),
+            CircuitComponent.ProcessedFrameboxAluminium,
+            ModuleRecipeInfo.HighTier,
+            20 * TICKS,
+            RecipeMaps.nanochipCuttingChamber);
+
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxTritanium,
+            Materials.Grade1PurifiedWater.getFluid(500),
+            CircuitComponent.ProcessedFrameboxTritanium,
+            ModuleRecipeInfo.HighTier,
+            20 * TICKS,
+            RecipeMaps.nanochipCuttingChamber);
+
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxCelestialTungsten,
+            Materials.Grade1PurifiedWater.getFluid(500),
+            CircuitComponent.ProcessedFrameboxCelestialTungsten,
+            ModuleRecipeInfo.HighTier,
+            20 * TICKS,
+            RecipeMaps.nanochipCuttingChamber);
+
+        addSimpleProcessingRecipe(
+            CircuitComponent.FrameboxHypogen,
+            Materials.Grade1PurifiedWater.getFluid(500),
+            CircuitComponent.ProcessedFrameboxHypogen,
+            ModuleRecipeInfo.HighTier,
+            20 * TICKS,
+            RecipeMaps.nanochipCuttingChamber);
+
+        // Plate recipes
+        addSimpleProcessingRecipe(
+            CircuitComponent.PlateMetastableOganesson,
+            Materials.Grade1PurifiedWater.getFluid(500),
+            CircuitComponent.ProcessedPlateMetastableOganesson,
+            ModuleRecipeInfo.HighTier,
+            20 * TICKS,
+            RecipeMaps.nanochipCuttingChamber);
     }
 
-    // todo finish migrating recipes to encasement wrapper
     private static void registerEncasementWrapperRecipes() {
+        // Crystal
+        GTValues.RA.stdBuilder()
+            .itemInputs(CircuitComponent.ProcessedFrameboxAluminium.getFakeStack(2))
+            .itemOutputs(CircuitComponent.BasicMainframeCasing.getFakeStack(1))
+            .duration(20)
+            .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipEncasementWrapper);
+
+        // Wetware, Bioware, Optical
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(16),
@@ -356,60 +389,57 @@ public class RecipeHandlers {
             .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
 
+        // Pico
         GTValues.RA.stdBuilder()
-            .itemInputs(CircuitComponent.ProcessedFrameboxAluminium.getFakeStack(2))
-            .itemOutputs(CircuitComponent.BasicMainframeCasing.getFakeStack(1))
+            .itemInputs(
+                CircuitComponent.ProcessedFrameboxCelestialTungsten.getFakeStack(2),
+                CircuitComponent.ScrewAstralTitanium.getFakeStack(4),
+                CircuitComponent.CasingUEVSuperconductor.getFakeStack(1),
+                CircuitComponent.ProcessedFoilRadoxPolymer.getFakeStack(16))
+            .itemOutputs(CircuitComponent.PicoCircuitCasing.getFakeStack(1))
             .duration(20)
-            .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
+            .eut(ModuleRecipeInfo.ExtremeTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
 
-        // Frame box processing recipes
-        addSimpleProcessingRecipe(
-            CircuitComponent.FrameboxAluminium,
-            Materials.Grade1PurifiedWater.getFluid(500),
-            CircuitComponent.ProcessedFrameboxAluminium,
-            ModuleRecipeInfo.HighTier,
-            20,
-            RecipeMaps.nanochipCuttingChamber);
-        addSimpleProcessingRecipe(
-            CircuitComponent.FrameboxTritanium,
-            Materials.Grade1PurifiedWater.getFluid(500),
-            CircuitComponent.ProcessedFrameboxTritanium,
-            ModuleRecipeInfo.HighTier,
-            20,
-            RecipeMaps.nanochipCuttingChamber);
-        addSimpleProcessingRecipe(
-            CircuitComponent.FrameboxNeutronium,
-            Materials.Grade1PurifiedWater.getFluid(500),
-            CircuitComponent.ProcessedFrameboxNeutronium,
-            ModuleRecipeInfo.HighTier,
-            20,
-            RecipeMaps.nanochipCuttingChamber);
+        // Quantum
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                CircuitComponent.ProcessedFrameboxHypogen.getFakeStack(2),
+                CircuitComponent.ScrewSixPhasedCopper.getFakeStack(4),
+                CircuitComponent.CasingCreon.getFakeStack(1),
+                CircuitComponent.ProcessedFoilShirabon.getFakeStack(48))
+            .itemOutputs(CircuitComponent.QuantumCircuitCasing.getFakeStack(1))
+            .duration(20)
+            .eut(ModuleRecipeInfo.ExtremeTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipEncasementWrapper);
 
         // Foil processing recipes
         addSimpleProcessingRecipe(
             CircuitComponent.FoilPolybenzimidazole,
             CircuitComponent.ProcessedFoilPolybenzimidazole,
             ModuleRecipeInfo.LowTier,
-            20,
+            20 * TICKS,
             RecipeMaps.nanochipEncasementWrapper);
+
         addSimpleProcessingRecipe(
             CircuitComponent.FoilSiliconeRubber,
             CircuitComponent.ProcessedFoilSiliconeRubber,
             ModuleRecipeInfo.LowTier,
-            20,
+            20 * TICKS,
             RecipeMaps.nanochipEncasementWrapper);
+
         addSimpleProcessingRecipe(
             CircuitComponent.FoilRadoxPolymer,
             CircuitComponent.ProcessedFoilRadoxPolymer,
             ModuleRecipeInfo.HighTier,
-            20,
+            20 * TICKS,
             RecipeMaps.nanochipEncasementWrapper);
+
         addSimpleProcessingRecipe(
             CircuitComponent.FoilShirabon,
             CircuitComponent.ProcessedFoilShirabon,
             ModuleRecipeInfo.ExtremeTier,
-            20,
+            20 * TICKS,
             RecipeMaps.nanochipEncasementWrapper);
     }
 
@@ -642,10 +672,18 @@ public class RecipeHandlers {
             20 * TICKS,
             RecipeMaps.nanochipWireTracer);
 
-        // Lanthanum
+        // Proto Halkonite
         addSimpleProcessingRecipe(
-            CircuitComponent.WireLanthanum,
-            CircuitComponent.ProcessedWireLanthanum,
+            CircuitComponent.WireProtoHalkonite,
+            CircuitComponent.ProcessedWireProtoHalkonite,
+            ModuleRecipeInfo.MediumTier,
+            20 * TICKS,
+            RecipeMaps.nanochipWireTracer);
+
+        // Infinity
+        addSimpleProcessingRecipe(
+            CircuitComponent.WireInfinity,
+            CircuitComponent.ProcessedWireInfinity,
             ModuleRecipeInfo.MediumTier,
             20 * TICKS,
             RecipeMaps.nanochipWireTracer);
@@ -704,7 +742,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 1),
                 new Object[] {
                     new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 2),
-                    new CircuitComponentStack(CircuitComponent.ProcessedWireLanthanum, 1)
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireProtoHalkonite, 1)
                 }),
             Arrays.asList(Materials.Iron.getMolten(1)),
             CircuitComponent.WetwareProcessor,
@@ -1170,26 +1208,25 @@ public class RecipeHandlers {
             TierEU.RECIPE_UEV, // real UEV
             VoltageIndex.UXV);
 
-        // todo maybe change recipes
         if (NewHorizonsCoreMod.isModLoaded()) {
             addAssemblyMatrixRecipe(
                 Arrays.asList(
-                    new CircuitComponentStack(CircuitComponent.BoardOptical, 1),
+                    new CircuitComponentStack(CircuitComponent.PicoCircuitCasing, 1),
                     new CircuitComponentStack(CircuitComponent.ProcessedChipPico, 4),
                     new CircuitComponentStack(CircuitComponent.OpticalMainframe, 2),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 48),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 48),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 48),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 48),
                     new CircuitComponentStack(CircuitComponent.ProcessedChipPikoPIC, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedFoilRadoxPolymer, 16),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 48),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireProtoHalkonite, 64),
                     new CircuitComponentStack(CircuitComponent.ProcessedBoltTranscendentMetal, 32),
-                    new CircuitComponentStack(CircuitComponent.ProcessedBoltNeutronium, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedWireLanthanum, 64)),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireInfinity, 8)),
                 Arrays.asList(
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(26 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * INGOTS),
                     Materials.UUMatter.getFluid(8000),
-                    Materials.Osmium.getMolten(8 * INGOTS)),
+                    GGMaterial.preciousMetalAlloy.getMolten(8 * INGOTS)),
                 CircuitComponent.PicoCircuit,
                 5 * TICKS, // 500s
                 TierEU.RECIPE_UMV, // real UMV
@@ -1197,21 +1234,22 @@ public class RecipeHandlers {
 
             addAssemblyMatrixRecipe(
                 Arrays.asList(
-                    new CircuitComponentStack(CircuitComponent.ProcessedFrameboxNeutronium, 16),
+                    new CircuitComponentStack(CircuitComponent.QuantumCircuitCasing, 1),
+                    new CircuitComponentStack(CircuitComponent.ProcessedPlateMetastableOganesson, 2),
                     new CircuitComponentStack(CircuitComponent.PicoCircuit, 2),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 64),
                     new CircuitComponentStack(CircuitComponent.ProcessedChipQuantumPIC, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedFoilShirabon, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedBoltIndium, 64),
-                    new CircuitComponentStack(CircuitComponent.ProcessedWireSpacetime, 8),
-                    new CircuitComponentStack(CircuitComponent.ProcessedWireLanthanum, 16)),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireProtoHalkonite, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedBoltUMVSuperconductor, 64),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireSpacetime, 8)),
                 Arrays.asList(
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(26 * INGOTS),
+                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * INGOTS),
                     Materials.UUMatter.getFluid(24000),
-                    Materials.Osmium.getMolten(16 * INGOTS)),
+                    GGMaterial.preciousMetalAlloy.getMolten(16 * INGOTS)),
                 CircuitComponent.QuantumCircuit,
                 5 * TICKS, // 1000s
                 TierEU.RECIPE_UMV, // real UMV
