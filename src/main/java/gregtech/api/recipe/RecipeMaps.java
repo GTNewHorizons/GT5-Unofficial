@@ -1406,20 +1406,7 @@ public final class RecipeMaps {
                 }
             }
 
-            GTRecipe.GTRecipe_WithAlt recipe = new GTRecipe.GTRecipe_WithAlt(
-                false,
-                r.mInputs,
-                r.mOutputs,
-                null,
-                null,
-                r.mFluidInputs,
-                null,
-                r.mDuration,
-                r.mEUt,
-                0,
-                r.mOreDictAlt);
-
-            return Collections.singleton(recipe);
+            return Collections.singleton(r);
         })
         .frontend(AssemblyLineFrontend::new)
         .build();
