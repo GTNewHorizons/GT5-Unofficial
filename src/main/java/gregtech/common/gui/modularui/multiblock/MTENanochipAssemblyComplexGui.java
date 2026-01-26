@@ -326,7 +326,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .child(
                         IKey.dynamic(
                             () -> syncManager.findSyncHandler("calibrationTitle", StringSyncValue.class)
-                                .getStringValue() + " Nanochip Assembly Complex")
+                                .getStringValue())
+                            .asWidget())
+                    .child(
+                        IKey.str("Nanochip Assembly Complex")
                             .asWidget()))
 
             .child(createButtonColumn(panel, syncManager));
