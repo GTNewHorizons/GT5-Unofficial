@@ -46,12 +46,17 @@ public enum CircuitComponent {
         4,
         "gt.circuitcomponent.wirespacetime",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 1)),
+    CableOpticalFiber(
+        5,
+        "gt.circuitcomponent.cable.opticalfiber",
+        () -> CustomItemList.DATApipe.get(1)),
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", true),
     ProcessedWireLumiium(102, "gt.circuitcomponent.processed.wirelumiium", true),
     ProcessedWireLanthanum(103, "gt.circuitcomponent.processed.wirelanthanum", true),
     ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", true),
+    ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -342,43 +347,44 @@ public enum CircuitComponent {
     PicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", true),
     QuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", true),
 
-    // Misc
-    // IDs: 1900-1999
-    CableOpticalFiber(
-        1900,
-        "gt.circuitcomponent.cable.opticalfiber",
-        () -> CustomItemList.DATApipe.get(1)),
-
     // Bolts
-    // IDs: 2000-2099
+    // IDs: 1900-1999 CC, 2000-2099 PC
     BoltEnrichedHolmium(
-        2000,
+        1900,
         "gt.circuitcomponent.bolt.enrichedholmium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 1)),
     BoltTranscendentMetal(
-        2001,
+        1901,
         "gt.circuitcomponent.bolt.transcendentmetal",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 1)),
     BoltNeutronium(
-        2002,
+        1902,
         "gt.circuitcomponent.bolt.neutronium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 1)),
     BoltIndium(
-        2003,
+        1903,
         "gt.circuitcomponent.bolt.indium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 1)),
     BoltYttriumBariumCuprate(
-        2004,
+        1904,
         "gt.circuitcomponent.bolt.yttriumbariumcuprate",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 1)),
     BoltCosmicNeutronium(
-        2005,
+        1905,
         "gt.circuitcomponent.bolt.cosmicneutronium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CosmicNeutronium, 1)),
     BoltChromaticGlass(
-        2006,
+        1906,
         "gt.circuitcomponent.bolt.chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getBolt(1)),
+
+    ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", true),
+    ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", true),
+    ProcessedBoltNeutronium(2002, "gt.circuitcomponent.bolt.processed.neutronium", true),
+    ProcessedBoltIndium(2003, "gt.circuitcomponent.bolt.processed.indium", true),
+    ProcessedBoltYttriumBariumCuprate(2004, "gt.circuitcomponent.bolt.processed.yttriumbariumcuprate", true),
+    ProcessedBoltCosmicNeutronium(2005, "gt.circuitcomponent.bolt.processed.cosmicneutronium", true),
+    ProcessedBoltChromaticGlass(2006, "gt.circuitcomponent.bolt.processed.chromaticglass", true),
 
     // Circuits
     // IDs: 2100-2199
