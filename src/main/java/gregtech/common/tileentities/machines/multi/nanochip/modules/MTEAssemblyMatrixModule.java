@@ -111,6 +111,10 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE)
                     .extFacing()
                     .build(),

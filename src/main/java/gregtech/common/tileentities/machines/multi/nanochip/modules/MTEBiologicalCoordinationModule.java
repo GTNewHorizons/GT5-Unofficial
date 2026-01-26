@@ -114,6 +114,10 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_BIOLOGICAL_COORDINATION)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_BIOLOGICAL_COORDINATION_ACTIVE)
                     .extFacing()
                     .build(),
