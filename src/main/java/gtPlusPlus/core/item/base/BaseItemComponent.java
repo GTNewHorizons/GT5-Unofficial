@@ -332,8 +332,7 @@ public class BaseItemComponent extends Item {
     public void registerIcons(final IIconRegister i) {
         final String iconPath = getCorrectTextures();
         final ResourceLocation iconResource = getResourceLocation(iconPath);
-        this.base = ResourceUtils.resourceExists(iconResource) ? i.registerIcon(iconPath)
-            : RENDERING_ERROR.getIcon();;
+        this.base = ResourceUtils.resourceExists(iconResource) ? i.registerIcon(iconPath) : RENDERING_ERROR.getIcon();;
 
         final String overlayPath = getCorrectTextures() + "_OVERLAY";
         final ResourceLocation overlayResource = getResourceLocation(overlayPath);
