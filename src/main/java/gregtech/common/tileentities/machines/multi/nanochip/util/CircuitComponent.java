@@ -15,6 +15,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsElements;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import tectech.thing.CustomItemList;
@@ -157,6 +158,10 @@ public enum CircuitComponent {
         405,
         "gt.circuitcomponent.bioprocessingunit",
         () -> ItemList.Circuit_Chip_BioCPU.get(1)),
+    LivingBioChip(
+        406,
+        "gt.circuitcomponent.livingbiochip",
+        () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", true),
@@ -164,6 +169,7 @@ public enum CircuitComponent {
     ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", true),
     ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", true),
+    ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -215,13 +221,23 @@ public enum CircuitComponent {
         800,
         "gt.circuitcomponent.chipcrystalcpu",
         () -> ItemList.Circuit_Chip_CrystalCPU.get(1)),
-    ChipAdvCrystalCPU(
+    ChipCrystalSoC(
         801,
-        "gt.circuitcomponent.chipadvcrystalcpu",
+        "gt.circuitcomponent.chipcrystalsoc",
         () -> ItemList.Circuit_Chip_CrystalSoC.get(1)),
+    ChipLivingCrystal(
+        802,
+        "gt.circuitcomponent.chiplivingcrystal",
+        () -> ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1)),
+    ChipRawAdvancedCrystal( // todo decide what module to put this in
+        803,
+        "gt.circuitcomponent.chiprawadvancedcrystal",
+        () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
 
     ProcessedChipCrystalCPU(900, "gt.circuitcomponent.processed.chipcrystalcpu", true),
-    ProcessedChipAdvCrystalCPU(901, "gt.circuitcomponent.processed.chipadvcrystalcpu", true),
+    ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", true),
+    ProcessedChipLivingCrystal(902, "gt.circuitcomponent.processed.chiplivingcrystal", true),
+    ProcessedChipRawAdvancedCrystal(903, "gt.circuitcomponent.processed.chiprawadvancedcrystal", true),
 
     // Optical components
     // IDs: 1000-1099 CC, 1100-1199 PC
@@ -351,6 +367,18 @@ public enum CircuitComponent {
         2003,
         "gt.circuitcomponent.bolt.indium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 1)),
+    BoltYttriumBariumCuprate(
+        2004,
+        "gt.circuitcomponent.bolt.yttriumbariumcuprate",
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 1)),
+    BoltCosmicNeutronium(
+        2005,
+        "gt.circuitcomponent.bolt.cosmicneutronium",
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CosmicNeutronium, 1)),
+    BoltChromaticGlass(
+        2006,
+        "gt.circuitcomponent.bolt.chromaticglass",
+        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getBolt(1)),
 
     // Circuits
     // IDs: 2100-2199
