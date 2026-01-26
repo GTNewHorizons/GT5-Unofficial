@@ -2851,14 +2851,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public void setMachineMode(int index) {
-        if (this.processingLogic != null) if (machineMode != index) {
-            // recipe map changed, reset CRIB recipe cache
-            for (IDualInputHatch dualInput : mDualInputHatches) {
-                if (dualInput instanceof IDualInputHatchWithPattern crib) {
-                    crib.resetCraftingInputRecipeMap(this.processingLogic);
-                }
-            }
-        }
         machineMode = index;
     }
 
