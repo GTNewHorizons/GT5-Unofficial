@@ -42,6 +42,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.BioItemList;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -1696,6 +1697,48 @@ public final class RecipeMaps {
             if (output.realComponent != null) {
                 MTEAssemblyMatrixModule.registerLocalName(output.realComponent.get(), output);
             }
+        })
+        .recipeEmitter(builder -> {
+            Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
+                .validateInputCount(1, 16)
+                .validateOutputCount(1, 1)
+                .validateOutputFluidCount(-1, 0)
+                .validateInputFluidCount(1, 4)
+                .buildWithAlt();
+            // noinspection SimplifyOptionalCallChains
+            if (!rr.isPresent()) return Collections.emptyList();
+            GTRecipe.GTRecipe_WithAlt r = rr.get();
+            ItemStack[][] oreDictAlt = r.mOreDictAlt;
+            Object[] inputs = builder.getItemInputsOreDict();
+
+            for (int i = 0, oreDictAltLength = oreDictAlt.length; i < oreDictAltLength; i++) {
+                ItemStack[] alts = oreDictAlt[i];
+                Object input = inputs[i];
+                if (input instanceof Object[]) {
+                    Arrays.sort(
+                        alts,
+                        Comparator
+                            .<ItemStack, String>comparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                            .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
+                            .thenComparingInt(Items.feather::getDamage)
+                            .thenComparingInt(s -> s.stackSize));
+                }
+            }
+
+            GTRecipe.GTRecipe_WithAlt recipe = new GTRecipe.GTRecipe_WithAlt(
+                false,
+                r.mInputs,
+                r.mOutputs,
+                null,
+                null,
+                r.mFluidInputs,
+                null,
+                r.mDuration,
+                r.mEUt,
+                0,
+                r.mOreDictAlt);
+
+            return Collections.singleton(recipe);
         })
         .frontend(AssemblyLineFrontend::new)
         .build();
