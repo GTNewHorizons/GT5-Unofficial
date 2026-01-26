@@ -73,6 +73,10 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_CUTTING_CHAMBER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_CUTTING_CHAMBER_ACTIVE)
                     .extFacing()
                     .build(),
