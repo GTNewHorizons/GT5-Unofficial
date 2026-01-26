@@ -1515,7 +1515,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipEncasementWrapper = RecipeMapBuilder
         .of("gt.recipe.nanochip.encasementwrapper", NACRecipeMapBackend::new)
-        .maxIO(3, 1, 0, 0)
+        .maxIO(4, 1, 0, 0)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipBiologicalCoordinator = RecipeMapBuilder
