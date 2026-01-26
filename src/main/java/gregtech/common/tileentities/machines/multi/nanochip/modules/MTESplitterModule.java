@@ -23,12 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
@@ -66,7 +65,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         { " A A   ", "CBBBBBC" }, { "   AA  ", " CBBBC " } };
 
     public List<SplitterRule> rules = new ArrayList<>();
-    public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(64*6 , 1);
     public final RedstoneChannelInfo redstoneChannelInfo = new RedstoneChannelInfo();
     public final ArrayList<MTEHatchSplitterRedstone> redstoneHatches = new ArrayList<>();
 
@@ -358,8 +356,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        rules = loadRulesTagList(aNBT.getTagList("rules", new NBTTagCompound().getId()));
-
+        rules = loadRulesTagList(aNBT.getTagList("rules", Constants.NBT.TAG_COMPOUND));
     }
 
     public NBTTagList createRulesTagList() {
@@ -372,9 +369,9 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     public List<SplitterRule> loadRulesTagList(NBTTagList tagList) {
         List<SplitterRule> list = new ArrayList<>();
-        for (Object a : tagList.tagList) {
-            if (!(a instanceof NBTTagCompound compound)) continue;
-            list.add(SplitterRule.loadFromNBT(compound));
+        for (int i = 0; i < tagList.tagCount(); i++) {
+            NBTTagCompound ruleTag = tagList.getCompoundTagAt(i);
+            list.add(SplitterRule.loadFromNBT(ruleTag));
         }
         return list;
     }

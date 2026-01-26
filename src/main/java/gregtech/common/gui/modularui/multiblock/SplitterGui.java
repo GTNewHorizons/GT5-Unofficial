@@ -2,12 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.FilterType.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.init.Items;
-import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IIcon;
@@ -15,17 +10,18 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.BoolValue;
+import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.WidgetTree;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
@@ -38,16 +34,20 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTLog;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
+import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.SplitterRuleAdapter;
 
 public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
 
+    private static final SplitterRuleAdapter RULE_ADAPTER = new SplitterRuleAdapter();
+
     int scrollValue;
+    ModularPanel subPanel;
 
     public SplitterGui(MTESplitterModule multiblock) {
         super(multiblock);
@@ -58,26 +58,29 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "rules",
-            0,
-            new GenericSyncValue<>(
-                () -> multiblock.rules,
-                map -> { multiblock.rules = map; },
-                new SplitterRuleListAdapter()));
-        // syncManager.syncValue("rules", 0, GenericListSyncHandler.<SplitterRule>builder()
-        // .getter(() -> multiblock.rules)
-        // .setter(list -> multiblock.rules = list)
-        // .serializer((packet, rule) -> packet.writeNBTTagCompoundToBuffer(rule.saveToNBT()))
-        // .deserializer(packet -> SplitterRule.loadFromNBT(packet.readNBTTagCompoundFromBuffer()))
-        // .build());
-        // syncManager.syncValue("rules", 0, new GenericListSyncHandler<>(
-        // () -> multiblock.rules,
-        // list -> multiblock.rules = list,
-        // packet -> SplitterRule.loadFromNBT(packet.readNBTTagCompoundFromBuffer()),
-        // (packet, rule) -> packet.writeNBTTagCompoundToBuffer(rule.saveToNBT()),
-        // SplitterRule::equals,
-        // null
-        // ));
+            GenericListSyncHandler.<SplitterRule>builder()
+                .getter(() -> multiblock.rules)
+                .setter(val -> {
+                    multiblock.rules.clear();
+                    multiblock.rules.addAll(val);
+                })
+                .adapter(RULE_ADAPTER)
+                .build());
+
         syncManager.syncValue("scroll", new IntSyncValue(() -> scrollValue, value -> scrollValue = value));
+    }
+
+    @Override
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel panel = super.build(guiData, syncManager, uiSettings);
+        syncManager.registerSyncedAction("refresh_dynamic", Side.SERVER, $ -> {
+            DynamicSyncedWidget<?> dynamic = WidgetTree.findFirst(subPanel, DynamicSyncedWidget.class, $$ -> true);
+            if (dynamic == null) return;
+            DynamicSyncHandler dynamicHandler = (DynamicSyncHandler) dynamic.getSyncHandler();
+            if (!dynamicHandler.isValid()) return;
+            dynamicHandler.notifyUpdate($$ -> {});
+        });
+        return panel;
     }
 
     @Override
@@ -87,6 +90,8 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 if (!rulesPopup.isPanelOpen()) {
                     rulesPopup.openPanel();
+
+                    syncManager.callSyncedAction("refresh_dynamic", $ -> {});
                 } else {
                     rulesPopup.closePanel();
                 }
@@ -99,25 +104,22 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = new ModularPanel("gt:splitter:rules_manager").child(ButtonWidget.panelCloseButton());
-        GenericSyncValue<List<SplitterRule>> rulesSyncer = (GenericSyncValue<List<SplitterRule>>) syncManager
-            .getSyncHandlerFromMapKey("rules:0");
-        DynamicSyncHandler rulesHandler = new DynamicSyncHandler().widgetProvider((manager, packet) -> {
-            if (packet == null) return new EmptyWidget();
-            return createRuleManagerList(SplitterRuleListAdapter.deserializePacket(packet), manager);
-        });
-        rulesSyncer.setChangeListener(
-            () -> rulesHandler
-                .notifyUpdate(packet -> { SplitterRuleListAdapter.serializeList(packet, rulesSyncer.getValue()); }));
+        ModularPanel ui = subPanel = new ModularPanel("gt:splitter:rules_manager")
+            .child(ButtonWidget.panelCloseButton());
+        var rulesSyncer = (GenericListSyncHandler<SplitterRule>) syncManager.findSyncHandler("rules");
+
+        final DynamicSyncHandler rulesHandler = new DynamicSyncHandler()
+            .widgetProvider((manager, $) -> createRuleManagerList(rulesSyncer, manager));
+
         // spotless:off
-        // TODO: figure out a different solution to this because this sends an error to the log on the client because Reasons
-        // TODO: and by this. lets just say that the dynamic widget doesnt start out with a child so we need to trigger it or give it an initial child
-        rulesHandler.notifyUpdate(packet -> SplitterRuleListAdapter.serializeList(packet, rulesSyncer.getValue()));
         return ui
+            .size(200, 170)
             .child(new Column()
-                .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-                        rulesSyncer.getValue().add(new SplitterRule(new ArrayList<>(), new ArrayList<>(), new SplitterRule.RedstoneMode(0, 15), null, COLOR));
-                        rulesSyncer.setValue(rulesSyncer.getValue());
+                .child(new ButtonWidget<>()
+                    .onMousePressed(mouseButton -> {
+                        multiblock.rules.add(new SplitterRule());
+                        rulesSyncer.notifyUpdate();
+                        syncManager.callSyncedAction("refresh_dynamic", $ -> {});
                         return true;
                     })
                     .size(18)
@@ -127,41 +129,36 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                     .syncHandler(rulesHandler)
                     .coverChildren())
                 .childPadding(8)
-                .coverChildren())
-            .coverChildren();
+                .coverChildren());
         // spotless:on
     }
 
-    public IWidget createRuleManagerList(List<SplitterRule> rules, PanelSyncManager syncManager) {
-        return new WorkaroundListWidget().children(rules.size(), i -> createRuleManagerRow(syncManager, i))
+    public IWidget createRuleManagerList(GenericListSyncHandler<SplitterRule> rulesSyncer,
+        PanelSyncManager syncManager) {
+        return new WorkaroundListWidget()
+            .children(multiblock.rules.size(), i -> createRuleManagerRow(rulesSyncer, syncManager, i))
             .childSeparator(IIcon.EMPTY_2PX)
             .size(200, 138);
     }
 
-    public IWidget createRuleManagerRow(PanelSyncManager syncManager, int index) {
-        GenericSyncValue<List<SplitterRule>> rulesSyncer = (GenericSyncValue<List<SplitterRule>>) syncManager
-            .getModularSyncManager()
-            .getMainPSM()
-            .getSyncHandlerFromMapKey("rules:0");
-        List<SplitterRule> rules = rulesSyncer.getValue();
-        SplitterRule rule = rules.get(index);
-
-        // spotless:off
-        IWidget inputColorGrid =  createColorGrid(rulesSyncer, index, true);
-        IWidget redstoneSelector = createRedstoneSelector(syncManager, rulesSyncer, index);
+    public IWidget createRuleManagerRow(GenericListSyncHandler<SplitterRule> rulesSyncer, PanelSyncManager syncManager,
+        int index) {
+        IWidget inputColorGrid = createColorGrid(rulesSyncer, index, true);
+        IWidget redstoneSelector = createRedstoneSelector(rulesSyncer, index);
         IWidget itemFilter = createItemFilter(syncManager, rulesSyncer, index);
         IWidget outputColorGrid = createColorGrid(rulesSyncer, index, false);
 
+        // spotless:off
         return new ParentWidget<>()
             .child(new Column()
                 .child(new Row()
-                    .child(createSelectorButton(syncManager, rulesSyncer, index, COLOR)
+                    .child(createSelectorButton(rulesSyncer, index, COLOR)
                         .tooltip(t -> t.add("Color"))
                         .overlay(new ItemDrawable(Items.dye, 10)))
-                    .child(createSelectorButton(syncManager, rulesSyncer, index, REDSTONE)
+                    .child(createSelectorButton(rulesSyncer, index, REDSTONE)
                         .tooltip(t -> t.add("Redstone"))
                         .overlay(new ItemDrawable(Items.redstone)))
-                    .child(createSelectorButton(syncManager, rulesSyncer, index, ITEM)
+                    .child(createSelectorButton(rulesSyncer, index, ITEM)
                         .tooltip(t -> t.add("Item"))
                         .overlay(IKey.str("I")))
                     .childPadding(3)
@@ -175,7 +172,15 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                 .size(60, 59))
             .child(new ParentWidget<>()
                 .child(new ButtonWidget<>()
-                    .onMousePressed(a -> { rules.remove(index); rulesSyncer.setValue(rules); return true; })
+                    .onMousePressed(a -> {
+                        multiblock.rules.remove(index);
+                        rulesSyncer.notifyUpdate();
+                        syncManager
+                            .getModularSyncManager()
+                            .getMainPSM()
+                            .callSyncedAction("refresh_dynamic", $ -> {});
+                        return true;
+                    })
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .tooltip(t -> t.add("Remove Rule"))
                     .posRel(0.5F, 0.1F)
@@ -199,60 +204,61 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         // spotless:on
     }
 
-    private ToggleButton createSelectorButton(PanelSyncManager syncManager, GenericSyncValue<List<SplitterRule>> syncer,
-        int i, SplitterRule.FilterType type) {
-        List<SplitterRule> rules = syncer.getValue();
-        SplitterRule rule = rules.get(i);
+    private ToggleButton createSelectorButton(GenericListSyncHandler<SplitterRule> syncer, int i,
+        SplitterRule.FilterType type) {
+        SplitterRule rule = multiblock.rules.get(i);
+
         // spotless:off
         return new ToggleButton()
-            .value(syncManager.getOrCreateSyncHandler(type.name(), i, BooleanSyncValue.class,
-                () -> new BooleanSyncValue(() -> rule.enabledWidget == type, bool -> {
+            .value(new BoolValue.Dynamic(
+                () -> rule.enabledWidget == type,
+                bool -> {
                     if (bool) {
-                        syncer.getValue().get(i).enabledWidget = type;
-                        syncer.setValue(syncer.getValue());
+                        rule.enabledWidget = type;
+                        syncer.notifyUpdate();
                     }
-                })))
+                }))
             .size(16);
         // spotless:on
     }
 
-    private IWidget createColorGrid(GenericSyncValue<List<SplitterRule>> syncer, int index, boolean input) {
-        List<SplitterRule> rules = syncer.getValue();
-        SplitterRule rule = rules.get(index);
+    private IWidget createColorGrid(GenericListSyncHandler<SplitterRule> syncer, int index, boolean input) {
+        SplitterRule rule = multiblock.rules.get(index);
+
         return new ColorGridWidget().onButtonToggled(selected -> {
             if (input) {
                 rule.inputColors = selected;
             } else rule.outputColors = selected;
-            rules.set(index, rule);
-            syncer.setValue(rules);
+            syncer.notifyUpdate();
         })
             .setInitialSelected(input ? rule.inputColors : rule.outputColors)
             .build()
             .setEnabledIf(f -> !input || rule.enabledWidget == COLOR);
     }
 
-    private IWidget createRedstoneSelector(PanelSyncManager syncManager, GenericSyncValue<List<SplitterRule>> syncer,
-        int index) {
-        List<SplitterRule> rules = syncer.getValue();
-        SplitterRule rule = rules.get(index);
+    private IWidget createRedstoneSelector(GenericListSyncHandler<SplitterRule> syncer, int index) {
+        SplitterRule rule = multiblock.rules.get(index);
+
         // spotless:off
         return new Column()
             .child(IKey.str("Channel").asWidget())
             .child(new TextFieldWidget()
-                .value(syncManager.getOrCreateSyncHandler("channel", index, StringSyncValue.class,
-                    () -> new StringSyncValue(() -> Integer.toString(rule.redstoneMode.channel), str -> {
-                        rules.get(index).redstoneMode.channel = Integer.parseInt(str);
-                        syncer.setValue(rules);
-                    })))
+                .value(new IntValue.Dynamic(
+                    () -> rule.redstoneMode.channel,
+                    val -> {
+                        rule.redstoneMode.channel = val;
+                        syncer.notifyUpdate();
+                    }))
                 .setFormatAsInteger(true)
                 .size(52, 12))
             .child(IKey.str("Strength").asWidget())
             .child(new TextFieldWidget()
-                .value(syncManager.getOrCreateSyncHandler("level", index, StringSyncValue.class,
-                    () -> new StringSyncValue(() -> Integer.toString(rule.redstoneMode.level), str -> {
-                        rules.get(index).redstoneMode.level = Integer.parseInt(str);
-                        syncer.setValue(rules);
-                    })))
+                .value(new IntValue.Dynamic(
+                    () -> rule.redstoneMode.level,
+                    val -> {
+                        rule.redstoneMode.level = val;
+                        syncer.notifyUpdate();
+                    }))
                 .setNumbers(0, 15)
                 .setFormatAsInteger(true)
                 .size(52, 12))
@@ -261,27 +267,25 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
         // spotless:on
     }
 
-    private IWidget createItemFilter(PanelSyncManager syncManager, GenericSyncValue<List<SplitterRule>> syncer,
+    private IWidget createItemFilter(PanelSyncManager syncManager, GenericListSyncHandler<SplitterRule> rulesSyncer,
         int index) {
-        List<SplitterRule> rules = syncer.getValue();
-        SplitterRule rule = rules.get(index);
-        // TODO: make it work
+        SplitterRule rule = multiblock.rules.get(index);
+
         return SlotGroupWidget.builder()
             .matrix("III", "III")
-            .key('I', i -> {
-                int realIndex = (index * 6) + i;
-                return new PhantomItemSlot().syncHandler(
+            .key(
+                'I',
+                i -> new PhantomItemSlot().syncHandler(
                     syncManager.getOrCreateSyncHandler(
                         "items",
-                        realIndex,
+                        (index * 6) + i,
                         PhantomItemSlotSH.class,
                         () -> new PhantomItemSlotSH(
-                            new ModularSlot(multiblock.phantomHolder, realIndex)
-                                .changeListener((newItem, onlyAmountChanged, client, init) -> {
-
-                                })
-                                .accessibility(true, false))));
-            })
+                            new ModularSlot(rule.filterStacks, i).accessibility(true, false)
+                                .changeListener(
+                                    (newItem, onlyAmountChanged, client, init) -> {
+                                        if (client) rulesSyncer.notifyUpdate();
+                                    })))))
             .build()
             .setEnabledIf(f -> rule.enabledWidget == ITEM);
     }
@@ -313,47 +317,4 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
             scrollValue = getScrollData().getScroll();
         }
     }
-
-    private static class SplitterRuleListAdapter implements IByteBufAdapter<List<SplitterRule>> {
-
-        @Override
-        public List<SplitterRule> deserialize(PacketBuffer buffer) {
-            return deserializePacket(buffer);
-        }
-
-        public static List<SplitterRule> deserializePacket(PacketBuffer buffer) {
-            List<SplitterRule> list = new ArrayList<>();
-            int size = buffer.readInt();
-            for (int i = 0; i < size; i++) {
-                try {
-                    list.add(SplitterRule.loadFromNBT(buffer.readNBTTagCompoundFromBuffer()));
-                } catch (IOException e) {
-                    GTLog.err.println(e.getCause());
-                }
-            }
-            return list;
-        }
-
-        @Override
-        public void serialize(PacketBuffer buffer, List<SplitterRule> list) {
-            serializeList(buffer, list);
-        }
-
-        public static void serializeList(PacketBuffer buffer, List<SplitterRule> list) {
-            buffer.writeInt(list.size());
-            for (SplitterRule rule : list) {
-                try {
-                    buffer.writeNBTTagCompoundToBuffer(rule.saveToNBT());
-                } catch (IOException e) {
-                    GTLog.err.println(e.getCause());
-                }
-            }
-        }
-
-        @Override
-        public boolean areEqual(List<SplitterRule> t1, List<SplitterRule> t2) {
-            return t1.equals(t2);
-        }
-    }
-
 }
