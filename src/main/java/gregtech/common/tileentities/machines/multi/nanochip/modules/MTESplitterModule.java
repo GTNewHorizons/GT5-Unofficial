@@ -90,6 +90,10 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_SPLITTER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_SPLITTER_ACTIVE)
                     .extFacing()
                     .build(),
