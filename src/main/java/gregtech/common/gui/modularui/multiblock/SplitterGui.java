@@ -1,248 +1,320 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.FilterType.*;
+
+import net.minecraft.init.Items;
+
+import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IIcon;
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.BoolValue;
+import com.cleanroommc.modularui.value.IntValue;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
+import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.WidgetTree;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
+import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import cpw.mods.fml.relauncher.Side;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
+import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
+import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.SplitterRuleAdapter;
 
 public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
+
+    private static final SplitterRuleAdapter RULE_ADAPTER = new SplitterRuleAdapter();
+
+    int scrollValue;
+    ModularPanel subPanel;
 
     public SplitterGui(MTESplitterModule multiblock) {
         super(multiblock);
     }
 
-    /*
-     * @Override
-     * protected void registerSyncValues(PanelSyncManager syncManager) {
-     * super.registerSyncValues(syncManager);
-     * GenericSyncValue rules = new GenericSyncValue<>(
-     * () -> multiblock.colorMap,
-     * map -> { multiblock.colorMap = map; },
-     * new ColorMapAdapter());
-     * syncManager.syncValue("rules", rules);
-     * }
-     * @Override
-     * protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-     * return super.createRightPanelGapRow(parent, syncManager).child(createRulesButton(syncManager));
-     * }
-     * protected ButtonWidget<?> createRulesButton(PanelSyncManager syncManager) {
-     * IPanelHandler popupPanel = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
-     * return new ButtonWidget<>().onMousePressed(mouseButton -> {
-     * if (!popupPanel.isPanelOpen()) {
-     * popupPanel.openPanel();
-     * } else {
-     * popupPanel.closePanel();
-     * }
-     * return true;
-     * })
-     * .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
-     * .disableHoverBackground()
-     * .tooltip(tooltip -> tooltip.add("Open Rules manager"))
-     * .size(18);
-     * }
-     * public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-     * ModularPanel ui = new ModularPanel("gt:splitter:rules_manager").child(ButtonWidget.panelCloseButton());
-     * ListWidget<IWidget, ?> list = new ListWidget<>();
-     * list.childSeparator(IIcon.EMPTY_2PX);
-     * list.size(168, 138);
-     * // button size + padding
-     * list.pos(0, 16 + 5);
-     * // Add existing rules
-     * for (Map.Entry<Integer, MTESplitterModule.ColorRule> entry : multiblock.colorMap.entrySet()) {
-     * int id = entry.getKey();
-     * MTESplitterModule.ColorRule rule = entry.getValue();
-     * if (rule == null) continue;
-     * list.child(createColorManager(syncManager, rule.getInputColors(), rule.getOutputColors(), id));
-     * }
-     * return ui.child(list)
-     * .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-     * list.child(createColorManager(syncManager, null, null, null));
-     * return true;
-     * })
-     * .pos(80, 4)
-     * .size(16, 16)
-     * .overlay(GuiTextures.ADD)
-     * .tooltip(tooltip -> tooltip.add("Add new Rule")))
-     * .posRel(0.75F, 0.5F)
-     * .margin(8)
-     * .coverChildren();
-     * }
-     * public IWidget createColorManager(PanelSyncManager syncManager, List<Byte> inputSelected, List<Byte>
-     * outputSelected,
-     * Integer indexOverride) {
-     * ColorGridWidget inputGrid = new ColorGridWidget();
-     * ColorGridWidget outputGrid = new ColorGridWidget();
-     * ColorGridSelector selector = new ColorGridSelector(syncManager, indexOverride);
-     * return selector
-     * // Arrow icon
-     * .child(
-     * GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
-     * .asWidget()
-     * .size(20, 18)
-     * .posRel(0.5F, 0.5F))
-     * .setInputGrid(
-     * (ColorGridWidget) inputGrid.setInitialSelected(inputSelected)
-     * .setMaxSelected(16)
-     * .build()
-     * .pos(5, 17))
-     * .setOutputGrid(
-     * (ColorGridWidget) outputGrid.setInitialSelected(outputSelected)
-     * .setMaxSelected(16)
-     * .build()
-     * .pos(121, 17))
-     * // Input grid color display
-     * .child(
-     * getAboveGridText(inputGrid).asWidget()
-     * .tooltipAutoUpdate(true)
-     * .tooltipBuilder(t -> getInfo(t, inputGrid))
-     * .scale(0.8F)
-     * .alignment(Alignment.Center)
-     * .pos(4, 5)
-     * .size(42, 8))
-     * // Output grid color display
-     * .child(
-     * getAboveGridText(outputGrid).asWidget()
-     * .tooltipAutoUpdate(true)
-     * .tooltipBuilder(t -> getInfo(t, outputGrid))
-     * .scale(0.8F)
-     * .alignment(Alignment.Center)
-     * .size(42, 8)
-     * .pos(120, 5))
-     * // Delete button
-     * .child(
-     * new ButtonWidget<>().tooltip(t -> t.add("Delete"))
-     * .onMousePressed(a -> {
-     * selector.removeColorData();
-     * // spotless i hate you so much this is so yucky what the hell is your problem with 2 .'s
-     * selector.getParent()
-     * .scheduleResize();
-     * return true;
-     * })
-     * .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-     * .pos(80, 5)
-     * .size(8, 8))
-     * .size(166, 60)
-     * .background(GTGuiTextures.BACKGROUND_POPUP_STANDARD);
-     * }
-     * public IKey getAboveGridText(ColorGridWidget selector) {
-     * return
-     * // spotless makes this look vile and disgusting and abominable and atrocious and yucky and horrid and
-     * // offensive to the eyes and nasty and foul and repugnant and abhorrent and deplorable and nauseating
-     * // and Dirty
-     * // spotless:off
-            IKey.dynamic(() -> switch (selector.getAmountSelected()) {
-                case 0: yield "None";
-                case 1: yield selector.getName(0);
-                default: yield "[Hover]";
-            });
-        // spotless:on
-     * }
-     * public void getInfo(RichTooltip t, ColorGridWidget grid) {
-     * List<Byte> selected = grid.getSelected();
-     * int amount = selected.size();
-     * if (amount < 2) return;
-     * t.pos(RichTooltip.Pos.ABOVE)
-     * .add("Currently selected:\n");
-     * for (int i = 0; i < amount; i++) {
-     * boolean shouldNewLine = (((i - 2) % 3) == 0);
-     * Dyes color = Dyes.get(selected.get(i));
-     * String name = color.getLocalizedDyeName();
-     * if (color == Dyes.dyeBlack) color = Dyes.dyeGray;
-     * t.add(color.formatting + name + IKey.RESET + (shouldNewLine ? "\n" : ", "));
-     * }
-     * }
-     * private class ColorGridSelector extends ParentWidget<ColorGridSelector> {
-     * int id;
-     * ColorGridWidget inputGrid;
-     * ColorGridWidget outputGrid;
-     * PanelSyncManager manager;
-     * GenericSyncValue<Map<Integer, MTESplitterModule.ColorRule>> colorMapSyncer;
-     * public ColorGridSelector(PanelSyncManager syncManager, Integer indexOverride) {
-     * super();
-     * manager = syncManager;
-     * colorMapSyncer = (GenericSyncValue<Map<Integer, MTESplitterModule.ColorRule>>) syncManager
-     * .findSyncHandler("rules", GenericSyncValue.class);
-     * if (indexOverride == null) {
-     * while (multiblock.colorMap.get(id) != null) {
-     * id++;
-     * }
-     * } else id = indexOverride;
-     * }
-     * @Override
-     * public void onInit() {
-     * super.onInit();
-     * saveColorData();
-     * }
-     * public void removeSelector() {
-     * IWidget widget = getParent();
-     * if (!(widget instanceof ListWidget list)) return;
-     * list.getChildren()
-     * .remove(this);
-     * }
-     * public ColorGridSelector setInputGrid(ColorGridWidget widget) {
-     * inputGrid = widget.onButtonToggled(this::saveColorData);
-     * return this.child(inputGrid);
-     * }
-     * public ColorGridSelector setOutputGrid(ColorGridWidget widget) {
-     * outputGrid = widget.onButtonToggled(this::saveColorData);
-     * return this.child(outputGrid);
-     * }
-     * private void saveColorData() {
-     * if (manager.isClient()) {
-     * multiblock.colorMap.put(id, thisAsRule());
-     * colorMapSyncer.setValue(multiblock.colorMap);
-     * }
-     * }
-     * private void removeColorData() {
-     * if (manager.isClient()) {
-     * multiblock.colorMap.remove(id);
-     * colorMapSyncer.setValue(multiblock.colorMap);
-     * }
-     * removeSelector();
-     * }
-     * public MTESplitterModule.ColorRule thisAsRule() {
-     * List<Byte> input = inputGrid.getSelected();
-     * List<Byte> output = outputGrid.getSelected();
-     * if (input.isEmpty()) input = ImmutableList.of((byte) -1);
-     * if (output.isEmpty()) output = ImmutableList.of((byte) -1);
-     * return new MTESplitterModule.ColorRule(input, output);
-     * }
-     * }
-     * private static class ColorMapAdapter implements IByteBufAdapter<Map<Integer, MTESplitterModule.ColorRule>> {
-     * @Override
-     * public Map<Integer, MTESplitterModule.ColorRule> deserialize(PacketBuffer buffer) {
-     * Map<Integer, MTESplitterModule.ColorRule> list = new HashMap<>();
-     * int size = buffer.readInt();
-     * for (int i = 0; i < size; i++) {
-     * int id = buffer.readInt();
-     * int inputCount = buffer.readInt();
-     * int outputCount = buffer.readInt();
-     * List<Byte> inputs = new ArrayList<>();
-     * List<Byte> outputs = new ArrayList<>();
-     * for (int j = 0; j < inputCount; j++) inputs.add(buffer.readByte());
-     * for (int j = 0; j < outputCount; j++) outputs.add(buffer.readByte());
-     * list.put(id, new MTESplitterModule.ColorRule(inputs, outputs));
-     * }
-     * return list;
-     * }
-     * @Override
-     * public void serialize(PacketBuffer buffer, Map<Integer, MTESplitterModule.ColorRule> map) {
-     * buffer.writeInt(map.size());
-     * for (Map.Entry<Integer, MTESplitterModule.ColorRule> entry : map.entrySet()) {
-     * MTESplitterModule.ColorRule rule = entry.getValue();
-     * List<Byte> inputs = rule.getInputColors();
-     * List<Byte> outputs = rule.getOutputColors();
-     * buffer.writeInt(entry.getKey());
-     * buffer.writeInt(inputs.size());
-     * buffer.writeInt(outputs.size());
-     * for (Byte dye : inputs) buffer.writeByte(dye);
-     * for (Byte dye : outputs) buffer.writeByte(dye);
-     * }
-     * }
-     * @Override
-     * public boolean areEqual(Map<Integer, MTESplitterModule.ColorRule> t1,
-     * Map<Integer, MTESplitterModule.ColorRule> t2) {
-     * return t1.equals(t2);
-     * }
-     * }
-     */
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        syncManager.syncValue(
+            "rules",
+            GenericListSyncHandler.<SplitterRule>builder()
+                .getter(() -> multiblock.rules)
+                .setter(val -> {
+                    multiblock.rules.clear();
+                    multiblock.rules.addAll(val);
+                })
+                .adapter(RULE_ADAPTER)
+                .build());
 
+        syncManager.syncValue("scroll", new IntSyncValue(() -> scrollValue, value -> scrollValue = value));
+    }
+
+    @Override
+    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        ModularPanel panel = super.build(guiData, syncManager, uiSettings);
+        syncManager.registerSyncedAction("refresh_dynamic", Side.SERVER, $ -> {
+            DynamicSyncedWidget<?> dynamic = WidgetTree.findFirst(subPanel, DynamicSyncedWidget.class, $$ -> true);
+            if (dynamic == null) return;
+            DynamicSyncHandler dynamicHandler = (DynamicSyncHandler) dynamic.getSyncHandler();
+            if (!dynamicHandler.isValid()) return;
+            dynamicHandler.notifyUpdate($$ -> {});
+        });
+        return panel;
+    }
+
+    @Override
+    protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
+        IPanelHandler rulesPopup = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
+        return super.createRightPanelGapRow(parent, syncManager)
+            .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
+                if (!rulesPopup.isPanelOpen()) {
+                    rulesPopup.openPanel();
+
+                    syncManager.callSyncedAction("refresh_dynamic", $ -> {});
+                } else {
+                    rulesPopup.closePanel();
+                }
+                return true;
+            })
+                .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
+                .disableHoverBackground()
+                .tooltip(tooltip -> tooltip.add("Open Rules manager"))
+                .size(18));
+    }
+
+    public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
+        ModularPanel ui = subPanel = new ModularPanel("gt:splitter:rules_manager")
+            .child(ButtonWidget.panelCloseButton());
+        var rulesSyncer = (GenericListSyncHandler<SplitterRule>) syncManager.findSyncHandler("rules");
+
+        final DynamicSyncHandler rulesHandler = new DynamicSyncHandler()
+            .widgetProvider((manager, $) -> createRuleManagerList(rulesSyncer, manager));
+
+        // spotless:off
+        return ui
+            .size(200, 170)
+            .child(new Column()
+                .child(new ButtonWidget<>()
+                    .onMousePressed(mouseButton -> {
+                        multiblock.rules.add(new SplitterRule());
+                        rulesSyncer.notifyUpdate();
+                        syncManager.callSyncedAction("refresh_dynamic", $ -> {});
+                        return true;
+                    })
+                    .size(18)
+                    .overlay(GuiTextures.ADD)
+                    .tooltip(tooltip -> tooltip.add("Add new Rule")))
+                .child(new DynamicSyncedWidget<>()
+                    .syncHandler(rulesHandler)
+                    .coverChildren())
+                .childPadding(8)
+                .coverChildren());
+        // spotless:on
+    }
+
+    public IWidget createRuleManagerList(GenericListSyncHandler<SplitterRule> rulesSyncer,
+        PanelSyncManager syncManager) {
+        return new WorkaroundListWidget()
+            .children(multiblock.rules.size(), i -> createRuleManagerRow(rulesSyncer, syncManager, i))
+            .childSeparator(IIcon.EMPTY_2PX)
+            .size(200, 138);
+    }
+
+    public IWidget createRuleManagerRow(GenericListSyncHandler<SplitterRule> rulesSyncer, PanelSyncManager syncManager,
+        int index) {
+        IWidget inputColorGrid = createColorGrid(rulesSyncer, index, true);
+        IWidget redstoneSelector = createRedstoneSelector(rulesSyncer, index);
+        IWidget itemFilter = createItemFilter(syncManager, rulesSyncer, index);
+        IWidget outputColorGrid = createColorGrid(rulesSyncer, index, false);
+
+        // spotless:off
+        return new ParentWidget<>()
+            .child(new Column()
+                .child(new Row()
+                    .child(createSelectorButton(rulesSyncer, index, COLOR)
+                        .tooltip(t -> t.add("Color"))
+                        .overlay(new ItemDrawable(Items.dye, 10)))
+                    .child(createSelectorButton(rulesSyncer, index, REDSTONE)
+                        .tooltip(t -> t.add("Redstone"))
+                        .overlay(new ItemDrawable(Items.redstone)))
+                    .child(createSelectorButton(rulesSyncer, index, ITEM)
+                        .tooltip(t -> t.add("Item"))
+                        .overlay(IKey.str("I")))
+                    .childPadding(3)
+                    .coverChildren())
+                .child(inputColorGrid)
+                .child(redstoneSelector)
+                .child(itemFilter)
+                .collapseDisabledChild()
+                .childPadding(2)
+                .posRel(0.15F, 0.5F)
+                .size(60, 59))
+            .child(new ParentWidget<>()
+                .child(new ButtonWidget<>()
+                    .onMousePressed(a -> {
+                        multiblock.rules.remove(index);
+                        rulesSyncer.notifyUpdate();
+                        syncManager
+                            .getModularSyncManager()
+                            .getMainPSM()
+                            .callSyncedAction("refresh_dynamic", $ -> {});
+                        return true;
+                    })
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                    .tooltip(t -> t.add("Remove Rule"))
+                    .posRel(0.5F, 0.1F)
+                    .size(8))
+                .child(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
+                    .asWidget()
+                    .topRel(0.5F)
+                    .size(20, 18))
+                .center()
+                .coverChildrenWidth()
+                .heightRel(1F))
+            .child(new Column()
+                .child(outputColorGrid)
+                .posRel(0.8F, 0.5F)
+                .marginTop(23)
+                .coverChildren())
+            .background(GTGuiTextures.BACKGROUND_NANOCHIP_RULE_POPUP)
+            .widthRel(1F)
+            .height(70)
+            .margin(4, 8, 4, 4);
+        // spotless:on
+    }
+
+    private ToggleButton createSelectorButton(GenericListSyncHandler<SplitterRule> syncer, int i,
+        SplitterRule.FilterType type) {
+        SplitterRule rule = multiblock.rules.get(i);
+
+        // spotless:off
+        return new ToggleButton()
+            .value(new BoolValue.Dynamic(
+                () -> rule.enabledWidget == type,
+                bool -> {
+                    if (bool) {
+                        rule.enabledWidget = type;
+                        syncer.notifyUpdate();
+                    }
+                }))
+            .size(16);
+        // spotless:on
+    }
+
+    private IWidget createColorGrid(GenericListSyncHandler<SplitterRule> syncer, int index, boolean input) {
+        SplitterRule rule = multiblock.rules.get(index);
+
+        return new ColorGridWidget().onButtonToggled(selected -> {
+            if (input) {
+                rule.inputColors = selected;
+            } else rule.outputColors = selected;
+            syncer.notifyUpdate();
+        })
+            .setInitialSelected(input ? rule.inputColors : rule.outputColors)
+            .build()
+            .setEnabledIf(f -> !input || rule.enabledWidget == COLOR);
+    }
+
+    private IWidget createRedstoneSelector(GenericListSyncHandler<SplitterRule> syncer, int index) {
+        SplitterRule rule = multiblock.rules.get(index);
+
+        // spotless:off
+        return new Column()
+            .child(IKey.str("Channel").asWidget())
+            .child(new TextFieldWidget()
+                .value(new IntValue.Dynamic(
+                    () -> rule.redstoneMode.channel,
+                    val -> {
+                        rule.redstoneMode.channel = val;
+                        syncer.notifyUpdate();
+                    }))
+                .setFormatAsInteger(true)
+                .size(52, 12))
+            .child(IKey.str("Strength").asWidget())
+            .child(new TextFieldWidget()
+                .value(new IntValue.Dynamic(
+                    () -> rule.redstoneMode.level,
+                    val -> {
+                        rule.redstoneMode.level = val;
+                        syncer.notifyUpdate();
+                    }))
+                .setNumbers(0, 15)
+                .setFormatAsInteger(true)
+                .size(52, 12))
+            .setEnabledIf(f -> rule.enabledWidget == REDSTONE)
+            .coverChildren();
+        // spotless:on
+    }
+
+    private IWidget createItemFilter(PanelSyncManager syncManager, GenericListSyncHandler<SplitterRule> rulesSyncer,
+        int index) {
+        SplitterRule rule = multiblock.rules.get(index);
+
+        return SlotGroupWidget.builder()
+            .matrix("III", "III")
+            .key(
+                'I',
+                i -> new PhantomItemSlot().syncHandler(
+                    syncManager.getOrCreateSyncHandler(
+                        "items",
+                        (index * 6) + i,
+                        PhantomItemSlotSH.class,
+                        () -> new PhantomItemSlotSH(
+                            new ModularSlot(rule.filterStacks, i).accessibility(true, false)
+                                .changeListener(
+                                    (newItem, onlyAmountChanged, client, init) -> {
+                                        if (client) rulesSyncer.notifyUpdate();
+                                    })))))
+            .build()
+            .setEnabledIf(f -> rule.enabledWidget == ITEM);
+    }
+
+    // A workaround class so that when the Splitter's Rules list changes and the rule manager's ListWidget is rebuilt
+    // the scroll value can be preserved instead of resetting to 0
+    private class WorkaroundListWidget extends ListWidget<IWidget, WorkaroundListWidget> {
+
+        public WorkaroundListWidget() {
+            super();
+        }
+
+        public boolean shouldScroll = true;
+
+        @Override
+        public void postResize() {
+            super.postResize();
+            // This check exists so that if the widget is resized again, such as when the panel is moved, we dont set
+            // the scroll back to the original value
+            if (shouldScroll) {
+                getScrollData().scrollTo(getScrollArea(), scrollValue);
+                shouldScroll = false;
+            }
+        }
+
+        @Override
+        public void dispose() {
+            super.dispose();
+            scrollValue = getScrollData().getScroll();
+        }
+    }
 }
