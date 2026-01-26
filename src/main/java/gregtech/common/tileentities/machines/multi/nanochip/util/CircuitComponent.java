@@ -38,10 +38,10 @@ public enum CircuitComponent {
         2,
         "gt.circuitcomponent.wirelumiium",
         () -> GGMaterial.lumiium.get(OrePrefixes.wireFine, 1)),
-    WireLanthanum(
+    WireProtoHalkonite(
         3,
-        "gt.circuitcomponent.wirelanthanum",
-        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Lanthanum, 1)),
+        "gt.circuitcomponent.wireprotohalkonite",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.ProtoHalkonite, 1)),
     WireSpacetime(
         4,
         "gt.circuitcomponent.wirespacetime",
@@ -50,13 +50,18 @@ public enum CircuitComponent {
         5,
         "gt.circuitcomponent.cable.opticalfiber",
         () -> CustomItemList.DATApipe.get(1)),
+    WireInfinity(
+        6,
+        "gt.circuitcomponent.wireinfinity",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1)),
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", () -> WireNiobiumTitanium, true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", () -> WireYttriumBariumCuprate, true),
     ProcessedWireLumiium(102, "gt.circuitcomponent.processed.wirelumiium", () -> WireLumiium, true),
-    ProcessedWireLanthanum(103, "gt.circuitcomponent.processed.wirelanthanum", () -> WireLanthanum, true),
+    ProcessedWireProtoHalkonite(103, "gt.circuitcomponent.processed.wireprotohalkonite", () -> WireProtoHalkonite, true),
     ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", () -> WireSpacetime, true),
     ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", () -> CableOpticalFiber, true),
+    ProcessedWireInfinity(106, "gt.circuitcomponent.processed.wireinfinity", () -> WireInfinity, true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -307,14 +312,19 @@ public enum CircuitComponent {
         1401,
         "gt.circuitcomponent.frame.tritanium",
         () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 1)),
-    FrameboxNeutronium(
+    FrameboxCelestialTungsten(
         1402,
-        "gt.circuitcomponent.frame.neutronium",
-        () -> GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1)),
+        "gt.circuitcomponent.frame.celestialtungsten",
+        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)),
+    FrameboxHypogen(
+        1403,
+        "gt.circuitcomponent.frame.hypogen",
+        () -> MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(1)),
 
     ProcessedFrameboxAluminium(1500, "gt.circuitcomponent.processed.frame.aluminium", () -> FrameboxAluminium, true),
     ProcessedFrameboxTritanium(1501, "gt.circuitcomponent.processed.frame.tritanium", () -> FrameboxTritanium, true),
-    ProcessedFrameboxNeutronium(1502, "gt.circuitcomponent.processed.frame.neutronium", () -> FrameboxNeutronium, true),
+    ProcessedFrameboxCelestialTungsten(1502, "gt.circuitcomponent.processed.frame.celestialtungsten", () -> FrameboxCelestialTungsten, true),
+    ProcessedFrameboxHypogen(1503, "gt.circuitcomponent.processed.frame.hypogen", () -> FrameboxHypogen, true),
 
     // Foils
     // IDs: 1600-1699 CC, 1700-1799 PC
@@ -347,7 +357,7 @@ public enum CircuitComponent {
     PicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", null, true),
     QuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", null, true),
 
-    // Bolts
+    // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
     BoltEnrichedHolmium(
         1900,
@@ -357,34 +367,50 @@ public enum CircuitComponent {
         1901,
         "gt.circuitcomponent.bolt.transcendentmetal",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 1)),
-    BoltNeutronium(
-        1902,
-        "gt.circuitcomponent.bolt.neutronium",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 1)),
-    BoltIndium(
-        1903,
-        "gt.circuitcomponent.bolt.indium",
-        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 1)),
     BoltYttriumBariumCuprate(
-        1904,
+        1902,
         "gt.circuitcomponent.bolt.yttriumbariumcuprate",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 1)),
     BoltCosmicNeutronium(
-        1905,
+        1903,
         "gt.circuitcomponent.bolt.cosmicneutronium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CosmicNeutronium, 1)),
     BoltChromaticGlass(
-        1906,
+        1904,
         "gt.circuitcomponent.bolt.chromaticglass",
         () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getBolt(1)),
+    BoltUMVSuperconductor(
+        1905,
+        "gt.circuitcomponent.bolt.umvsuperconductor",
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.SuperconductorUMVBase, 1)),
+    PlateMetastableOganesson(
+        1906,
+        "gt.circuitcomponent.plate.metastableoganesson",
+        () -> GGMaterial.metastableOganesson.get(OrePrefixes.plate, 1)),
+    ScrewAstralTitanium(
+        1907,
+        "gt.circuitcomponent.screw.astraltitanium",
+        () -> MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getScrew(1)),
+    CasingUEVSuperconductor(
+        1908,
+        "gt.circuitcomponent.casing.uevsuperconductor",
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.SuperconductorUEVBase, 1)),
+    ScrewSixPhasedCopper(
+        1909,
+        "gt.circuitcomponent.screw.sixphasedcopper",
+        () -> GTOreDictUnificator.get(OrePrefixes.screw, Materials.SixPhasedCopper, 1)),
+    CasingCreon(
+        1910,
+        "gt.circuitcomponent.casing.creon",
+        () -> GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Creon, 1)),
 
     ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", () -> BoltEnrichedHolmium, true),
     ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", () -> BoltTranscendentMetal, true),
-    ProcessedBoltNeutronium(2002, "gt.circuitcomponent.bolt.processed.neutronium", () -> BoltNeutronium, true),
-    ProcessedBoltIndium(2003, "gt.circuitcomponent.bolt.processed.indium", () -> BoltIndium, true),
-    ProcessedBoltYttriumBariumCuprate(2004, "gt.circuitcomponent.bolt.processed.yttriumbariumcuprate", () -> BoltYttriumBariumCuprate, true),
-    ProcessedBoltCosmicNeutronium(2005, "gt.circuitcomponent.bolt.processed.cosmicneutronium", () -> BoltCosmicNeutronium, true),
-    ProcessedBoltChromaticGlass(2006, "gt.circuitcomponent.bolt.processed.chromaticglass", () -> BoltChromaticGlass, true),
+    ProcessedBoltYttriumBariumCuprate(2002, "gt.circuitcomponent.bolt.processed.yttriumbariumcuprate", () -> BoltYttriumBariumCuprate, true),
+    ProcessedBoltCosmicNeutronium(2003, "gt.circuitcomponent.bolt.processed.cosmicneutronium", () -> BoltCosmicNeutronium, true),
+    ProcessedBoltChromaticGlass(2004, "gt.circuitcomponent.bolt.processed.chromaticglass", () -> BoltChromaticGlass, true),
+    ProcessedBoltUMVSuperconductor(2005, "gt.circuitcomponent.bolt.processed.umvsuperconductor", () -> BoltUMVSuperconductor, true),
+    ProcessedPlateMetastableOganesson(2006, "gt.circuitcomponent.plate.processed.metastableoganesson", () -> PlateMetastableOganesson, true),
 
     // Circuits
     // IDs: 2100-2199
