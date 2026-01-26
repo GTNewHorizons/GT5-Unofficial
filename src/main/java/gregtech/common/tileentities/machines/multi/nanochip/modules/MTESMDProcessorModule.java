@@ -66,6 +66,10 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_SMD_PROCESSOR)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_SMD_PROCESSOR_ACTIVE)
                     .extFacing()
                     .build(),
