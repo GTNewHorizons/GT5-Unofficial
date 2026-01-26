@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -85,6 +87,7 @@ import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
@@ -1700,6 +1703,7 @@ public final class RecipeMaps {
         })
         .recipeEmitter(builder -> {
             Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
+                .fake()
                 .validateInputCount(1, 16)
                 .validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0)
@@ -1711,7 +1715,7 @@ public final class RecipeMaps {
             ItemStack[][] oreDictAlt = r.mOreDictAlt;
             Object[] inputs = builder.getItemInputsOreDict();
 
-            for (int i = 0, oreDictAltLength = oreDictAlt.length; i < oreDictAltLength; i++) {
+            for (int i = 0; i < oreDictAlt.length; i++) {
                 ItemStack[] alts = oreDictAlt[i];
                 Object input = inputs[i];
                 if (input instanceof Object[]) {
@@ -1725,7 +1729,41 @@ public final class RecipeMaps {
                 }
             }
 
-            return Collections.singleton(r);
+            List<GTRecipe> recipes = new ArrayList<>();
+            List<List<ItemStack>> slots = Arrays.stream(oreDictAlt)
+                .map(
+                    val -> Arrays.stream(val)
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList());
+            slots.stream()
+                .reduce(
+                    Stream.of(new ArrayList<ItemStack>()),
+                    (acc, slot) -> acc.flatMap(
+                        prefix -> slot.stream()
+                            .map(choice -> {
+                                ArrayList<ItemStack> next = new ArrayList<>(prefix);
+                                next.add(choice);
+                                return next;
+                            })),
+                    Stream::concat)
+                .map(val -> val.toArray(new ItemStack[0]))
+                .forEach(
+                    recipeInputs -> recipes.add(
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(recipeInputs)
+                            .fluidInputs(r.mFluidInputs)
+                            .itemOutputs(r.mOutputs)
+                            .duration(r.mDuration)
+                            .eut(r.mEUt)
+                            .metadata(
+                                NanochipAssemblyMatrixTierKey.INSTANCE,
+                                r.getMetadata(NanochipAssemblyMatrixTierKey.INSTANCE))
+                            .hidden()
+                            .build()
+                            .orElse(null)));
+
+            recipes.add(r);
+            return recipes;
         })
         .frontend(AssemblyLineFrontend::new)
         .build();
