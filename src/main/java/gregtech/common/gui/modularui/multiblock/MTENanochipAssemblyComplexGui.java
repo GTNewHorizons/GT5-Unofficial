@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
 
@@ -32,6 +33,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -259,7 +261,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .anchorLeft(0);
     }
 
-    protected Widget<? extends Widget<?>> createBarWidget(PanelSyncManager syncManager) {
+    protected SegmentedBarWidget createBarWidget(PanelSyncManager syncManager) {
         return new SegmentedBarWidget(
             HISTORY_BLOCKS * BATCH_SIZE,
             1,
@@ -298,7 +300,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("specials", IntSyncValue.class)::getValue,
                 Color.WHITE,
-                "High-Grade Specialty Circuits")).width(getTerminalRowWidth() - 27)
+                "High-Grade Specialty Circuits")).width(getTerminalRowWidth() - 47)
                     .height(14);
     }
 
@@ -315,13 +317,31 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .coverChildren()
                     .childPadding(6)
                     .child(createTalkTextField(panel, syncManager))
-                    .child(createBarWidget(syncManager)))
+                    .child(
+                        Flow.row()
+                            .childPadding(2)
+                            .child(createBarWidget(syncManager))
+                            .child(createCalibrationProgressBar(syncManager))))
+
             .child(createButtonColumn(panel, syncManager));
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
         return new TerminalTextFieldWidget(textList, syncManager, panel).setFocusOnGuiOpen(true)
             .size(getTerminalRowWidth() - 27, 14);
+    }
+
+    protected ProgressWidget createCalibrationProgressBar(PanelSyncManager syncManager) {
+        IntSyncValue blockSyncer = syncManager.findSyncHandler("currentBlock", IntSyncValue.class);
+        return new ProgressWidget().progress(() -> (double) blockSyncer.getValue() / BATCH_SIZE)
+            .texture(PROGRESSBAR_NANOCHIP_CALIBRATION, 18)
+            .direction(ProgressWidget.Direction.CIRCULAR_CW)
+            .size(18, 18)
+            .tooltipAutoUpdate(true)
+            .tooltipDynamic(tt -> {
+                tt.addLine("Nanocalibration in progress.");
+                tt.addLine("Circuits needed for next update: " + blockSyncer.getValue() + "/" + BATCH_SIZE);
+            });
     }
 
     @Override
@@ -354,6 +374,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 7)));
         syncManager.syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 8)));
         syncManager.syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 64)));
+
+        syncManager.syncValue("currentBlock", new IntSyncValue(multiblock::getCurrentBlockSize));
 
         GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> linkedModules = new GenericListSyncHandler.Builder<MTENanochipAssemblyModuleBase<?>>()
             .getter(multiblock::getModules)

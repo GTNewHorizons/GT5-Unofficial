@@ -15,6 +15,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsElements;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import tectech.thing.CustomItemList;
@@ -45,12 +46,17 @@ public enum CircuitComponent {
         4,
         "gt.circuitcomponent.wirespacetime",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 1)),
+    CableOpticalFiber(
+        5,
+        "gt.circuitcomponent.cable.opticalfiber",
+        () -> CustomItemList.DATApipe.get(1)),
 
     ProcessedWireNiobiumTitanium(100, "gt.circuitcomponent.processed.wirenbti", true),
     ProcessedWireYttriumBariumCuprate(101, "gt.circuitcomponent.processed.wireybc", true),
     ProcessedWireLumiium(102, "gt.circuitcomponent.processed.wirelumiium", true),
     ProcessedWireLanthanum(103, "gt.circuitcomponent.processed.wirelanthanum", true),
     ProcessedWireSpacetime(104, "gt.circuitcomponent.processed.wirespacetime", true),
+    ProcessedCableOpticalFiber(105, "gt.circuitcomponent.cable.processed.opticalfiber", true),
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
@@ -157,6 +163,10 @@ public enum CircuitComponent {
         405,
         "gt.circuitcomponent.bioprocessingunit",
         () -> ItemList.Circuit_Chip_BioCPU.get(1)),
+    LivingBioChip(
+        406,
+        "gt.circuitcomponent.livingbiochip",
+        () -> ItemList.Circuit_Parts_Chip_Bioware.get(1)),
 
     ProcessedBoardMultifiberglassElite(500, "gt.circuitcomponent.processed.board.multifiberelite", true),
     ProcessedBoardWetwareLifesupport(501, "gt.circuitcomponent.processed.board.wetwarelifesupport", true),
@@ -164,6 +174,7 @@ public enum CircuitComponent {
     ProcessedBoardOptical(503, "gt.circuitcomponent.processed.board.optical", true),
     ProcessedNeuroProcessingUnit(504, "gt.circuitcomponent.processed.neuroprocessingunit", true),
     ProcessedBioProcessingUnit(505, "gt.circuitcomponent.processed.board.bioprocessingunit", true),
+    ProcessedLivingBioChip(506, "gt.circuitcomponent.processed.board.livingbiochip", true),
 
     // Wafers and chips
     // IDs: 600-699 CC, 700-799 PC
@@ -215,13 +226,23 @@ public enum CircuitComponent {
         800,
         "gt.circuitcomponent.chipcrystalcpu",
         () -> ItemList.Circuit_Chip_CrystalCPU.get(1)),
-    ChipAdvCrystalCPU(
+    ChipCrystalSoC(
         801,
-        "gt.circuitcomponent.chipadvcrystalcpu",
+        "gt.circuitcomponent.chipcrystalsoc",
         () -> ItemList.Circuit_Chip_CrystalSoC.get(1)),
+    ChipLivingCrystal(
+        802,
+        "gt.circuitcomponent.chiplivingcrystal",
+        () -> ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1)),
+    ChipRawAdvancedCrystal( // todo decide what module to put this in
+        803,
+        "gt.circuitcomponent.chiprawadvancedcrystal",
+        () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
 
     ProcessedChipCrystalCPU(900, "gt.circuitcomponent.processed.chipcrystalcpu", true),
-    ProcessedChipAdvCrystalCPU(901, "gt.circuitcomponent.processed.chipadvcrystalcpu", true),
+    ProcessedChipCrystalSoC(901, "gt.circuitcomponent.processed.chipcrystalsoc", true),
+    ProcessedChipLivingCrystal(902, "gt.circuitcomponent.processed.chiplivingcrystal", true),
+    ProcessedChipRawAdvancedCrystal(903, "gt.circuitcomponent.processed.chiprawadvancedcrystal", true),
 
     // Optical components
     // IDs: 1000-1099 CC, 1100-1199 PC
@@ -247,29 +268,34 @@ public enum CircuitComponent {
         1201,
         "gt.circuitcomponent.superconductorzpm",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 1)),
-    SuperconductorUHV(
+    SuperconductorUV(
         1202,
-        "gt.circuitcomponent.superconductoruhv",
+        "gt.circuitcomponent.superconductoruv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 1)),
-    SuperconductorUEV(
+    SuperconductorUHV(
         1203,
-        "gt.circuitcomponent.superconductoruev",
+        "gt.circuitcomponent.superconductoruhv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1)),
-    SuperconductorUIV(
+    SuperconductorUEV(
         1204,
-        "gt.circuitcomponent.superconductoruiv",
+        "gt.circuitcomponent.superconductoruev",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 1)),
-    SuperconductorUMV(
+    SuperconductorUIV(
         1205,
-        "gt.circuitcomponent.superconductorumv",
+        "gt.circuitcomponent.superconductoruiv",
         () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUIV, 1)),
+    SuperconductorUMV(
+        1206,
+        "gt.circuitcomponent.superconductorumv",
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 1)),
 
     ProcessedSuperconductorLuV(1300, "gt.circuitcomponent.processed.superconductorluv", true),
     ProcessedSuperconductorZPM(1301, "gt.circuitcomponent.processed.superconductorzpm", true),
-    ProcessedSuperconductorUHV(1302, "gt.circuitcomponent.processed.superconductoruhv", true),
-    ProcessedSuperconductorUEV(1303, "gt.circuitcomponent.processed.superconductoruev", true),
-    ProcessedSuperconductorUIV(1304, "gt.circuitcomponent.processed.superconductoruiv", true),
-    ProcessedSuperconductorUMV(1305, "gt.circuitcomponent.processed.superconductorumv", true),
+    ProcessedSuperconductorUV(1302, "gt.circuitcomponent.processed.superconductoruv", true),
+    ProcessedSuperconductorUHV(1303, "gt.circuitcomponent.processed.superconductoruhv", true),
+    ProcessedSuperconductorUEV(1304, "gt.circuitcomponent.processed.superconductoruev", true),
+    ProcessedSuperconductorUIV(1305, "gt.circuitcomponent.processed.superconductoruiv", true),
+    ProcessedSuperconductorUMV(1306, "gt.circuitcomponent.processed.superconductorumv", true),
 
     // Frameboxes
     // IDs: 1400-1499 CC, 1500-1599 PC
@@ -316,35 +342,49 @@ public enum CircuitComponent {
 
     // Circuit encasement
     // IDs: 1800-1899
-    MainframeCasing(1800, "gt.circuitcomponent.casing.mainframe", true),
-    PicoCircuitCasing(1801, "gt.circuitcomponent.casing.pico", true),
-    QuantumCircuitCasing(1802, "gt.circuitcomponent.casing.quantum", true),
-
-    // Misc
-    // IDs: 1900-1999
-    CableOpticalFiber(
-        1900,
-        "gt.circuitcomponent.cable.opticalfiber",
-        () -> CustomItemList.DATApipe.get(1)),
+    BasicMainframeCasing(1800, "gt.circuitcomponent.casing.basicmainframe", true),
+    AdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.advancedmainframe", true),
+    PicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", true),
+    QuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", true),
 
     // Bolts
-    // IDs: 2000-2099
+    // IDs: 1900-1999 CC, 2000-2099 PC
     BoltEnrichedHolmium(
-        2000,
+        1900,
         "gt.circuitcomponent.bolt.enrichedholmium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.EnrichedHolmium, 1)),
     BoltTranscendentMetal(
-        2001,
+        1901,
         "gt.circuitcomponent.bolt.transcendentmetal",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.TranscendentMetal, 1)),
     BoltNeutronium(
-        2002,
+        1902,
         "gt.circuitcomponent.bolt.neutronium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Neutronium, 1)),
     BoltIndium(
-        2003,
+        1903,
         "gt.circuitcomponent.bolt.indium",
         () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Indium, 1)),
+    BoltYttriumBariumCuprate(
+        1904,
+        "gt.circuitcomponent.bolt.yttriumbariumcuprate",
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.YttriumBariumCuprate, 1)),
+    BoltCosmicNeutronium(
+        1905,
+        "gt.circuitcomponent.bolt.cosmicneutronium",
+        () -> GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CosmicNeutronium, 1)),
+    BoltChromaticGlass(
+        1906,
+        "gt.circuitcomponent.bolt.chromaticglass",
+        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getBolt(1)),
+
+    ProcessedBoltEnrichedHolmium(2000, "gt.circuitcomponent.bolt.processed.enrichedholmium", true),
+    ProcessedBoltTranscendentMetal(2001, "gt.circuitcomponent.bolt.processed.transcendentmetal", true),
+    ProcessedBoltNeutronium(2002, "gt.circuitcomponent.bolt.processed.neutronium", true),
+    ProcessedBoltIndium(2003, "gt.circuitcomponent.bolt.processed.indium", true),
+    ProcessedBoltYttriumBariumCuprate(2004, "gt.circuitcomponent.bolt.processed.yttriumbariumcuprate", true),
+    ProcessedBoltCosmicNeutronium(2005, "gt.circuitcomponent.bolt.processed.cosmicneutronium", true),
+    ProcessedBoltChromaticGlass(2006, "gt.circuitcomponent.bolt.processed.chromaticglass", true),
 
     // Circuits
     // IDs: 2100-2199
@@ -518,20 +558,20 @@ public enum CircuitComponent {
 
     public static class CircuitComponentStack {
 
-        private final CircuitComponent mCircuitComponent;
-        private final int mSize;
+        private final CircuitComponent circuitComponent;
+        private final int size;
 
-        public CircuitComponentStack(CircuitComponent mCircuitComponent, int mSize) {
-            this.mCircuitComponent = mCircuitComponent;
-            this.mSize = mSize;
+        public CircuitComponentStack(CircuitComponent circuitComponent, int size) {
+            this.circuitComponent = circuitComponent;
+            this.size = size;
         }
 
         public CircuitComponent getCircuitComponent() {
-            return mCircuitComponent;
+            return circuitComponent;
         }
 
         public int getSize() {
-            return mSize;
+            return size;
         }
     }
 }

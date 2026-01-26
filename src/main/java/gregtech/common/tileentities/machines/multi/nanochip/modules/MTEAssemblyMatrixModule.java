@@ -78,7 +78,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         .addElement(
             'B',
             ofBlocksTiered(
-                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : null,
+                (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta + 1 : null,
                 IntStream.range(0, 14)
                     .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                     .collect(Collectors.toList()),
@@ -167,7 +167,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
             ASSEMBLY_OFFSET_X,
@@ -186,6 +186,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Now check module structure
         return checkPiece(STRUCTURE_PIECE_MAIN, ASSEMBLY_OFFSET_X, ASSEMBLY_OFFSET_Y, ASSEMBLY_OFFSET_Z);
+    }
+
+    @Override
+    public boolean addItemOutputs(ItemStack[] outputItems) {
+        for (ItemStack stack : outputItems) {
+            CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
+            if (circuitComponent != null && baseMulti != null) {
+                baseMulti.addToHistory(circuitComponent.circuitTier, stack.stackSize);
+            }
+        }
+        return super.addItemOutputs(outputItems);
     }
 
     @Override
@@ -228,9 +239,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     public @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 0);
+        int recipeTier = recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
         int machineTier = getCasingTier();
-        if (machineTier + 1 >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
+        if (machineTier >= recipeTier) return CheckRecipeResultRegistry.SUCCESSFUL;
         return CheckRecipeResultRegistry.insufficientMachineTier(recipeTier);
     }
 
@@ -243,7 +254,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("tier", machineTier + 1);
+        tag.setInteger("tier", machineTier);
     }
 
     @Override
@@ -264,7 +275,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (machineTier >= 0 ? GTValues.VN[machineTier + 1]
+            + (machineTier >= 0 ? GTValues.VN[machineTier]
                 : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }

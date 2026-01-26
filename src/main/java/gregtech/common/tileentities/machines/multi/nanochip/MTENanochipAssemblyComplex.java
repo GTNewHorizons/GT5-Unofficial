@@ -28,6 +28,8 @@ import java.util.Queue;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -42,7 +44,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -92,7 +93,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
-    public static final int BATCH_SIZE = 10_000;
+    public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
@@ -114,11 +115,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement('D', ofFrame(Materials.Naquadah))
         // Nanochip Glass
         .addElement('E', Casings.NanochipComplexGlass.asElement())
-        // Module
+        // Either a module or an ignored hatch (since this hatch would be on the module)
         .addElement(
             'F',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(ImmutableMap.of(AssemblyHatchElement.AssemblyModule, 0))
+                .atLeast(ImmutableMap.of(AssemblyHatchElement.AssemblyModule, 0, AssemblyHatchElement.IgnoredHatch, 1))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(1)
                 // Base casing or assembly module
@@ -232,7 +233,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 TOOLTIP_CCs + " can only exist in the perfect environment present in"
                     + EnumChatFormatting.WHITE
                     + " Vacuum Conveyor Hatches")
-            .addInfo("Convert items to " + TOOLTIP_CCs + " in the control room by placing them in a colored input bus")
+            .addInfo(
+                "Convert items to " + TOOLTIP_CCs
+                    + " in the control room by placing them in a "
+                    + coloredString()
+                    + " input bus")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "5"
@@ -465,7 +470,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                     if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
                         if (stackInSlot.stackSize >= stack.stack.stackSize) {
-                            lEUt -= (stack.stack.stackSize * EU_MULTIPLIER);
                             baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
                             break;
                         }
@@ -489,19 +493,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realComponent != null) {
-                            if (currentBlock == null) currentBlock = new CircuitBatch();
-                            // If the current block is full, store to history. Push the oldest block if needed.
-                            if (currentBlock.isFull()) {
-                                circuitHistory.add(currentBlock);
-                                if (circuitHistory.size() > HISTORY_BLOCKS) {
-                                    circuitHistory.poll();
-                                }
-                                currentBlock = new CircuitBatch();
-                            }
-
-                            currentBlock.add(component.circuitTier, (int) Math.min(Integer.MAX_VALUE, amount));
-
-                            lEUt -= (amount * EU_MULTIPLIER);
                             ItemStack toOutput = GTUtility.copyAmountUnsafe(
                                 (int) Math.min(Integer.MAX_VALUE, amount),
                                 component.realComponent.get());
@@ -514,6 +505,29 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 }
             }
         }
+    }
+
+    public void addToHistory(byte type, int amount) {
+        amount = Math.min(amount, BATCH_SIZE * HISTORY_BLOCKS);
+        if (currentBlock == null) currentBlock = new CircuitBatch();
+
+        int leftover = currentBlock.add(type, amount);
+
+        // If the current block is full, store to history. Push the oldest block if needed.
+        if (currentBlock.isFull()) {
+            circuitHistory.add(currentBlock);
+            if (circuitHistory.size() > HISTORY_BLOCKS) {
+                circuitHistory.poll();
+            }
+            currentBlock = new CircuitBatch();
+        }
+
+        // Recursively call addToHistory to clear leftovers evenly
+        if (leftover > 0) addToHistory(type, leftover);
+    }
+
+    public int getCurrentBlockSize() {
+        return currentBlock == null ? 0 : currentBlock.total;
     }
 
     public int getTotalCircuit(byte type) {
@@ -529,19 +543,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 case 7 -> total += batch.cosmics;
                 case 8 -> total += batch.temporals;
                 case 64 -> total += batch.specials;
-            }
-        }
-        if (currentBlock != null) {
-            switch (type) {
-                case 1 -> total += currentBlock.primitives;
-                case 2 -> total += currentBlock.crystals;
-                case 3 -> total += currentBlock.wetwares;
-                case 4 -> total += currentBlock.bios;
-                case 5 -> total += currentBlock.opticals;
-                case 6 -> total += currentBlock.exotics;
-                case 7 -> total += currentBlock.cosmics;
-                case 8 -> total += currentBlock.temporals;
-                case 64 -> total += currentBlock.specials;
             }
         }
         return total;
@@ -597,15 +598,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
-    private static final long EU_MULTIPLIER = TierEU.UV;
-
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         // Always keep the machine running, it doesn't run recipes directly.
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 5 * SECONDS;
-            lEUt = 0;
             // Inside checkProcessing we can safely consume inputs from hatches
             processRealItemInputs();
             processComponentInputs();
@@ -630,12 +628,27 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("talkMode", this.isTalkModeActive);
+        NBTTagList history = new NBTTagList();
+        for (CircuitBatch batch : circuitHistory) {
+            history.appendTag(new NBTTagIntArray(batch.writeToIntArray()));
+        }
+        aNBT.setTag("history", history);
+        if (currentBlock != null) {
+            aNBT.setIntArray("currentBlock", currentBlock.writeToIntArray());
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         isTalkModeActive = aNBT.getBoolean("talkMode");
+        NBTTagList history = aNBT.getTagList("history", 11);
+        for (Object rawTag : history.tagList) {
+            if (rawTag instanceof NBTTagIntArray batch) {
+                circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
+            }
+        }
+        currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {

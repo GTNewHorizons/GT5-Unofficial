@@ -128,6 +128,12 @@ public final class GTGuiTextures {
         .adaptable(4)
         .name(GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
         .build();
+    public static final UITexture BACKGROUND_NANOCHIP_RULE_POPUP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_rule")
+        .imageSize(188, 70)
+        .adaptable(4)
+        .canApplyTheme()
+        .build();
 
     public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
         .location(GregTech.ID, "gui/background/contributors_foundry")
@@ -538,6 +544,8 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_STANDARD)
         .build();
+    public static final UITexture PROGRESSBAR_NANOCHIP_CALIBRATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip_calibration");
     private static final SteamTextureRegisterer PROGRESSBAR_FUEL_STEAM = SteamTextureRegisterer.builder()
         .location("gui/progressbar/fuel_%s")
         .fullImage()

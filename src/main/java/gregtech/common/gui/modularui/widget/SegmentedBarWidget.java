@@ -33,7 +33,9 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
 
     public void createTooltip(RichTooltip builder) {
         for (SegmentInfo segment : segments) {
-            builder.addLine(segment.label + ": " + segment.valueSupplier.get());
+            if (segment.valueSupplier.get() > 0) {
+                builder.addLine(segment.label + ": " + segment.valueSupplier.get());
+            }
         }
     }
 
@@ -53,7 +55,8 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
             // If segment value is zero, display nothing. Otherwise, display size relative to maximum with minimum 1
             // pixel.
             int segValue = segment.valueSupplier.get();
-            int segWidth = segValue <= 0 ? 0 : Math.max(borderSize, (int) (((double) segValue / maximum) * area.width));
+            int segWidth = segValue <= 0 ? 0
+                : Math.max(borderSize, (int) (((double) segValue / maximum) * (area.width - (borderSize * 2))));
 
             GuiDraw.drawHorizontalGradientRect(
                 start,
