@@ -508,6 +508,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public void addToHistory(byte type, int amount) {
+        amount = Math.min(amount, BATCH_SIZE * HISTORY_BLOCKS);
         if (currentBlock == null) currentBlock = new CircuitBatch();
 
         int leftover = currentBlock.add(type, amount);
