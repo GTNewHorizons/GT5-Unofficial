@@ -699,6 +699,18 @@ public class RecipeHandlers {
             5 * TICKS,
             TierEU.RECIPE_LuV,
             VoltageIndex.UHV);
+        addAssemblyMatrixRecipe(
+            Arrays.asList(
+                new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 1),
+                new Object[] {
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 2),
+                    new CircuitComponentStack(CircuitComponent.ProcessedWireLanthanum, 1)
+                }),
+            Arrays.asList(Materials.Iron.getMolten(1)),
+            CircuitComponent.WetwareProcessor,
+            5 * TICKS,
+            TierEU.RECIPE_LuV,
+            VoltageIndex.UHV);
 
         // ======= //
         // Crystal //
