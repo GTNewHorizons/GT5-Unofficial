@@ -184,11 +184,15 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
         return true;
     }
 
+    protected boolean forceCharge() {
+        return false;
+    }
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
-            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
+            mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3 || forceCharge();;
+            mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3 && !forceCharge();
             mBatteryCount = 0;
             mChargeableCount = 0;
             for (ItemStack tStack : mInventory) if (GTModHandler.isElectricItem(tStack, mTier)) {
