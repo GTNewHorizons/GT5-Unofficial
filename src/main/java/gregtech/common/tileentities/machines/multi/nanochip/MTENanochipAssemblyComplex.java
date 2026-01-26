@@ -471,7 +471,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                     if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
                         if (stackInSlot.stackSize >= stack.stack.stackSize) {
-                            lEUt -= (stack.stack.stackSize * EU_MULTIPLIER);
                             baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
                             break;
                         }
@@ -495,7 +494,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         Long amount = entry.getValue();
                         // If this entry has a real circuit, we have produced a circuit using the NAC!
                         if (component.realComponent != null) {
-                            lEUt -= (amount * EU_MULTIPLIER);
                             ItemStack toOutput = GTUtility.copyAmountUnsafe(
                                 (int) Math.min(Integer.MAX_VALUE, amount),
                                 component.realComponent.get());
@@ -600,15 +598,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
-    private static final long EU_MULTIPLIER = TierEU.UV;
-
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         // Always keep the machine running, it doesn't run recipes directly.
         if (isAllowedToWork()) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 5 * SECONDS;
-            lEUt = 0;
             // Inside checkProcessing we can safely consume inputs from hatches
             processRealItemInputs();
             processComponentInputs();
