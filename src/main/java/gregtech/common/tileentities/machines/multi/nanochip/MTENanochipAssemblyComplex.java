@@ -199,6 +199,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return this.mExoticEnergyHatches.get(0);
     }
 
+    public long getLaserHatchTier() {
+        MTEHatch laserHatch = this.getEnergyHatch();
+        return laserHatch != null ? laserHatch.getInputTier() : 0;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         modules.clear();
@@ -590,7 +595,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         if (availableEnergy == 0) return;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
-                            module.connect();
+                            module.connect(this);
                             long moduleSize = module.getBufferSize();
                             long moduleCurrentEU = module.getEUVar();
                             long euToSend = moduleSize - moduleCurrentEU;
