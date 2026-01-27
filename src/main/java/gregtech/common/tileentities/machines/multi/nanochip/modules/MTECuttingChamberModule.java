@@ -144,7 +144,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Cutting Chamber"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.cutting_chamber.action", TOOLTIP_CCs))
