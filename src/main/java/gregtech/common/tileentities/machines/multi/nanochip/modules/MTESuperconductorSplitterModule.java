@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
@@ -213,7 +214,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Superconductor Splitter"))
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
-            .addInfo("Splits your Superconductor " + TOOLTIP_CCs)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
             .addInfo(TOOLTIP_COLOR_MATCH_VCS)
             .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()

@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -165,7 +166,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Board Processor"))
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
-            .addInfo("Processes your Board " + TOOLTIP_CC + "s")
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
             .addInfo(TOOLTIP_COLOR_MATCH_VCS)
             .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()

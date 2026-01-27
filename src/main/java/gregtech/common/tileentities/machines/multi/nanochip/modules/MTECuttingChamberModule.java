@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_CUTTING_CHAMB
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -146,7 +147,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Cutting Chamber"))
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
-            .addInfo("Cuts your Wafer " + TOOLTIP_CCs)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.cutting_chamber.action", TOOLTIP_CCs))
             .addInfo(TOOLTIP_COLOR_MATCH_VCS)
             .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()

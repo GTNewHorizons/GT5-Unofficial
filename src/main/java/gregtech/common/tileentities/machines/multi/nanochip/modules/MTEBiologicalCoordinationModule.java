@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_CO
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -145,7 +146,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Biological Coordinator"))
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
-            .addInfo("Coordinates your living " + TOOLTIP_CC + "s")
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.biological_coordinator.action", TOOLTIP_CCs))
             .addInfo(TOOLTIP_COLOR_MATCH_VCS)
             .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
