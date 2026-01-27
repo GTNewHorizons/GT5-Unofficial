@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 
@@ -224,7 +225,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
                     + EnumChatFormatting.GRAY
                     + " to run") // todo: maybe make this more interesting / use higher tier coolants for higher tier sc
             .addSeparator()
-            .addInfo(tooltipFlavorText("Where there are superconductors, there is coolant!"))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
             .addStructureInfo("Any base casing - Input Hatch")
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
