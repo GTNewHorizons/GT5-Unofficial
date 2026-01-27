@@ -189,9 +189,9 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return this.mExoticEnergyHatches.get(0);
     }
 
-    public long getLaserHatchTier() {
-        MTEHatch laserHatch = this.getEnergyHatch();
-        return laserHatch != null ? laserHatch.getInputTier() : 0;
+    public long getEnergyHatchTier() {
+        MTEHatch energyHatch = this.getEnergyHatch();
+        return energyHatch != null ? energyHatch.getInputTier() : 0;
     }
 
     @Override
