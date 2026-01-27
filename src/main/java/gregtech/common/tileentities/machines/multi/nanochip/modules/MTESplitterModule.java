@@ -8,7 +8,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -238,34 +237,20 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Splitter, NAC Module")
-            .addInfo(NAC_MODULE)
-            .addInfo("Splits inputs of the same " + rainbowColor(false) + " evenly into their respective outputs")
-            .addInfo("You can add Rules to override what " + rainbowColor(false) + " inputs will go to")
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Splitter"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addSeparator()
+            .addInfo("Splits inputs of the same " + TOOLTIP_COLOR + " evenly into their respective outputs")
+            .addInfo("You can add Rules to override what " + TOOLTIP_COLOR + " inputs will go to")
             .addInfo(
-                "If a rule has multiple output " + rainbowColor(true)
-                    + ", inputs will be split evenly into those as well")
-            .addInfo(
-                "If there are multiple rules of the same " + rainbowColor(false) + ", they will be treated as if they")
+                "If a rule has multiple output " + TOOLTIP_COLORS + ", inputs will be split evenly into those as well")
+            .addInfo("If there are multiple rules of the same " + TOOLTIP_COLORS + ", they will be treated as if they")
             .addInfo("were merged into a single rule")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .addSeparator()
+            .addInfo(tooltipFlavorText("The crux of the whole operation!"))
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
-        return tt;
-    }
-
-    private static String rainbowColor(boolean plural) {
-        // spotless:off
-        return
-            EnumChatFormatting.RED + "c" +
-            EnumChatFormatting.YELLOW + "o" +
-            EnumChatFormatting.GREEN + "l" +
-            EnumChatFormatting.AQUA + "o" +
-            EnumChatFormatting.LIGHT_PURPLE + "r" +
-            (plural ? EnumChatFormatting.DARK_PURPLE + "s" : "")
-            + EnumChatFormatting.GRAY;
-        // spotless:on
     }
 
     @Override

@@ -11,8 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSE
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.coloredString;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
@@ -76,25 +74,13 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibrat
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
 public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, NanochipTooltipValues {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String TOOLTIP_CC = EnumChatFormatting.YELLOW + "CC" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_CCs = EnumChatFormatting.YELLOW + "CCs" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCI = EnumChatFormatting.YELLOW + "VCI" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCIs = EnumChatFormatting.YELLOW + "VCIs" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCO = EnumChatFormatting.YELLOW + "VCO" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCOs = EnumChatFormatting.YELLOW + "VCOs" + EnumChatFormatting.GRAY;
-    public static final String NAC_MODULE = "Module of the " + EnumChatFormatting.GREEN
-        + "Nanochip Assembly Complex"
-        + EnumChatFormatting.GRAY;
-    public static final String INFINITE_PARALLEL = "Has " + EnumChatFormatting.GOLD
-        + "infinite"
-        + EnumChatFormatting.GRAY
-        + " parallel";
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
@@ -249,16 +235,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(
                 "Convert items to " + TOOLTIP_CCs
                     + " in the control room by placing them in a "
-                    + coloredString()
+                    + TOOLTIP_COLORED
                     + " input bus")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "5"
                     + EnumChatFormatting.GRAY
                     + " seconds, all items in "
-                    + coloredString()
+                    + TOOLTIP_COLORED
                     + " input buses are placed")
-            .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + colorString())
+            .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + TOOLTIP_COLOR)
             .addInfo(
                 "Finished circuit " + TOOLTIP_CCs
                     + " are converted back into circuits by routing them to a "
@@ -266,11 +252,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     + " in the control room")
             .addInfo(
                 TOOLTIP_CCs + " in a "
-                    + coloredString()
+                    + TOOLTIP_COLORED
                     + " "
                     + TOOLTIP_VCI
                     + " are placed in an output bus of the same "
-                    + colorString())
+                    + TOOLTIP_COLOR)
             .addSeparator()
             .addInfo(
                 TOOLTIP_CCs + " must be processed into a refined version by "
