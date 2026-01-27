@@ -5,15 +5,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENCASEMENT_WRAPPER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -65,6 +59,10 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENCASEMENT_WRAPPER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ENCASEMENT_WRAPPER_ACTIVE)
                     .extFacing()
@@ -147,24 +145,16 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Encasement Wrapper"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
-            .addInfo("Able to process sheet and framebox " + TOOLTIP_CCs + " into wrapper spools and circuit casings.")
-            .addInfo(
-                "Outputs are placed in the " + TOOLTIP_VCO
-                    + " with the same "
-                    + colorString()
-                    + " as the input "
-                    + TOOLTIP_VCI)
-            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo("Able to process sheet and framebox " + TOOLTIP_CCs + " into wrapper spools and circuit casings")
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Constructing strong casings for your circuits since 1984.")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .addInfo(tooltipFlavorText("Constructing strong casings for your circuits since 1984."))
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 

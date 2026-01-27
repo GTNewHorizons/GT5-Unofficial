@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi.nanochip.modules;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE;
@@ -8,19 +7,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -72,8 +65,6 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     public static final IStructureDefinition<MTEAssemblyMatrixModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEAssemblyMatrixModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ASSEMBLY_STRING)
-        // Iron bar
-        .addElement('A', ofBlock(Blocks.iron_bars, 0))
         // CoAL casing
         .addElement(
             'B',
@@ -110,6 +101,10 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE)
                     .extFacing()
@@ -201,34 +196,23 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Assembly Matrix"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
-            .addInfo(
-                "Outputs are placed in the " + TOOLTIP_VCO
-                    + " with the same "
-                    + colorString()
-                    + " as the input "
-                    + TOOLTIP_VCI)
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addSeparator()
             .addInfo("Maximum allowed recipe tier is determined by")
             .addInfo("the tier of the " + EnumChatFormatting.WHITE + "Component Assembly Line Casing")
-            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
             .addSeparator()
+            .addInfo(tooltipFlavorText("After processing your CCs through an intricate pipeline, they are finally"))
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "After processing your CCs through an intricate pipeline, they are finally")
+                tooltipFlavorText("ready to be assembled into a circuit. This circuit can be converted into a real"))
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "ready to be assembled into a circuit. This circuit can be converted into a real")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "item in the NAC control center, or processed further into a higher tier circuit")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+                tooltipFlavorText("item in the NAC control center, or processed further into a higher tier circuit"))
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -82,11 +83,14 @@ public class SplitterRule {
     public boolean appliesTo(Byte color, ItemStack item, MTESplitterModule.RedstoneChannelInfo redstoneState) {
         // Requires the given color to be in the set of input colors
         if (!inputColors.contains(color)) return false;
-        // If a set of filter stacks is set and nonempty
-        // If no items in the filter set match the given item, do not apply this rule
-        if (filterStacks.getStacks()
+        // Get all the filters that are actually set
+        var filters = filterStacks.getStacks()
             .stream()
-            .noneMatch(stack -> stack == null || stack.isItemEqual(item))) {
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+        // If no items in the filter set match the given item, do not apply this rule
+        if (!filters.isEmpty() && filters.stream()
+            .noneMatch(stack -> stack.isItemEqual(item))) {
             return false;
         }
         // If a redstone mode is set

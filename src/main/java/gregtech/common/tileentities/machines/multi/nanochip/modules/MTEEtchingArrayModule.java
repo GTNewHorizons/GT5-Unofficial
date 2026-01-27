@@ -7,12 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.List;
@@ -111,6 +106,10 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ETCHING_ARRAY)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ETCHING_ARRAY_ACTIVE)
                     .extFacing()
                     .build(),
@@ -183,25 +182,20 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Etching Array"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo("Uses high-energy lasers to etch your Chip " + TOOLTIP_CCs)
-            .addInfo(
-                "Outputs are placed in the " + TOOLTIP_VCO
-                    + " with the same "
-                    + colorString()
-                    + " as the input "
-                    + TOOLTIP_VCI)
-            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Perfect for etching even the finest details")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+                "In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes")
+            .addSeparator()
+            .addInfo(tooltipFlavorText("Perfect for etching even the finest details"))
             .addOtherStructurePart("Any Laser Source Hatch", addHintNumber(1))
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 

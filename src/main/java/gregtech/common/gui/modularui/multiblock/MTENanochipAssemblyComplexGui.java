@@ -2,7 +2,7 @@ package gregtech.common.gui.modularui.multiblock;
 
 import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.HISTORY_BLOCKS;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CALIBRATION_MAX;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,6 +26,7 @@ import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
@@ -48,47 +49,19 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyC
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBaseAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gtPlusPlus.core.util.math.MathUtils;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
-public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
+public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex>
+    implements NanochipTooltipValues {
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
     String fieldHintTalk = "Type 'talk' to enter talk mode";
     String fieldHintExit = "Type 'exit' to exit talk mode";
-
-    public static String colorString() {
-        return EnumChatFormatting.RED + "c"
-            + EnumChatFormatting.YELLOW
-            + "o"
-            + EnumChatFormatting.GREEN
-            + "l"
-            + EnumChatFormatting.AQUA
-            + "o"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "r"
-            + EnumChatFormatting.GRAY;
-    }
-
-    public static String coloredString() {
-        return EnumChatFormatting.RED + "c"
-            + EnumChatFormatting.YELLOW
-            + "o"
-            + EnumChatFormatting.GREEN
-            + "l"
-            + EnumChatFormatting.AQUA
-            + "o"
-            + EnumChatFormatting.DARK_AQUA
-            + "r"
-            + EnumChatFormatting.DARK_PURPLE
-            + "e"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "d"
-            + EnumChatFormatting.GRAY;
-    }
 
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
@@ -263,7 +236,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     protected SegmentedBarWidget createBarWidget(PanelSyncManager syncManager) {
         return new SegmentedBarWidget(
-            HISTORY_BLOCKS * BATCH_SIZE,
+            CALIBRATION_MAX,
             1,
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("primitives", IntSyncValue.class)::getValue,
@@ -321,7 +294,15 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         Flow.row()
                             .childPadding(2)
                             .child(createBarWidget(syncManager))
-                            .child(createCalibrationProgressBar(syncManager))))
+                            .child(createCalibrationProgressBar(syncManager)))
+                    .child(
+                        IKey.dynamic(
+                            () -> syncManager.findSyncHandler("calibrationTitle", StringSyncValue.class)
+                                .getStringValue())
+                            .asWidget())
+                    .child(
+                        IKey.str("Nanochip Assembly Complex")
+                            .asWidget()))
 
             .child(createButtonColumn(panel, syncManager));
     }
@@ -374,6 +355,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
         syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 7)));
         syncManager.syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 8)));
         syncManager.syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 64)));
+
+        syncManager.syncValue("calibrationTitle", new StringSyncValue(multiblock::getCalibrationTitle));
 
         syncManager.syncValue("currentBlock", new IntSyncValue(multiblock::getCurrentBlockSize));
 

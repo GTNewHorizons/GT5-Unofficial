@@ -63,12 +63,13 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable {
+    extends MTEExtendedPowerMultiBlockBase<T> implements ISurvivalConstructable, NanochipTooltipValues {
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
@@ -350,6 +351,18 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .setCalculator(OverclockCalculator.ofNoOverclock(recipe));
     }
 
+    protected OverclockCalculator createCalculator(GTRecipe recipe) {
+        return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
+            .setEUt(this.availableEUt)
+            .setUnlimitedTierSkips()
+            .setDuration(recipe.mDuration)
+            .setDurationDecreasePerOC(4)
+            .setEUtIncreasePerOC(4)
+            .setMaxOverclocks(
+                (int) (this.getBaseMulti()
+                    .getLaserHatchTier() - GTUtility.getTier(recipe.mEUt)));
+    }
+
     /**
      * Validate if a recipe can be run by this module. By default, always succeeds.
      * Override this logic if you want to do recipe validation such as tiering of the module.
@@ -371,7 +384,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         currentParallel = 0;
         this.lEUt = 0;
 
-        if (!isConnected) {
+        if (!isConnected || baseMulti == null) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -395,16 +408,26 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (outputHatch == null) {
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
+        OverclockCalculator calculator = this.createCalculator(recipe)
+            .calculate();
+
+        long powerConsumption = calculator.getConsumption();
+        int duration = calculator.getDuration();
+
+        GTRecipe properRecipe = recipe.copy();
+        properRecipe.setEUt((int) powerConsumption);
+        properRecipe.setDuration(duration);
 
         // Create parallel helper to calculate parallel and consume inputs
-        ParallelHelper parallelHelper = createParallelHelper(recipe, inputInfo);
+        ParallelHelper parallelHelper = createParallelHelper(properRecipe, inputInfo);
         // Add item consumer to parallel helper and make it consume the input items while it builds
         parallelHelper.setConsumption(true)
             .setInputConsumer(new CCInputConsumer(this.vacuumConveyorInputs, this))
             .build();
         CheckRecipeResult result = parallelHelper.getResult();
         if (result.wasSuccessful()) {
-            long euToConsume = parallelHelper.getCurrentParallel() * (long) recipe.mDuration * (long) recipe.mEUt;
+            long euToConsume = parallelHelper.getCurrentParallel() * (long) properRecipe.mDuration
+                * (long) properRecipe.mEUt;
             if (euToConsume > this.getEUVar()) return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
             // not output to normal busses
@@ -416,9 +439,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             this.processingLogic.setSpeedBonus(1F / this.getBonusSpeedModifier());
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
-            mMaxProgresstime = recipe.mDuration;
+            mMaxProgresstime = properRecipe.mDuration;
             // Needs to be negative obviously to display correctly
-            this.lEUt = -(long) recipe.mEUt * (long) this.currentParallel;
+            this.lEUt = -(long) properRecipe.mEUt * (long) this.currentParallel;
             this.lEUt = (long) (this.lEUt * this.getEUDiscountModifier());
         }
 
@@ -521,7 +544,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (getBaseMetaTileEntity() == null) {
             return 0;
         }
-        connect();
+        isConnected = true;
         long increasedEU = Math
             .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
@@ -583,8 +606,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.availableEUt = eut;
     }
 
-    public void connect() {
+    public void connect(MTENanochipAssemblyComplex baseMulti) {
         isConnected = true;
+        this.setBaseMulti(baseMulti);
     }
 
     public void disconnect() {

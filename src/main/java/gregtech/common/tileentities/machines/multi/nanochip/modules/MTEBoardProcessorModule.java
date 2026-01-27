@@ -7,8 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +86,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
                 TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE)
                     .extFacing()
                     .build(),
@@ -159,13 +161,22 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Board Processor"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addSeparator()
             .addInfo("Processes your Board " + TOOLTIP_CC + "s")
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addSeparator()
+            .addInfo("what do i do???") // todo mechanic text NOC!!!!!!!!!!!!1
+            .addSeparator()
+            .addInfo(
+                tooltipFlavorText("The developer of this multiblock loves league of legends more than her friends...")) // todo
+                                                                                                                        // flavor
+                                                                                                                        // text
             .addStructureInfo("Any base casing - Input Hatch")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 
@@ -194,6 +205,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         aNBT.setInteger("impurityFluidAmount", this.ImpurityFluidAmount);
         aNBT.setInteger("fluidAmount", this.FluidAmount);
         aNBT.setInteger("processedItems", this.ProcessedItems);
+        aNBT.setInteger("automationPercentage", this.AutomationPercentage);
         aNBT.setString(
             "storedFluid",
             StoredFluid == null ? ""
@@ -212,6 +224,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         ImpurityFluidAmount = aNBT.getInteger("impurityFluidAmount");
         FluidAmount = aNBT.getInteger("fluidAmount");
         ProcessedItems = aNBT.getInteger("processedItems");
+        AutomationPercentage = aNBT.getInteger("automationPercentage");
         if (!Objects.equals(aNBT.getString("storedFluid"), "")) {
             StoredFluid = FluidRegistry.getFluidStack(aNBT.getString("storedFluid"), FluidAmount);
         } else {
@@ -227,12 +240,17 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     protected int Capacity = 10000;
     protected FluidStack StoredFluid;
     protected int FluidAmount;
+
     private int ProcessedItems;
+
     protected FluidStack ImpurityFluid;
     protected int ImpurityFluidAmount;
-    private int ImpurityThreshold = 1000;
     protected double ImpurityPercentage;
-    private int ImpurityIncrease = 100;
+
+    private int ImpurityThreshold = 1000;
+    private final int ImpurityIncrease = 100;
+
+    private int AutomationPercentage = 100;
 
     protected static final HashSet<Fluid> LegalFluids = new HashSet<>(Arrays.asList(Materials.IronIIIChloride.mFluid));
 
@@ -261,7 +279,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         if (StoredFluid != null && ImpurityFluid != null) {
             if (mOutputItems != null) {
                 ProcessedItems += mOutputItems[0].stackSize;
-                if (ProcessedItems >= ImpurityThreshold) {
+                while (ProcessedItems >= ImpurityThreshold) {
                     ProcessedItems -= ImpurityThreshold;
                     ImpurityFluidAmount += Math.min(ImpurityIncrease, FluidAmount - ImpurityFluidAmount);
                     ImpurityFluid.amount = ImpurityFluidAmount;
@@ -270,6 +288,24 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             }
         }
         super.endRecipeProcessing();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+
+        if (aTick % 20 == 0) {
+
+            if (ImpurityPercentage >= ((double) AutomationPercentage / 100)) {
+                FlushTank();
+            }
+
+            if (StoredFluid == null) {
+                FillTank();
+            }
+
+        }
+
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -342,5 +378,13 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     public void setImpurityThreshold(int impurityThreshold) {
         ImpurityThreshold = impurityThreshold;
+    }
+
+    public int getAutomationPercentage() {
+        return AutomationPercentage;
+    }
+
+    public void setAutomationPercentage(int automationPercentage) {
+        AutomationPercentage = automationPercentage;
     }
 }

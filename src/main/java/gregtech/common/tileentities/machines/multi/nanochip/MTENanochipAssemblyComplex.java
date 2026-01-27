@@ -11,8 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSE
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.coloredString;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
@@ -72,31 +70,27 @@ import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacu
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitBatch;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ItemStackWithSourceBus;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
 public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, NanochipTooltipValues {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String TOOLTIP_CC = EnumChatFormatting.YELLOW + "CC" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_CCs = EnumChatFormatting.YELLOW + "CCs" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCI = EnumChatFormatting.YELLOW + "VCI" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCIs = EnumChatFormatting.YELLOW + "VCIs" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCO = EnumChatFormatting.YELLOW + "VCO" + EnumChatFormatting.GRAY;
-    public static final String TOOLTIP_VCOs = EnumChatFormatting.YELLOW + "VCOs" + EnumChatFormatting.GRAY;
-    public static final String NAC_MODULE = "Module of the " + EnumChatFormatting.GREEN
-        + "Nanochip Assembly Complex"
-        + EnumChatFormatting.GRAY;
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
     public static final int BATCH_SIZE = 1000;
     public static final int HISTORY_BLOCKS = 100;
+    public static final int CALIBRATION_MAX = BATCH_SIZE * HISTORY_BLOCKS;
     public final Queue<CircuitBatch> circuitHistory = new ArrayDeque<>();
     private CircuitBatch currentBlock;
+
+    public CircuitCalibration.CalibrationThreshold currentThreshold;
 
     // For usage in the GUI
     public boolean isTalkModeActive = false;
@@ -195,6 +189,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return this.mExoticEnergyHatches.get(0);
     }
 
+    public long getLaserHatchTier() {
+        MTEHatch laserHatch = this.getEnergyHatch();
+        return laserHatch != null ? laserHatch.getInputTier() : 0;
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         modules.clear();
@@ -236,16 +235,16 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(
                 "Convert items to " + TOOLTIP_CCs
                     + " in the control room by placing them in a "
-                    + coloredString()
+                    + TOOLTIP_COLORED
                     + " input bus")
             .addInfo(
                 "Every " + EnumChatFormatting.RED
                     + "5"
                     + EnumChatFormatting.GRAY
                     + " seconds, all items in "
-                    + coloredString()
+                    + TOOLTIP_COLORED
                     + " input buses are placed")
-            .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + colorString())
+            .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + TOOLTIP_COLOR)
             .addInfo(
                 "Finished circuit " + TOOLTIP_CCs
                     + " are converted back into circuits by routing them to a "
@@ -253,11 +252,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     + " in the control room")
             .addInfo(
                 TOOLTIP_CCs + " in a "
-                    + coloredString()
+                    + TOOLTIP_COLORED
                     + " "
                     + TOOLTIP_VCI
                     + " are placed in an output bus of the same "
-                    + colorString())
+                    + TOOLTIP_COLOR)
             .addSeparator()
             .addInfo(
                 TOOLTIP_CCs + " must be processed into a refined version by "
@@ -332,7 +331,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             return false;
         }
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
-            module.setBaseMulti(this);
+            module.connect(this);
             return modules.add(module);
         }
         return false;
@@ -508,7 +507,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     public void addToHistory(byte type, int amount) {
-        amount = Math.min(amount, BATCH_SIZE * HISTORY_BLOCKS);
+        amount = Math.min(amount, CALIBRATION_MAX);
         if (currentBlock == null) currentBlock = new CircuitBatch();
 
         int leftover = currentBlock.add(type, amount);
@@ -520,10 +519,17 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 circuitHistory.poll();
             }
             currentBlock = new CircuitBatch();
+            // Update calibration
+            currentThreshold = CircuitCalibration.getCurrentCalibration(this);
         }
 
         // Recursively call addToHistory to clear leftovers evenly
         if (leftover > 0) addToHistory(type, leftover);
+    }
+
+    public String getCalibrationTitle() {
+        if (currentThreshold == null) return "Standard";
+        return currentThreshold.title;
     }
 
     public int getCurrentBlockSize() {
@@ -579,7 +585,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                         if (availableEnergy == 0) return;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
-                            module.connect();
+                            module.connect(this);
                             long moduleSize = module.getBufferSize();
                             long moduleCurrentEU = module.getEUVar();
                             long euToSend = moduleSize - moduleCurrentEU;
@@ -648,6 +654,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
             }
         }
+        currentThreshold = CircuitCalibration.getCurrentCalibration(this);
         currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
     }
 
