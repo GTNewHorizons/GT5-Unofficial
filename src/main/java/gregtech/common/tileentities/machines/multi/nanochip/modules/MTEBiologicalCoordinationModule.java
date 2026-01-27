@@ -157,7 +157,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
                     + colorString()
                     + " as the input "
                     + TOOLTIP_VCI)
-            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo(INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""
