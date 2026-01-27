@@ -7,9 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.INFINITE_PARALLEL;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -164,14 +161,22 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Board Processor"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addSeparator()
             .addInfo("Processes your Board " + TOOLTIP_CC + "s")
-            .addInfo(INFINITE_PARALLEL)
-            .addInfo("Outputs into the VCO with the same color as the input VCI")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addSeparator()
+            .addInfo("what do i do???") // todo mechanic text NOC!!!!!!!!!!!!1
+            .addSeparator()
+            .addInfo(
+                tooltipFlavorText("The developer of this multiblock loves league of legends more than her friends...")) // todo
+                                                                                                                        // flavor
+                                                                                                                        // text
             .addStructureInfo("Any base casing - Input Hatch")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 

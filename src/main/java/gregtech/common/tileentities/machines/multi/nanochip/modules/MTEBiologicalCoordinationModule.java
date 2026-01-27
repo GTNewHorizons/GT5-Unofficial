@@ -5,16 +5,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_CO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_COORDINATION_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BIOLOGICAL_COORDINATION_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.INFINITE_PARALLEL;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CC;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -148,24 +141,19 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
      */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Biological Coordinator"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo("Coordinates your living " + TOOLTIP_CC + "s")
-            .addInfo(
-                "Outputs are placed in the " + TOOLTIP_VCO
-                    + " with the same "
-                    + colorString()
-                    + " as the input "
-                    + TOOLTIP_VCI)
-            .addInfo(INFINITE_PARALLEL)
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addSeparator()
+            .addInfo("Consumes Living Medium while operating") // todo fix to reflect real mechanic
             .addSeparator()
             .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Biological Circuit Components require strict reprogramming for optimal assembly")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+                tooltipFlavorText("Biological Circuit Components require strict reprogramming for optimal assembly"))
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 
