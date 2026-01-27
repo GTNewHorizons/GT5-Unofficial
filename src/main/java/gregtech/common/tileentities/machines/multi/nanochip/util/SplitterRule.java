@@ -89,7 +89,8 @@ public class SplitterRule {
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
         // If no items in the filter set match the given item, do not apply this rule
-        if (!filters.isEmpty() && filters.stream().noneMatch(stack -> stack.isItemEqual(item))) {
+        if (!filters.isEmpty() && filters.stream()
+            .noneMatch(stack -> stack.isItemEqual(item))) {
             return false;
         }
         // If a redstone mode is set
