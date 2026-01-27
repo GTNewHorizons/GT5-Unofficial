@@ -1,15 +1,21 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static kubatech.api.Variables.numberFormat;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.drawable.IRichTextBuilder;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -18,9 +24,11 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 
 import cpw.mods.fml.relauncher.Side;
@@ -39,6 +47,9 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
         syncManager.syncValue("processedItems", new IntSyncValue(multiblock::getProcessedItems));
         syncManager.syncValue("impurity", new DoubleSyncValue(multiblock::getImpurityPercentage));
+        syncManager.syncValue(
+            "automationPercentage",
+            new IntSyncValue(multiblock::getAutomationPercentage, multiblock::setAutomationPercentage));
 
         syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.FillTank());
         syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.FlushTank());
@@ -131,7 +142,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                         return false;
                     })
                     .tooltipBuilder(t -> t.addLine("Flush"))
-                    .tooltipShowUpTimer(TOOLTIP_DELAY));
+                    .tooltipShowUpTimer(TOOLTIP_DELAY))
+            .child(createAutomationButton(syncManager, parent));
     }
 
     @Override
@@ -143,6 +155,54 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         return super.createTerminalTextWidget(syncManager, parent)
             .child(new TextWidget<>(IKey.dynamic(processedItems::getStringValue)))
             .child(new TextWidget<>(IKey.dynamic(impurity::getStringValue)));
+    }
+
+    @NotNull
+    private ModularPanel openAutoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+        PanelSyncManager syncManager) {
+        return new ModularPanel("automationPanel").relative(parent)
+            .leftRel(1)
+            .topRel(0)
+            .size(193, 134)
+            .widgetTheme("backgroundPopup")
+            .child(createAutomationPanelColumn(syncManager));
+    }
+
+    private Flow createAutomationPanelColumn(PanelSyncManager syncManager) {
+
+        IntSyncValue automationPercentage = syncManager.findSyncHandler("automationPercentage", IntSyncValue.class);
+
+        return new Column().coverChildrenHeight()
+            .align(Alignment.CENTER)
+            .childPadding(4)
+            .child(new TextWidget<>("Flush automatically at:"))
+            .child(
+                new TextFieldWidget().setNumbers(1, 100)
+                    .setTextAlignment(Alignment.CENTER)
+                    .setDefaultNumber(100)
+                    .value(automationPercentage)
+                    .size(60, 18))
+            .child(new TextWidget<>("Impurity"));
+
+    }
+
+    protected IWidget createAutomationButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler automationPanel = syncManager.panel(
+            "automationPanel",
+            (p_syncManager, syncHandler) -> openAutoPanel(p_syncManager, parent, syncManager),
+            true);
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
+            .onMousePressed(d -> {
+                if (!automationPanel.isPanelOpen()) {
+                    automationPanel.openPanel();
+                } else {
+                    automationPanel.closePanel();
+                }
+                return true;
+            })
+            .tooltipBuilder(t -> t.addLine("dn"))
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     @Override
