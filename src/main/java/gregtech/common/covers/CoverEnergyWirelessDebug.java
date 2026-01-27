@@ -14,7 +14,7 @@ public class CoverEnergyWirelessDebug extends CoverEnergyWireless {
     private static final int INTERVAL_TICKS = 20;
 
     public CoverEnergyWirelessDebug(CoverContext context, ITexture voltageTexture) {
-        super(context, 13);
+        super(context, 14);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CoverEnergyWirelessDebug extends CoverEnergyWireless {
 
     @Override
     public int getMinimumTickRate() {
-        return 1;
+        return INTERVAL_TICKS;
     }
 
 }
