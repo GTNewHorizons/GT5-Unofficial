@@ -198,6 +198,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         aNBT.setInteger("impurityFluidAmount", this.ImpurityFluidAmount);
         aNBT.setInteger("fluidAmount", this.FluidAmount);
         aNBT.setInteger("processedItems", this.ProcessedItems);
+        aNBT.setInteger("automationPercentage", this.AutomationPercentage);
         aNBT.setString(
             "storedFluid",
             StoredFluid == null ? ""
@@ -216,6 +217,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         ImpurityFluidAmount = aNBT.getInteger("impurityFluidAmount");
         FluidAmount = aNBT.getInteger("fluidAmount");
         ProcessedItems = aNBT.getInteger("processedItems");
+        AutomationPercentage = aNBT.getInteger("automationPercentage");
         if (!Objects.equals(aNBT.getString("storedFluid"), "")) {
             StoredFluid = FluidRegistry.getFluidStack(aNBT.getString("storedFluid"), FluidAmount);
         } else {
@@ -231,12 +233,17 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     protected int Capacity = 10000;
     protected FluidStack StoredFluid;
     protected int FluidAmount;
+
     private int ProcessedItems;
+
     protected FluidStack ImpurityFluid;
     protected int ImpurityFluidAmount;
-    private int ImpurityThreshold = 1000;
     protected double ImpurityPercentage;
-    private int ImpurityIncrease = 100;
+
+    private int ImpurityThreshold = 1000;
+    private final int ImpurityIncrease = 100;
+
+    private int AutomationPercentage = 100;
 
     protected static final HashSet<Fluid> LegalFluids = new HashSet<>(Arrays.asList(Materials.IronIIIChloride.mFluid));
 
@@ -265,7 +272,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         if (StoredFluid != null && ImpurityFluid != null) {
             if (mOutputItems != null) {
                 ProcessedItems += mOutputItems[0].stackSize;
-                if (ProcessedItems >= ImpurityThreshold) {
+                while (ProcessedItems >= ImpurityThreshold) {
                     ProcessedItems -= ImpurityThreshold;
                     ImpurityFluidAmount += Math.min(ImpurityIncrease, FluidAmount - ImpurityFluidAmount);
                     ImpurityFluid.amount = ImpurityFluidAmount;
@@ -274,6 +281,24 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             }
         }
         super.endRecipeProcessing();
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+
+        if (aTick % 20 == 0) {
+
+            if (ImpurityPercentage >= ((double) AutomationPercentage / 100)) {
+                FlushTank();
+            }
+
+            if (StoredFluid == null) {
+                FillTank();
+            }
+
+        }
+
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -346,5 +371,13 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     public void setImpurityThreshold(int impurityThreshold) {
         ImpurityThreshold = impurityThreshold;
+    }
+
+    public int getAutomationPercentage() {
+        return AutomationPercentage;
+    }
+
+    public void setAutomationPercentage(int automationPercentage) {
+        AutomationPercentage = automationPercentage;
     }
 }
