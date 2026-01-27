@@ -351,18 +351,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .setCalculator(OverclockCalculator.ofNoOverclock(recipe));
     }
 
-    protected OverclockCalculator createCalculator(GTRecipe recipe) {
-        return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setEUt(this.availableEUt)
-            .setUnlimitedTierSkips()
-            .setDuration(recipe.mDuration)
-            .setDurationDecreasePerOC(4)
-            .setEUtIncreasePerOC(4)
-            .setMaxOverclocks(
-                (int) (this.getBaseMulti()
-                    .getLaserHatchTier() - GTUtility.getTier(recipe.mEUt)));
-    }
-
     /**
      * Validate if a recipe can be run by this module. By default, always succeeds.
      * Override this logic if you want to do recipe validation such as tiering of the module.
@@ -408,15 +396,23 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (outputHatch == null) {
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
-        OverclockCalculator calculator = this.createCalculator(recipe)
-            .calculate();
-
-        long powerConsumption = calculator.getConsumption();
-        int duration = calculator.getDuration();
+        double recipeDuration = recipe.mDuration;
+        double recipeEUT = recipe.mEUt;
+        int remainingOverclocks = (int) Math
+            .max(0, this.baseMulti.getEnergyHatchTier() - GTUtility.getTier(recipe.mEUt));
+        // max overclocks is ehatch tier - recipe tier
+        // can only overclock if machine has a remaining overclock,
+        // duration when overclocked won't go below 1 second
+        // and recipe eu/t after overclock is less than available eu/t
+        while (remainingOverclocks > 0 && (recipeDuration / 4) >= 20 && recipeEUT * 4L <= this.availableEUt) {
+            recipeDuration /= 4;
+            recipeEUT *= 4;
+            remainingOverclocks -= 1;
+        }
 
         GTRecipe properRecipe = recipe.copy();
-        properRecipe.setEUt((int) powerConsumption);
-        properRecipe.setDuration(duration);
+        properRecipe.setEUt((int) recipeEUT);
+        properRecipe.setDuration((int) recipeDuration);
 
         // Create parallel helper to calculate parallel and consume inputs
         ParallelHelper parallelHelper = createParallelHelper(properRecipe, inputInfo);
