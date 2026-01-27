@@ -152,7 +152,7 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
             .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.cutting_chamber.flavor.1")))
-            .addStructureInfo("Any base casing - Input Hatch")
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();

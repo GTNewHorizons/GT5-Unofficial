@@ -175,7 +175,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1"))) // todo
                                                                                                               // flavor
                                                                                                               // text
-            .addStructureInfo("Any base casing - Input Hatch")
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
