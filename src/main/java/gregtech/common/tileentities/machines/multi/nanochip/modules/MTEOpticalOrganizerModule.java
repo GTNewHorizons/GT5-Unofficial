@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGAN
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGANIZER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -195,7 +196,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, "0.8x EU", TooltipHelper.PARALLEL_COLOR))
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, "0.5x EU", TooltipHelper.PARALLEL_COLOR))
             .addSeparator()
-            .addInfo(tooltipFlavorText("Does mixing water together even make sense???"))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
             .addStructureInfo("Any base casing - Input Hatch")
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)

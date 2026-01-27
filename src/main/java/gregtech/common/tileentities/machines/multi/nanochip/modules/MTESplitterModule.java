@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,7 +248,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             .addInfo("If there are multiple rules of the same " + TOOLTIP_COLORS + ", they will be treated as if they")
             .addInfo("were merged into a single rule")
             .addSeparator()
-            .addInfo(tooltipFlavorText("The crux of the whole operation!"))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();

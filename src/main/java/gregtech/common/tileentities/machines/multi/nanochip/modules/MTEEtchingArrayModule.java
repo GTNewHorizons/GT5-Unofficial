@@ -9,6 +9,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static gtnhlanth.util.DescTextLocalization.addHintNumber;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
@@ -192,7 +193,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(
                 "In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes")
             .addSeparator()
-            .addInfo(tooltipFlavorText("Perfect for etching even the finest details"))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .addOtherStructurePart("Any Laser Source Hatch", addHintNumber(1))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
