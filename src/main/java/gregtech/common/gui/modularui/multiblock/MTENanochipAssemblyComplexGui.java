@@ -49,47 +49,19 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyC
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBaseAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gtPlusPlus.core.util.math.MathUtils;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
-public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex> {
+public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanochipAssemblyComplex>
+    implements NanochipTooltipValues {
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
     String fieldHintTalk = "Type 'talk' to enter talk mode";
     String fieldHintExit = "Type 'exit' to exit talk mode";
-
-    public static String colorString() {
-        return EnumChatFormatting.RED + "c"
-            + EnumChatFormatting.YELLOW
-            + "o"
-            + EnumChatFormatting.GREEN
-            + "l"
-            + EnumChatFormatting.AQUA
-            + "o"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "r"
-            + EnumChatFormatting.GRAY;
-    }
-
-    public static String coloredString() {
-        return EnumChatFormatting.RED + "c"
-            + EnumChatFormatting.YELLOW
-            + "o"
-            + EnumChatFormatting.GREEN
-            + "l"
-            + EnumChatFormatting.AQUA
-            + "o"
-            + EnumChatFormatting.DARK_AQUA
-            + "r"
-            + EnumChatFormatting.DARK_PURPLE
-            + "e"
-            + EnumChatFormatting.LIGHT_PURPLE
-            + "d"
-            + EnumChatFormatting.GRAY;
-    }
 
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);

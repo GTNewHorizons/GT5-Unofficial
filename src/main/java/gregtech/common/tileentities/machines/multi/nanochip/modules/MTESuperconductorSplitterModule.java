@@ -6,13 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.INFINITE_PARALLEL;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCO;
 
 import java.util.ArrayList;
 
@@ -215,32 +209,25 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC Module")
-            .addInfo(NAC_MODULE)
+        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Superconductor Splitter"))
+            .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo("Splits your Superconductor " + TOOLTIP_CCs)
-            .addInfo(
-                "Outputs are placed in the " + TOOLTIP_VCO
-                    + " with the same "
-                    + colorString()
-                    + " as the input "
-                    + TOOLTIP_VCI)
+            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
+            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addSeparator()
             .addInfo(
                 "Requires " + EnumChatFormatting.RED
                     + "1000 L/s"
                     + EnumChatFormatting.BLUE
                     + " Super Coolant"
                     + EnumChatFormatting.GRAY
-                    + " to run")
-            .addInfo(INFINITE_PARALLEL)
+                    + " to run") // todo: maybe make this more interesting / use higher tier coolants for higher tier sc
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Universal rule of GTNH: Where there are superconductors, there is coolant")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Input")
+            .addInfo(tooltipFlavorText("Where there are superconductors, there is coolant!"))
             .addStructureInfo("Any base casing - Input Hatch")
-            .addStructureInfo("Any base casing - Vacuum Conveyor Output")
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
+            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
     }
 

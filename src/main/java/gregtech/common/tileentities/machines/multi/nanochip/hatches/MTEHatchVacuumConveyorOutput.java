@@ -32,7 +32,7 @@ public class MTEHatchVacuumConveyorOutput extends MTEHatchVacuumConveyor impleme
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.coloredString() + " to work",
+        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.TOOLTIP_COLORED + " to work",
             "Can be installed in the " + EnumChatFormatting.GREEN + "Nanochip Assembly Complex",
             "Provides" + EnumChatFormatting.YELLOW
                 + " Circuit Component "
