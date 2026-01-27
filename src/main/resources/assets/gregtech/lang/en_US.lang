@@ -1641,6 +1641,24 @@ GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
 
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 
+# NAC Module Tooltip Keys
+GT5U.tooltip.nac.interface.machine_info=%s, %s
+GT5U.tooltip.nac.interface.nac_module=NAC Module
+GT5U.tooltip.nac.interface.cc=§eCC§7
+GT5U.tooltip.nac.interface.ccs=§eCCs§7
+GT5U.tooltip.nac.interface.vci=§eVCI§7
+GT5U.tooltip.nac.interface.vcis=§eVCIs§7
+GT5U.tooltip.nac.interface.vco=§eVCO§7
+GT5U.tooltip.nac.interface.vcos=§eVCOs§7
+GT5U.tooltip.nac.interface.color=§4c§eo§al§bo§dr§7
+GT5U.tooltip.nac.interface.colors=§4c§eo§al§bo§dr§5s§7
+GT5U.tooltip.nac.interface.colored=§4c§eo§al§3o§br§de§5d§7
+GT5U.tooltip.nac.interface.color_match_vcs=Outputs are placed in the %s with the same %s as the input %s
+GT5U.tooltip.nac.interface.module_description=Module of the §aNanochip Assembly Complex§7
+GT5U.tooltip.nac.interface.infinite_parallel=Has §6infinite§7 parallels!
+GT5U.tooltip.nac.interface.structure_base_vci=Any base casing - Vacuum Conveyor Input
+GT5U.tooltip.nac.interface.structure_base_vco=Any base casing - Vacuum Conveyor Output
+
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
