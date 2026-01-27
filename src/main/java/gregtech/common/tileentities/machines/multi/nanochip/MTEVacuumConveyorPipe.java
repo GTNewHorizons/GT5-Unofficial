@@ -79,7 +79,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.coloredString() + " to work",
+        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.TOOLTIP_COLORED + " to work",
             "Transports" + EnumChatFormatting.YELLOW
                 + " Circuit Components "
                 + EnumChatFormatting.GRAY
