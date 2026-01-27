@@ -521,7 +521,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (getBaseMetaTileEntity() == null) {
             return 0;
         }
-        connect();
+        isConnected = true;
         long increasedEU = Math
             .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
@@ -583,8 +583,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.availableEUt = eut;
     }
 
-    public void connect() {
+    public void connect(MTENanochipAssemblyComplex baseMulti) {
         isConnected = true;
+        this.setBaseMulti(baseMulti);
     }
 
     public void disconnect() {
