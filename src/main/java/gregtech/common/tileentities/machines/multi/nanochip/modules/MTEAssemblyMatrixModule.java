@@ -72,8 +72,6 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     public static final IStructureDefinition<MTEAssemblyMatrixModule> STRUCTURE_DEFINITION = ModuleStructureDefinition
         .<MTEAssemblyMatrixModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, ASSEMBLY_STRING)
-        // Iron bar
-        .addElement('A', ofBlock(Blocks.iron_bars, 0))
         // CoAL casing
         .addElement(
             'B',
