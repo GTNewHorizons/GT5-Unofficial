@@ -365,6 +365,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    // overridable for the matrix to use recipe metadata instead.
+    public int getRecipeTier(GTRecipe recipe) {
+        return GTUtility.getTier(recipe.mEUt);
+    }
+
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -399,8 +404,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
         double recipeDuration = recipe.mDuration;
         double recipeEUT = recipe.mEUt;
-        int remainingOverclocks = (int) Math
-            .max(0, this.baseMulti.getEnergyHatchTier() - GTUtility.getTier(recipe.mEUt));
+        int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
         // max overclocks is ehatch tier - recipe tier
         // can only overclock if machine has a remaining overclock,
         // duration when overclocked won't go below 5 seconds
