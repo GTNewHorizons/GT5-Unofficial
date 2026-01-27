@@ -65,26 +65,7 @@ public enum CircuitComponent {
 
     // SMDs
     // IDs: 200-299 CC, 300-399 PC
-    SMDResistor(
-        200,
-        "gt.circuitcomponent.smd.resistor",
-        () -> ItemList.Circuit_Parts_ResistorSMD.get(1)),
-    SMDTransistor(
-        201,
-        "gt.circuitcomponent.smd.transistor",
-        () -> ItemList.Circuit_Parts_TransistorSMD.get(1)),
-    SMDInductor(
-        202,
-        "gt.circuitcomponent.smd.inductor",
-        () -> ItemList.Circuit_Parts_InductorSMD.get(1)),
-    SMDCapacitor(
-        203,
-        "gt.circuitcomponent.smd.capacitor",
-        () -> ItemList.Circuit_Parts_CapacitorSMD.get(1)),
-    SMDDiode(
-        204,
-        "gt.circuitcomponent.smd.diode",
-        () -> ItemList.Circuit_Parts_DiodeSMD.get(1)),
+    // 200-209 reserved for normal SMDs, if they are ever needed
     AdvSMDResistor(
         210,
         "gt.circuitcomponent.asmd.resistor",
@@ -126,11 +107,7 @@ public enum CircuitComponent {
         "gt.circuitcomponent.xsmd.diode",
         () -> ItemList.Circuit_Parts_DiodeXSMD.get(1)),
 
-    ProcessedSMDResistor(300, "gt.circuitcomponent.processed.smd.resistor", () -> SMDResistor, true),
-    ProcessedSMDTransistor(301, "gt.circuitcomponent.processed.smd.transistor", () -> SMDTransistor, true),
-    ProcessedSMDInductor(302, "gt.circuitcomponent.processed.smd.inductor", () -> SMDInductor, true),
-    ProcessedSMDCapacitor(303, "gt.circuitcomponent.processed.smd.capacitor", () -> SMDCapacitor, true),
-    ProcessedSMDDiode(304, "gt.circuitcomponent.processed.smd.diode", () -> SMDDiode, true),
+    // 300-309 reserved for normal SMDs, if they are ever needed
     ProcessedAdvSMDResistor(310, "gt.circuitcomponent.processed.asmd.resistor", () -> AdvSMDResistor, true),
     ProcessedAdvSMDTransistor(311, "gt.circuitcomponent.processed.asmd.transistor", () -> AdvSMDTransistor, true),
     ProcessedAdvSMDInductor(312, "gt.circuitcomponent.processed.asmd.inductor", () -> AdvSMDInductor, true),
@@ -344,6 +321,10 @@ public enum CircuitComponent {
         1603,
         "gt.circuitcomponent.sheet.shirabon",
         () -> GGMaterial.shirabon.get(OrePrefixes.foil, 1)),
+    FoilStyreneButadieneRubber(
+        1604,
+        "gt.circuitcomponent.sheet.styrenebutadienerubber",
+        () -> GTOreDictUnificator.get(OrePrefixes.foil, Materials.StyreneButadieneRubber, 1)),
 
     ProcessedFoilSiliconeRubber(1700, "gt.circuitcomponent.sheet.processed.siliconerubber", () -> FoilSiliconeRubber, true),
     ProcessedFoilPolybenzimidazole(1701, "gt.circuitcomponent.sheet.processed.polybenzimidazole", () -> FoilPolybenzimidazole, true),
