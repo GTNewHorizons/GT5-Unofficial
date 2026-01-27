@@ -810,7 +810,7 @@ public class RecipeHandlers {
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.BasicMainframeCasing, 1), // todo verify
+                new CircuitComponentStack(CircuitComponent.BasicMainframeCasing, 1),
                 new CircuitComponentStack(CircuitComponent.CrystalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
@@ -958,8 +958,7 @@ public class RecipeHandlers {
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 8),
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUIV, 4),
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUMV, 2),
-                },
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
+                }),
             Arrays.asList(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(2 * INGOTS),
                 FluidRegistry.getFluidStack("ic2coolant", 10000),
@@ -1107,9 +1106,7 @@ public class RecipeHandlers {
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 32),
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUIV, 16),
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUMV, 8),
-                },
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64)),
+                }),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
                 Materials.BioMediumSterilized.getFluid(20 * INGOTS),
@@ -1195,9 +1192,7 @@ public class RecipeHandlers {
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUEV, 64),
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUIV, 32),
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUMV, 16),
-                },
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 128),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 128)),
+                }),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(40 * INGOTS),
                 Materials.Radon.getGas(40 * INGOTS),
