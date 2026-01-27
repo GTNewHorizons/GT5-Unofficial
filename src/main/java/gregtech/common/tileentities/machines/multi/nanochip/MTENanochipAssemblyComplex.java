@@ -91,6 +91,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     public static final String NAC_MODULE = "Module of the " + EnumChatFormatting.GREEN
         + "Nanochip Assembly Complex"
         + EnumChatFormatting.GRAY;
+    public static final String INFINITE_PARALLEL = "Has " + EnumChatFormatting.GOLD
+        + "infinite"
+        + EnumChatFormatting.GRAY
+        + " parallel";
 
     public static final int CASING_INDEX_WHITE = Casings.NanochipMeshInterfaceCasing.textureId;
 
