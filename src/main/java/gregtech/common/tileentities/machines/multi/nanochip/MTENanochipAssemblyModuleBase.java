@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 
 import java.util.ArrayList;
@@ -404,7 +405,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // can only overclock if machine has a remaining overclock,
         // duration when overclocked won't go below 5 seconds
         // and recipe eu/t after overclock is less than available eu/t
-        while (remainingOverclocks > 0 && (recipeDuration / 4) >= 100 && recipeEUT * 4L <= this.availableEUt) {
+        while (remainingOverclocks > 0 && (recipeDuration / 4) >= 5 * SECONDS && recipeEUT * 4L <= this.availableEUt) {
             recipeDuration /= 4;
             recipeEUT *= 4;
             remainingOverclocks -= 1;
