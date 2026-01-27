@@ -147,7 +147,7 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Encasement Wrapper"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo(
