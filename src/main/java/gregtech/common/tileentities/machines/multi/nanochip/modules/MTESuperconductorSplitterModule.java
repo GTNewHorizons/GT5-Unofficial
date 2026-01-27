@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui.colorString;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.INFINITE_PARALLEL;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.NAC_MODULE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_CCs;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.TOOLTIP_VCI;
@@ -231,7 +232,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
                     + " Super Coolant"
                     + EnumChatFormatting.GRAY
                     + " to run")
-            .addInfo("Has " + EnumChatFormatting.WHITE + EnumChatFormatting.UNDERLINE + "unlimited parallel")
+            .addInfo(INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.LIGHT_PURPLE + ""
