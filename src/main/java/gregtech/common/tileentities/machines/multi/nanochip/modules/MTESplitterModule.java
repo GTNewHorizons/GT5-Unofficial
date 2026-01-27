@@ -9,6 +9,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -241,6 +242,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Splitter"))
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.action", TOOLTIP_CCs))
             .addInfo("Splits inputs of the same " + TOOLTIP_COLOR + " evenly into their respective outputs")
             .addInfo("You can add Rules to override what " + TOOLTIP_COLOR + " inputs will go to")
             .addInfo(
