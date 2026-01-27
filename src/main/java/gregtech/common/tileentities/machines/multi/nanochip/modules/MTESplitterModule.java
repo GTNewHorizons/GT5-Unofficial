@@ -239,7 +239,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Splitter"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.action", TOOLTIP_CCs))
