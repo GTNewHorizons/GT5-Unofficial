@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OPTICAL_ORGAN
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -158,7 +159,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Optical Organizer"))
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
-            .addInfo("Optimizes your Optical " + TOOLTIP_CCs)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.action", TOOLTIP_CCs))
             .addInfo(TOOLTIP_COLOR_MATCH_VCS)
             .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
