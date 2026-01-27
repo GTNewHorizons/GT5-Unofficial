@@ -462,6 +462,9 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (FluidContainerRegistry.isContainer(aPlayer.getHeldItem())) {
+            if (fluid == null) {
+                return false;
+            }
             if (aPlayer.capabilities.isCreativeMode) {
                 return false;
             }
