@@ -1608,6 +1608,20 @@ GT5U.tooltip.nac.interface.infinite_parallel=Has §6infinite§7 parallels!
 GT5U.tooltip.nac.interface.structure_base_vci=Any base casing - Vacuum Conveyor Input
 GT5U.tooltip.nac.interface.structure_base_vco=Any base casing - Vacuum Conveyor Output
 
+GT5U.tooltip.nac.module.assembly_matrix.flavor.1=After processing your CCs through an intricate pipeline, they are finally
+GT5U.tooltip.nac.module.assembly_matrix.flavor.2=ready to be assembled into a circuit. This circuit can be converted into a real
+GT5U.tooltip.nac.module.assembly_matrix.flavor.3=item in the NAC control center, or processed further into a higher tier circuit
+GT5U.tooltip.nac.module.biological_coordinator.flavor.1=Biological Circuit Components require strict reprogramming for optimal assembly
+GT5U.tooltip.nac.module.board_processor.flavor.1=The developer of this multiblock loves league of legends more than her friends...
+GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
+GT5U.tooltip.nac.module.encasement_wrapper.flavor.1=Constructing strong casings for your circuits since 1984.
+GT5U.tooltip.nac.module.etching_array.flavor.1=Perfect for etching even the finest details
+GT5U.tooltip.nac.module.optical_organizer.flavor.1=Does mixing water together even make sense???
+GT5U.tooltip.nac.module.smd_processor.flavor.1=Processing the core logical components of circuits requires a lot of thought...
+GT5U.tooltip.nac.module.splitter.flavor.1=The crux of the whole operation!
+GT5U.tooltip.nac.module.superconductor_splitter.flavor.1=Where there are superconductors, there is coolant!
+GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
+
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
