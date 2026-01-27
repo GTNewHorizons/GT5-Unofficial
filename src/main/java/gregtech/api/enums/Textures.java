@@ -15,8 +15,10 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.client.ResourceUtils;
+import gregtech.common.config.Gregtech;
 
 public class Textures {
 
@@ -318,8 +320,8 @@ public class Textures {
         MACHINE_DIM_BRIDGE,
         MACHINE_COIL_SUPERCONDUCTOR,
 
-        MACHINE_BRONZEBLASTFURNACE,
-        MACHINE_BRONZEBLASTFURNACE_ACTIVE,
+        MACHINE_BRONZEBLASTFURNACE(true),
+        MACHINE_BRONZEBLASTFURNACE_ACTIVE(true),
         MACHINE_BRONZEBLASTFURNACE_ACTIVE_GLOW(true),
         MACHINE_CASING_ROBUST_TUNGSTENSTEEL,
         MACHINE_CASING_CLEAN_STAINLESSSTEEL,
@@ -732,41 +734,41 @@ public class Textures {
         OVERLAY_FLUIDDETECTOR(true),
         OVERLAY_ITEMDETECTOR(true),
 
-        OVERLAY_COVER_CHEST_1(true),
-        OVERLAY_COVER_CHEST_1_OPENED(true),
-        OVERLAY_COVER_CHEST_2(true),
-        OVERLAY_COVER_CHEST_2_OPENED(true),
-        OVERLAY_COVER_CHEST_3(true),
-        OVERLAY_COVER_CHEST_3_OPENED(true),
+        OVERLAY_COVER_CHEST_1,
+        OVERLAY_COVER_CHEST_1_OPENED,
+        OVERLAY_COVER_CHEST_2,
+        OVERLAY_COVER_CHEST_2_OPENED,
+        OVERLAY_COVER_CHEST_3,
+        OVERLAY_COVER_CHEST_3_OPENED,
 
-        OVERLAY_REDSTONE_TRANSMITTER(true),
-        OVERLAY_REDSTONE_RECEIVER(true),
-        OVERLAY_MAINTENANCE_DETECTOR(true),
+        OVERLAY_REDSTONE_TRANSMITTER,
+        OVERLAY_REDSTONE_RECEIVER,
+        OVERLAY_MAINTENANCE_DETECTOR,
 
-        OVERLAY_ADVANCED_REDSTONE_TRANSMITTER(true),
-        OVERLAY_ADVANCED_REDSTONE_RECEIVER(true),
-        OVERLAY_WIRELESS_ITEM_DETECTOR(true),
-        OVERLAY_WIRELESS_FLUID_DETECTOR(true),
-        OVERLAY_WIRELESS_MAINTENANCE_DETECTOR(true),
-        OVERLAY_WIRELESS_ACTIVITYDETECTOR(true),
-        OVERLAY_WIRELESS_CONTROLLER(true),
-        OVERLAY_METRICS_TRANSMITTER(true),
+        OVERLAY_ADVANCED_REDSTONE_TRANSMITTER,
+        OVERLAY_ADVANCED_REDSTONE_RECEIVER,
+        OVERLAY_WIRELESS_ITEM_DETECTOR,
+        OVERLAY_WIRELESS_FLUID_DETECTOR,
+        OVERLAY_WIRELESS_MAINTENANCE_DETECTOR,
+        OVERLAY_WIRELESS_ACTIVITYDETECTOR,
+        OVERLAY_WIRELESS_CONTROLLER,
+        OVERLAY_METRICS_TRANSMITTER,
 
-        OVERLAY_FLUID_STORAGE_MONITOR0(true),
-        OVERLAY_FLUID_STORAGE_MONITOR1(true),
-        OVERLAY_FLUID_STORAGE_MONITOR2(true),
-        OVERLAY_FLUID_STORAGE_MONITOR3(true),
-        OVERLAY_FLUID_STORAGE_MONITOR4(true),
-        OVERLAY_FLUID_STORAGE_MONITOR5(true),
-        OVERLAY_FLUID_STORAGE_MONITOR6(true),
-        OVERLAY_FLUID_STORAGE_MONITOR7(true),
-        OVERLAY_FLUID_STORAGE_MONITOR8(true),
-        OVERLAY_FLUID_STORAGE_MONITOR9(true),
-        OVERLAY_FLUID_STORAGE_MONITOR10(true),
-        OVERLAY_FLUID_STORAGE_MONITOR11(true),
-        OVERLAY_FLUID_STORAGE_MONITOR12(true),
-        OVERLAY_FLUID_STORAGE_MONITOR13(true),
-        OVERLAY_FLUID_STORAGE_MONITOR14(true),
+        OVERLAY_FLUID_STORAGE_MONITOR0,
+        OVERLAY_FLUID_STORAGE_MONITOR1,
+        OVERLAY_FLUID_STORAGE_MONITOR2,
+        OVERLAY_FLUID_STORAGE_MONITOR3,
+        OVERLAY_FLUID_STORAGE_MONITOR4,
+        OVERLAY_FLUID_STORAGE_MONITOR5,
+        OVERLAY_FLUID_STORAGE_MONITOR6,
+        OVERLAY_FLUID_STORAGE_MONITOR7,
+        OVERLAY_FLUID_STORAGE_MONITOR8,
+        OVERLAY_FLUID_STORAGE_MONITOR9,
+        OVERLAY_FLUID_STORAGE_MONITOR10,
+        OVERLAY_FLUID_STORAGE_MONITOR11,
+        OVERLAY_FLUID_STORAGE_MONITOR12,
+        OVERLAY_FLUID_STORAGE_MONITOR13,
+        OVERLAY_FLUID_STORAGE_MONITOR14,
 
         OVERLAY_DTPF_OFF(true),
         OVERLAY_DTPF_ON(true),
@@ -2501,6 +2503,14 @@ public class Textures {
         BlockIcons(boolean optionalResource) {
             this.optionalResource = optionalResource;
             GregTechAPI.sGTBlockIconload.add(this);
+            if (Gregtech.debug.logRegisterIcons) logIcons();
+        }
+
+        private void logIcons() {
+            final String name = this.toString();
+            final ResourceLocation iconResource = GregTech
+                .getResourceLocation(TEXTURES_BLOCKS + ICONSETS, name + ".png");
+            GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
         }
 
         public static ITexture getCasingTextureForId(int id) {
@@ -2564,6 +2574,14 @@ public class Textures {
                 this.optionalResource = optionalResource;
                 mOverlayName = mIconName + _OVERLAY;
                 GregTechAPI.sGTBlockIconload.add(this);
+                if (Gregtech.debug.logRegisterIcons) logIcons();
+            }
+
+            private void logIcons() {
+                final ResourceLocation iconResource = getResourceLocation(mIconName);
+                GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
+                final ResourceLocation overlayResource = getResourceLocation(mOverlayName);
+                GTLog.ico.println("O " + overlayResource);
             }
 
             @Override
@@ -2666,6 +2684,16 @@ public class Textures {
 
         ItemIcons() {
             GregTechAPI.sGTItemIconload.add(this);
+            if (Gregtech.debug.logRegisterIcons) logIcons();
+        }
+
+        private void logIcons() {
+            final String iconPath = GregTech.getResourcePath(ICONSETS, this.toString());
+            final ResourceLocation iconResource = getResourceLocation(iconPath);
+            GTLog.ico.println("R " + iconResource);
+            final String overlayPath = GregTech.getResourcePath(ICONSETS, this + _OVERLAY);
+            final ResourceLocation overlayResource = getResourceLocation(overlayPath);
+            GTLog.ico.println("O " + overlayResource);
         }
 
         @Override
@@ -2710,6 +2738,16 @@ public class Textures {
             public CustomIcon(String aIconName) {
                 mIconName = aIconName;
                 GregTechAPI.sGTItemIconload.add(this);
+                if (Gregtech.debug.logRegisterIcons) logIcons();
+            }
+
+            private void logIcons() {
+                final String iconPath = GregTech.getResourcePath(mIconName);
+                final ResourceLocation iconResource = getResourceLocation(iconPath);
+                GTLog.ico.println("R " + iconResource);
+                final String overlayPath = GregTech.getResourcePath(mIconName + _OVERLAY);
+                final ResourceLocation overlayResource = getResourceLocation(overlayPath);
+                GTLog.ico.println("O " + overlayResource);
             }
 
             @Override
