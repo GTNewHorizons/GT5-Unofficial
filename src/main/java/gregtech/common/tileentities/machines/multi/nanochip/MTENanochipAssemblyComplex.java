@@ -331,7 +331,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             return false;
         }
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
-            module.setBaseMulti(this);
+            module.connect(this);
             return modules.add(module);
         }
         return false;
