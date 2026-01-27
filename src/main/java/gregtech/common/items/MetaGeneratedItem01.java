@@ -4149,10 +4149,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         CoverRegistry.registerCover(
             ItemList.Cover_Wireless_Energy_Debug.get(1L),
-            TextureFactory.of(MACHINE_CASINGS[13][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGY_IN_DEBUG)),
-            context -> new CoverEnergyWirelessDebug(
-                context,
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGY_IN_DEBUG)));
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGY_IN_DEBUG)),
+            CoverEnergyWirelessDebug::new);
 
     }
 

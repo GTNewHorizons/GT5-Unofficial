@@ -3,18 +3,37 @@ package gregtech.common.covers;
 import static gregtech.api.enums.GTValues.V;
 
 import gregtech.api.covers.CoverContext;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 
-public class CoverEnergyWirelessDebug extends CoverEnergyWireless {
+public class CoverEnergyWirelessDebug extends CoverLegacyData {
 
     private static final int VOLTAGE_TIER = 15; // MAX+
-    private static final int AMPERAGE = 2; // 2A
+    private static final int AMPERAGE = 2;
     private static final int INTERVAL_TICKS = 20;
 
-    public CoverEnergyWirelessDebug(CoverContext context, ITexture voltageTexture) {
-        super(context, 14);
+    public CoverEnergyWirelessDebug(CoverContext context) {
+        super(context);
+    }
+
+    @Override
+    public boolean isRedstoneSensitive(long aTimer) {
+        return false;
+    }
+
+    @Override
+    public boolean allowsCopyPasteTool() {
+        return false;
+    }
+
+    @Override
+    public boolean allowsTickRateAddition() {
+        return false;
+    }
+
+    @Override
+    public boolean alwaysLookConnected() {
+        return true;
     }
 
     @Override
