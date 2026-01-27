@@ -156,7 +156,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Optical Organizer"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.action", TOOLTIP_CCs))

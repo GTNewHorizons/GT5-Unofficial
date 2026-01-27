@@ -141,7 +141,7 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Wire Tracer"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.wire_tracer.action", TOOLTIP_CCs))

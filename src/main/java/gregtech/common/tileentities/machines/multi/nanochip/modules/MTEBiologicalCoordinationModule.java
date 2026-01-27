@@ -143,7 +143,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
      */
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Biological Coordinator"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.biological_coordinator.action", TOOLTIP_CCs))
