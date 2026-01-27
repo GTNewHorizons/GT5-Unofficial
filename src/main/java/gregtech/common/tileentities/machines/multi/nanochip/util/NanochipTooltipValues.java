@@ -40,8 +40,12 @@ public interface NanochipTooltipValues {
     String TOOLTIP_MODULE_DESCRIPTION = translateToLocal("GT5U.tooltip.nac.interface.module_description");
 
     String TOOLTIP_INFINITE_PARALLEL = translateToLocal("GT5U.tooltip.nac.interface.infinite_parallel");
-
-    String TOOLTIP_STRUCTURE_BASE_VCI = translateToLocal("GT5U.tooltip.nac.interface.structure_base_vci");
-    String TOOLTIP_STRUCTURE_BASE_VCO = translateToLocal("GT5U.tooltip.nac.interface.structure_base_vco");
+    String TOOLTIP_STRUCTURE_BASE_CASING = translateToLocal("GT5U.tooltip.nac.interface.structure_base_casing");
+    String TOOLTIP_STRUCTURE_BASE_VCI = translateToLocalFormatted(
+        "GT5U.tooltip.nac.interface.structure_base_vci",
+        TOOLTIP_STRUCTURE_BASE_CASING);
+    String TOOLTIP_STRUCTURE_BASE_VCO = translateToLocalFormatted(
+        "GT5U.tooltip.nac.interface.structure_base_vco",
+        TOOLTIP_STRUCTURE_BASE_CASING);
 
 }
