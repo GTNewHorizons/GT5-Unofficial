@@ -227,7 +227,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
                     + " to run") // todo: maybe make this more interesting / use higher tier coolants for higher tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
-            .addStructureInfo("Any base casing - Input Hatch")
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();

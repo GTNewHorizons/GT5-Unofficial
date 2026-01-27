@@ -1656,8 +1656,9 @@ GT5U.tooltip.nac.interface.colored=§4c§eo§al§3o§br§de§5d§7
 GT5U.tooltip.nac.interface.color_match_vcs=Outputs are placed in the %s with the same %s as the input %s
 GT5U.tooltip.nac.interface.module_description=Module of the §aNanochip Assembly Complex§7
 GT5U.tooltip.nac.interface.infinite_parallel=Has §6infinite§7 parallels!
-GT5U.tooltip.nac.interface.structure_base_vci=Any base casing - Vacuum Conveyor Input
-GT5U.tooltip.nac.interface.structure_base_vco=Any base casing - Vacuum Conveyor Output
+GT5U.tooltip.nac.interface.structure_base_vci=%s - Vacuum Conveyor Input
+GT5U.tooltip.nac.interface.structure_base_vco=%s - Vacuum Conveyor Output
+GT5U.tooltip.nac.interface.structure_base_casing=Any base casing
 
 GT5U.tooltip.nac.module.assembly_matrix.flavor.1=After processing your CCs through an intricate pipeline, they are finally
 GT5U.tooltip.nac.module.assembly_matrix.flavor.2=ready to be assembled into a circuit. This circuit can be converted into a real
