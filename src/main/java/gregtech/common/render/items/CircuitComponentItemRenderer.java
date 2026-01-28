@@ -4,8 +4,6 @@ import static gregtech.common.tileentities.machines.multi.nanochip.util.CircuitC
 import static gregtech.loaders.ExtraIcons.circuitComponentOverlay;
 import static net.minecraftforge.client.IItemRenderer.ItemRenderType.INVENTORY;
 
-import java.awt.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
