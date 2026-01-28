@@ -1955,9 +1955,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                withPattern.setProcessingLogic(processingLogic);
+                if (this.processingLogic != null) {
+                    // processingLogic might be null, like a Space Elevator
+                    withPattern.setProcessingLogic(processingLogic);
+                }
             }
             return mDualInputHatches.add(hatch);
         }
@@ -2091,6 +2095,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                if (this.processingLogic != null) {
+                    // processingLogic might be null, like a Space Elevator
+                    withPattern.setProcessingLogic(processingLogic);
+                }
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
