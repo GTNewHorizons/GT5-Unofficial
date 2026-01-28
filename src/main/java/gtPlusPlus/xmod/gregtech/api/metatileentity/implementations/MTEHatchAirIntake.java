@@ -6,13 +6,18 @@ import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.tileentities.machines.multi.MTEBiodome;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
+public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodomeCompatible {
+
+    MTEBiodome connectedBiodome;
 
     public MTEHatchAirIntake(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -40,10 +45,14 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public Fluid getFluidToGenerate() {
-        int id = this.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
+        String id;
+        if (connectedBiodome != null) {
+            id = connectedBiodome.getDimensionOverride();
+        } else {
+            id = getBaseMetaTileEntity().getWorld().provider.getDimensionName();
+        }
 
-        if (id == -1) {
+        if (id.equals(DimensionDef.Nether.name())) {
             return Materials.NetherAir.mFluid;
         } else {
             return Materials.Air.getGas(1)
@@ -138,5 +147,10 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
     @Override
     protected FluidSlotWidget createFluidSlot() {
         return super.createFluidSlot().setFilter(f -> f == Materials.Air.mGas);
+    }
+
+    @Override
+    public void updateBiodome(MTEBiodome biodome) {
+        connectedBiodome = biodome;
     }
 }
