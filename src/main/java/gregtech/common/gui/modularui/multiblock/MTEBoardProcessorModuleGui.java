@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.drawable.IRichTextBuilder;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -23,7 +22,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -127,23 +125,21 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
 
-        return super.createLeftPanelGapRow(parent, syncManager)
-            .child(
-                new ButtonWidget<>().size(18, 18)
-                    .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down"))
-                    .playClickSound(true)
-                    .onMousePressed(d -> {
-                        syncManager.callSyncedAction("flushTank", $ -> {});
-                        return false;
-                    })
-                    .tooltipBuilder(t -> t.addLine("Flush Tank"))
-                    .tooltipShowUpTimer(TOOLTIP_DELAY))
+        return super.createLeftPanelGapRow(parent, syncManager).child(
+            new ButtonWidget<>().size(18, 18)
+                .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down"))
+                .playClickSound(true)
+                .onMousePressed(d -> {
+                    syncManager.callSyncedAction("flushTank", $ -> {});
+                    return false;
+                })
+                .tooltipBuilder(t -> t.addLine("Flush Tank"))
+                .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(createAutomationButton(syncManager, parent));
     }
 
     @NotNull
-    private ModularPanel openAutoPanel(ModularPanel parent,
-        PanelSyncManager syncManager) {
+    private ModularPanel openAutoPanel(ModularPanel parent, PanelSyncManager syncManager) {
         return new ModularPanel("automationPanel").relative(parent)
             .leftRel(1)
             .topRel(0)
@@ -171,10 +167,8 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
     }
 
     protected IWidget createAutomationButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler automationPanel = syncManager.panel(
-            "automationPanel",
-            (p_syncManager, syncHandler) -> openAutoPanel(parent, syncManager),
-            true);
+        IPanelHandler automationPanel = syncManager
+            .panel("automationPanel", (p_syncManager, syncHandler) -> openAutoPanel(parent, syncManager), true);
         return new ButtonWidget<>().size(18, 18)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
