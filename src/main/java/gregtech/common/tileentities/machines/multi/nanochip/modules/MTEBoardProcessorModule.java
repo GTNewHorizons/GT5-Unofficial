@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -26,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
@@ -132,11 +130,17 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return STRUCTURE_DEFINITION;
     }
 
-    public int structureOffsetX() { return BOARD_OFFSET_X; }
+    public int structureOffsetX() {
+        return BOARD_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return BOARD_OFFSET_Y; }
+    public int structureOffsetY() {
+        return BOARD_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return BOARD_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return BOARD_OFFSET_Z;
+    }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {

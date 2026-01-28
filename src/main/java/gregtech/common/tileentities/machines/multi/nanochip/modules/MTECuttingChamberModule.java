@@ -10,11 +10,9 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -113,11 +111,17 @@ public class MTECuttingChamberModule extends MTENanochipAssemblyModuleBase<MTECu
         return STRUCTURE_DEFINITION;
     }
 
-    public int structureOffsetX() { return CUTTING_OFFSET_X; }
+    public int structureOffsetX() {
+        return CUTTING_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return CUTTING_OFFSET_Y; }
+    public int structureOffsetY() {
+        return CUTTING_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return CUTTING_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return CUTTING_OFFSET_Z;
+    }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {

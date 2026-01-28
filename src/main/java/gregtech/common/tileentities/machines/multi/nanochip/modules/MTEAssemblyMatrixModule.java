@@ -27,7 +27,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.casing.Casings;
@@ -59,11 +58,17 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
 
-    public int structureOffsetX() { return ASSEMBLY_OFFSET_X; }
+    public int structureOffsetX() {
+        return ASSEMBLY_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return ASSEMBLY_OFFSET_Y; }
+    public int structureOffsetY() {
+        return ASSEMBLY_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return ASSEMBLY_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return ASSEMBLY_OFFSET_Z;
+    }
 
     protected static final String[][] ASSEMBLY_STRING = new String[][] { { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
         { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },

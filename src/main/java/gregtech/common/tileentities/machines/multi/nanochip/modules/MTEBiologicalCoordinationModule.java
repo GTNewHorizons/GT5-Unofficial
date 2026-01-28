@@ -9,11 +9,9 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
@@ -75,11 +73,17 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         return STRUCTURE_DEFINITION;
     }
 
-    public int structureOffsetX() { return BIO_OFFSET_X; }
+    public int structureOffsetX() {
+        return BIO_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return BIO_OFFSET_Y; }
+    public int structureOffsetY() {
+        return BIO_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return BIO_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return BIO_OFFSET_Z;
+    }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,

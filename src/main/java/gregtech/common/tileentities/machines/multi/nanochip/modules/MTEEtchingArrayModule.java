@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -151,11 +150,17 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         return STRUCTURE_DEFINITION;
     }
 
-    public int structureOffsetX() { return ETCHING_OFFSET_X; }
+    public int structureOffsetX() {
+        return ETCHING_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return ETCHING_OFFSET_Y; }
+    public int structureOffsetY() {
+        return ETCHING_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return ETCHING_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return ETCHING_OFFSET_Z;
+    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
