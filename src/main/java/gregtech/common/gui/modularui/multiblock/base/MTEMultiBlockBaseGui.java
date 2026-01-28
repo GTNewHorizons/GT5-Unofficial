@@ -383,7 +383,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private final int DISPLAY_ROW_HEIGHT = 15;
+    private static final int DISPLAY_ROW_HEIGHT = 15;
+    private static final int DISPLAY_ROW_CHAR_LIMIT = 46;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -528,7 +529,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String truncatedItemName = GTUtility.truncateText(itemName, 46 - amountString.length());
+        String truncatedItemName = GTUtility.truncateText(itemName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
         String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.ItemTextLine");
         if (!localizedLine.equals("gt.interact.desc.mb.ItemTextLine")) {
             String amountShort = GTUtility.formatShortenedLong(amount);
@@ -581,7 +582,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String truncatedFluidName = GTUtility.truncateText(fluidName, 46 - amountString.length());
+        String truncatedFluidName = GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
         String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.FluidTextLine");
         if (!localizedLine.equals("gt.interact.desc.mb.FluidTextLine")) {
             String amountShort = GTUtility.formatShortenedLong(amount);
