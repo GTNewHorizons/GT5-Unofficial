@@ -1526,6 +1526,7 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_IndustrialBrewery,
 
     Machine_Multi_Biosphere,
+    Biosphere_Casing,
 
     Machine_Multi_Spinmatron,
     Spinmatron_Casing,

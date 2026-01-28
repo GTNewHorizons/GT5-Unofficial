@@ -1,7 +1,11 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.Textures.BlockIcons.BIOSPHERE_CASING_BOTTOM;
+import static gregtech.api.enums.Textures.BlockIcons.BIOSPHERE_CASING_TOP;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +23,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
         register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
+        register(8, ItemList.Biosphere_Casing, "Biosphere Panel Casing");
         register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
@@ -52,6 +57,11 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
+            case 8 -> {
+                if (ordinalSide == ForgeDirection.UP.ordinal()) yield BIOSPHERE_CASING_TOP.getIcon();
+                else if (ordinalSide == ForgeDirection.DOWN.ordinal()) yield BIOSPHERE_CASING_BOTTOM.getIcon();
+                else yield Textures.BlockIcons.BIOSPHERE_CASING_SIDE.getIcon();
+            }
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
