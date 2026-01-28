@@ -3,6 +3,7 @@ package gregtech.common.gui.modularui.multiblock;
 import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRATION;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CALIBRATION_MAX;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -14,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -44,6 +46,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.enums.GTValues;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
@@ -156,8 +159,131 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
-        return super.makeLogoWidget(syncManager, parent).size(24)
-            .setEnabledIf(a -> !multiblock.isTalkModeActive);
+        IPanelHandler infoPanel = syncManager
+            .panel("infoPanel", (p_syncManager, syncHandler) -> openInfoPanel(parent), true);
+
+        return new ButtonWidget<>().size(24)
+            .marginTop(4)
+            .overlay(IDrawable.EMPTY)
+            .setEnabledIf(a -> !multiblock.isTalkModeActive)
+            .tooltip(t -> t.addLine(translateToLocal("GT5U.gui.text.nac.info.open")))
+            .background(GTGuiTextures.PICTURE_NANOCHIP_LOGO)
+            .disableHoverBackground()
+            .onMousePressed(d -> {
+                if (!infoPanel.isPanelOpen()) {
+                    infoPanel.openPanel();
+                } else {
+                    infoPanel.closePanel();
+                }
+                return true;
+            });
+    }
+
+    private static final int SIZE = 300;
+    private static final int OFFSET_SIZE = SIZE - 20;
+
+    private ModularPanel openInfoPanel(ModularPanel parent) {
+        ModularPanel panel = new ModularPanel("infoPanel").relative(parent)
+            .size(SIZE)
+            .background(GTGuiTextures.BACKGROUND_NANOCHIP)
+            .padding(10);
+        ListWidget<IWidget, ?> textList = new ListWidget<>().size(OFFSET_SIZE);
+        textList.child(createHeader("GT5U.gui.text.nac.info.introduction.header"));
+        textList.child(createTextEntry("GT5U.gui.text.nac.info.introduction.body.1"));
+        TextWidget<?> vacuumBasicsHeader = createHeader("GT5U.gui.text.nac.info.nac_basics.header");
+        ButtonWidget<?> vacuumBasicsToC = createToCEntry(
+            textList,
+            "GT5U.gui.text.nac.info.nac_basics.header",
+            vacuumBasicsHeader);
+
+        TextWidget<?> vacuumBasicsBody1 = createTextEntry("GT5U.gui.text.nac.info.nac_basics.body.1");
+        TextWidget<?> vacuumBasicsBody2 = createTextEntry("GT5U.gui.text.nac.info.nac_basics.body.2");
+        TextWidget<?> vacuumBasicsBody3 = createTextEntry("GT5U.gui.text.nac.info.nac_basics.body.3");
+        TextWidget<?> moduleBasicsHeader = createHeader("GT5U.gui.text.nac.info.module_basics.header");
+        ButtonWidget<?> moduleBasicsToC = createToCEntry(
+            textList,
+            "GT5U.gui.text.nac.info.module_basics.header",
+            moduleBasicsHeader);
+        TextWidget<?> moduleBasicsBody1 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.1");
+        TextWidget<?> moduleBasicsBody2 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.2");
+        TextWidget<?> moduleBasicsBody3 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.3");
+        TextWidget<?> moduleBasicsBody4 = createTextEntry("GT5U.gui.text.nac.info.module_basics.body.4");
+        TextWidget<?> calibrationHeader = createHeader("GT5U.gui.text.nac.info.calibration.header");
+        ButtonWidget<?> calibrationToC = createToCEntry(
+            textList,
+            "GT5U.gui.text.nac.info.calibration.header",
+            calibrationHeader);
+        TextWidget<?> calibrationBody1 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.1");
+        TextWidget<?> calibrationBody2 = createTextEntry("GT5U.gui.text.nac.info.calibration.body.2");
+
+        textList.child(createTableOfContentsHeader());
+        textList.child(vacuumBasicsToC);
+        textList.child(moduleBasicsToC);
+        textList.child(calibrationToC);
+        textList.child(vacuumBasicsHeader);
+        textList.child(vacuumBasicsBody1);
+        textList.child(vacuumBasicsBody2);
+        textList.child(vacuumBasicsBody3);
+        textList.child(moduleBasicsHeader);
+        textList.child(moduleBasicsBody1);
+        textList.child(moduleBasicsBody2);
+        textList.child(moduleBasicsBody3);
+        textList.child(moduleBasicsBody4);
+        textList.child(calibrationHeader);
+        textList.child(calibrationBody1);
+        textList.child(calibrationBody2);
+
+        panel.child(textList);
+        return panel;
+    }
+
+    private static TextWidget<?> createHeader(String langKey) {
+        return IKey.lang(langKey)
+            .style(EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
+            .color(0xFFCE4242)
+            .asWidget()
+            .alignX(Alignment.CENTER)
+            .marginBottom(8);
+    }
+
+    private static TextWidget<?> createTextEntry(String langKey) {
+        return IKey.lang(langKey)
+            .color(0xFFDBE0)
+            .alignment(Alignment.CenterLeft)
+            .asWidget()
+            .width(OFFSET_SIZE)
+            .marginBottom(8);
+    }
+
+    private static TextWidget<?> createTableOfContentsHeader() {
+        return IKey.lang("GT5U.gui.text.nac.info.toc")
+            .style(EnumChatFormatting.BOLD)
+            .color(0xFFD25A7E)
+            .alignment(Alignment.CenterLeft)
+            .asWidget()
+            .width(OFFSET_SIZE)
+            .marginBottom(8);
+    }
+
+    private static ButtonWidget<?> createToCEntry(ListWidget<IWidget, ?> textList, String langKey,
+        TextWidget<?> jumpPoint) {
+        return new ButtonWidget<>().width(OFFSET_SIZE)
+            .background(IDrawable.EMPTY)
+            .overlay(
+                IKey.lang(langKey)
+                    .color(0xFFDBE0)
+                    .style(EnumChatFormatting.BOLD)
+                    .alignment(Alignment.CenterLeft))
+            .disableHoverBackground()
+            .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+            .onMousePressed(d -> {
+                textList.getScrollData()
+                    .animateTo(
+                        textList.getScrollArea(),
+                        jumpPoint.getArea()
+                            .getRelativePoint(GuiAxis.Y));
+                return true;
+            });
     }
 
     private ModularPanel openContributorsPanel(ModularPanel parent) {
