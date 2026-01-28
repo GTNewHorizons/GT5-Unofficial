@@ -4,6 +4,7 @@ import static gregtech.api.modularui2.GTGuiTextures.PROGRESSBAR_NANOCHIP_CALIBRA
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.BATCH_SIZE;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CALIBRATION_MAX;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -370,39 +371,39 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("primitives", IntSyncValue.class)::getValue,
                 Color.YELLOW,
-                "Primitive Circuits"),
+                "GT5U.gui.text.nac.bar.label.primitives"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("crystals", IntSyncValue.class)::getValue,
                 Color.LIGHT_BLUE,
-                "Crystal Circuits"),
+                "GT5U.gui.text.nac.bar.label.crystals"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("wetwares", IntSyncValue.class)::getValue,
                 Color.RED_ACCENT,
-                "Wetware Circuits"),
+                "GT5U.gui.text.nac.bar.label.wetwares"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("bios", IntSyncValue.class)::getValue,
                 Color.LIGHT_GREEN,
-                "Bio Circuits"),
+                "GT5U.gui.text.nac.bar.label.bios"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("opticals", IntSyncValue.class)::getValue,
                 Color.ORANGE,
-                "Optical Circuits"),
+                "GT5U.gui.text.nac.bar.label.opticals"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("exotics", IntSyncValue.class)::getValue,
                 Color.PURPLE,
-                "Exotic Circuits"),
+                "GT5U.gui.text.nac.bar.label.exotics"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("cosmics", IntSyncValue.class)::getValue,
                 Color.BLUE,
-                "Cosmic Circuits"),
+                "GT5U.gui.text.nac.bar.label.cosmics"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("temporals", IntSyncValue.class)::getValue,
                 Color.WHITE,
-                "Temporally Transcendent Circuits"),
+                "GT5U.gui.text.nac.bar.label.temporals"),
             new SegmentedBarWidget.SegmentInfo(
                 syncManager.findSyncHandler("specials", IntSyncValue.class)::getValue,
                 Color.WHITE,
-                "High-Grade Specialty Circuits")).width(getTerminalRowWidth() - 47)
+                "GT5U.gui.text.nac.bar.label.specials")).width(getTerminalRowWidth() - 47)
                     .height(14);
     }
 
@@ -462,8 +463,12 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             .size(18, 18)
             .tooltipAutoUpdate(true)
             .tooltipDynamic(tt -> {
-                tt.addLine("Nanocalibration in progress.");
-                tt.addLine("Circuits needed for next update: " + blockSyncer.getValue() + "/" + BATCH_SIZE);
+                tt.addLine(translateToLocal("GT5U.gui.text.nac.bar.calibration.progress.1"));
+                tt.addLine(
+                    translateToLocalFormatted(
+                        "GT5U.gui.text.nac.bar.calibration.progress.2",
+                        blockSyncer.getIntValue(),
+                        BATCH_SIZE));
             });
     }
 
@@ -623,7 +628,6 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     default -> "This time not a lie";
                 };
             case "6" -> "7";
-            case "tilapia" -> "An awesome protein for your fried rice!";
             case "joke" -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "No time for jokes.";
                     case 2 -> "A rolling golem gathers no rust.";
