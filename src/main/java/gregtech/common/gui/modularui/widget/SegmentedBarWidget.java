@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.widget;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +36,7 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
     public void createTooltip(RichTooltip builder) {
         for (SegmentInfo segment : segments) {
             if (segment.valueSupplier.get() > 0) {
-                builder.addLine(segment.label + ": " + segment.valueSupplier.get());
+                builder.addLine(translateToLocal(segment.labelKey) + ": " + segment.valueSupplier.get());
             }
         }
     }
@@ -79,12 +81,12 @@ public class SegmentedBarWidget extends Widget<SegmentedBarWidget> {
 
         public Supplier<Integer> valueSupplier;
         public ColorShade color;
-        public String label;
+        public String labelKey;
 
-        public SegmentInfo(Supplier<Integer> valueSupplier, ColorShade color, String label) {
+        public SegmentInfo(Supplier<Integer> valueSupplier, ColorShade color, String labelKey) {
             this.valueSupplier = valueSupplier;
             this.color = color;
-            this.label = label;
+            this.labelKey = labelKey;
         }
     }
 }
