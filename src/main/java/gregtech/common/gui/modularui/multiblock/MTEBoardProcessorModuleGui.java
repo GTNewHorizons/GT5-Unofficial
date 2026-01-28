@@ -127,39 +127,19 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
 
-        return super.createLeftPanelGapRow(parent, syncManager).child(
-            new ButtonWidget<>().size(18, 18)
-                .playClickSound(true)
-                .onMousePressed(d -> {
-                    syncManager.callSyncedAction("fillTank", $ -> {});
-                    return false;
-                })
-                .tooltipBuilder(t -> t.addLine("Fill"))
-                .tooltipShowUpTimer(TOOLTIP_DELAY))
+        return super.createLeftPanelGapRow(parent, syncManager)
             .child(
                 new ButtonWidget<>().size(18, 18)
+                    .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/arrow_green_down"))
                     .playClickSound(true)
                     .onMousePressed(d -> {
                         syncManager.callSyncedAction("flushTank", $ -> {});
                         return false;
                     })
-                    .tooltipBuilder(t -> t.addLine("Flush"))
+                    .tooltipBuilder(t -> t.addLine("Flush Tank"))
                     .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(createAutomationButton(syncManager, parent));
     }
-
-    //@Override
-    //protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-
-    //    IntSyncValue processedItems = syncManager.findSyncHandler("processedItems", IntSyncValue.class);
-    //    DoubleSyncValue impurity = syncManager.findSyncHandler("impurity", DoubleSyncValue.class);
-    //    FloatSyncValue eu = syncManager.findSyncHandler("euMult", FloatSyncValue.class);
-
-    //    return super.createTerminalTextWidget(syncManager, parent)
-    //        .child(new TextWidget<>(IKey.dynamic(processedItems::getStringValue)))
-    //        .child(new TextWidget<>(IKey.dynamic(impurity::getStringValue)))
-    //        .child(new TextWidget<>(IKey.dynamic(eu::getStringValue)));
-    //}
 
     @NotNull
     private ModularPanel openAutoPanel(ModularPanel parent,
@@ -205,7 +185,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine("dn"))
+            .tooltipBuilder(t -> t.addLine("Edit auto-flush settings"))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
