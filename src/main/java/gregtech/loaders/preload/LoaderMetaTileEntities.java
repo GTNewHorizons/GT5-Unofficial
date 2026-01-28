@@ -134,7 +134,7 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter1;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
-import gregtech.common.tileentities.machines.multi.MTEBiosphere;
+import gregtech.common.tileentities.machines.multi.MTEBiodome;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
@@ -584,8 +584,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
 
-        ItemList.Machine_Multi_Biosphere
-            .set(new MTEBiosphere(BIOSPHERE_CONTROLLER.ID, "multimachine.biosphere", "Biosphere").getStackForm(1));
+        ItemList.Machine_Multi_Biodome
+            .set(new MTEBiodome(BIODOME_CONTROLLER.ID, "multimachine.biodome", "Biodome").getStackForm(1));
 
         ItemList.Machine_Multi_Spinmatron.set(
             new MTESpinmatron(SPINMATRON_CONTROLLER.ID, "multimachine.spinmatron", "Spinmatron-2737").getStackForm(1));

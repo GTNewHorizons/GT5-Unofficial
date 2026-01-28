@@ -6,10 +6,10 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
-import gregtech.loaders.postload.BiodomeCalibrationLoader;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
+import gregtech.loaders.postload.BiodomeCalibrationLoader;
 import gregtech.loaders.postload.FoundryFakeModuleCostLoader;
 import tectech.TecTech;
 

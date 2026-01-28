@@ -1344,7 +1344,7 @@ public final class RecipeMaps {
         .dontUseProgressBar()
         .neiTransferRect(87, 38, 30, 13)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(ItemList.Machine_Multi_Biosphere.get(1))
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_Biodome.get(1))
                 .setHeight(100))
         .build();
 }

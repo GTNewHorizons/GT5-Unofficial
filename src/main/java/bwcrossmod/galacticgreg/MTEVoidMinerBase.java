@@ -48,7 +48,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
-import gregtech.api.interfaces.IBiosphereCompatible;
+import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -59,12 +59,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.tileentities.machines.multi.MTEBiosphere;
+import gregtech.common.tileentities.machines.multi.MTEBiodome;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtneioreplugin.util.DimensionHelper;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable, IBiosphereCompatible {
+    implements ISurvivalConstructable, IBiodomeCompatible {
 
     private ModDimensionDef dimensionDef;
     private boolean canVoidMine = true;
@@ -78,7 +78,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     private boolean mBlacklist = false;
 
-    MTEBiosphere connectedBiosphere = null;
+    MTEBiodome connectedBiodome = null;
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -269,8 +269,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.totalWeight = 0;
         this.canVoidMine = false;
 
-        if (connectedBiosphere != null)
-            dimensionDef = DimensionDef.getDefByName(connectedBiosphere.getDimensionOverride());
+        if (connectedBiodome != null) dimensionDef = DimensionDef.getDefByName(connectedBiodome.getDimensionOverride());
         else dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
 
         if (dimensionDef == null || !dimensionDef.canBeVoidMined()) return;
@@ -408,8 +407,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     @Override
-    public void updateBiosphere(MTEBiosphere biosphere) {
-        connectedBiosphere = biosphere;
+    public void updateBiodome(MTEBiodome biodome) {
+        connectedBiodome = biodome;
         calculateDropMap();
     }
 }

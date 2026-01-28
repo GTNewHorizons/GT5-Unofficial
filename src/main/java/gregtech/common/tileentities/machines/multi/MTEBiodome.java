@@ -26,7 +26,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IBiosphereCompatible;
+import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,15 +41,15 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.casing.TTCasingsContainer;
 
-public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> implements ISurvivalConstructable {
+public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> implements ISurvivalConstructable {
 
     public static final int WIDTH_OFFSET = 19;
     public static final int HEIGHT_OFFSET = 0;
     public static final int DEPTH_OFFSET = 19;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEBiosphere> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEBiosphere>builder()
+    private static final IStructureDefinition<MTEBiodome> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEBiodome>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -87,26 +87,26 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
         .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 7))
         .addElement(
             'x',
-            ofChain(onElementPass(t -> {}, ofBlock(Blocks.air, 0)), ofTileAdder(MTEBiosphere::addMTE, Blocks.air, 0)))
+            ofChain(onElementPass(t -> {}, ofBlock(Blocks.air, 0)), ofTileAdder(MTEBiodome::addMTE, Blocks.air, 0)))
         .build();
 
-    private final Set<IBiosphereCompatible> connectedTEs = new HashSet<>();
+    private final Set<IBiodomeCompatible> connectedTEs = new HashSet<>();
 
     public boolean addMTE(TileEntity te) {
         if (te instanceof BaseMetaTileEntity bmte) {
-            if (bmte.getMetaTileEntity() instanceof IBiosphereCompatible bc) setTileDim(bc);
-        } else if (te instanceof IBiosphereCompatible bc) setTileDim(bc);
+            if (bmte.getMetaTileEntity() instanceof IBiodomeCompatible bc) setTileDim(bc);
+        } else if (te instanceof IBiodomeCompatible bc) setTileDim(bc);
         return true;
     }
 
-    private void setTileDim(IBiosphereCompatible te) {
+    private void setTileDim(IBiodomeCompatible te) {
         connectedTEs.add(te);
-        te.updateBiosphere(this);
+        te.updateBiodome(this);
     }
 
     private void clearTileDims() {
-        for (IBiosphereCompatible te : connectedTEs) {
-            te.updateBiosphere(null);
+        for (IBiodomeCompatible te : connectedTEs) {
+            te.updateBiodome(null);
         }
     }
 
@@ -119,22 +119,22 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
         return "Nether";
     }
 
-    public MTEBiosphere(final int aID, final String aName, final String aNameRegional) {
+    public MTEBiodome(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEBiosphere(String aName) {
+    public MTEBiodome(String aName) {
         super(aName);
     }
 
     @Override
-    public IStructureDefinition<MTEBiosphere> getStructureDefinition() {
+    public IStructureDefinition<MTEBiodome> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBiosphere(this.mName);
+        return new MTEBiodome(this.mName);
     }
 
     @Override
@@ -183,9 +183,9 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
             .addInfo("Replicates the conditions of a dimension within the dome")
             .addInfo("Anything inside will operate as if it was built in the active dimension")
             .addInfo("Each dimension must be calibrated by providing resources from that dimension")
-            .addInfo("If the Biosphere shuts down, calibration will be lost")
+            .addInfo("If the Biodome shuts down, calibration will be lost")
             .addSeparator()
-            .addInfo("The Biosphere's floor can accept dynamos and energy hatches to pass power into the dome")
+            .addInfo("The Biodome's floor can accept dynamos and energy hatches to pass power into the dome")
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
