@@ -23,6 +23,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
     public static final String BACKGROUND_TITLE_FOUNDRY = "gregtech:bg_title_foundry";
     public static final String BACKGROUND_TITLE_NANOCHIP = "gregtech:bg_title_nanochip";
+    public static final String BACKGROUND_NAMEPLATE_NANOCHIP = "gregtech:bg_nameplate_nanochip";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
