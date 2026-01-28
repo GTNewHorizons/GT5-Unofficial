@@ -102,13 +102,13 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
             .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")
             .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
             .addInfo("You need to wait for it to reach 300% to output full power")
+            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
             .addCasingInfoRange("Stable Titanium Machine Casing", 16, 22, false)
             .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
             .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
-            .addStructureInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addDynamoHatch("Back center", 2)
             .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
             .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
@@ -310,11 +310,21 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setInteger("mEfficiency", mEfficiency);
+        aNBT.setBoolean("boostEu", boostEu);
+        aNBT.setInteger("fuelConsumption", fuelConsumption);
+        aNBT.setInteger("fuelValue", fuelValue);
+        aNBT.setInteger("fuelRemaining", fuelRemaining);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mEfficiency = aNBT.getInteger("mEfficiency");
+        boostEu = aNBT.getBoolean("boostEu");
+        fuelConsumption = aNBT.getInteger("fuelConsumption");
+        fuelValue = aNBT.getInteger("fuelValue");
+        fuelRemaining = aNBT.getInteger("fuelRemaining");
     }
 
     @Override
