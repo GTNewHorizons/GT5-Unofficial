@@ -155,7 +155,16 @@ public class ColorGridWidget extends Column {
         }.background(false, drawButton(Color.multiply(color, 0.5F, false)))
             .background(true, drawButton(color))
             .hoverOverlay(drawButton(Color.multiply(color, 0.7F, false)))
-            .tooltip(tooltip -> tooltip.add(Dyes.VALUES[index].getLocalizedDyeName()))
+            .tooltipDynamic(tooltip -> {
+                if (selected.contains((byte) index)) {
+                    tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
+                    tooltip.add(EnumChatFormatting.GREEN + " Selected");
+                } else {
+                    tooltip.addLine((EnumChatFormatting.GRAY + "Click to select"));
+                    tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
+
+                }
+            })
             .size(buttonSize, buttonSize);
     }
 
