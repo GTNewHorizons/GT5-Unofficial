@@ -1642,6 +1642,7 @@ GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 
 # NAC Info Panel
+GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
 GT5U.gui.text.nac.info.open=Open Info Panel
 GT5U.gui.text.nac.info.toc=Table of Contents
 GT5U.gui.text.nac.info.introduction.header=Introduction
