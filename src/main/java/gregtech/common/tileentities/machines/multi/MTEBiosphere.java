@@ -101,12 +101,12 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
 
     private void setTileDim(IBiosphereCompatible te) {
         connectedTEs.add(te);
-        te.setDimensionOverride(this);
+        te.updateBiosphere(this);
     }
 
     private void clearTileDims() {
         for (IBiosphereCompatible te : connectedTEs) {
-            te.setDimensionOverride(null);
+            te.updateBiosphere(null);
         }
     }
 

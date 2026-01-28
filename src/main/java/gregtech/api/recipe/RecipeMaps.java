@@ -1336,4 +1336,15 @@ public final class RecipeMaps {
             builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
                 .setHeight(100))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> biodomeFakeCalibrationRecipes = RecipeMapBuilder
+        .of("gt.recipe.biodome_calibration")
+        .maxIO(6, 1, 3, 0)
+        .addSpecialTexture(87, 38, 30, 13, GTUITextures.PICTURE_ARROW_GRAY)
+        .dontUseProgressBar()
+        .neiTransferRect(87, 38, 30, 13)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_Biosphere.get(1))
+                .setHeight(100))
+        .build();
 }

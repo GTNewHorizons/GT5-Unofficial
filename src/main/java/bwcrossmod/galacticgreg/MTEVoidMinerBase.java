@@ -408,7 +408,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     @Override
-    public void setDimensionOverride(MTEBiosphere biosphere) {
+    public void updateBiosphere(MTEBiosphere biosphere) {
         connectedBiosphere = biosphere;
         calculateDropMap();
     }

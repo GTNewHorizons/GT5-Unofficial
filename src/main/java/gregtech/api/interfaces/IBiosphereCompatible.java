@@ -14,5 +14,5 @@ public interface IBiosphereCompatible {
      * The biosphere is guaranteed to call this method with a null reference whenever the biosphere is removed or
      * shut down. Tile entities should use their regular dimension behavior when the stored reference is null.
      */
-    void setDimensionOverride(MTEBiosphere biosphere);
+    void updateBiosphere(MTEBiosphere biosphere);
 }
