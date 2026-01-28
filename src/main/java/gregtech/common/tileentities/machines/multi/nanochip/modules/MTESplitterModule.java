@@ -145,26 +145,11 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return false;
     }
 
-    @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, SPLITTER_OFFSET_X, SPLITTER_OFFSET_Y, SPLITTER_OFFSET_Z);
-    }
+    public int structureOffsetX() { return SPLITTER_OFFSET_X; }
 
-    @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            SPLITTER_OFFSET_X,
-            SPLITTER_OFFSET_Y,
-            SPLITTER_OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
+    public int structureOffsetY() { return SPLITTER_OFFSET_Y; }
+
+    public int structureOffsetZ() { return SPLITTER_OFFSET_Z; }
 
     public List<Byte> getGetOutputColors(byte color, ItemStack item) {
         Set<Byte> set = new HashSet<>();
@@ -195,46 +180,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             case 15 -> EnumChatFormatting.WHITE;
             default -> EnumChatFormatting.RESET;
         };
-    }
-
-    private void assignHatchIdentifiers() {
-        // Assign ID of all hatches based on their color, index and whether they are an input or an output hatch.
-
-        int hatchID = 0;
-        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorInput>> inputList : this.vacuumConveyorInputs.hatchMap()
-            .entrySet()) {
-            byte color = inputList.getKey();
-            EnumChatFormatting colorFormat = getPrefixColor(color);
-            ArrayList<MTEHatchVacuumConveyorInput> hatches = inputList.getValue();
-            for (MTEHatchVacuumConveyorInput hatch : hatches) {
-                hatch.identifier = colorFormat + "In/" + hatchID;
-                hatchID += 1;
-            }
-        }
-
-        hatchID = 0;
-        for (Map.Entry<Byte, ArrayList<MTEHatchVacuumConveyorOutput>> outputList : this.vacuumConveyorOutputs.hatchMap()
-            .entrySet()) {
-            byte color = outputList.getKey();
-            EnumChatFormatting colorFormat = getPrefixColor(color);
-            ArrayList<MTEHatchVacuumConveyorOutput> hatches = outputList.getValue();
-            for (MTEHatchVacuumConveyorOutput hatch : hatches) {
-                hatch.identifier = colorFormat + "Out/" + hatchID;
-                hatchID += 1;
-            }
-        }
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        // Now check module structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, SPLITTER_OFFSET_X, SPLITTER_OFFSET_Y, SPLITTER_OFFSET_Z)) {
-            return false;
-        }
-        assignHatchIdentifiers();
-        return true;
     }
 
     @Override

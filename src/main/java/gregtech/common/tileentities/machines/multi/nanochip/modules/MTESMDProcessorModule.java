@@ -106,34 +106,11 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, SMD_OFFSET_X, SMD_OFFSET_Y, SMD_OFFSET_Z);
-    }
+    public int structureOffsetX() { return SMD_OFFSET_X; }
 
-    @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            SMD_OFFSET_X,
-            SMD_OFFSET_Y,
-            SMD_OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
+    public int structureOffsetY() { return SMD_OFFSET_Y; }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, SMD_OFFSET_X, SMD_OFFSET_Y, SMD_OFFSET_Z);
-    }
+    public int structureOffsetZ() { return SMD_OFFSET_Z; }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {

@@ -124,32 +124,11 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            hintsOnly,
-            SUPERCOND_SPLITTER_OFFSET_X,
-            SUPERCOND_SPLITTER_OFFSET_Y,
-            SUPERCOND_SPLITTER_OFFSET_Z);
-    }
+    public int structureOffsetX() { return SUPERCOND_SPLITTER_OFFSET_X; }
 
-    @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            SUPERCOND_SPLITTER_OFFSET_X,
-            SUPERCOND_SPLITTER_OFFSET_Y,
-            SUPERCOND_SPLITTER_OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
+    public int structureOffsetY() { return SUPERCOND_SPLITTER_OFFSET_Y; }
+
+    public int structureOffsetZ() { return SUPERCOND_SPLITTER_OFFSET_Z; }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -157,12 +136,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         // Add coolant hatch
         if (!findCoolantHatch()) return false;
-        // Now check module structure
-        return checkPiece(
-            STRUCTURE_PIECE_MAIN,
-            SUPERCOND_SPLITTER_OFFSET_X,
-            SUPERCOND_SPLITTER_OFFSET_Y,
-            SUPERCOND_SPLITTER_OFFSET_Z);
+        return true;
     }
 
     private boolean findCoolantHatch() {
