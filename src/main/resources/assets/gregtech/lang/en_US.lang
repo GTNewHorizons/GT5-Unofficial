@@ -1642,6 +1642,17 @@ GT5U.gui.text.nac.waiting_for_power=Waiting For Power
 GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
 
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
+GT5U.gui.text.nac.bar.calibration.progress.1=Nanocalibration in progress.
+GT5U.gui.text.nac.bar.calibration.progress.2=Circuits needed for next update: %s / %s
+GT5U.gui.text.nac.bar.label.primitives=Primitive Circuits
+GT5U.gui.text.nac.bar.label.crystals=Crystal Circuits
+GT5U.gui.text.nac.bar.label.wetwares=Wetware Circuits
+GT5U.gui.text.nac.bar.label.bios=Bio Circuits
+GT5U.gui.text.nac.bar.label.opticals=Optical Circuits
+GT5U.gui.text.nac.bar.label.exotics=Exotics Circuits
+GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
+GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
+GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
