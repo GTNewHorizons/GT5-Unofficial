@@ -213,7 +213,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            module.setBufferSize(this.getMaxInputEu() * maxDurationOfModuleRecipe * MODULE_CONNECT_INTERVAL);
+            module.setBufferSize(this.getMaxInputEu() * maxDurationOfModuleRecipe);
             module.setAvailableEUt(this.getMaxInputEu());
         }
         return true;
