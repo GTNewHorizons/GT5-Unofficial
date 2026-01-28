@@ -199,11 +199,8 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
             .addInfo(
                 translateToLocalFormatted("GT5U.tooltip.nac.module.assembly_matrix.action", TOOLTIP_CCs, TOOLTIP_CCs))
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo("Maximum allowed recipe tier is determined by")
             .addInfo("the tier of the " + EnumChatFormatting.WHITE + "Component Assembly Line Casing")

@@ -31,15 +31,8 @@ public interface NanochipTooltipValues {
 
     String TOOLTIP_COLORED = translateToLocal("GT5U.tooltip.nac.interface.colored");
 
-    String TOOLTIP_COLOR_MATCH_VCS = translateToLocalFormatted(
-        "GT5U.tooltip.nac.interface.color_match_vcs",
-        TOOLTIP_VCO,
-        TOOLTIP_COLOR,
-        TOOLTIP_VCI);
-
     String TOOLTIP_MODULE_DESCRIPTION = translateToLocal("GT5U.tooltip.nac.interface.module_description");
 
-    String TOOLTIP_INFINITE_PARALLEL = translateToLocal("GT5U.tooltip.nac.interface.infinite_parallel");
     String TOOLTIP_STRUCTURE_BASE_CASING = translateToLocal("GT5U.tooltip.nac.interface.structure_base_casing");
     String TOOLTIP_STRUCTURE_BASE_VCI = translateToLocalFormatted(
         "GT5U.tooltip.nac.interface.structure_base_vci",
