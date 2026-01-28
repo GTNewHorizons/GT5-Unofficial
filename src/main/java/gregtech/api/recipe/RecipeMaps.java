@@ -1311,8 +1311,7 @@ public final class RecipeMaps {
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
-        .neiRecipeBackgroundOffset(7, 0)
-        .neiRecipeBackgroundSize(165, 60)
+        .neiRecipeBackgroundSize(170, 60)
         .logoPos(150, 38)
         .frontend(CauldronFrontend::new)
         .neiHandlerInfo(builder -> {

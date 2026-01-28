@@ -795,7 +795,7 @@ public class GTUtility {
                     inflateStack.stackSize += toTransfer;
                     remaining -= toTransfer;
 
-                    didSomething.setTrue();
+                    didSomething.setValue(true);
 
                     if (toBeExtracted.left().stackSize <= 0) {
                         inv.set(toBeExtracted.rightInt(), null);
@@ -827,7 +827,7 @@ public class GTUtility {
                 if (stack != null) {
                     inv.set(insert, stack);
                     inv.set(extract, null);
-                    didSomething.setTrue();
+                    didSomething.setValue(true);
                 } else {
                     break;
                 }
@@ -836,7 +836,7 @@ public class GTUtility {
             insert++;
         }
 
-        return didSomething.isTrue();
+        return didSomething.getValue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {
