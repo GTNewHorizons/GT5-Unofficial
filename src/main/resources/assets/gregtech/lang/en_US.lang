@@ -949,6 +949,7 @@ gt.recipe.nanochip.wiretracer=Nanoprecision Wire Tracer
 gt.recipe.nanochip.superconductorsplitter=Superconductive Strand Splitter
 gt.recipe.nanochip.opticalorganizer=Optically Optimized Organizer
 gt.recipe.nanochip.biologicalcoordinator=Accelerated Biological Coordinator
+gt.recipe.nanochip.encasementwrapper=Nanometer Encasement Wrapper
 
 GT5U.MS.multismelting=Multi smelting
 
