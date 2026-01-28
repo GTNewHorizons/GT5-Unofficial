@@ -96,7 +96,7 @@ public class SplitterRule {
         // If a redstone mode is set
         if (redstoneMode != null) {
             // Redstone level in requested channel should be at least the given level
-            if (redstoneMode.level < redstoneState.get(redstoneMode.channel)) {
+            if (redstoneMode.level > redstoneState.get(redstoneMode.channel)) {
                 return false;
             }
         }
