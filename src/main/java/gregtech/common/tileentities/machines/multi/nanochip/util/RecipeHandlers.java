@@ -373,7 +373,7 @@ public class RecipeHandlers {
         // Crystal
         GTValues.RA.stdBuilder()
             .itemInputs(CircuitComponent.ProcessedFrameboxAluminium.getFakeStack(2))
-            .itemOutputs(CircuitComponent.BasicMainframeCasing.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBasicMainframeCasing.getFakeStack(1))
             .duration(20)
             .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
@@ -384,7 +384,7 @@ public class RecipeHandlers {
                 CircuitComponent.ProcessedFoilSiliconeRubber.getFakeStack(16),
                 CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(1),
                 CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(16))
-            .itemOutputs(CircuitComponent.AdvancedMainframeCasing.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedAdvancedMainframeCasing.getFakeStack(1))
             .duration(20)
             .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
@@ -396,7 +396,7 @@ public class RecipeHandlers {
                 CircuitComponent.ScrewAstralTitanium.getFakeStack(4),
                 CircuitComponent.CasingUEVSuperconductor.getFakeStack(1),
                 CircuitComponent.ProcessedFoilRadoxPolymer.getFakeStack(16))
-            .itemOutputs(CircuitComponent.PicoCircuitCasing.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedPicoCircuitCasing.getFakeStack(1))
             .duration(20)
             .eut(ModuleRecipeInfo.ExtremeTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
@@ -408,7 +408,7 @@ public class RecipeHandlers {
                 CircuitComponent.ScrewSixPhasedCopper.getFakeStack(4),
                 CircuitComponent.CasingCreon.getFakeStack(1),
                 CircuitComponent.ProcessedFoilShirabon.getFakeStack(48))
-            .itemOutputs(CircuitComponent.QuantumCircuitCasing.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedQuantumCircuitCasing.getFakeStack(1))
             .duration(20)
             .eut(ModuleRecipeInfo.ExtremeTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
@@ -774,7 +774,7 @@ public class RecipeHandlers {
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.BasicMainframeCasing, 1),
+                new CircuitComponentStack(CircuitComponent.ProcessedBasicMainframeCasing, 1),
                 new CircuitComponentStack(CircuitComponent.CrystalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
                 new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
@@ -847,7 +847,7 @@ public class RecipeHandlers {
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 2),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvancedMainframeCasing, 2),
                 new CircuitComponentStack(CircuitComponent.WetwareComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 4),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
@@ -940,7 +940,7 @@ public class RecipeHandlers {
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvancedMainframeCasing, 4),
                 new CircuitComponentStack(CircuitComponent.BiowareComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 6),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 6),
@@ -1027,7 +1027,7 @@ public class RecipeHandlers {
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 8),
+                new CircuitComponentStack(CircuitComponent.ProcessedAdvancedMainframeCasing, 8),
                 new CircuitComponentStack(CircuitComponent.OpticalComputer, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 32),
@@ -1053,7 +1053,7 @@ public class RecipeHandlers {
         if (NewHorizonsCoreMod.isModLoaded()) {
             addAssemblyMatrixRecipe(
                 Arrays.asList(
-                    new CircuitComponentStack(CircuitComponent.PicoCircuitCasing, 1),
+                    new CircuitComponentStack(CircuitComponent.ProcessedPicoCircuitCasing, 1),
                     new CircuitComponentStack(CircuitComponent.ProcessedChipPico, 4),
                     new CircuitComponentStack(CircuitComponent.OpticalMainframe, 2),
                     new CircuitComponentStack(CircuitComponent.ProcessedChipPikoPIC, 64),
@@ -1076,7 +1076,7 @@ public class RecipeHandlers {
 
             addAssemblyMatrixRecipe(
                 Arrays.asList(
-                    new CircuitComponentStack(CircuitComponent.QuantumCircuitCasing, 1),
+                    new CircuitComponentStack(CircuitComponent.ProcessedQuantumCircuitCasing, 1),
                     new CircuitComponentStack(CircuitComponent.ProcessedPlateMetastableOganesson, 2),
                     new CircuitComponentStack(CircuitComponent.PicoCircuit, 2),
                     new CircuitComponentStack(CircuitComponent.ProcessedChipQuantumPIC, 64),
