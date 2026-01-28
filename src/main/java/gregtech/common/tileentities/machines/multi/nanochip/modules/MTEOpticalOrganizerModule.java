@@ -156,62 +156,37 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
+        // spotless:off
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(
-                "Requires 2 " + EnumChatFormatting.AQUA
-                    + "Purified Waters"
-                    + EnumChatFormatting.GRAY
-                    + " to be supplied")
-
-            .addInfo(
-                "Will " + EnumChatFormatting.DARK_GREEN
-                    + "drain X L/s"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.AQUA
-                    + "Waters"
-                    + EnumChatFormatting.GRAY
-                    + " when running to provide "
-                    + EnumChatFormatting.WHITE
-                    + "Bonuses")
-            .addInfo(
-                EnumChatFormatting.WHITE + "Bonuses"
-                    + EnumChatFormatting.GRAY
-                    + " of "
-                    + EnumChatFormatting.AQUA
-                    + "Waters"
-                    + EnumChatFormatting.GRAY
-                    + " in the same pair do NOT stack!")
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body1"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body2"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body3"))
             .addSeparator()
-            // scuffed but works i guess.
-            .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, "0.8x Water Cost", TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, "0.6x Water Cost", TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, "1.3x Speed", EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, "1.8x Speed", EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, "0.8x EU", TooltipHelper.PARALLEL_COLOR))
-            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, "0.5x EU", TooltipHelper.PARALLEL_COLOR))
+            .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.8x"), EnumChatFormatting.WHITE))
+            .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.6x"), EnumChatFormatting.WHITE))
+            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","1.3x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","1.8x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.8x"), TooltipHelper.EFF_COLOR))
+            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.5x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
+        // spotless:on
     }
 
     public String getWaterTooltipLine(String grade, int amount, String effect, EnumChatFormatting effectColor) {
-        return "Grade " + EnumChatFormatting.AQUA
-            + grade
-            + EnumChatFormatting.GRAY
-            + "/"
-            + EnumChatFormatting.DARK_GREEN
-            + amount
-            + EnumChatFormatting.GRAY
-            + "/"
-            + effectColor
-            + effect;
+        return translateToLocalFormatted(
+            "GT5U.tooltip.nac.module.optical_organizer.body.water",
+            grade,
+            amount,
+            effectColor,
+            effect);
     }
 
     @Override
