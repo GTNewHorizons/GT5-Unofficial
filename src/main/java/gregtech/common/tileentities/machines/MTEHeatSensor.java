@@ -1,4 +1,8 @@
-package gregtech.common.tileentities.machines.multi.compressor;
+package gregtech.common.tileentities.machines;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,25 +15,28 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHeatProducer;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 
 public class MTEHeatSensor extends MTEHatch {
 
+    protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
+    protected static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
+
     protected double threshold = 0;
     protected boolean inverted = false;
-    private boolean isOn = false;
-
-    private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
-    private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
+    protected float heat = 0;
 
     public MTEHeatSensor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Reads heat from HIP Unit.");
+        super(aID, aName, aNameRegional, aTier, 0, "Reads heat from a machine.");
     }
 
     public MTEHeatSensor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -77,7 +84,8 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Reads heat of Hot Isostatic Pressurization Unit.",
+        return new String[] { "Reads heat of a machine.",
+            "Send redstone signal if the heat is greater than the threshold.",
             "Right click to open the GUI and change settings." };
     }
 
@@ -85,6 +93,7 @@ public class MTEHeatSensor extends MTEHatch {
     public void loadNBTData(NBTTagCompound aNBT) {
         threshold = aNBT.getDouble("mThreshold");
         inverted = aNBT.getBoolean("mInverted");
+        heat = aNBT.getFloat("heat");
         super.loadNBTData(aNBT);
     }
 
@@ -92,28 +101,25 @@ public class MTEHeatSensor extends MTEHatch {
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setDouble("mThreshold", threshold);
         aNBT.setBoolean("mInverted", inverted);
+        aNBT.setFloat("heat", heat);
         super.saveNBTData(aNBT);
     }
 
-    /**
-     * Updates redstone output strength based on the heat of the HIP unit.
-     */
-    public void updateRedstoneOutput(float heat) {
-        isOn = (heat > threshold) ^ inverted;
+    public void setHeatValue(float heat) {
+        this.heat = heat;
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (isOn) {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 15);
-            }
-        } else {
-            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                aBaseMetaTileEntity.setStrongOutputRedstoneSignal(side, (byte) 0);
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
+        boolean isOn = (heat > threshold) ^ inverted;
+        if (aBaseMetaTileEntity.isServerSide()) {
+            for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+                aBaseMetaTileEntity
+                    .setStrongOutputRedstoneSignal(direction, isOn && direction == facing ? (byte) 15 : 0);
             }
         }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -123,7 +129,7 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TEXTURE_FRONT), TextureFactory.builder()
             .addIcon(textureFont_Glow)
             .glow()
             .build() };
@@ -131,7 +137,7 @@ public class MTEHeatSensor extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(TEXTURE_FRONT) };
     }
 
     public double getThreshold() {
@@ -158,6 +164,34 @@ public class MTEHeatSensor extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHeatSensorGui(this).build(data, syncManager, uiSettings);
+    }
+
+    public enum HeatSensorHatchElement implements IHatchElement<IHeatProducer> {
+
+        HeatSensor(IHeatProducer::addHeatSensorHatchToMachineList, MTEHeatSensor.class);
+
+        private final IGTHatchAdder<IHeatProducer> adder;
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+
+        HeatSensorHatchElement(IGTHatchAdder<IHeatProducer> adder, Class<? extends IMetaTileEntity> mteClasse) {
+            this.adder = adder;
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasse));
+        }
+
+        @Override
+        public long count(IHeatProducer heatProducer) {
+            return heatProducer.getHeatSensorHatchNum();
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        public IGTHatchAdder<? super IHeatProducer> adder() {
+            return adder;
+        }
+
     }
 
 }
