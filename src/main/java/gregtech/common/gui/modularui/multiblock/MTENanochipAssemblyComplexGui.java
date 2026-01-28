@@ -30,6 +30,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.SingleChildWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widget.scroll.ScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -406,6 +407,27 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     @Override
+    public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return super.createMainColumn(panel, syncManager).child(createTitleColumn(panel, syncManager));
+    }
+
+    private Flow createTitleColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        StringSyncValue titleSync = syncManager.findSyncHandler("calibrationTitle", StringSyncValue.class);
+
+        return new Column().widthRel(1)
+            .paddingLeft(4)
+            .paddingLeft(4)
+            .coverChildrenHeight()
+            .child(
+                new SingleChildWidget<>().size(144, 24)
+                    .background(GTGuiTextures.BACKGROUND_NANOCHIP_NAMEPLATE)
+                    .overlay(
+                        IKey.dynamic(
+                            () -> titleSync.getStringValue() + "\n"
+                                + translateToLocal("GT5U.gui.text.nac.nameplate"))));
+    }
+
+    @Override
     protected Flow createPanelGap(ModularPanel panel, PanelSyncManager syncManager) {
         return new Row().widthRel(1)
             .paddingRight(6)
@@ -422,15 +444,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                         Flow.row()
                             .childPadding(2)
                             .child(createBarWidget(syncManager))
-                            .child(createCalibrationProgressBar(syncManager)))
-                    .child(
-                        IKey.dynamic(
-                            () -> syncManager.findSyncHandler("calibrationTitle", StringSyncValue.class)
-                                .getStringValue())
-                            .asWidget())
-                    .child(
-                        IKey.str("Nanochip Assembly Complex")
-                            .asWidget()))
+                            .child(createCalibrationProgressBar(syncManager))))
 
             .child(createButtonColumn(panel, syncManager));
     }

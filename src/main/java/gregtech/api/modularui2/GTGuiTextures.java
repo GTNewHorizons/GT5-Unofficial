@@ -134,6 +134,11 @@ public final class GTGuiTextures {
         .adaptable(4)
         .canApplyTheme()
         .build();
+    public static final UITexture BACKGROUND_NANOCHIP_NAMEPLATE = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_nameplate")
+        .imageSize(144, 24)
+        .name(GTTextureIds.BACKGROUND_NAMEPLATE_NANOCHIP)
+        .build();
 
     public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
         .location(GregTech.ID, "gui/background/contributors_foundry")
