@@ -132,34 +132,11 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, BOARD_OFFSET_X, BOARD_OFFSET_Y, BOARD_OFFSET_Z);
-    }
+    public int structureOffsetX() { return BOARD_OFFSET_X; }
 
-    @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            BOARD_OFFSET_X,
-            BOARD_OFFSET_Y,
-            BOARD_OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
+    public int structureOffsetY() { return BOARD_OFFSET_Y; }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, BOARD_OFFSET_X, BOARD_OFFSET_Y, BOARD_OFFSET_Z);
-    }
+    public int structureOffsetZ() { return BOARD_OFFSET_Z; }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
