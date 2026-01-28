@@ -43,14 +43,14 @@ import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterM
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.SplitterRuleAdapter;
 
-public class SplitterGui extends MTENanochipAssemblyModuleBaseGui<MTESplitterModule> {
+public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESplitterModule> {
 
     private static final SplitterRuleAdapter RULE_ADAPTER = new SplitterRuleAdapter();
 
     int scrollValue;
     ModularPanel subPanel;
 
-    public SplitterGui(MTESplitterModule multiblock) {
+    public MTESplitterModuleGui(MTESplitterModule multiblock) {
         super(multiblock);
     }
 

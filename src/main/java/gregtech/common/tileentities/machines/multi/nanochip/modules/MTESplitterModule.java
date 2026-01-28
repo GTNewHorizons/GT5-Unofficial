@@ -44,7 +44,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.gui.modularui.multiblock.SplitterGui;
+import gregtech.common.gui.modularui.multiblock.MTESplitterModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
@@ -325,7 +325,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<MTESplitterModule> getGui() {
-        return new SplitterGui(this);
+        return new MTESplitterModuleGui(this);
     }
 
     public static class RedstoneChannelInfo {
