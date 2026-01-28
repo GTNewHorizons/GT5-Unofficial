@@ -11,8 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSE
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.GTUtility.stackToInt;
-import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
@@ -26,10 +24,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 
-import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -444,17 +440,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             if (routed) {
                 stack.bus.removeAllResource(stack.stack);
 
-                /*final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
-                for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
-                    if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
-                        if (stackInSlot.stackSize >= stack.stack.stackSize) {
-
-                            baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
-                            break;
-                        }
-                    }
-                }*/
+                /*
+                 * final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
+                 * for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                 * ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
+                 * if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
+                 * if (stackInSlot.stackSize >= stack.stack.stackSize) {
+                 * baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
+                 * break;
+                 * }
+                 * }
+                 * }
+                 */
             }
         }
 
