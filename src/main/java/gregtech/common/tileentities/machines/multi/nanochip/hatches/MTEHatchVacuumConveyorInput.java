@@ -1,5 +1,8 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -9,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.tileentities.machines.multi.nanochip.factory.IVacuumStorage;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
@@ -31,16 +33,13 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Must be " + MTENanochipAssemblyComplexGui.TOOLTIP_COLORED + " to work",
-            "Can be installed in the " + EnumChatFormatting.GREEN + "Nanochip Assembly Complex",
-            "Provides" + EnumChatFormatting.YELLOW
-                + " Circuit Component "
-                + EnumChatFormatting.GRAY
-                + "input for NAC modules",
+        return new String[] { translateToLocalFormatted("GT5U.tooltip.nac.hatch.vc.base.1", TOOLTIP_COLORED),
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.2"),
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.input.base.1"),
             EnumChatFormatting.STRIKETHROUGH
                 + "------------------------------------------------------------------------",
-            EnumChatFormatting.YELLOW + "Outputs from recipes with inputs from a colored Vacuum Conveyor Input",
-            EnumChatFormatting.YELLOW + "will be placed in a Vacuum Conveyor Output of the corresponding color", };
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.3"),
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.4") };
     }
 
     @Override

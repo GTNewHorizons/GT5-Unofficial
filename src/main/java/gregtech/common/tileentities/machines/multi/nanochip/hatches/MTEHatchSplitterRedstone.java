@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -80,8 +82,10 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Can be installed in a Splitter module for Nanochip Assembly Complex",
-            "Allows for Redstone Input for rules control" };
+        return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.1"),
+            translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.2"),
+            translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.3"),
+            translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.4") };
     }
 
     @Override
