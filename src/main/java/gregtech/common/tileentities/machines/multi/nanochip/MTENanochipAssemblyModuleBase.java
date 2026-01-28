@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -140,6 +141,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .addElement('Z', Casings.NanochipReinforcementCasing.asElement());
     }
 
+    protected static final String STRUCTURE_PIECE_MAIN = "main";
+
+    public abstract int structureOffsetX();
+
+    public abstract int structureOffsetY();
+
+    public abstract int structureOffsetZ();
+
     public enum ModuleHatchElement implements IHatchElement<MTENanochipAssemblyModuleBase<?>> {
 
         VacuumConveyorHatch(MTENanochipAssemblyModuleBase::addConveyorToMachineList,
@@ -194,11 +203,39 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         this.vacuumConveyorInputs.clear();
         this.vacuumConveyorOutputs.clear();
         fixAllIssues();
-        return checkPiece(
+        // Base structure
+        if (!checkPiece(
             STRUCTURE_PIECE_BASE,
             BASE_STRUCTURE_OFFSET_X,
             BASE_STRUCTURE_OFFSET_Y,
-            BASE_STRUCTURE_OFFSET_Z);
+            BASE_STRUCTURE_OFFSET_Z)) return false;
+        // Module structure
+        return checkPiece(STRUCTURE_PIECE_MAIN, structureOffsetX(), structureOffsetY(), structureOffsetZ());
+    }
+
+    @Override
+    public void construct(ItemStack trigger, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_BASE, trigger, hintsOnly, BASE_STRUCTURE_OFFSET_X, BASE_STRUCTURE_OFFSET_Y, BASE_STRUCTURE_OFFSET_Z);
+        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, structureOffsetX(), structureOffsetY(), structureOffsetZ());
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
+        int built = survivalBuildPiece(
+            STRUCTURE_PIECE_BASE, trigger, BASE_STRUCTURE_OFFSET_X, BASE_STRUCTURE_OFFSET_Y, BASE_STRUCTURE_OFFSET_Z,
+            elementBudget, env, false, true
+        );
+        built += survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            trigger,
+            structureOffsetX(),
+            structureOffsetY(),
+            structureOffsetZ(),
+            elementBudget,
+            env,
+            false,
+            true);
+        return built;
     }
 
     public boolean addConveyorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

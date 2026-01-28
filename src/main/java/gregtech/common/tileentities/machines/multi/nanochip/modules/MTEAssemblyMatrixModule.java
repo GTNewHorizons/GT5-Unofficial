@@ -55,10 +55,16 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAssemblyMatrixModule> {
 
-    protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final int ASSEMBLY_OFFSET_X = 3;
     protected static final int ASSEMBLY_OFFSET_Y = 4;
     protected static final int ASSEMBLY_OFFSET_Z = 0;
+
+    public int structureOffsetX() { return ASSEMBLY_OFFSET_X; }
+
+    public int structureOffsetY() { return ASSEMBLY_OFFSET_Y; }
+
+    public int structureOffsetZ() { return ASSEMBLY_OFFSET_Z; }
+
     protected static final String[][] ASSEMBLY_STRING = new String[][] { { "       ", "  BFB  ", " DDFDD ", "  BFB  " },
         { "  CFC  ", " D   D ", "DB   BD", " DEEED " }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
         { " FFDFF ", "F  G  F", "F  G  F", "FE G EF" }, { " CFFFC ", "B     B", "D     D", "BE   EB" },
@@ -156,33 +162,9 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, ASSEMBLY_OFFSET_X, ASSEMBLY_OFFSET_Y, ASSEMBLY_OFFSET_Z);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            ASSEMBLY_OFFSET_X,
-            ASSEMBLY_OFFSET_Y,
-            ASSEMBLY_OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.machineTier = -1;
-        // Check base structure
-        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        // Now check module structure
-        return checkPiece(STRUCTURE_PIECE_MAIN, ASSEMBLY_OFFSET_X, ASSEMBLY_OFFSET_Y, ASSEMBLY_OFFSET_Z);
+        return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
     @Override

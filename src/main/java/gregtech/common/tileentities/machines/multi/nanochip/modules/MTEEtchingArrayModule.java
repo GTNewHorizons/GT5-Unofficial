@@ -151,33 +151,15 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         return STRUCTURE_DEFINITION;
     }
 
-    @Override
-    public void construct(ItemStack trigger, boolean hintsOnly) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, ETCHING_OFFSET_X, ETCHING_OFFSET_Y, ETCHING_OFFSET_Z);
-    }
+    public int structureOffsetX() { return ETCHING_OFFSET_X; }
 
-    @Override
-    public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
-        // Should only construct the main structure, since the base structure is built by the nanochip assembly complex.
-        return survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            trigger,
-            ETCHING_OFFSET_X,
-            ETCHING_OFFSET_Y,
-            ETCHING_OFFSET_Z,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
+    public int structureOffsetY() { return ETCHING_OFFSET_Y; }
+
+    public int structureOffsetZ() { return ETCHING_OFFSET_Z; }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // Check base structure
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        // Now check module structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, ETCHING_OFFSET_X, ETCHING_OFFSET_Y, ETCHING_OFFSET_Z)) return false;
         return laserSource != null;
     }
 
