@@ -165,10 +165,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo("what do i do???") // todo mechanic text NOC!!!!!!!!!!!!1
             .addSeparator()

@@ -213,10 +213,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(
                 "Requires " + EnumChatFormatting.RED

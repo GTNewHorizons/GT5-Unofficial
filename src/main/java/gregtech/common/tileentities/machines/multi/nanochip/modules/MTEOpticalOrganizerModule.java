@@ -158,10 +158,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.action", TOOLTIP_CCs))
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(
                 "Requires 2 " + EnumChatFormatting.AQUA
