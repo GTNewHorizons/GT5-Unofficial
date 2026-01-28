@@ -815,4 +815,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
+
+    // For MUI2 guis (which are usually built in a different class).
+    public int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    public int getColorTitleWhite() {
+        return COLOR_TITLE_WHITE.get();
+    }
+
+    public int getColorTextWhite() {
+        return COLOR_TEXT_WHITE.get();
+    }
+
+    public int getColorTextGray() {
+        return COLOR_TEXT_GRAY.get();
+    }
+
+    public int getColorTextRed() {
+        return COLOR_TEXT_RED.get();
+    }
 }
