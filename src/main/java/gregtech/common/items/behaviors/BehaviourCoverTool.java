@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -23,7 +24,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -32,8 +32,6 @@ public class BehaviourCoverTool extends BehaviourNone {
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourCoverTool();
     private static final String NBT_COVER_ID = "mCoverId";
     private static final String NBT_COVER_DATA = "mCoverData";
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
 
     @Override
     public boolean shouldInterruptBlockActivation(final EntityPlayer player, final TileEntity tileEntity,
@@ -170,12 +168,12 @@ public class BehaviourCoverTool extends BehaviourNone {
             final NBTTagCompound tNBT = aStack.getTagCompound();
             final int tSize = tNBT.getInteger("dataLinesCount");
             if (tSize < 1) throw new Exception();
-            aList.add(EnumChatFormatting.BLUE + "Stored Cover Data:");
+            aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.cover_copy_paste.store"));
             for (int i = 0; i < tSize; i++) {
                 aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
             }
         } catch (Exception e) {
-            aList.add(this.mTooltip);
+            aList.add(StatCollector.translateToLocal("gt.behaviour.cover_copy_paste"));
         }
         return aList;
     }

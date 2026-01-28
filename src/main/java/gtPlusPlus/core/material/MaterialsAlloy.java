@@ -404,7 +404,7 @@ public final class MaterialsAlloy {
         new MaterialStack(MaterialsElements.getInstance().YTTRIUM, 4));
 
     public static final Material TUNGSTEN_CARBIDE = new Material(
-        "Tungsten Carbide", // Material Name
+        "Tungstencarbide", // Material Name
         MaterialState.SOLID, // State
         new short[] { 44, 44, 44, 0 }, // Material Colour
         3422, // Melting Point in C

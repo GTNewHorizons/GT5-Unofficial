@@ -102,6 +102,7 @@ import bartworks.API.BorosilicateGlass;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -324,7 +325,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing (Except inner bottom ones)", 1)
             .addInputHatch("Any casing (Except inner bottom ones)", 1)
             .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
-            .toolTipFinisher(GTValues.AuthorKuba);
+            .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
 
