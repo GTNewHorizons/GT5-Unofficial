@@ -17,7 +17,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -124,11 +123,17 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         return STRUCTURE_DEFINITION;
     }
 
-    public int structureOffsetX() { return SUPERCOND_SPLITTER_OFFSET_X; }
+    public int structureOffsetX() {
+        return SUPERCOND_SPLITTER_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return SUPERCOND_SPLITTER_OFFSET_Y; }
+    public int structureOffsetY() {
+        return SUPERCOND_SPLITTER_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return SUPERCOND_SPLITTER_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return SUPERCOND_SPLITTER_OFFSET_Z;
+    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
