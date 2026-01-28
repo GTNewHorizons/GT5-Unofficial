@@ -553,16 +553,27 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     public String getGREGOSResponse(String currentText, PanelSyncManager syncManager, ModularPanel parent) {
         return switch (currentText.toLowerCase()) {
-            case "help" -> "List of commands: contributors, gregos, joke, nac, clear";
+            case "help" -> "List of commands: contributors, info, gregos, joke, nac, clear";
+            case "info" -> {
+                IPanelHandler infoPanel = syncManager
+                    .panel("infoPanel", (p_syncManager, syncHandler) -> openInfoPanel(parent), true);
+                if (!infoPanel.isPanelOpen()) {
+                    infoPanel.openPanel();
+                    yield "Opening Info Panel...";
+                } else {
+                    infoPanel.closePanel();
+                    yield "Closing Info Panel...";
+                }
+            }
             case "contributors" -> {
                 IPanelHandler contribPanel = syncManager
                     .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
                 if (!contribPanel.isPanelOpen()) {
                     contribPanel.openPanel();
-                    yield "Opening Panel...";
+                    yield "Opening Contributors Panel...";
                 } else {
                     contribPanel.closePanel();
-                    yield "Closing Panel...";
+                    yield "Closing Contributors Panel...";
                 }
             }
 
