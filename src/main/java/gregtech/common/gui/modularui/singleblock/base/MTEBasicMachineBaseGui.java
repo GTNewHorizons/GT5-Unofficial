@@ -23,12 +23,12 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 
-public class MTEBasicMachineBaseGui {
+public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
-    protected final MTEBasicMachine machine;
+    protected final T machine;
     protected final IGregTechTileEntity baseMetaTileEntity;
 
-    public MTEBasicMachineBaseGui(MTEBasicMachine machine) {
+    public MTEBasicMachineBaseGui(T machine) {
         this.machine = machine;
         this.baseMetaTileEntity = machine.getBaseMetaTileEntity();
     }
@@ -90,7 +90,8 @@ public class MTEBasicMachineBaseGui {
 
     protected Flow createContentHolderRow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow contentFlow = Flow.row()
-            .size(getContentRowWidth(), getContentRowHeight());
+            .size(getContentRowWidth(), getContentRowHeight())
+            .paddingBottom(4);
         contentFlow.child(createContentSection(panel, syncManager));
         return contentFlow;
     }
@@ -118,8 +119,7 @@ public class MTEBasicMachineBaseGui {
         Flow cornerFlow = Flow.row()
             .coverChildren()
             .align(Alignment.BottomLeft)
-            .paddingBottom(4)
-            .paddingLeft(3);
+            .paddingLeft(4);
         return cornerFlow;
     }
 
@@ -134,7 +134,6 @@ public class MTEBasicMachineBaseGui {
             .reverseLayout(true)
             .coverChildren()
             .align(Alignment.BottomRight)
-            .paddingBottom(4)
             .paddingRight(4);
 
         cornerFlow.childIf(this.doesAddGregTechLogo(), this.createLogo());
