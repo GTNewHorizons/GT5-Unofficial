@@ -1,6 +1,8 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import static gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.FilterType.*;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.FilterType.COLOR;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.FilterType.ITEM;
+import static gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.FilterType.REDSTONE;
 
 import net.minecraft.init.Items;
 
@@ -36,13 +38,12 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule;
 import gregtech.common.tileentities.machines.multi.nanochip.util.SplitterRule.SplitterRuleAdapter;
 
-public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
+public class SplitterGui extends MTENanochipAssemblyModuleBaseGui<MTESplitterModule> {
 
     private static final SplitterRuleAdapter RULE_ADAPTER = new SplitterRuleAdapter();
 
@@ -123,6 +124,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                         return true;
                     })
                     .size(18)
+                    .marginTop(4)
                     .overlay(GuiTextures.ADD)
                     .tooltip(tooltip -> tooltip.add("Add new Rule")))
                 .child(new DynamicSyncedWidget<>()
@@ -201,7 +203,6 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
             .widthRel(1F)
             .height(70)
             .margin(4, 8, 4, 4);
-        // spotless:on
     }
 
     private ToggleButton createSelectorButton(GenericListSyncHandler<SplitterRule> syncer, int i,
@@ -287,6 +288,7 @@ public class SplitterGui extends MTEMultiBlockBaseGui<MTESplitterModule> {
                                         if (client) rulesSyncer.notifyUpdate();
                                     })))))
             .build()
+            .marginTop(2)
             .setEnabledIf(f -> rule.enabledWidget == ITEM);
     }
 
