@@ -1335,4 +1335,10 @@ public final class RecipeMaps {
             builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
                 .setHeight(100))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> advancedCircuitAssemblylineRecipes = RecipeMapBuilder
+        .of("gt.recipe.advancedcircuitassemblyline")
+        .maxIO(9, 8, 4, 0)
+        .minInputs(1, 1)
+        .build();
 }
