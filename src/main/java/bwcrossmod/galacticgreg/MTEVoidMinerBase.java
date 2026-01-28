@@ -78,6 +78,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     private boolean mBlacklist = false;
 
+    MTEBiosphere connectedBiosphere = null;
+
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
         this.TIER_MULTIPLIER = (byte) Math.max(tier, 1);
@@ -267,7 +269,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.totalWeight = 0;
         this.canVoidMine = false;
 
-        if (!dimensionOverride.isEmpty()) dimensionDef = DimensionDef.getDefByName(dimensionOverride);
+        if (connectedBiosphere != null)
+            dimensionDef = DimensionDef.getDefByName(connectedBiosphere.getDimensionOverride());
         else dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
 
         if (dimensionDef == null || !dimensionDef.canBeVoidMined()) return;
@@ -404,16 +407,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             EnumChatFormatting.GRAY);
     }
 
-    String dimensionOverride = "";
-
     @Override
-    public boolean setDimensionOverride(String dimensionName, MTEBiosphere biosphere) {
-        if (DimensionDef.getDefByName(dimensionName)
-            .canBeVoidMined()) {
-            dimensionOverride = dimensionName;
-            calculateDropMap();
-            return true;
-        }
-        return false;
+    public void setDimensionOverride(MTEBiosphere biosphere) {
+        connectedBiosphere = biosphere;
+        calculateDropMap();
     }
 }

@@ -10,6 +10,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -56,6 +59,8 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
             ofChain(onElementPass(t -> {}, ofBlock(Blocks.air, 0)), ofTileAdder(MTEBiosphere::addMTE, Blocks.air, 0)))
         .build();
 
+    private final Set<IBiosphereCompatible> connectedTEs = new HashSet<>();
+
     public boolean addMTE(TileEntity te) {
         if (te instanceof BaseMetaTileEntity bmte) {
             if (bmte.getMetaTileEntity() instanceof IBiosphereCompatible bc) setTileDim(bc);
@@ -64,7 +69,23 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
     }
 
     private void setTileDim(IBiosphereCompatible te) {
-        te.setDimensionOverride("Nether", this);
+        connectedTEs.add(te);
+        te.setDimensionOverride(this);
+    }
+
+    private void clearTileDims() {
+        for (IBiosphereCompatible te : connectedTEs) {
+            te.setDimensionOverride(null);
+        }
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        clearTileDims();
+    }
+
+    public String getDimensionOverride() {
+        return "Nether";
     }
 
     public MTEBiosphere(final int aID, final String aName, final String aNameRegional) {
