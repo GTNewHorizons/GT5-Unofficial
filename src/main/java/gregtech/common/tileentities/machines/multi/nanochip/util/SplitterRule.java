@@ -65,7 +65,7 @@ public class SplitterRule {
         this(
             new ArrayList<>(),
             new ArrayList<>(),
-            new SplitterRule.RedstoneMode(0, 15),
+            new SplitterRule.RedstoneMode(0, 0),
             new LimitingItemStackHandler(6, 1),
             COLOR);
     }
