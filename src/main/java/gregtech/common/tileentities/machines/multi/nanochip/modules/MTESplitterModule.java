@@ -30,7 +30,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
@@ -49,7 +48,6 @@ import gregtech.common.gui.modularui.multiblock.SplitterGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -145,11 +143,17 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return false;
     }
 
-    public int structureOffsetX() { return SPLITTER_OFFSET_X; }
+    public int structureOffsetX() {
+        return SPLITTER_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return SPLITTER_OFFSET_Y; }
+    public int structureOffsetY() {
+        return SPLITTER_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return SPLITTER_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return SPLITTER_OFFSET_Z;
+    }
 
     public List<Byte> getGetOutputColors(byte color, ItemStack item) {
         Set<Byte> set = new HashSet<>();

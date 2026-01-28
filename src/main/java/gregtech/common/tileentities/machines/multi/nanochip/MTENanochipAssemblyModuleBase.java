@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
@@ -215,16 +215,34 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_BASE, trigger, hintsOnly, BASE_STRUCTURE_OFFSET_X, BASE_STRUCTURE_OFFSET_Y, BASE_STRUCTURE_OFFSET_Z);
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, structureOffsetX(), structureOffsetY(), structureOffsetZ());
+        buildPiece(
+            STRUCTURE_PIECE_BASE,
+            trigger,
+            hintsOnly,
+            BASE_STRUCTURE_OFFSET_X,
+            BASE_STRUCTURE_OFFSET_Y,
+            BASE_STRUCTURE_OFFSET_Z);
+        buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            trigger,
+            hintsOnly,
+            structureOffsetX(),
+            structureOffsetY(),
+            structureOffsetZ());
     }
 
     @Override
     public int survivalConstruct(ItemStack trigger, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(
-            STRUCTURE_PIECE_BASE, trigger, BASE_STRUCTURE_OFFSET_X, BASE_STRUCTURE_OFFSET_Y, BASE_STRUCTURE_OFFSET_Z,
-            elementBudget, env, false, true
-        );
+            STRUCTURE_PIECE_BASE,
+            trigger,
+            BASE_STRUCTURE_OFFSET_X,
+            BASE_STRUCTURE_OFFSET_Y,
+            BASE_STRUCTURE_OFFSET_Z,
+            elementBudget,
+            env,
+            false,
+            true);
         built += survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             trigger,
