@@ -19,7 +19,7 @@ public class PurificationUnitLaserFrontend extends PurificationUnitRecipeMapFron
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             120,
-            uiPropertiesBuilder.logoPos(new Pos2d(147, 102))
+            uiPropertiesBuilder.logoPos(new Pos2d(147, 65))
                 .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_UV_TREATMENT)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 120)));
     }
