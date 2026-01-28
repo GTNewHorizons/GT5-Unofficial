@@ -409,6 +409,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public void updateBiodome(MTEBiodome biodome) {
         connectedBiodome = biodome;
-        calculateDropMap();
+        if (this.getBaseMetaTileEntity() != null) calculateDropMap();
     }
 }
