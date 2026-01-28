@@ -54,6 +54,7 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
+        super.drawNEIOverlayForInput(stack);
         drawFluidOverlay(stack);
     }
 

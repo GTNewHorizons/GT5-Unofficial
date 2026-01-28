@@ -834,7 +834,7 @@ public class Godforge implements Runnable {
             List<ItemStack> itemOutputs = new ArrayList<>(1);
             List<FluidStack> fluidOutputs = new ArrayList<>(2);
 
-            int[] originalChances = recipe.mChances;
+            int[] originalChances = recipe.mOutputChances;
             IntList newChances = new IntArrayList();
             for (int i = 0; i < recipe.mOutputs.length; i++) {
                 ItemStack stack = recipe.getOutput(i);

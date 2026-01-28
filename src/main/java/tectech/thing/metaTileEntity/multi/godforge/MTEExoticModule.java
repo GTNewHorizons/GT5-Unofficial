@@ -209,6 +209,9 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             null,
             null,
+            null,
+            null,
+            null,
             ArrayUtils
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
             new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
@@ -229,6 +232,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
         return new GTRecipe(
             false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -429,6 +435,9 @@ public class MTEExoticModule extends MTEBaseModule {
             setPlasmaRecipe(
                 new GTRecipe(
                     false,
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,

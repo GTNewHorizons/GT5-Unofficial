@@ -264,6 +264,5 @@ public class GTPPRecipeMaps {
         .maxIO(3, 1, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
-        .frontend(MultiblockRockBreakerFrontend::new)
         .build();
 }
