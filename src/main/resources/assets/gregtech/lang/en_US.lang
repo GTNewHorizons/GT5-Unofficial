@@ -1716,6 +1716,16 @@ GT5U.tooltip.nac.module.wire_tracer.name=Wire Tracer
 GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
 GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
 
+GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
+GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
+GT5U.tooltip.nac.hatch.splitter.body.3=Set the channel and redstone threshold in the GUI
+GT5U.tooltip.nac.hatch.splitter.body.4=A redstone rule is active if the supplied redstone signal is >= the threshold on that channel
+GT5U.tooltip.nac.hatch.vc.input.base.1=Provides §eCircuit Component§7 input for NAC modules
+GT5U.tooltip.nac.hatch.vc.output.base.1=Provides §eCircuit Component§7 output for NAC modules
+GT5U.tooltip.nac.hatch.vc.base.1=Must be %s to work
+GT5U.tooltip.nac.hatch.vc.base.2=Can be installed in the §aNanochip Assembly Complex
+GT5U.tooltip.nac.hatch.vc.base.3=§eOutputs from recipes with inputs from a colored Vacuum Conveyor Input
+GT5U.tooltip.nac.hatch.vc.base.4=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
