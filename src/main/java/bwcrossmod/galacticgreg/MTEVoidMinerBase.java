@@ -48,6 +48,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.IBiosphereCompatible;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,11 +59,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.machines.multi.MTEBiosphere;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtneioreplugin.util.DimensionHelper;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IBiosphereCompatible {
 
     private ModDimensionDef dimensionDef;
     private boolean canVoidMine = true;
@@ -265,7 +267,8 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.totalWeight = 0;
         this.canVoidMine = false;
 
-        dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
+        if (!dimensionOverride.isEmpty()) dimensionDef = DimensionDef.getDefByName(dimensionOverride);
+        else dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
 
         if (dimensionDef == null || !dimensionDef.canBeVoidMined()) return;
 
@@ -399,5 +402,18 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             EnumChatFormatting.GOLD,
             boost,
             EnumChatFormatting.GRAY);
+    }
+
+    String dimensionOverride = "";
+
+    @Override
+    public boolean setDimensionOverride(String dimensionName, MTEBiosphere biosphere) {
+        if (DimensionDef.getDefByName(dimensionName)
+            .canBeVoidMined()) {
+            dimensionOverride = dimensionName;
+            calculateDropMap();
+            return true;
+        }
+        return false;
     }
 }

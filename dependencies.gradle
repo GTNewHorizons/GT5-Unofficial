@@ -102,7 +102,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:SC2:2.3.12:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.6.7:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
-    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.4:dev'){transitive=false}
+    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.5:dev'){transitive=false}
 
     compileOnly("com.google.auto.value:auto-value-annotations:1.10.1") { transitive = false }
     annotationProcessor("com.google.auto.value:auto-value:1.10.1")
