@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
@@ -123,17 +122,22 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         return STRUCTURE_DEFINITION;
     }
 
-    public int structureOffsetX() { return OPTICAL_OFFSET_X; }
+    public int structureOffsetX() {
+        return OPTICAL_OFFSET_X;
+    }
 
-    public int structureOffsetY() { return OPTICAL_OFFSET_Y; }
+    public int structureOffsetY() {
+        return OPTICAL_OFFSET_Y;
+    }
 
-    public int structureOffsetZ() { return OPTICAL_OFFSET_Z; }
+    public int structureOffsetZ() {
+        return OPTICAL_OFFSET_Z;
+    }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
-        return this.mInputHatches.size() <= 2
-            && !this.mInputHatches.isEmpty();
+        return this.mInputHatches.size() <= 2 && !this.mInputHatches.isEmpty();
     }
 
     @Override
