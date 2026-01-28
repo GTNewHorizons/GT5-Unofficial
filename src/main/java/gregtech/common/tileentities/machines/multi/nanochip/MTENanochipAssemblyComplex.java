@@ -11,6 +11,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_NANOCHIP_ASSE
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.stackToInt;
+import static gregtech.api.util.GTUtility.validMTEList;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
@@ -24,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -415,8 +418,13 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private void processRealItemInputs() {
+        // For each color that is on the nac
+        this.startRecipeProcessing();
+
         ArrayList<ItemStackWithSourceBus> inputs = getStoredInputsWithBus();
         // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
+        // Say the magic incantation to prevent duping
+        this.startRecipeProcessing();
         for (ItemStackWithSourceBus stack : inputs) {
             // Find a conversion recipe
             GTRecipe recipe = RecipeMaps.nanochipConversionRecipes.findRecipeQuery()
@@ -434,14 +442,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
             // If successful, consume the input
             if (routed) {
-                ItemStack removed = stack.bus.removeAllResource(stack.stack);
-                if (removed != null) {
-                    // Say the magic incantation to prevent duping
-                    if (stack.bus instanceof IRecipeProcessingAwareHatch aware) {
-                        setResultIfFailure(aware.endRecipeProcessing(this));
-                        aware.startRecipeProcessing();
-                    }
-                }
+                stack.bus.removeAllResource(stack.stack);
+
                 /*final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
                 for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
@@ -455,6 +457,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 }*/
             }
         }
+
+        this.endRecipeProcessing();
     }
 
     private void processComponentInputs() {
