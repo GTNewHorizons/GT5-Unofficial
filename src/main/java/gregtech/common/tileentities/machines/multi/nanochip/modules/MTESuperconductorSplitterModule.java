@@ -13,7 +13,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -215,13 +214,11 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(
-                "Requires " + EnumChatFormatting.RED
-                    + "1000 L/s"
-                    + EnumChatFormatting.BLUE
-                    + " Super Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " to run") // todo: maybe make this more interesting / use higher tier coolants for higher tier sc
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.body1")) // todo: maybe make this
+                                                                                                // more interesting /
+                                                                                                // use higher tier
+                                                                                                // coolants for higher
+                                                                                                // tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)

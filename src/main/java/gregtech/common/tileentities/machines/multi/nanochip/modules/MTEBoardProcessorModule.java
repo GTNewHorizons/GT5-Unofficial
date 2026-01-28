@@ -167,7 +167,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo("what do i do???") // todo mechanic text NOC!!!!!!!!!!!!1
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body1")) // todo mechanic text
+                                                                                                 // NOC!!!!!!!!!!!!1
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1"))) // todo
                                                                                                               // flavor
