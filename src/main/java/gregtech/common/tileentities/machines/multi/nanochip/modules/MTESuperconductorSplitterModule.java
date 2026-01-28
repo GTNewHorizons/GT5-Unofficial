@@ -7,11 +7,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTO
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SUPERCONDUCTOR_SPLITTER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -209,23 +210,18 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Superconductor Splitter"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo("Splits your Superconductor " + TOOLTIP_CCs)
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.body1")) // todo: maybe make this
+                                                                                                // more interesting /
+                                                                                                // use higher tier
+                                                                                                // coolants for higher
+                                                                                                // tier sc
             .addSeparator()
-            .addInfo(
-                "Requires " + EnumChatFormatting.RED
-                    + "1000 L/s"
-                    + EnumChatFormatting.BLUE
-                    + " Super Coolant"
-                    + EnumChatFormatting.GRAY
-                    + " to run") // todo: maybe make this more interesting / use higher tier coolants for higher tier sc
-            .addSeparator()
-            .addInfo(tooltipFlavorText("Where there are superconductors, there is coolant!"))
-            .addStructureInfo("Any base casing - Input Hatch")
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();

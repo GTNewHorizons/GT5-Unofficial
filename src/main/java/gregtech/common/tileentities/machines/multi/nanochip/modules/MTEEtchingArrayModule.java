@@ -8,7 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ETCHING_ARRAY
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
@@ -182,18 +183,13 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Etching Array"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo("Uses high-energy lasers to etch your Chip " + TOOLTIP_CCs)
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body1")) // todo implement gimmick
             .addSeparator()
-            .addInfo(
-                "In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes")
-            .addSeparator()
-            .addInfo(tooltipFlavorText("Perfect for etching even the finest details"))
-            .addOtherStructurePart("Any Laser Source Hatch", addHintNumber(1))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();

@@ -7,6 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BOARD_PROCESSOR_GLOW;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,20 +163,17 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Board Processor"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo("Processes your Board " + TOOLTIP_CC + "s")
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body1")) // todo mechanic text
+                                                                                                 // NOC!!!!!!!!!!!!1
             .addSeparator()
-            .addInfo("what do i do???") // todo mechanic text NOC!!!!!!!!!!!!1
-            .addSeparator()
-            .addInfo(
-                tooltipFlavorText("The developer of this multiblock loves league of legends more than her friends...")) // todo
-                                                                                                                        // flavor
-                                                                                                                        // text
-            .addStructureInfo("Any base casing - Input Hatch")
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1"))) // todo
+                                                                                                              // flavor
+                                                                                                              // text
+            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
@@ -237,6 +236,13 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
     }
 
+    @Override
+    protected float getEUDiscountModifier() {
+        return euMultiplier;
+    }
+
+    float euMultiplier = 1;
+
     protected int Capacity = 10000;
     protected FluidStack StoredFluid;
     protected int FluidAmount;
@@ -251,12 +257,14 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     private final int ImpurityIncrease = 100;
 
     private int AutomationPercentage = 100;
+    private double FillPercentage = 0;
 
     protected static final HashSet<Fluid> LegalFluids = new HashSet<>(Arrays.asList(Materials.IronIIIChloride.mFluid));
 
     @NotNull
     @Override
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+        euMultiplier = 1;
 
         if (StoredFluid == null) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
@@ -271,6 +279,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
+        if (ImpurityPercentage <= 0.15) {
+            euMultiplier = (float) (1 - 0.3 + ImpurityPercentage * 2);
+        } else if (ImpurityPercentage >= 0.65) {
+            euMultiplier = (float) (1 + 2 * (ImpurityPercentage - 0.65));
+        }
+
         return super.validateRecipe(recipe);
     }
 
@@ -281,7 +295,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 ProcessedItems += mOutputItems[0].stackSize;
                 while (ProcessedItems >= ImpurityThreshold) {
                     ProcessedItems -= ImpurityThreshold;
-                    ImpurityFluidAmount += Math.min(ImpurityIncrease, FluidAmount - ImpurityFluidAmount);
+                    ImpurityFluidAmount += (int) Math
+                        .min(ImpurityIncrease * (1 / Math.pow(FillPercentage, 1.5)), FluidAmount - ImpurityFluidAmount);
                     ImpurityFluid.amount = ImpurityFluidAmount;
                     ImpurityPercentage = (double) ImpurityFluidAmount / FluidAmount;
                 }
@@ -318,12 +333,15 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             ArrayList<FluidStack> inputFluid = getStoredFluids();
             for (FluidStack fluid : inputFluid) {
                 if (LegalFluids.contains(fluid.getFluid())) {
-                    FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(Capacity, fluid.amount));
-                    depleteInput(toDeplete);
-                    StoredFluid = toDeplete;
-                    FluidAmount = toDeplete.amount;
-                    if (StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
-                        ImpurityFluid = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                    if (fluid.amount >= Capacity / 2) {
+                        FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(Capacity, fluid.amount));
+                        depleteInput(toDeplete);
+                        StoredFluid = toDeplete;
+                        FluidAmount = toDeplete.amount;
+                        FillPercentage = (double) FluidAmount / Capacity;
+                        if (StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+                            ImpurityFluid = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                        }
                     }
                 }
             }
@@ -340,7 +358,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             FluidAmount = 0;
             ImpurityFluidAmount = 0;
             ImpurityPercentage = 0;
-
+            FillPercentage = 0;
         }
     }
 
@@ -372,12 +390,8 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return ImpurityPercentage;
     }
 
-    public int getImpurityThreshold() {
-        return ImpurityThreshold;
-    }
-
-    public void setImpurityThreshold(int impurityThreshold) {
-        ImpurityThreshold = impurityThreshold;
+    public float getEuMultiplier() {
+        return euMultiplier;
     }
 
     public int getAutomationPercentage() {

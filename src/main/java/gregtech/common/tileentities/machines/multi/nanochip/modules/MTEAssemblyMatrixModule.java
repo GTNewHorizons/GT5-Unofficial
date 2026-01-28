@@ -8,6 +8,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATR
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -44,6 +45,7 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -196,21 +198,19 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType(machineInfoText("Assembly Matrix"))
+        return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
-            .addInfo("Assembles your Circuit Part " + TOOLTIP_CC + "s into Circuit " + TOOLTIP_CC + "s")
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
-            .addSeparator()
-            .addInfo("Maximum allowed recipe tier is determined by")
-            .addInfo("the tier of the " + EnumChatFormatting.WHITE + "Component Assembly Line Casing")
-            .addSeparator()
-            .addInfo(tooltipFlavorText("After processing your CCs through an intricate pipeline, they are finally"))
             .addInfo(
-                tooltipFlavorText("ready to be assembled into a circuit. This circuit can be converted into a real"))
+                translateToLocalFormatted("GT5U.tooltip.nac.module.assembly_matrix.action", TOOLTIP_CCs, TOOLTIP_CCs))
+            .addSeparator()
             .addInfo(
-                tooltipFlavorText("item in the NAC control center, or processed further into a higher tier circuit"))
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.assembly_matrix.body1",
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
+            .addSeparator()
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.3")))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
@@ -219,6 +219,11 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEAssemblyMatrixModule(this.mName);
+    }
+
+    @Override
+    public int getRecipeTier(GTRecipe recipe) {
+        return recipe.getMetadataOrDefault(NanochipAssemblyMatrixTierKey.INSTANCE, 1);
     }
 
     @Override
@@ -247,7 +252,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
+            translateToLocal("GT5U.machines.tier") + ": "
                 + EnumChatFormatting.WHITE
                 + tag.getInteger("tier")
                 + EnumChatFormatting.RESET);
@@ -258,9 +263,8 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (machineTier >= 0 ? GTValues.VN[machineTier]
-                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
+        ret[origin.length] = translateToLocal("scanner.info.CASS.tier")
+            + (machineTier >= 0 ? GTValues.VN[machineTier] : translateToLocal("scanner.info.CASS.tier.none"));
         return ret;
     }
 

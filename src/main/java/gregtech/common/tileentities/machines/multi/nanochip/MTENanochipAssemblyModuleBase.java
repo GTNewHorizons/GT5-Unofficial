@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 
 import java.util.ArrayList;
@@ -351,18 +352,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .setCalculator(OverclockCalculator.ofNoOverclock(recipe));
     }
 
-    protected OverclockCalculator createCalculator(GTRecipe recipe) {
-        return new OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setEUt(this.availableEUt)
-            .setUnlimitedTierSkips()
-            .setDuration(recipe.mDuration)
-            .setDurationDecreasePerOC(4)
-            .setEUtIncreasePerOC(4)
-            .setMaxOverclocks(
-                (int) (this.getBaseMulti()
-                    .getLaserHatchTier() - GTUtility.getTier(recipe.mEUt)));
-    }
-
     /**
      * Validate if a recipe can be run by this module. By default, always succeeds.
      * Override this logic if you want to do recipe validation such as tiering of the module.
@@ -374,6 +363,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @NotNull
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    // overridable for the matrix to use recipe metadata instead.
+    public int getRecipeTier(GTRecipe recipe) {
+        return GTUtility.getTier(recipe.mEUt);
     }
 
     @NotNull
@@ -408,15 +402,22 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (outputHatch == null) {
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
-        OverclockCalculator calculator = this.createCalculator(recipe)
-            .calculate();
-
-        long powerConsumption = calculator.getConsumption();
-        int duration = calculator.getDuration();
+        double recipeDuration = recipe.mDuration;
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier();
+        int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
+        // max overclocks is ehatch tier - recipe tier
+        // can only overclock if machine has a remaining overclock,
+        // duration when overclocked won't go below 5 seconds
+        // and recipe eu/t after overclock is less than available eu/t
+        while (remainingOverclocks > 0 && (recipeDuration / 4) >= 5 * SECONDS && recipeEUT * 4L <= this.availableEUt) {
+            recipeDuration /= 4;
+            recipeEUT *= 4;
+            remainingOverclocks -= 1;
+        }
 
         GTRecipe properRecipe = recipe.copy();
-        properRecipe.setEUt((int) powerConsumption);
-        properRecipe.setDuration(duration);
+        properRecipe.setEUt((int) recipeEUT);
+        properRecipe.setDuration((int) recipeDuration);
 
         // Create parallel helper to calculate parallel and consume inputs
         ParallelHelper parallelHelper = createParallelHelper(properRecipe, inputInfo);
@@ -442,7 +443,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             mMaxProgresstime = properRecipe.mDuration;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) properRecipe.mEUt * (long) this.currentParallel;
-            this.lEUt = (long) (this.lEUt * this.getEUDiscountModifier());
         }
 
         return result;

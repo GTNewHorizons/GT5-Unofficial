@@ -480,42 +480,6 @@ public class RecipeHandlers {
     }
 
     private static void registerSMDProcessorRecipes() {
-        // SMDs
-        addSimpleProcessingRecipe(
-            CircuitComponent.SMDResistor,
-            CircuitComponent.ProcessedSMDResistor,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipSMDProcessorRecipes);
-
-        addSimpleProcessingRecipe(
-            CircuitComponent.SMDTransistor,
-            CircuitComponent.ProcessedSMDTransistor,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipSMDProcessorRecipes);
-
-        addSimpleProcessingRecipe(
-            CircuitComponent.SMDInductor,
-            CircuitComponent.ProcessedSMDInductor,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipSMDProcessorRecipes);
-
-        addSimpleProcessingRecipe(
-            CircuitComponent.SMDCapacitor,
-            CircuitComponent.ProcessedSMDCapacitor,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipSMDProcessorRecipes);
-
-        addSimpleProcessingRecipe(
-            CircuitComponent.SMDDiode,
-            CircuitComponent.ProcessedSMDDiode,
-            ModuleRecipeInfo.LowTier,
-            20 * TICKS,
-            RecipeMaps.nanochipSMDProcessorRecipes);
-
         // ASMDs
         addSimpleProcessingRecipe(
             CircuitComponent.AdvSMDResistor,
@@ -763,8 +727,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 8)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
             CircuitComponent.CrystalProcessor,
-            5 * TICKS,
-            2_457_600, // EU/t
+            4 * SECONDS,
+            9_600, // LuV
             VoltageIndex.UHV);
 
         // SoC
@@ -777,7 +741,7 @@ public class RecipeHandlers {
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
             CircuitComponent.CrystalProcessor,
             2 * SECONDS,
-            2_457_600, // EU/t
+            153_600, // UV
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -790,8 +754,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
             CircuitComponent.CrystalAssembly,
-            10 * TICKS,
-            2_457_600, // EU/t
+            8 * SECONDS,
+            9_600, // LuV
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -804,8 +768,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
             CircuitComponent.CrystalComputer,
-            1 * SECONDS,
-            2_457_600, // EU/t
+            16 * SECONDS,
+            9_600, // LuV
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -818,8 +782,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorLuV, 16)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(18)),
             CircuitComponent.CrystalMainframe,
-            2 * SECONDS,
-            TierEU.RECIPE_UEV,
+            32 * SECONDS,
+            TierEU.RECIPE_LuV,
             VoltageIndex.UHV);
 
         // ======= //
@@ -831,28 +795,13 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedNeuroProcessingUnit, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalCPU, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 8),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 8),
-                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 8)),
-            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
-            CircuitComponent.WetwareProcessor,
-            2 * SECONDS,
-            2_457_600, // EU/t
-            VoltageIndex.UHV);
-
-        // Optical SMDs
-        addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedNeuroProcessingUnit, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipCrystalCPU, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 8)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
             CircuitComponent.WetwareProcessor,
             1 * SECONDS,
-            2_457_600, // EU/t
+            153_600, // UV
             VoltageIndex.UHV);
 
         // SoC
@@ -864,25 +813,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedBoltCosmicNeutronium, 4)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
             CircuitComponent.WetwareProcessor,
-            8 * SECONDS,
-            2_457_600, // EU/t
+            2 * SECONDS,
+            614_400, // UHV
             VoltageIndex.UHV);
 
-        addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
-                new CircuitComponentStack(CircuitComponent.WetwareProcessor, 2),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 8),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 12),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 24),
-                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 16)),
-            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
-            CircuitComponent.WetwareAssembly,
-            4 * SECONDS,
-            2_457_600, // EU/t
-            VoltageIndex.UHV);
-
-        // Optical SMD
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 1),
@@ -893,25 +827,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 16)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
             CircuitComponent.WetwareAssembly,
-            2 * SECONDS,
-            2_457_600, // EU/t
+            1 * SECONDS + 10 * TICKS,
+            153_600, // UV
             VoltageIndex.UHV);
 
-        addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 2),
-                new CircuitComponentStack(CircuitComponent.WetwareAssembly, 2),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 8),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 16),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
-                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
-            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
-            CircuitComponent.WetwareComputer,
-            8 * SECONDS,
-            2_457_600, // EU/t
-            VoltageIndex.UHV);
-
-        // Optical SMD
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardWetwareLifesupport, 2),
@@ -922,34 +841,19 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
             CircuitComponent.WetwareComputer,
-            4 * SECONDS,
-            2_457_600, // EU/t
+            3 * SECONDS,
+            153_600, // UV
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 2),
                 new CircuitComponentStack(CircuitComponent.WetwareComputer, 2),
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDResistor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 4),
-                },
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 4),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 48),
                 new Object[] {
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorZPM, 64),
@@ -964,8 +868,8 @@ public class RecipeHandlers {
                 FluidRegistry.getFluidStack("ic2coolant", 10000),
                 Materials.Radon.getGas(2500)),
             CircuitComponent.WetwareMainframe,
-            5 * TICKS, // 100s todo
-            TierEU.RECIPE_UV, // 300,000 EU/t todo
+            100 * SECONDS,
+            300_000, // UV
             VoltageIndex.UHV);
 
         // ======= //
@@ -977,28 +881,13 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedBioProcessingUnit, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRawAdvancedCrystal, 1),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 2),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 12),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 12),
-                new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
-            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
-            CircuitComponent.BiowareProcessor,
-            10 * SECONDS,
-            2_457_600, // EU/t
-            VoltageIndex.UHV);
-
-        // Optical SMD
-        addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedBioProcessingUnit, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipRawAdvancedCrystal, 1),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipNanoCPU, 2),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 3),
                 new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 3),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 16)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(4)),
             CircuitComponent.BiowareProcessor,
-            5 * SECONDS,
-            2_457_600, // EU/t
+            2 * SECONDS + 10 * TICKS,
+            614_400, // UHV
             VoltageIndex.UHV);
 
         // SoC
@@ -1010,25 +899,10 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedBoltChromaticGlass, 4)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
             CircuitComponent.BiowareProcessor,
-            40 * SECONDS,
-            2_457_600, // EU/t
+            3 * SECONDS,
+            2_457_600, // UEV
             VoltageIndex.UHV);
 
-        addAssemblyMatrixRecipe(
-            Arrays.asList(
-                new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 1),
-                new CircuitComponentStack(CircuitComponent.BiowareProcessor, 2),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 12),
-                new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
-                new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 32),
-                new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
-            Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
-            CircuitComponent.BiowareAssembly,
-            15 * SECONDS,
-            2_457_600, // EU/t
-            VoltageIndex.UHV);
-
-        // Optical SMD
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 1),
@@ -1039,30 +913,18 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedWireYttriumBariumCuprate, 24)),
             Arrays.asList(MaterialsAlloy.INDALLOY_140.getFluidStack(9)),
             CircuitComponent.BiowareAssembly,
-            20 * SECONDS,
-            2_457_600, // EU/t
+            2 * SECONDS,
+            614_400, // UHV
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.ProcessedBoardBioMutated, 2),
                 new CircuitComponentStack(CircuitComponent.BiowareAssembly, 2),
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDResistor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 16),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 4),
-                },
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 4),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 4),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32),
@@ -1072,34 +934,19 @@ public class RecipeHandlers {
                 Materials.BioMediumSterilized.getFluid(10 * INGOTS),
                 Materials.SuperCoolant.getFluid(10000)),
             CircuitComponent.BiowareComputer,
-            5 * TICKS, // 200s
-            TierEU.RECIPE_UV, // real UV
+            200 * SECONDS,
+            TierEU.RECIPE_UV,
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
                 new CircuitComponentStack(CircuitComponent.AdvancedMainframeCasing, 4),
                 new CircuitComponentStack(CircuitComponent.BiowareComputer, 2),
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDInductor, 24),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 6),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 24),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 6),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDResistor, 24),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 6),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 24),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 6),
-                },
-                new Object[] {
-                    new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 24),
-                    new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 6),
-                },
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDInductor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDCapacitor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDResistor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDTransistor, 6),
+                new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 6),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new Object[] {
                     new CircuitComponentStack(CircuitComponent.ProcessedSuperconductorUHV, 64),
@@ -1112,8 +959,8 @@ public class RecipeHandlers {
                 Materials.BioMediumSterilized.getFluid(20 * INGOTS),
                 Materials.SuperCoolant.getFluid(20000)),
             CircuitComponent.BiowareMainframe,
-            5 * TICKS, // 300s
-            TierEU.RECIPE_UHV, // real UHV
+            300 * SECONDS,
+            TierEU.RECIPE_UHV,
             VoltageIndex.UHV);
 
         // ======= //
@@ -1130,8 +977,8 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedBoltEnrichedHolmium, 4)),
             Arrays.asList(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(18)),
             CircuitComponent.OpticalProcessor,
-            60 * SECONDS,
-            2_457_600, // EU/t
+            15 * SECONDS,
+            614_400, // UHV
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -1151,8 +998,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(10000),
                 WerkstoffLoader.Oganesson.getFluidOrGas(500)),
             CircuitComponent.OpticalAssembly,
-            5 * TICKS, // 20s
-            TierEU.RECIPE_UHV, // real UHV
+            20 * SECONDS,
+            TierEU.RECIPE_UHV,
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -1174,8 +1021,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(20000),
                 WerkstoffLoader.Oganesson.getFluidOrGas(1000)),
             CircuitComponent.OpticalComputer,
-            5 * TICKS, // 200s
-            TierEU.RECIPE_UHV, // real UHV
+            200 * SECONDS,
+            TierEU.RECIPE_UHV,
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -1199,8 +1046,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(40000),
                 WerkstoffLoader.Oganesson.getFluidOrGas(2000)),
             CircuitComponent.OpticalMainframe,
-            5 * TICKS, // 300s
-            TierEU.RECIPE_UEV, // real UEV
+            300 * SECONDS,
+            TierEU.RECIPE_UEV,
             VoltageIndex.UXV);
 
         if (NewHorizonsCoreMod.isModLoaded()) {
@@ -1223,8 +1070,8 @@ public class RecipeHandlers {
                     Materials.UUMatter.getFluid(8000),
                     GGMaterial.preciousMetalAlloy.getMolten(8 * INGOTS)),
                 CircuitComponent.PicoCircuit,
-                5 * TICKS, // 500s
-                TierEU.RECIPE_UMV, // real UMV
+                500 * SECONDS,
+                TierEU.RECIPE_UMV,
                 VoltageIndex.UHV);
 
             addAssemblyMatrixRecipe(
@@ -1246,8 +1093,8 @@ public class RecipeHandlers {
                     Materials.UUMatter.getFluid(24000),
                     GGMaterial.preciousMetalAlloy.getMolten(16 * INGOTS)),
                 CircuitComponent.QuantumCircuit,
-                5 * TICKS, // 1000s
-                TierEU.RECIPE_UMV, // real UMV
+                1000 * SECONDS,
+                TierEU.RECIPE_UMV,
                 VoltageIndex.UHV);
         }
     }
