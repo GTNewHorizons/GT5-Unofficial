@@ -27,6 +27,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -342,26 +344,23 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.progress",
-                formatNumber(this.mProgresstime / 20),
-                formatNumber(this.mMaxProgresstime / 20)),
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.thtr.triso_pebbles",
                 formatNumber(this.fuelSupply),
-                formatNumber(this.fuelSupply)),
+                formatNumber(this.fuelSupply)));
+
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.htr.helium_level",
                 formatNumber(this.HeliumSupply),
-                formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
+                formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)));
+
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "BW.infoData.thtr.coolant",
-                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
+                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)));
     }
 
     @Override

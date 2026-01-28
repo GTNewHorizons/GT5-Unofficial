@@ -203,8 +203,4 @@ public class MTELargeTurbineSteam extends MTELargeTurbine {
         return (looseFit && XSTR_INSTANCE.nextInt(4) == 0) ? 0 : 1;
     }
 
-    @Override
-    public String[] getInfoData() {
-        return super.getInfoData();
-    }
 }

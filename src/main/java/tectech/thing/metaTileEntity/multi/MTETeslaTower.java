@@ -18,7 +18,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1104,21 +1103,17 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public String[] getInfoData() {
-        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
-
-        data.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             translateToLocalFormatted(
                 "tt.infodata.multi.energy_hatches",
                 EnumChatFormatting.GREEN + formatNumber(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(energyCapacity) + EnumChatFormatting.RESET));
-        data.add(
+        info.add(
             translateToLocalFormatted(
                 "tt.infodata.multi.current_output",
                 EnumChatFormatting.GREEN + formatNumber(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(outputCurrentMax) + EnumChatFormatting.RESET));
-
-        return data.toArray(new String[0]);
     }
 
     @Override

@@ -510,13 +510,12 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Rocket Engine", "Current Air: " + getAir(),
-            "Time until next fuel consumption: " + this.freeFuelTicks,
-            "Current Output: " + this.lEUt * this.mEfficiency / 10000 + " EU/t",
-            "Fuel Consumption: " + (this.fuelConsumption) + "L/s", "Fuel Value: " + this.fuelValue + " EU/L",
-            "Fuel Remaining: " + this.fuelRemaining + " Litres", "Current Efficiency: " + this.mEfficiency / 100 + "%",
-            (this.getIdealStatus() == this.getRepairStatus()) ? "No Maintainance issues" : "Needs Maintainance" };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Current Air: " + getAir());
+        info.add("Time until next fuel consumption: " + this.freeFuelTicks);
+        info.add("Fuel Consumption: " + (this.fuelConsumption) + "L/s");
+        info.add("Fuel Value: " + this.fuelValue + " EU/L");
+        info.add("Fuel Remaining: " + this.fuelRemaining + " Litres");
     }
 
     @Override

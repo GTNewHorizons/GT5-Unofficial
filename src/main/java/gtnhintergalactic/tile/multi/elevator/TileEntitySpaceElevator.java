@@ -2,11 +2,7 @@ package gtnhintergalactic.tile.multi.elevator;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
-import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
-import static net.minecraft.util.EnumChatFormatting.RED;
-import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -694,19 +690,6 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     // endregion
 
     // region Misc
-
-    /**
-     * Get the information data of this controller
-     *
-     * @return String, that contains the provided information data
-     */
-    @Override
-    public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
-            "---------------------------------------------" };
-    }
 
     /**
      * @return True as the elevator doesn't have maintenance issues

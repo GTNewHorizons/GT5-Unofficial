@@ -6,7 +6,6 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -349,8 +348,7 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi.steam.tier",
@@ -359,7 +357,6 @@ public class MTESteamCentrifuge extends MTESteamMultiBase<MTESteamCentrifuge> im
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi.steam.parallel",
                 "" + EnumChatFormatting.YELLOW + getTrueParallel()));
-        return info.toArray(new String[0]);
     }
 
     @Override

@@ -304,7 +304,6 @@ scanner.info.UX.0=Running Parallel
 scanner.info.CASS.tier=Casing Tier:
 scanner.info.CASS.tier.none=None!
 
-gg.scanner.info.antimatter_forge=Antimatter Forge
 gg.scanner.info.antimatter_generator=Antimatter Generator
 gg.scanner.info.les.parallel=Parallel:
 gg.scanner.info.les.node_power=Node Power:

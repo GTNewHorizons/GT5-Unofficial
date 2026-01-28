@@ -104,12 +104,6 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
     }
 
     @Override
-    public String[] getInfoData() {
-        super.looseFit = looseFit;
-        return super.getInfoData();
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("turbineFitting", looseFit);

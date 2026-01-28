@@ -16,6 +16,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.scanner.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 
@@ -31,7 +32,7 @@ public class BehaviourScanner extends BehaviourNone {
             final ArrayList<String> tList = new ArrayList<>();
             if (aItem.use(
                 aStack,
-                GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
+                ScannerHelper.scan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
                 aPlayer)) {
                 final int tList_sS = tList.size();
                 tNBT.setInteger("dataLinesCount", tList_sS);
@@ -43,7 +44,7 @@ public class BehaviourScanner extends BehaviourNone {
             return true;
         }
         GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
-        // doGuiAtClient()
+
         return aPlayer instanceof EntityPlayerMP;
     }
 
@@ -53,7 +54,6 @@ public class BehaviourScanner extends BehaviourNone {
             NBTTagCompound tNBT = aStack.getTagCompound();
             int lines = tNBT.getInteger("dataLinesCount");
             if (lines < 1) throw new Exception();
-            aList.add(EnumChatFormatting.BLUE + "Block scan data result:");
             for (int i = 0; i < lines; i++) {
                 aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
             }

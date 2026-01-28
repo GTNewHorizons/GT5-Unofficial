@@ -9,7 +9,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -299,8 +298,7 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi.steam.tier",
@@ -309,7 +307,6 @@ public class MTESteamAlloySmelter extends MTESteamMultiBase<MTESteamAlloySmelter
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi.steam.parallel",
                 "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
-        return info.toArray(new String[0]);
     }
 
     @Override

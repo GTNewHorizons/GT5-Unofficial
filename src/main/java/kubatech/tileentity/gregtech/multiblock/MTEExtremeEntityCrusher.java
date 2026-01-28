@@ -55,7 +55,6 @@ import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SWORD;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -952,8 +951,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         String mobName = getCurrentMob();
         info.add(
             mobName != null ? StatCollector.translateToLocalFormatted("kubatech.infodata.eec.current_mob", mobName)
@@ -1001,7 +999,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
-        return info.toArray(new String[0]);
     }
 
     @Override

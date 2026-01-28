@@ -626,8 +626,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(
             StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
                 + EnumChatFormatting.GOLD
@@ -661,8 +660,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             infos.merge(builder.toString(), 1, Integer::sum);
         }
         infos.forEach((key, value) -> info.add("x" + value + ": " + key));
-
-        return info.toArray(new String[0]);
     }
 
     @Override

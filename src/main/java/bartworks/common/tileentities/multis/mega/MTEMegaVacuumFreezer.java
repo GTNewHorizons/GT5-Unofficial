@@ -491,8 +491,7 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(StatCollector.translateToLocalFormatted("BW.infoData.mega_vacuum_freezer.tier", mTier));
         if (mTier == 2) {
             if (currentCoolingFluid != null) {
@@ -505,7 +504,6 @@ public class MTEMegaVacuumFreezer extends MegaMultiBlockBase<MTEMegaVacuumFreeze
                 info.add(StatCollector.translateToLocal("BW.infoData.mega_vacuum_freezer.subspace_cooling.inactive"));
             }
         }
-        return info.toArray(new String[] {});
     }
 
     @Override

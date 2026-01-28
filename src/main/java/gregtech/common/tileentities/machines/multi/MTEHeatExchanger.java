@@ -16,6 +16,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -423,53 +425,29 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
                 + StatCollector.translateToLocal("GT5U.LHE.steam")
                 + ": "
                 + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
                 + formatNumber(superheated ? -2L * mEUt : -mEUt)
                 + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
+                + " EU/t");
+
+        info.add(
             StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
                 + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
                 + superheated
-                + EnumChatFormatting.RESET,
+                + EnumChatFormatting.RESET);
+
+        info.add(
             StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
                 + StatCollector.translateToLocal("GT5U.LHE.threshold")
                 + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumber(superheated_threshold)
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + recipesDone
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+                + EnumChatFormatting.RESET);
     }
 
     @Override

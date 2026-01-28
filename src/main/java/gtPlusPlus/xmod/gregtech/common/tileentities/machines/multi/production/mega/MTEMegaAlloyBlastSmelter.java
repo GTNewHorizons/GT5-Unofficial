@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.mega;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -14,7 +13,8 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gregtech.api.util.GTUtility.validMTEList;
+
+import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.configs.Configuration;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -314,78 +313,25 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
+    public void getExtraInfoData(ArrayList<String> info) {
         int paras = getBaseMetaTileEntity().isActive() ? processingLogic.getCurrentParallels() : 0;
         int moreSpeed = (int) ((1 - speedBonus) * 100);
         int lessEnergy = (int) ((1 - energyDiscount) * 100);
-        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
 
-        return new String[] {
-            EnumChatFormatting.STRIKETHROUGH + "------------"
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.infodata.critical_info")
-                + " "
-                + EnumChatFormatting.STRIKETHROUGH
-                + "------------",
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(-lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getAverageInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getMaxInputAmps())
-                + EnumChatFormatting.RESET
-                + "A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + GTValues.VN[GTUtility.getTier(getAverageInputVoltage())]
-                + EnumChatFormatting.RESET,
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.abs.mega.parallels",
-                "" + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET),
+                "" + EnumChatFormatting.BLUE + paras + EnumChatFormatting.RESET));
+
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.abs.mega.speed_bonus",
-                "" + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET),
+                "" + EnumChatFormatting.BLUE + moreSpeed + "%" + EnumChatFormatting.RESET));
+
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.abs.mega.energy_discount",
-                "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
-            EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
+                "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET));
     }
 
     @Override

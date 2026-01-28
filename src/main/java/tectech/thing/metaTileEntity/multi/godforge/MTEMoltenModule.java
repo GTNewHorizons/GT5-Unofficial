@@ -125,45 +125,43 @@ public class MTEMoltenModule extends MTEBaseModule {
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> str = new ArrayList<>();
-        str.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.progress",
                 GREEN + formatNumber(mProgresstime / 20) + RESET,
                 YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
-        str.add(
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.currently_using",
                 RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt) : "0") + RESET));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.max_parallel",
                 RESET + formatNumber(getActualParallel())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.parallel.current",
                 RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(currentParallel) : "0")));
-        str.add(
+        info.add(
             YELLOW + StatCollector
                 .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumber(getHeat())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.capacity.heat.effective",
                 RESET + formatNumber(getHeatForOC())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.recipe_time",
                 RESET + formatNumber(getSpeedBonus())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.energy",
                 RESET + formatNumber(getEnergyDiscount())));
-        str.add(
+        info.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
                 RESET + formatNumber(getOverclockTimeFactor())));
-        return str.toArray(new String[0]);
     }
 
     @Override

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -2167,25 +2168,67 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>();
         long storedEnergy = 0;
         long maxEnergy = 0;
+        long seconds = (this.mTotalRunTime / 20);
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+        long hours = TimeUnit.SECONDS.toHours(seconds);
+        String ownerName = "None";
+        int metaID = 0;
+
+        // spotless:off
+        String timeValue =
+            hours > 0 ? String.valueOf(hours)
+                : minutes > 0 ? String.valueOf(minutes)
+                : seconds > 0 ? String.valueOf(seconds)
+                : String.valueOf(this.mTotalRunTime);
+        String timeKey =
+            hours > 0 ? "GT5U.multiblock.totalRunHours"
+                : minutes > 0 ? "GT5U.multiblock.totalRunMinutes"
+                : seconds > 0 ? "GT5U.multiblock.totalRunSeconds"
+                : "GT5U.multiblock.totalRunTicks";
+        // spotless:on
+
+        if (getBaseMetaTileEntity() != null) {
+            ownerName = getBaseMetaTileEntity().getOwnerName();
+            metaID = getBaseMetaTileEntity().getMetaTileID();
+        }
+
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
             storedEnergy += baseMetaTileEntity.getStoredEU();
             maxEnergy += baseMetaTileEntity.getEUCapacity();
         }
 
-        return new String[] {
-            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
+        info.add(translateToLocal("GT5U.multiblock.owned_by") + ": " + EnumChatFormatting.GOLD + ownerName);
+
+        info.add(
+            "Meta-ID: " + EnumChatFormatting.GOLD
+                + formatNumber(metaID)
                 + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
+                + (getBaseMetaTileEntity().canAccessData()
+                    ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
+                + (getBaseMetaTileEntity().getMetaTileEntity() == null
+                    ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
+                    : " "));
+
+        if (mProgresstime > 0) {
+            info.add(
+                translateToLocal("GT5U.multiblock.Progress") + ": "
+                    + EnumChatFormatting.GREEN
+                    + formatNumber(mProgresstime / 20)
+                    + EnumChatFormatting.RESET
+                    + " s / "
+                    + EnumChatFormatting.YELLOW
+                    + formatNumber(mMaxProgresstime / 20)
+                    + EnumChatFormatting.RESET
+                    + " s");
+        }
+
+        info.add(
+            translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
@@ -2193,42 +2236,57 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 + EnumChatFormatting.YELLOW
                 + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
+                + " EU");
+
+        if (getActualEnergyUsage() > 0) {
+            info.add(
+                translateToLocal("GT5U.multiblock.usage") + ": "
+                    + EnumChatFormatting.RED
+                    + formatNumber(getActualEnergyUsage())
+                    + EnumChatFormatting.RESET
+                    + " EU/t");
+        }
+
+        info.add(
+            translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
                 + formatNumber(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
+                + " EU/t (*2A) "
                 + translateToLocal("GT5U.machines.tier")
                 + ": "
                 + EnumChatFormatting.YELLOW
                 + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RESET);
+
+        info.add(
+            translateToLocal("GT5U.multiblock.problems") + ": "
                 + EnumChatFormatting.RED
                 + (getIdealStatus() - getRepairStatus())
                 + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
                 + EnumChatFormatting.YELLOW
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
+                + " %");
+
+        info.add(
+            translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %",
-            /* 7 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + " %");
+
+        info.add(
+            translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+                + EnumChatFormatting.RESET);
+
+        if (Long.parseLong(timeValue) > 0) {
+            info.add(translateToLocal(timeKey) + ": " + EnumChatFormatting.GOLD + timeValue);
+        }
+
+        return info.toArray(new String[0]);
     }
 
     @Override

@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
@@ -57,7 +56,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
@@ -80,7 +78,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
@@ -359,77 +356,8 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-
-        return new String[] { translateToLocalFormatted("tt.keyphrase.Energy_Hatches", clientLocale) + ":",
-            EnumChatFormatting.GREEN + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            (mEUt <= 0 ? translateToLocalFormatted("tt.keyphrase.Probably_uses", clientLocale) + ": "
-                : translateToLocalFormatted("tt.keyphrase.Probably_makes", clientLocale) + ": ")
-                + EnumChatFormatting.RED
-                + formatNumber(Math.abs(mEUt))
-                + EnumChatFormatting.RESET
-                + " EU/t "
-                + translateToLocalFormatted("tt.keyword.at", clientLocale)
-                + " "
-                + EnumChatFormatting.RED
-                + formatNumber(eAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            translateToLocalFormatted("tt.keyphrase.Tier_Rating", clientLocale) + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[getMaxEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.GREEN
-                + VN[getMinEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocalFormatted("tt.keyphrase.Amp_Rating", clientLocale)
-                + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(eMaxAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            translateToLocalFormatted("tt.keyword.Problems", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocalFormatted("tt.keyword.Efficiency", clientLocale)
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            translateToLocalFormatted("tt.keyword.PowerPass", clientLocale) + ": "
-                + EnumChatFormatting.BLUE
-                + ePowerPass
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocalFormatted("tt.keyword.SafeVoid", clientLocale)
-                + ": "
-                + EnumChatFormatting.BLUE
-                + eSafeVoid,
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             translateToLocalFormatted("tt.keyphrase.Computation_Available", clientLocale) + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumber(eAvailableData)
@@ -437,17 +365,16 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + " / "
                 + EnumChatFormatting.YELLOW
                 + formatNumber(eRequiredData)
-                + EnumChatFormatting.RESET,
-            translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":",
+                + EnumChatFormatting.RESET);
+
+        info.add(translateToLocalFormatted("tt.keyphrase.Computation_Remaining", clientLocale) + ":");
+
+        info.add(
             EnumChatFormatting.GREEN + formatNumber(computationRemaining / 20L)
                 + EnumChatFormatting.RESET
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + formatNumber(getComputationRequired()),
-            translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+                + formatNumber(getComputationRequired()));
     }
 
     @Override

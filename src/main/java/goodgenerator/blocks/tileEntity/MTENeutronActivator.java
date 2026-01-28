@@ -399,35 +399,36 @@ public class MTENeutronActivator extends MTETooltipMultiBlockBaseEM implements I
     }
 
     @Override
-    public String[] getInfoData() {
+    public void getExtraInfoData(ArrayList<String> info) {
         int currentNKEInput = 0;
         boolean anyWorking = false;
         for (MTENeutronAccelerator tHatch : mNeutronAccelerator) {
             if (tHatch.getBaseMetaTileEntity()
                 .isActive()) {
-                currentNKEInput += (R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
-                    * GTUtility.powInt(0.95, height - 4);
+                currentNKEInput += (int) ((R.nextInt(tHatch.getMaxEUConsume() + 1) + tHatch.getMaxEUConsume()) * 10
+                    * GTUtility.powInt(0.95, height - 4));
                 anyWorking = true;
             }
         }
         if (!anyWorking) currentNKEInput = -72000;
-        return new String[] {
+
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "gg.scanner.info.neutron_activator.progress",
                 EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET));
+
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "gg.scanner.info.neutron_activator.input",
-                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET));
+
+        info.add(
             StatCollector.translateToLocal("scanner.info.NA") + " "
                 + EnumChatFormatting.LIGHT_PURPLE
                 + formatNumber(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
-                + "eV",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+                + "eV");
     }
 
     @Override

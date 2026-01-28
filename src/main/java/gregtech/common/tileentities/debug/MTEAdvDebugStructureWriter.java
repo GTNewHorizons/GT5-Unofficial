@@ -3,6 +3,8 @@ package gregtech.common.tileentities.debug;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
@@ -218,8 +220,8 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     }
 
     @Override
-    public String[] getInfoData() {
-        return result;
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(Arrays.toString(result));
     }
 
     @Override

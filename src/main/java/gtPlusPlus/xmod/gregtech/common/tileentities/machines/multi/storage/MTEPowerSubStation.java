@@ -678,60 +678,44 @@ public class MTEPowerSubStation extends GTPPMultiBlockBase<MTEPowerSubStation> i
     }
 
     @Override
-    public String[] getExtraInfoData() {
+    public void getExtraInfoData(ArrayList<String> info) {
         String mode;
         if (mIsOutputtingPower) {
             mode = EnumChatFormatting.GOLD + "Output" + EnumChatFormatting.RESET;
-        } else {
-            mode = EnumChatFormatting.BLUE + "Input" + EnumChatFormatting.RESET;
+            info.add(
+                "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET);
+            info.add(
+                "Running Costs: " + EnumChatFormatting.RED
+                    + formatNumber(this.computeEnergyTax())
+                    + EnumChatFormatting.RESET
+                    + " EU/t");
+            info.add("Controller Mode: " + mode);
+            info.add(
+                "Average Input: " + EnumChatFormatting.BLUE
+                    + formatNumber(this.getAverageEuAdded())
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Average Output: " + EnumChatFormatting.GOLD
+                    + formatNumber(this.getAverageEuConsumed())
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Total Input: " + EnumChatFormatting.BLUE
+                    + formatNumber(this.mTotalEnergyAdded)
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Total Output: " + EnumChatFormatting.GOLD
+                    + formatNumber(this.mTotalEnergyConsumed)
+                    + EnumChatFormatting.RESET
+                    + " EU");
+            info.add(
+                "Total Costs: " + EnumChatFormatting.RED
+                    + formatNumber(this.mTotalEnergyLost)
+                    + EnumChatFormatting.RESET
+                    + " EU");
         }
-
-        String storedEnergyText;
-        if (this.getEUVar() > this.mBatteryCapacity) {
-            storedEnergyText = EnumChatFormatting.RED + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
-        } else {
-            storedEnergyText = EnumChatFormatting.GREEN + formatNumber(this.getEUVar()) + EnumChatFormatting.RESET;
-        }
-
-        int errorCode = getErrorDisplayID();
-        boolean mMaint = (errorCode != 0);
-
-        return new String[] { "Ergon Energy - District Sub-Station", "Stored EU: " + storedEnergyText,
-            "Capacity: " + EnumChatFormatting.YELLOW + formatNumber(this.maxEUStore()) + EnumChatFormatting.RESET,
-            "Running Costs: " + EnumChatFormatting.RED
-                + formatNumber(this.computeEnergyTax())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            "Controller Mode: " + mode,
-            "Requires Maintenance: " + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                + mMaint
-                + EnumChatFormatting.RESET
-                + " | Code: ["
-                + (!mMaint ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)
-                + errorCode
-                + EnumChatFormatting.RESET
-                + "]",
-            EnumChatFormatting.STRIKETHROUGH + "----------------------", "Stats for Nerds",
-            "Average Input: " + EnumChatFormatting.BLUE
-                + formatNumber(this.getAverageEuAdded())
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Average Output: " + EnumChatFormatting.GOLD
-                + formatNumber(this.getAverageEuConsumed())
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Input: " + EnumChatFormatting.BLUE
-                + formatNumber(this.mTotalEnergyAdded)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Output: " + EnumChatFormatting.GOLD
-                + formatNumber(this.mTotalEnergyConsumed)
-                + EnumChatFormatting.RESET
-                + " EU",
-            "Total Costs: " + EnumChatFormatting.RED
-                + formatNumber(this.mTotalEnergyLost)
-                + EnumChatFormatting.RESET
-                + " EU", };
     }
 
     @Override

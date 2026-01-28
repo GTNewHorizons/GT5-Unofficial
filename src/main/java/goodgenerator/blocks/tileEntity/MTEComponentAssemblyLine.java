@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -28,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
@@ -248,20 +246,6 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEComponentAssemblyLine(mName);
-    }
-
-    /**
-     * Changes and adds new information to the default info data for the scanner.
-     */
-    @Override
-    public String[] getInfoData() {
-        String[] origin = super.getInfoData();
-        String[] ret = new String[origin.length + 1];
-        System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1]
-                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
-        return ret;
     }
 
     @Override

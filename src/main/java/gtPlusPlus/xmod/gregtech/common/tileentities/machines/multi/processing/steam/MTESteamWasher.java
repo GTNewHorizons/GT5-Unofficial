@@ -371,15 +371,13 @@ public class MTESteamWasher extends MTESteamMultiBase<MTESteamWasher> implements
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add(
             translateToLocalFormatted("gtpp.infodata.multi.steam.tier", "" + EnumChatFormatting.YELLOW + tierMachine));
         info.add(
             translateToLocalFormatted(
                 "gtpp.infodata.multi.steam.parallel",
                 "" + EnumChatFormatting.YELLOW + getMaxParallelRecipes()));
-        return info.toArray(new String[0]);
     }
 
     @Override

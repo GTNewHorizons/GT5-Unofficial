@@ -1,6 +1,5 @@
 package goodgenerator.blocks.tileEntity.base;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
@@ -510,53 +509,6 @@ public abstract class MTELargeFusionComputer extends MTETooltipMultiBlockBaseEM
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_FUSION_LOOP;
-    }
-
-    @Override
-    public String[] getInfoData() {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
-        String tier = switch (tier()) {
-            case 6 -> EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET;
-            case 7 -> EnumChatFormatting.RED + "II" + EnumChatFormatting.RESET;
-            case 8 -> EnumChatFormatting.RED + "III" + EnumChatFormatting.RESET;
-            case 9 -> EnumChatFormatting.RED + "IV" + EnumChatFormatting.RESET;
-            default -> EnumChatFormatting.GOLD + "V" + EnumChatFormatting.RESET;
-        };
-        double plasmaOut = 0;
-        if (mMaxProgresstime > 0) plasmaOut = (double) mOutputFluids[0].amount / mMaxProgresstime;
-
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.fusion_reactor_mk")
-                + " "
-                + EnumChatFormatting.RESET
-                + tier,
-            StatCollector.translateToLocal("scanner.info.UX.0") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(this.para)
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.fusion.req") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(-lEUt)
-                + EnumChatFormatting.RESET
-                + "EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEUStore())
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(plasmaOut)
-                + EnumChatFormatting.RESET
-                + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
     }
 
     protected long energyStorageCache;

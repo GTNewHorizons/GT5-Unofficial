@@ -239,11 +239,8 @@ public class MTEFuelRefineFactory extends MTETooltipMultiBlockBaseEM implements 
     }
 
     @Override
-    public String[] getInfoData() {
-        String[] infoData = new String[super.getInfoData().length + 1];
-        System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
-        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier;
-        return infoData;
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier);
     }
 
     @Override

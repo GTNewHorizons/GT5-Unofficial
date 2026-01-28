@@ -256,20 +256,17 @@ public abstract class MTEPCBUpgradeBase<T extends MTEEnhancedMultiBlockBase<T>> 
     }
 
     @Override
-    public String[] getInfoData() {
-        var ret = new ArrayList<String>();
-        // if this unit has a controller, give the coordinates
+    public void getExtraInfoData(ArrayList<String> info) {
         if (!controllerCoords.isEmpty()) {
             for (Vec3Impl controllerCoord : controllerCoords) {
-                ret.add(
+                info.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.pcb_upgrade_base.linked_at",
                         controllerCoord.get(0),
                         controllerCoord.get(0),
                         controllerCoord.get(0)));
             }
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.pcb_upgrade_base.not_linked"));
-        return ret.toArray(new String[0]);
+        } else info.add(StatCollector.translateToLocal("GT5U.infodata.pcb_upgrade_base.not_linked"));
     }
 
     @Override

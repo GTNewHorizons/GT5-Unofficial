@@ -17,6 +17,7 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -25,8 +26,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -475,21 +474,21 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + formatNumber(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET,
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Modules: " + YELLOW + formatNumber(moduleCount) + RESET);
+
+        info.add(
+            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET);
+
+        info.add(
             "Theoretical Output: " + YELLOW
                 + formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
                 + RESET
-                + " EU/t",
-            "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
-            "---------------------------------------------" };
+                + " EU/t");
+
+        info.add("Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t");
+
+        info.add("Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t");
     }
 
     /******************

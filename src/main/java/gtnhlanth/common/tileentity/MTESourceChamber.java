@@ -1,8 +1,6 @@
 package gtnhlanth.common.tileentity;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -35,13 +33,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -274,92 +270,38 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     }
 
     @Override
-    public String[] getInfoData() {
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : mEnergyHatches) {
-            if (tHatch.isValid()) {
-                storedEnergy += tHatch.getBaseMetaTileEntity()
-                    .getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity()
-                    .getEUCapacity();
-            }
-        }
-
-        return new String[] {
-            // from super()
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 Pollution not included */
-            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
-            // Beamline-specific
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
                 + ": "
-                + EnumChatFormatting.RESET,
+                + EnumChatFormatting.RESET);
+
+        info.add(
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(this.outputParticle)
                     .getLocalisedName()
                 + " "
-                + EnumChatFormatting.RESET,
+                + EnumChatFormatting.RESET);
+
+        info.add(
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
                 + EnumChatFormatting.DARK_RED
                 + this.outputEnergy * 1000
                 + EnumChatFormatting.RESET
-                + " eV",
+                + " eV");
+
+        info.add(
             StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
                 + EnumChatFormatting.BLUE
                 + this.outputFocus
                 + " "
-                + EnumChatFormatting.RESET,
+                + EnumChatFormatting.RESET);
+
+        info.add(
             StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
                 + EnumChatFormatting.LIGHT_PURPLE
-                + this.outputRate };
+                + this.outputRate);
     }
 
     @Override

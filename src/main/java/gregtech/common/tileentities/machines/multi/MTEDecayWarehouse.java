@@ -627,16 +627,12 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public String[] getInfoData() {
-        List<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
-
+    public void getExtraInfoData(ArrayList<String> info) {
         info.add("Isotope: " + GREEN + (isotope == null ? "None" : isotope.getDisplayName()));
         info.add("Product: " + YELLOW + (product == null ? "None" : product.getDisplayName()));
         info.add("Isotope Amount: " + GREEN + storedIsotope);
         info.add("Product Amount: " + YELLOW + storedProduct);
         info.add("Decay Rate: " + BLUE + decayRate);
         info.add("Capacity: " + BLUE + getWarehouseCapacity());
-
-        return info.toArray(new String[0]);
     }
 }

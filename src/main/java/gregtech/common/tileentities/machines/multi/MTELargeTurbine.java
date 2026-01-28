@@ -355,83 +355,35 @@ public abstract class MTELargeTurbine extends MTEEnhancedMultiBlockBase<MTELarge
     }
 
     @Override
-    public String[] getInfoData() {
-        String tRunning = mMaxProgresstime > 0
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
-                + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
-                + EnumChatFormatting.RESET;
-        String tMaintainance = getIdealStatus() == getRepairStatus()
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                + EnumChatFormatting.RESET;
+    public void getExtraInfoData(ArrayList<String> info) {
         int tDura = 0;
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof MetaGeneratedTool01) {
-            tDura = GTUtility.safeInt(
-                (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(mInventory[1])
-                    * (MetaGeneratedTool.getToolDamage(mInventory[1])) + 1));
-        }
+            info.add(
+                StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
+                    + EnumChatFormatting.YELLOW
+                    + formatNumber(GTUtility.safeInt((long) realOptFlow))
+                    + EnumChatFormatting.RESET
+                    + " L/" // based on processing time uses ticks or seconds (for plasma)
+                    + (this.mMaxProgresstime == 1 ? 't' : 's'));
 
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
+            info.add(
+                EnumChatFormatting.YELLOW + " ("
+                    + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
+                        : StatCollector.translateToLocal("GT5U.turbine.tight"))
+                    + ")");
+
+            info.add(
+                StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
+                    + EnumChatFormatting.GOLD
+                    + formatNumber(storedFluid)
+                    + EnumChatFormatting.RESET
+                    + "L");
+
+            info.add(
+                StatCollector.translateToLocal(
+                    "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%");
         }
-        return new String[] {
-            // 8 Lines available for information panels
-            tRunning + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(((long) mEUt * mEfficiency) / 10000)
-                + EnumChatFormatting.RESET
-                + " EU/t", /* 1 */
-            tMaintainance, /* 2 */
-            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.RESET
-                + "%", /* 2 */
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + /* 3 */ EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(GTUtility.safeInt((long) realOptFlow))
-                + EnumChatFormatting.RESET
-                + " L/" // based on processing time uses ticks or seconds (for plasma)
-                + (this.mMaxProgresstime == 1 ? 't' : 's')
-                + /* 4 */ EnumChatFormatting.YELLOW
-                + " ("
-                + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
-                + ")", /* 5 */
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + formatNumber(storedFluid)
-                + EnumChatFormatting.RESET
-                + "L", /* 6 */
-            StatCollector.translateToLocal(
-                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%", /* 7 */
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %", /* 8 */
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET /* 9 */
-        };
     }
 
     public boolean hasTurbine() {

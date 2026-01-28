@@ -494,15 +494,14 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    public String[] getInfoData() {
-        var ret = new ArrayList<String>();
-        ret.add(
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
             translateToLocal("GT5U.multiblock.recipesDone") + ": "
                 + EnumChatFormatting.GREEN
                 + formatNumber(recipesDone)
                 + EnumChatFormatting.RESET);
         // Show linked purification units and their status
-        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
+        info.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.linkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -522,9 +521,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                         + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
-            ret.add(text);
+            info.add(text);
         }
-        return ret.toArray(new String[0]);
     }
 
     @Override

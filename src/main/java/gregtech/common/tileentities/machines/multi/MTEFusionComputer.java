@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -21,7 +20,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -446,50 +444,6 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     public void stopMachine(@NotNull ShutDownReason reason) {
         super.stopMachine(reason);
         turnCasingActive(false);
-    }
-
-    @Override
-    public String[] getInfoData() {
-        String tier = tier() == 6 ? EnumChatFormatting.RED + "I" + EnumChatFormatting.RESET
-            : tier() == 7 ? EnumChatFormatting.YELLOW + "II" + EnumChatFormatting.RESET
-                : tier() == 8 ? EnumChatFormatting.GRAY + "III" + EnumChatFormatting.RESET : "IV";
-        float plasmaOut = 0;
-        int powerRequired = 0;
-        if (this.mLastRecipe != null) {
-            powerRequired = this.mLastRecipe.mEUt;
-            if (this.mLastRecipe.getFluidOutput(0) != null) {
-                plasmaOut = (float) this.mLastRecipe.getFluidOutput(0).amount / (float) this.mLastRecipe.mDuration;
-            }
-        }
-
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.fusion_reactor_mk")
-                + " "
-                + EnumChatFormatting.RESET
-                + tier,
-            StatCollector.translateToLocal("GT5U.fusion.req") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(powerRequired)
-                + EnumChatFormatting.RESET
-                + "EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mEUStore)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEUStore())
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(plasmaOut)
-                + EnumChatFormatting.RESET
-                + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + recipesDone
-                + EnumChatFormatting.RESET };
     }
 
     @Override

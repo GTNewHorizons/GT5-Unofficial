@@ -624,8 +624,8 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Internal Heat Level: " + this.mHeatLevel,
-            "Connected Solar Reflectors: " + this.mSolarHeaters.size() };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Internal Heat Level: " + this.mHeatLevel);
+        info.add("Connected Solar Reflectors: " + this.mSolarHeaters.size());
     }
 }

@@ -2909,7 +2909,6 @@ GT5U.infodata.air_filter.pollution_reduction=Pollution reduction: %s gibbl/t
 GT5U.infodata.air_filter.remaining_cycles=remaining cycles for the filter (if present): %d
 
 GT5U.infodata.diesel_engine=Дизельный двигатель
-GT5U.infodata.extreme_diesel_engine=Экстремальный дизельный двигатель
 GT5U.infodata.fusion_reactor_mk=Термоядерный реактор MK
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Макс. параллелей: %s%d%s

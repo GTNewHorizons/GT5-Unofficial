@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -212,10 +213,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        final String running = (this.mMaxProgresstime > 0 ? "Salt Plant running" : "Salt Plant stopped");
-        final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
+    public void getExtraInfoData(ArrayList<String> info) {
         String tSpecialText;
 
         if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
@@ -224,7 +222,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             tSpecialText = "Currently processing: Nothing";
         }
 
-        return new String[] { "Nuclear Salt Processing Plant", running, maintenance, tSpecialText };
+        info.add(tSpecialText);
     }
 
     @Override

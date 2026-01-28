@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -18,7 +17,6 @@ import static gregtech.common.misc.WirelessNetworkManager.processInitialSettings
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_BRIDGE_CASING;
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_INJECTION_CASING;
 import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRANS_CASING;
-import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
 import java.util.UUID;
@@ -28,7 +26,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -296,30 +293,6 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     public void loadNBTData(final NBTTagCompound aNBT) {
         multiplier = aNBT.getInteger("eMultiplier");
         super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + (mMaxProgresstime == 0 ? "0"
-                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
     }
 
     @Override

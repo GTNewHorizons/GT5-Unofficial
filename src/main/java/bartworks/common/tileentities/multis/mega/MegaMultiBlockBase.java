@@ -1,28 +1,15 @@
 package bartworks.common.tileentities.multis.mega;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.util.GTUtility.validMTEList;
-
-import java.util.Arrays;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
-import bartworks.util.BWTooltipReference;
-import bartworks.util.BWUtil;
-import gregtech.api.enums.GTValues;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 
 public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extends MTEExtendedPowerMultiBlockBase<T> {
 
@@ -32,113 +19,6 @@ public abstract class MegaMultiBlockBase<T extends MegaMultiBlockBase<T>> extend
 
     public MegaMultiBlockBase(String aName) {
         super(aName);
-    }
-
-    protected String[] getExtendedInfoData() {
-        return GTValues.emptyStringArray;
-    }
-
-    protected long[] getCurrentInfoData() {
-        long storedEnergy = 0, maxEnergy = 0;
-        for (MTEHatch hatch : this.getExoticAndNormalEnergyHatchList()) {
-            storedEnergy += hatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += hatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        return new long[] { storedEnergy, maxEnergy };
-    }
-
-    @Override
-    public String[] getInfoData() {
-        long[] ttHatches = this.getCurrentInfoData();
-        long storedEnergy = ttHatches[0];
-        long maxEnergy = ttHatches[1];
-
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            if (tHatch instanceof MTEHatchEnergyDebug debugHatch) {
-                storedEnergy = debugHatch.getEUVar();
-                maxEnergy = debugHatch.maxEUStore();
-                break;
-            }
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-
-        long nominalV = this.getMaxInputEu();
-        String tName = BWUtil.getTierNameFromVoltage(nominalV);
-        if ("MAX+".equals(tName)) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
-
-        String[] extendedInfo = this.getExtendedInfoData();
-
-        String[] baseInfo = {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(this.mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(this.mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(-this.lEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(this.getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + formatNumber(this.getMaxInputAmps())
-                + "A) = "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(nominalV)
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.tier") + ": "
-                + EnumChatFormatting.YELLOW
-                + tName
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (this.getIdealStatus() - this.getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + this.mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
-
-        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length + 1);
-
-        System.arraycopy(extendedInfo, 0, combinedInfo, baseInfo.length, extendedInfo.length);
-
-        combinedInfo[combinedInfo.length - 1] = BWTooltipReference.BW;
-
-        return combinedInfo;
     }
 
     @Override

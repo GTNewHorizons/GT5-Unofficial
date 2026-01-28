@@ -13,6 +13,8 @@ import static gregtech.api.util.GTRecipeConstants.LFTR_OUTPUT_POWER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -122,15 +124,12 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        final String tRunning = (this.mMaxProgresstime > 0 ? "Reactor running" : "Reactor stopped");
-        final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues"
-            : "Needs Maintainance");
-
-        return new String[] { "Liquid Fluoride Thorium Reactor", tRunning, tMaintainance,
-            "Current Output: " + this.lEUt + " EU/t", "Fuel Remaining: " + this.mFuelRemaining + " Litres",
-            "Current Efficiency: " + (this.mEfficiency / 5) + "%", "Current Efficiency (Raw): " + (this.mEfficiency),
-            "It requires you to have 100% Efficiency." };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add("Current Output: " + this.lEUt + " EU/t");
+        info.add("Fuel Remaining: " + this.mFuelRemaining + " Litres");
+        info.add("Current Efficiency: " + (this.mEfficiency / 5) + "%");
+        info.add("Current Efficiency (Raw): " + (this.mEfficiency));
+        info.add("It requires you to have 100% Efficiency.");
     }
 
     @Override

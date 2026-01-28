@@ -26,6 +26,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.annotation.Nonnull;
@@ -275,12 +276,13 @@ public class MTEMegaBlastFurnace extends MegaMultiBlockBase<MTEMegaBlastFurnace>
     }
 
     @Override
-    protected String[] getExtendedInfoData() {
-        return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(this.mHeatingCapacity)
-            + EnumChatFormatting.RESET
-            + " K" };
+    public void getExtraInfoData(ArrayList<String> info) {
+        info.add(
+            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(this.mHeatingCapacity)
+                + EnumChatFormatting.RESET
+                + " K");
     }
 
     @Override
