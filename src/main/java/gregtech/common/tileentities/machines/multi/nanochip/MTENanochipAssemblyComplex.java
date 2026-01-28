@@ -14,6 +14,8 @@ import static gregtech.api.util.GTUtility.filterValidMTEs;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_X;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Y;
 import static gregtech.common.tileentities.machines.multi.nanochip.util.AssemblyComplexStructureString.MAIN_OFFSET_Z;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -225,67 +226,35 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        return new MultiblockTooltipBuilder().addMachineType("NAC, Nanochip-Assembly-Complex")
+        return new MultiblockTooltipBuilder().addMachineType(translateToLocal("GT5U.tooltip.nac.main.machine_type"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo("Uses Circuit Components (" + TOOLTIP_CCs + ") to create circuits at unimaginable speeds")
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.1", TOOLTIP_CCs, VC_HATCHES))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.2", TOOLTIP_CCs, TOOLTIP_COLORED))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.3", TOOLTIP_COLORED))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.4", TOOLTIP_VCOs, TOOLTIP_COLOR))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.5", TOOLTIP_CCs, TOOLTIP_VCI))
             .addInfo(
-                TOOLTIP_CCs + " can only exist in the perfect environment present in"
-                    + EnumChatFormatting.WHITE
-                    + " Vacuum Conveyor Hatches")
-            .addInfo(
-                "Convert items to " + TOOLTIP_CCs
-                    + " in the control room by placing them in a "
-                    + TOOLTIP_COLORED
-                    + " input bus")
-            .addInfo(
-                "Every " + EnumChatFormatting.RED
-                    + "5"
-                    + EnumChatFormatting.GRAY
-                    + " seconds, all items in "
-                    + TOOLTIP_COLORED
-                    + " input buses are placed")
-            .addInfo("in Vacuum Conveyor Outputs (" + TOOLTIP_VCOs + ") of the same " + TOOLTIP_COLOR)
-            .addInfo(
-                "Finished circuit " + TOOLTIP_CCs
-                    + " are converted back into circuits by routing them to a "
-                    + TOOLTIP_VCI
-                    + " in the control room")
-            .addInfo(
-                TOOLTIP_CCs + " in a "
-                    + TOOLTIP_COLORED
-                    + " "
-                    + TOOLTIP_VCI
-                    + " are placed in an output bus of the same "
-                    + TOOLTIP_COLOR)
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.main.body.6",
+                    TOOLTIP_CCs,
+                    TOOLTIP_COLORED,
+                    TOOLTIP_VCI,
+                    TOOLTIP_COLOR))
             .addSeparator()
-            .addInfo(
-                TOOLTIP_CCs + " must be processed into a refined version by "
-                    + EnumChatFormatting.WHITE
-                    + EnumChatFormatting.UNDERLINE
-                    + "modules"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " before they")
-            .addInfo("can be assembled into a circuit in the " + EnumChatFormatting.GREEN + "Nanochip Assembly Matrix")
-            .addInfo("All power from the energy hatch is distributed to the modules as they need it")
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
             .addSeparator()
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "a pseudo-sentient program overseeing circuit production in the NAC")
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE + ""
-                    + EnumChatFormatting.ITALIC
-                    + "It seems to be eager to learn more, maybe you can become friends?")
-            .addStructureInfo("Any control room base casing - Vacuum Conveyor Input")
-            .addStructureInfo("Any control room base casing - Input bus")
-            .addStructureInfo("Any control room base casing - Vacuum Conveyor Output")
-            .addStructureInfo("Any control room base casing - Output bus")
-            .addStructureInfo("Any control room base casing - Energy Hatch")
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
+            .addStructureInfo(TOOLTIP_VCI_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addStructureInfo(TOOLTIP_VCO_LONG + ": " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+
             .toolTipFinisher();
     }
 

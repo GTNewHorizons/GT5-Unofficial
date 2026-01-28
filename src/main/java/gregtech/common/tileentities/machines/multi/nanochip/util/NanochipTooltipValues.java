@@ -19,9 +19,11 @@ public interface NanochipTooltipValues {
     String TOOLTIP_CC = translateToLocal("GT5U.tooltip.nac.interface.cc");
     String TOOLTIP_CCs = translateToLocal("GT5U.tooltip.nac.interface.ccs");
 
+    String TOOLTIP_VCI_LONG = translateToLocal("GT5U.tooltip.nac.interface.vci_long");
     String TOOLTIP_VCI = translateToLocal("GT5U.tooltip.nac.interface.vci");
     String TOOLTIP_VCIs = translateToLocal("GT5U.tooltip.nac.interface.vcis");
 
+    String TOOLTIP_VCO_LONG = translateToLocal("GT5U.tooltip.nac.interface.vco_long");
     String TOOLTIP_VCO = translateToLocal("GT5U.tooltip.nac.interface.vco");
     String TOOLTIP_VCOs = translateToLocal("GT5U.tooltip.nac.interface.vcos");
 
@@ -33,6 +35,8 @@ public interface NanochipTooltipValues {
 
     String TOOLTIP_MODULE_DESCRIPTION = translateToLocal("GT5U.tooltip.nac.interface.module_description");
 
+    String TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING = translateToLocal(
+        "GT5U.tooltip.nac.interface.structure_control_room_base_casing");
     String TOOLTIP_STRUCTURE_BASE_CASING = translateToLocal("GT5U.tooltip.nac.interface.structure_base_casing");
     String TOOLTIP_STRUCTURE_BASE_VCI = translateToLocalFormatted(
         "GT5U.tooltip.nac.interface.structure_base_vci",
@@ -40,5 +44,6 @@ public interface NanochipTooltipValues {
     String TOOLTIP_STRUCTURE_BASE_VCO = translateToLocalFormatted(
         "GT5U.tooltip.nac.interface.structure_base_vco",
         TOOLTIP_STRUCTURE_BASE_CASING);
+    String VC_HATCHES = translateToLocal("GT5U.tooltip.nac.interface.vc_hatches");
 
 }
