@@ -34,7 +34,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.misc.GTStructureChannels;
 
 public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> implements ISurvivalConstructable {
 
@@ -128,8 +127,14 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Brewery, BBB")
-            .addBulkMachineInfo(4, 1.5F, 1F)
+        tt.addMachineType("Environmental Emulator")
+            .addInfo("Replicates the conditions of a dimension within the dome")
+            .addInfo("Anything inside will operate as if it was built in the active dimension")
+            .addInfo("Each dimension must be calibrated by providing resources from that dimension")
+            .addInfo("If the Biosphere shuts down, calibration will be lost")
+            .addSeparator()
+            .addInfo("The Biosphere's floor can accept dynamos and energy hatches to pass power into the dome")
+            .addTecTechHatchInfo()
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front Center")
             .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
@@ -141,9 +146,13 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
             .addOutputHatch("Any Wooden Casing", 1)
             .addEnergyHatch("Any Wooden Casing", 1)
             .addMaintenanceHatch("Any Wooden Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
+    }
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
     }
 
     @Override
@@ -155,12 +164,6 @@ public class MTEBiosphere extends MTEExtendedPowerMultiBlockBase<MTEBiosphere> i
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 2, 0, elementBudget, env, false, true);
-    }
-
-    private int mCasingAmount;
-
-    private void onCasingAdded() {
-        mCasingAmount++;
     }
 
     @Override
