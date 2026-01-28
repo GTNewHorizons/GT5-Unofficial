@@ -260,7 +260,7 @@ public class SplitterGui extends MTENanochipAssemblyModuleBaseGui<MTESplitterMod
                         rule.redstoneMode.level = val;
                         syncer.notifyUpdate();
                     }))
-                .setNumbers(0, 0)
+                .setNumbers(0, 15)
                 .setFormatAsInteger(true)
                 .size(52, 12))
             .setEnabledIf(f -> rule.enabledWidget == REDSTONE)
