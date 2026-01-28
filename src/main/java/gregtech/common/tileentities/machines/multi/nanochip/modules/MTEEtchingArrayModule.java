@@ -191,7 +191,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body1")) // todo implement gimmick
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
-            .addOtherStructurePart("Any Laser Source Hatch", addHintNumber(1))
+            .addOtherStructurePart(EnumChatFormatting.GRAY+translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), addHintNumber(1))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
