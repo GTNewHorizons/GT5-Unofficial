@@ -45,6 +45,7 @@ import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -202,8 +203,10 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addInfo(
                 translateToLocalFormatted("GT5U.tooltip.nac.module.assembly_matrix.action", TOOLTIP_CCs, TOOLTIP_CCs))
             .addSeparator()
-            .addInfo("Maximum allowed recipe tier is determined by")
-            .addInfo("the tier of the " + EnumChatFormatting.WHITE + "Component Assembly Line Casing")
+            .addInfo(
+                translateToLocalFormatted(
+                    "GT5U.tooltip.nac.module.assembly_matrix.body1",
+                    TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
