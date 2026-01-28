@@ -17,6 +17,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -47,6 +48,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
         syncManager.syncValue("processedItems", new IntSyncValue(multiblock::getProcessedItems));
         syncManager.syncValue("impurity", new DoubleSyncValue(multiblock::getImpurityPercentage));
+        syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
             new IntSyncValue(multiblock::getAutomationPercentage, multiblock::setAutomationPercentage));
@@ -146,19 +148,21 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
             .child(createAutomationButton(syncManager, parent));
     }
 
-    @Override
-    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+    //@Override
+    //protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
 
-        IntSyncValue processedItems = syncManager.findSyncHandler("processedItems", IntSyncValue.class);
-        DoubleSyncValue impurity = syncManager.findSyncHandler("impurity", DoubleSyncValue.class);
+    //    IntSyncValue processedItems = syncManager.findSyncHandler("processedItems", IntSyncValue.class);
+    //    DoubleSyncValue impurity = syncManager.findSyncHandler("impurity", DoubleSyncValue.class);
+    //    FloatSyncValue eu = syncManager.findSyncHandler("euMult", FloatSyncValue.class);
 
-        return super.createTerminalTextWidget(syncManager, parent)
-            .child(new TextWidget<>(IKey.dynamic(processedItems::getStringValue)))
-            .child(new TextWidget<>(IKey.dynamic(impurity::getStringValue)));
-    }
+    //    return super.createTerminalTextWidget(syncManager, parent)
+    //        .child(new TextWidget<>(IKey.dynamic(processedItems::getStringValue)))
+    //        .child(new TextWidget<>(IKey.dynamic(impurity::getStringValue)))
+    //        .child(new TextWidget<>(IKey.dynamic(eu::getStringValue)));
+    //}
 
     @NotNull
-    private ModularPanel openAutoPanel(PanelSyncManager p_syncManager, ModularPanel parent,
+    private ModularPanel openAutoPanel(ModularPanel parent,
         PanelSyncManager syncManager) {
         return new ModularPanel("automationPanel").relative(parent)
             .leftRel(1)
@@ -189,7 +193,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
     protected IWidget createAutomationButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler automationPanel = syncManager.panel(
             "automationPanel",
-            (p_syncManager, syncHandler) -> openAutoPanel(p_syncManager, parent, syncManager),
+            (p_syncManager, syncHandler) -> openAutoPanel(parent, syncManager),
             true);
         return new ButtonWidget<>().size(18, 18)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
