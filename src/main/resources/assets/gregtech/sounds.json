@@ -151,6 +151,15 @@
       }
     ]
   },
+  "machines.LHCSpinUp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "LHCSpinUp",
+        "stream": false
+      }
+    ]
+  },
   "items.spraycan_shake": {
     "category": "player",
     "sounds": [

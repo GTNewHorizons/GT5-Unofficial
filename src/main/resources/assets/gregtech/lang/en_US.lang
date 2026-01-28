@@ -1093,6 +1093,7 @@ gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
+gt.recipe.beamcrafter=Beam Crafter
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
@@ -1214,6 +1215,10 @@ GT5U.GTPP_MULTI_STEAM_FURNACE.mode.1=Blasting
 GT5U.GTPP_MULTI_STEAM_FURNACE.mode.2=Smoking
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.0=Separator
 GT5U.INDUSTRIAL_ELECTROMAGNETIC_SEPARATOR.mode.1=Polarizer
+GT5U.MULTI_CANNER.mode.0=Canner
+GT5U.MULTI_CANNER.mode.1=Fluid Canner
+GT5U.MULTI_LHC.mode.0=Accelerator
+GT5U.MULTI_LHC.mode.1=Collider
 GT5U.BLACKHOLE.mode.0=Compressor
 GT5U.BLACKHOLE.mode.1=Singularity Compressor
 GT5U.GTPP_MULTI_INDUSTRIAL_DEHYDRATOR.mode.0=Vacuum Furnace
@@ -1748,6 +1753,18 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
+
+GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
+GT5U.gui.text.BeamlineHatch.emptylist=No List to choose from :(
+
+GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
+GT5U.gui.text.LHC.beamrate=Current Beam Rate
+GT5U.gui.text.LHC.powercost=Current Power Draw %s EU/t
+GT5U.gui.text.LHC.status=Status: %s
+GT5U.gui.text.LHC.off=Off
+GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
+GT5U.gui.text.LHC.collidermode=Colliding beam...
+GT5U.gui.text.LHC.completedcycles=Completed Cycles
 
 # chats
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
