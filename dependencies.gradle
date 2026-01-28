@@ -34,7 +34,7 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-    api("com.github.GTNewHorizons:StructureLib:1.4.28:dev")
+    api("com.github.GTNewHorizons:StructureLib:1.4.25:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.55-GTNH:dev")
     api("com.github.GTNewHorizons:GTNHLib:0.9.6:dev")
