@@ -403,7 +403,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
         double recipeDuration = recipe.mDuration;
-        double recipeEUT = recipe.mEUt;
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier();
         int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
         // max overclocks is ehatch tier - recipe tier
         // can only overclock if machine has a remaining overclock,
@@ -443,7 +443,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             mMaxProgresstime = properRecipe.mDuration;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) properRecipe.mEUt * (long) this.currentParallel;
-            this.lEUt = (long) (this.lEUt * this.getEUDiscountModifier());
         }
 
         return result;
