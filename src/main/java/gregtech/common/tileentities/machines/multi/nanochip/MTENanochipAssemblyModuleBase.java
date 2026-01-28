@@ -297,7 +297,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                     inputs.merge(
                         id,
                         stack,
-                        (a, b) -> new ItemStack(a.getItem(), a.getItemDamage(), a.stackSize + b.stackSize));
+                        (a, b) -> new ItemStack(a.getItem(), a.stackSize + b.stackSize, a.getItemDamage()));
                     // Also register its color
                     itemColorMap.put(id, conveyorColor);
                     // Also add the item to the list of individual input items for recipe checking
