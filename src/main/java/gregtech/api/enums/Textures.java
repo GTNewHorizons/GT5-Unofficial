@@ -80,11 +80,6 @@ public class Textures {
 
     public enum BlockIcons implements IIconContainer, Runnable {
 
-        // RENDERING_ERROR,
-
-        //
-        // VOID // The Empty Texture
-        // ,
         // ADDED
         MACHINE_UEV_SIDE,
         MACHINE_UIV_SIDE,
@@ -1056,6 +1051,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_UXV(true),
         OVERLAY_ENERGY_ON_WIRELESS_MAX(true),
         OVERLAY_ENERGY_ON_WIRELESS_MAXP(true),
+        OVERLAY_ENERGY_ON_WIRELESS_DEBUG(true),
 
         OVERLAY_ENERGY_ON_WIRELESS_4A(true),
         OVERLAY_ENERGY_ON_WIRELESS_4A_ULV(true),
