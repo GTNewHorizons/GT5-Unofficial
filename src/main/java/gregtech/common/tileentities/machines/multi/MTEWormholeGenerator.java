@@ -71,7 +71,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -402,7 +402,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Nullable
-    private TileEntityWormhole createRenderBlock() {
+    private RenderingTileEntityWormhole createRenderBlock() {
 
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
         World world = gregTechTileEntity.getWorld();
@@ -426,11 +426,11 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         world.setBlock(xTarget, yTarget, zTarget, Blocks.air);
         world.setBlock(xTarget, yTarget, zTarget, GregTechAPI.sWormholeRender);
 
-        return (TileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
+        return (RenderingTileEntityWormhole) world.getTileEntity(xTarget, yTarget, zTarget);
     }
 
     @Nullable
-    private TileEntityWormhole getRenderBlock() {
+    private RenderingTileEntityWormhole getRenderBlock() {
         IGregTechTileEntity gregTechTileEntity = this.getBaseMetaTileEntity();
 
         int x = gregTechTileEntity.getXCoord();
@@ -448,7 +448,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
         TileEntity tile = Optional.ofNullable(gregTechTileEntity.getWorld())
             .map(w -> w.getTileEntity(wX, wY, wZ))
             .orElse(null);
-        if (tile instanceof TileEntityWormhole wormhole) return wormhole;
+        if (tile instanceof RenderingTileEntityWormhole wormhole) return wormhole;
         return null;
 
     }
@@ -460,7 +460,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .map(IHasWorldObjectAndCoords::getWorld)
             .orElse(null);
 
-        TileEntityWormhole hole = getRenderBlock();
+        RenderingTileEntityWormhole hole = getRenderBlock();
         if (hole == null) hole = createRenderBlock();
 
         if (hole != null) {
@@ -469,7 +469,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     public void updateRenderRadius(double radius) {
-        TileEntityWormhole hole = getRenderBlock();
+        RenderingTileEntityWormhole hole = getRenderBlock();
         if (hole == null) hole = createRenderBlock();
 
         if (hole != null) {
