@@ -186,10 +186,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
-            .addInfo(TOOLTIP_COLOR_MATCH_VCS)
-            .addInfo(TOOLTIP_INFINITE_PARALLEL)
             .addSeparator()
             .addInfo(
                 "In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes")
