@@ -42,10 +42,11 @@ import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactor
 import gregtech.common.tileentities.machines.multi.nanochip.factory.VacuumFactoryNetwork;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
+import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement {
+public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumFactoryElement, NanochipTooltipValues {
 
     public static final int VACUUM_MOVE_TICK = 17;
     public VacuumFactoryNetwork network;
