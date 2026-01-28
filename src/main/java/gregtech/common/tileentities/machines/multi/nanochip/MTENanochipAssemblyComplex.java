@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
@@ -433,16 +434,25 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             boolean routed = routeToHatches(destinationHatches, busColor, component, stack.stack.stackSize);
             // If successful, consume the input
             if (routed) {
-                final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
+                ItemStack removed = stack.bus.removeAllResource(stack.stack);
+                if (removed != null) {
+                    // Say the magic incantation to prevent duping
+                    if (stack.bus instanceof IRecipeProcessingAwareHatch aware) {
+                        setResultIfFailure(aware.endRecipeProcessing(this));
+                        aware.startRecipeProcessing();
+                    }
+                }
+                /*final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
                 for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
                     ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
                     if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
                         if (stackInSlot.stackSize >= stack.stack.stackSize) {
+
                             baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
                             break;
                         }
                     }
-                }
+                }*/
             }
         }
     }
