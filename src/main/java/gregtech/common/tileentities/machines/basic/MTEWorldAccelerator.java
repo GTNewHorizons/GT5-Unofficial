@@ -100,10 +100,10 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        _mGTIco_Norm_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR");
-        _mGTIco_Norm_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_ACTIVE");
-        _mGTIco_TE_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE");
-        _mGTIco_TE_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE");
+        _mGTIco_Norm_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR", true);
+        _mGTIco_Norm_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_ACTIVE", true);
+        _mGTIco_TE_Idle = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE", true);
+        _mGTIco_TE_Active = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_ACCELERATOR_TE_ACTIVE", true);
     }
 
     @SideOnly(Side.CLIENT)

@@ -32,70 +32,89 @@ public class MTEReplicator extends MTEBasicMachine {
             1,
             1,
             TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE")),
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon(
+                        "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE",
+                        true)),
                 TextureFactory.builder()
                     .addIcon(
                         new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW"))
+                            "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW",
+                            true))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR")),
-                TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE")),
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_SIDE_REPLICATOR", true)),
                 TextureFactory.builder()
                     .addIcon(
                         new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR")),
-                TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE")),
-                TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW"))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_TOP_REPLICATOR")),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_TOP_REPLICATOR_GLOW"))
+                            "basicmachines/replicator/OVERLAY_SIDE_REPLICATOR_GLOW",
+                            true))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory.of(
-                    new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE")),
+                    new Textures.BlockIcons.CustomIcon(
+                        "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE",
+                        true)),
                 TextureFactory.builder()
                     .addIcon(
                         new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW"))
+                            "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW",
+                            true))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR")),
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_FRONT_REPLICATOR", true)),
                 TextureFactory.builder()
                     .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_GLOW"))
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/replicator/OVERLAY_FRONT_REPLICATOR_GLOW",
+                            true))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE", true)),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/replicator/OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW",
+                            true))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_TOP_REPLICATOR", true)),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/replicator/OVERLAY_TOP_REPLICATOR_GLOW",
+                            true))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(
+                    new Textures.BlockIcons.CustomIcon(
+                        "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE",
+                        true)),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW",
+                            true))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR", true)),
+                TextureFactory.builder()
+                    .addIcon(
+                        new Textures.BlockIcons.CustomIcon(
+                            "basicmachines/replicator/OVERLAY_BOTTOM_REPLICATOR_GLOW",
+                            true))
                     .glow()
                     .build()));
     }

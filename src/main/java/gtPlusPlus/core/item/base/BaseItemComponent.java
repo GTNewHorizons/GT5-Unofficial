@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Textures.GlobalIcons.RENDERING_ERROR;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -24,10 +26,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gregtech.api.util.client.ResourceUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -317,10 +321,23 @@ public class BaseItemComponent extends Item {
         return this.overlay;
     }
 
+    private static ResourceLocation getResourceLocation(String iconPath) {
+        final int semicolon = iconPath.indexOf(':');
+        final String domain = iconPath.substring(0, semicolon);
+        final String path = "textures/items/" + iconPath.substring(semicolon + 1) + ".png";
+        return new ResourceLocation(domain, path);
+    }
+
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(getCorrectTextures());
-        this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
+        final String iconPath = getCorrectTextures();
+        final ResourceLocation iconResource = getResourceLocation(iconPath);
+        this.base = ResourceUtils.resourceExists(iconResource) ? i.registerIcon(iconPath) : RENDERING_ERROR.getIcon();;
+
+        final String overlayPath = getCorrectTextures() + "_OVERLAY";
+        final ResourceLocation overlayResource = getResourceLocation(overlayPath);
+        this.overlay = ResourceUtils.resourceExists(overlayResource) ? i.registerIcon(overlayPath)
+            : Textures.InvisibleIcon.INVISIBLE_ICON;
     }
 
     public enum ComponentTypes {
