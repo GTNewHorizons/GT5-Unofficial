@@ -188,8 +188,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(
-                "In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes")
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body1")) // todo implement gimmick
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .addOtherStructurePart("Any Laser Source Hatch", addHintNumber(1))
