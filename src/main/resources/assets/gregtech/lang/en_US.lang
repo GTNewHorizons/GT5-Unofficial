@@ -1689,9 +1689,18 @@ GT5U.tooltip.nac.module.biological_coordinator.flavor.1=Biological Circuit Compo
 GT5U.tooltip.nac.module.biological_coordinator.action=Coordinates your Living %s
 GT5U.tooltip.nac.module.biological_coordinator.body1=Consumes Living Medium while operating
 GT5U.tooltip.nac.module.board_processor.name=Board Processor
-GT5U.tooltip.nac.module.board_processor.flavor.1=The developer of this multiblock loves league of legends more than her friends...
-GT5U.tooltip.nac.module.board_processor.action=Processes your Board %s
-GT5U.tooltip.nac.module.board_processor.body1=really... noc..... seriously -_-
+GT5U.tooltip.nac.module.board_processor.flavor.1=The developer of this multiblock is hated by its friends...
+GT5U.tooltip.nac.module.board_processor.action=Processes your Board %s by cleaning them in adequate chemicals.
+GT5U.tooltip.nac.module.board_processor.body1=Needs to be filled with an specific fluid according to the board to be processed
+GT5U.tooltip.nac.module.board_processor.body2=Will try to fill itself with stocked fluids every second
+GT5U.tooltip.nac.module.board_processor.body3=Can hold up to 1 Million Liters of Immersion Fluid, needs at least half fill to work.
+GT5U.tooltip.nac.module.board_processor.body4=The immersion fluid gets impurer as the module processes recipes
+GT5U.tooltip.nac.module.board_processor.body5=The more fluid stocked, slower the impurity increases
+GT5U.tooltip.nac.module.board_processor.body6=By default the multi automatically flushes at 100%% impurity, but this can be changed manually.
+GT5U.tooltip.nac.module.board_processor.body7=The Impurity percentage §b(y%%)§7 affects the module's efficiency:
+GT5U.tooltip.nac.module.board_processor.body8=§b0%%-15%%§r - §aEU Discount = 30%% - 2 * y%%
+GT5U.tooltip.nac.module.board_processor.body9=§b15%%-65%%§r - Default behaviour
+GT5U.tooltip.nac.module.board_processor.body10=§b65%%-100%%§r - §4Extra EU cost = 2%% * y%%
 GT5U.tooltip.nac.module.cutting_chamber.name=Cutting Chamber
 GT5U.tooltip.nac.module.cutting_chamber.flavor.1=Measure once, cut twice.
 GT5U.tooltip.nac.module.cutting_chamber.action=Cuts your Wafer %s

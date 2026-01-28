@@ -148,12 +148,19 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body1")) // todo mechanic text
-                                                                                                 // NOC!!!!!!!!!!!!1
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body1"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body2"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body3"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body4"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body5"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body6"))
             .addSeparator()
-            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1"))) // todo
-                                                                                                              // flavor
-                                                                                                              // text
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body7"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body8"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body9"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.board_processor.body10"))
+            .addSeparator()
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.board_processor.flavor.1")))
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
@@ -224,7 +231,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     float euMultiplier = 1;
 
-    protected int Capacity = 10000;
+    protected int Capacity = 1000000;
     protected FluidStack StoredFluid;
     protected int FluidAmount;
 
