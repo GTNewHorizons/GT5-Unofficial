@@ -241,8 +241,8 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
-            .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.action", TOOLTIP_CCs))
+            .addSeparator()
             .addInfo("Splits inputs of the same " + TOOLTIP_COLOR + " evenly into their respective outputs")
             .addInfo("You can add Rules to override what " + TOOLTIP_COLOR + " inputs will go to")
             .addInfo(
