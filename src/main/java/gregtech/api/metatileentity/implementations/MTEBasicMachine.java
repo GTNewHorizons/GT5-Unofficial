@@ -44,6 +44,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -70,6 +71,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.fluid.GTMultiFluidTank;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -121,15 +123,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
+    /**
+     * The fluid stacks to be produced when the progress is finished.
+     * <p>
+     * The array itself won't be replace, and the included elements are updated when the recipe starts and finishes. The
+     * size is equal to the slot count of {@link #outputFluids}.
+     */
+    public final @Nullable FluidStack @NotNull [] mOutputFluids;
     public final int mInputSlotCount, mAmperage;
     public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
         mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
-    private int errorDisplayID;
+    protected int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
-    public FluidStack mOutputFluid;
     protected final OverclockDescriber overclockDescriber;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
@@ -140,7 +148,28 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     protected GTRecipe mLastRecipe = null;
 
-    private FluidStack mFluidOut;
+    /**
+     * Represents the input fluid slots.
+     * <p>
+     * {@link #mFluid} is used as its 0-index slot.
+     */
+    protected GTMultiFluidTank inputFluids;
+    /**
+     * Represents the output fluid slots.
+     * <p>
+     * {@link #mFluidOut} is used as its 0-index slot.
+     */
+    protected GTMultiFluidTank outputFluids;
+
+    /**
+     * @deprecated get it from {@link #outputFluids} instead.
+     */
+    @Deprecated
+    protected FluidStack mFluidOut;
+    /**
+     * @deprecated get it from {@link #outputFluids} instead.
+     */
+    @Deprecated // TODO: remove this in the next major cycle
     protected final FluidStackTank fluidOutputTank = new FluidStackTank(
         () -> mFluidOut,
         fluidStack -> mFluidOut = fluidStack,
@@ -149,27 +178,43 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     /**
      * Registers machine with single-line description.
      *
-     * @param aOverlays 0 = SideFacingActive 1 = SideFacingInactive 2 = FrontFacingActive 3 = FrontFacingInactive 4 =
-     *                  TopFacingActive 5 = TopFacingInactive 6 = BottomFacingActive 7 = BottomFacingInactive ----- Not
+     * @param aOverlays 0 = SideFacingActive<br>
+     *                  1 = SideFacingInactive<br>
+     *                  2 = FrontFacingActive<br>
+     *                  3 = FrontFacingInactive<br>
+     *                  4 =
+     *                  TopFacingActive<br>
+     *                  5 = TopFacingInactive<br>
+     *                  6 = BottomFacingActive<br>
+     *                  7 = BottomFacingInactive<br>
+     *                  -----<br>
+     *                  Not
      *                  all Array Elements have to be initialised, you can also just use 8 Parameters for the Default
-     *                  Pipe Texture Overlays ----- 8 = BottomFacingPipeActive 9 = BottomFacingPipeInactive 10 =
-     *                  TopFacingPipeActive 11 = TopFacingPipeInactive 12 = SideFacingPipeActive 13 =
+     *                  Pipe Texture Overlays<br>
+     *                  -----<br>
+     *                  8 = BottomFacingPipeActive<br>
+     *                  9 = BottomFacingPipeInactive<br>
+     *                  10 =
+     *                  TopFacingPipeActive<br>
+     *                  11 = TopFacingPipeInactive<br>
+     *                  12 = SideFacingPipeActive<br>
+     *                  13 =
      *                  SideFacingPipeInactive
      */
     public MTEBasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage, String aDescription,
         int aInputSlotCount, int aOutputSlotCount, ITexture... aOverlays) {
-        super(
+        this(
             aID,
             aName,
             aNameRegional,
             aTier,
-            OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1,
+            aAmperage,
             aDescription,
+            aInputSlotCount,
+            aOutputSlotCount,
+            1,
+            1,
             aOverlays);
-        mInputSlotCount = Math.max(0, aInputSlotCount);
-        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
-        mAmperage = aAmperage;
-        overclockDescriber = createOverclockDescriber();
     }
 
     /**
@@ -177,6 +222,57 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
      */
     public MTEBasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage, String[] aDescription,
         int aInputSlotCount, int aOutputSlotCount, ITexture... aOverlays) {
+        this(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            aAmperage,
+            aDescription,
+            aInputSlotCount,
+            aOutputSlotCount,
+            1,
+            1,
+            aOverlays);
+    }
+
+    /**
+     * For {@link #newMetaEntity}.
+     */
+    public MTEBasicMachine(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures,
+        int aInputSlotCount, int aOutputSlotCount) {
+        this(aName, aTier, aAmperage, aDescription, aTextures, aInputSlotCount, aOutputSlotCount, 1, 1);
+    }
+
+    /**
+     * Registers machine with single-line description.
+     *
+     * @param aOverlays 0 = SideFacingActive<br>
+     *                  1 = SideFacingInactive<br>
+     *                  2 = FrontFacingActive<br>
+     *                  3 = FrontFacingInactive<br>
+     *                  4 =
+     *                  TopFacingActive<br>
+     *                  5 = TopFacingInactive<br>
+     *                  6 = BottomFacingActive<br>
+     *                  7 = BottomFacingInactive<br>
+     *                  -----<br>
+     *                  Not
+     *                  all Array Elements have to be initialised, you can also just use 8 Parameters for the Default
+     *                  Pipe Texture Overlays<br>
+     *                  -----<br>
+     *                  8 = BottomFacingPipeActive<br>
+     *                  9 = BottomFacingPipeInactive<br>
+     *                  10 =
+     *                  TopFacingPipeActive<br>
+     *                  11 = TopFacingPipeInactive<br>
+     *                  12 = SideFacingPipeActive<br>
+     *                  13 =
+     *                  SideFacingPipeInactive
+     */
+    public MTEBasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage, String aDescription,
+        int aInputSlotCount, int aOutputSlotCount, int inputFluidSlotCount, int outputFluidSlotCount,
+        ITexture... aOverlays) {
         super(
             aID,
             aName,
@@ -187,20 +283,61 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             aOverlays);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
+        mOutputFluids = new FluidStack[Math.max(0, outputFluidSlotCount)];
         mAmperage = aAmperage;
         overclockDescriber = createOverclockDescriber();
+        inputFluids = new GTMultiFluidTank(getRealCapacity(), inputFluidSlotCount);
+        outputFluids = new GTMultiFluidTank(getRealCapacity(), outputFluidSlotCount);
+        inputFluids.setCapacityOverride(this::getRealCapacity);
+        outputFluids.setCapacityOverride(this::getRealCapacity);
+        inputFluids.setOverride(0, this::getFillableStack, this::setFillableStack);
+        outputFluids.setOverride(0, this::getDrainableStack, this::setDrainableStack);
+    }
+
+    /**
+     * Registers machine with multi-line descriptions.
+     */
+    public MTEBasicMachine(int aID, String aName, String aNameRegional, int aTier, int aAmperage, String[] aDescription,
+        int aInputSlotCount, int aOutputSlotCount, int inputFluidSlotCount, int outputFluidSlotCount,
+        ITexture... aOverlays) {
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1,
+            aDescription,
+            aOverlays);
+        mInputSlotCount = Math.max(0, aInputSlotCount);
+        mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
+        mOutputFluids = new FluidStack[Math.max(0, outputFluidSlotCount)];
+        mAmperage = aAmperage;
+        overclockDescriber = createOverclockDescriber();
+        inputFluids = new GTMultiFluidTank(getRealCapacity(), inputFluidSlotCount);
+        outputFluids = new GTMultiFluidTank(getRealCapacity(), outputFluidSlotCount);
+        inputFluids.setCapacityOverride(this::getRealCapacity);
+        outputFluids.setCapacityOverride(this::getRealCapacity);
+        inputFluids.setOverride(0, this::getFillableStack, this::setFillableStack);
+        outputFluids.setOverride(0, this::getDrainableStack, this::setDrainableStack);
     }
 
     /**
      * For {@link #newMetaEntity}.
      */
     public MTEBasicMachine(String aName, int aTier, int aAmperage, String[] aDescription, ITexture[][][] aTextures,
-        int aInputSlotCount, int aOutputSlotCount) {
+        int aInputSlotCount, int aOutputSlotCount, int inputFluidSlotCount, int outputFluidSlotCount) {
         super(aName, aTier, OTHER_SLOT_COUNT + aInputSlotCount + aOutputSlotCount + 1, aDescription, aTextures);
         mInputSlotCount = Math.max(0, aInputSlotCount);
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
+        mOutputFluids = new FluidStack[Math.max(0, outputFluidSlotCount)];
         mAmperage = aAmperage;
         overclockDescriber = createOverclockDescriber();
+        inputFluids = new GTMultiFluidTank(getRealCapacity(), inputFluidSlotCount);
+        outputFluids = new GTMultiFluidTank(getRealCapacity(), outputFluidSlotCount);
+        inputFluids.setCapacityOverride(this::getRealCapacity);
+        outputFluids.setCapacityOverride(this::getRealCapacity);
+        inputFluids.setOverride(0, this::getFillableStack, this::setFillableStack);
+        outputFluids.setOverride(0, this::getDrainableStack, this::setDrainableStack);
     }
 
     /**
@@ -503,11 +640,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         aNBT.setInteger("mMainFacing", mMainFacing.ordinal());
         aNBT.setInteger("mProgresstime", mProgresstime);
         aNBT.setInteger("mMaxProgresstime", mMaxProgresstime);
-        if (mOutputFluid != null) aNBT.setTag("mOutputFluid", mOutputFluid.writeToNBT(new NBTTagCompound()));
         if (mFluidOut != null) aNBT.setTag("mFluidOut", mFluidOut.writeToNBT(new NBTTagCompound()));
+        aNBT.setTag("inputFluids", inputFluids.writeData());
+        aNBT.setTag("outputFluids", outputFluids.writeData());
 
         for (int i = 0; i < mOutputItems.length; i++)
             if (mOutputItems[i] != null) GTUtility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
+        for (int i = 0; i < mOutputFluids.length; i++)
+            if (mOutputFluids[i] != null) GTUtility.saveFluid(aNBT, "mOutputFluid" + i, mOutputFluids[i]);
     }
 
     @Override
@@ -523,10 +663,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         mMainFacing = ForgeDirection.getOrientation(aNBT.getInteger("mMainFacing"));
         mProgresstime = aNBT.getInteger("mProgresstime");
         mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
-        mOutputFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mOutputFluid"));
         mFluidOut = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluidOut"));
+        inputFluids.readData(aNBT.getCompoundTag("inputFluids"));
+        outputFluids.readData(aNBT.getCompoundTag("outputFluids"));
 
         for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GTUtility.loadItem(aNBT, "mOutputItem" + i);
+        for (int i = 0; i < mOutputFluids.length; i++) mOutputFluids[i] = GTUtility.loadFluid(aNBT, "mOutputFluid" + i);
+        if (aNBT.hasKey("mOutputFluid")) {
+            // read the legacy data if possible
+            // TODO: remove this in the next major cycle.
+            mOutputFluids[0] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mOutputFluid"));
+        }
     }
 
     /**
@@ -565,12 +712,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                             for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity
                                 .addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
                                 break;
-                        if (mOutputFluid != null)
-                            if (getDrainableStack() == null) setDrainableStack(mOutputFluid.copy());
-                            else if (mOutputFluid.isFluidEqual(getDrainableStack()))
-                                getDrainableStack().amount += mOutputFluid.amount;
+                        for (FluidStack fluidStack : mOutputFluids)
+                            if (fluidStack != null) outputFluids.fill(fluidStack, true);
                         Arrays.fill(mOutputItems, null);
-                        mOutputFluid = null;
+                        Arrays.fill(mOutputFluids, null);
                         mEUt = 0;
                         mProgresstime = 0;
                         mMaxProgresstime = 0;
@@ -652,7 +797,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     } else {
                         mMaxProgresstime = 0;
                         Arrays.fill(mOutputItems, null);
-                        mOutputFluid = null;
+                        Arrays.fill(mOutputFluids, null);
                     }
                 }
             } else {
@@ -732,8 +877,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     protected boolean canOutput(GTRecipe aRecipe) {
-        return aRecipe != null && (aRecipe.mNeedsEmptyOutput ? isOutputEmpty() && getDrainableStack() == null
-            : canOutput(aRecipe.getFluidOutput(0)) && canOutput(aRecipe.mOutputs));
+        return aRecipe != null && (aRecipe.mNeedsEmptyOutput ? isOutputEmpty() && isFluidOutputEmpty()
+            : canOutput(aRecipe.mFluidOutputs) && canOutput(aRecipe.mOutputs));
     }
 
     protected boolean canOutput(ItemStack... aOutputs) {
@@ -749,11 +894,27 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return true;
     }
 
+    @Deprecated
     protected boolean canOutput(FluidStack aOutput) {
         if (aOutput == null) return true;
         FluidStack drainableStack = getDrainableStack();
         if (drainableStack != null && !drainableStack.isFluidEqual(aOutput)) return false;
         return (drainableStack != null ? drainableStack.amount : 0) + aOutput.amount <= getCapacity();
+    }
+
+    protected boolean canOutput(FluidStack[] output) {
+        if (output == null || output.length == 0) return true;
+        for (int i = 0; i < outputFluids.getSlotCount() && i < output.length; i++) {
+            FluidStack storedAt = outputFluids.get(i);
+            FluidStack outputAt = output[i];
+            if (storedAt != null && outputAt != null
+                && (!storedAt.isFluidEqual(outputAt)
+                    || storedAt.amount + outputAt.amount > outputFluids.getCapacity())) {
+                mOutputBlocked++;
+                return false;
+            }
+        }
+        return true;
     }
 
     protected ItemStack getInputAt(int aIndex) {
@@ -768,6 +929,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return rInputs;
     }
 
+    protected FluidStack[] getAllFluidInputs() {
+        return inputFluids.getAllStacks();
+    }
+
     protected boolean isOutputEmpty() {
         boolean rIsEmpty = true;
         for (ItemStack tOutputSlotContent : getAllOutputs()) if (tOutputSlotContent != null) {
@@ -775,6 +940,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             break;
         }
         return rIsEmpty;
+    }
+
+    protected boolean isFluidOutputEmpty() {
+        return outputFluids.isEmpty();
     }
 
     @Override
@@ -1063,7 +1232,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (tMap == null) return DID_NOT_FIND_RECIPE;
         GTRecipe tRecipe = tMap.findRecipeQuery()
             .items(getAllInputs())
-            .fluids(getFillableStack())
+            .fluids(getAllFluidInputs())
             .specialSlot(getSpecialSlot())
             .voltage(V[mTier])
             .cachedRecipe(mLastRecipe)
@@ -1095,7 +1264,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
             }
         }
-        if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
+        if (!tRecipe.isRecipeInputEqual(true, getAllFluidInputs(), getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         for (int i = 0; i < mOutputItems.length; i++)
             if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
@@ -1112,7 +1281,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mOutputItems[i] = null;
                 }
         }
-        mOutputFluid = tRecipe.getFluidOutput(0);
+        for (int i = 0; i < mOutputFluids.length; i++) {
+            mOutputFluids[i] = tRecipe.getFluidOutput(i);
+        }
         if (!skipOC) {
             calculateCustomOverclock(tRecipe);
             // In case recipe is too OP for that machine
@@ -1348,8 +1519,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             return originalProperties.toBuilder()
                 .maxItemInputs(mInputSlotCount)
                 .maxItemOutputs(mOutputItems.length)
-                .maxFluidInputs(Math.min(originalProperties.maxFluidInputs, 1))
-                .maxFluidOutputs(Math.min(originalProperties.maxFluidOutputs, 1))
+                .maxFluidInputs(Math.min(originalProperties.maxFluidInputs, inputFluids.getSlotCount()))
+                .maxFluidOutputs(Math.min(originalProperties.maxFluidOutputs, outputFluids.getSlotCount()))
                 .build();
         }
         return BasicUIProperties.builder()
@@ -1368,8 +1539,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             (i, backgrounds, pos) -> builder.widget(createItemInputSlot(i, backgrounds, pos)),
             (i, backgrounds, pos) -> builder.widget(createItemOutputSlot(i, backgrounds, pos)),
             (i, backgrounds, pos) -> builder.widget(createSpecialSlot(backgrounds, pos, uiProperties)),
-            (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(backgrounds, pos)),
-            (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(backgrounds, pos)),
+            (i, backgrounds, pos) -> builder.widget(createFluidInputSlot(i, backgrounds, pos)),
+            (i, backgrounds, pos) -> builder.widget(createFluidOutputSlot(i, backgrounds, pos)),
             getGUITextureSet().getItemSlot(),
             getGUITextureSet().getFluidSlot(),
             uiProperties,
@@ -1446,13 +1617,29 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             .setPos(pos);
     }
 
+    /**
+     * @deprecated use {@link #createFluidInputSlot(int, IDrawable[], Pos2d)} instead.
+     */
+    @Deprecated // TODO: remove this in the next major cycle
     protected FluidSlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidSlotWidget) new FluidSlotWidget(fluidTank).setBackground(backgrounds)
+        return createFluidInputSlot(0, backgrounds, pos);
+    }
+
+    /**
+     * @deprecated use {@link #createFluidOutputSlot(int, IDrawable[], Pos2d)} instead.
+     */
+    @Deprecated // TODO: remove this in the next major cycle
+    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
+        return createFluidOutputSlot(0, backgrounds, pos);
+    }
+
+    protected FluidSlotWidget createFluidInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        return (FluidSlotWidget) new FluidSlotWidget(inputFluids.getFluidStackTank(index)).setBackground(backgrounds)
             .setPos(pos);
     }
 
-    protected FluidSlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidSlotWidget) new FluidSlotWidget(fluidOutputTank).setInteraction(true, false)
+    protected FluidSlotWidget createFluidOutputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
+        return (FluidSlotWidget) new FluidSlotWidget(outputFluids.getFluidStackTank(index)).setInteraction(true, false)
             .setBackground(backgrounds)
             .setPos(pos);
     }
