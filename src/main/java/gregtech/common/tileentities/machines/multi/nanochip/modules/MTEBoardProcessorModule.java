@@ -247,7 +247,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     private int AutomationPercentage = 100;
     private double FillPercentage = 0;
 
-    protected static final HashSet<Fluid> LegalFluids = new HashSet<>(Arrays.asList(Materials.IronIIIChloride.mFluid));
+    protected static final HashSet<Fluid> LegalFluids = new HashSet<>(
+        Arrays.asList(
+            Materials.IronIIIChloride.mFluid,
+            Materials.GrowthMediumSterilized.mFluid,
+            Materials.BioMediumSterilized.mFluid,
+            Materials.PrismaticAcid.mFluid));
 
     @NotNull
     @Override
@@ -265,7 +270,16 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1
             && !StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        } else if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2
+            && !StoredFluid.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            } else if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3
+                && !StoredFluid.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                } else if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
+                    && !StoredFluid.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+                    }
 
         if (ImpurityPercentage <= 0.15) {
             euMultiplier = (float) (1 - 0.3 + ImpurityPercentage * 2);
@@ -329,6 +343,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                         FillPercentage = (double) FluidAmount / Capacity;
                         if (StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
                             ImpurityFluid = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                        } else if (StoredFluid.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
+                            ImpurityFluid = Materials.GrowthMediumRaw.getFluid(0);
+                        } else if (StoredFluid.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+                            ImpurityFluid = Materials.BioMediumRaw.getFluid(0);
+                        } else if (StoredFluid.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+                            ImpurityFluid = Materials.PrismaticGas.getFluid(0);
                         }
                     }
                 }
