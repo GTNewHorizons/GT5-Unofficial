@@ -25,7 +25,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
@@ -135,10 +134,6 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEWireTracerModule(this.mName);
-    }
-
-    public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = "Traced " + unprocessedName;
     }
 
     @Override

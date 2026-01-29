@@ -274,10 +274,6 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         machineTier = aNBT.getInteger("machineTier");
     }
 
-    public static void registerLocalName(ItemStack stack, CircuitComponent component) {
-        component.fallbackLocalizedName = stack.getDisplayName();
-    }
-
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.nanochipAssemblyMatrixRecipes;

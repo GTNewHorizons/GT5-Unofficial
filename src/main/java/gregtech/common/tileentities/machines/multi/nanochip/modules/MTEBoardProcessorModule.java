@@ -44,7 +44,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEBoardProcessorModuleGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -168,10 +167,6 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEBoardProcessorModule(this.mName);
-    }
-
-    public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        component.fallbackLocalizedName = unprocessedName + " Die";
     }
 
     @Override

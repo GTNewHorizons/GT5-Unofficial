@@ -609,10 +609,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return RecipeMaps.nanochipConversionRecipes;
     }
 
-    public static void registerLocalName(ItemStack stack, CircuitComponent component) {
-        component.fallbackLocalizedName = stack.getDisplayName();
-    }
-
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
