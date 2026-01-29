@@ -425,6 +425,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return GTUtility.getTier(recipe.mEUt);
     }
 
+    public int getOCFactorReduction() {
+        return 4;
+    }
+
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -464,9 +468,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         // can only overclock if machine has a remaining overclock,
         // duration when overclocked won't go below 5 seconds
         // and recipe eu/t after overclock is less than available eu/t
-        while (remainingOverclocks > 0 && (recipeDuration / 4) >= 5 * SECONDS && recipeEUT * 4L <= this.availableEUt) {
-            recipeDuration /= 4;
-            recipeEUT *= 4;
+        final int ocFactor = getOCFactorReduction();
+        while (remainingOverclocks > 0 && (recipeDuration / ocFactor) >= 5 * SECONDS
+            && recipeEUT * ocFactor <= this.availableEUt) {
+            recipeDuration /= ocFactor;
+            recipeEUT *= ocFactor;
             remainingOverclocks -= 1;
         }
 
