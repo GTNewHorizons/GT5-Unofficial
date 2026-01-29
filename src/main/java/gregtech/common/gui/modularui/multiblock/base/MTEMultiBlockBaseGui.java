@@ -143,13 +143,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         registerSyncValues(syncManager);
 
         ModularPanel panel = getBasePanel(guiData, syncManager, uiSettings);
-        return panel.child(
-            Flow.column()
-                .padding(borderRadius)
-                .child(createTerminalRow(panel, syncManager))
-                .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
-                .child(createPanelGap(panel, syncManager))
-                .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
+        return panel.child(createMainColumn(panel, syncManager));
+    }
+
+    public Flow createMainColumn(ModularPanel panel, PanelSyncManager syncManager) {
+        return Flow.column()
+            .padding(borderRadius)
+            .child(createTerminalRow(panel, syncManager))
+            .childIf(multiblock.canBeMuffled(), this.createMuffleButton())
+            .child(createPanelGap(panel, syncManager))
+            .childIf(multiblock.supportsInventoryRow(), createInventoryRow(panel, syncManager));
     }
 
     protected ModularPanel getBasePanel(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
