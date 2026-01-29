@@ -1730,15 +1730,81 @@ GT5U.tooltip.nac.hatch.vc.base.4=§ewill be placed in a Vacuum Conveyor Output o
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s
-gt.circuitcomponent.casing.basicmainframe=Basic Mainframe Circuit Encasement
-gt.circuitcomponent.casing.advancedmainframe=Advanced Mainframe Circuit Encasement
-gt.circuitcomponent.casing.pico=Pico Circuit Encasement
-gt.circuitcomponent.casing.quantum=Quantum Circuit Encasement
+
+gt.circuitcomponent.processed.wirenbti=
+gt.circuitcomponent.processed.wireybc=
+gt.circuitcomponent.processed.wirelumiium=
+gt.circuitcomponent.processed.wireprotohalkonite=
+gt.circuitcomponent.processed.wirespacetime=
+gt.circuitcomponent.cable.processed.opticalfiber=
+gt.circuitcomponent.processed.wireinfinity=
+
+gt.circuitcomponent.processed.asmd.resistor=
+gt.circuitcomponent.processed.asmd.transistor=
+gt.circuitcomponent.processed.asmd.inductor=
+gt.circuitcomponent.processed.asmd.capacitor=
+gt.circuitcomponent.processed.asmd.diode=
+gt.circuitcomponent.processed.xsmd.resistor=
+gt.circuitcomponent.processed.xsmd.transistor=
+gt.circuitcomponent.processed.xsmd.inductor=
+gt.circuitcomponent.processed.xsmd.capacitor=
+gt.circuitcomponent.processed.xsmd.diode=
+
+gt.circuitcomponent.processed.board.multifiberelite=
+gt.circuitcomponent.processed.board.wetwarelifesupport=
+gt.circuitcomponent.processed.board.biomutated=
+gt.circuitcomponent.processed.board.optical=
+gt.circuitcomponent.processed.neuroprocessingunit=
+gt.circuitcomponent.processed.board.bioprocessingunit=
+gt.circuitcomponent.processed.board.livingbiochip=
+
+gt.circuitcomponent.processed.chipnanocpu=
+gt.circuitcomponent.processed.chipram=
+gt.circuitcomponent.processed.chipnor=
+gt.circuitcomponent.processed.chipnand=
+gt.circuitcomponent.processed.chipasoc=
+gt.circuitcomponent.processed.chippikopic=
+gt.circuitcomponent.processed.chipquantumpic=
+gt.circuitcomponent.processed.chippico=
+
+gt.circuitcomponent.processed.chipcrystalcpu=
+gt.circuitcomponent.processed.chipcrystalsoc=
+gt.circuitcomponent.processed.chiplivingcrystal=
+gt.circuitcomponent.processed.chiprawadvancedcrystal=
+
+gt.circuitcomponent.processed.opticalcpu=
+gt.circuitcomponent.processed.opticalram=
+
+gt.circuitcomponent.processed.superconductorluv=
+gt.circuitcomponent.processed.superconductorzpm=
+gt.circuitcomponent.processed.superconductoruv=
+gt.circuitcomponent.processed.superconductoruhv=
+gt.circuitcomponent.processed.superconductoruev=
+gt.circuitcomponent.processed.superconductoruiv=
+gt.circuitcomponent.processed.superconductorumv=
+
+gt.circuitcomponent.processed.frame.aluminium=
+gt.circuitcomponent.processed.frame.tritanium=
+gt.circuitcomponent.processed.frame.celestialtungsten=
+gt.circuitcomponent.processed.frame.hypogen=
+
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
 gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
 gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
 gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
 gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
+gt.circuitcomponent.casing.processed.basicmainframe=Basic Mainframe Circuit Encasement
+gt.circuitcomponent.casing.processed.advancedmainframe=Advanced Mainframe Circuit Encasement
+gt.circuitcomponent.casing.processed.pico=Pico Circuit Encasement
+gt.circuitcomponent.casing.processed.quantum=Quantum Circuit Encasement
+
+gt.circuitcomponent.bolt.processed.enrichedholmium=
+gt.circuitcomponent.bolt.processed.transcendentmetal=
+gt.circuitcomponent.bolt.processed.yttriumbariumcuprate=
+gt.circuitcomponent.bolt.processed.cosmicneutronium=
+gt.circuitcomponent.bolt.processed.chromaticglass=
+gt.circuitcomponent.bolt.processed.umvsuperconductor=
+gt.circuitcomponent.plate.processed.metastableoganesson=
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
