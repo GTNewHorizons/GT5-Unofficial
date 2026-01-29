@@ -1789,7 +1789,7 @@ gt.circuitcomponent.processed.chipnand=Cut NAND Memory Chips
 gt.circuitcomponent.processed.chipasoc=Cut ASoC Chips
 gt.circuitcomponent.processed.chippikopic=Cut Piko Power IC Chips
 gt.circuitcomponent.processed.chipquantumpic=Cut Quantum Power IC Chips
-gt.circuitcomponent.processed.chippico=Cut Prismatic Pico Chips
+gt.circuitcomponent.processed.chippico=Cut Pico Chips
 
 gt.circuitcomponent.processed.chipcrystalcpu=Etched Crystal Processing Unit
 gt.circuitcomponent.processed.chipcrystalsoc=Etched Crystal SoC
