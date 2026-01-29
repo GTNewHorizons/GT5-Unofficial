@@ -418,13 +418,12 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private void processRealItemInputs() {
-        // For each color that is on the nac
         this.startRecipeProcessing();
 
         ArrayList<ItemStackWithSourceBus> inputs = getStoredInputsWithBus();
-        // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
         // Say the magic incantation to prevent duping
         this.startRecipeProcessing();
+        // For each stack in the input, try to find a matching circuit component and if so send it to the correct hatch
         for (ItemStackWithSourceBus stack : inputs) {
             // Find a conversion recipe
             GTRecipe recipe = RecipeMaps.nanochipConversionRecipes.findRecipeQuery()
