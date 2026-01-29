@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
@@ -47,9 +48,12 @@ public class CircuitComponentFakeItem extends GTGenericItem {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add("Item in the Nanochip Assembly Complex vacuum pipe system");
-        super.addInformation(aStack, aPlayer, aList, aF3_H);
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> textList, boolean advanced) {
+        CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
+        textList.add(translateToLocal("gt.circuitcomponent.tooltip.base"));
+        if (!component.isProcessed) textList.add(translateToLocal("gt.circuitcomponent.tooltip.cc.base"));
+        else textList.add(translateToLocal("gt.circuitcomponent.tooltip.pc.base"));
+        super.addInformation(stack, player, textList, advanced);
     }
 
     @Override
