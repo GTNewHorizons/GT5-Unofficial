@@ -1750,6 +1750,18 @@ GT5U.tooltip.nac.hatch.vc.base.2=Can be installed in the §aNanochip Assembly Co
 GT5U.tooltip.nac.hatch.vc.base.3=§eOutputs from recipes with inputs from a colored Vacuum Conveyor Input
 GT5U.tooltip.nac.hatch.vc.base.4=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
 
+# NAC circuit components
+gt.circuitcomponent.base=Packaged %s
+gt.circuitcomponent.casing.basicmainframe=Basic Mainframe Circuit Encasement
+gt.circuitcomponent.casing.advancedmainframe=Advanced Mainframe Circuit Encasement
+gt.circuitcomponent.casing.pico=Pico Circuit Encasement
+gt.circuitcomponent.casing.quantum=Quantum Circuit Encasement
+gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
+gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
+gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
+gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
+gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
+
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
 GT5U.gui.hoverable.powerloss=Lost Power.
@@ -3424,17 +3436,6 @@ gt.softmallet.mode.2=Deactivation Mode
 gt.vajra.tooltip.flavor=Your friendly instant block breaker
 gt.vajra.tooltip.charge=Can be charged in any %s machine
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
-
-# NAC circuit components
-gt.circuitcomponent.casing.basicmainframe=Basic Mainframe Circuit Encasement
-gt.circuitcomponent.casing.advancedmainframe=Advanced Mainframe Circuit Encasement
-gt.circuitcomponent.casing.pico=Pico Circuit Encasement
-gt.circuitcomponent.casing.quantum=Quantum Circuit Encasement
-gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
-gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
-gt.circuitcomponent.sheet.processed.radoxpolymer=Radox Polymer Wrapper Spool
-gt.circuitcomponent.sheet.processed.shirabon=Shirabon Wrapper Spool
-gt.circuitcomponent.sheet.processed.styrenerubber=Styrene-Butadiene Rubber Wrapper Spool
 
 # GT++
 

@@ -2,12 +2,12 @@ package gregtech.common.tileentities.machines.multi.nanochip.util;
 
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.function.Supplier;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.ItemList;
@@ -484,9 +484,7 @@ public enum CircuitComponent {
     }
 
     public final int metaId;
-    public final String unlocalizedName;
-    public String fallbackLocalizedName = null;
-
+    public final String nameKey;
     public final String iconString;
 
     // CC -> real item association
@@ -499,8 +497,8 @@ public enum CircuitComponent {
     public final byte circuitTier;
 
     // CC constructor
-    CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent) {
-        this(id, unlocalizedName, realComponent, null, false, (byte) 0);
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent) {
+        this(id, nameKey, realComponent, null, false, (byte) 0);
     }
 
     // CC constructor with tier, used for circuits
@@ -516,13 +514,13 @@ public enum CircuitComponent {
     // 8 - Temporally Transcendent
     // 64 - Special Temporary circuits - Piko/Quantum
 
-    CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent, byte circuitTier) {
-        this(id, unlocalizedName, realComponent, null, false, circuitTier);
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, byte circuitTier) {
+        this(id, nameKey, realComponent, null, false, circuitTier);
     }
 
     // PC constructor
-    CircuitComponent(int id, String unlocalizedName, Supplier<CircuitComponent> ccSupplier, boolean isProcessed) {
-        this(id, unlocalizedName, null, ccSupplier, isProcessed, (byte) 0);
+    CircuitComponent(int id, String nameKey, Supplier<CircuitComponent> ccSupplier, boolean isProcessed) {
+        this(id, nameKey, null, ccSupplier, isProcessed, (byte) 0);
     }
 
     private static final String PROCESSED_DIRECTORY = "processed/";
@@ -532,10 +530,10 @@ public enum CircuitComponent {
      * images are stored in gregtech/textures/items/gt.circuitcomponent
      * processed components are found in the processed subdirectory
      */
-    CircuitComponent(int id, String unlocalizedName, Supplier<ItemStack> realComponent,
-        Supplier<CircuitComponent> ccSupplier, boolean isProcessed, byte circuitTier) {
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, Supplier<CircuitComponent> ccSupplier,
+        boolean isProcessed, byte circuitTier) {
         this.metaId = id;
-        this.unlocalizedName = unlocalizedName;
+        this.nameKey = nameKey;
         this.realComponent = realComponent;
         this.componentForProcessed = ccSupplier;
         this.isProcessed = isProcessed;
@@ -546,11 +544,7 @@ public enum CircuitComponent {
     }
 
     public String getLocalizedName() {
-        // If a translation key is set, use it, otherwise use the automatically generated fallback name
-        if (StatCollector.canTranslate(unlocalizedName)) {
-            return StatCollector.translateToLocal(unlocalizedName);
-        }
-        return fallbackLocalizedName;
+        return translateToLocal(nameKey);
     }
 
     // ItemStack of a fake item, only for display and recipe checking purposes

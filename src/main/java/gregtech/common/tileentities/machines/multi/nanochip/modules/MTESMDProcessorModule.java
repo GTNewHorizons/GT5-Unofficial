@@ -26,7 +26,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
-import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 
@@ -131,11 +130,6 @@ public class MTESMDProcessorModule extends MTENanochipAssemblyModuleBase<MTESMDP
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESMDProcessorModule(this.mName);
-    }
-
-    public static void registerLocalName(String unprocessedName, CircuitComponent component) {
-        // Processed SMDs can be given a name like 'SMD Inductor Tray'
-        component.fallbackLocalizedName = unprocessedName + " Tray";
     }
 
     @Override
