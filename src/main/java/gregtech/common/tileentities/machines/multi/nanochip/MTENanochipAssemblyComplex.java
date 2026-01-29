@@ -443,23 +443,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             // If successful, consume the input
             if (routed) {
                 stack.bus.removeAllResource(stack.stack);
-
-                /*
-                 * final IGregTechTileEntity baseMetaTileEntity = stack.bus.getBaseMetaTileEntity();
-                 * for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
-                 * ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
-                 * if (GTUtility.areStacksEqual(stack.stack, stackInSlot)) {
-                 * if (stackInSlot.stackSize >= stack.stack.stackSize) {
-                 * baseMetaTileEntity.decrStackSize(i, stack.stack.stackSize);
-                 * break;
-                 * }
-                 * }
-                 * }
-                 */
             }
         }
-
-        this.endRecipeProcessing();
     }
 
     private void processComponentInputs() {
