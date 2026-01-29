@@ -612,6 +612,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 + "   %%%%+===+%%%%%%  \n"
                 + "       =*###%       \n"
                 + "\n";
+            case "gm" -> "Good morning, engineer!";
+            case "good morning" -> "Good morning, engineer!";
+            case "gn" -> "Have a great sleep, architect!";
+            case "good night" -> "Have a great sleep, architect!";
             case "gregos" -> "It seems you have asked about NAC's advanced sentient artificial intelligence. This is "
                 + "an artificial intelligence designed to simulate the player's otherwise inimitably rad typing "
                 + "style, tone, cadence, personality, and substance of retort while they are using the NAC. The "
