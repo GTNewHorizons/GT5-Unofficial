@@ -174,7 +174,8 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body1")) // todo implement gimmick
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1")) // todo implement
+                                                                                                // gimmick
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)

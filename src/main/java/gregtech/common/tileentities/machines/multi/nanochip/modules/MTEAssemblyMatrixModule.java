@@ -192,7 +192,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .addSeparator()
             .addInfo(
                 translateToLocalFormatted(
-                    "GT5U.tooltip.nac.module.assembly_matrix.body1",
+                    "GT5U.tooltip.nac.module.assembly_matrix.body.1",
                     TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
