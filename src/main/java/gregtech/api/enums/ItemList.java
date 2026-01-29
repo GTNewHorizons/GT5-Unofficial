@@ -1022,6 +1022,7 @@ public enum ItemList implements IItemContainer {
     Cover_Wireless_Energy_UMV,
     Cover_Wireless_Energy_UXV,
     Cover_Wireless_Energy_MAX,
+    Cover_Wireless_Energy_Debug,
 
     Hatch_Input_ULV,
     Hatch_Input_LV,

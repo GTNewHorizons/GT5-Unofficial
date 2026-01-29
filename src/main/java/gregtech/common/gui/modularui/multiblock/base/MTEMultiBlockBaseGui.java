@@ -273,7 +273,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .widthRel(1))
             .childIf(
                 multiblock.hasRunningText(),
-                new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
+                new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.running"))
+                    .color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
@@ -382,7 +383,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private final int DISPLAY_ROW_HEIGHT = 15;
+    private static final int DISPLAY_ROW_HEIGHT = 15;
+    private static final int DISPLAY_ROW_CHAR_LIMIT = 46;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -522,15 +524,31 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
-
         String amountString = EnumChatFormatting.WHITE + " x "
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
-            + amountString;
-        return itemTextLine;
+        String truncatedItemName = GTUtility.truncateText(itemName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
+        String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.ItemTextLine");
+        if (!localizedLine.equals("gt.interact.desc.mb.ItemTextLine")) {
+            String amountShort = GTUtility.formatShortenedLong(amount);
+            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
+                GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()));
+            String trimmedRate = rateText.trim();
+            String rateInner = trimmedRate;
+            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
+                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
+            }
+            return StatCollector.translateToLocalFormatted(
+                "gt.interact.desc.mb.ItemTextLine",
+                truncatedItemName,
+                amountShort,
+                "(",
+                rateInner,
+                ")");
+        }
+        return EnumChatFormatting.AQUA + truncatedItemName + amountString;
     }
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
@@ -564,9 +582,26 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
-            + amountString;
-        return fluidTextLine;
+        String truncatedFluidName = GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
+        String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.FluidTextLine");
+        if (!localizedLine.equals("gt.interact.desc.mb.FluidTextLine")) {
+            String amountShort = GTUtility.formatShortenedLong(amount);
+            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
+                GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()));
+            String trimmedRate = rateText.trim();
+            String rateInner = trimmedRate;
+            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
+                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
+            }
+            return StatCollector.translateToLocalFormatted(
+                "gt.interact.desc.mb.FluidTextLine",
+                truncatedFluidName,
+                amountShort,
+                "(",
+                rateInner,
+                ")");
+        }
+        return EnumChatFormatting.AQUA + truncatedFluidName + amountString;
     }
 
     /**

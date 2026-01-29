@@ -156,6 +156,7 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
@@ -2388,14 +2389,22 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
-                        "  " + tag.getString("outputItem" + i)
+                        "  " + tag.getString("outputItemIcon" + i)
+                            + EnumChatFormatting.AQUA
+                            + tag.getString("outputItemName" + i)
+                            + EnumChatFormatting.RESET
                             + " x "
+                            + EnumChatFormatting.GOLD
                             + formatNumber(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     currentTip.add(
-                        "  " + tag.getString("outputFluid" + i)
+                        "  " + tag.getString("outputFluidIcon" + i)
+                            + EnumChatFormatting.AQUA
+                            + tag.getString("outputFluidName" + i)
+                            + EnumChatFormatting.RESET
                             + " x "
+                            + EnumChatFormatting.GOLD
                             + formatNumber(tag.getInteger("outputFluidCount" + i))
                             + "L");
                 }
@@ -2462,7 +2471,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
-                tag.setString("outputItem" + index, stack.getDisplayName());
+                tag.setString("outputItemIcon" + index, TTRenderStack.create(stack, true));
+                tag.setString("outputItemName" + index, stack.getDisplayName());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2472,7 +2482,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (FluidStack stack : mOutputFluids) {
                 if (stack == null) continue;
-                tag.setString("outputFluid" + index, stack.getLocalizedName());
+                tag.setString(
+                    "outputFluidIcon" + index,
+                    TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
+                tag.setString("outputFluidName" + index, stack.getLocalizedName());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }
