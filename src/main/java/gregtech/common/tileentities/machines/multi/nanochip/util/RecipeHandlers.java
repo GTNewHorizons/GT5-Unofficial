@@ -782,7 +782,7 @@ public class RecipeHandlers {
             CircuitComponent.CrystalProcessor,
             4 * SECONDS,
             9_600, // LuV
-            VoltageIndex.UHV);
+            VoltageIndex.LuV);
 
         // SoC
         addAssemblyMatrixRecipe(
@@ -795,7 +795,7 @@ public class RecipeHandlers {
             CircuitComponent.CrystalProcessor,
             2 * SECONDS,
             153_600, // UV
-            VoltageIndex.UHV);
+            VoltageIndex.LuV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -809,7 +809,7 @@ public class RecipeHandlers {
             CircuitComponent.CrystalAssembly,
             8 * SECONDS,
             9_600, // LuV
-            VoltageIndex.UHV);
+            VoltageIndex.LuV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -823,7 +823,7 @@ public class RecipeHandlers {
             CircuitComponent.CrystalComputer,
             16 * SECONDS,
             9_600, // LuV
-            VoltageIndex.UHV);
+            VoltageIndex.LuV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -837,7 +837,7 @@ public class RecipeHandlers {
             CircuitComponent.CrystalMainframe,
             32 * SECONDS,
             TierEU.RECIPE_LuV,
-            VoltageIndex.UHV);
+            VoltageIndex.LuV);
 
         // ======= //
         // Wetware //
@@ -855,7 +855,7 @@ public class RecipeHandlers {
             CircuitComponent.WetwareProcessor,
             1 * SECONDS,
             153_600, // UV
-            VoltageIndex.UHV);
+            VoltageIndex.ZPM);
 
         // SoC
         addAssemblyMatrixRecipe(
@@ -868,7 +868,7 @@ public class RecipeHandlers {
             CircuitComponent.WetwareProcessor,
             2 * SECONDS,
             614_400, // UHV
-            VoltageIndex.UHV);
+            VoltageIndex.ZPM);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -882,7 +882,7 @@ public class RecipeHandlers {
             CircuitComponent.WetwareAssembly,
             1 * SECONDS + 10 * TICKS,
             153_600, // UV
-            VoltageIndex.UHV);
+            VoltageIndex.ZPM);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -896,7 +896,7 @@ public class RecipeHandlers {
             CircuitComponent.WetwareComputer,
             3 * SECONDS,
             153_600, // UV
-            VoltageIndex.UHV);
+            VoltageIndex.ZPM);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -922,8 +922,8 @@ public class RecipeHandlers {
                 Materials.Radon.getGas(2500)),
             CircuitComponent.WetwareMainframe,
             100 * SECONDS,
-            300_000, // UV
-            VoltageIndex.UHV);
+            4_800_000, // UEV
+            VoltageIndex.ZPM);
 
         // ======= //
         // Bioware //
@@ -941,7 +941,7 @@ public class RecipeHandlers {
             CircuitComponent.BiowareProcessor,
             2 * SECONDS + 10 * TICKS,
             614_400, // UHV
-            VoltageIndex.UHV);
+            VoltageIndex.UV);
 
         // SoC
         addAssemblyMatrixRecipe(
@@ -954,7 +954,7 @@ public class RecipeHandlers {
             CircuitComponent.BiowareProcessor,
             3 * SECONDS,
             2_457_600, // UEV
-            VoltageIndex.UHV);
+            VoltageIndex.UV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -968,7 +968,7 @@ public class RecipeHandlers {
             CircuitComponent.BiowareAssembly,
             2 * SECONDS,
             614_400, // UHV
-            VoltageIndex.UHV);
+            VoltageIndex.UV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -988,8 +988,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(10000)),
             CircuitComponent.BiowareComputer,
             200 * SECONDS,
-            TierEU.RECIPE_UV,
-            VoltageIndex.UHV);
+            TierEU.RECIPE_UEV,
+            VoltageIndex.UV);
 
         addAssemblyMatrixRecipe(
             Arrays.asList(
@@ -1013,8 +1013,8 @@ public class RecipeHandlers {
                 Materials.SuperCoolant.getFluid(20000)),
             CircuitComponent.BiowareMainframe,
             300 * SECONDS,
-            TierEU.RECIPE_UHV,
-            VoltageIndex.UHV);
+            TierEU.RECIPE_UIV,
+            VoltageIndex.UV);
 
         // ======= //
         // Optical //
@@ -1052,7 +1052,7 @@ public class RecipeHandlers {
                 WerkstoffLoader.Oganesson.getFluidOrGas(500)),
             CircuitComponent.OpticalAssembly,
             20 * SECONDS,
-            TierEU.RECIPE_UHV,
+            TierEU.RECIPE_UIV,
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -1075,7 +1075,7 @@ public class RecipeHandlers {
                 WerkstoffLoader.Oganesson.getFluidOrGas(1000)),
             CircuitComponent.OpticalComputer,
             200 * SECONDS,
-            TierEU.RECIPE_UHV,
+            TierEU.RECIPE_UIV,
             VoltageIndex.UHV);
 
         addAssemblyMatrixRecipe(
@@ -1100,8 +1100,8 @@ public class RecipeHandlers {
                 WerkstoffLoader.Oganesson.getFluidOrGas(2000)),
             CircuitComponent.OpticalMainframe,
             300 * SECONDS,
-            TierEU.RECIPE_UEV,
-            VoltageIndex.UXV);
+            TierEU.RECIPE_UMV,
+            VoltageIndex.UHV);
 
         if (NewHorizonsCoreMod.isModLoaded()) {
             addAssemblyMatrixRecipe(
@@ -1123,9 +1123,9 @@ public class RecipeHandlers {
                     Materials.UUMatter.getFluid(8000),
                     GGMaterial.preciousMetalAlloy.getMolten(8 * INGOTS)),
                 CircuitComponent.PicoCircuit,
-                500 * SECONDS,
-                TierEU.RECIPE_UMV,
-                VoltageIndex.UHV);
+                250 * SECONDS,
+                TierEU.RECIPE_MAX,
+                VoltageIndex.UIV);
 
             addAssemblyMatrixRecipe(
                 Arrays.asList(
@@ -1146,9 +1146,9 @@ public class RecipeHandlers {
                     Materials.UUMatter.getFluid(24000),
                     GGMaterial.preciousMetalAlloy.getMolten(16 * INGOTS)),
                 CircuitComponent.QuantumCircuit,
-                1000 * SECONDS,
-                TierEU.RECIPE_UMV,
-                VoltageIndex.UHV);
+                500 * SECONDS,
+                TierEU.RECIPE_MAX,
+                VoltageIndex.UIV);
         }
     }
     // spotless:on
