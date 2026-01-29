@@ -49,10 +49,10 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         syncManager.syncValue("euMult", new FloatSyncValue(multiblock::getEuMultiplier));
         syncManager.syncValue(
             "automationPercentage",
-            new IntSyncValue(multiblock::getAutomationPercentage, multiblock::setAutomationPercentage));
+            new IntSyncValue(multiblock::getAutoFlushPercentage, multiblock::setAutoFlushPercentage));
 
-        syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.FillTank());
-        syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.FlushTank());
+        syncManager.registerSyncedAction("fillTank", Side.SERVER, p -> multiblock.fillTank());
+        syncManager.registerSyncedAction("flushTank", Side.SERVER, p -> multiblock.flushTank());
 
     }
 
@@ -62,13 +62,13 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         DoubleSyncValue impurity = syncManager.findSyncHandler("impurity", DoubleSyncValue.class);
 
         final FluidStackTank fluidTank = new FluidStackTank(
-            multiblock::getStoredFluid,
-            multiblock::setStoredFluid,
+            multiblock::getStoredFluidStack,
+            multiblock::setStoredFluidStack,
             multiblock::getCapacity);
 
         final FluidStackTank impurityFluidTank = new FluidStackTank(
-            multiblock::getImpurityFluid,
-            multiblock::setImpurityFluid,
+            multiblock::getImpurityFluidStack,
+            multiblock::setImpurityFluidStack,
             multiblock::getCapacity);
 
         final FluidSlot fluidSlot = new FluidSlot().syncHandler(

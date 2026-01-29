@@ -182,38 +182,38 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("impurityFluidAmount", this.ImpurityFluidAmount);
-        aNBT.setInteger("fluidAmount", this.FluidAmount);
-        aNBT.setInteger("processedItems", this.ProcessedItems);
-        aNBT.setInteger("automationPercentage", this.AutomationPercentage);
+        aNBT.setInteger("impurityFluidAmount", this.impurityFluidAmount);
+        aNBT.setInteger("fluidAmount", this.fluidAmount);
+        aNBT.setInteger("processedItems", this.processedItems);
+        aNBT.setInteger("automationPercentage", this.autoFlushPercentage);
         aNBT.setString(
             "storedFluid",
-            StoredFluid == null ? ""
-                : StoredFluid.getFluid()
+            storedFluidStack == null ? ""
+                : storedFluidStack.getFluid()
                     .getName());
         aNBT.setString(
             "impurityFluid",
-            this.ImpurityFluid == null ? ""
-                : ImpurityFluid.getFluid()
+            this.impurityFluidStack == null ? ""
+                : impurityFluidStack.getFluid()
                     .getName());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        ImpurityFluidAmount = aNBT.getInteger("impurityFluidAmount");
-        FluidAmount = aNBT.getInteger("fluidAmount");
-        ProcessedItems = aNBT.getInteger("processedItems");
-        AutomationPercentage = aNBT.getInteger("automationPercentage");
+        impurityFluidAmount = aNBT.getInteger("impurityFluidAmount");
+        fluidAmount = aNBT.getInteger("fluidAmount");
+        processedItems = aNBT.getInteger("processedItems");
+        autoFlushPercentage = aNBT.getInteger("automationPercentage");
         if (!Objects.equals(aNBT.getString("storedFluid"), "")) {
-            StoredFluid = FluidRegistry.getFluidStack(aNBT.getString("storedFluid"), FluidAmount);
+            storedFluidStack = FluidRegistry.getFluidStack(aNBT.getString("storedFluid"), fluidAmount);
         } else {
-            StoredFluid = null;
+            storedFluidStack = null;
         }
         if (!Objects.equals(aNBT.getString("impurityFluid"), "")) {
-            ImpurityFluid = FluidRegistry.getFluidStack(aNBT.getString("impurityFluid"), ImpurityFluidAmount);
+            impurityFluidStack = FluidRegistry.getFluidStack(aNBT.getString("impurityFluid"), impurityFluidAmount);
         } else {
-            ImpurityFluid = null;
+            impurityFluidStack = null;
         }
     }
 
@@ -224,23 +224,23 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     float euMultiplier = 1;
 
-    protected int Capacity = 1000000;
-    protected FluidStack StoredFluid;
-    protected int FluidAmount;
+    protected int fluidCapacity = 1000000;
+    protected FluidStack storedFluidStack;
+    protected int fluidAmount;
 
-    private int ProcessedItems;
+    private int processedItems;
 
-    protected FluidStack ImpurityFluid;
-    protected int ImpurityFluidAmount;
-    protected double ImpurityPercentage;
+    protected FluidStack impurityFluidStack;
+    protected int impurityFluidAmount;
+    protected double impurityPercentage;
 
-    private int ImpurityThreshold = 1000;
-    private final int ImpurityIncrease = 100;
+    private static final int IMPURITY_THRESHOLD = 1000;
+    private static final int IMPURITY_INCREASE = 100;
 
-    private int AutomationPercentage = 100;
-    private double FillPercentage = 0;
+    private int autoFlushPercentage = 100;
+    private double fillPercentage = 0;
 
-    protected static final HashSet<Fluid> LegalFluids = new HashSet<>(
+    protected static final HashSet<Fluid> LEGAL_FLUIDS = new HashSet<>(
         Arrays.asList(
             Materials.IronIIIChloride.mFluid,
             Materials.GrowthMediumSterilized.mFluid,
@@ -252,32 +252,37 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
         euMultiplier = 1;
 
-        if (StoredFluid == null) {
+        if (storedFluidStack == null) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
-        if (ImpurityPercentage == 1) {
+        if (impurityPercentage == 1) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1
-            && !StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+            && !storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
-        } else if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2
-            && !StoredFluid.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
-            } else if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3
-                && !StoredFluid.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
-                    return CheckRecipeResultRegistry.NO_RECIPE;
-                } else if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
-                    && !StoredFluid.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
+        }
 
-        if (ImpurityPercentage <= 0.15) {
-            euMultiplier = (float) (1 - 0.3 + ImpurityPercentage * 2);
-        } else if (ImpurityPercentage >= 0.65) {
-            euMultiplier = (float) (1 + 2 * (ImpurityPercentage - 0.65));
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2
+            && !storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3
+                && !storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
+            && !storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+                        return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (impurityPercentage <= 0.15) {
+            euMultiplier = (float) (1 - 0.3 + impurityPercentage * 2);
+        } else if (impurityPercentage >= 0.65) {
+            euMultiplier = (float) (1 + 2 * (impurityPercentage - 0.65));
         }
 
         return super.validateRecipe(recipe);
@@ -285,15 +290,15 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
     @Override
     public void endRecipeProcessing() {
-        if (StoredFluid != null && ImpurityFluid != null) {
+        if (storedFluidStack != null && impurityFluidStack != null) {
             if (mOutputItems != null) {
-                ProcessedItems += mOutputItems[0].stackSize;
-                while (ProcessedItems >= ImpurityThreshold) {
-                    ProcessedItems -= ImpurityThreshold;
-                    ImpurityFluidAmount += (int) Math
-                        .min(ImpurityIncrease * (1 / Math.pow(FillPercentage, 1.5)), FluidAmount - ImpurityFluidAmount);
-                    ImpurityFluid.amount = ImpurityFluidAmount;
-                    ImpurityPercentage = (double) ImpurityFluidAmount / FluidAmount;
+                processedItems += mOutputItems[0].stackSize;
+                while (processedItems >= IMPURITY_THRESHOLD) {
+                    processedItems -= IMPURITY_THRESHOLD;
+                    impurityFluidAmount += (int) Math
+                        .min(IMPURITY_INCREASE * (1 / Math.pow(fillPercentage, 1.5)), fluidAmount - impurityFluidAmount);
+                    impurityFluidStack.amount = impurityFluidAmount;
+                    impurityPercentage = (double) impurityFluidAmount / fluidAmount;
                 }
             }
         }
@@ -305,12 +310,12 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
         if (aTick % 20 == 0) {
 
-            if (ImpurityPercentage >= ((double) AutomationPercentage / 100)) {
-                FlushTank();
+            if (impurityPercentage >= ((double) autoFlushPercentage / 100)) {
+                flushTank();
             }
 
-            if (StoredFluid == null) {
-                FillTank();
+            if (storedFluidStack == null) {
+                fillTank();
             }
 
         }
@@ -323,25 +328,25 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         return super.checkProcessing();
     }
 
-    public void FillTank() {
-        if (StoredFluid == null) {
+    public void fillTank() {
+        if (storedFluidStack == null) {
             ArrayList<FluidStack> inputFluid = getStoredFluids();
             for (FluidStack fluid : inputFluid) {
-                if (LegalFluids.contains(fluid.getFluid())) {
-                    if (fluid.amount >= Capacity / 2) {
-                        FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(Capacity, fluid.amount));
+                if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
+                    if (fluid.amount >= fluidCapacity / 2) {
+                        FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(fluidCapacity, fluid.amount));
                         depleteInput(toDeplete);
-                        StoredFluid = toDeplete;
-                        FluidAmount = toDeplete.amount;
-                        FillPercentage = (double) FluidAmount / Capacity;
-                        if (StoredFluid.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
-                            ImpurityFluid = GGMaterial.ferrousChloride.getFluidOrGas(0);
-                        } else if (StoredFluid.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
-                            ImpurityFluid = Materials.GrowthMediumRaw.getFluid(0);
-                        } else if (StoredFluid.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
-                            ImpurityFluid = Materials.BioMediumRaw.getFluid(0);
-                        } else if (StoredFluid.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
-                            ImpurityFluid = Materials.PrismaticGas.getFluid(0);
+                        storedFluidStack = toDeplete;
+                        fluidAmount = toDeplete.amount;
+                        fillPercentage = (double) fluidAmount / fluidCapacity;
+                        if (storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+                            impurityFluidStack = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                        } else if (storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
+                            impurityFluidStack = Materials.GrowthMediumRaw.getFluid(0);
+                        } else if (storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+                            impurityFluidStack = Materials.BioMediumRaw.getFluid(0);
+                        } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+                            impurityFluidStack = Materials.PrismaticGas.getFluid(0);
                         }
                     }
                 }
@@ -349,57 +354,57 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
         }
     }
 
-    public void FlushTank() {
-        if ((StoredFluid != null) && (!mOutputHatches.isEmpty())) {
-            ImpurityFluidAmount = FluidAmount;
-            FluidStack toFlush = new FluidStack(ImpurityFluid.getFluid(), ImpurityFluidAmount);
+    public void flushTank() {
+        if ((storedFluidStack != null) && (!mOutputHatches.isEmpty())) {
+            impurityFluidAmount = fluidAmount;
+            FluidStack toFlush = new FluidStack(impurityFluidStack.getFluid(), impurityFluidAmount);
             addOutput(toFlush);
-            StoredFluid = null;
-            ImpurityFluid = null;
-            FluidAmount = 0;
-            ImpurityFluidAmount = 0;
-            ImpurityPercentage = 0;
-            FillPercentage = 0;
+            storedFluidStack = null;
+            impurityFluidStack = null;
+            fluidAmount = 0;
+            impurityFluidAmount = 0;
+            impurityPercentage = 0;
+            fillPercentage = 0;
         }
     }
 
-    public FluidStack getStoredFluid() {
-        return StoredFluid;
+    public FluidStack getStoredFluidStack() {
+        return storedFluidStack;
     }
 
-    public void setStoredFluid(FluidStack fluid) {
-        this.StoredFluid = fluid;
+    public void setStoredFluidStack(FluidStack fluid) {
+        this.storedFluidStack = fluid;
     }
 
     public int getCapacity() {
-        return Capacity;
+        return fluidCapacity;
     }
 
     public int getProcessedItems() {
-        return ProcessedItems;
+        return processedItems;
     }
 
-    public FluidStack getImpurityFluid() {
-        return ImpurityFluid;
+    public FluidStack getImpurityFluidStack() {
+        return impurityFluidStack;
     }
 
-    public void setImpurityFluid(FluidStack impurityFluid) {
-        ImpurityFluid = impurityFluid;
+    public void setImpurityFluidStack(FluidStack impurityFluidStack) {
+        this.impurityFluidStack = impurityFluidStack;
     }
 
     public double getImpurityPercentage() {
-        return ImpurityPercentage;
+        return impurityPercentage;
     }
 
     public float getEuMultiplier() {
         return euMultiplier;
     }
 
-    public int getAutomationPercentage() {
-        return AutomationPercentage;
+    public int getAutoFlushPercentage() {
+        return autoFlushPercentage;
     }
 
-    public void setAutomationPercentage(int automationPercentage) {
-        AutomationPercentage = automationPercentage;
+    public void setAutoFlushPercentage(int autoFlushPercentage) {
+        this.autoFlushPercentage = autoFlushPercentage;
     }
 }
