@@ -19,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -36,8 +38,11 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTEBiodomeGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -91,6 +96,12 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
         .build();
 
     private final Set<IBiodomeCompatible> connectedTEs = new HashSet<>();
+
+    private GTRecipe calibrationRecipe;
+
+    public void setCalibrationRecipe(GTRecipe recipe) {
+        calibrationRecipe = recipe;
+    }
 
     public boolean addMTE(TileEntity te) {
         if (te instanceof BaseMetaTileEntity bmte) {
@@ -266,5 +277,10 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEBiodomeGui(this);
     }
 }
