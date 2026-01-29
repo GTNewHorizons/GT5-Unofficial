@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.Mods.GregTech;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +33,16 @@ public class CircuitComponentFakeItem extends GTGenericItem {
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(aStack);
-        return component.unlocalizedName;
+        return component.nameKey;
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         CircuitComponent component = CircuitComponent.getFromFakeStackUnsafe(stack);
+        if (!component.isProcessed) return translateToLocalFormatted(
+            "gt.circuitcomponent.base",
+            component.realComponent.get()
+                .getDisplayName());
         return component.getLocalizedName();
     }
 
