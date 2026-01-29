@@ -128,8 +128,8 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.biological_coordinator.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body1")) // todo fix to reflect
-                                                                                               // real mechanic
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body.1")) // todo fix to reflect
+                                                                                                // real mechanic
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.1")))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
