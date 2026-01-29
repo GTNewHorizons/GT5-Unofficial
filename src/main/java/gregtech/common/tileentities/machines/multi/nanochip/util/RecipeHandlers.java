@@ -425,6 +425,16 @@ public class RecipeHandlers {
             .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
             .addTo(RecipeMaps.nanochipEncasementWrapper);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                CircuitComponent.ProcessedFoilStyreneRubber.getFakeStack(16),
+                CircuitComponent.ProcessedFrameboxTritanium.getFakeStack(1),
+                CircuitComponent.ProcessedFoilPolybenzimidazole.getFakeStack(16))
+            .itemOutputs(CircuitComponent.ProcessedAdvancedMainframeCasing.getFakeStack(1))
+            .duration(20)
+            .eut(ModuleRecipeInfo.MediumTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipEncasementWrapper);
+
         // Pico
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -475,6 +485,13 @@ public class RecipeHandlers {
             CircuitComponent.FoilShirabon,
             CircuitComponent.ProcessedFoilShirabon,
             ModuleRecipeInfo.ExtremeTier,
+            20 * TICKS,
+            RecipeMaps.nanochipEncasementWrapper);
+
+        addSimpleProcessingRecipe(
+            CircuitComponent.FoilStyreneRubber,
+            CircuitComponent.ProcessedFoilStyreneRubber,
+            ModuleRecipeInfo.LowTier,
             20 * TICKS,
             RecipeMaps.nanochipEncasementWrapper);
     }
@@ -964,7 +981,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireNiobiumTitanium, 32),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
+                new Object[] {new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64), new CircuitComponentStack(CircuitComponent.ProcessedFoilStyreneRubber,64)}),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                 Materials.BioMediumSterilized.getFluid(10 * INGOTS),
@@ -1027,7 +1044,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipRAM, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 24),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64)),
+                new Object[] {new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64), new CircuitComponentStack(CircuitComponent.ProcessedFoilStyreneRubber,64)}),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS),
                 Materials.Radon.getGas(10 * INGOTS),
@@ -1049,7 +1066,7 @@ public class RecipeHandlers {
                 new CircuitComponentStack(CircuitComponent.ProcessedChipNOR, 64),
                 new CircuitComponentStack(CircuitComponent.ProcessedChipASOC, 32),
                 new CircuitComponentStack(CircuitComponent.ProcessedWireLumiium, 32),
-                new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64),
+                new Object[] {new CircuitComponentStack(CircuitComponent.ProcessedFoilSiliconeRubber, 64), new CircuitComponentStack(CircuitComponent.ProcessedFoilStyreneRubber,64)},
                 new CircuitComponentStack(CircuitComponent.ProcessedFoilPolybenzimidazole, 64)),
             Arrays.asList(
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(20 * INGOTS),
