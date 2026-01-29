@@ -862,6 +862,9 @@ public enum ItemList implements IItemContainer {
     Casing_Advanced_Iridium,
     Casing_Magical,
 
+    Casing_Strengthened_Inanimate,
+    Casing_Precise_Stationary,
+
     Hull_ULV,
     Hull_LV,
     Hull_MV,
