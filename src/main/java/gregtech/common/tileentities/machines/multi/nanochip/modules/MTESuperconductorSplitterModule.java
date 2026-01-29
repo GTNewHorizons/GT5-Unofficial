@@ -193,11 +193,12 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.superconductor_splitter.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.body1")) // todo: maybe make this
-                                                                                                // more interesting /
-                                                                                                // use higher tier
-                                                                                                // coolants for higher
-                                                                                                // tier sc
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.body.1")) // todo: maybe make
+                                                                                                 // this
+                                                                                                 // more interesting /
+                                                                                                 // use higher tier
+                                                                                                 // coolants for higher
+                                                                                                 // tier sc
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.superconductor_splitter.flavor.1")))
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
