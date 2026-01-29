@@ -88,9 +88,12 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 int mGeneration = aNBT.getInteger("mGeneration");
 
                 aList.add(
-                    StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.requires_light", boolLoc(mRequiresLight)));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.salt_water", boolLoc(mSaltWater)));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.fresh_water", boolLoc(mFreshWater)));
+                    StatCollector
+                        .translateToLocalFormatted("GTPP.algae.tooltip.requires_light", boolLoc(mRequiresLight)));
+                aList
+                    .add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.salt_water", boolLoc(mSaltWater)));
+                aList.add(
+                    StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.fresh_water", boolLoc(mFreshWater)));
                 aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.temp_tolerance", mTempTolerance));
                 aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.growth", mFertility));
                 aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.production", mProductionSpeed));
