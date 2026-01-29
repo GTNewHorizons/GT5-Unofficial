@@ -333,10 +333,10 @@ public enum CircuitComponent {
     ProcessedFoilStyreneRubber(1704, "gt.circuitcomponent.sheet.processed.styrenerubber", () -> FoilStyreneRubber, true),
     // Circuit encasement
     // IDs: 1800-1899
-    ProcessedBasicMainframeCasing(1800, "gt.circuitcomponent.casing.basicmainframe", null, true),
-    ProcessedAdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.advancedmainframe", null, true),
-    ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.pico", null, true),
-    ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.quantum", null, true),
+    ProcessedBasicMainframeCasing(1800, "gt.circuitcomponent.casing.processed.basicmainframe", null, true),
+    ProcessedAdvancedMainframeCasing(1801, "gt.circuitcomponent.casing.processed.advancedmainframe", null, true),
+    ProcessedPicoCircuitCasing(1802, "gt.circuitcomponent.casing.processed.pico", null, true),
+    ProcessedQuantumCircuitCasing(1803, "gt.circuitcomponent.casing.processed.quantum", null, true),
 
     // Bolts and other small components
     // IDs: 1900-1999 CC, 2000-2099 PC
