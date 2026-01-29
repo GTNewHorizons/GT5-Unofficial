@@ -17,6 +17,7 @@ import static gregtech.common.tileentities.machines.multi.nanochip.util.Assembly
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.math.BigInteger;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,8 +214,10 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
 
         for (MTENanochipAssemblyModuleBase<?> module : modules) {
             final int maxDurationOfModuleRecipe = module.getMaxRecipeDuration();
-            // multiplty by 2 so there is no stuttering in between fully saturated recipes
-            module.setBufferSize(this.getMaxInputEu() * maxDurationOfModuleRecipe * 2);
+            // multiplty by 1.5 so there is no stuttering in between fully saturated recipes
+            BigInteger bufferSize = BigInteger.valueOf(this.getMaxInputEu());
+            bufferSize = bufferSize.multiply(BigInteger.valueOf(maxDurationOfModuleRecipe * 2L));
+            module.setBufferSize(bufferSize);
             module.setAvailableEUt(this.getMaxInputEu());
         }
         return true;
@@ -535,19 +538,18 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return total;
     }
 
-    private void tryChargeInternalBuffer() {
+    public long getHatchVar() {
         MTEHatch hatch = this.getEnergyHatch();
-        if (hatch == null) return;
+        if (hatch == null || hatch.getBaseMetaTileEntity() == null) return 0;
 
-        long eut = this.getMaxInputEu();
-        long euToAdd = Math.min(
-            eut,
-            hatch.getBaseMetaTileEntity()
-                .getStoredEU());
-        if (hatch.getBaseMetaTileEntity()
-            .decreaseStoredEnergyUnits(euToAdd, false)) {
-            setEUVar(getBaseMetaTileEntity().getStoredEU() + euToAdd);
-        }
+        return hatch.getBaseMetaTileEntity()
+            .getStoredEU();
+    }
+
+    public void setHatchVar(long energy) {
+        MTEHatch hatch = this.getEnergyHatch();
+        if (hatch == null || hatch.getBaseMetaTileEntity() == null) return;
+        hatch.setEUVar(energy);
     }
 
     @Override
@@ -555,27 +557,27 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (isAllowedToWork()) {
-                // Every running tick, try to charge the buffer in the controller.
-                tryChargeInternalBuffer();
                 // If the complex is turned on, periodically reconnect modules.
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
                         // Calculate the max power to be shared to the modules
                         long availableEnergy = Math
-                            .min(this.getEUVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL);
+                            .min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL);
                         if (availableEnergy == 0) return;
+                        BigInteger availableEnergyBigInt = BigInteger.valueOf(availableEnergy);
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect(this);
-                            long moduleSize = module.getBufferSize();
-                            long moduleCurrentEU = module.getEUVar();
-                            long euToSend = moduleSize - moduleCurrentEU;
-                            if (euToSend <= 0) continue;
-                            long sentEnergy = module.increaseStoredEU(Math.min(euToSend, availableEnergy));
-                            availableEnergy -= sentEnergy;
-                            if (availableEnergy <= 0) break;
+                            BigInteger moduleSize = module.getBufferSize();
+                            BigInteger moduleCurrentEU = module.getCurrentEUStored();
+                            BigInteger euToSend = moduleSize.subtract(moduleCurrentEU);
+                            if (euToSend.compareTo(BigInteger.ZERO) <= 0) continue;
+                            BigInteger sentEnergy = module.increaseStoredEU(euToSend.min(availableEnergyBigInt));
+                            availableEnergyBigInt = availableEnergyBigInt.subtract(sentEnergy);
+                            availableEnergy = Math.max(0, availableEnergyBigInt.longValue());
+                            if (availableEnergy == 0) break;
                         }
-                        setEUVar(getEUVar() - availableEnergy);
+                        setHatchVar(getHatchVar() - availableEnergy);
                     }
                 }
             } else {
