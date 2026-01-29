@@ -577,7 +577,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_busses");
+            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
             return false;
         }
         boolean oStuck = stuck;
