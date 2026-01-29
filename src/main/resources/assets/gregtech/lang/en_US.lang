@@ -1730,63 +1730,65 @@ GT5U.tooltip.nac.hatch.vc.base.4=§ewill be placed in a Vacuum Conveyor Output o
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s
+gt.circuitcomponent.tooltip.base=Item in the §eNAC§7 Vacuum Conveyor System
+gt.circuitcomponent.tooltip.cc.base=This item §a§lcan§r§7 be converted to/from its real stack equivalent in the §eNAC
+gt.circuitcomponent.tooltip.pc.base=This item §c§lcan not§r§7 be converted to its un-processed real stack equivalent in the §eNAC
+gt.circuitcomponent.processed.wirenbti=Spooled Niobium-Titanium Wire
+gt.circuitcomponent.processed.wireybc=Spooled Yttrium Barium Cuprate Wire
+gt.circuitcomponent.processed.wirelumiium=Spooled Lumiium Wire
+gt.circuitcomponent.processed.wireprotohalkonite=Spooled Proto-Halkonite Steel Wire
+gt.circuitcomponent.processed.wirespacetime=Spooled Spacetime Wire
+gt.circuitcomponent.cable.processed.opticalfiber=Split Optical Fiber Cable
+gt.circuitcomponent.processed.wireinfinity=Spooled Infinity Wire
 
-gt.circuitcomponent.processed.wirenbti=
-gt.circuitcomponent.processed.wireybc=
-gt.circuitcomponent.processed.wirelumiium=
-gt.circuitcomponent.processed.wireprotohalkonite=
-gt.circuitcomponent.processed.wirespacetime=
-gt.circuitcomponent.cable.processed.opticalfiber=
-gt.circuitcomponent.processed.wireinfinity=
+gt.circuitcomponent.processed.asmd.resistor=Prepared Advanced SMD Resistor
+gt.circuitcomponent.processed.asmd.transistor=Prepared Advanced SMD Transistor
+gt.circuitcomponent.processed.asmd.inductor=Prepared Advanced SMD Inductor
+gt.circuitcomponent.processed.asmd.capacitor=Prepared Advanced SMD Capacitor
+gt.circuitcomponent.processed.asmd.diode=Prepared Advanced SMD Diode
+gt.circuitcomponent.processed.xsmd.resistor=Prepared Optical SMD Resistor
+gt.circuitcomponent.processed.xsmd.transistor=Prepared Optical SMD Transistor
+gt.circuitcomponent.processed.xsmd.inductor=Prepared Optical SMD Inductor
+gt.circuitcomponent.processed.xsmd.capacitor=Prepared Optical SMD Capacitor
+gt.circuitcomponent.processed.xsmd.diode=Prepared Optical SMD Diode
 
-gt.circuitcomponent.processed.asmd.resistor=
-gt.circuitcomponent.processed.asmd.transistor=
-gt.circuitcomponent.processed.asmd.inductor=
-gt.circuitcomponent.processed.asmd.capacitor=
-gt.circuitcomponent.processed.asmd.diode=
-gt.circuitcomponent.processed.xsmd.resistor=
-gt.circuitcomponent.processed.xsmd.transistor=
-gt.circuitcomponent.processed.xsmd.inductor=
-gt.circuitcomponent.processed.xsmd.capacitor=
-gt.circuitcomponent.processed.xsmd.diode=
+gt.circuitcomponent.processed.board.multifiberelite=Purified Elite Circuit Board
+gt.circuitcomponent.processed.board.wetwarelifesupport=Purified Extreme Wetware Lifesupport Circuit Board
+gt.circuitcomponent.processed.board.biomutated=Purified Ultra Bio Mutated Circuit Board
+gt.circuitcomponent.processed.board.optical=Purified Optical Circuit Board
+gt.circuitcomponent.processed.neuroprocessingunit=Coordinated Neuro Processing Unit
+gt.circuitcomponent.processed.board.bioprocessingunit=Coordinated Bio Processing Unit
+gt.circuitcomponent.processed.board.livingbiochip=Coordinated Living Bio Chip
 
-gt.circuitcomponent.processed.board.multifiberelite=
-gt.circuitcomponent.processed.board.wetwarelifesupport=
-gt.circuitcomponent.processed.board.biomutated=
-gt.circuitcomponent.processed.board.optical=
-gt.circuitcomponent.processed.neuroprocessingunit=
-gt.circuitcomponent.processed.board.bioprocessingunit=
-gt.circuitcomponent.processed.board.livingbiochip=
+gt.circuitcomponent.processed.chipnanocpu=Cut Nanocomponent CPU Chips
+gt.circuitcomponent.processed.chipram=Cut Random Access Memory Chips
+gt.circuitcomponent.processed.chipnor=Cut NOR Memory Chips
+gt.circuitcomponent.processed.chipnand=Cut NAND Memory Chips
+gt.circuitcomponent.processed.chipasoc=Cut ASoC Chips
+gt.circuitcomponent.processed.chippikopic=Cut Piko Power IC Chips
+gt.circuitcomponent.processed.chipquantumpic=Cut Quantum Power IC Chips
+gt.circuitcomponent.processed.chippico=Cut Prismatic Pico Chips
 
-gt.circuitcomponent.processed.chipnanocpu=
-gt.circuitcomponent.processed.chipram=
-gt.circuitcomponent.processed.chipnor=
-gt.circuitcomponent.processed.chipnand=
-gt.circuitcomponent.processed.chipasoc=
-gt.circuitcomponent.processed.chippikopic=
-gt.circuitcomponent.processed.chipquantumpic=
-gt.circuitcomponent.processed.chippico=
+gt.circuitcomponent.processed.chipcrystalcpu=Etched Crystal Processing Unit
+gt.circuitcomponent.processed.chipcrystalsoc=Etched Crystal SoC
+gt.circuitcomponent.processed.chiplivingcrystal=Coordinated Living Crystal Chip
+gt.circuitcomponent.processed.chiprawadvancedcrystal=Coordinated Raw Advanced Crystal Chip
 
-gt.circuitcomponent.processed.chipcrystalcpu=
-gt.circuitcomponent.processed.chipcrystalsoc=
-gt.circuitcomponent.processed.chiplivingcrystal=
-gt.circuitcomponent.processed.chiprawadvancedcrystal=
+gt.circuitcomponent.processed.opticalcpu=Organized Optically Perfected CPU
+gt.circuitcomponent.processed.opticalram=Organized Optically Compatible Memory
 
-gt.circuitcomponent.processed.opticalcpu=
-gt.circuitcomponent.processed.opticalram=
+gt.circuitcomponent.processed.superconductorluv=Attuned Superconductor LuV Wire
+gt.circuitcomponent.processed.superconductorzpm=Attuned Superconductor ZPM Wire
+gt.circuitcomponent.processed.superconductoruv=Attuned Superconductor UV Wire
+gt.circuitcomponent.processed.superconductoruhv=Attuned Superconductor UHV Wire
+gt.circuitcomponent.processed.superconductoruev=Attuned Superconductor UEV Wire
+gt.circuitcomponent.processed.superconductoruiv=Attuned Superconductor UIV Wire
+gt.circuitcomponent.processed.superconductorumv=Attuned Superconductor UMV Wire
 
-gt.circuitcomponent.processed.superconductorluv=
-gt.circuitcomponent.processed.superconductorzpm=
-gt.circuitcomponent.processed.superconductoruv=
-gt.circuitcomponent.processed.superconductoruhv=
-gt.circuitcomponent.processed.superconductoruev=
-gt.circuitcomponent.processed.superconductoruiv=
-gt.circuitcomponent.processed.superconductorumv=
-
-gt.circuitcomponent.processed.frame.aluminium=
-gt.circuitcomponent.processed.frame.tritanium=
-gt.circuitcomponent.processed.frame.celestialtungsten=
-gt.circuitcomponent.processed.frame.hypogen=
+gt.circuitcomponent.processed.frame.aluminium=Spliced Aluminium Framebox
+gt.circuitcomponent.processed.frame.tritanium=Spliced Tritanium Framebox
+gt.circuitcomponent.processed.frame.celestialtungsten=Spliced Celestial Tungsten Framebox
+gt.circuitcomponent.processed.frame.hypogen=Spliced Hypogen Framebox
 
 gt.circuitcomponent.sheet.processed.siliconerubber=Silicone Rubber Wrapper Spool
 gt.circuitcomponent.sheet.processed.polybenzimidazole=Polybenzimidazone Wrapper Spool
@@ -1798,13 +1800,13 @@ gt.circuitcomponent.casing.processed.advancedmainframe=Advanced Mainframe Circui
 gt.circuitcomponent.casing.processed.pico=Pico Circuit Encasement
 gt.circuitcomponent.casing.processed.quantum=Quantum Circuit Encasement
 
-gt.circuitcomponent.bolt.processed.enrichedholmium=
-gt.circuitcomponent.bolt.processed.transcendentmetal=
-gt.circuitcomponent.bolt.processed.yttriumbariumcuprate=
-gt.circuitcomponent.bolt.processed.cosmicneutronium=
-gt.circuitcomponent.bolt.processed.chromaticglass=
-gt.circuitcomponent.bolt.processed.umvsuperconductor=
-gt.circuitcomponent.plate.processed.metastableoganesson=
+gt.circuitcomponent.bolt.processed.enrichedholmium=Filed Enriched Holmium Bolt
+gt.circuitcomponent.bolt.processed.transcendentmetal=Filed Transcendent Metal Bolt
+gt.circuitcomponent.bolt.processed.yttriumbariumcuprate=Filed Yttrium Barium Cuprate Bolt
+gt.circuitcomponent.bolt.processed.cosmicneutronium=Filed Cosmic Neutronium Bolt
+gt.circuitcomponent.bolt.processed.chromaticglass=Filed Chromatic Glass Bolt
+gt.circuitcomponent.bolt.processed.umvsuperconductor=Filed UMV Superconductor Base Bolt
+gt.circuitcomponent.plate.processed.metastableoganesson=Stripped Metastable Oganesson Plate
 
 GT5U.gui.hoverable.runningfine=Running Fine.
 GT5U.gui.hoverable.incomplete=Structure incomplete.
