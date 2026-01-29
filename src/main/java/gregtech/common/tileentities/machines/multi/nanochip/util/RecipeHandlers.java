@@ -727,32 +727,11 @@ public class RecipeHandlers {
     private static void registerAssemblyMatrixRecipes() {
         // TODO: dummy recipes
         addAssemblyMatrixRecipe(
-            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDCapacitor, 1)),
-            Arrays.asList(Materials.Iron.getFluid(1)),
-            CircuitComponent.CrystalProcessor,
-            5 * TICKS,
-            TierEU.RECIPE_LuV,
-            VoltageIndex.UHV);
-        addAssemblyMatrixRecipe(
-            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDResistor, 1)),
-            Arrays.asList(Materials.Iron.getFluid(1)),
-            CircuitComponent.OpticalProcessor,
-            5 * TICKS,
-            TierEU.RECIPE_LuV,
-            VoltageIndex.UHV);
-        addAssemblyMatrixRecipe(
-            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDTransistor, 1)),
-            Arrays.asList(Materials.Iron.getFluid(1)),
-            CircuitComponent.BiowareProcessor,
-            5 * TICKS,
-            TierEU.RECIPE_LuV,
-            VoltageIndex.UHV);
-        addAssemblyMatrixRecipe(
-            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedAdvSMDDiode, 1)),
-            Arrays.asList(Materials.Iron.getFluid(1)),
-            CircuitComponent.WetwareProcessor,
-            5 * TICKS,
-            TierEU.RECIPE_LuV,
+            Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 1)),
+            Arrays.asList(Materials.Iron.getMolten(1)),
+            CircuitComponent.OpticalMainframe,
+            300 * SECONDS,
+            TierEU.RECIPE_UMV,
             VoltageIndex.UHV);
         addAssemblyMatrixRecipe(
             Arrays.asList(

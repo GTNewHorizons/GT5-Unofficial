@@ -10,6 +10,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -122,8 +122,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return ((NACRecipeMapBackend) (this.getRecipeMap()
             .getBackend())).getMaxDuration();
     }
-
-    protected long euBufferSize = TierEU.UV * 4096 * 20;
 
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorInput> vacuumConveyorInputs = new VacuumConveyorHatchMap<>();
     protected final VacuumConveyorHatchMap<MTEHatchVacuumConveyorOutput> vacuumConveyorOutputs = new VacuumConveyorHatchMap<>();
@@ -429,6 +427,17 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return 4;
     }
 
+    @Override
+    public boolean drainEnergyInput(long eu) {
+        BigInteger euOut = BigInteger.valueOf(eu);
+        if (euOut.compareTo(currentEU) > 0) {
+            currentEU = BigInteger.ZERO;
+            return false;
+        }
+        currentEU = currentEU.subtract(euOut);
+        return true;
+    }
+
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
@@ -490,7 +499,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (result.wasSuccessful()) {
             long euToConsume = parallelHelper.getCurrentParallel() * (long) properRecipe.mDuration
                 * (long) properRecipe.mEUt;
-            if (euToConsume > this.getEUVar()) return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
+            if (euToConsume > this.currentEU.longValue()) return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
@@ -513,25 +522,35 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return 1;
     }
 
-    public void setBufferSize(long buffer) {
+    protected BigInteger euBufferSize = BigInteger.ZERO;
+    protected BigInteger currentEU = BigInteger.ZERO;
+
+    public void setBufferSize(BigInteger buffer) {
         this.euBufferSize = buffer;
     }
 
-    public long getBufferSize() {
+    public BigInteger getBufferSize() {
         return this.euBufferSize;
+    }
+
+    public BigInteger getCurrentEUStored() {
+        return this.currentEU;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("bufferSize", this.euBufferSize);
+        aNBT.setByteArray("bufferSize", this.euBufferSize.toByteArray());
+        aNBT.setByteArray("currentEU", this.currentEU.toByteArray());
+
         aNBT.setBoolean("connected", this.isConnected);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.euBufferSize = aNBT.getLong("bufferSize");
+        this.euBufferSize = new BigInteger(aNBT.getByteArray("bufferSize"));
+        this.currentEU = new BigInteger(aNBT.getByteArray("currentEU"));
         this.isConnected = aNBT.getBoolean("connected");
     }
 
@@ -548,27 +567,16 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (aBaseMetaTileEntity.isServerSide() && isConnected) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
             if (mEfficiency < 0) mEfficiency = 0;
-            if (aBaseMetaTileEntity.getStoredEU() <= 0 && mMaxProgresstime > 0) {
+            if (currentEU.compareTo(BigInteger.ZERO) <= 0 && mMaxProgresstime > 0) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
             }
         }
     }
 
     @Override
-    public long maxEUStore() {
-        return euBufferSize;
-    }
-
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        // Drain EU from internal buffer in controller. We will need to charge this buffer from the
-        // Assembly Complex
-        if (aEU <= this.getEUVar()) {
-            this.setEUVar(this.getEUVar() - aEU);
-            return true;
-        } else {
-            return false;
-        }
+    public String[] getInfoData() {
+        return new String[] { "Current EU: " + GTUtility.scientificFormat(currentEU),
+            "Total Buffer Size" + GTUtility.scientificFormat(euBufferSize) };
     }
 
     /**
@@ -601,14 +609,15 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * @param maximumIncrease EU that should be added to the buffer
      * @return Actually used amount
      */
-    public long increaseStoredEU(long maximumIncrease) {
+    public BigInteger increaseStoredEU(BigInteger maximumIncrease) {
         if (getBaseMetaTileEntity() == null) {
-            return 0;
+            return BigInteger.ZERO;
         }
         isConnected = true;
-        long increasedEU = Math
-            .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
-        return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
+        BigInteger euToFull = euBufferSize.subtract(currentEU);
+        BigInteger increasedEU = euToFull.min(maximumIncrease);
+        currentEU = currentEU.add(increasedEU);
+        return currentEU;
     }
 
     protected MTEHatchVacuumConveyorOutput findOutputHatch(byte color) {
