@@ -230,7 +230,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
 
     @Override
     public int getPriority() {
-        return 100;
+        return -1;
     }
 
     @Override
