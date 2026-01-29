@@ -163,47 +163,83 @@ public class RecipeHandlers {
     private static void registerBoardProcessorRecipes() {
         // Elite Board
         GTValues.RA.stdBuilder()
+            .hidden()
             .metadata(BoardProcessingModuleFluidKey.INSTANCE, 1)
             .itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
             .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1))
-            .duration(20)
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Elite Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardMultifiberglassElite.getFakeStack(1))
+            .fluidInputs(Materials.IronIIIChloride.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardMultifiberglassElite.getFakeStack(1))
+            .duration(5 * SECONDS)
             .eut(ModuleRecipeInfo.HighTier.recipeEUt)
             .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
 
         // Wetware Board
-        addSimpleProcessingRecipe(
-            CircuitComponent.BoardWetwareLifesupport,
-            Materials.GrowthMediumSterilized.getFluid(1000),
-            CircuitComponent.ProcessedBoardWetwareLifesupport,
-            ModuleRecipeInfo.HighTier,
-            20 * TICKS,
-            RecipeMaps.nanochipBoardProcessorRecipes);
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 2)
+            .itemInputs(CircuitComponent.BoardWetwareLifesupport.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardWetwareLifesupport.getFakeStack(1))
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Wetware Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardWetwareLifesupport.getFakeStack(1))
+            .fluidInputs(Materials.GrowthMediumSterilized.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardWetwareLifesupport.getFakeStack(1))
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
 
         // Bio Board
-        addSimpleProcessingRecipe(
-            CircuitComponent.BoardBioMutated,
-            Materials.BioMediumSterilized.getFluid(1000),
-            CircuitComponent.ProcessedBoardBioMutated,
-            ModuleRecipeInfo.HighTier,
-            20 * TICKS,
-            RecipeMaps.nanochipBoardProcessorRecipes);
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 3)
+            .itemInputs(CircuitComponent.BoardBioMutated.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardBioMutated.getFakeStack(1))
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
+
+        // Bio Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardBioMutated.getFakeStack(1))
+            .fluidInputs(Materials.BioMediumSterilized.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardBioMutated.getFakeStack(1))
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
 
         // Optical Board
-        addSimpleProcessingRecipe(
-            CircuitComponent.BoardOptical,
-            Materials.MysteriousCrystal.getMolten(1000),
-            CircuitComponent.ProcessedBoardOptical,
-            ModuleRecipeInfo.HighTier,
-            20 * TICKS,
-            RecipeMaps.nanochipBoardProcessorRecipes);
+        GTValues.RA.stdBuilder()
+            .hidden()
+            .metadata(BoardProcessingModuleFluidKey.INSTANCE, 4)
+            .itemInputs(CircuitComponent.BoardOptical.getFakeStack(1))
+            .itemOutputs(CircuitComponent.ProcessedBoardOptical.getFakeStack(1))
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
 
-        addSimpleProcessingRecipe(
-            CircuitComponent.BoardOptical,
-            Materials.MysteriousCrystal.getMolten(1000),
-            CircuitComponent.ProcessedBoardOptical,
-            ModuleRecipeInfo.HighTier,
-            20 * TICKS,
-            RecipeMaps.nanochipBoardProcessorRecipes);
+        // Optical Board fake recipe
+        GTValues.RA.stdBuilder()
+            .fake()
+            .itemInputs(CircuitComponent.BoardOptical.getFakeStack(1))
+            .fluidInputs(Materials.PrismaticAcid.getFluid(0))
+            .itemOutputs(CircuitComponent.ProcessedBoardOptical.getFakeStack(1))
+            .duration(5 * SECONDS)
+            .eut(ModuleRecipeInfo.HighTier.recipeEUt)
+            .addTo(RecipeMaps.nanochipBoardProcessorRecipes);
     }
 
     private static void registerCuttingChamberRecipes() {
