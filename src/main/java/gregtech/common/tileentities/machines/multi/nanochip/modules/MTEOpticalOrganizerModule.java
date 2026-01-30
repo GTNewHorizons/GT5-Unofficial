@@ -152,8 +152,8 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addSeparator()
             .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.8x"), EnumChatFormatting.WHITE))
             .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.6x"), EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","1.3x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","1.8x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.6x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.8x"), TooltipHelper.SPEED_COLOR))
             .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.8x"), TooltipHelper.EFF_COLOR))
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.5x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
@@ -189,7 +189,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     float waterDiscount = 1;
 
     @Override
-    protected float getBonusSpeedModifier() {
+    protected float getModuleDurationModifier() {
         return speedModifier;
     }
 
@@ -253,8 +253,8 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
         new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount = 0.8f; }),
         new BoostingWater(Materials.Grade4PurifiedWater, 500, module -> { module.waterDiscount = 0.6f; }),
-        new BoostingWater(Materials.Grade5PurifiedWater, 600, module -> { module.speedModifier = 1.3f; }),
-        new BoostingWater(Materials.Grade6PurifiedWater, 300, module -> { module.speedModifier = 1.8f; }),
+        new BoostingWater(Materials.Grade5PurifiedWater, 600, module -> { module.speedModifier = 0.8f; }),
+        new BoostingWater(Materials.Grade6PurifiedWater, 300, module -> { module.speedModifier = 0.6f; }),
         new BoostingWater(Materials.Grade7PurifiedWater, 200, module -> { module.euMultiplier = 0.8f; }),
         new BoostingWater(Materials.Grade8PurifiedWater, 100, module -> { module.euMultiplier = 0.5f; }));
 
