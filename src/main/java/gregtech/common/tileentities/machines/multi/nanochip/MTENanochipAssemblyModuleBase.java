@@ -51,6 +51,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.NACRecipeMapBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
@@ -63,6 +64,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponentPacket;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -472,7 +474,14 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
         double recipeDuration = recipe.mDuration;
-        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier();
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
+        CircuitCalibration recipeCalibration = recipe
+            .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
+        if (recipeCalibration != null && baseMulti.currentThreshold != null
+            && baseMulti.currentThreshold.calibrationType == recipeCalibration) {
+            recipeDuration *= baseMulti.globalDurationMultiplier;
+        }
+
         int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
         // max overclocks is ehatch tier - recipe tier
         // can only overclock if machine has a remaining overclock,

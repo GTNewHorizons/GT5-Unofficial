@@ -22,6 +22,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.BoardProcessingModuleFluidKey;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitComponent.CircuitComponentStack;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -83,6 +84,7 @@ public class RecipeHandlers {
 
         GTValues.RA.stdBuilder()
             .metadata(NanochipAssemblyMatrixTierKey.INSTANCE, recipeTier)
+            .metadata(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, output.circuitType)
             .itemInputs(inputs)
             .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
             .itemOutputs(output.getFakeStack(1))
