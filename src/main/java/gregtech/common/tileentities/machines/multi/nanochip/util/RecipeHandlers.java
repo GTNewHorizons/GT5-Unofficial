@@ -725,7 +725,6 @@ public class RecipeHandlers {
     }
 
     // spotless:off
-    // todo finalize recipes and fill in missing ones
     private static void registerAssemblyMatrixRecipes() {
         // TODO: dummy recipes
         addAssemblyMatrixRecipe(
