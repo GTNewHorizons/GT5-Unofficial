@@ -20,7 +20,7 @@ public class CCNEIRepresentation {
     public static void init() {
         for (CircuitComponent cc : CircuitComponent.VALUES) {
             // Circuits
-            if (cc.circuitTier != 0) {
+            if (cc.circuitType != CircuitCalibration.NONE) {
                 ItemStack ccItem = cc.getFakeStack(1);
                 ItemStack realItem = cc.realComponent.get();
 

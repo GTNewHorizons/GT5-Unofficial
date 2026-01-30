@@ -177,7 +177,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         for (ItemStack stack : outputItems) {
             CircuitComponent circuitComponent = CircuitComponent.tryGetFromFakeStack(stack);
             if (circuitComponent != null && baseMulti != null) {
-                baseMulti.addToHistory(circuitComponent.circuitTier, stack.stackSize);
+                baseMulti.addToHistory(circuitComponent.circuitType, stack.stackSize);
             }
         }
         return super.addItemOutputs(outputItems);
