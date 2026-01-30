@@ -464,7 +464,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                                 (int) Math.min(Integer.MAX_VALUE, amount),
                                 component.realComponent.get());
                             // Add output and deplete from hatch
-                            // todo check that this is correct after item logistics changes
                             addOutputAtomic(toOutput);
                             contents.remove(component);
                         }
