@@ -522,7 +522,7 @@ public class RecipeHandlers {
             CircuitComponent.ChipOpticalCPU,
             CircuitComponent.ProcessedChipOpticalCPU,
             ModuleRecipeInfo.ExtremeTier,
-            20 * TICKS,
+            10 * SECONDS,
             RecipeMaps.nanochipOpticalOrganizer);
 
         // Optical Memory
