@@ -53,6 +53,7 @@ import gregtech.common.gui.modularui.widget.SegmentedBarWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBaseAdapter;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
 import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltipValues;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -493,15 +494,21 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             0,
             new BooleanSyncValue(() -> multiblock.isTalkModeActive, b -> multiblock.isTalkModeActive = b));
 
-        syncManager.syncValue("primitives", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 1)));
-        syncManager.syncValue("crystals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 2)));
-        syncManager.syncValue("wetwares", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 3)));
-        syncManager.syncValue("bios", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 4)));
-        syncManager.syncValue("opticals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 5)));
-        syncManager.syncValue("exotics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 6)));
-        syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 7)));
-        syncManager.syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 8)));
-        syncManager.syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit((byte) 64)));
+        syncManager
+            .syncValue("primitives", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.PRIMITIVE)));
+        syncManager
+            .syncValue("crystals", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.CRYSTAL)));
+        syncManager
+            .syncValue("wetwares", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.WETWARE)));
+        syncManager.syncValue("bios", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.BIO)));
+        syncManager
+            .syncValue("opticals", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.OPTICAL)));
+        syncManager.syncValue("exotics", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.EXOTIC)));
+        syncManager.syncValue("cosmics", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.COSMIC)));
+        syncManager
+            .syncValue("temporals", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.TEMPORAL)));
+        syncManager
+            .syncValue("specials", new IntSyncValue(() -> multiblock.getTotalCircuit(CircuitCalibration.SPECIAL)));
 
         syncManager.syncValue("calibrationTitle", new StringSyncValue(multiblock::getCalibrationTitle));
 

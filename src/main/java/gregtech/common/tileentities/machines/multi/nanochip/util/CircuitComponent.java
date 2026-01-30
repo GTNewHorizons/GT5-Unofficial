@@ -400,75 +400,75 @@ public enum CircuitComponent {
     CrystalProcessor(
         2100,
         "gt.circuitcomponent.crystalprocessor",
-        () -> ItemList.Circuit_Crystalprocessor.get(1), (byte) 2),
+        () -> ItemList.Circuit_Crystalprocessor.get(1), CircuitCalibration.CRYSTAL),
     CrystalAssembly(
         2101,
         "gt.circuitcomponent.crystalasssembly",
-        () -> ItemList.Circuit_Crystalcomputer.get(1), (byte) 2),
+        () -> ItemList.Circuit_Crystalcomputer.get(1), CircuitCalibration.CRYSTAL),
     CrystalComputer(
         2102,
         "gt.circuitcomponent.crystalcomputer",
-        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), (byte) 2),
+        () -> ItemList.Circuit_Ultimatecrystalcomputer.get(1), CircuitCalibration.CRYSTAL),
     CrystalMainframe(
         2103,
         "gt.circuitcomponent.crystalmainframe",
-        () -> ItemList.Circuit_Crystalmainframe.get(1), (byte) 2),
+        () -> ItemList.Circuit_Crystalmainframe.get(1), CircuitCalibration.CRYSTAL),
     WetwareProcessor(
         2104,
         "gt.circuitcomponent.wetwareprocessor",
-        () -> ItemList.Circuit_Neuroprocessor.get(1), (byte) 3),
+        () -> ItemList.Circuit_Neuroprocessor.get(1), CircuitCalibration.WETWARE),
     WetwareAssembly(
         2105,
         "gt.circuitcomponent.wetwareassembly",
-        () -> ItemList.Circuit_Wetwarecomputer.get(1), (byte) 3),
+        () -> ItemList.Circuit_Wetwarecomputer.get(1), CircuitCalibration.WETWARE),
     WetwareComputer(
         2106,
         "gt.circuitcomponent.wetwarecomputer",
-        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), (byte) 3),
+        () -> ItemList.Circuit_Wetwaresupercomputer.get(1), CircuitCalibration.WETWARE),
     WetwareMainframe(
         2107,
         "gt.circuitcomponent.wetwaremainframe",
-        () -> ItemList.Circuit_Wetwaremainframe.get(1), (byte) 3),
+        () -> ItemList.Circuit_Wetwaremainframe.get(1), CircuitCalibration.WETWARE),
     BiowareProcessor(
         2108,
         "gt.circuitcomponent.biowareprocessor",
-        () -> ItemList.Circuit_Bioprocessor.get(1), (byte) 4),
+        () -> ItemList.Circuit_Bioprocessor.get(1), CircuitCalibration.BIO),
     BiowareAssembly(
         2109,
         "gt.circuitcomponent.biowareassembly",
-        () -> ItemList.Circuit_Biowarecomputer.get(1), (byte) 4),
+        () -> ItemList.Circuit_Biowarecomputer.get(1), CircuitCalibration.BIO),
     BiowareComputer(
         2110,
         "gt.circuitcomponent.biowarecomputer",
-        () -> ItemList.Circuit_Biowaresupercomputer.get(1), (byte) 4),
+        () -> ItemList.Circuit_Biowaresupercomputer.get(1), CircuitCalibration.BIO),
     BiowareMainframe(
         2111,
         "gt.circuitcomponent.biowaremainframe",
-        () -> ItemList.Circuit_Biomainframe.get(1), (byte) 4),
+        () -> ItemList.Circuit_Biomainframe.get(1), CircuitCalibration.BIO),
     OpticalProcessor(
         2112,
         "gt.circuitcomponent.opticalprocessor",
-        () -> ItemList.Circuit_OpticalProcessor.get(1), (byte) 5),
+        () -> ItemList.Circuit_OpticalProcessor.get(1), CircuitCalibration.OPTICAL),
     OpticalAssembly(
         2113,
         "gt.circuitcomponent.opticalassembly",
-        () -> ItemList.Circuit_OpticalAssembly.get(1), (byte) 5),
+        () -> ItemList.Circuit_OpticalAssembly.get(1), CircuitCalibration.OPTICAL),
     OpticalComputer(
         2114,
         "gt.circuitcomponent.opticalcomputer",
-        () -> ItemList.Circuit_OpticalComputer.get(1), (byte) 5),
+        () -> ItemList.Circuit_OpticalComputer.get(1), CircuitCalibration.OPTICAL),
     OpticalMainframe(
         2115,
         "gt.circuitcomponent.opticalmainframe",
-        () -> ItemList.Circuit_OpticalMainframe.get(1), (byte) 5),
+        () -> ItemList.Circuit_OpticalMainframe.get(1), CircuitCalibration.OPTICAL),
     PicoCircuit(
         2116,
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), (byte) 64),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
     QuantumCircuit(
         2117,
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), (byte) 64),
+        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
 
     ;
 
@@ -494,11 +494,11 @@ public enum CircuitComponent {
     public final boolean isProcessed;
 
     // Tier used for calibration
-    public final byte circuitTier;
+    public final CircuitCalibration circuitType;
 
     // CC constructor
     CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent) {
-        this(id, nameKey, realComponent, null, false, (byte) 0);
+        this(id, nameKey, realComponent, null, false, CircuitCalibration.NONE);
     }
 
     // CC constructor with tier, used for circuits
@@ -514,13 +514,13 @@ public enum CircuitComponent {
     // 8 - Temporally Transcendent
     // 64 - Special Temporary circuits - Piko/Quantum
 
-    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, byte circuitTier) {
-        this(id, nameKey, realComponent, null, false, circuitTier);
+    CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, CircuitCalibration circuitType) {
+        this(id, nameKey, realComponent, null, false, circuitType);
     }
 
     // PC constructor
     CircuitComponent(int id, String nameKey, Supplier<CircuitComponent> ccSupplier, boolean isProcessed) {
-        this(id, nameKey, null, ccSupplier, isProcessed, (byte) 0);
+        this(id, nameKey, null, ccSupplier, isProcessed, CircuitCalibration.NONE);
     }
 
     private static final String PROCESSED_DIRECTORY = "processed/";
@@ -531,13 +531,13 @@ public enum CircuitComponent {
      * processed components are found in the processed subdirectory
      */
     CircuitComponent(int id, String nameKey, Supplier<ItemStack> realComponent, Supplier<CircuitComponent> ccSupplier,
-        boolean isProcessed, byte circuitTier) {
+        boolean isProcessed, CircuitCalibration circuitType) {
         this.metaId = id;
         this.nameKey = nameKey;
         this.realComponent = realComponent;
         this.componentForProcessed = ccSupplier;
         this.isProcessed = isProcessed;
-        this.circuitTier = circuitTier;
+        this.circuitType = circuitType;
 
         this.iconString = isProcessed ? PROCESSED_DIRECTORY + name().toLowerCase() : name().toLowerCase();
         codechicken.nei.api.API.hideItem(getFakeStack(1));

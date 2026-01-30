@@ -20,23 +20,23 @@ public class CircuitBatch {
     }
 
     // Returns leftover if total exceeds BATCH_SIZE
-    public int add(byte type, int amount) {
+    public int add(CircuitCalibration circuitType, int amount) {
         int leftover = 0;
         if (total + amount > BATCH_SIZE) {
             leftover = total + amount - BATCH_SIZE;
             amount = BATCH_SIZE - total;
         }
         total += amount;
-        switch (type) {
-            case 1 -> primitives += amount;
-            case 2 -> crystals += amount;
-            case 3 -> wetwares += amount;
-            case 4 -> bios += amount;
-            case 5 -> opticals += amount;
-            case 6 -> exotics += amount;
-            case 7 -> cosmics += amount;
-            case 8 -> temporals += amount;
-            case 64 -> specials += amount;
+        switch (circuitType) {
+            case PRIMITIVE -> primitives += amount;
+            case CRYSTAL -> crystals += amount;
+            case WETWARE -> wetwares += amount;
+            case BIO -> bios += amount;
+            case OPTICAL -> opticals += amount;
+            case EXOTIC -> exotics += amount;
+            case COSMIC -> cosmics += amount;
+            case TEMPORAL -> temporals += amount;
+            case SPECIAL -> specials += amount;
         }
         return leftover;
     }
