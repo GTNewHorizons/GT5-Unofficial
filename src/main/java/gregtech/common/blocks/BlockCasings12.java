@@ -21,6 +21,7 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
         register(1, ItemList.Casing_Strengthened_Inanimate, "Strengthened Inanimate Machine Casing");
         register(2, ItemList.Casing_Precise_Stationary, "Precise Stationary Machine Casing");
+        register(3, ItemList.Casing_Ultimately_Static, "Ultimately Static Machine Casing");
         register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
@@ -54,8 +55,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
-            case 1 -> Textures.BlockIcons.STRENGTHENED_INANIMATE_MACHINE_CASING.getIcon();
-            case 2 -> Textures.BlockIcons.PRECISE_STATIONARY_MACHINE_CASING.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_STRENGTHENED_INANIMATE.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_PRECISE_STATIONARY.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_ULTIMATELY_STATIC.getIcon();
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();

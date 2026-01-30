@@ -864,6 +864,7 @@ public enum ItemList implements IItemContainer {
 
     Casing_Strengthened_Inanimate,
     Casing_Precise_Stationary,
+    Casing_Ultimately_Static,
 
     Hull_ULV,
     Hull_LV,

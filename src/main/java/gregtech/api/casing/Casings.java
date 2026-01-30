@@ -251,6 +251,12 @@ public enum Casings implements ICasing {
         }
     },
 
+    StrengthenedInanimateCasing
+        (()->GregTechAPI.sBlockCasings12,1,gt(16,5,1)),
+    PreciseStationaryCasing
+        (()->GregTechAPI.sBlockCasings12,2,gt(16,5,2)),
+    UltimateStaticCasing
+        (()->GregTechAPI.sBlockCasings12,3,gt(16,5,3)),
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
     ElectronPermeableNeutroniumCoatedGlass
