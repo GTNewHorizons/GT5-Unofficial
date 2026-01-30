@@ -730,8 +730,8 @@ public class RecipeHandlers {
         addAssemblyMatrixRecipe(
             Arrays.asList(new CircuitComponentStack(CircuitComponent.ProcessedOpticalSMDDiode, 1)),
             Arrays.asList(Materials.Iron.getMolten(1)),
-            CircuitComponent.OpticalMainframe,
-            300 * SECONDS,
+            CircuitComponent.WetwareComputer,
+            10 * SECONDS,
             TierEU.RECIPE_UMV,
             VoltageIndex.UHV);
         addAssemblyMatrixRecipe(

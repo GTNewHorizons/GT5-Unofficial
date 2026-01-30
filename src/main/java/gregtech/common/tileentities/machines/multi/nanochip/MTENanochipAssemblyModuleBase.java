@@ -473,32 +473,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (outputHatch == null) {
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
-        double recipeDuration = recipe.mDuration * this.getModuleDurationModifier();
-        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
 
-        CircuitCalibration recipeCalibration = recipe
-            .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
-        if (recipeCalibration != null && baseMulti.currentThreshold != null
-            && baseMulti.currentThreshold.calibrationType == recipeCalibration) {
-            recipeDuration *= baseMulti.globalDurationMultiplier;
-        }
-
-        int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
-        // max overclocks is ehatch tier - recipe tier
-        // can only overclock if machine has a remaining overclock,
-        // duration when overclocked won't go below 5 seconds
-        // and recipe eu/t after overclock is less than available eu/t
-        final int ocFactor = getOCFactorReduction();
-        while (remainingOverclocks > 0 && (recipeDuration / ocFactor) >= 5 * SECONDS
-            && recipeEUT * ocFactor <= this.availableEUt) {
-            recipeDuration /= ocFactor;
-            recipeEUT *= ocFactor;
-            remainingOverclocks -= 1;
-        }
-
-        GTRecipe properRecipe = recipe.copy();
-        properRecipe.setEUt((int) recipeEUT);
-        properRecipe.setDuration((int) recipeDuration);
+        GTRecipe properRecipe = this.transformRecipe(recipe);
 
         // Create parallel helper to calculate parallel and consume inputs
         ParallelHelper parallelHelper = createParallelHelper(properRecipe, inputInfo);
@@ -530,6 +506,44 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         }
 
         return result;
+    }
+
+    /**
+     * Takes in the original recipe from lookup and applies any changes to it.
+     * Standard logic is overclocking and applying calibration multipliers
+     * Modules can override to further transform the recipe
+     * 
+     * @param recipe - initial recipe that is copied and modified
+     * @return modified recipe
+     */
+    public GTRecipe transformRecipe(GTRecipe recipe) {
+        double recipeDuration = recipe.mDuration * this.getModuleDurationModifier();
+        double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
+
+        CircuitCalibration recipeCalibration = recipe
+            .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
+        if (recipeCalibration != null && baseMulti.currentThreshold != null
+            && baseMulti.currentThreshold.calibrationType == recipeCalibration) {
+            recipeDuration *= baseMulti.globalDurationMultiplier;
+        }
+
+        int remainingOverclocks = (int) Math.max(0, this.baseMulti.getEnergyHatchTier() - this.getRecipeTier(recipe));
+        // max overclocks is ehatch tier - recipe tier
+        // can only overclock if machine has a remaining overclock,
+        // duration when overclocked won't go below 5 seconds
+        // and recipe eu/t after overclock is less than available eu/t
+        final int ocFactor = getOCFactorReduction();
+        while (remainingOverclocks > 0 && (recipeDuration / ocFactor) >= 5 * SECONDS
+            && recipeEUT * ocFactor <= this.availableEUt) {
+            recipeDuration /= ocFactor;
+            recipeEUT *= ocFactor;
+            remainingOverclocks -= 1;
+        }
+
+        GTRecipe copiedRecipe = recipe.copy();
+        copiedRecipe.setEUt((int) recipeEUT);
+        copiedRecipe.setDuration((int) recipeDuration);
+        return copiedRecipe;
     }
 
     public int getPriority() {
