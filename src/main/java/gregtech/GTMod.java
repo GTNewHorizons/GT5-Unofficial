@@ -97,7 +97,6 @@ import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
-import gregtech.common.tileentities.machines.multi.nanochip.util.RecipeHandlers;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
@@ -387,10 +386,6 @@ public class GTMod {
 
         GT_FML_LOGGER.debug("Registering SpaceDimensions");
         SpaceDimRegisterer.register();
-        // This needs to run BEFORE creating any circuit assembler recipes, since the downstream
-        // recipe map for the assembly matrix relies on doing recipe lookups here.
-        // I really hope I can put this here without breaking something
-        RecipeHandlers.registerNanochipModuleRecipes();
 
         GregTechAPI.sLoadFinished = true;
         GTLog.out.println("GTMod: Load-Phase finished!");
