@@ -473,8 +473,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (outputHatch == null) {
             return CheckRecipeResultRegistry.noValidOutputColor(this.outputColor);
         }
-        double recipeDuration = recipe.mDuration;
+        double recipeDuration = recipe.mDuration * this.getModuleDurationModifier();
         double recipeEUT = recipe.mEUt * this.getEUDiscountModifier() * baseMulti.globalEUMultiplier;
+
         CircuitCalibration recipeCalibration = recipe
             .getMetadataOrDefault(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE, null);
         if (recipeCalibration != null && baseMulti.currentThreshold != null
@@ -521,7 +522,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             this.mOutputItems = parallelHelper.getItemOutputs();
 
             addVCOutput(mOutputItems[0], outputHatch);
-            this.processingLogic.setSpeedBonus(1F / this.getBonusSpeedModifier());
             mEfficiency = 10000;
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = properRecipe.mDuration;
@@ -610,7 +610,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * Further applies a modifier to speed
      * In case any specific module wants to control this value.
      */
-    protected float getBonusSpeedModifier() {
+    protected float getModuleDurationModifier() {
         return 1f;
     }
 
