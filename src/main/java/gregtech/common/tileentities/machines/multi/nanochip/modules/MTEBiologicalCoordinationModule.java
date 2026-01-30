@@ -9,7 +9,12 @@ import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAs
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
@@ -22,7 +27,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleTypes;
@@ -127,13 +134,49 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.biological_coordinator.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body.1")) // todo fix to reflect
-                                                                                                // real mechanic
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body.1"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.body.2"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.1")))
+            .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.2")))
+
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
             .toolTipFinisher();
+    }
+
+    @Override
+    protected GTRecipe findRecipe(ArrayList<ItemStack> inputs) {
+        RecipeMap<?> recipeMap = this.getRecipeMap();
+        final List<FluidStack> fakeFluids = new ArrayList<>(getStoredFluids());
+        if (baseMulti.wetwareT3Active) {
+            fakeFluids.add(Materials.GrowthMediumSterilized.getFluid(Integer.MAX_VALUE));
+        }
+        if (baseMulti.bioT3Active) {
+            fakeFluids.add(Materials.BioMediumSterilized.getFluid(Integer.MAX_VALUE));
+        }
+        FluidStack[] inputFluids = fakeFluids.toArray(new FluidStack[] {});
+
+        return recipeMap.findRecipeQuery()
+            .items(inputs.toArray(new ItemStack[] {}))
+            .fluids(inputFluids)
+            .find();
+    }
+
+    @Override
+    public GTRecipe transformRecipe(GTRecipe recipe) {
+        GTRecipe transformedRecipe = super.transformRecipe(recipe);
+        FluidStack[] fluidInputs = transformedRecipe.mFluidInputs;
+        for (int i = 0; i < fluidInputs.length; i++) {
+            FluidStack stack = fluidInputs[i];
+            if (stack == null) continue;
+            if (baseMulti.wetwareT3Active && stack.getFluid()
+                .equals(Materials.GrowthMediumSterilized.mFluid)) fluidInputs[i] = null;
+            if (baseMulti.bioT3Active && stack.getFluid()
+                .equals(Materials.BioMediumSterilized.mFluid)) fluidInputs[i] = null;
+        }
+        transformedRecipe.setFluidInputs(ArrayExt.removeNullFluids(fluidInputs));
+        return transformedRecipe;
     }
 
     @Override
