@@ -9,7 +9,6 @@ import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyC
 public enum CircuitCalibration {
 
     // spotless:off
-    //todo: implement the Consumers
     NONE(CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY, CalibrationThreshold.EMPTY),
 
     PRIMITIVE(
