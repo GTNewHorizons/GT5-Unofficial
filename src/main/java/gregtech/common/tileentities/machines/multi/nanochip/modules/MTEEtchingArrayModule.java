@@ -34,6 +34,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -55,7 +56,6 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         { "  AGA  ", " A   A ", " G F G ", "B     B" }, { "  AGA  ", " BCCCB ", " BCCCB ", "BBCCCBB" },
         { "  EEE  ", " EAEAE ", " EAEAE ", " BAEAB " } };
 
-    // todo implement crystal calibration
     private MTEHatchDynamoTunnel laserSource = null;
     private int laserAmps = 0;
     private int laserTier = 0;
@@ -168,13 +168,24 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
     }
 
     @Override
+    protected float getEUDiscountModifier() {
+        return 1f / (GTUtility.log4ceil(laserAmps) - 3);
+    }
+
+    @Override
+    protected float getModuleDurationModifier() {
+        return 1f / (Math.max(1, laserTier - 9));
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.action", TOOLTIP_CCs))
             .addSeparator()
-            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1")) // todo implement
-                                                                                                // gimmick
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.1"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.2"))
+            .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.etching_array.body.3"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.etching_array.flavor.1")))
             .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
