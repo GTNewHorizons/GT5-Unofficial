@@ -191,7 +191,7 @@ public enum CircuitComponent {
     WaferPico(
         607,
         "gt.circuitcomponent.waferpico",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PicoWafer", 1, 0, new ItemStack(Blocks.fire))),
 
     ProcessedChipNanoCPU(700, "gt.circuitcomponent.processed.chipnanocpu", () -> ChipNanoCPU, true),
     ProcessedChipRAM(701, "gt.circuitcomponent.processed.chipram", () -> ChipRAM, true),
@@ -464,11 +464,11 @@ public enum CircuitComponent {
     PicoCircuit(
         2116,
         "gt.circuitcomponent.picocircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
     QuantumCircuit(
         2117,
         "gt.circuitcomponent.quantumcircuit",
-        () -> getModItem(NewHorizonsCoreMod.ID, "item.QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
+        () -> getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1, 0, new ItemStack(Blocks.fire)), CircuitCalibration.SPECIAL),
 
     ;
 
