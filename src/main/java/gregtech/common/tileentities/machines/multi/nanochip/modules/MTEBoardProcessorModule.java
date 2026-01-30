@@ -267,16 +267,16 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
 
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2
             && !storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
-                return CheckRecipeResultRegistry.NO_RECIPE;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 3
-                && !storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
-                    return CheckRecipeResultRegistry.NO_RECIPE;
+            && !storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 4
             && !storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (impurityPercentage <= 0.15) {
@@ -295,8 +295,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 processedItems += mOutputItems[0].stackSize;
                 while (processedItems >= IMPURITY_THRESHOLD) {
                     processedItems -= IMPURITY_THRESHOLD;
-                    impurityFluidAmount += (int) Math
-                        .min(IMPURITY_INCREASE * (1 / Math.pow(fillPercentage, 1.5)), fluidAmount - impurityFluidAmount);
+                    impurityFluidAmount += (int) Math.min(
+                        IMPURITY_INCREASE * (1 / Math.pow(fillPercentage, 1.5)),
+                        fluidAmount - impurityFluidAmount);
                     impurityFluidStack.amount = impurityFluidAmount;
                     impurityPercentage = (double) impurityFluidAmount / fluidAmount;
                 }
