@@ -205,8 +205,8 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
 
     @Override
     public int getMaxRecipeDuration() {
-        // Not really the actual processing time, which is instant. but this is just for charging EU
-        return 1 * SECONDS;
+        // Splitter holds no power
+        return 0;
     }
 
     @Override
