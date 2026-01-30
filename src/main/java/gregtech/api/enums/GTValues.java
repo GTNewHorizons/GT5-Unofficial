@@ -616,10 +616,6 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Raven";
 
-    /*
-    
-     */
-
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final Supplier<String> AuthorNoc = chain(

@@ -45,9 +45,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                                 .onMousePressed((a) -> {
                                     channel.setValue((channel.getValue() - 1) % hatch.MAX_CHANNEL);
                                     return true;
-                                })
-
-                        )
+                                }))
                         .child(
                             new TextFieldWidget().setFormatAsInteger(true)
                                 .setDefaultNumber(0)
@@ -62,18 +60,14 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                                     channel.setValue((channel.getValue() + 1) % hatch.MAX_CHANNEL);
                                     return true;
                                 })))
-
                 .child(
                     IKey.str("Current Redstone Level")
                         .asWidget())
-
                 .child(
                     IKey.dynamic(() -> EnumChatFormatting.RED + redstone.getStringValue())
                         .alignment(Alignment.CENTER)
                         .asWidget()
-                        .paddingTop(3))
-
-        );
+                        .paddingTop(3)));
     }
 
     @Override
