@@ -498,9 +498,13 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             .build();
         CheckRecipeResult result = parallelHelper.getResult();
         if (result.wasSuccessful()) {
-            long euToConsume = parallelHelper.getCurrentParallel() * (long) properRecipe.mDuration
-                * (long) properRecipe.mEUt;
-            if (euToConsume > this.currentEU.longValue()) return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
+            BigInteger euToConsume = BigInteger.valueOf(parallelHelper.getCurrentParallel())
+                .multiply(BigInteger.valueOf(properRecipe.mDuration))
+                .multiply(BigInteger.valueOf(properRecipe.mEUt));
+            if (euToConsume.compareTo(this.currentEU) > 0) {
+                return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
+            }
+
             // Set item outputs and parallel count. Note that while these outputs are fake, we override the method to
             // not output to normal busses
             // Then use addVCOutput to convert these back into CCs in the right hatch
@@ -623,7 +627,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         BigInteger euToFull = euBufferSize.subtract(currentEU);
         BigInteger increasedEU = euToFull.min(maximumIncrease);
         currentEU = currentEU.add(increasedEU);
-        return currentEU;
+        return increasedEU;
     }
 
     protected MTEHatchVacuumConveyorOutput findOutputHatch(byte color) {
