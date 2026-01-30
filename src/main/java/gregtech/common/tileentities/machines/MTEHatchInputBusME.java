@@ -572,6 +572,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
+        if (processingRecipe) {
+            return true;
+        }
         return aIndex != getManualSlot();
     }
 
