@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.nanochip.hatches;
 
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_SPLITTER_REDSTONE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_SPLITTER_REDSTONE_GLOW;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +16,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -32,12 +32,8 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     private int channel = 1;
     public int MAX_CHANNEL = 20;
 
-    // todo: change these :3
-    private static final IIconContainer textureFont = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR;
-    private static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_PH_SENSOR_GLOW;
-
     public MTEHatchSplitterRedstone(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Allows Redstone Control for Spliter");
+        super(aID, aName, aNameRegional, aTier, 0, "Allows Redstone Control for Splitter");
     }
 
     public MTEHatchSplitterRedstone(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -56,10 +52,11 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont), TextureFactory.builder()
-            .addIcon(textureFont_Glow)
-            .glow()
-            .build() };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_SPLITTER_REDSTONE),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_HATCH_SPLITTER_REDSTONE_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
@@ -72,7 +69,7 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(textureFont) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_HATCH_SPLITTER_REDSTONE) };
     }
 
     @Override

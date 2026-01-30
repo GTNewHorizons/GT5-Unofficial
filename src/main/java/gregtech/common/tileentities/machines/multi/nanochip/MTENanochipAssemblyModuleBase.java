@@ -656,7 +656,6 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return false;
     }
 
-    // todo check that this is correct after item logistics changes
     @Override
     public boolean addOutputAtomic(ItemStack aStack) {
         // We need to override this because outputs are produced in vacuum conveyor outputs, not as real items
