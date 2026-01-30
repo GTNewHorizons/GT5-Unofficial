@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
+import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
@@ -104,8 +105,13 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
+        GregTechAPI.sBeforeGTPostload.add(() -> {
+            CircuitImprint.registerExternalModCircuitsInItemList();
+            CircuitImprint.registerSlicedCircuitsAndImprints();
+            CircuitImprint.populateImprintLookups();
+        });
+
         GregTechAPI.sAfterGTPostload.add(() -> {
-            CircuitImprintLoader.registerItemstacks();
             for (CircuitWraps wrap : CircuitWraps.values()) {
                 wrap.registerWrap();
                 wrap.registerWrapRecipe();
