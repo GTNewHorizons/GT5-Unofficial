@@ -26,11 +26,17 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.items.ItemToolbox;
 import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.IElectricItem;
 
+/**
+ * GUI for storing and retrieving items from the toolbox.
+ *
+ * @see gregtech.api.modularui2.ToolboxSelectGuiFactory
+ */
 public class ToolboxInventoryGui {
 
     private static final int WIDTH = 176;
@@ -87,7 +93,7 @@ public class ToolboxInventoryGui {
 
         SlotGroupWidget slotGroupWidget = new SlotGroupWidget();
 
-        for (final ItemToolbox.SlotDefinition slot : ItemToolbox.SlotDefinition.values()) {
+        for (final ToolboxSlot slot : ToolboxSlot.values()) {
 
             final IWidget widget = new CustomItemSlot(() -> itemHandler, slot)
                 .slot(new ModularSlot(itemHandler, slot.getSlotID()).slotGroup(SLOT_GROUP_SYNC_NAME))
@@ -103,10 +109,8 @@ public class ToolboxInventoryGui {
 
         slotGroupWidget.flex()
             .size(
-                ItemToolbox.SlotDefinition.ROW_WIDTH * SLOT_DRAW_SIZE,
-                (int) (Math.ceil(
-                    (double) ItemToolbox.SlotDefinition.values().length
-                        / (double) ItemToolbox.SlotDefinition.ROW_WIDTH))
+                ToolboxSlot.ROW_WIDTH * SLOT_DRAW_SIZE,
+                (int) (Math.ceil((double) ToolboxSlot.values().length / (double) ToolboxSlot.ROW_WIDTH))
                     * SLOT_DRAW_SIZE);
         column.child(
             slotGroupWidget.alignX(Alignment.Center)
@@ -116,7 +120,7 @@ public class ToolboxInventoryGui {
         return panel;
     }
 
-    private static String getTooltip(final ItemToolbox.SlotDefinition slot) {
+    private static String getTooltip(final ToolboxSlot slot) {
         final String key = slot.isGeneric() ? "generic" : String.valueOf(slot.getSlotID());
 
         return StatCollector
@@ -132,9 +136,9 @@ public class ToolboxInventoryGui {
         private static final UITexture[] BLANK_SLOT_TEXTURE = { GTGuiTextures.SLOT_ITEM_STANDARD };
 
         private final Supplier<IItemHandler> itemHandlerSupplier;
-        private final ItemToolbox.SlotDefinition slot;
+        private final ToolboxSlot slot;
 
-        public CustomItemSlot(final Supplier<IItemHandler> itemHandlerSupplier, final ItemToolbox.SlotDefinition slot) {
+        public CustomItemSlot(final Supplier<IItemHandler> itemHandlerSupplier, final ToolboxSlot slot) {
             super();
 
             this.itemHandlerSupplier = itemHandlerSupplier;
@@ -148,16 +152,16 @@ public class ToolboxInventoryGui {
         public @Nullable IDrawable getCurrentBackground(final ITheme theme, final WidgetThemeEntry<?> widgetTheme) {
             final IItemHandler itemHandler = this.itemHandlerSupplier.get();
 
-            if (itemHandler != null && !slot.isGeneric()) {
+            if (itemHandler != null && slot.isTool()) {
                 final int slotID = slot.getSlotID();
                 final ItemStack stackInSlot = itemHandler.getStackInSlot(slotID);
 
-                if (stackInSlot == null) {
-                    if (!slot.isGeneric() && slotID > 0 || slotID < GTGuiTextures.OVERLAY_TOOLBOX_SLOTS.length) {
-                        return IDrawable.of(
-                            new UITexture[] { GTGuiTextures.SLOT_ITEM_STANDARD,
-                                GTGuiTextures.OVERLAY_TOOLBOX_SLOTS[slotID] });
-                    }
+                if (stackInSlot == null && slot.getOverlay()
+                    .isPresent()) {
+                    return IDrawable.of(
+                        GTGuiTextures.SLOT_ITEM_STANDARD,
+                        slot.getOverlay()
+                            .get());
                 }
             }
 

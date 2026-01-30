@@ -176,9 +176,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return 0;
     }
 
-    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+    public static void switchCurrentToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
         if (!keyDown) return;
         ItemStack currentItem = player.inventory.getCurrentItem();
+        switchToolMode(currentItem);
+    }
+
+    public static void switchToolMode(final ItemStack currentItem) {
         if (currentItem == null || (!(currentItem.getItem() instanceof MetaGeneratedTool item))) return;
         byte maxMode = item.getToolMaxMode(currentItem);
         if (maxMode <= 1) return;
@@ -964,20 +968,29 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-
         String result = super.getItemStackDisplayName(aStack);
-        IToolStats toolStats = getToolStats(aStack);
-        if (toolStats != null) {
-            String toolName = toolStats.getToolTypeName();
-            if (toolName == null) return result;
+        final String toolMode = getToolModeName(aStack);
 
-            String key = "gt." + toolName + ".mode." + getToolMode(aStack);
-            if (canTranslate(key)) {
-                result += " (" + translateToLocal(key) + ")";
-            }
+        if (toolMode != null) {
+            result += " (" + toolMode + ")";
         }
         return result;
 
+    }
+
+    public String getToolModeName(ItemStack aStack) {
+        IToolStats toolStats = getToolStats(aStack);
+        if (toolStats != null) {
+            String toolName = toolStats.getToolTypeName();
+            if (toolName != null) {
+                String key = "gt." + toolName + ".mode." + getToolMode(aStack);
+                if (canTranslate(key)) {
+                    return translateToLocal(key);
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override

@@ -18,6 +18,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizons.modularui.api.UIInfos;
@@ -149,6 +151,25 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         return Optional.of(aList);
     }
+
+    @Override
+    public @Nullable String getNameOverride(final String oldName, final ItemStack stack) {
+        final boolean isLocked = isLocked(stack);
+        final char lBracket = isLocked ? '[' : '(';
+        final char rBracket = isLocked ? ']' : ')';
+
+        if (mCurrentColor == REMOVE_COLOR) {
+            return StatCollector
+                .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket);
+        } else {
+            return StatCollector.translateToLocalFormatted(
+                "item.GT5U.infinite_spray_can.name.colored",
+                lBracket,
+                Dyes.get(mCurrentColor)
+                    .getLocalizedDyeName(),
+                rBracket);
+        }
+    }
     // endregion
 
     // region Raw Event Handlers
@@ -277,8 +298,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         tag.setByte(COLOR_NBT_TAG, color);
         mCurrentColor = color;
         itemStack.setTagCompound(tag);
-
-        setItemStackName(itemStack);
     }
 
     public boolean toggleLock(final ItemStack itemStack) {
@@ -289,33 +308,12 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         return toggleBooleanTag(itemStack, PREVENT_SHAKE_TAG);
     }
 
-    private void setItemStackName(final ItemStack itemStack) {
-        final boolean isLocked = isLocked(itemStack);
-        final char lBracket = isLocked ? '[' : '(';
-        final char rBracket = isLocked ? ']' : ')';
-
-        if (mCurrentColor == REMOVE_COLOR) {
-            itemStack.setStackDisplayName(
-                StatCollector
-                    .translateToLocalFormatted("item.GT5U.infinite_spray_can.name.solvent", lBracket, rBracket));
-        } else {
-            itemStack.setStackDisplayName(
-                StatCollector.translateToLocalFormatted(
-                    "item.GT5U.infinite_spray_can.name.colored",
-                    lBracket,
-                    Dyes.get(mCurrentColor)
-                        .getLocalizedDyeName(),
-                    rBracket));
-        }
-    }
-
     private boolean toggleBooleanTag(final ItemStack itemStack, final String tagName) {
         final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
         final boolean newValue = !tag.getBoolean(tagName);
 
         tag.setBoolean(tagName, newValue);
         itemStack.setTagCompound(tag);
-        setItemStackName(itemStack);
 
         return newValue;
     }

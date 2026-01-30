@@ -1,18 +1,20 @@
 package gregtech.common.items;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
@@ -20,20 +22,18 @@ import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.rwtema.extrautils.item.ItemHealingAxe;
+import com.gtnewhorizon.gtnhlib.GTNHLib;
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.item.IMiddleClickItem;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.modularui2.ToolboxSelectGuiFactory;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.ToolboxInventoryGui;
@@ -48,16 +48,13 @@ public class ItemToolbox extends GTGenericItem
     public static final String CONTENTS_NBT_KEY = "gt5u.toolbox:Contents";
     public static final String TOOLBOX_OPEN_NBT_KEY = "gt5u.toolbox:ToolboxOpen";
     public static final String CURRENT_TOOL_NBT_KEY = "gt5u.toolbox:SelectedSlot";
+    public static final int NO_TOOL_SELECTED = -1;
+
     private static final int CHARGE_TICK = 20;
 
     public ItemToolbox(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
-    }
-
-    @Override
-    public ItemStack getContainerItem(final ItemStack aStack) {
-        return super.getContainerItem(aStack);
     }
 
     @Override
@@ -67,32 +64,13 @@ public class ItemToolbox extends GTGenericItem
         }
 
         if (isInHand && entity instanceof final EntityPlayer player) {
-            // Since we need to interact with the stack quite a bit in this function, we'll avoid the convenience
-            // methods as they instantiate a new handler every time you call them.
-
-            final ItemStack offhandItem = Backhand.getOffhandItem(player);
-            final int mainInventorySlot;
-
-            if (offhandItem != null && offhandItem.getItem() instanceof ItemToolbox) {
-                mainInventorySlot = Backhand.getOffhandSlot(player);
-            } else {
-                mainInventorySlot = player.inventory.currentItem;
-            }
-
-            final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(player, mainInventorySlot);
+            final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(stack);
             boolean shouldUpdate = false;
-
-            if (Mods.ExtraUtilities.isModLoaded()) {
-                final ItemStack healingAxe = handler.getStackInSlot(SlotDefinition.HEALING_AXE.getSlotID());
-                if (healingAxe != null && healingAxe.getItem() instanceof final ItemHealingAxe healingAxeItem) {
-                    healingAxeItem.onUpdate(stack, world, entity, timer, true);
-                }
-            }
 
             if (player.ticksExisted % CHARGE_TICK == 0 && stack.hasTagCompound() && !stack.getTagCompound().getBoolean(TOOLBOX_OPEN_NBT_KEY)) {
                 // If the toolbox is open, don't charge items to prevent syncing issues.
 
-                final ItemStack battery = handler.extractItem(SlotDefinition.BATTERY.getSlotID(), 1, true);
+                final ItemStack battery = handler.extractItem(ToolboxSlot.BATTERY.getSlotID(), 1, true);
                 if (battery != null && battery.getItem() instanceof final IElectricItem batteryItem) {
                     shouldUpdate = getElectricManager(battery).map(batteryManager -> {
                         boolean dirty = false;
@@ -105,8 +83,8 @@ public class ItemToolbox extends GTGenericItem
                             true
                         );
 
-                        for (final SlotDefinition slot : SlotDefinition.values()) {
-                            if (slot == SlotDefinition.BATTERY) {
+                        for (final ToolboxSlot slot : ToolboxSlot.values()) {
+                            if (slot == ToolboxSlot.BATTERY) {
                                 continue;
                             }
 
@@ -136,7 +114,7 @@ public class ItemToolbox extends GTGenericItem
                         }
 
                         if (dirty) {
-                            handler.setStackInSlot(SlotDefinition.BATTERY.getSlotID(), battery);
+                            handler.setStackInSlot(ToolboxSlot.BATTERY.getSlotID(), battery);
                         }
 
                         return dirty;
@@ -145,10 +123,7 @@ public class ItemToolbox extends GTGenericItem
             }
 
             if (shouldUpdate) {
-                final NBTTagCompound tag = stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound();
-
-                tag.setTag(CONTENTS_NBT_KEY, handler.serializeNBT());
-                stack.setTagCompound(tag);
+                saveToolbox(stack, handler);
             }
         }
     }
@@ -170,8 +145,77 @@ public class ItemToolbox extends GTGenericItem
     }
 
     @Override
-    public boolean onMiddleClick(final ItemStack itemStack, final EntityPlayer player) {
-        // TODO: Tool switching
+    public String getItemStackDisplayName(final ItemStack toolbox) {
+        final String base = super.getItemStackDisplayName(toolbox);
+
+        if (toolbox.hasTagCompound()) {
+            final int selectedTool = toolbox.getTagCompound()
+                .getInteger(CURRENT_TOOL_NBT_KEY);
+            final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
+
+            return ToolboxSlot.getBySlot(selectedTool)
+                .map(slot -> {
+                    final String toolName = StatCollector.translateToLocal("GT5U.gui.text.toolbox.slot_title." + selectedTool);
+                    final Optional<ItemStack> potentialTool = handler.getCurrentTool();
+                    final byte toolMode = potentialTool.map(MetaGeneratedTool::getToolMode).orElse((byte) 0);
+
+                    //noinspection SimplifyOptionalCallChains
+                    return toolMode > 0
+                            ? StatCollector.translateToLocalFormatted(
+                                "GT5U.item.toolbox.name_template.mode",
+                                base,
+                                toolName,
+                                potentialTool.map(currentTool -> currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem
+                                    ? mgToolItem.getToolModeName(currentTool)
+                                    : "").orElse(""))
+                            : StatCollector
+                                .translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
+                })
+                .orElse(base);
+        }
+
+        return base;
+    }
+
+    @Override
+    public boolean onMiddleClick(final ItemStack toolbox, final EntityPlayer player) {
+        // TODO: Switch tool if you pick block a machine?
+        final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
+
+        int toolCount = 0;
+        int lastSlot = -1;
+        for (ToolboxSlot slot : ToolboxSlot.TOOL_SLOTS) {
+            if (handler.getStackInSlot(slot.getSlotID()) != null) {
+                toolCount++;
+                lastSlot = slot.getSlotID();
+            }
+        }
+
+        switch (toolCount) {
+            case 0:
+                GTNHLib.proxy.printMessageAboveHotbar(
+                    StatCollector.translateToLocal("GT5U.gui.text.toolbox.error.no_tools"),
+                    120,
+                    true,
+                    true);
+            case 1:
+                final int currentTool = toolbox.hasTagCompound() && toolbox.getTagCompound().hasKey(CURRENT_TOOL_NBT_KEY)
+                    ? toolbox.getTagCompound().getInteger(CURRENT_TOOL_NBT_KEY)
+                    : NO_TOOL_SELECTED;
+
+                GTValues.NW.sendToServer(
+                    new GTPacketToolboxEvent(
+                        GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL,
+                        player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem : Backhand.getOffhandSlot(player),
+                        currentTool == NO_TOOL_SELECTED ? lastSlot : NO_TOOL_SELECTED));
+                return true;
+            default:
+                if (player instanceof final EntityClientPlayerMP playerMP) {
+                    ToolboxSelectGuiFactory.INSTANCE.open(playerMP);
+                    return true;
+                }
+        }
+
         return false;
     }
 
@@ -183,7 +227,7 @@ public class ItemToolbox extends GTGenericItem
 
         if (data.getUsedItemStack() != null) {
             syncManager.addOpenListener(player -> {
-                // Despite the javadoc's insistence, this function only runs on the client.
+                // Despite the Javadoc's insistence, this function only runs on the client.
                 // Keeping this check in here just in case it gets fixed upstream, so it doesn't break later.
                 if (player.worldObj.isRemote) {
                     GTValues.NW.sendToServer(new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.UI_OPEN, slot));
@@ -193,21 +237,20 @@ public class ItemToolbox extends GTGenericItem
                     if (!player.worldObj.isRemote) {
                         // Retrieve stack from player again. Persist the toolbox contents and allow charging again.
                         final ItemStack toolbox = player.inventory.getStackInSlot(slot);
-                        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound()
-                            : new NBTTagCompound();
-                        tag.setTag(CONTENTS_NBT_KEY, stackHandler.serializeNBT());
-                        tag.setBoolean(TOOLBOX_OPEN_NBT_KEY, false);
 
-                        // Unselect the active tool if it was removed from the toolbox.
-                        if (tag.hasKey(CURRENT_TOOL_NBT_KEY)) {
-                            final int selectedToolSlot = tag.getInteger(CURRENT_TOOL_NBT_KEY);
-                            if (selectedToolSlot >= 0 && selectedToolSlot < stackHandler.getSlots()
-                                && stackHandler.getStackInSlot(selectedToolSlot) == null) {
-                                tag.removeTag(CURRENT_TOOL_NBT_KEY);
+                        saveToolbox(toolbox, stackHandler, tag -> {
+                            tag.setBoolean(TOOLBOX_OPEN_NBT_KEY, false);
+
+                            // Unselect the active tool if it was removed from the toolbox.
+                            if (tag.hasKey(CURRENT_TOOL_NBT_KEY)) {
+                                final int selectedToolSlot = tag.getInteger(CURRENT_TOOL_NBT_KEY);
+                                if (selectedToolSlot >= 0 && selectedToolSlot < stackHandler.getSlots()
+                                    && stackHandler.getStackInSlot(selectedToolSlot) == null) {
+                                    tag.removeTag(CURRENT_TOOL_NBT_KEY);
+                                }
                             }
-                        }
+                        });
 
-                        toolbox.setTagCompound(tag);
                         player.inventory.setInventorySlotContents(data.getSlotIndex(), toolbox);
 
                         GTUtility.sendSoundToPlayers(
@@ -222,6 +265,74 @@ public class ItemToolbox extends GTGenericItem
                 });
         }
         return new ToolboxInventoryGui(syncManager, data, stackHandler).build();
+    }
+
+    /**
+     * Handler for tool mode switch keybind. The toolbox delegates this action to the currently selected tool, switching
+     * its mode while still inside.
+     *
+     * @param player  The player doing the switching
+     * @param keybind The keybind responsible for triggering this action
+     * @param keyDown true if the key is depressed
+     */
+    public static void switchToolMode(EntityPlayerMP player, SyncedKeybind keybind, boolean keyDown) {
+        if (!keyDown) {
+            return;
+        }
+
+        getToolboxIfEquipped(player).ifPresent(toolboxStack -> {
+            if (toolboxStack.hasTagCompound()) {
+                ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolboxStack);
+                handler.mutateCurrentTool(MetaGeneratedTool::switchToolMode);
+                toolboxStack.getTagCompound()
+                    .setTag(CONTENTS_NBT_KEY, handler.serializeNBT());
+            }
+        });
+    }
+
+    /**
+     * Gets the currently equipped toolbox if the player is holding it in their main hand or offhand.
+     *
+     * @param player The player to interrogate
+     * @return An optional with the toolbox's item stack, or empty if the user is not wielding a toolbox
+     */
+    private static Optional<ItemStack> getToolboxIfEquipped(EntityPlayer player) {
+        for (ItemStack stack : new ItemStack[] { player.inventory.getCurrentItem(), Backhand.getOffhandItem(player) }) {
+            if (stack != null && stack.getItem() instanceof ItemToolbox) {
+                return Optional.of(stack);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * {@code additionalAction} defaults to null.
+     *
+     * @see #saveToolbox(ItemStack, ItemStackHandler, Consumer)
+     */
+    private static void saveToolbox(final ItemStack toolbox, final ItemStackHandler handler) {
+        saveToolbox(toolbox, handler, null);
+    }
+
+    /**
+     * Writes the toolbox's data to the {@link ItemStack ItemStack's} NBT data.
+     *
+     * @param toolbox          The toolbox to persist
+     * @param handler          The {@link ItemStackHandler} that contains updated contents data
+     * @param additionalAction Any additional changes to make to the NBT data of the toolbox before persisting.
+     *                         If null, nothing happens.
+     */
+    private static void saveToolbox(final ItemStack toolbox, final ItemStackHandler handler,
+        @Nullable Consumer<NBTTagCompound> additionalAction) {
+        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
+        tag.setTag(CONTENTS_NBT_KEY, handler.serializeNBT());
+
+        if (additionalAction != null) {
+            additionalAction.accept(tag);
+        }
+
+        toolbox.setTagCompound(tag);
     }
 
     // region Electric Item Functions
@@ -251,6 +362,21 @@ public class ItemToolbox extends GTGenericItem
         return GTValues.V[tier];
     }
 
+    /**
+     * Convenience method for getting the battery from the toolbox.
+     * <p>
+     * <b>NOTE:</b> Any changes to the battery MUST be persisted via {@link #saveBattery(ItemStack, ItemStack)}! This is
+     * not
+     * done automatically.
+     *
+     * @param toolbox The toolbox you wish to search
+     * @return An optional containing a copy of the battery's ItemStack, or empty if there isn't one.
+     */
+    private static Optional<ItemStack> getBattery(final ItemStack toolbox) {
+        return Optional
+            .ofNullable(new ToolboxItemStackHandler(toolbox).getStackInSlot(ToolboxSlot.BATTERY.getSlotID()));
+    }
+
     @Override
     public IElectricItemManager getManager(final ItemStack toolbox) {
         return new ToolboxElectricManager();
@@ -273,193 +399,71 @@ public class ItemToolbox extends GTGenericItem
 
     @Override
     public double getMaxCharge(final ItemStack toolbox) {
-        return SlotDefinition.BATTERY.getStack(toolbox).map(battery -> battery.getItem() instanceof final IElectricItem item ? item.getMaxCharge(battery) : 0d).orElse(0d);
+        return getBattery(toolbox).map(battery -> battery.getItem() instanceof final IElectricItem item ? item.getMaxCharge(battery) : 0d).orElse(0d);
     }
 
     @Override
     public double getTransferLimit(final ItemStack toolbox) {
-        return SlotDefinition.BATTERY.getStack(toolbox).map(battery -> battery.getItem() instanceof final IElectricItem item ? item.getTransferLimit(battery) : 0d).orElse(0d);
+        return getBattery(toolbox).map(battery -> battery.getItem() instanceof final IElectricItem item ? item.getTransferLimit(battery) : 0d).orElse(0d);
     }
+
+    /**
+     * Get the {@link IElectricItemManager} for the battery inside a toolbox.
+     * 
+     * @param toolbox The toolbox to search
+     * @param mapper  A function to run if a battery is found inside the toolbox.
+     *                Arguments are the battery's {@link ItemStack} and its manager.
+     * @return An optional containing the results of the mapping function, or empty if no battery or manager was found.
+     * @param <U> The return type of the mapper
+     */
+    private static <U> Optional<U> mapBatteryManager(final ItemStack toolbox,
+        BiFunction<? super ItemStack, ? super IElectricItemManager, ? extends U> mapper) {
+        final Optional<ItemStack> stack = getBattery(toolbox);
+
+        return stack.flatMap(ItemToolbox::getElectricManager)
+            .map(manager -> mapper.apply(stack.get(), manager));
+    }
+
+    /**
+     * Writes the battery to the toolbox. Use after mutating the battery; changes to tools are not automatically
+     * propagated to the containing toolbox!
+     * 
+     * @param toolbox The toolbox to use
+     * @param battery A battery to save to the toolbox
+     */
+    private static void saveBattery(final ItemStack toolbox, final ItemStack battery) {
+        ItemStackHandler handler = new ItemToolbox.ToolboxItemStackHandler(toolbox);
+        handler.setStackInSlot(ToolboxSlot.BATTERY.getSlotID(), battery);
+
+        saveToolbox(toolbox, handler);
+    }
+
     // endregion
 
-    public enum SlotDefinition {
-
-        WRENCH(0, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sWrenchList)),
-        WIRE_CUTTER(1, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sWireCutterList)),
-        SCREWDRIVER(2, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sScrewdriverList)),
-        SOFT_MALLET(3, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSoftMalletList)),
-        HARD_HAMMER(4, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sHardHammerList)),
-        CROWBAR(5, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sCrowbarList)),
-        SOLDERING_IRON(6, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSolderingToolList)),
-
-        // Charges any item in the toolbox.
-        BATTERY(7, OrePrefixes.battery::containsUnCached),
-        // If we don't do this, players will never use the toolbox.
-        HEALING_AXE(8, itemStack -> {
-            if (Mods.ExtraUtilities.isModLoaded()) {
-                return itemStack.getItem() instanceof ItemHealingAxe;
-            }
-
-            // If XU isn't loaded, just make this a generic slot.
-            return true;
-        }, () -> !Mods.ExtraUtilities.isModLoaded()),
-
-        // And finally, a few slots that allow anything, for soldering wire and stuff. Also fills out the row in the
-        // GUI.
-        GENERIC_SLOT1(9),
-        GENERIC_SLOT2(10),
-        GENERIC_SLOT3(11),
-        GENERIC_SLOT4(12),
-        GENERIC_SLOT5(13),;
-
-        public static final ImmutableList<SlotDefinition> GENERIC_SLOTS = ImmutableList
-            .of(HEALING_AXE, GENERIC_SLOT1, GENERIC_SLOT2, GENERIC_SLOT3, GENERIC_SLOT4, GENERIC_SLOT5);
-        public static final ImmutableList<SlotDefinition> TOOL_SLOTS = ImmutableList
-            .of(WRENCH, WIRE_CUTTER, SCREWDRIVER, SOFT_MALLET, HARD_HAMMER, CROWBAR, SOLDERING_IRON);
-        public static final int ROW_WIDTH = 7;
-
-        private static final ImmutableMap<Integer, SlotDefinition> LOOKUP;
-        static {
-            final ImmutableMap.Builder<Integer, SlotDefinition> builder = new ImmutableMap.Builder<>();
-            for (final SlotDefinition slotDefinition : SlotDefinition.values()) {
-                builder.put(slotDefinition.getSlotID(), slotDefinition);
-            }
-
-            LOOKUP = builder.build();
-        }
-
-        private final Predicate<ItemStack> itemStackTest;
-        private final int slot;
-        private final Supplier<Boolean> isGeneric;
-
-        SlotDefinition(final int slot) {
-            this(slot, x -> true, true);
-        }
-
-        SlotDefinition(final int slot, final Predicate<ItemStack> itemStackTest) {
-            this(slot, itemStackTest, () -> false);
-        }
-
-        SlotDefinition(final int slot, final Predicate<ItemStack> itemStackTest, boolean isGeneric) {
-            this(slot, itemStackTest, () -> isGeneric);
-        }
-
-        SlotDefinition(final int slot, final Predicate<ItemStack> itemStackTest, Supplier<Boolean> isGeneric) {
-            if (slot < 0) {
-                throw new RuntimeException("Invalid slot " + slot + ". Must be greater than or equal to zero.");
-            }
-            this.slot = slot;
-            this.itemStackTest = itemStackTest;
-            this.isGeneric = isGeneric;
-        }
-
-        public boolean test(final ItemStack stack) {
-            if (stack == null) {
-                return false;
-            }
-
-            if (stack.getItem() instanceof ItemToolbox) {
-                return false;
-            }
-
-            // TODO: Also do not allow single-use tools in the tool slots
-            return itemStackTest.test(stack);
-        }
-
-        public int getSlotID() {
-            return slot;
-        }
-
-        public int getRow() {
-            // Using integer division on purpose here.
-            return slot / ROW_WIDTH;
-        }
-
-        public int getColumn() {
-            return slot % ROW_WIDTH;
-        }
-
-        /**
-         * Gets the stack for this slot in the toolbox.
-         *
-         * @param toolbox The ItemStack containing the toolbox
-         * @return The item in the slot, or empty Optional if there is none
-         */
-        public Optional<ItemStack> getStack(final ItemStack toolbox) {
-            IItemHandlerModifiable handler = new ToolboxItemStackHandler(toolbox);
-            return Optional.ofNullable(handler.getStackInSlot(slot));
-        }
-
-        /**
-         * Sets the stack for this slot in the toolbox
-         *
-         * @param toolbox     The ItemStack containing the toolbox
-         * @param newContents The new ItemStack to put in the slot. Pass null to delete anything currently in the slot
-         */
-        public void setStack(final ItemStack toolbox, final ItemStack newContents) {
-
-            ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
-            handler.setStackInSlot(slot, newContents);
-
-            if (!toolbox.hasTagCompound()) {
-                toolbox.setTagCompound(new NBTTagCompound());
-            }
-
-            toolbox.getTagCompound()
-                .setTag(CONTENTS_NBT_KEY, handler.serializeNBT());
-        }
-
-        public boolean isGeneric() {
-            return isGeneric.get();
-        }
-
-        /**
-         * Retrieves the item in the given slot of the passed toolbox, if present, and maps it according to the passed
-         * function.
-         *
-         * @param toolbox The {@link ItemStack} for the entire toolbox
-         * @param mapper  A function with the {@link ItemStack} of the slot inside the toolbox as the argument
-         * @return An {@link Optional} with the results of the mapping, or empty if there is no item in the slot
-         * @param <U> The return type of the mapper
-         */
-        public <U> Optional<U> mapStack(final ItemStack toolbox, Function<? super ItemStack, ? extends U> mapper) {
-            Objects.requireNonNull(mapper);
-            return getStack(toolbox).map(mapper);
-        }
-
-        /**
-         * Retrieves the item in the given slot of the passed toolbox and its associated {@link IElectricItem}, if
-         * present, and maps it according to the passed function.
-         *
-         * @param toolbox The ItemStack for the entire toolbox
-         * @param mapper  A function that is passed both the item stack of the slot, and its associated
-         *                {@link IElectricItem}
-         * @return An {@link Optional} with the results of the mapping, or empty if there is no item in the slot
-         * @param <U> The return type of the mapper
-         */
-        public <U> Optional<U> mapElectricItem(final ItemStack toolbox,
-            BiFunction<? super ItemStack, ? super IElectricItemManager, ? extends U> mapper) {
-            Objects.requireNonNull(mapper);
-            final Optional<ItemStack> slotStack = getStack(toolbox);
-
-            return slotStack.flatMap(ItemToolbox::getElectricManager)
-                .map(electricItem -> mapper.apply(slotStack.get(), electricItem));
-        }
-
-        public static Optional<SlotDefinition> getBySlot(int slot) {
-            return Optional.ofNullable(LOOKUP.get(slot));
-        }
-    }
-
+    /**
+     * A special {@link ItemStackHandler} for working with toolboxes. Used both to drive the inventory GUI and for
+     * general inventory management.
+     */
     public static class ToolboxItemStackHandler extends ItemStackHandler {
 
+        private final int currentTool;
+
         public ToolboxItemStackHandler(final ItemStack toolbox) {
-            super(SlotDefinition.values().length);
+            super(ToolboxSlot.values().length);
+            int currentTool = -1;
 
             NBTTagCompound itemData = toolbox.getTagCompound();
-            if (itemData != null && itemData.hasKey(CONTENTS_NBT_KEY)) {
-                deserializeNBT(itemData.getCompoundTag(CONTENTS_NBT_KEY));
+            if (itemData != null) {
+                if (itemData.hasKey(CONTENTS_NBT_KEY)) {
+                    deserializeNBT(itemData.getCompoundTag(CONTENTS_NBT_KEY));
+                }
+
+                if (itemData.hasKey(CURRENT_TOOL_NBT_KEY)) {
+                    currentTool = itemData.getInteger(CURRENT_TOOL_NBT_KEY);
+                }
             }
+
+            this.currentTool = currentTool;
         }
 
         public ToolboxItemStackHandler(EntityPlayer player, int slot) {
@@ -468,20 +472,48 @@ public class ItemToolbox extends GTGenericItem
 
         @Override
         public boolean isItemValid(final int slot, final ItemStack stack) {
-            return SlotDefinition.getBySlot(slot)
+            return ToolboxSlot.getBySlot(slot)
                 .map(definition -> definition.test(stack))
                 .orElse(false);
         }
 
         @Override
         public int getSlotLimit(final int slot) {
-            return SlotDefinition.getBySlot(slot)
-                .map(SlotDefinition::isGeneric)
+            return ToolboxSlot.getBySlot(slot)
+                .map(ToolboxSlot::isGeneric)
                 .map(x -> x ? 64 : 1)
                 .orElse(64);
         }
+
+        /**
+         * Allows for the currently selected tool to change. Tool is saved to the handler after the action.
+         *
+         * @param action Receives the current tool. If the user has no tool selected, action does not run.
+         */
+        public void mutateCurrentTool(Consumer<ItemStack> action) {
+            getCurrentTool().ifPresent(tool -> {
+                action.accept(tool);
+                setStackInSlot(currentTool, tool);
+            });
+        }
+
+        /**
+         * Retrieves the currently selected tool from the toolbox.
+         * 
+         * @return An Optional containing the tool's {@link ItemStack}, or empty if the user hasn't selected one
+         */
+        public Optional<ItemStack> getCurrentTool() {
+            if (currentTool == -1 || currentTool > this.stacks.size()) {
+                return Optional.empty();
+            }
+
+            return Optional.of(this.stacks.get(currentTool));
+        }
     }
 
+    /**
+     * A special {@link IElectricItemManager} for delegating electricity tasks to the toolbox's battery.
+     */
     private static class ToolboxElectricManager implements IElectricItemManager {
 
         @Override
@@ -494,15 +526,14 @@ public class ItemToolbox extends GTGenericItem
                 return 0;
             }
 
-            return SlotDefinition.BATTERY.mapElectricItem(toolbox, (battery, manager) -> {
+            return mapBatteryManager(toolbox, (battery, manager) -> {
                 final double amountCharged = manager.charge(battery, charge, tier, ignoreTransferLimit, simulate);
                 if (amountCharged > 0) {
-                    SlotDefinition.BATTERY.setStack(toolbox, battery);
+                    saveBattery(toolbox, battery);
                 }
 
                 return amountCharged;
-            })
-                .orElse(0d);
+            }).orElse(0d);
         }
 
         @Override
@@ -515,49 +546,51 @@ public class ItemToolbox extends GTGenericItem
                 return 0;
             }
 
-            return SlotDefinition.BATTERY.mapElectricItem(toolbox, (battery, manager) -> {
+            return mapBatteryManager(toolbox, (battery, manager) -> {
                 final double amountDischarged = manager
                     .discharge(battery, charge, tier, ignoreTransferLimit, batteryAlike, simulate);
                 if (amountDischarged > 0) {
-                    SlotDefinition.BATTERY.setStack(toolbox, battery);
+                    saveBattery(toolbox, battery);
                 }
                 return amountDischarged;
-            })
-                .orElse(0d);
+            }).orElse(0d);
         }
 
         @Override
         public double getCharge(final ItemStack toolbox) {
-            return SlotDefinition.BATTERY.mapElectricItem(toolbox, (battery, manager) -> manager.getCharge(battery))
-                .orElse(0d);
+            return mapBatteryManager(toolbox, (battery, manager) -> manager.getCharge(battery)).orElse(0d);
         }
 
         @Override
         public boolean canUse(final ItemStack toolbox, final double amount) {
-            return SlotDefinition.BATTERY
-                .mapElectricItem(toolbox, (battery, manager) -> manager.canUse(battery, amount))
-                .orElse(false);
+            return mapBatteryManager(toolbox, (battery, manager) -> manager.canUse(battery, amount)).orElse(false);
         }
 
         @Override
         public boolean use(final ItemStack toolbox, final double amount, final EntityLivingBase entityLivingBase) {
-            return SlotDefinition.BATTERY
-                .mapElectricItem(toolbox, (battery, manager) -> manager.use(battery, amount, entityLivingBase))
-                .orElse(false);
+            return mapBatteryManager(toolbox, (battery, manager) -> {
+                final boolean used = manager.use(battery, amount, entityLivingBase);
+                if (used) {
+                    saveBattery(toolbox, battery);
+                }
+
+                return used;
+            }).orElse(false);
         }
 
         @Override
         public void chargeFromArmor(final ItemStack toolbox, final EntityLivingBase entityLivingBase) {
             // TODO: add mutate stack
-            SlotDefinition.BATTERY.getStack(toolbox)
-                .ifPresent(
-                    battery -> getElectricManager(battery)
-                        .ifPresent(manager -> manager.chargeFromArmor(battery, entityLivingBase)));
+            getBattery(toolbox).ifPresent(battery -> getElectricManager(battery).ifPresent(manager -> {
+                manager.chargeFromArmor(battery, entityLivingBase);
+                saveBattery(toolbox, battery);
+            }));
         }
 
         @Override
         public String getToolTip(final ItemStack toolbox) {
             return null;
         }
+
     }
 }

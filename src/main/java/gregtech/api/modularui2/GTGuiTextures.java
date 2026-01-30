@@ -10,10 +10,8 @@ import java.util.stream.IntStream;
 
 import com.cleanroommc.modularui.drawable.ColorType;
 import com.cleanroommc.modularui.drawable.UITexture;
-import com.google.common.collect.ImmutableList;
 
 import bartworks.MainMod;
-import gregtech.common.items.ItemToolbox;
 import gregtech.common.modularui2.util.SteamTextureRegisterer;
 import kekztech.KekzCore;
 
@@ -483,23 +481,30 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .build();
 
-    public static final UITexture[] OVERLAY_TOOLBOX_SLOTS;
-    static {
-        ImmutableList.Builder<UITexture> builder = ImmutableList.builder();
-        for (ItemToolbox.SlotDefinition slot : ItemToolbox.SlotDefinition.values()) {
-            if (slot.isGeneric()) {
-                continue;
-            }
-
-            builder.add(
-                UITexture.builder()
-                    .location(GregTech.ID, "gui/overlay_slot/toolbox_slot" + slot.getSlotID())
-                    .build());
-        }
-
-        OVERLAY_TOOLBOX_SLOTS = builder.build()
-            .toArray(new UITexture[0]);
-    }
+    public static final UITexture OVERLAY_TOOLBOX_WRENCH = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot0")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_WIRE_CUTTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot1")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SCREWDRIVER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot2")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SOFT_MALLET = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot3")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_HARD_HAMMER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot4")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_CROWBAR = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot5")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_SOLDERING_IRON = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot6")
+        .build();
+    public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/toolbox_slot7")
+        .build();
     // endregion slot overlay
 
     // region progressbar

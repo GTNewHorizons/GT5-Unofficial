@@ -1769,6 +1769,12 @@ GT5U.gui.text.toolbox.tooltip.8=Add healing axe to make toolbox restore hunger w
 GT5U.gui.text.toolbox.tooltip.generic=Holds whatever you want
 GT5U.gui.text.toolbox.tooltip.no_charge_while_open=§l§cNOTE: §rCharging disabled while open
 
+GT5U.gui.text.toolbox.radial.title=Select Active Tool
+GT5U.gui.text.toolbox.radial.unselect=Unselect Tool
+GT5U.gui.text.toolbox.radial.missing=%s (missing)
+
+GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to open and add tools.
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3
@@ -1796,6 +1802,9 @@ GT5U.item.pipe.gas_proof.no=No
 GT5U.item.pipe.amount=Pipe Amount
 GT5U.item.pipe.empty=Empty
 GT5U.item.pipe.swap=Pipe Swapped:
+
+GT5U.item.toolbox.name_template=%s (%s)
+GT5U.item.toolbox.name_template.mode=%s (%s, %s)
 
 gt.behaviour.paintspray.infinite.gui.header=Select a Color
 gt.behaviour.paintspray.infinite.gui.lock_error=§eSpray can is §clocked§e! §bSneak + MMB to unlock.
