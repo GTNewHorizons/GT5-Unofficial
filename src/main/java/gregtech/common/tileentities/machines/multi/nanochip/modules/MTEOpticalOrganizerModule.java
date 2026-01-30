@@ -231,7 +231,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         if (firstWater == null || secondWater == null || (firstWater.water == secondWater.water)) {
             return CheckRecipeResultRegistry.NAC_OPTICAL_MISSING_WATER;
         }
-        if(baseMulti.opticalT3Active) {
+        if (baseMulti.opticalT3Active) {
             firstWater.boosterFunction.accept(this);
             secondWater.boosterFunction.accept(this);
         }
