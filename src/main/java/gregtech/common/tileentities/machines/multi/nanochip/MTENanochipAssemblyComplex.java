@@ -545,23 +545,24 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 if (aTick % MODULE_CONNECT_INTERVAL == 0) {
                     if (!modules.isEmpty()) {
                         // Calculate the max power to be shared to the modules
-                        long availableEnergy = Math
-                            .min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL);
-                        if (availableEnergy == 0) return;
-                        BigInteger availableEnergyBigInt = BigInteger.valueOf(availableEnergy);
+                        BigInteger availableEnergy = BigInteger
+                            .valueOf(Math.min(this.getHatchVar(), this.getMaxInputEu() * MODULE_CONNECT_INTERVAL));
+                        if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) return;
                         // iterate over the modules, sending EU to fill their internal buffers
                         for (MTENanochipAssemblyModuleBase<?> module : modules) {
                             module.connect(this);
-                            BigInteger moduleSize = module.getBufferSize();
-                            BigInteger moduleCurrentEU = module.getCurrentEUStored();
-                            BigInteger euToSend = moduleSize.subtract(moduleCurrentEU);
-                            if (euToSend.compareTo(BigInteger.ZERO) <= 0) continue;
-                            BigInteger sentEnergy = module.increaseStoredEU(euToSend.min(availableEnergyBigInt));
-                            availableEnergyBigInt = availableEnergyBigInt.subtract(sentEnergy);
-                            availableEnergy = Math.max(0, availableEnergyBigInt.longValue());
-                            if (availableEnergy == 0) break;
+
+                            BigInteger moduleCapacity = module.getBufferSize();
+                            BigInteger moduleStored = module.getCurrentEUStored();
+                            if (moduleCapacity.compareTo(moduleStored) <= 0) continue;
+
+                            BigInteger euToSend = moduleCapacity.subtract(moduleStored)
+                                .min(availableEnergy);
+                            BigInteger sentEnergy = module.increaseStoredEU(euToSend);
+                            availableEnergy = availableEnergy.subtract(sentEnergy);
+                            if (availableEnergy.compareTo(BigInteger.ZERO) <= 0) break;
                         }
-                        setHatchVar(getHatchVar() - availableEnergy);
+                        setHatchVar(getHatchVar() - availableEnergy.longValue());
                     }
                 }
             } else {
