@@ -7,6 +7,7 @@ import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.nio.FloatBuffer;
 
+import net.coderbot.iris.pipeline.ShadowRenderer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -389,21 +390,35 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
     }
 
     private void RenderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        // Determine if we are in the shadow pass
+        boolean shadowPass = ShadowRenderer.ACTIVE;
 
+        // ----- STATE SETUP -----
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+
+        if (shadowPass) {
+            // Shadows require opaque geometry
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_ALPHA_TEST); // optional but often safer
+            ShaderProgram.clear(); // don't use fancy fragment shaders in shadow pass
+        } else {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            fadeBypassProgram.use(); // normal rendering
+        }
+
+        // Bind texture atlas (fine for both shadow and normal passes)
         bindTexture(TextureMap.locationBlocksTexture);
-        fadeBypassProgram.use();
 
+        // ----- RENDER RINGS -----
         GL11.glPushMatrix();
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
         GL11.glRotatef(tile.getRotAngle(), tile.getRotAxisX(), tile.getRotAxisY(), tile.getRotAxisZ());
         GL11.glRotatef(timer / 6 * 7, 1, 0, 0);
         GL11.glTranslated(ringOneNudge.x, ringOneNudge.y, ringOneNudge.z);
 
-        ringOne.render();
-        GL11.glPopMatrix();
+
         if (tile.getRingCount() > 1) {
             GL11.glPushMatrix();
             GL11.glTranslated(x + .5f, y + .5f, z + .5f);
@@ -423,8 +438,13 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
                 GL11.glPopMatrix();
             }
         }
+
+        // ----- CLEANUP -----
         ShaderProgram.clear();
-        GL11.glPopAttrib();
+
+        if (!shadowPass) {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
     }
 
     @Override
