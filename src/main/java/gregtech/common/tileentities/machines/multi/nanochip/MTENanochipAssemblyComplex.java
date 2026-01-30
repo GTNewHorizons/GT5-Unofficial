@@ -474,11 +474,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         }
     }
 
-    public void addToHistory(byte type, int amount) {
+    public void addToHistory(CircuitCalibration circuitType, int amount) {
         amount = Math.min(amount, CALIBRATION_MAX);
         if (currentBlock == null) currentBlock = new CircuitBatch();
 
-        int leftover = currentBlock.add(type, amount);
+        int leftover = currentBlock.add(circuitType, amount);
 
         // If the current block is full, store to history. Push the oldest block if needed.
         if (currentBlock.isFull()) {
@@ -487,12 +487,38 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 circuitHistory.poll();
             }
             currentBlock = new CircuitBatch();
-            // Update calibration
-            currentThreshold = CircuitCalibration.getCurrentCalibration(this);
+            // Update calibration stats
+            setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
         }
 
         // Recursively call addToHistory to clear leftovers evenly
-        if (leftover > 0) addToHistory(type, leftover);
+        if (leftover > 0) addToHistory(circuitType, leftover);
+    }
+
+    // values of calibration steps
+    public float globalEUMultiplier = 1;
+    // duration only gets applied if the CircuitCalibration Metadata key is present on the recipe and is active on the
+    // NAC
+    public float globalDurationMultiplier = 1;
+    public boolean crystalT3Active = false;
+    public boolean wetwareT3Active = false;
+    public boolean bioT3Active = false;
+    public boolean opticalT3Active = false;
+
+    public void setCurrentThreshold(CircuitCalibration.CalibrationThreshold currentThreshold) {
+        this.currentThreshold = currentThreshold;
+        this.resetCalibrationValues();
+        if (currentThreshold == null) return;
+        currentThreshold.function.accept(this);
+    }
+
+    public void resetCalibrationValues() {
+        globalEUMultiplier = 1;
+        globalDurationMultiplier = 1;
+        crystalT3Active = false;
+        wetwareT3Active = false;
+        bioT3Active = false;
+        opticalT3Active = false;
     }
 
     public String getCalibrationTitle() {
@@ -504,19 +530,19 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         return currentBlock == null ? 0 : currentBlock.total;
     }
 
-    public int getTotalCircuit(byte type) {
+    public int getTotalCircuit(CircuitCalibration circuitType) {
         int total = 0;
         for (CircuitBatch batch : circuitHistory) {
-            switch (type) {
-                case 1 -> total += batch.primitives;
-                case 2 -> total += batch.crystals;
-                case 3 -> total += batch.wetwares;
-                case 4 -> total += batch.bios;
-                case 5 -> total += batch.opticals;
-                case 6 -> total += batch.exotics;
-                case 7 -> total += batch.cosmics;
-                case 8 -> total += batch.temporals;
-                case 64 -> total += batch.specials;
+            switch (circuitType) {
+                case PRIMITIVE -> total += batch.primitives;
+                case CRYSTAL -> total += batch.crystals;
+                case WETWARE -> total += batch.wetwares;
+                case BIO -> total += batch.bios;
+                case OPTICAL -> total += batch.opticals;
+                case EXOTIC -> total += batch.exotics;
+                case COSMIC -> total += batch.cosmics;
+                case TEMPORAL -> total += batch.temporals;
+                case SPECIAL -> total += batch.specials;
             }
         }
         return total;
@@ -618,7 +644,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                 circuitHistory.add(new CircuitBatch(batch.func_150302_c()));
             }
         }
-        currentThreshold = CircuitCalibration.getCurrentCalibration(this);
+        setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
         currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
     }
 

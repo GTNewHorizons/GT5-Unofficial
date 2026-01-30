@@ -1733,6 +1733,9 @@ public final class RecipeMaps {
                             .metadata(
                                 NanochipAssemblyMatrixTierKey.INSTANCE,
                                 r.getMetadata(NanochipAssemblyMatrixTierKey.INSTANCE))
+                            .metadata(
+                                GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE,
+                                r.getMetadata(GTRecipeConstants.CIRCUIT_CALIBRATION_TYPE))
                             .hidden()
                             .build()
                             .orElse(null)));
