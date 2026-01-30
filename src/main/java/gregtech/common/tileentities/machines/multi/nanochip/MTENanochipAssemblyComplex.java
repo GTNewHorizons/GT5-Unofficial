@@ -62,6 +62,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyComplexGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -447,6 +448,8 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     }
 
     private void processComponentInputs() {
+        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this.getOutputBusses(), true);
+
         // Convert finished circuit CCs to real circuit items and add them as output.
         for (ArrayList<MTEHatchVacuumConveyor> hatchList : this.vacuumConveyors.allHatches()) {
             for (MTEHatchVacuumConveyor hatch : filterValidMTEs(hatchList)) {
@@ -457,20 +460,41 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
                     Map<CircuitComponent, Long> contents = hatch.contents.getComponents();
                     for (Map.Entry<CircuitComponent, Long> entry : contents.entrySet()) {
                         CircuitComponent component = entry.getKey();
-                        Long amount = entry.getValue();
-                        // If this entry has a real circuit, we have produced a circuit using the NAC!
+                        long amount = entry.getValue();
                         if (component.realComponent != null) {
-                            ItemStack toOutput = GTUtility.copyAmountUnsafe(
-                                (int) Math.min(Integer.MAX_VALUE, amount),
-                                component.realComponent.get());
-                            // Add output and deplete from hatch
-                            addOutputAtomic(toOutput);
-                            contents.remove(component);
+                            long ejected = ejectCircuitComponent(ejectionHelper, component, amount);
+                            if (ejected > 0) {
+                                long originalAmount = contents.get(component);
+                                long newAmount = originalAmount - ejected;
+                                if (newAmount == 0) {
+                                    contents.remove(component);
+                                } else {
+                                    contents.put(component, newAmount);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
+        ejectionHelper.commit();
+    }
+
+    // Outputs a CC to the output bus as a real item, attempting to fit as much as possible in one operation
+    private long ejectCircuitComponent(ItemEjectionHelper helper, CircuitComponent component, long amount) {
+        long ejected = 0;
+        while (amount > 0) {
+            int maxEject = (int) Math.min(Integer.MAX_VALUE, amount);
+            ItemStack toOutput = GTUtility.copyAmountUnsafe(maxEject, component.realComponent.get());
+            if (toOutput == null) break;
+
+            int amountEjected = helper.ejectStack(toOutput);
+            ejected += amountEjected;
+            if (amountEjected != maxEject) break;
+            amount -= maxEject;
+        }
+        return ejected;
     }
 
     public void addToHistory(CircuitCalibration circuitType, int amount) {
