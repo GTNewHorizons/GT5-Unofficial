@@ -1655,9 +1655,9 @@ GT5U.tooltip.nac.interface.vco=§eVCO§7
 GT5U.tooltip.nac.interface.vco_long=§fVacuum Conveyor Output§7
 GT5U.tooltip.nac.interface.vcos=§eVCOs§7
 GT5U.tooltip.nac.interface.vc_hatches=§fVacuum Conveyor Hatches§7
-GT5U.tooltip.nac.interface.color=§4c§eo§al§bo§dr§7
-GT5U.tooltip.nac.interface.colors=§4c§eo§al§bo§dr§5s§7
-GT5U.tooltip.nac.interface.colored=§4c§eo§al§3o§br§de§5d§7
+GT5U.tooltip.nac.interface.color=§cc§eo§al§bo§dr§7
+GT5U.tooltip.nac.interface.colors=§cc§eo§al§bo§dr§5s§7
+GT5U.tooltip.nac.interface.colored=§cc§eo§al§3o§br§de§5d§7
 GT5U.tooltip.nac.interface.module_description=Module of the §aNanochip Assembly Complex§7
 GT5U.tooltip.nac.interface.structure_base_vci=%s - Vacuum Conveyor Input
 GT5U.tooltip.nac.interface.structure_base_vco=%s - Vacuum Conveyor Output
@@ -1749,6 +1749,9 @@ GT5U.tooltip.nac.hatch.vc.base.1=Must be %s to work
 GT5U.tooltip.nac.hatch.vc.base.2=Can be installed in the §aNanochip Assembly Complex
 GT5U.tooltip.nac.hatch.vc.base.3=§eOutputs from recipes with inputs from a colored Vacuum Conveyor Input
 GT5U.tooltip.nac.hatch.vc.base.4=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
+
+GT5U.tooltip.nac.module.scanner.current_eu=§eCurrent EU Stored: %s
+GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s

@@ -9,6 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -575,8 +576,13 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     @Override
     public String[] getInfoData() {
-        return new String[] { "Current EU: " + GTUtility.scientificFormat(currentEU),
-            "Total Buffer Size" + GTUtility.scientificFormat(euBufferSize) };
+        return new String[] {
+            translateToLocalFormatted(
+                "GT5U.tooltip.nac.module.scanner.current_eu",
+                GTUtility.scientificFormat(currentEU)),
+            translateToLocalFormatted(
+                "GT5U.tooltip.nac.module.scanner.total_buffer",
+                GTUtility.scientificFormat(euBufferSize)) };
     }
 
     /**
