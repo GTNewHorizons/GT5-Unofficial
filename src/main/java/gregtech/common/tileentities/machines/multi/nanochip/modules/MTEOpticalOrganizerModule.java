@@ -149,13 +149,14 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.1"))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.2"))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.3"))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.body.4"))
             .addSeparator()
             .addInfo(getWaterTooltipLine("3", WATER_LIST.get(0).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.8x"), EnumChatFormatting.WHITE))
             .addInfo(getWaterTooltipLine("4", WATER_LIST.get(1).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water34","0.6x"), EnumChatFormatting.WHITE))
-            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.6x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.8x"), TooltipHelper.SPEED_COLOR))
-            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.8x"), TooltipHelper.EFF_COLOR))
-            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.5x"), TooltipHelper.EFF_COLOR))
+            .addInfo(getWaterTooltipLine("5", WATER_LIST.get(2).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.9x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("6", WATER_LIST.get(3).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water56","0.7x"), TooltipHelper.SPEED_COLOR))
+            .addInfo(getWaterTooltipLine("7", WATER_LIST.get(4).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.9x"), TooltipHelper.EFF_COLOR))
+            .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
             .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
@@ -230,6 +231,10 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         if (firstWater == null || secondWater == null || (firstWater.water == secondWater.water)) {
             return CheckRecipeResultRegistry.NAC_OPTICAL_MISSING_WATER;
         }
+        if(baseMulti.opticalT3Active) {
+            firstWater.boosterFunction.accept(this);
+            secondWater.boosterFunction.accept(this);
+        }
         firstWater.boosterFunction.accept(this);
         secondWater.boosterFunction.accept(this);
         return super.validateRecipe(recipe);
@@ -251,12 +256,12 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
     }
 
     private static final List<BoostingWater> WATER_LIST = ImmutableList.of(
-        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount = 0.8f; }),
-        new BoostingWater(Materials.Grade4PurifiedWater, 500, module -> { module.waterDiscount = 0.6f; }),
-        new BoostingWater(Materials.Grade5PurifiedWater, 600, module -> { module.speedModifier = 0.8f; }),
-        new BoostingWater(Materials.Grade6PurifiedWater, 300, module -> { module.speedModifier = 0.6f; }),
-        new BoostingWater(Materials.Grade7PurifiedWater, 200, module -> { module.euMultiplier = 0.8f; }),
-        new BoostingWater(Materials.Grade8PurifiedWater, 100, module -> { module.euMultiplier = 0.5f; }));
+        new BoostingWater(Materials.Grade3PurifiedWater, 1000, module -> { module.waterDiscount *= 0.8f; }),
+        new BoostingWater(Materials.Grade4PurifiedWater, 800, module -> { module.waterDiscount *= 0.6f; }),
+        new BoostingWater(Materials.Grade5PurifiedWater, 800, module -> { module.speedModifier *= 0.9f; }),
+        new BoostingWater(Materials.Grade6PurifiedWater, 600, module -> { module.speedModifier *= 0.7f; }),
+        new BoostingWater(Materials.Grade7PurifiedWater, 600, module -> { module.euMultiplier *= 0.9f; }),
+        new BoostingWater(Materials.Grade8PurifiedWater, 400, module -> { module.euMultiplier *= 0.7f; }));
 
     private static class BoostingWater {
 
