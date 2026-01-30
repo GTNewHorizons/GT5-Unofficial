@@ -78,8 +78,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String[][] base_structure = new String[][] { { " VV~VV ", "       ", " VVVVV " },
-        { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { "VVVVVVV", " ZZZZZ ", "VVVVVVV" },
-        { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { "VVVVVVV", " ZZZZZ ", "VVVVVVV" }, { " VVVVV ", "       ", " VVVVV " } };
+        { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" },
+        { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { "VPPPPPV", " ZZZZZ ", "VPPPPPV" }, { " VVVVV ", "       ", " VVVVV " } };
 
     protected static final int BASE_STRUCTURE_OFFSET_X = 3;
     protected static final int BASE_STRUCTURE_OFFSET_Y = 0;
@@ -139,6 +139,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                     .casingIndex(CASING_INDEX_WHITE)
                     .hint(2)
                     .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
+            .addElement('P', Casings.NanochipMeshInterfaceCasing.asElement())
             .addElement('Z', Casings.NanochipReinforcementCasing.asElement());
     }
 
@@ -512,7 +513,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
      * Takes in the original recipe from lookup and applies any changes to it.
      * Standard logic is overclocking and applying calibration multipliers
      * Modules can override to further transform the recipe
-     * 
+     *
      * @param recipe - initial recipe that is copied and modified
      * @return modified recipe
      */
