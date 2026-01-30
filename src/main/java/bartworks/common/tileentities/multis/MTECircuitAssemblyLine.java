@@ -265,7 +265,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     // getter used in MM
-    public @Nullable CircuitImprint getCircuitImprint(){
+    public @Nullable CircuitImprint getCircuitImprint() {
         return this.circuitImprint;
     }
 
