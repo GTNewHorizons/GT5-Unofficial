@@ -28,7 +28,7 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockCasings13;
+import gregtech.common.blocks.BlockCasings12;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockGlass1;
@@ -378,13 +378,13 @@ public enum Casings implements ICasing {
     UltimateContainmentFieldGenerator
         (() -> TTCasingsContainer.sBlockCasingsTT, 14, tt(14)),
     NanochipMeshInterfaceCasing(
-        () -> GregTechAPI.sBlockCasings13, 10, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10)),
+        () -> GregTechAPI.sBlockCasings12, 1, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(1)),
     NanochipReinforcementCasing(
-        () -> GregTechAPI.sBlockCasings13, 11, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(11)),
+        () -> GregTechAPI.sBlockCasings12, 2, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(2)),
     NanochipComputationalMatrixCasing(
-        () -> GregTechAPI.sBlockCasings13, 12, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(12)),
+        () -> GregTechAPI.sBlockCasings12, 3, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(3)),
     NanochipFirewallProjectionCasing(
-        () -> GregTechAPI.sBlockCasings13, 13, ((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(13)),
+        () -> GregTechAPI.sBlockCasings12, 4, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(4)),
     NanochipComplexGlass(
         () -> GregTechAPI.sBlockGlass1, 8, ((BlockGlass1) GregTechAPI.sBlockGlass1).getTextureIndex(8)),
 
