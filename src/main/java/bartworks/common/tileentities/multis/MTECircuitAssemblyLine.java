@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -261,6 +262,11 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
 
     public boolean isImprinted() {
         return this.circuitImprint != null;
+    }
+
+    // getter used in MM
+    public @Nullable CircuitImprint getCircuitImprint(){
+        return this.circuitImprint;
     }
 
     public static boolean isValidImprint(ItemStack stack) {
