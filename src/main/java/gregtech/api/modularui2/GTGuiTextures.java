@@ -913,17 +913,6 @@ public final class GTGuiTextures {
         .name(GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 
-    public static final UITexture PICTURE_BRAIN = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/brain")
-        .fullImage()
-        .name(GTTextureIds.PICTURE_BRAIN)
-        .build();
-    public static final UITexture PICTURE_ELECRICITY = UITexture.builder()
-        .location(GregTech.ID, "gui/picture/electricity")
-        .fullImage()
-        .name(GTTextureIds.PICTURE_ELECRICITY)
-        .build();
-
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
         .location(GregTech.ID, "gui/picture/transparent")
         .fullImage()
