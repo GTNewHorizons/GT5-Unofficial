@@ -201,8 +201,8 @@ gt.recipe.electricimplosioncompressor=Electric Implosion Compressor
 bw.recipe.htgr=High Temperature Gas-cooled Reactor
 
 nei.biovat.0.name=Needs Glass Tier: %s
-nei.biovat.1.name=Need exactly Sievert: %s Sv
-nei.biovat.2.name=Need minimum Sievert: %s Sv
+nei.biovat.1.name=Needs exactly Sievert: %s Sv
+nei.biovat.2.name=Needs minimum Sievert: %s Sv
 nei.biovat.input.tooltip=Consumed up to 1,001x amount, depending on output rate
 nei.biovat.output.tooltip=Outputs up to 1,001x amount, depending on the amount of fluid stored in the Output Hatch
 

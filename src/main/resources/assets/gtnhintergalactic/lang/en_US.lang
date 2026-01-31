@@ -139,7 +139,7 @@ gt.blockcasings.ig.2.desc1=Looks nice too!
 tile.SpaceElevatorCable.name=Space Elevator Cable
 gt.blockcasings.ig.cable.name=Space Elevator Cable
 gt.blockcasings.ig.cable.desc0=Connects the counter weight with the base structure
-gt.blockcasings.ig.cable.desc1=Would be a shame if this would tear
+gt.blockcasings.ig.cable.desc1=Would be a shame if this tears
 gt.blockcasingsSEMotor.name=Space Elevator Motor
 gt.blockcasings.ig.motor.t1.name=Space Elevator Motor MK-I
 gt.blockcasings.ig.motor.t2.name=Space Elevator Motor MK-II
@@ -190,7 +190,7 @@ ig.button.projects=Projects
 # Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
 gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
-gt.blockmachines.multimachine.ig.siphon.desc1=Build on an Space Station orbiting a Gas Planet\nRequires a Programmed Circuit set to the depth you want to pump from (1 - 4)\nRequires 64x depth Mining Pipes\nEU/t: d*4^(t+2), t is the Space Station's tier and d the depth\nCan load the chunk it is in (toggle using a Soldering Iron)
+gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet\nRequires a Programmed Circuit set to the depth you want to pump from (1 - 4)\nRequires 64x depth Mining Pipes\nEU/t: d*4^(t+2), t is the Space Station's tier and d the depth\nCan load the chunk it is in (toggle using a Soldering Iron)
 gt.blockmachines.multimachine.ig.siphon.lore0=333:Taking Space-Mining to another Level!
 gt.blockmachines.multimachine.ig.siphon.lore1=333:It's time to SUCC!
 gt.blockmachines.multimachine.ig.siphon.lore2=333:Trading EU -> Fluids
@@ -267,7 +267,7 @@ gt.blockmachines.multimachine.project.ig.miner.t1.desc1=Great treasures beyond y
 gt.blockmachines.multimachine.project.ig.miner.t2.desc1=Does this violate drone rights?
 gt.blockmachines.multimachine.project.ig.miner.t3.desc1=This definitely violates drone rights.
 gt.blockmachines.multimachine.project.ig.miner.desc3=Requires a plasma to operate (§e825L Helium §7/ §3550L Bismuth §7/ §9375L Radon §7/ §f250L Technetium §7/ §c150L Plutonium 241§7).
-gt.blockmachines.multimachine.project.ig.miner.desc4=Higher tier plasmas increases the chances of mining bigger asteroids, and improves mining operation time.
+gt.blockmachines.multimachine.project.ig.miner.desc4=Higher tier plasmas increase the chances of mining bigger asteroids, and improves mining operation time.
 gt.blockmachines.multimachine.project.ig.miner.desc5=Needs to be fed with computation to work.
 gt.blockmachines.multimachine.project.ig.miner.desc5.1=Computation is consumed per parallel
 gt.blockmachines.multimachine.project.ig.miner.desc5.2=Mining Drones must be placed in a regular input bus (neither linked nor stocking bus).
@@ -362,7 +362,7 @@ ig.dyson.structure.additionally=§oAdditionally needed:
 
 # Space Projects
 ig.spaceproject.asteroidoutpost=Asteroid Outpost
-ig.spaceproject.asteroidoutpost.description=An asteroid outpost used by the drones as a fueling station and command centre
+ig.spaceproject.asteroidoutpost.description=An asteroid outpost used by the drones as a fueling station and command center
 ig.spaceproject.planetscan=Planetary scan
 ig.spaceproject.planetscan.description=A probe that will scan the planet it orbits to collect data.
 ig.sp.upgrade.improvedcomputation=Improved Computation Upgrade

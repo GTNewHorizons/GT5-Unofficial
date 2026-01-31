@@ -168,7 +168,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
         inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
             new ChatComponentTranslation(
-                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
+                inputSeparation ? "interaction.separateBuses.enabled" : "interaction.separateBuses.disabled"));
     }
 
     @Override

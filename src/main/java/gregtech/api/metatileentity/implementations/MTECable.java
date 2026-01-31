@@ -298,7 +298,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
         // Swap in the new cable
         aBaseMetaTileEntity.setMetaTileID(newMetaID);
-        aBaseMetaTileEntity.setMetaTileEntity(newCable);
+        newCable.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueBlockUpdate();

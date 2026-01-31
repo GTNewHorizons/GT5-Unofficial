@@ -89,7 +89,7 @@ tile.kekztech_ichorjar_block.3.name=Ichor Void Jar
 # -------- Ichor Jar: Research
 tc.research_name.ICHORJAR=Ichor Jars
 tc.research_text.ICHORJAR=Much better jars
-kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently aquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentially destroying one unlikely.
+kekztech.research_page.ICHORJAR.0=This is it!<BR><BR>By infusing a jar with just a single piece of Ichor you have created something to rival digitized Essentia storage without sacrificing any of the beauty of Warded Jars.<BR><BR>Ichor Jars can hold an astounding 4096 Essentia and fit nicely into your recently acquired set of Ichor based achievements.<BR><BR>You definitely don't want to disturb these jars. Luckily Ichor is resilient enough to make accidentally destroying one unlikely.
 
 # -------- Cosmetic Blocks
 tile.kekztech_largehextile_block.name=Large Hex Tile

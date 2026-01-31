@@ -552,7 +552,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_busses");
+            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
             return false;
         }
         boolean oStuck = stuck;
@@ -1011,7 +1011,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
                     if (addOutputAtomic(GTUtility.copy(output)) || !voidingMode.protectItem) {
-                        recipesDone++;
+                        recipesDone += currentRecipeParallel;
                         reset();
                     } else {
                         stuck = true;
