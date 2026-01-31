@@ -216,7 +216,7 @@ public enum CircuitComponent {
         802,
         "gt.circuitcomponent.chiplivingcrystal",
         () -> ItemList.Circuit_Parts_Crystal_Chip_Wetware.get(1)),
-    ChipRawAdvancedCrystal( // todo decide what module to put this in
+    ChipRawAdvancedCrystal(
         803,
         "gt.circuitcomponent.chiprawadvancedcrystal",
         () -> ItemList.Circuit_Chip_CrystalSoC2.get(1)),
