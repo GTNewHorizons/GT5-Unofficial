@@ -1606,7 +1606,7 @@ GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
 GT5U.gui.text.nac.info.open=Open Info Panel
-GT5U.gui.text.nac.info.toc=Table of Contents
+GT5U.gui.text.nac.info.toc=§nTable of Contents
 GT5U.gui.text.nac.info.introduction.header=Introduction
 GT5U.gui.text.nac.info.introduction.body.1=Welcome to the Nanochip Assembly Complex! This machine is designed to handle all your circuit assembling needs. This multi operates on a "vacuum conveyor" system, where you must route items around with pipes to the various modules to assemble circuits. This info panel should help to explain all the intricacies of this massive structure.
 GT5U.gui.text.nac.info.nac_basics.header=Vacuum Conveyor Basics
