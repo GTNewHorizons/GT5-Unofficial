@@ -114,7 +114,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         ores = new GTBlockOre[] { ores1, ores2, ores3, ores4, ores5, ores6 };
         // spotless:on
 
-        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world) -> {
+        TileEntityReplacementManager.tileEntityTransformer("GT_TileEntity_Ores", (tag, world, chunk) -> {
             int meta = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
@@ -123,11 +123,7 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
-        ItemStackReplacementManager.addItemReplacement("gregtech:gt.blockores", (tag) -> {
-            int itemId = Item.getIdFromItem(Item.getItemFromBlock(ores1));
-            tag.setInteger("id", itemId);
-            return tag;
-        });
+        ItemStackReplacementManager.addSimpleReplacement("gregtech:gt.blockores", Item.getItemFromBlock(ores1), true);
     }
 
     public ImmutableBlockMeta transform(int meta, boolean natural) {
