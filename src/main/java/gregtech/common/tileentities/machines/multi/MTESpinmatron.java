@@ -112,7 +112,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
     private static final String anyCasing = GTUtility.nestParams(
         "GT5U.MBTT.HatchInfo",
-        ItemList.Chamber_Casing.get(1)
+        ItemList.Spinmatron_Casing.get(1)
             .getDisplayName());
 
     private boolean staticAnimations = false;
@@ -401,11 +401,11 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addController("front_center")
             .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 81, true)
             .addCasingInfoMin(
-                ItemList.Chamber_Casing.get(1)
+                ItemList.Spinmatron_Casing.get(1)
                     .getDisplayName(),
                 550)
             .addCasingInfoExactly(
-                ItemList.Chamber_Grate.get(1)
+                ItemList.Spinmatron_Chamber_Grate.get(1)
                     .getDisplayName(),
                 144)
             .addCasingInfoExactly("gt.spinmatron.info.frame", 9, true)
