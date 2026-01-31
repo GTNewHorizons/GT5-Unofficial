@@ -25,6 +25,7 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -42,7 +43,12 @@ public class ToolboxInventoryGui {
     private static final int WIDTH = 176;
     private static final int HEIGHT = 166;
     private static final String SLOT_GROUP_SYNC_NAME = "toolbox_internal_inventory";
-    public static final int SLOT_DRAW_SIZE = 18;
+    private static final int SLOT_DRAW_SIZE = 18;
+
+    /** Draws a gap between two columns starting at the specified column. Set to something very large to disable. */
+    private static final int GAP_COLUMN = 4;
+    /** Defines the size of the gap to draw. Set to 0 to disable. */
+    private static final int GAP_SIZE = SLOT_DRAW_SIZE;
 
     private final PanelSyncManager syncManager;
     private final PlayerInventoryGuiData data;
@@ -80,7 +86,7 @@ public class ToolboxInventoryGui {
                     : new ModularSlot(inv, index));
         }
 
-        syncManager.registerSlotGroup(SLOT_GROUP_SYNC_NAME, itemHandler.getSlots());
+        // syncManager.registerSlotGroup(SLOT_GROUP_SYNC_NAME, itemHandler.getSlots());
 
         Flow column = Flow.column()
             .sizeRel(1);
@@ -91,16 +97,28 @@ public class ToolboxInventoryGui {
                 .widthRel(1)
                 .height(SLOT_DRAW_SIZE));
 
-        SlotGroupWidget slotGroupWidget = new SlotGroupWidget();
+        final SlotGroupWidget slotGroupWidget = new SlotGroupWidget();
+
+        final int genericSlotSize = ToolboxSlot.GENERIC_SLOTS.size();
+        final SlotGroup toolGroup = new SlotGroup(
+            "gt5:toolbox:tools",
+            ToolboxSlot.values().length - genericSlotSize,
+            0,
+            true);
+        final SlotGroup genericGroup = new SlotGroup("gt5:toolbox:generic", genericSlotSize, 100, true);
+
+        syncManager.registerSlotGroup(toolGroup);
+        syncManager.registerSlotGroup(genericGroup);
 
         for (final ToolboxSlot slot : ToolboxSlot.values()) {
 
-            final IWidget widget = new CustomItemSlot(() -> itemHandler, slot)
-                .slot(new ModularSlot(itemHandler, slot.getSlotID()).slotGroup(SLOT_GROUP_SYNC_NAME))
+            final IWidget widget = new CustomItemSlot(() -> itemHandler, slot).slot(
+                new ModularSlot(itemHandler, slot.getSlotID()).slotGroup(slot.isGeneric() ? genericGroup : toolGroup))
                 .addTooltipLine(getTooltip(slot));
 
+            final int leftShift = slot.getColumn() * SLOT_DRAW_SIZE + (slot.getColumn() >= GAP_COLUMN ? GAP_SIZE : 0);
             widget.flex()
-                .left(slot.getColumn() * SLOT_DRAW_SIZE)
+                .left(leftShift)
                 .top(slot.getRow() * SLOT_DRAW_SIZE);
             slotGroupWidget.child(widget);
 
@@ -109,7 +127,7 @@ public class ToolboxInventoryGui {
 
         slotGroupWidget.flex()
             .size(
-                ToolboxSlot.ROW_WIDTH * SLOT_DRAW_SIZE,
+                ToolboxSlot.ROW_WIDTH * SLOT_DRAW_SIZE + GAP_SIZE,
                 (int) (Math.ceil((double) ToolboxSlot.values().length / (double) ToolboxSlot.ROW_WIDTH))
                     * SLOT_DRAW_SIZE);
         column.child(

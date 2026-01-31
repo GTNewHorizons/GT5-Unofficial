@@ -74,7 +74,7 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
         @Override
         public ModularPanel buildUI(final GuiData data, final PanelSyncManager syncManager, final UISettings settings) {
             final int inventorySlot = getToolboxSlot(data.getPlayer()).orElseThrow(
-                () -> new RuntimeException("Tried to open the toolbox radial UI without equipping a toolbox"));
+                () -> new IllegalArgumentException("Tried to open the toolbox radial UI without equipping a toolbox"));
             final ItemStack toolbox = data.getPlayer().inventory.getStackInSlot(inventorySlot);
             final ItemToolbox.ToolboxItemStackHandler itemHandler = new ItemToolbox.ToolboxItemStackHandler(toolbox);
 

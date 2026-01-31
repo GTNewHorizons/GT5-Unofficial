@@ -28,19 +28,20 @@ public enum ToolboxSlot {
         GTGuiTextures.OVERLAY_TOOLBOX_SCREWDRIVER),
     SOFT_MALLET(3, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSoftMalletList),
         GTGuiTextures.OVERLAY_TOOLBOX_SOFT_MALLET),
-    HARD_HAMMER(4, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sHardHammerList),
-        GTGuiTextures.OVERLAY_TOOLBOX_HARD_HAMMER),
-    CROWBAR(5, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sCrowbarList),
-        GTGuiTextures.OVERLAY_TOOLBOX_CROWBAR),
-    SOLDERING_IRON(6, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSolderingToolList),
-        GTGuiTextures.OVERLAY_TOOLBOX_SOLDERING_IRON),
+
+    GENERIC_SLOT0(4),
+    GENERIC_SLOT1(5),
+    GENERIC_SLOT2(6),
 
     // Charges any item in the toolbox.
     BATTERY(7, OrePrefixes.battery::containsUnCached, GTGuiTextures.OVERLAY_TOOLBOX_BATTERY),
+    HARD_HAMMER(8, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sHardHammerList),
+        GTGuiTextures.OVERLAY_TOOLBOX_HARD_HAMMER),
+    CROWBAR(9, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sCrowbarList),
+        GTGuiTextures.OVERLAY_TOOLBOX_CROWBAR),
+    SOLDERING_IRON(10, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSolderingToolList),
+        GTGuiTextures.OVERLAY_TOOLBOX_SOLDERING_IRON),
 
-    GENERIC_SLOT0(8),
-    GENERIC_SLOT1(9),
-    GENERIC_SLOT2(10),
     GENERIC_SLOT3(11),
     GENERIC_SLOT4(12),
     GENERIC_SLOT5(13),;
