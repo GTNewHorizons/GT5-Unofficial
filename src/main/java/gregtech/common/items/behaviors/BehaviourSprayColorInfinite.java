@@ -122,6 +122,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
         aList.add(mTooltipChain);
+        aList.add(mTooltipUnstackable);
         aList.add(" ");
 
         if (!statuses.isEmpty()) {

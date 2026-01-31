@@ -425,13 +425,6 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
         .build();
-    public static final RecipeMap<FluidCannerBackend> fluidCannerRecipes = RecipeMapBuilder
-        .of("gt.recipe.fluidcanner", FluidCannerBackend::new)
-        .maxIO(1, 1, 1, 1)
-        .minInputs(1, 0)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_CANISTER : null)
-        .progressBar(GTUITextures.PROGRESSBAR_CANNER)
-        .build();
     public static final RecipeMap<RecipeMapBackend> brewingRecipes = RecipeMapBuilder.of("gt.recipe.brewer")
         .maxIO(1, 0, 1, 1)
         .minInputs(1, 1)
@@ -971,8 +964,9 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
         .build();
-    public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
-        .maxIO(2, 2, 0, 0)
+    public static final RecipeMap<FluidCannerBackend> cannerRecipes = RecipeMapBuilder
+        .of("gt.recipe.canner", FluidCannerBackend::new)
+        .maxIO(2, 2, 1, 1)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
@@ -985,6 +979,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CANNER)
         .build();
+
     public static final RecipeMap<RecipeMapBackend> latheRecipes = RecipeMapBuilder.of("gt.recipe.lathe")
         .maxIO(1, 2, 0, 0)
         .minInputs(1, 0)
@@ -1034,8 +1029,13 @@ public final class RecipeMaps {
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
+            b.copy()
+                .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
                 .duration(aDuration)
+                .build()
+                .ifPresent(ret::add);
+            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
+                .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);
             return ret;
@@ -1311,8 +1311,7 @@ public final class RecipeMaps {
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
-        .neiRecipeBackgroundOffset(7, 0)
-        .neiRecipeBackgroundSize(165, 60)
+        .neiRecipeBackgroundSize(170, 60)
         .logoPos(150, 38)
         .frontend(CauldronFrontend::new)
         .neiHandlerInfo(builder -> {

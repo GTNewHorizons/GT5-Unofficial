@@ -1,8 +1,8 @@
 package gtPlusPlus.core.item.tool.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -160,10 +160,10 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
             EnumChatFormatting.BLUE + (f != null ? f.getLocalizedName()
                 : StatCollector.translateToLocal("item.itemGregtechPump.tooltip.3")));
         aList.add(
-            EnumChatFormatting.BLUE + (f != null ? "" + formatNumbers(f.amount) : "" + 0)
+            EnumChatFormatting.BLUE + (f != null ? "" + formatNumber(f.amount) : "" + 0)
                 + "L"
                 + " / "
-                + formatNumbers(getCapacity(aStack))
+                + formatNumber(getCapacity(aStack))
                 + "L");
 
         final Long[] tStats = this.getElectricStats(aStack);
@@ -172,7 +172,7 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                 aList.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
-                        formatNumbers(tStats[3]),
+                        formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
                 final long tCharge = this.getRealCharge(aStack);
@@ -185,9 +185,9 @@ public class ItemGregtechPump extends Item implements ISpecialElectricItem, IEle
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
-                                formatNumbers(tCharge),
-                                formatNumbers(Math.abs(tStats[0])),
-                                formatNumbers(
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(
                                     V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }

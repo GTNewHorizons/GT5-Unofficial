@@ -956,6 +956,13 @@ public class Textures {
         OVERLAY_ENERGY_OUT_MULTI_64A_MAX,
         OVERLAY_ENERGY_OUT_MULTI_64A_MAXP,
 
+        OVERLAY_ENERGY_OUT_MULTI_256A_UV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UHV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UEV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UIV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UMV,
+        OVERLAY_ENERGY_OUT_MULTI_256A_UXV,
+
         OVERLAY_ENERGY_OUT_MULTI_LASER,
         OVERLAY_ENERGY_OUT_MULTI_LASER_ULV,
         OVERLAY_ENERGY_OUT_MULTI_LASER_LV,
@@ -991,6 +998,7 @@ public class Textures {
         OVERLAY_ENERGY_ON_WIRELESS_UXV,
         OVERLAY_ENERGY_ON_WIRELESS_MAX,
         OVERLAY_ENERGY_ON_WIRELESS_MAXP,
+        OVERLAY_ENERGY_ON_WIRELESS_DEBUG,
 
         OVERLAY_ENERGY_ON_WIRELESS_4A,
         OVERLAY_ENERGY_ON_WIRELESS_4A_ULV,
@@ -1935,8 +1943,8 @@ public class Textures {
         HAWKING_GLASS,
         OVERLAY_NANITE_HATCH,
         OVERLAY_NANITE_HATCH_GLOW,
-        MACHINE_CASING_CHAMBER_CENTRIFUGE,
-        SIEVE_MESH,
+        SPINMATRON_CASING,
+        SPINMATRON_GRATE,
         NANO_FORGE_CASING_1,
         NANO_FORGE_CASING_2,
         NANO_FORGE_CASING_3,
@@ -2254,6 +2262,22 @@ public class Textures {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_UXV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAX),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_64A_MAXP), };
 
+        public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_256A = {
+            // Base Icon
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            // ULV - ZPM Placeholders
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV),
+            // In-Game Textures
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UHV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UEV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UIV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UMV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UXV),
+            // MAX / MAXP placeholders
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UXV),
+            TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_256A_UXV), };
+
         public static final ITexture[] OVERLAYS_ENERGY_OUT_MULTI_LASER = {
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_ULV),
             TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_LV), TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI_LASER_MV),
@@ -2548,7 +2572,8 @@ public class Textures {
         ENERGY_BAR_8,
         WIRELESS_HEADPHONES,
         HALO,
-        HALO_FUZZY;
+        HALO_FUZZY,
+        JACKHAMMER_BASE;
 
         public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
             DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,

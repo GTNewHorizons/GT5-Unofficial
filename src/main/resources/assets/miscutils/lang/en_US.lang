@@ -3797,8 +3797,8 @@ item.itemBasicTurbine_2.name=Basic Steel Turbine
 interaction.voidexcess.enabled=Void Excess Enabled
 interaction.voidexcess.disabled=Void Excess Disabled
 
-interaction.separateBusses.enabled=Input buses are separated
-interaction.separateBusses.disabled=Input buses are not separated
+interaction.separateBuses.enabled=Input buses are separated
+interaction.separateBuses.disabled=Input buses are not separated
 
 # Added 29/11/21
 
@@ -3966,7 +3966,7 @@ item.ItemCustomSpawnEgg.name=Spawn %s
 item.itemSimpleFiremaker.message.0=You light the fire pit.
 item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire...
 item.itemSimpleFiremaker.message.2=You created a fire!
-item.itemSimpleFiremaker.message.3=Your attemp does nothing.
+item.itemSimpleFiremaker.message.3=Your attempt does nothing.
 
 # Added 17/07/23
 item.BasicGenericChemItem.29.name=Limpid Water Catalyst
@@ -4025,11 +4025,11 @@ gtpp.tooltip.cover_item.connection.deny=Allows Connections: false
 gtpp.tooltip.cover_item.change_state=Shift Rmb to change state before applying
 gtpp.tooltip.dark_world_portal.frame.0=Use this to access the Toxic Everglades.
 gtpp.tooltip.dark_world_portal.frame.1=Assembled in the same shape as the Nether Portal.
-gtpp.tooltip.dark_world_portal.0=Place this if you are lazy to create the portal structure, slacker.
+gtpp.tooltip.dark_world_portal.0=Place this if you are too lazy to create the portal structure, slacker.
 gtpp.tooltip.dark_world.ground=Will burn very quickly if it happens to catch fire.
-gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?.
+gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?
 gtpp.tooltip.dark_world.polluted_dirt.1=This smells worse than a bean fart...
-gtpp.tooltip.alkalus_disk.0=Shines the way, towards the far away Everglades.
+gtpp.tooltip.alkalus_disk.0=Shines the way towards the far away Everglades.
 gtpp.tooltip.alkalus_disk.1=This item produces such a temperature, that you'd hate to use it incorrectly.
 gtpp.tooltip.tool.durability=Durability:
 gtpp.tooltip.tool.turbine_efficiency=Turbine Efficiency:
@@ -4049,6 +4049,7 @@ gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away 
 gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
 gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
 gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
+gtpp.infodata.multi_block.recipes_done=Recipes Finished: %s
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
 gtpp.infodata.tesseract_generator.frequency=Frequency: %d
 gtpp.infodata.tesseract_generator.status.active=Active
