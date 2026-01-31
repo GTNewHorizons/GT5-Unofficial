@@ -428,7 +428,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     public int getOCFactorReduction() {
-        return 4;
+        return 2;
     }
 
     @Override

@@ -184,11 +184,6 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     }
 
     @Override
-    public int getOCFactorReduction() {
-        return 2;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
             .addInfo(TOOLTIP_MODULE_DESCRIPTION)
@@ -200,7 +195,6 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
                     "GT5U.tooltip.nac.module.assembly_matrix.body.1",
                     TooltipTier.COMPONENT_ASSEMBLY_LINE_CASING.getValue()))
             .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.2"))
-            .addInfo(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.body.3"))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.assembly_matrix.flavor.2")))
