@@ -330,7 +330,7 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        var wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
         onScrewdriverRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
