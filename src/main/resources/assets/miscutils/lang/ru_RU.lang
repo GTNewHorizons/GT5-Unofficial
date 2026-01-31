@@ -3794,8 +3794,8 @@ item.itemBasicTurbine_2.name=Базовая стальная турбина
 interaction.voidexcess.enabled=Уничтожение излишек включен
 interaction.voidexcess.disabled=Уничтожение излишек откл.
 
-interaction.separateBusses.enabled=Input buses are separated
-interaction.separateBusses.disabled=Input buses are not separated
+interaction.separateBuses.enabled=Input buses are separated
+interaction.separateBuses.disabled=Input buses are not separated
 
 # Added 29/11/21
 
