@@ -3872,6 +3872,7 @@ machtype.backfiller=Concrete Backfiller
 machtype.solar_factory=Solar Factory
 machtype.wormhole_gen=Wormhole Generator, MWG
 machtype.tpm=Transcendent Mixer, TPM
+machtype.dtpf=Plasma Forge, DTPF
 
 # Used in addController. These are some commonly used shared ones
 # CONTEXT: Controller: (corepos)
@@ -3880,6 +3881,9 @@ gt.mb.corepos.front_bottom_middle=Front bottom middle
 gt.mb.corepos.top_center=Top center
 
 # Multiblock Tooltip lines
+gt.dtpf.tips=Transcending Dimensional Boundaries.\nTakes §c%s§7 hours of continuous run time to fully breach dimensional\nboundaries and achieve maximum efficiency, reducing fuel consumption by up to §c%s%%\nWhen no recipe is running, fuel discount decays x§c%s§7 as fast as it builds up, draining\nthe total amount of stored runtime<SEPARATOR>Multidimensional spaces can be perfectly aligned and synchronized in this state,\nallowing §6Dimensional Convergence§7 to occur. To reach the required stability threshold,\na §bTransdimensional Alignment Matrix§7 must be placed in the controller\nWhen §6Convergence§7 is active, it allows the forge to perform §cPerfect Overclocks§7,\nbut the extra power cost is instead added in form of increased catalyst amounts
+gt.dtpf.info.e_hatch=§61§7-§62§7 (for TT Energy Hatch only §61§7 allowed)
+
 gt.tpm.tips=Assisting in all your DTPF needs!\nThis multiblock will run in parallel according to the amount set in the parallel menu\nAll inputs will scale, except time...\nAll EU is deducted from wireless EU networks only
 
 gt.wormhole_gen.tips=Transfers EU between two wormhole generators\nWormholes are linked by placing an AE2 Entangled Singularity in each controller slot\nThe transfer rate is limited by the wormhole size, and the wormhole size is governed by the transfer rate\nIf the transfer rate is completely stable, the transfer efficiency is %s%%\nEU will only be transferred if there is space in the laser source hatch\nEach laser target must have a laser source on the §oother§7 controller, on the §oopposite§7 side\nConsumes an AE2 Singularity from an input bus each time the wormhole is kick-started\nRight click the controller with a screwdriver to disable overclocking
