@@ -35,6 +35,7 @@ public class RadialMenuBuilder implements BranchableRadialMenu {
     public final List<RadialMenuOptionBuilder<RadialMenuBuilder>> options = new ArrayList<>();
     public float innerRadius = 0.25f, outerRadius = 0.60f;
     public IIcon innerIcon;
+    public RadialMenuTheme theme = RadialMenu.DEFAULT_THEME;
 
     public RadialMenuBuilder(String syncActionPrefix, PanelSyncManager syncManager) {
         this.syncActionPrefix = syncActionPrefix;
@@ -65,6 +66,11 @@ public class RadialMenuBuilder implements BranchableRadialMenu {
     /** Sets the outer radius */
     public RadialMenuBuilder outerRadius(float radius) {
         this.outerRadius = radius;
+        return this;
+    }
+
+    public RadialMenuBuilder theme(RadialMenuTheme theme) {
+        this.theme = theme;
         return this;
     }
 
@@ -110,6 +116,7 @@ public class RadialMenuBuilder implements BranchableRadialMenu {
         menu.innerIcon = this.innerIcon;
         menu.innerRadius = this.innerRadius;
         menu.outerRadius = this.outerRadius;
+        menu.theme = this.theme;
 
         for (var option : options) {
             option.registerActions(menu, syncManager, syncActionPrefix + ":");

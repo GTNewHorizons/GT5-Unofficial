@@ -148,7 +148,7 @@ public class ItemToolbox extends GTGenericItem
     public String getItemStackDisplayName(final ItemStack toolbox) {
         final String base = super.getItemStackDisplayName(toolbox);
 
-        if (toolbox.hasTagCompound()) {
+        if (toolbox.hasTagCompound() && toolbox.getTagCompound().hasKey(CURRENT_TOOL_NBT_KEY)) {
             final int selectedTool = toolbox.getTagCompound()
                 .getInteger(CURRENT_TOOL_NBT_KEY);
             final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
@@ -409,7 +409,7 @@ public class ItemToolbox extends GTGenericItem
 
     /**
      * Get the {@link IElectricItemManager} for the battery inside a toolbox.
-     * 
+     *
      * @param toolbox The toolbox to search
      * @param mapper  A function to run if a battery is found inside the toolbox.
      *                Arguments are the battery's {@link ItemStack} and its manager.
@@ -427,7 +427,7 @@ public class ItemToolbox extends GTGenericItem
     /**
      * Writes the battery to the toolbox. Use after mutating the battery; changes to tools are not automatically
      * propagated to the containing toolbox!
-     * 
+     *
      * @param toolbox The toolbox to use
      * @param battery A battery to save to the toolbox
      */
@@ -499,7 +499,7 @@ public class ItemToolbox extends GTGenericItem
 
         /**
          * Retrieves the currently selected tool from the toolbox.
-         * 
+         *
          * @return An Optional containing the tool's {@link ItemStack}, or empty if the user hasn't selected one
          */
         public Optional<ItemStack> getCurrentTool() {

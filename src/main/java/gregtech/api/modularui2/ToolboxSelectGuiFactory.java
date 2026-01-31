@@ -7,13 +7,15 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.Icon;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiManager;
@@ -25,6 +27,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuBuilder;
+import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuTheme;
 import gregtech.common.items.ItemToolbox;
 import gregtech.crossmod.backhand.Backhand;
 
@@ -40,7 +43,7 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
 
     public static final ToolboxSelectGuiFactory INSTANCE = new ToolboxSelectGuiFactory();
 
-    public ToolboxSelectGuiFactory() {
+    private ToolboxSelectGuiFactory() {
         super("gregtech:toolbox_select");
     }
 
@@ -79,6 +82,8 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
             panel.fullScreenInvisible();
             panel.child(
                 new RadialMenuBuilder("gt5:toolbox:select_gui", syncManager).innerIcon(toolbox)
+                    .theme(
+                        new RadialMenuTheme(new float[] { 0f, 0f, 0f, 0.4f }, new float[] { 0.25f, 0.25f, 0.25f, 1f }))
                     .pipe(builder -> {
                         builder.innerIcon(toolbox)
                             .option()
@@ -97,12 +102,22 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
                                     .done();
                                 count++;
                             } else {
+                                final Optional<UITexture> overlay = slot.getOverlay();
+                                final Icon icon;
+
+                                if (overlay.isPresent()) {
+                                    icon = IDrawable.of(
+                                        slot.getOverlay()
+                                            .get(),
+                                        GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                                        .asIcon();
+                                } else {
+                                    icon = IDrawable.of(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                                        .asIcon();
+                                }
+
                                 builder.option()
-                                    .label(
-                                        IKey.lang(
-                                            "GT5U.gui.text.toolbox.radial.missing",
-                                            StatCollector.translateToLocal(
-                                                "GT5U.gui.text.toolbox.slot_title." + slot.getSlotID())))
+                                    .label(icon.size(16, 16))
                                     .onClicked(() -> false)
                                     .done();
                             }

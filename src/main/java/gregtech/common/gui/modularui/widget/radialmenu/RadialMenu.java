@@ -32,6 +32,9 @@ import cpw.mods.fml.relauncher.Side;
 public class RadialMenu extends Widget<RadialMenu> implements Interactable {
 
     private static final double TAU = PI * 2;
+    public static final RadialMenuTheme DEFAULT_THEME = new RadialMenuTheme(
+        new float[] { 0f, 0f, 0f, 1f },
+        new float[] { 0.25f, 0.25f, 0.25f, 1f });
 
     public List<RadialMenuOption> options = new ArrayList<>();
     public float innerRadius = 0.25f, outerRadius = 0.60f;
@@ -39,6 +42,7 @@ public class RadialMenu extends Widget<RadialMenu> implements Interactable {
      * An icon to draw in the centre of the menu, or null to skip it.
      */
     public IDrawable innerIcon;
+    public RadialMenuTheme theme = DEFAULT_THEME;
 
     @Override
     public void draw(ModularGuiContext context, WidgetThemeEntry<?> widgetTheme) {
@@ -112,7 +116,8 @@ public class RadialMenu extends Widget<RadialMenu> implements Interactable {
         double mouseRadius = mouse.x;
         double mouseTheta = mouse.y;
 
-        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
@@ -125,11 +130,8 @@ public class RadialMenu extends Widget<RadialMenu> implements Interactable {
             boolean isHoveredOver = mouseRadius >= innerRadius && mouseRadius <= outerRadius
                 && isAngleBetween(mouseTheta, option.startTheta, option.endTheta);
 
-            if (isHoveredOver) {
-                GL11.glColor4f(0.25f, 0.25f, 0.25f, 1f);
-            } else {
-                GL11.glColor4f(0f, 0f, 0f, 1f);
-            }
+            final float[] colors = isHoveredOver ? theme.getHoveredBackground() : theme.getDefaultBackground();
+            GL11.glColor4f(colors[0], colors[1], colors[2], colors[3]);
 
             GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
 

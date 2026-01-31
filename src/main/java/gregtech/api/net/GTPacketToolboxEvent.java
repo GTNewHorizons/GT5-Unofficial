@@ -119,9 +119,14 @@ public class GTPacketToolboxEvent extends GTPacket {
                 if (selectedTool == ItemToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemToolbox.CURRENT_TOOL_NBT_KEY)) {
                     tag.removeTag(ItemToolbox.CURRENT_TOOL_NBT_KEY);
                     dirty = true;
-                } else if (ToolboxSlot.slotIsTool(toolboxSlot)) {
-                    tag.setInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY, selectedTool);
-                    dirty = true;
+                } else if (selectedTool != ItemToolbox.NO_TOOL_SELECTED && ToolboxSlot.slotIsTool(selectedTool)) {
+                    final int oldToolSelection = tag.hasKey(ItemToolbox.CURRENT_TOOL_NBT_KEY)
+                        ? tag.getInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY)
+                        : ItemToolbox.NO_TOOL_SELECTED;
+                    if (oldToolSelection != selectedTool) {
+                        tag.setInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY, selectedTool);
+                        dirty = true;
+                    }
                 }
 
                 if (dirty) {
