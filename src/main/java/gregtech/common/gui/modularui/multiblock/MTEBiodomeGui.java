@@ -4,14 +4,19 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.recipe.RecipeMaps.biodomeFakeCalibrationRecipes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.FluidDrawable;
@@ -19,16 +24,22 @@ import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
+import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
+import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTRecipe;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEBiodome;
@@ -67,7 +78,7 @@ public class MTEBiodomeGui extends MTEMultiBlockBaseGui<MTEBiodome> {
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         ListWidget<IWidget, ?> list = super.createTerminalTextWidget(syncManager, parent);
 
-        StringSyncValue dimensionSync = (StringSyncValue) syncManager.findSyncHandler("dimension");
+        StringSyncValue dimensionSync = syncManager.findSyncHandler("dimension", StringSyncValue.class);
         list.child(
             IKey.dynamic(() -> "Calibrating: " + dimensionSync.getValue())
                 .asWidget());
@@ -77,7 +88,122 @@ public class MTEBiodomeGui extends MTEMultiBlockBaseGui<MTEBiodome> {
         GenericListSyncHandler<FluidStack> fluidInputSyncer = (GenericListSyncHandler<FluidStack>) syncManager
             .findSyncHandler("fluidInputs");
 
-        return list;
+        DynamicSyncHandler recipeHandler = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
+            if (packet == null) {
+                return new EmptyWidget();
+            }
+            return Flow.column()
+                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .coverChildren()
+                .child(createItemRecipeInfo(packet, syncManager))
+                .child(createFluidRecipeInfo(packet, syncManager));
+        });
+
+        itemInputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemInputSyncer, fluidInputSyncer));
+        fluidInputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemInputSyncer, fluidInputSyncer));
+
+        return list.child(
+            new DynamicSyncedWidget<>().widthRel(0.85f)
+                .coverChildrenHeight()
+                .syncHandler(recipeHandler));
+    }
+
+    private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,
+        GenericListSyncHandler<ItemStack> itemOutputSyncer, GenericListSyncHandler<FluidStack> fluidOutputSyncer) {
+        recipeHandler.notifyUpdate(packet -> {
+            List<ItemStack> items = itemOutputSyncer.getValue();
+            packet.writeInt(items.size());
+            for (ItemStack item : items) {
+                NetworkUtils.writeItemStack(packet, item);
+            }
+
+            List<FluidStack> fluids = fluidOutputSyncer.getValue();
+            packet.writeInt(fluids.size());
+            for (FluidStack fluid : fluids) {
+                NetworkUtils.writeFluidStack(packet, fluid);
+            }
+        });
+    }
+
+    private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+        int size = packet.readInt();
+        Flow column = Flow.column()
+            .coverChildren();
+
+        List<ItemStack> itemList = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            ItemStack item = NetworkUtils.readItemStack(packet);
+            // Some multiblocks set outputs to null
+            if (item == null) {
+                continue;
+            }
+            itemList.add(item);
+        }
+        // create row for each entry
+        for (ItemStack stack : itemList) {
+            column.child(
+                Flow.row()
+                    .widthRel(1)
+                    .height(DISPLAY_ROW_HEIGHT)
+                    .child(
+                        new ItemDisplayWidget().item(stack)
+                            .background(IDrawable.NONE)
+                            .displayAmount(false)
+                            .size(DISPLAY_ROW_HEIGHT - 1)
+                            .marginRight(2))
+                    .child(
+                        IKey.str(
+                            EnumChatFormatting.AQUA + stack.getDisplayName()
+                                + EnumChatFormatting.RESET
+                                + " x "
+                                + EnumChatFormatting.WHITE
+                                + stack.stackSize)
+                            .asWidget()));
+        }
+
+        return column;
+    }
+
+    private IWidget createFluidRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
+        int size = packet.readInt();
+        Flow column = Flow.column()
+            .coverChildren();
+
+        // create merged map of fluidstack to total amount in recipe
+        final List<FluidStack> fluidStacks = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            // Some multiblocks set outputs to null
+            if (fluidStack == null) {
+                continue;
+            }
+            fluidStacks.add(fluidStack);
+
+        }
+        // create row for each entry
+        for (FluidStack fluidStack : fluidStacks) {
+            column.child(
+                Flow.row()
+                    .widthRel(1)
+                    .height(DISPLAY_ROW_HEIGHT)
+                    .child(
+                        new FluidDisplayWidget().background(IDrawable.EMPTY)
+                            .displayAmount(false)
+                            .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
+                            .fluid(fluidStack)
+                            .size(DISPLAY_ROW_HEIGHT - 1)
+                            .marginRight(2))
+                    .child(
+                        IKey.str(
+                            EnumChatFormatting.AQUA + fluidStack.getLocalizedName()
+                                + EnumChatFormatting.RESET
+                                + " x "
+                                + EnumChatFormatting.WHITE
+                                + fluidStack.amount)
+                            .asWidget()));
+        }
+        return column;
     }
 
     @Override
