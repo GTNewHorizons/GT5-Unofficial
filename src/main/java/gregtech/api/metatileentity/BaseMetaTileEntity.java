@@ -16,8 +16,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.items.MetaGeneratedTool;
-import gregtech.common.tools.ToolSoftMallet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.item.EntityItem;
@@ -70,6 +68,7 @@ import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;

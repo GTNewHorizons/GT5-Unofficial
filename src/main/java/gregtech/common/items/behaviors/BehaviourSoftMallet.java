@@ -16,6 +16,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
+
     public static final int MODE_ACTIVATE = 1;
     public static final int MODE_DEACTIVATE = 2;
     private final int mCosts;
