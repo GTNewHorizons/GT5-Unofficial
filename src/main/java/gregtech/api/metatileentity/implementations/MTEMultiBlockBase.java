@@ -1999,7 +1999,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-
+            hatch.addMultiblock(this);
             if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
                 droneDownLink.registerMachineController(this);
             }

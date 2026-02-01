@@ -7,11 +7,18 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_AUTOMAINTENANCE_IDL
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DUCTTAPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MAINTENANCE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import gregtech.common.gui.modularui.hatch.MTEHatchMaintenanceGui;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -57,6 +64,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
+import org.jetbrains.annotations.NotNull;
 import thaumic.tinkerer.common.block.tile.tablet.TabletFakePlayer;
 
 public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAlignment {
@@ -68,6 +76,25 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     protected String mMaintenanceSound = null;
     protected float mMaintenanceSoundStrength = 1.0F;
     protected float mMaintenanceSoundModulation = 1.0F;
+    private final List<MTEMultiBlockBase> multiblocks = new ArrayList<>();
+
+    public List<MTEMultiBlockBase> getMultiBlocks() {
+        return multiblocks;
+    }
+
+    public void addMultiblock(MTEMultiBlockBase controller) {
+        if(controller.mMachine){
+            multiblocks.add(controller);
+        }
+    }
+
+    public void setMultiblocks(@NotNull List<MTEMultiBlockBase> controllers) {
+        multiblocks.clear();
+        controllers.stream()
+            .filter(c -> c != null && c.mMachine)
+            .forEach(multiblocks::add);
+    }
+
 
     public boolean mWrench = false, mScrewdriver = false, mSoftMallet = false, mHardHammer = false,
         mSolderingTool = false, mCrowbar = false, mAuto;
@@ -539,6 +566,16 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
                 base.issueTextureUpdate();
             }
         }
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchMaintenanceGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
