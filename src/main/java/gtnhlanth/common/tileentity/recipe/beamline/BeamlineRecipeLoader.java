@@ -125,7 +125,6 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(sourceChamberRecipes);
 
-
         /*
          * TARGET CHAMBER
          */
