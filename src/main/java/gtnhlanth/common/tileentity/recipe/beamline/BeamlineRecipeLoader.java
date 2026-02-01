@@ -125,23 +125,6 @@ public class BeamlineRecipeLoader {
             .eut(TierEU.RECIPE_HV)
             .addTo(sourceChamberRecipes);
 
-        /*
-         * POSITRON
-         */
-        GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Yttrium.getDust(1))
-            .itemOutputs(Materials.Strontium.getDust(1))
-            .metadata(
-                SOURCE_CHAMBER_METADATA,
-                SourceChamberMetadata.builder()
-                    .particleID(Particle.POSITRON.ordinal())
-                    .rate(1)
-                    .energy(10000, 0.5f)
-                    .focus(90)
-                    .build())
-            .duration(20)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(sourceChamberRecipes);
 
         /*
          * TARGET CHAMBER
