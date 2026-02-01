@@ -11,6 +11,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.Loader;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -39,6 +40,7 @@ public class RecipesMachinesTiered {
         cropManagers();
         autoWorkbenches();
         autoChisels();
+        drawerFramers();
         semifluidGenerators();
         resonanceChambers();
         modulators();
@@ -1098,6 +1100,54 @@ public class RecipesMachinesTiered {
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
+    }
+
+    private static void drawerFramers() {
+
+        if (!Loader.isModLoaded("StorageDrawers")) return;
+
+        // Basic Drawer Framer
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_LV.get(1),
+                MaterialsAlloy.BRONZE.getPlate(4),
+                ItemList.Conveyor_Module_LV.get(2),
+                ItemList.Robot_Arm_LV.get(2))
+            .circuit(11)
+            .itemOutputs(GregtechItemList.GT_Framer_LV.get(1))
+            .fluidInputs(MaterialsAlloy.BRONZE.getFluidStack(8 * INGOTS))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
+        // Advanced Drawer Framer
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_MV.get(1),
+                MaterialsAlloy.SILICON_CARBIDE.getPlate(4),
+                ItemList.Conveyor_Module_MV.get(2),
+                ItemList.Robot_Arm_MV.get(2))
+            .circuit(12)
+            .itemOutputs(GregtechItemList.GT_Framer_MV.get(1))
+            .fluidInputs(MaterialsAlloy.SILICON_CARBIDE.getFluidStack(8 * INGOTS))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+
+        // Precision Drawer Framer
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_HV.get(1),
+                MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(4),
+                ItemList.Conveyor_Module_HV.get(2),
+                ItemList.Robot_Arm_HV.get(2))
+            .circuit(13)
+            .itemOutputs(GregtechItemList.GT_Framer_HV.get(1))
+            .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(8 * INGOTS))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
     }
 
     private static void semifluidGenerators() {
