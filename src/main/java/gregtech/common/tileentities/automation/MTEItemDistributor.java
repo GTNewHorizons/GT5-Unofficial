@@ -213,9 +213,9 @@ public class MTEItemDistributor extends MTEBuffer {
     }
 
     private void addDistributionTooltip(byte[] distributionPerSide, List<String> tooltip) {
-        var distributionDescriptions = new ArrayList<String>();
+        List<String> distributionDescriptions = new ArrayList<>();
         for (int i = 0; i < distributionPerSide.length; i++) {
-            var sideDistribution = distributionPerSide[i];
+            byte sideDistribution = distributionPerSide[i];
             if (sideDistribution != 0) {
                 distributionDescriptions.add(String.format("  %s: %d", getFacingNameLocalized(i), sideDistribution));
             }
