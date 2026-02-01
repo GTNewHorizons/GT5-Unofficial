@@ -2910,7 +2910,25 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticalCPUContainmentHousings,
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
-    Wrap_LivingBioChips
+    Wrap_LivingBioChips,
+
+    CompressedOutputBusLuV,
+    CompressedOutputBusZPM,
+    CompressedOutputBusUV,
+    CompressedOutputBusUHV,
+    CompressedOutputBusUEV,
+    CompressedOutputBusUIV,
+    CompressedOutputBusUMV,
+    CompressedOutputBusUXV,
+
+    CompressedInputBusLuV,
+    CompressedInputBusZPM,
+    CompressedInputBusUV,
+    CompressedInputBusUHV,
+    CompressedInputBusUEV,
+    CompressedInputBusUIV,
+    CompressedInputBusUMV,
+    CompressedInputBusUXV,
 
     // semicolon after the comment to reduce merge conflicts
     ;
