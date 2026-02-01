@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -13,7 +12,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.jaquadro.minecraft.storagedrawers.block.BlockDrawersCustom;
 import com.jaquadro.minecraft.storagedrawers.item.ItemCustomDrawers;
 
-import cpw.mods.fml.common.Loader;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -22,7 +21,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.enums.Mods;
 
 public class MTEDrawerFramer extends MTEBasicMachine {
 
