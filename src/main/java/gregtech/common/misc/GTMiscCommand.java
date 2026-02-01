@@ -278,7 +278,7 @@ public final class GTMiscCommand extends GTBaseCommand {
 
         // Usage is /gt global_energy_add username EU
 
-        String EU_string_formatted = EnumChatFormatting.RED + GTUtility.formatNumbers(eu) + EnumChatFormatting.RESET;
+        String EU_string_formatted = EnumChatFormatting.RED + formatNumber(eu) + EnumChatFormatting.RESET;
 
         if (addEUToGlobalEnergyMap(uuid, eu)) {
             sendChatToPlayer(
@@ -326,7 +326,7 @@ public final class GTMiscCommand extends GTBaseCommand {
             "Successfully set " + formatted_username
                 + "'s global energy network to "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(eu)
+                + formatNumber(eu)
                 + EnumChatFormatting.RESET
                 + "EU.");
     }
