@@ -18,10 +18,7 @@ import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
 
-    private final String mTooltip = StatCollector.translateToLocal("gt.softmallet.tooltip");
-    private final String mTooltipMode = StatCollector.translateToLocal("gt.softmallet.tooltip.mode");
     public static final String NBT_SOFT_MALLET_MODE = "gt.soft_mallet_mode";
-
     public static final int SOFT_MALLET_MODE_TOGGLE = 0;
     public static final int SOFT_MALLET_MODE_ALWAYS_ON = 1;
     public static final int SOFT_MALLET_MODE_ALWAYS_OFF = 2;
@@ -53,9 +50,9 @@ public class BehaviourSoftMallet extends BehaviourNone {
 
     public static String getModeText(int mode) {
         return switch (mode) {
-            case SOFT_MALLET_MODE_ALWAYS_ON -> StatCollector.translateToLocal("gt.softmallet.mode.1");
-            case SOFT_MALLET_MODE_ALWAYS_OFF -> StatCollector.translateToLocal("gt.softmallet.mode.2");
-            default -> StatCollector.translateToLocal("gt.softmallet.mode.0");
+            case SOFT_MALLET_MODE_ALWAYS_ON -> "gt.softmallet.mode.1";
+            case SOFT_MALLET_MODE_ALWAYS_OFF -> "gt.softmallet.mode.2";
+            default -> "gt.softmallet.mode.0";
         };
     }
 
@@ -160,8 +157,8 @@ public class BehaviourSoftMallet extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
-        aList.add(this.mTooltipMode);
+        aList.add(StatCollector.translateToLocal("gt.softmallet.tooltip"));
+        aList.add(StatCollector.translateToLocal("gt.softmallet.tooltip.mode"));
         return aList;
     }
 }
