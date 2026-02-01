@@ -8,8 +8,7 @@ public enum Particle {
     PHOTON(false, 1, 0, 0, "Photon", "\u03B3", 0, null),
     NEUTRON(false, 2, 939.57f, 15000, "Neutron", "n\u2070", 0, null),
     PROTON(true, 3, 938.27f, 15000, "Proton", "p\u207A", 1, null),
-    ALPHA(true, 4, 3727.38f, 8000, "Alpha", "\u03B1", 2, null),
-    POSITRON(true, 5, 0.510f, 10000, "Positron", "e\u207A", 1, null);
+    ALPHA(true, 4, 3727.38f, 8000, "Alpha", "\u03B1", 2, null);
 
     public static final Particle[] VALUES = values();
 
