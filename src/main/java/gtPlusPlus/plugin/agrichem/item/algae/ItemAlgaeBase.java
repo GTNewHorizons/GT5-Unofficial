@@ -88,14 +88,17 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
                 int mGeneration = aNBT.getInteger("mGeneration");
 
                 aList.add(
-                    StatCollector.translateToLocalFormatted("GTPP.tooltip.requires_light", boolLoc(mRequiresLight)));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.salt_water", boolLoc(mSaltWater)));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.fresh_water", boolLoc(mFreshWater)));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.temp_tolerance", mTempTolerance));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.growth", mFertility));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.production", mProductionSpeed));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.lifespan", mLifespan));
-                aList.add(StatCollector.translateToLocalFormatted("GTPP.tooltip.generation", mGeneration));
+                    StatCollector
+                        .translateToLocalFormatted("GTPP.algae.tooltip.requires_light", boolLoc(mRequiresLight)));
+                aList
+                    .add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.salt_water", boolLoc(mSaltWater)));
+                aList.add(
+                    StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.fresh_water", boolLoc(mFreshWater)));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.temp_tolerance", mTempTolerance));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.growth", mFertility));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.production", mProductionSpeed));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.lifespan", mLifespan));
+                aList.add(StatCollector.translateToLocalFormatted("GTPP.algae.tooltip.generation", mGeneration));
             }
         } catch (Exception e) {
             e.printStackTrace(GTLog.err);
