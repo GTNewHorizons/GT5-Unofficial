@@ -250,6 +250,12 @@ public class GTRecipeConstants {
         .create(Integer.class, "research_station_data");
 
     /**
+     * Research Station data.
+     */
+    public static final RecipeMetadataKey<String> BIODOME_DIMENSION_STRING = SimpleRecipeMetadataKey
+        .create(String.class, "biodome_dimension");
+
+    /**
      * sievert data required for the biovat recipes.
      */
 

@@ -6,10 +6,16 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_BREWERY_GLOW;
+import static gregtech.api.util.GTRecipeConstants.BIODOME_DIMENSION_STRING;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +24,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,15 +39,16 @@ import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.gui.modularui.multiblock.MTEBiodomeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gtPlusPlus.core.block.ModBlocks;
@@ -60,7 +68,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
             // spotless:off
             transpose(
                 new String[][]{
-                    {"                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                  AAA                  ","                 A   A                 ","                A     A                ","               A  AAA  A               ","               A  A~A  A               ","               A  AAA  A               ","                A     A                ","                 A   A                 ","                  AAA                  ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       "},
+                    {"                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                  AAA                  ","                 A   A                 ","                A     A                ","               A  HHH  A               ","               A  H~H  A               ","               A  HHH  A               ","                A     A                ","                 A   A                 ","                  AAA                  ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       "},
                     {"                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                  ABA                  ","              AA  ABA  AA              ","             ABAA ABA AABA             ","             AABAAABAAABAA             ","              AABADDDABAA              ","               AADDDDDAA               ","            AAAADDAAADDAAAA            ","            BBBBDDAAADDBBBB            ","            AAAADDAAADDAAAA            ","               AADDDDDAA               ","              AABADDDABAA              ","             AABAAABAAABAA             ","             ABAA ABA AABA             ","              AA  ABA  AA              ","                  ABA                  ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       "},
                     {"                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                  A A                  ","                  A A                  ","             AA FFFBFFF AA             ","            ABFFFFFBFFFFFBA            ","            AFBFFFFBFFFFBFA            ","             FFBFxxBxxFBFF             ","            FFFFBxxBxxBFFFF            ","            FFFxxBBBBBxxFFF            ","          AAFFFxxBBBBBxxFFFAA          ","            BBBBBBBBBBBBBBB            ","          AAFFFxxBBBBBxxFFFAA          ","            FFFxxBBBBBxxFFF            ","            FFFFBxxBxxBFFFF            ","             FFBFxxBxxFBFF             ","            AFBFFFFBFFFFBFA            ","            ABFFFFFBFFFFFBA            ","             AA FFFBFFF AA             ","                  A A                  ","                  A A                  ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       "},
                     {"                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                  A A                  ","                  A A                  ","                FFFBFFF                ","            AAFFFFFBFFFFFAA            ","           ABFFFxxxxxxxFFFBA           ","           AFFxxxxxxxxxxxFFA           ","           FFxxxxxxxxxxxxxFF           ","           FFxxxxxxxxxxxxxFF           ","          FFxxxxxxxxxxxxxxxFF          ","          FFxxxxxxxxxxxxxxxFF          ","        AAFFxxxxxxxxxxxxxxxFFAA        ","          BBxxxxxxxxxxxxxxxBB          ","        AAFFxxxxxxxxxxxxxxxFFAA        ","          FFxxxxxxxxxxxxxxxFF          ","          FFxxxxxxxxxxxxxxxFF          ","           FFxxxxxxxxxxxxxFF           ","           FFxxxxxxxxxxxxxFF           ","           AFFxxxxxxxxxxxFFA           ","           ABFFFxxxxxxxFFFBA           ","            AAFFFFFBFFFFFAA            ","                FFFBFFF                ","                  A A                  ","                  A A                  ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       ","                                       "},
@@ -91,16 +99,29 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
         .addElement('E', lazy(() -> ofBlock(ModBlocks.blockCasings2Misc, 12)))
         .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 7))
         .addElement(
+            'H',
+            ofChain(
+                buildHatchAdder(MTEBiodome.class).atLeast(Energy, InputHatch, InputBus)
+                    .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
+                    .hint(1)
+                    .buildAndChain(onElementPass(x -> {}, ofBlock(GregTechAPI.sBlockCasings10, 3)))))
+        .addElement(
             'x',
             ofChain(onElementPass(t -> {}, ofBlock(Blocks.air, 0)), ofTileAdder(MTEBiodome::addMTE, Blocks.air, 0)))
         .build();
 
     private final Set<IBiodomeCompatible> connectedTEs = new HashSet<>();
 
-    private GTRecipe calibrationRecipe;
+    private boolean calibrated = false;
+    private String dimension;
+    private ItemStack[] inputItems;
+    private FluidStack[] inputFluids;
 
     public void setCalibrationRecipe(GTRecipe recipe) {
-        calibrationRecipe = recipe;
+        inputItems = recipe.mInputs;
+        inputFluids = recipe.mFluidInputs;
+        String meta = recipe.getMetadata(BIODOME_DIMENSION_STRING);
+        if (meta != null) dimension = meta;
     }
 
     public boolean addMTE(TileEntity te) {
@@ -127,7 +148,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
     }
 
     public String getDimensionOverride() {
-        return "Nether";
+        return calibrated ? dimension : null;
     }
 
     public MTEBiodome(final int aID, final String aName, final String aNameRegional) {
@@ -244,43 +265,40 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 1.5F)
-            .setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.brewingRecipes;
-    }
-
-    @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsBatchMode() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
+        return RecipeMaps.biodomeFakeCalibrationRecipes;
     }
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEBiodomeGui(this);
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity bmte, long aTick) {
+        if (bmte.isClientSide() || aTick % 20 != 0 || calibrated) return;
+
+        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+            for (int i = 0; i < inputItems.length; i++) {
+                if (inputItems[i] == null) continue;
+                ItemStack removed = bus.removeResource(inputItems[i], inputItems[i].stackSize);
+                if (removed != null) inputItems[i].stackSize -= removed.stackSize;
+                if (inputItems[i].stackSize == 0) inputItems[i] = null;
+            }
+        }
+
+        super.onPostTick(bmte, aTick);
+    }
+
+    public boolean isCalibrated() {
+        return calibrated;
+    }
+
+    public ItemStack[] getInputItems() {
+        return inputItems;
+    }
+
+    public FluidStack[] getInputFluids() {
+        return inputFluids;
     }
 }

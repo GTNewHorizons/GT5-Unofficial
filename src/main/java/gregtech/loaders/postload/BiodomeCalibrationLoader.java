@@ -1,5 +1,7 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.util.GTRecipeConstants.BIODOME_DIMENSION_STRING;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -28,6 +30,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ow"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "Overworld")
             .duration(1)
             .eut(1)
             .fake()
@@ -47,6 +50,7 @@ public class BiodomeCalibrationLoader {
                 Materials.NetherAir.getFluid(256000),
                 Materials.SulfuricAcid.getFluid(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ne"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "Nether")
             .duration(1)
             .eut(1)
             .fake()
