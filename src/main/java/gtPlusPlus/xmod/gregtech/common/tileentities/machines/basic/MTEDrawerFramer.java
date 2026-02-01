@@ -96,7 +96,10 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(this.mDescriptionArray, "Frame your drawers exactly like the framing table!");
+        return ArrayUtils.addAll(
+            this.mDescriptionArray,
+            "Add Framed Drawers to Slot 1",
+            "The following slots are Side, Trim, and Front materials");
     }
 
     private static final FallbackableUITexture progressBarTexture = GTUITextures

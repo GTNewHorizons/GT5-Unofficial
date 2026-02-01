@@ -1106,7 +1106,7 @@ public class RecipesMachinesTiered {
         // Basic Drawer Framer
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_LV.get(1),
+                ItemList.Hull_LV.get(1),
                 MaterialsAlloy.BRONZE.getPlate(4),
                 ItemList.Conveyor_Module_LV.get(2),
                 ItemList.Robot_Arm_LV.get(2))
@@ -1120,7 +1120,7 @@ public class RecipesMachinesTiered {
         // Advanced Drawer Framer
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_MV.get(1),
+                ItemList.Hull_MV.get(1),
                 MaterialsAlloy.SILICON_CARBIDE.getPlate(4),
                 ItemList.Conveyor_Module_MV.get(2),
                 ItemList.Robot_Arm_MV.get(2))
@@ -1134,7 +1134,7 @@ public class RecipesMachinesTiered {
         // Precision Drawer Framer
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.Casing_HV.get(1),
+                ItemList.Hull_HV.get(1),
                 MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(4),
                 ItemList.Conveyor_Module_HV.get(2),
                 ItemList.Robot_Arm_HV.get(2))
