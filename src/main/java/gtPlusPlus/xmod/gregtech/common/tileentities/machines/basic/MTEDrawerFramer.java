@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -21,10 +22,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.enums.Mods;
 
 public class MTEDrawerFramer extends MTEBasicMachine {
-
-    private boolean mStorageDrawersLoaded;
 
     public MTEDrawerFramer(int aID, String aName, String aNameRegional, int aTier) {
 
@@ -89,7 +89,6 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     public MTEDrawerFramer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, 4, 1);
-        mStorageDrawersLoaded = Loader.isModLoaded("StorageDrawers");
     }
 
     @Override
@@ -144,7 +143,7 @@ public class MTEDrawerFramer extends MTEBasicMachine {
     public int checkRecipe() {
 
         // if storage drawers is not loaded, a recipe could never be made
-        if (!mStorageDrawersLoaded) return DID_NOT_FIND_RECIPE;
+        if (!Mods.StorageDrawers.isModLoaded()) return DID_NOT_FIND_RECIPE;
 
         ItemStack drawer_slot = getInputAt(0);
         ItemStack side_slot = getInputAt(1);

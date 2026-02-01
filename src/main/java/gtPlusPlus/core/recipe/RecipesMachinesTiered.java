@@ -1104,8 +1104,6 @@ public class RecipesMachinesTiered {
 
     private static void drawerFramers() {
 
-        if (!Loader.isModLoaded("StorageDrawers")) return;
-
         // Basic Drawer Framer
         GTValues.RA.stdBuilder()
             .itemInputs(
