@@ -62,7 +62,6 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialExtruder
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFishPond;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFluidHeater;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialForgeHammer;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFramer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFuelRefinery;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
@@ -196,7 +195,6 @@ public class CompatHandler {
         GregtechRedstoneLamp.run();
         GregtechRedstoneStrengthDisplay.run();
         GregtechRedstoneStrengthScale.run();
-        GregtechIndustrialFramer.run();
     }
 
     // InterMod

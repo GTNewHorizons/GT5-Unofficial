@@ -548,6 +548,48 @@ public class AssemblerRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
             }
+
+            // Basic Drawer Framer
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    MaterialsAlloy.BRONZE.getPlate(4),
+                    ItemList.Conveyor_Module_LV.get(2),
+                    ItemList.Robot_Arm_LV.get(2))
+                .circuit(11)
+                .itemOutputs(ItemList.Machine_LV_DrawerFramer.get(1))
+                .fluidInputs(MaterialsAlloy.BRONZE.getFluidStack(8 * INGOTS))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(assemblerRecipes);
+
+            // Advanced Drawer Framer
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    MaterialsAlloy.SILICON_CARBIDE.getPlate(4),
+                    ItemList.Conveyor_Module_MV.get(2),
+                    ItemList.Robot_Arm_MV.get(2))
+                .circuit(12)
+                .itemOutputs(ItemList.Machine_MV_DrawerFramer.get(1))
+                .fluidInputs(MaterialsAlloy.SILICON_CARBIDE.getFluidStack(8 * INGOTS))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(assemblerRecipes);
+
+            // Precision Drawer Framer
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    MaterialsAlloy.NIOBIUM_CARBIDE.getPlate(4),
+                    ItemList.Conveyor_Module_HV.get(2),
+                    ItemList.Robot_Arm_HV.get(2))
+                .circuit(13)
+                .itemOutputs(ItemList.Machine_HV_DrawerFramer.get(1))
+                .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(8 * INGOTS))
+                .duration(20 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
         }
 
         // If Cleanroom is enabled, add an assembler recipe

@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
+package gregtech.common.tileentities.machines.basic;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

@@ -678,11 +678,6 @@ public enum GregtechItemList implements IItemContainer {
     GT_Chisel_MV,
     GT_Chisel_HV,
 
-    // Drawer Framer Machines
-    GT_Framer_LV,
-    GT_Framer_MV,
-    GT_Framer_HV,
-
     // ----------------------------------------------------------------------------
 
     /**
