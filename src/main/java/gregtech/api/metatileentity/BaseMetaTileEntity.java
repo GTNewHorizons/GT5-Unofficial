@@ -1447,27 +1447,38 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            if (mWorks) disableWorking();
-                            else {
-                                if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
-                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+
+                            final int mode = gregtech.common.items.behaviors.BehaviourSoftMallet.getMode(tCurrentItem);
+                            final boolean shouldEnable = switch (mode) {
+                                case gregtech.common.items.behaviors.BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_ON -> true;
+                                case gregtech.common.items.behaviors.BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_OFF -> false;
+                                default -> !mWorks;
+                            };
+
+                            if (shouldEnable) {
+                                if (!mWorks) {
+                                    if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                                        GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                    }
+                                    enableWorking();
                                 }
-                                enableWorking();
+                            } else {
+                                if (mWorks) {
+                                    disableWorking();
+                                }
                             }
-                            {
-                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
-                                    // FIXME: localize it
-                                    GTUtility.sendChatToPlayer(aPlayer, getMetaTileEntity().getAlternativeModeText());
-                                } else {
-                                    GTUtility.sendChatTrans(
-                                        aPlayer,
-                                        isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
-                                            : "GT5U.chat.machine.processing.disable");
-                                }
+                            if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
+                                GTUtility.sendChatTrans(aPlayer, getMetaTileEntity().getAlternativeModeText());
+                            } else {
+                                GTUtility.sendChatTrans(
+                                    aPlayer,
+                                    isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                        : "GT5U.chat.machine.processing.disable");
                             }
                             sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
-                            if (tCurrentItem.stackSize == 0)
+                            if (tCurrentItem.stackSize == 0) {
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
+                            }
                         }
                         return true;
                     }

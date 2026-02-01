@@ -6,23 +6,73 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
 
+    private final String mTooltip = StatCollector.translateToLocal("gt.softmallet.tooltip");
+    private final String mTooltipMode = StatCollector.translateToLocal("gt.softmallet.tooltip.mode");
+    public static final String NBT_SOFT_MALLET_MODE = "gt.soft_mallet_mode";
+
+    public static final int SOFT_MALLET_MODE_TOGGLE = 0;
+    public static final int SOFT_MALLET_MODE_ALWAYS_ON = 1;
+    public static final int SOFT_MALLET_MODE_ALWAYS_OFF = 2;
     private final int mCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.softmallet", "Activates and Deactivates Machines");
 
     public BehaviourSoftMallet(int aCosts) {
         this.mCosts = aCosts;
+    }
+
+    public static int getMode(ItemStack stack) {
+        if (stack == null) return SOFT_MALLET_MODE_TOGGLE;
+        if (!stack.hasTagCompound()) return SOFT_MALLET_MODE_TOGGLE;
+        int mode = stack.getTagCompound()
+            .getInteger(NBT_SOFT_MALLET_MODE);
+        return (mode >= SOFT_MALLET_MODE_TOGGLE && mode <= SOFT_MALLET_MODE_ALWAYS_OFF) ? mode
+            : SOFT_MALLET_MODE_TOGGLE;
+    }
+
+    public static void setMode(ItemStack stack, int mode) {
+        if (stack == null) return;
+        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+        stack.getTagCompound()
+            .setInteger(NBT_SOFT_MALLET_MODE, mode);
+    }
+
+    public static int cycleMode(int current) {
+        return (current + 1) % 3;
+    }
+
+    public static String getModeText(int mode) {
+        return switch (mode) {
+            case SOFT_MALLET_MODE_ALWAYS_ON -> StatCollector.translateToLocal("gt.softmallet.mode.1");
+            case SOFT_MALLET_MODE_ALWAYS_OFF -> StatCollector.translateToLocal("gt.softmallet.mode.2");
+            default -> StatCollector.translateToLocal("gt.softmallet.mode.0");
+        };
+    }
+
+    private static void cycleModeWithFeedback(EntityPlayer player, World world, ItemStack stack, double sx, double sy,
+        double sz) {
+        int next = cycleMode(getMode(stack));
+        setMode(stack, next);
+        GTUtility.sendChatTrans(player, getModeText(next));
+        GTUtility.sendSoundToPlayers(world, SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F, sx, sy, sz);
+    }
+
+    @Override
+    public ItemStack onItemRightClick(MetaBaseItem aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+        if (!aWorld.isRemote && aPlayer.isSneaking()) {
+            cycleModeWithFeedback(aPlayer, aWorld, aStack, aPlayer.posX, aPlayer.posY, aPlayer.posZ);
+        }
+        return aStack;
     }
 
     @Override
@@ -111,6 +161,7 @@ public class BehaviourSoftMallet extends BehaviourNone {
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
+        aList.add(this.mTooltipMode);
         return aList;
     }
 }
