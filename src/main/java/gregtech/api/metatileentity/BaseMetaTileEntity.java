@@ -16,6 +16,8 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.common.tools.ToolSoftMallet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.item.EntityItem;
@@ -1449,10 +1451,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
 
-                            final int mode = gregtech.api.items.MetaGeneratedTool.getToolMode(tCurrentItem);
+                            final int mode = MetaGeneratedTool.getToolMode(tCurrentItem);
                             final boolean shouldEnable = switch (mode) {
-                                case BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_ON -> true;
-                                case BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_OFF -> false;
+                                case BehaviourSoftMallet.MODE_ACTIVATE -> true;
+                                case BehaviourSoftMallet.MODE_DEACTIVATE -> false;
                                 default -> !mWorks;
                             };
 

@@ -16,10 +16,8 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
-
-    public static final int SOFT_MALLET_MODE_TOGGLE = 0;
-    public static final int SOFT_MALLET_MODE_ALWAYS_ON = 1;
-    public static final int SOFT_MALLET_MODE_ALWAYS_OFF = 2;
+    public static final int MODE_ACTIVATE = 1;
+    public static final int MODE_DEACTIVATE = 2;
     private final int mCosts;
 
     public BehaviourSoftMallet(int aCosts) {
