@@ -1449,7 +1449,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
 
-                            final int mode = BehaviourSoftMallet.getMode(tCurrentItem);
+                            final int mode = gregtech.api.items.MetaGeneratedTool.getToolMode(tCurrentItem);
                             final boolean shouldEnable = switch (mode) {
                                 case BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_ON -> true;
                                 case BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_OFF -> false;
@@ -1463,10 +1463,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                     }
                                     enableWorking();
                                 }
-                            } else {
-                                if (mWorks) {
-                                    disableWorking();
-                                }
+                            } else if (mWorks) {
+                                disableWorking();
                             }
                             if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
                                 GTUtility.sendChatTrans(aPlayer, getMetaTileEntity().getAlternativeModeText());
