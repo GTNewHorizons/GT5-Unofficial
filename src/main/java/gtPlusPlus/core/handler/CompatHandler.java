@@ -37,7 +37,6 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderGTNH;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderGlueLine;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderIndustrialRockBreaker;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderNuclear;
-import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.Gregtech4Content;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAlgaeContent;
@@ -63,6 +62,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialExtruder
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFishPond;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFluidHeater;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialForgeHammer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFramer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFuelRefinery;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
@@ -98,7 +98,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWaterPump;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFramer;
+import gtPlusPlus.xmod.pamsharvest.fishtrap.FishTrapHandler;
 
 public class CompatHandler {
 
