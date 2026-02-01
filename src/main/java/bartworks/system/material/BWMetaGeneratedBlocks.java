@@ -39,14 +39,12 @@ import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.render.GTRendererBlock;
 
 public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implements IBlockWithTextures {
 
     public static ThreadLocal<TileEntityMetaGeneratedBlock> mTemporaryTileEntity = new ThreadLocal<>();
     protected final OrePrefixes prefix;
-    protected String blockTypeLocalizedName;
 
     public BWMetaGeneratedBlocks(Material p_i45386_1_, Class<? extends TileEntity> tileEntity, String blockName,
         OrePrefixes types) {
@@ -56,11 +54,6 @@ public abstract class BWMetaGeneratedBlocks extends BWTileEntityContainer implem
         this.setBlockTextureName("stone");
         this.setCreativeTab(metaTab);
         this.prefix = types;
-        if (this.prefix != null) {
-            this.blockTypeLocalizedName = GTLanguageManager.addStringLocalization(
-                "bw.blocktype." + this.prefix,
-                this.prefix.getMaterialPrefix() + "%material" + this.prefix.getMaterialPostfix());
-        }
         Werkstoff.werkstoffHashSet.forEach(this::doRegistrationStuff);
     }
 

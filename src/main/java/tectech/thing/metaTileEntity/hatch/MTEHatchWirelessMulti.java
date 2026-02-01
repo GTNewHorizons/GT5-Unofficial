@@ -1,11 +1,8 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -30,12 +27,16 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
     public final long precisionMultiplier = LongMath.pow(10, 15);
@@ -57,22 +58,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     public UUID owner_uuid;
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + YELLOW
-                    + formatNumber(aAmp * V[aTier])
-                    + GRAY
-                    + " EU/t" },
-            aAmp);
+        super(aID, aName, aNameRegional, aTier, 0, null, aAmp);
     }
 
     @Override
@@ -238,5 +224,18 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
                     .setSize(70, 18)
                     .setPos(x, y + 16)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedWithSuffix(
+            "gt.blockmachines.energy_hatch.wireless",
+            new String[] { GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get()),
+                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                    + YELLOW
+                    + formatNumber(maxAmperes * V[mTier])
+                    + GRAY
+                    + " EU/t",
+                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip") });
     }
 }

@@ -37,7 +37,7 @@ public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActi
     protected float mThickness = 0.5f;
 
     public MTEBaseFactoryPipe(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, 0);
     }
 
     protected MTEBaseFactoryPipe(MTEBaseFactoryPipe prototype) {

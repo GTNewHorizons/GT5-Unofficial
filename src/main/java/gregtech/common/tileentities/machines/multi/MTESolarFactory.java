@@ -37,7 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -426,7 +426,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-            .toolTipFinisher(GTValues.AuthorPureBluez);
+            .toolTipFinisher(GTAuthors.AuthorPureBluez);
         return tt;
     }
 
