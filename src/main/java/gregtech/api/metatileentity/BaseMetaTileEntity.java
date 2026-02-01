@@ -78,6 +78,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
+import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
@@ -1448,10 +1449,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
 
-                            final int mode = gregtech.common.items.behaviors.BehaviourSoftMallet.getMode(tCurrentItem);
+                            final int mode = BehaviourSoftMallet.getMode(tCurrentItem);
                             final boolean shouldEnable = switch (mode) {
-                                case gregtech.common.items.behaviors.BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_ON -> true;
-                                case gregtech.common.items.behaviors.BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_OFF -> false;
+                                case BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_ON -> true;
+                                case BehaviourSoftMallet.SOFT_MALLET_MODE_ALWAYS_OFF -> false;
                                 default -> !mWorks;
                             };
 
