@@ -8,16 +8,12 @@ import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
-import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
 
 public class ModTileEntities {
 
     public static void init() {
         Logger.INFO("Registering Tile Entities.");
-        GameRegistry.registerTileEntity(TileEntityPooCollector.class, "TileEntityPooCollector");
-        GameRegistry.registerTileEntity(TileEntityAdvPooCollector.class, "TileEntityAdvPooCollector");
         GameRegistry.registerTileEntity(TileEntityFishTrap.class, "TileFishTrap");
         GameRegistry.registerTileEntity(TileEntityInfiniteFluid.class, "TileInfiniteFluid");
         GameRegistry.registerTileEntity(TileEntityCircuitProgrammer.class, "TileCircuitProgrammer");

@@ -57,14 +57,6 @@ public class RecipeLoaderAgriculturalChem {
         // Organise OreDict
         processAllOreDict();
 
-        // Slurry Production
-        addBasicSlurryRecipes();
-        addAdvancedSlurryRecipes();
-
-        // Organic Fert. Production
-        addBasicOrganiseFertRecipes();
-        addAdvancedOrganiseFertRecipes();
-
         recipeFermentationBase();
         addMiscRecipes();
 
@@ -132,123 +124,6 @@ public class RecipeLoaderAgriculturalChem {
         ArrayList<ItemStack> aTemp = OreDictionary.getOres(aOreName);
         if (!aTemp.isEmpty()) {
             aMap.addAll(aTemp);
-        }
-    }
-
-    private static void addBasicSlurryRecipes() {
-        ItemStack aManureByprod1 = GregtechItemList.TinyManureByproductsDust.get(1);
-        ItemStack aManureByprod2 = GregtechItemList.SmallManureByproductsDust.get(1);
-        ItemStack aDirtDust = GregtechItemList.DriedEarthDust.get(1);
-
-        // Poop Juice to Basic Slurry
-        GTValues.RA.stdBuilder()
-            .circuit(21)
-            .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod1, aManureByprod1)
-            .outputChances(2000, 2000, 500, 500, 250, 250)
-            .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.ManureSlurry, 250))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(centrifugeRecipes);
-
-        // More Efficient way to get byproducts, less Slurry
-        GTValues.RA.stdBuilder()
-            .circuit(20)
-            .itemOutputs(aDirtDust, aDirtDust, aManureByprod1, aManureByprod1, aManureByprod2, aManureByprod2)
-            .outputChances(4000, 3000, 1250, 1250, 675, 675)
-            .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.ManureSlurry, 50))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV / 2)
-            .addTo(centrifugeRecipes);
-    }
-
-    private static void addAdvancedSlurryRecipes() {
-        ItemStack aBone;
-        ItemStack aMeat;
-        ItemStack aEmptyCells = Materials.Empty.getCells(2);
-        ItemStack aInputCells = ItemUtils.getItemStackOfAmountFromOreDict("cellRawAnimalWaste", 2);
-        FluidStack aOutput = new FluidStack(GTPPFluids.FertileManureSlurry, 1_000);
-
-        for (FluidStack aBloodStack : GTPPFluids.getBloodFluids()) {
-            for (ItemStack aBoneStack : mList_Master_Bones) {
-                aBone = GTUtility.copyAmount(2, aBoneStack);
-                for (ItemStack aMeatStack : mList_Master_Meats) {
-                    aMeat = GTUtility.copyAmount(5, aMeatStack);
-                    // Poop Juice to Fertile Slurry
-                    GTValues.RA.stdBuilder()
-                        .itemInputs(aBone, aMeat, aInputCells)
-                        .circuit(10)
-                        .itemOutputs(aEmptyCells)
-                        .fluidInputs(aBloodStack)
-                        .fluidOutputs(aOutput)
-                        .duration(8 * SECONDS)
-                        .eut(TierEU.RECIPE_MV / 2)
-                        .addTo(mixerRecipes);
-                }
-            }
-        }
-    }
-
-    private static void addBasicOrganiseFertRecipes() {
-        FluidStack aInputFluid = new FluidStack(GTPPFluids.ManureSlurry, 1_000);
-        ItemStack aOutputDust = GregtechItemList.OrganicFertilizerDust.get(3);
-        ItemStack aPeat;
-        ItemStack aMeat;
-        for (ItemStack aPeatStack : mPeat) {
-            aPeat = GTUtility.copyAmount(3, aPeatStack);
-            for (ItemStack aMeatStack : mList_Master_Meats) {
-                aMeat = GTUtility.copyAmount(5, aMeatStack);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(aPeat, aMeat)
-                    .itemOutputs(aOutputDust)
-                    .fluidInputs(aInputFluid)
-                    .duration(20 * SECONDS)
-                    .eut(TierEU.RECIPE_MV)
-                    .addTo(UniversalChemical);
-            }
-            aPeat = GTUtility.copyAmount(2, aPeatStack);
-            for (ItemStack aMeatStack : mList_Master_FruitVege) {
-                aMeat = GTUtility.copyAmount(9, aMeatStack);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(aPeat, aMeat)
-                    .itemOutputs(aOutputDust)
-                    .fluidInputs(aInputFluid)
-                    .duration(10 * SECONDS)
-                    .eut(TierEU.RECIPE_MV)
-                    .addTo(UniversalChemical);
-            }
-        }
-    }
-
-    private static void addAdvancedOrganiseFertRecipes() {
-        FluidStack aInputFluid = new FluidStack(GTPPFluids.FertileManureSlurry, 1_000);
-        ItemStack aOutputDust = GregtechItemList.OrganicFertilizerDust.get(7);
-        ItemStack aPeat;
-        ItemStack aMeat;
-        for (ItemStack aPeatStack : mPeat) {
-            aPeat = GTUtility.copyAmount(5, aPeatStack);
-            for (ItemStack aMeatStack : mList_Master_Meats) {
-                aMeat = GTUtility.copyAmount(7, aMeatStack);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(aPeat, aMeat)
-                    .itemOutputs(aOutputDust)
-                    .fluidInputs(aInputFluid)
-                    .duration(10 * SECONDS)
-                    .eut(140)
-                    .addTo(UniversalChemical);
-            }
-            aPeat = GTUtility.copyAmount(3, aPeatStack);
-            for (ItemStack aMeatStack : mList_Master_FruitVege) {
-                aMeat = GTUtility.copyAmount(12, aMeatStack);
-                GTValues.RA.stdBuilder()
-                    .itemInputs(aPeat, aMeat)
-                    .itemOutputs(aOutputDust)
-                    .fluidInputs(aInputFluid)
-                    .duration(5 * SECONDS)
-                    .eut(140)
-                    .addTo(UniversalChemical);
-            }
         }
     }
 
@@ -347,74 +222,6 @@ public class RecipeLoaderAgriculturalChem {
     }
 
     private static void addMiscRecipes() {
-        // Dehydrate Organise Fert to Normal Fert.
-        if (Mods.Forestry.isModLoaded()) {
-            addMiscForestryRecipes();
-        }
-
-        // IC2 Fertilizer
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.OrganicFertilizerDust.get(4))
-            .circuit(12)
-            .itemOutputs(
-                ItemList.IC2_Fertilizer.get(3),
-                GregtechItemList.ManureByproductsDust.get(1),
-                GregtechItemList.ManureByproductsDust.get(1))
-            .outputChances(10000, 2000, 2000)
-            .eut(240)
-            .duration(20 * SECONDS)
-            .addTo(chemicalDehydratorRecipes);
-
-        // Dirt Production
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.DriedEarthDust.get(9))
-            .itemOutputs(new ItemStack(Blocks.dirt))
-            .duration(2 * SECONDS)
-            .eut(8)
-            .addTo(compressorRecipes);
-
-        // Centrifuge Byproducts
-
-        // Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.ManureByproductsDust.get(4))
-            .circuit(20)
-            .itemOutputs(
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Phosphorus, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Calcium, 2L),
-                GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Copper, 1L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
-                GregtechItemList.DriedEarthDust.get(1),
-                GregtechItemList.TinyAmmoniumNitrateDust.get(1))
-            .outputChances(2500, 2500, 750, 1000, 5000, 250)
-            .fluidInputs(Materials.SulfuricAcid.getFluid(250))
-            .fluidOutputs(new FluidStack(GTPPFluids.SulfuricApatiteMix, 50))
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV / 2)
-            .addTo(centrifugeRecipes);
-
-        // Add Fuel Usages
-        GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.PoopJuice, 1_000))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 12)
-            .addTo(semiFluidFuels);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.ManureSlurry, 1_000))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 24)
-            .addTo(semiFluidFuels);
-
-        GTValues.RA.stdBuilder()
-            .fluidInputs(new FluidStack(GTPPFluids.FertileManureSlurry, 1_000))
-            .duration(0)
-            .eut(0)
-            .metadata(FUEL_VALUE, 32)
-            .addTo(semiFluidFuels);
-
         // Red Slurry / Tailings Processing
         GTValues.RA.stdBuilder()
             .circuit(10)
@@ -431,22 +238,5 @@ public class RecipeLoaderAgriculturalChem {
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
-    }
-
-    @Optional.Method(modid = Mods.ModIDs.FORESTRY)
-    private static void addMiscForestryRecipes() {
-        if (ItemList.FR_Fertilizer.hasBeenSet()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(GregtechItemList.OrganicFertilizerDust.get(4))
-                .circuit(11)
-                .itemOutputs(
-                    ItemList.FR_Fertilizer.get(3),
-                    GregtechItemList.ManureByproductsDust.get(1),
-                    GregtechItemList.ManureByproductsDust.get(1))
-                .outputChances(100_00, 20_00, 20_00)
-                .eut(240)
-                .duration(20 * SECONDS)
-                .addTo(chemicalDehydratorRecipes);
-        }
     }
 }
