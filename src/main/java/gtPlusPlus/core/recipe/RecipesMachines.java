@@ -90,34 +90,6 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // Agricultural Sewer
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_MV.get(1),
-                ItemList.FluidRegulator_MV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 2),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                MaterialsAlloy.POTIN.getScrew(6))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector))
-            .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(4 * INGOTS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        // Biocomposite Collector
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                new ItemStack(ModBlocks.blockPooCollector),
-                ItemList.FluidRegulator_IV.get(2),
-                GTOreDictUnificator.get("pipeHugeStaballoy", 4),
-                MaterialsAlloy.ZERON_100.getScrew(16))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector, 1, 8))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(9 * INGOTS))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
         // Flask Configurator
         GTValues.RA.stdBuilder()
             .itemInputs(

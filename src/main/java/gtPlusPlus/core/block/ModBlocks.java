@@ -20,7 +20,6 @@ import gtPlusPlus.core.block.machine.BlockDecayablesChest;
 import gtPlusPlus.core.block.machine.BlockFishTrap;
 import gtPlusPlus.core.block.machine.BlockFlaskSetter;
 import gtPlusPlus.core.block.machine.BlockPestKiller;
-import gtPlusPlus.core.block.machine.BlockPooCollector;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -51,8 +50,6 @@ public final class ModBlocks {
     public static Block blockHellfire;
     public static Block blockInfiniteFLuidTank;
 
-    public static Block blockPooCollector;
-
     public static void init() {
         Logger.INFO("Initializing Blocks.");
 
@@ -74,7 +71,6 @@ public final class ModBlocks {
         GregtechItemList.WitherGuard.set(new ItemStack(new BlockWitherProof()));
         blockCircuitProgrammer = new BlockCircuitProgrammer();
         blockDecayablesChest = new BlockDecayablesChest();
-        blockPooCollector = new BlockPooCollector();
         GregtechItemList.PestKiller.set(new ItemStack(new BlockPestKiller()));
         blockVolumetricFlaskSetter = new BlockFlaskSetter();
 
