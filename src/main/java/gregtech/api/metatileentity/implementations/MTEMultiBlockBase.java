@@ -155,6 +155,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
@@ -218,6 +219,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     private GTCoilTracker.MultiCoilLease coilLease = null;
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
+    protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
@@ -2062,6 +2064,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
+    public boolean addExoticDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti mteHatchDynamoMulti) {
+            mteHatchDynamoMulti.updateTexture(aBaseCasingIndex);
+            mteHatchDynamoMulti.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticDynamoHatches.add(mteHatchDynamoMulti);
+        }
+        return false;
+    }
+
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -2535,6 +2549,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public List<MTEHatch> getExoticEnergyHatches() {
         return mExoticEnergyHatches;
+    }
+
+    public List<MTEHatch> getExoticDynamoHatches() {
+        return mExoticDynamoHatches;
     }
 
     /**
