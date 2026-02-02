@@ -174,21 +174,6 @@ public class RecipesMachines {
                 ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
 
-        // Project Table
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                ItemList.Emitter_EV.get(2),
-                ItemList.Robot_Arm_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 8),
-                MaterialsAlloy.TANTALUM_CARBIDE.getScrew(8),
-                MaterialsAlloy.INCONEL_625.getPlate(4))
-            .itemOutputs(new ItemStack(ModBlocks.blockProjectTable))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(4 * INGOTS))
-            .duration(1 * MINUTES + 30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
         // Reservoir Hatch
         if (RemoteIO.isModLoaded()) {
             GTValues.RA.stdBuilder()

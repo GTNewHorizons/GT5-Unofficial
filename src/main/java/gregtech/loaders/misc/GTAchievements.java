@@ -110,7 +110,7 @@ public class GTAchievements {
             3,
             7,
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
-                IDMetaTool01.JACKHAMMER.ID,
+                IDMetaTool01.JACKHAMMER_HV.ID,
                 1,
                 Materials.TungstenSteel,
                 Materials.TungstenSteel,

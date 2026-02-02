@@ -2283,7 +2283,6 @@ tile.blockFishTrap.name=Fish Catcher
 tile.blockInfiniteFluidTank.name=Infinite Fluid Tank
 tile.blockMiningExplosives.name=Mining Explosives
 tile.blockHellFire.name=Hellish Fire
-tile.blockProjectBench.name=Project Table
 tile.blockTradeBench.name=Trade Bench
 tile.blockModularity.name=Modularity Bench
 tile.blockBlackGate.name=Wither Cage
@@ -3797,8 +3796,8 @@ item.itemBasicTurbine_2.name=Basic Steel Turbine
 interaction.voidexcess.enabled=Void Excess Enabled
 interaction.voidexcess.disabled=Void Excess Disabled
 
-interaction.separateBusses.enabled=Input buses are separated
-interaction.separateBusses.disabled=Input buses are not separated
+interaction.separateBuses.enabled=Input buses are separated
+interaction.separateBuses.disabled=Input buses are not separated
 
 # Added 29/11/21
 
@@ -3966,7 +3965,7 @@ item.ItemCustomSpawnEgg.name=Spawn %s
 item.itemSimpleFiremaker.message.0=You light the fire pit.
 item.itemSimpleFiremaker.message.1=You somehow managed to set yourself on fire...
 item.itemSimpleFiremaker.message.2=You created a fire!
-item.itemSimpleFiremaker.message.3=Your attemp does nothing.
+item.itemSimpleFiremaker.message.3=Your attempt does nothing.
 
 # Added 17/07/23
 item.BasicGenericChemItem.29.name=Limpid Water Catalyst
@@ -4025,11 +4024,11 @@ gtpp.tooltip.cover_item.connection.deny=Allows Connections: false
 gtpp.tooltip.cover_item.change_state=Shift Rmb to change state before applying
 gtpp.tooltip.dark_world_portal.frame.0=Use this to access the Toxic Everglades.
 gtpp.tooltip.dark_world_portal.frame.1=Assembled in the same shape as the Nether Portal.
-gtpp.tooltip.dark_world_portal.0=Place this if you are lazy to create the portal structure, slacker.
+gtpp.tooltip.dark_world_portal.0=Place this if you are too lazy to create the portal structure, slacker.
 gtpp.tooltip.dark_world.ground=Will burn very quickly if it happens to catch fire.
-gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?.
+gtpp.tooltip.dark_world.polluted_dirt=Maybe you can do something with this?
 gtpp.tooltip.dark_world.polluted_dirt.1=This smells worse than a bean fart...
-gtpp.tooltip.alkalus_disk.0=Shines the way, towards the far away Everglades.
+gtpp.tooltip.alkalus_disk.0=Shines the way towards the far away Everglades.
 gtpp.tooltip.alkalus_disk.1=This item produces such a temperature, that you'd hate to use it incorrectly.
 gtpp.tooltip.tool.durability=Durability:
 gtpp.tooltip.tool.turbine_efficiency=Turbine Efficiency:
