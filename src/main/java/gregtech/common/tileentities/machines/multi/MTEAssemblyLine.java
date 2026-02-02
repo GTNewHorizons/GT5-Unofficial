@@ -27,7 +27,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -133,28 +132,18 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Assembly Line, Assline, AL")
-            .addInfo("Used to craft complex machine parts (LuV+)")
-            .addInfo("Items & Fluids are inserted in NEI order, one per slice")
-            .addInfo("Does not run Assembler recipes")
+        tt.addMachineType("machtype.assline")
+            .addInfo("gt.assline.tips.1")
             .addMaxTierSkips(1)
-            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
-            .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-            .addController("Either Grate Machine Casing on the first slice")
-            .addEnergyHatch("Any layer 4 casing", 1)
-            .addMaintenanceHatch("Any layer 1 casing", 3)
-            .addInputBus("As specified on layer 1", 4)
-            .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine casing on layer 1 of last slice", 3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any Grate Machine Casing NOT on the first slice",
-                2)
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false)
+            .addStructureInfo("gt.assline.info.1")
+            .addController("gt.assline.info.2")
+            .addEnergyHatch("gt.assline.info.3", 1)
+            .addMaintenanceHatch("gt.assline.info.4", 3)
+            .addInputBus("gt.assline.info.5", 4)
+            .addInputHatch("gt.assline.info.4", 3)
+            .addOutputBus("gt.assline.info.6", 3)
+            .addStructurePart("gt.blockmachines.hatch.dataaccess.name", "gt.assline.info.7", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

@@ -10,6 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -22,8 +23,10 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvFusionMk5 extends MTEFusionComputer {
@@ -44,21 +47,25 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Fusion Reactor")
-            .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-            .addInfo("§b524,288§7 EU/t and §b1.28B§7 EU capacity per Energy Hatch")
-            .addInfo("If the recipe has a startup cost greater than the")
-            .addInfo("number of energy hatches * cap, you can't do it")
-            .addInfo("Performs 4/4 overclocks")
+        tt.addMachineType("gt.recipe.fusionreactor")
+            .addInfo("gt.fusion.tips.d")
+            .addInfo("gt.fusion.tips", "524,288", "1.28B")
+            .addInfo("gt.fusion.tips.overclock")
             .beginStructureBlock(15, 3, 15, false)
-            .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
-            .addStructureInfo("ALL Hatches must be UEV or better")
+            .addController("gt.fusion.info.1")
+            .addCasingInfoMin(
+                GregtechItemList.Casing_Fusion_External2.get(1)
+                    .getDisplayName(),
+                79)
+            .addStructureInfo("gt.fusion.info.2")
+            .addStructurePart(
+                GregtechItemList.Casing_Fusion_Internal2.get(1)
+                    .getDisplayName(),
+                "gt.fusion.info.3")
+            .addEnergyHatch("gt.fusion.info.4", 2)
+            .addInputHatch("gt.fusion.info.5", 1)
+            .addOutputHatch("gt.fusion.info.4", 3)
+            .addStructureInfo("gt.fusion.info.6", TooltipHelper.voltageText(VoltageIndex.UEV))
             .toolTipFinisher();
         return tt;
     }
