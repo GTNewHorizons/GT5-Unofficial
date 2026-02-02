@@ -41,7 +41,6 @@ public class ResourceUtils {
      *                    extension)
      * @return The complete ResourceLocation pointing to the resource file
      */
-    @SideOnly(Side.CLIENT)
     public static ResourceLocation getCompleteResourceLocation(String basePath, String ext, String resourceKey) {
         final int i = resourceKey.indexOf(':');
         final String domain = (i <= 0) ? "" : resourceKey.substring(0, i);
@@ -49,14 +48,11 @@ public class ResourceUtils {
         return new ResourceLocation(domain, basePath + path + ext);
     }
 
-    @SideOnly(Side.CLIENT)
     public static ResourceLocation getCompleteBlockTextureResourceLocation(String resourceKey) {
         return getCompleteResourceLocation("textures/blocks/", ".png", resourceKey);
     }
 
-    @SideOnly(Side.CLIENT)
     public static ResourceLocation getCompleteItemTextureResourceLocation(String resourceKey) {
         return getCompleteResourceLocation("textures/items/", ".png", resourceKey);
     }
-
 }
