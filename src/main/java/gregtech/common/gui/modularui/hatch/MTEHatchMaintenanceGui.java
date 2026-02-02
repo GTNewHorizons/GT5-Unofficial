@@ -1,11 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
-import binnie.core.genetics.Gene;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -15,7 +11,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.adapter.MaintainceAdapter;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
-import org.jetbrains.annotations.NotNull;
 
 public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance> {
 
@@ -34,10 +29,33 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
         GenericListSyncHandler<MTEMultiBlockBase> attachedMultis = syncManager.findSyncHandler("multis", GenericListSyncHandler.class);
         return super.createRightCornerFlow(panel, syncManager)
             .child(new DynamicDrawable( () -> GTGuiTextures.OVERLAY_NEEDS_WRENCH).asWidget()
-                .tooltipDynamic((tooltip) -> {
-                    for (MTEMultiBlockBase multi : attachedMultis.getValue()){
-                            tooltip.addLine(multi.mName);
-
+                .tooltipDynamic((t) -> {
+                    for (MTEMultiBlockBase multiblock: attachedMultis.getValue()){
+                            t.addLine(multiblock.getLocalName());
+                        if (!multiblock.mCrowbar) t.add(
+                                GTGuiTextures.OVERLAY_NEEDS_CROWBAR.asIcon()
+                                    .size(16, 16))
+                            .add(" ");
+                        if (!multiblock.mHardHammer) t.add(
+                                GTGuiTextures.OVERLAY_NEEDS_HARDHAMMER.asIcon()
+                                    .size(16, 16))
+                            .add(" ");
+                        if (!multiblock.mScrewdriver) t.add(
+                                GTGuiTextures.OVERLAY_NEEDS_SCREWDRIVER.asIcon()
+                                    .size(16, 16))
+                            .add(" ");
+                        if (!multiblock.mSoftMallet) t.add(
+                                GTGuiTextures.OVERLAY_NEEDS_SOFTHAMMER.asIcon()
+                                    .size(16, 16))
+                            .add(" ");
+                        if (!multiblock.mSolderingTool) t.add(
+                                GTGuiTextures.OVERLAY_NEEDS_SOLDERING.asIcon()
+                                    .size(16, 16))
+                            .add(" ");
+                        if (!multiblock.mWrench) t.add(
+                                GTGuiTextures.OVERLAY_NEEDS_WRENCH.asIcon()
+                                    .size(16, 16))
+                            .addLine(" ");
                     }
                 })
         );
