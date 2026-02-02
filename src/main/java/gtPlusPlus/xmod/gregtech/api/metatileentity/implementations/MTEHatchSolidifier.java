@@ -21,7 +21,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import ggfab.GGItemList;
 import gregtech.GTMod;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
@@ -29,7 +28,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.net.GTPacketSetMold;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.base.ItemSelectBaseGui;
 
@@ -123,7 +121,6 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
             this.setInventorySlotContents(moldSlot, phantom);
         } catch (Exception ignored) {}
         markDirty();
-        GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
     }
 
     @Override
@@ -148,7 +145,9 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
                     else if (clickData.mouseButton == 1) newIndex--;
                     newIndex = Math.floorMod(newIndex, solidifierMolds.length);
                     newMold = solidifierMolds[newIndex];
+                    inventoryHandler.setStackInSlot(moldSlot, solidifierMolds[newIndex].copy());
                 }
+
                 setMold(newMold);
             }
 
