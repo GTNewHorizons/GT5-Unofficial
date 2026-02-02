@@ -507,7 +507,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     }
 
     public IWidget createTalkTextField(ModularPanel panel, PanelSyncManager syncManager) {
-        return new TerminalTextFieldWidget(textList, syncManager, panel).setFocusOnGuiOpen(true)
+        return new TerminalTextFieldWidget(textList, syncManager, panel).setFocusOnGuiOpen(false)
             .size(getTerminalRowWidth() - 27, 14);
     }
 
