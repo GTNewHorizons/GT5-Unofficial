@@ -201,42 +201,52 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                } else {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                }
-
-                if (this.componentMaterial.isRadioactive) {
-                    list.add(GTPPCore.GT_Tooltip_Radioactive.get());
-                }
-
-                if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
-                    if (this.unlocalName.toLowerCase()
-                        .contains("hot")) {
-                        list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
+                if (Client.tooltip.showFormula) {
+                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                        list.add(
+                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                    } else {
+                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
                     }
                 }
 
-                // Hidden Tooltip
-                if (KeyboardUtils.isCtrlKeyDown()) {
-                    String type = this.componentMaterial.getTextureSet().mSetName;
-                    String output = type.substring(0, 1)
-                        .toUpperCase() + type.substring(1);
-                    list.add(
-                        EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
-                    list.add(
-                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                            "GTPP.tooltip.material.state",
-                            this.componentMaterial.getState()
-                                .name()));
-                    list.add(
-                        EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
-                            "GTPP.tooltip.material.radioactivity",
-                            this.componentMaterial.vRadiationLevel));
-                } else {
-                    list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
+                if (Client.tooltip.showRadioactiveText) {
+                    if (this.componentMaterial.isRadioactive) {
+                        list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+                    }
+                }
+
+                if (Client.tooltip.showHotIngotText) {
+                    if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {
+                        if (this.unlocalName.toLowerCase()
+                            .contains("hot")) {
+                            list.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
+                        }
+                    }
+                }
+
+                if (Client.tooltip.showCtrlText) {
+                    // Hidden Tooltip
+                    if (KeyboardUtils.isCtrlKeyDown()) {
+                        String type = this.componentMaterial.getTextureSet().mSetName;
+                        String output = type.substring(0, 1)
+                            .toUpperCase() + type.substring(1);
+                        list.add(
+                            EnumChatFormatting.GRAY
+                                + StatCollector.translateToLocalFormatted("GTPP.tooltip.material.type", output));
+                        list.add(
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.state",
+                                this.componentMaterial.getState()
+                                    .name()));
+                        list.add(
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.material.radioactivity",
+                                this.componentMaterial.vRadiationLevel));
+                    } else {
+                        list.add(
+                            EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
+                    }
                 }
             }
         } catch (Exception t) {}

@@ -725,33 +725,6 @@ public final class ModItems {
         GregtechItemList.SmallAmmoniumNitrateDust.set(ammoniumNitrate[1]);
         GregtechItemList.TinyAmmoniumNitrateDust.set(ammoniumNitrate[2]);
 
-        // Farm Animal Fun
-        // Nitrogen, Ammonium Nitrate, Phosphates, Calcium, Copper, Carbon
-        Item[] manureByproducts = ItemUtils.generateSpecialUseDusts(
-            "ManureByproducts",
-            "Manure Byproduct",
-            "(N2H4O3)N2P2Ca3CuC8",
-            Utils.rgbtoHexValue(110, 75, 25));
-        GregtechItemList.ManureByproductsDust.set(manureByproducts[0]);
-        GregtechItemList.SmallManureByproductsDust.set(manureByproducts[1]);
-        GregtechItemList.TinyManureByproductsDust.set(manureByproducts[2]);
-
-        // Basically Guano
-        Item[] organicFertilizer = ItemUtils.generateSpecialUseDusts(
-            "OrganicFertilizer",
-            "Organic Fertilizer",
-            "Ca5(PO4)3(OH)",
-            Utils.rgbtoHexValue(240, 240, 240));
-        GregtechItemList.OrganicFertilizerDust.set(organicFertilizer[0]);
-        GregtechItemList.SmallOrganicFertilizerDust.set(organicFertilizer[1]);
-        GregtechItemList.TinyOrganicFertilizerDust.set(organicFertilizer[2]);
-
-        // Dirt Dust :)
-        Item[] dirt = ItemUtils.generateSpecialUseDusts("Dirt", "Dried Earth", Utils.rgbtoHexValue(65, 50, 15));
-        GregtechItemList.DriedEarthDust.set(dirt[0]);
-        GregtechItemList.SmallDriedEarthDust.set(dirt[1]);
-        GregtechItemList.TinyDriedEarthDust.set(dirt[2]);
-
         // Zirconium
         // Cinter Pellet.
         GregtechItemList.ZirconiumPellet.set(

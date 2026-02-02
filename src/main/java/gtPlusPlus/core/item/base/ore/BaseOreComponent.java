@@ -23,6 +23,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gregtech.common.config.Client;
 import gregtech.api.util.client.ResourceUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -115,14 +116,20 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                } else {
-                    list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+                if (Client.tooltip.showFormula) {
+                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
+                        list.add(
+                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
+                    } else {
+                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+                    }
                 }
-                if (this.componentMaterial.isRadioactive) {
-                    list.add(
-                        GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
+                if (Client.tooltip.showRadioactiveText) {
+                    if (this.componentMaterial.isRadioactive) {
+                        list.add(
+                            GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: "
+                                + this.componentMaterial.vRadiationLevel);
+                    }
                 }
             } else {
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
