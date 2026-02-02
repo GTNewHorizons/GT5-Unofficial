@@ -155,8 +155,7 @@ public class TextureSet {
                     case "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
                         aTextMatIconDir + aSetName + SUFFIXES[i]);
                     default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
-                        aTextMatIconDir + aSetName + SUFFIXES[i],
-                        true);
+                        aTextMatIconDir + aSetName + SUFFIXES[i]);
                 }
             } else {
                 // Check nanites folder for nanites texture to avoid copy pasting large file multiple times.

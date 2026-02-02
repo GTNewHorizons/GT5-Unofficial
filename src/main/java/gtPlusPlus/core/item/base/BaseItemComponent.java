@@ -32,6 +32,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.api.util.client.ResourceUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -331,21 +332,14 @@ public class BaseItemComponent extends Item {
         return this.overlay;
     }
 
-    private static ResourceLocation getResourceLocation(String iconPath) {
-        final int semicolon = iconPath.indexOf(':');
-        final String domain = iconPath.substring(0, semicolon);
-        final String path = "textures/items/" + iconPath.substring(semicolon + 1) + ".png";
-        return new ResourceLocation(domain, path);
-    }
-
     @Override
     public void registerIcons(final IIconRegister i) {
         final String iconPath = getCorrectTextures();
-        final ResourceLocation iconResource = getResourceLocation(iconPath);
+        final ResourceLocation iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(iconPath);
         this.base = ResourceUtils.resourceExists(iconResource) ? i.registerIcon(iconPath) : RENDERING_ERROR.getIcon();;
 
         final String overlayPath = getCorrectTextures() + "_OVERLAY";
-        final ResourceLocation overlayResource = getResourceLocation(overlayPath);
+        final ResourceLocation overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(overlayPath);
         this.overlay = ResourceUtils.resourceExists(overlayResource) ? i.registerIcon(overlayPath)
             : Textures.InvisibleIcon.INVISIBLE_ICON;
     }

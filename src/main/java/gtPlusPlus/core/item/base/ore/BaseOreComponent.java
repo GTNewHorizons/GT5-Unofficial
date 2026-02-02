@@ -23,8 +23,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gregtech.common.config.Client;
 import gregtech.api.util.client.ResourceUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -165,13 +165,6 @@ public class BaseOreComponent extends Item {
         return this.componentType.hasOverlay();
     }
 
-    private static ResourceLocation getResourceLocation(String iconPath) {
-        final int semicolon = iconPath.indexOf(':');
-        final String domain = iconPath.substring(0, semicolon);
-        final String path = "textures/items/" + iconPath.substring(semicolon + 1) + ".png";
-        return new ResourceLocation(domain, path);
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
@@ -189,7 +182,8 @@ public class BaseOreComponent extends Item {
                     + "materialicons/METALLIC/"
                     + this.componentType.COMPONENT_NAME
                     + "_OVERLAY";
-                final ResourceLocation overlayResource = getResourceLocation(overlayPath);
+                final ResourceLocation overlayResource = ResourceUtils
+                    .getCompleteItemTextureResourceLocation(overlayPath);
 
                 this.overlay = ResourceUtils.resourceExists(overlayResource)
                     ? par1IconRegister.registerIcon(overlayPath)

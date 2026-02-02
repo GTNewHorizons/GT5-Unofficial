@@ -23,7 +23,7 @@ import gregtech.common.config.Gregtech;
 public class Textures {
 
     public static final String _OVERLAY = "_OVERLAY";
-    public static final String ICONSETS = "iconsets";
+    public static final String ICONSETS = "iconsets/";
 
     // spotless:off
     public enum InvisibleIcon implements IIcon {
@@ -2452,7 +2452,6 @@ public class Textures {
                                                                              // long array
 
         public static final int ERROR_TEXTURE_INDEX = (1 << 7) + 97;
-        public static final String TEXTURES_BLOCKS = "textures/blocks/";
         private static final Map<ITexture, Integer> reverseMap = new HashMap<>();
 
         static {
@@ -2491,6 +2490,8 @@ public class Textures {
         }
 
         final boolean optionalResource;
+        final String mIconName;
+        final ResourceLocation iconResource;
 
         /**
          * @param optionalResource {@code true} if the Resource is optional
@@ -2498,15 +2499,10 @@ public class Textures {
          */
         BlockIcons(boolean optionalResource) {
             this.optionalResource = optionalResource;
+            mIconName = GregTech.resourceDomain + ":" + ICONSETS + this;
+            iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
             GregTechAPI.sGTBlockIconload.add(this);
-            if (Gregtech.debug.logRegisterIcons) logIcons();
-        }
-
-        private void logIcons() {
-            final String name = this.toString();
-            final ResourceLocation iconResource = GregTech
-                .getResourceLocation(TEXTURES_BLOCKS + ICONSETS, name + ".png");
-            GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
+            if (Gregtech.debug.logRegisterIcons) GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
         }
 
         public static ITexture getCasingTextureForId(int id) {
@@ -2547,19 +2543,18 @@ public class Textures {
 
         @Override
         public void run() {
-            final String name = this.toString();
-            final ResourceLocation resLoc = GregTech.getResourceLocation(TEXTURES_BLOCKS + ICONSETS, name + ".png");
             // Icons with a fallback are optional and later replaced with their fallback
-            mIcon = !optionalResource || ResourceUtils.resourceExists(resLoc)
-                ? GregTechAPI.sBlockIcons.registerIcon(GregTech.getResourcePath(ICONSETS, name))
+            mIcon = !optionalResource || ResourceUtils.resourceExists(iconResource)
+                ? GregTechAPI.sBlockIcons.registerIcon(mIconName)
                 : InvisibleIcon.INVISIBLE_ICON;
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
 
-            protected IIcon mIcon, mOverlay = null;
+            protected final ResourceLocation iconResource, overlayResource;
             protected final String mIconName, mOverlayName;
-            private final boolean optionalResource;
+            protected final boolean optionalResource;
+            protected IIcon mIcon, mOverlay = null;
 
             public CustomIcon(String aIconName) {
                 this(aIconName, false);
@@ -2567,41 +2562,27 @@ public class Textures {
 
             public CustomIcon(String aIconName, boolean optionalResource) {
                 mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
-                this.optionalResource = optionalResource;
-                mOverlayName = mIconName + _OVERLAY;
-                GregTechAPI.sGTBlockIconload.add(this);
-                if (Gregtech.debug.logRegisterIcons) logIcons();
-            }
+                iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
 
-            private void logIcons() {
-                final ResourceLocation iconResource = getResourceLocation(mIconName);
-                GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
-                final ResourceLocation overlayResource = getResourceLocation(mOverlayName);
-                GTLog.ico.println("O " + overlayResource);
+                mOverlayName = mIconName + _OVERLAY;
+                overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
+                this.optionalResource = optionalResource;
+                // Prevents scheduling multiple registrations of same custom block icon
+                GregTechAPI.sGTBlockIconload.add(this);
+                if (Gregtech.debug.logRegisterIcons) {
+                    GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
+                    GTLog.ico.println("O " + overlayResource);
+                }
             }
 
             @Override
             public void run() {
-                mIcon = optionalResource && !ResourceUtils.resourceExists(getResourceLocation(mIconName))
-                    ? InvisibleIcon.INVISIBLE_ICON
+                mIcon = optionalResource && !ResourceUtils.resourceExists(iconResource) ? InvisibleIcon.INVISIBLE_ICON
                     : GregTechAPI.sBlockIcons.registerIcon(mIconName);
                 // This makes the block _OVERLAY icon totally optional
-                if (ResourceUtils.resourceExists(getResourceLocation(mOverlayName))) {
+                if (ResourceUtils.resourceExists(overlayResource)) {
                     mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
                 }
-            }
-
-            private ResourceLocation getResourceLocation(String iconName) {
-                final String overlayDomain, overlayPath;
-                final int i = iconName.indexOf(':');
-                if (i >= 0) {
-                    overlayDomain = i > 1 ? iconName.substring(0, i) : "minecraft";
-                    overlayPath = TEXTURES_BLOCKS + iconName.substring(i + 1) + ".png";
-                } else {
-                    overlayDomain = "minecraft";
-                    overlayPath = TEXTURES_BLOCKS + iconName + ".png";
-                }
-                return new ResourceLocation(overlayDomain, overlayPath);
             }
 
             @Override
@@ -2678,19 +2659,20 @@ public class Textures {
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
 
         IIcon mIcon, mOverlay;
+        final String mIconName;
+        final ResourceLocation iconResource, overlayResource;
+        final String mOverlayName;
 
         ItemIcons() {
+            mIconName = GregTech.resourceDomain + ":" + ICONSETS + this;
+            iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
+            mOverlayName = mIconName + _OVERLAY;
+            overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
             GregTechAPI.sGTItemIconload.add(this);
-            if (Gregtech.debug.logRegisterIcons) logIcons();
-        }
-
-        private void logIcons() {
-            final String iconPath = GregTech.getResourcePath(ICONSETS, this.toString());
-            final ResourceLocation iconResource = getResourceLocation(iconPath);
-            GTLog.ico.println("R " + iconResource);
-            final String overlayPath = GregTech.getResourcePath(ICONSETS, this + _OVERLAY);
-            final ResourceLocation overlayResource = getResourceLocation(overlayPath);
-            GTLog.ico.println("O " + overlayResource);
+            if (Gregtech.debug.logRegisterIcons) {
+                GTLog.ico.println("R " + iconResource);
+                GTLog.ico.println("O " + overlayResource);
+            }
         }
 
         @Override
@@ -2710,14 +2692,16 @@ public class Textures {
 
         @Override
         public void run() {
-            final String iconPath = GregTech.getResourcePath(ICONSETS, this.toString());
-            final ResourceLocation iconResource = getResourceLocation(iconPath);
-            mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sItemIcons.registerIcon(iconPath)
-                : RENDERING_ERROR.getIcon();
-            final String overlayPath = GregTech.getResourcePath(ICONSETS, this + _OVERLAY);
-            mOverlay = ResourceUtils.resourceExists(getResourceLocation(overlayPath))
-                ? GregTechAPI.sItemIcons.registerIcon(overlayPath)
-                : InvisibleIcon.INVISIBLE_ICON;
+            final boolean iconExists = ResourceUtils.resourceExists(iconResource);
+            final boolean overlayExists = ResourceUtils.resourceExists(overlayResource);
+            if (iconExists || overlayExists) {
+                mIcon = iconExists ? GregTechAPI.sItemIcons.registerIcon(mIconName) : InvisibleIcon.INVISIBLE_ICON;
+                mOverlay = overlayExists ? GregTechAPI.sItemIcons.registerIcon(mOverlayName)
+                    : InvisibleIcon.INVISIBLE_ICON;
+            } else {
+                mIcon = InvisibleIcon.INVISIBLE_ICON;
+                mOverlay = RENDERING_ERROR.getOverlayIcon();
+            }
         }
 
         private static ResourceLocation getResourceLocation(String iconPath) {
@@ -2730,21 +2714,20 @@ public class Textures {
         public static class CustomIcon implements IIconContainer, Runnable {
 
             protected IIcon mIcon, mOverlay;
-            protected String mIconName;
+            protected String mIconName, mOverlayName;
+            protected ResourceLocation iconResource, overlayResource;
 
             public CustomIcon(String aIconName) {
-                mIconName = aIconName;
+                mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
+                iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
+                mOverlayName = mIconName + _OVERLAY;
+                overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
+                // Prevents scheduling multiple registrations of same custom item icon
                 GregTechAPI.sGTItemIconload.add(this);
-                if (Gregtech.debug.logRegisterIcons) logIcons();
-            }
-
-            private void logIcons() {
-                final String iconPath = GregTech.getResourcePath(mIconName);
-                final ResourceLocation iconResource = getResourceLocation(iconPath);
-                GTLog.ico.println("R " + iconResource);
-                final String overlayPath = GregTech.getResourcePath(mIconName + _OVERLAY);
-                final ResourceLocation overlayResource = getResourceLocation(overlayPath);
-                GTLog.ico.println("O " + overlayResource);
+                if (Gregtech.debug.logRegisterIcons) {
+                    GTLog.ico.println("R " + iconResource);
+                    GTLog.ico.println("O " + overlayResource);
+                }
             }
 
             @Override
@@ -2764,15 +2747,16 @@ public class Textures {
 
             @Override
             public void run() {
-                final String iconPath = GregTech.getResourcePath(mIconName);
-                final ResourceLocation iconResource = getResourceLocation(iconPath);
-                mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sItemIcons.registerIcon(iconPath)
-                    : RENDERING_ERROR.getIcon();
-
-                final String overlayPath = GregTech.getResourcePath(mIconName + _OVERLAY);
-                mOverlay = ResourceUtils.resourceExists(getResourceLocation(overlayPath))
-                    ? GregTechAPI.sItemIcons.registerIcon(overlayPath)
-                    : InvisibleIcon.INVISIBLE_ICON;
+                final boolean iconExists = ResourceUtils.resourceExists(iconResource);
+                final boolean overlayExists = ResourceUtils.resourceExists(overlayResource);
+                if (iconExists || overlayExists) {
+                    mIcon = iconExists ? GregTechAPI.sItemIcons.registerIcon(mIconName) : InvisibleIcon.INVISIBLE_ICON;
+                    mOverlay = overlayExists ? GregTechAPI.sItemIcons.registerIcon(mOverlayName)
+                        : InvisibleIcon.INVISIBLE_ICON;
+                } else {
+                    mIcon = InvisibleIcon.INVISIBLE_ICON;
+                    mOverlay = RENDERING_ERROR.getOverlayIcon();
+                }
             }
         }
     }
