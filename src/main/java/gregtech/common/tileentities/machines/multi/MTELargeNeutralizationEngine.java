@@ -28,6 +28,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
@@ -37,6 +39,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int structureTier;
     private int mCasing;
+
+    public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
+
+    public MTELargeNeutralizationEngine(String aName) {
+        super(aName);
+    }
 
     @Nullable
     private static Integer getStructureCasingTier(Block b, int m) {
@@ -90,5 +100,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 .build();
         }
         return STRUCTURE_DEFINITION;
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTELargeNeutralizationEngine(this.mName);
     }
 }

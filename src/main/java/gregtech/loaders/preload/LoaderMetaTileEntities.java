@@ -164,6 +164,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeBoilerTungstenSteel;
 import gregtech.common.tileentities.machines.multi.MTELargeChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTELargeFluidExtractor;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
+import gregtech.common.tileentities.machines.multi.MTELargeNeutralizationEngine;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineGas;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
@@ -604,6 +605,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.DecayWarehouse.set(
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
                 .getStackForm(1));
+
+        ItemList.Machine_Multi_Large_Neutralization_Engine.set(
+            new MTELargeNeutralizationEngine(
+                LARGE_NEUTRALIZATION_ENGINE_CONTROLLER.ID,
+                "multimachine.large-neutralization-engine",
+                "Large Neutralization Engine").getStackForm(1));
 
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTValues.AuthorThree));
