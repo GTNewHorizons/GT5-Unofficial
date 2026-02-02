@@ -58,6 +58,7 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
                             .addLine(" ");
                     }
                 })
+                .tooltipAutoUpdate(true)
         );
     }
 

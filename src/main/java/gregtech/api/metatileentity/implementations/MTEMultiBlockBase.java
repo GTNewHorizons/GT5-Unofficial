@@ -2513,6 +2513,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         deactivateCoilLease();
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
+            for(MTEHatchMaintenance hatch : mMaintenanceHatches){
+                if(hatch.getMultiBlocks().contains(this)){
+                    hatch.getMultiBlocks().remove(this);
+            }
+        }
 
         if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
             GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
@@ -3595,6 +3600,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mSolderingTool = true;
         mCrowbar = true;
     }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity baseMetaTileEntity) {
+        super.onFirstTick(baseMetaTileEntity);
+        for (MTEHatchMaintenance hatch : mMaintenanceHatches){
+            hatch.addMultiblock(this);
+        }
+    }
+
+
 
     @Override
     public final ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {

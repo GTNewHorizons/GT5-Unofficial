@@ -83,9 +83,7 @@ public class MTEHatchMaintenance extends MTEHatch implements IAddUIWidgets, IAli
     }
 
     public void addMultiblock(MTEMultiBlockBase controller) {
-        if(controller.mMachine){
             multiblocks.add(controller);
-        }
     }
 
     public void setMultiblocks(@NotNull List<MTEMultiBlockBase> controllers) {
