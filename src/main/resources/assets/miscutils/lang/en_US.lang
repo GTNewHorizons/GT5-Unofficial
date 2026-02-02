@@ -2283,7 +2283,6 @@ tile.blockFishTrap.name=Fish Catcher
 tile.blockInfiniteFluidTank.name=Infinite Fluid Tank
 tile.blockMiningExplosives.name=Mining Explosives
 tile.blockHellFire.name=Hellish Fire
-tile.blockProjectBench.name=Project Table
 tile.blockTradeBench.name=Trade Bench
 tile.blockModularity.name=Modularity Bench
 tile.blockBlackGate.name=Wither Cage

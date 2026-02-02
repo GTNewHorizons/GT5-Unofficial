@@ -27,7 +27,7 @@ import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 
 public class GuiHandler implements IGuiHandler {
 
-    public static final int GUI1 = 0; // Project Table
+    public static final int GUI1 = 0; // None
     public static final int GUI2 = 1; // None
     public static final int GUI3 = 2; // None
     public static final int GUI4 = 3; // None
