@@ -551,12 +551,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean machineMetalGUI;
 
-        // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        @Config.Comment("If true, use the definition of the metallic tint in GT5U, otherwise NHCore will set it to white.")
-        @Config.DefaultBoolean(true)
-        @Config.RequiresMcRestart
-        public boolean useMachineMetal;
-
         @Config.Comment("If true, Crafting Input Bus/Buffer will drop items and fluids if they cannot be returned to the AE network.")
         @Config.DefaultBoolean(true)
         public boolean allowCribDropItems;

@@ -445,8 +445,6 @@ public class GTPreLoad {
         GregTechAPI.sMachineThunderExplosions = Gregtech.machines.machineThunderExplosions;
         GregTechAPI.sColoredGUI = Gregtech.machines.coloredGUI;
         GregTechAPI.sMachineMetalGUI = Gregtech.machines.machineMetalGUI;
-        // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTechAPI.sUseMachineMetal = Gregtech.machines.useMachineMetal;
 
         // client
         loadClientConfig();
