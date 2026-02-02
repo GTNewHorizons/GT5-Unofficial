@@ -20,20 +20,10 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.animatedText;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static gregtech.api.util.CustomGlyphs.AIR;
-import static gregtech.api.util.CustomGlyphs.ALEPH;
 import static gregtech.api.util.CustomGlyphs.CHAOS;
-import static gregtech.api.util.CustomGlyphs.CIRCLE_CROSS;
-import static gregtech.api.util.CustomGlyphs.CIRCLE_STAR;
 import static gregtech.api.util.CustomGlyphs.EARTH;
-import static gregtech.api.util.CustomGlyphs.EMPTY_SET;
-import static gregtech.api.util.CustomGlyphs.HIGH_VOLTAGE;
-import static gregtech.api.util.CustomGlyphs.MAGNET;
-import static gregtech.api.util.CustomGlyphs.OMEGA;
 import static gregtech.api.util.CustomGlyphs.ORDER;
-import static gregtech.api.util.CustomGlyphs.SPARKLES;
 import static gregtech.api.util.CustomGlyphs.STAR;
-import static gregtech.api.util.CustomGlyphs.SUBSCRIPT0;
-import static gregtech.api.util.CustomGlyphs.SUPERSCRIPT0;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -52,11 +42,14 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.fluid.GTFluidTank;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.internal.IGTRecipeAdder;
 import gregtech.api.net.IGT_NetworkHandler;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.CustomGlyphs;
 import gregtech.api.util.GTChunkAssociatedData;
 
 /**
@@ -206,7 +199,7 @@ public class GTValues {
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-        EnumChatFormatting.BLACK.toString(), // LV, 1
+        EnumChatFormatting.DARK_GREEN.toString(), // LV, 1
         EnumChatFormatting.GOLD.toString(), // MV, 2
         EnumChatFormatting.YELLOW.toString(), // HV, 3
         EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
@@ -555,6 +548,16 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Weabo";
 
+    public static final String Authorguid118 = "Author: " + EnumChatFormatting.WHITE
+        + EnumChatFormatting.BOLD
+        + "gu"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "id"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "118";
+
     public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
@@ -632,6 +635,18 @@ public class GTValues {
             EnumChatFormatting.DARK_GREEN + BOLD,
             EnumChatFormatting.DARK_GREEN + OBFUSCATED + BOLD));
 
+    public static final String AuthorJulia =
+        // spotless:off
+        EnumChatFormatting.BOLD.toString() +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES +
+        EnumChatFormatting.AQUA            + "J"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "u"                   +
+        EnumChatFormatting.WHITE           + "l"                   +
+        EnumChatFormatting.LIGHT_PURPLE    + "i"                   +
+        EnumChatFormatting.AQUA            + "a"                   +
+        EnumChatFormatting.GOLD            + CustomGlyphs.SPARKLES ;
+        // spotless:on
+
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
     public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
@@ -645,16 +660,21 @@ public class GTValues {
         + EnumChatFormatting.DARK_BLUE
         + "ez";
 
+    // for use with the chain
+    public static final Supplier<String> AUTHOR_SUPPLIER = () -> "Author: ";
+    public static final Supplier<String> AUTHORS_SUPPLIER = () -> "Authors: ";
+    public static final Supplier<String> AND_SUPPLIER = () -> EnumChatFormatting.RESET + " & ";
+
     // a list specifically for random selection of formatting codes.
-    private static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE,
-        GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
+    public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,
+        AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, OBFUSCATED, UNDERLINE };
 
     public static final Supplier<String> fancyAuthorChrom = chain(
-        createChromLetter("C", ORDER, MAGNET, HIGH_VOLTAGE),
-        createChromLetter("h", EARTH, ALEPH + SUBSCRIPT0, OMEGA + SUPERSCRIPT0),
-        createChromLetter("r", CHAOS, "ṟ", SPARKLES),
-        createChromLetter("o", AIR, CIRCLE_CROSS, EMPTY_SET),
-        createChromLetter("m", STAR, CIRCLE_STAR, "⏧"));
+        createChromLetter("C", ORDER),
+        createChromLetter("h", EARTH),
+        createChromLetter("r", CHAOS),
+        createChromLetter("o", AIR),
+        createChromLetter("m", STAR));
 
     public static final Supplier<String> AuthorThree = chain(
         animatedText(
@@ -691,11 +711,12 @@ public class GTValues {
             }
             colorList[i] = builder.toString();
         }
-        return chromAnimatedText(" ", 1, 1000, colorList);
+        return emptyAnimatedText(1, 1000, colorList);
     }
 
     // special version of the animated text that strips the return value of spaces, don't bother using this elsewhere
-    private static Supplier<String> chromAnimatedText(String text, int posstep, int delay, String... formattingArray) {
+    private static Supplier<String> emptyAnimatedText(int posstep, int delay, String... formattingArray) {
+        String text = " ";
         if (text == null || formattingArray == null || formattingArray.length == 0) return () -> "";
 
         final int finalDelay = Math.max(delay, 1);
@@ -713,6 +734,76 @@ public class GTValues {
             return sb.toString()
                 .replaceAll("\\s", "");
         };
+    }
+
+    public static final Supplier<String> AuthorAuynonymous = chain(
+        createAuynonymousLetter(0),
+        createAuynonymousLetter(1),
+        createAuynonymousLetter(2),
+        createAuynonymousLetter(3),
+        createAuynonymousLetter(4),
+        createAuynonymousLetter(5),
+        createAuynonymousLetter(6),
+        createAuynonymousLetter(7),
+        createAuynonymousLetter(8),
+        createAuynonymousLetter(9),
+        createAuynonymousLetter(10));
+
+    private static Supplier<String> createAuynonymousLetter(int index) {
+        final String[] letters = new String[] { "A", "u", "y", "n", "o", "n", "y", "m", "o", "u", "s" };
+        String[] colorList = new String[letters.length];
+        final String letter = letters[index];
+        for (int i = 0; i < letters.length; i++) {
+            colorList[i] = LIGHT_PURPLE
+                + (i == (letters.length - index - 1) ? EnumChatFormatting.BOLD + "" + EnumChatFormatting.ITALIC + "<3"
+                    : letter);
+        }
+        return emptyAnimatedText(1, 1000, colorList);
+    }
+
+    public static final Supplier<String> AuthorSerenibyss = chain(
+        getAuthorSerenibyssLetter("S", 3, LIGHT_PURPLE, 11, WHITE, 25, AQUA),
+        getAuthorSerenibyssLetter("e", 12, AQUA, 18, LIGHT_PURPLE, 29, WHITE),
+        getAuthorSerenibyssLetter("r", 0, WHITE, 10, LIGHT_PURPLE, 20, AQUA),
+        getAuthorSerenibyssLetter("e", 9, LIGHT_PURPLE, 17, AQUA, 22, WHITE),
+        getAuthorSerenibyssLetter("n", 6, WHITE, 14, AQUA, 27, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("i", 1, AQUA, 15, WHITE, 21, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("b", 13, WHITE, 19, LIGHT_PURPLE, 23, WHITE),
+        getAuthorSerenibyssLetter("y", 2, AQUA, 8, LIGHT_PURPLE, 24, WHITE),
+        getAuthorSerenibyssLetter("s", 5, AQUA, 16, WHITE, 26, LIGHT_PURPLE),
+        getAuthorSerenibyssLetter("s", 4, LIGHT_PURPLE, 7, WHITE, 28, AQUA));
+
+    private static Supplier<String> getAuthorSerenibyssLetter(String letter, Object... switchParams) {
+        int[] switchIntervals = new int[switchParams.length / 2];
+        String[] colors = new String[switchParams.length / 2];
+        for (int i = 0; i < switchParams.length; i += 2) {
+            switchIntervals[i / 2] = (int) switchParams[i];
+            colors[i / 2] = (String) switchParams[i + 1];
+        }
+
+        String[] colorAlternator = new String[30];
+        int index = switchIntervals[0];
+        int switchIndex = 0;
+        boolean obfuscated = false;
+        do {
+            String color;
+            if (ArrayUtils.contains(switchIntervals, index)) {
+                obfuscated = true;
+                color = colors[switchIndex] + OBFUSCATED;
+            } else if (obfuscated) {
+                obfuscated = false;
+                switchIndex++;
+                if (switchIndex == colors.length) switchIndex = 0;
+                color = colors[switchIndex];
+            } else {
+                color = colors[switchIndex];
+            }
+            colorAlternator[index] = color;
+            index++;
+            if (index == 30) index = 0;
+        } while (index != switchIntervals[0]);
+
+        return animatedText(letter, 1, 250, colorAlternator);
     }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],

@@ -1,5 +1,6 @@
 package gtnhlanth.common.tileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -14,7 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -454,7 +455,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('k', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coils
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
-                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
+                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(6).casingIndex(CASING_INDEX).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
                 		MTESynchrotron::getAntennaBlockTier,
@@ -462,15 +463,15 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
                 		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
-                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
-                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
+                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(4).casingIndex(CASING_INDEX).build())
+                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(5).casingIndex(CASING_INDEX).build())
                 .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX)
-                        .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
+                        .hint(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
-                        .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
+                        .hint(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
-                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
+                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(3).casingIndex(CASING_INDEX)
                 		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
                 .build();
     }
@@ -499,27 +500,29 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo("Due to the relativistic Larmor effect, it produces then outputs a photon beam")
             .addInfo("The " + createEnergyText("Beam Energy") + ", " + createFocusText("Beam Focus") + ", and " + createRateText("Beam Rate") + " are all determined by the formulae in this tooltip")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.AQUA + "32 kL/s" + EnumChatFormatting.GRAY + " of "  + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " is required for operation, and " + EnumChatFormatting.RED + "hot coolant" + EnumChatFormatting.WHITE +" is returned")
             .addInfo("The input beam must have a " + createFocusText("Focus") + " of at least 25")
             .addInfo("The " + createFocusText("Output Beam Focus") + " can be improved by using lower temperature coolant")
             .addInfo("Valid coolants:")
-            .addInfo(coolantLine("Coolant",300))
             .addInfo(coolantLine("Liquid Nitrogen",90))
             .addInfo(coolantLine("Liquid Oxygen",90))
+            .addInfo(coolantLine("Coolant",60))
             .addInfo(coolantLine("Super Coolant",1))
             .addInfo("There are two types of " + EnumChatFormatting.DARK_AQUA + "Antenna Casings" + EnumChatFormatting.GRAY + ", upgrade them to improve the machine")
             .addInfo("All energies in the following formulae must be in keV")
             .addSeparator()
             .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.RED + "IR " + EnumChatFormatting.WHITE + "* "+EnumChatFormatting.DARK_GREEN + "Power Scale Factor")
             .addInfo("where " + EnumChatFormatting.RED + "IR " + EnumChatFormatting.WHITE + " =  (" + EnumChatFormatting.YELLOW + "Input Beam Energy"+EnumChatFormatting.WHITE+")^(1.13*("+EnumChatFormatting.DARK_AQUA+"Antenna Tier"+EnumChatFormatting.WHITE+")^(4/9))/40,000,000")
-            .addInfo("and "+EnumChatFormatting.DARK_GREEN+"Power Scale Factor"+EnumChatFormatting.WHITE+" = 1 - 0.15^("+EnumChatFormatting.BLUE + "Total EU/t Provided" + EnumChatFormatting.WHITE + " / (30,384 * (" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ")^(5/2)))")
+            .addInfo("and "+EnumChatFormatting.DARK_GREEN+"Power Scale Factor"+EnumChatFormatting.WHITE+" = 1 - 0.15^("+EnumChatFormatting.BLUE + "Total EU/t Provided" + EnumChatFormatting.WHITE + " / (30,384 * (" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ")^(2.5)))")
             .addSeparator()
-            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + ")/2.5")
+            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + "depends on the relation between " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " and " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE)
             .addInfo(EnumChatFormatting.WHITE + "where " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + " = max(min(1.5^(12 - " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + "/40), 90), 10)")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " > " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + ")/2.5")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.GREEN + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
             .addSeparator()
             .addInfo(createRateText("Output Beam Rate") + EnumChatFormatting.WHITE + " = floor(2.5^(" + EnumChatFormatting.DARK_AQUA + "Antenna Tier" + EnumChatFormatting.WHITE + ") * sqrt(" + EnumChatFormatting.BLUE + "Total EU/t Provided)" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.YELLOW + "Input Beam Rate" + EnumChatFormatting.WHITE + "/15,000)")
-            .addTecTechHatchInfo()
 
             .beginStructureBlock(36, 7, 34, true)
             .addController("Front middle")
@@ -529,12 +532,12 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(2))
-            .addMaintenanceHatch(addDotText(3))
-            .addInputHatch(addDotText(4))
-            .addOutputHatch(addDotText(5))
-            .addEnergyHatch(addDotText(6))
+            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(1))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(2))
+            .addMaintenanceHatch(addHintNumber(3))
+            .addInputHatch(addHintNumber(4))
+            .addOutputHatch(addHintNumber(5))
+            .addEnergyHatch(addHintNumber(6))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
@@ -738,7 +741,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
      */
     private static double calculateOutputParticleEnergy(long voltage, double inputParticleEnergy, int antennaTier) {
         return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
-            * (-(Math.pow(0.15, (2.0 * voltage) / ((Math.pow(antennaTier, 2.5) * 60768.0)))) + 1);
+            * (1 - (Math.pow(0.15, (voltage) / ((Math.pow(antennaTier, 2.5) * 30384.0)))));
 
     }
 
@@ -849,30 +852,30 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             // from super()
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + formatNumber(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getAverageInputVoltage())
+                + formatNumber(getAverageInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + getMaxInputAmps()
@@ -894,6 +897,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
+            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET,
             // Beamline-specific
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.focus") + ": " // Machine Focus:

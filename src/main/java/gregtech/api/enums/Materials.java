@@ -904,6 +904,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
+    public static Materials SoulInfusedMedium;
 
     // Botania Materials
     public static Materials Manasteel;
@@ -1113,6 +1114,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
     public String mChemicalFormula = "?";
+    public String flavorText;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
@@ -1152,6 +1154,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
+        String flavorText,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1219,6 +1222,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 .collect(Collectors.joining())
                 .replaceAll("_", "-");
         }
+
+        this.flavorText = flavorText;
 
         // Set texture and colors
         mIconSet = iconSet;
@@ -1746,19 +1751,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mDensity;
     }
 
-    public String getToolTip() {
-        return getToolTip(1, false);
+    public String getChemicalTooltip() {
+        return getChemicalTooltip(1, false);
     }
 
-    public String getToolTip(boolean aShowQuestionMarks) {
-        return getToolTip(1, aShowQuestionMarks);
+    public String getChemicalTooltip(boolean aShowQuestionMarks) {
+        return getChemicalTooltip(1, aShowQuestionMarks);
     }
 
-    public String getToolTip(long aMultiplier) {
-        return getToolTip(aMultiplier, false);
+    public String getChemicalTooltip(long aMultiplier) {
+        return getChemicalTooltip(aMultiplier, false);
     }
 
-    public String getToolTip(long aMultiplier, boolean aShowQuestionMarks) {
+    public String getChemicalTooltip(long aMultiplier, boolean aShowQuestionMarks) {
         if (!aShowQuestionMarks && mChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
             return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
@@ -1766,6 +1771,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 : "(" + mChemicalFormula + ")") + aMultiplier;
         }
         return mChemicalFormula;
+    }
+
+    public String getFlavorText() {
+        return flavorText;
     }
 
     /**
@@ -1932,6 +1941,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
+    public @Nullable Materials getGTMaterial() {
+        return this;
+    }
+
+    @Override
     public List<IStoneType> getValidStones() {
         if (contains(SubTag.ICE_ORE)) {
             return StoneType.ICES;
@@ -1957,6 +1971,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             aFormat.replace("%s", "%temp")
                 .replace("%material", "%s"),
             this.mLocalizedName).replace("%temp", "%s");
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        return prefix.doGenerateItem(this);
     }
 
     public boolean hasDustItems() {

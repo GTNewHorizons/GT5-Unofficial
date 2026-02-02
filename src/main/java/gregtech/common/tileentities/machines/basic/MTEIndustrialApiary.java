@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
@@ -20,7 +21,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -111,6 +111,7 @@ import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -639,24 +640,12 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     aBaseMetaTileEntity.setActive(false);
 
                     if (doesAutoOutput() && !isOutputEmpty() && aBaseMetaTileEntity.getFrontFacing() != mMainFacing) {
-                        final TileEntity tTileEntity2 = aBaseMetaTileEntity
-                            .getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                        final long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                        int tMaxStacks = (int) (tStoredEnergy / 64L);
-                        if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                        GTItemTransfer transfer = new GTItemTransfer();
 
-                        moveMultipleItemStacks(
-                            aBaseMetaTileEntity,
-                            tTileEntity2,
-                            aBaseMetaTileEntity.getFrontFacing(),
-                            aBaseMetaTileEntity.getBackFacing(),
-                            null,
-                            false,
-                            (byte) 64,
-                            (byte) 1,
-                            (byte) 64,
-                            (byte) 1,
-                            tMaxStacks);
+                        transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                        transfer.setStacksToTransfer(mOutputItems.length);
+
+                        transfer.transfer();
                     }
 
                     if (aBaseMetaTileEntity.isAllowedToWork() && checkRecipe() == FOUND_AND_SUCCESSFULLY_USED_RECIPE)
@@ -901,33 +890,44 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private int flowerBlockMeta;
 
     private boolean checkFlower(IBee bee) {
+        final World world = getWorld();
         final String flowerType = bee.getGenome()
             .getFlowerProvider()
             .getFlowerType();
-        if (!this.flowerType.equals(flowerType)
-            || !getWorld().blockExists(flowercoords.posX, flowercoords.posY, flowercoords.posZ)) {
-            flowercoords = null;
-        }
+
         if (flowercoords != null) {
-            if (getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ) != flowerBlock
-                || getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ)
-                    != flowerBlockMeta)
-                if (!FlowerManager.flowerRegistry
-                    .isAcceptedFlower(flowerType, getWorld(), flowercoords.posX, flowercoords.posY, flowercoords.posZ))
-                    flowercoords = null;
-                else {
-                    flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                    flowerBlockMeta = getWorld()
-                        .getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                }
-        }
-        if (flowercoords == null) {
-            flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
-            if (flowercoords != null) {
-                flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
-                this.flowerType = flowerType;
+            int x = flowercoords.posX;
+            int y = flowercoords.posY;
+            int z = flowercoords.posZ;
+
+            if (!this.flowerType.equals(flowerType) || !world.blockExists(x, y, z)) {
+                return findFlower(bee, flowerType);
             }
+
+            if (world.getBlock(x, y, z) != flowerBlock || world.getBlockMetadata(x, y, z) != flowerBlockMeta) {
+                if (!FlowerManager.flowerRegistry.isAcceptedFlower(flowerType, world, x, y, z)) {
+                    return findFlower(bee, flowerType);
+                }
+
+                flowerBlock = world.getBlock(x, y, z);
+                flowerBlockMeta = world.getBlockMetadata(x, y, z);
+            }
+        }
+
+        if (flowercoords == null) {
+            return findFlower(bee, flowerType);
+        }
+
+        return true;
+    }
+
+    /** @return true if a flower was found, false otherwise */
+    private boolean findFlower(IBee bee, String flowerType) {
+        flowercoords = FlowerManager.flowerRegistry.getAcceptedFlowerCoordinates(this, bee, flowerType);
+        if (flowercoords != null) {
+            flowerBlock = getWorld().getBlock(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            flowerBlockMeta = getWorld().getBlockMetadata(flowercoords.posX, flowercoords.posY, flowercoords.posZ);
+            this.flowerType = flowerType;
         }
         return flowercoords != null;
     }
@@ -1234,7 +1234,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             .widget(
                 new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
                     .setGTTooltip(() -> {
-                        final String energyreq = GTUtility.formatNumbers(
+                        final String energyreq = formatNumber(
                             (int) ((float) MTEIndustrialApiary.baseEUtUsage * getEnergyModifier() * getAcceleration())
                                 + getAdditionalEnergyUsage());
                         // The localization in Forestry is written like this.
@@ -1296,7 +1296,7 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                     () -> mTooltipCache.getUncachedTooltipData(
                         mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
                         getAcceleration(),
-                        GTUtility.formatNumbers(getAdditionalEnergyUsage())))
+                        formatNumber(getAdditionalEnergyUsage())))
                 .attachSyncer(
                     new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> mSpeed = val),
                     builder,
@@ -1498,19 +1498,23 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("queen")) {
             currenttip.add(
-                "Current Queen: " + EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.industrial_apiary.current_queen",
+                    EnumChatFormatting.GREEN + StatCollector.translateToLocal(tag.getString("queen"))));
         }
         if (tag.hasKey("dummyProduction")) {
             currenttip.add(
-                "Effective Production: " + EnumChatFormatting.AQUA
-                    + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction")));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.industrial_apiary.effective_production",
+                    EnumChatFormatting.AQUA + String.format("b^0.52 * %.2f", tag.getFloat("dummyProduction"))));
         }
         if (tag.hasKey("errors")) {
             NBTTagCompound errorNbt = tag.getCompoundTag("errors");
             for (int i = 0; i < errorNbt.getInteger("size"); i++) {
                 currenttip.add(
-                    "Error: " + EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i)));
+                    StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.industrial_apiary.error",
+                        EnumChatFormatting.RED + StatCollector.translateToLocal("for." + errorNbt.getString("e" + i))));
             }
         }
     }

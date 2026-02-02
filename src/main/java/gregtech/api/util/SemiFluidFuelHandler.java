@@ -70,7 +70,7 @@ public class SemiFluidFuelHandler {
                         aFuelValue *= 2;
                     }
 
-            if (aFuelValue <= (128 * 3)) {
+            if (aFuelValue <= (128 * 4)) {
 
                 GTValues.RA.stdBuilder()
                     .fluidInputs(p.getKey())

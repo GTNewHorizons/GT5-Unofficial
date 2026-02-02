@@ -142,12 +142,6 @@ public class GTThaumcraftCompat implements IThaumcraftCompat {
             new Aspect[] { Aspect.MAN, Aspect.TRAVEL },
             new ResourceLocation("gregtech:textures/aspects/" + TCAspects.GLORIA.name() + ".png"),
             1);
-
-        GTLanguageManager.addStringLocalization("tc.aspect.strontio", "Stupidness, Incompetence");
-        GTLanguageManager.addStringLocalization("tc.aspect.nebrisum", "Cheatyness, Raiding");
-        GTLanguageManager.addStringLocalization("tc.aspect.electrum", "Electricity, Lightning");
-        GTLanguageManager.addStringLocalization("tc.aspect.magneto", "Magnetism, Attraction");
-        GTLanguageManager.addStringLocalization("tc.aspect.radio", "Radiation");
     }
 
     public class LocalizedCustomAspectName extends Aspect {

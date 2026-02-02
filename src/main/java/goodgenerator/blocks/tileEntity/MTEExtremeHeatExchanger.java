@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -47,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -99,7 +99,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                                 gregtech.api.enums.HatchElement.InputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement(
@@ -110,7 +110,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                                 gregtech.api.enums.HatchElement.OutputHatch,
                                 gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
-                            .dot(2)
+                            .hint(2)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement('F', EHEHatches.HotInputHatch.newAny(48, 3))
@@ -121,7 +121,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                         buildHatchAdder(MTEExtremeHeatExchanger.class)
                             .atLeast(gregtech.api.enums.HatchElement.Maintenance)
                             .casingIndex(48)
-                            .dot(5)
+                            .hint(5)
                             .build(),
                         onElementPass(x -> x.casingAmount++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
                 .addElement('G', chainAllGlasses())
@@ -218,7 +218,7 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
             .addInfo(EnumChatFormatting.RED + "Explodes if it runs out of water")
             .addController("Front bottom")
             .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
-            .addCasingInfoExactly("EV+ Glass", 72, false)
+            .addCasingInfoExactly("Any Tiered Glass", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
             .addOtherStructurePart(
@@ -347,11 +347,11 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
@@ -367,14 +367,18 @@ public class MTEExtremeHeatExchanger extends MTETooltipMultiBlockBaseEM
                 + " %",
             StatCollector.translateToLocal("scanner.info.XHE.0") + " "
                 + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(this.mEUt)
+                + formatNumber(this.mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("scanner.info.XHE.1") + " "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(tThreshold)
+                + formatNumber(tThreshold)
                 + EnumChatFormatting.RESET
-                + " L/s" };
+                + " L/s",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

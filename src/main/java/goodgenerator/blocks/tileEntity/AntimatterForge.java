@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -30,12 +31,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
@@ -58,7 +53,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -131,7 +125,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .anyOf(HatchElement.InputHatch)
                             .adder(AntimatterForge::addFluidIO)
                             .casingIndex(x.textureIndex(2))
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .addElement(
                     'E',
@@ -139,7 +133,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
                             .hatchClass(AntimatterOutputHatch.class)
                             .casingIndex(x.textureIndex(1))
-                            .dot(3)
+                            .hint(3)
                             .build()))
                 .addElement(
                     'H',
@@ -148,7 +142,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                             .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(x.getCasingBlock(2), x.getCasingMeta(2))))
                 .build();
         }
@@ -175,7 +169,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("Converts protomatter into antimatter")
             .addInfo("Use screwdriver to disable rendering")
             .addInfo(
-                "Passively consumes " + GTUtility.formatNumbers(BASE_CONSUMPTION)
+                "Passively consumes " + formatNumber(BASE_CONSUMPTION)
                     + " + ("
                     + EnumChatFormatting.DARK_AQUA
                     + "Antimatter"
@@ -198,7 +192,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "Antimatter"
                     + EnumChatFormatting.GRAY
                     + " * "
-                    + GTUtility.formatNumbers(activeBaseMult)
+                    + formatNumber(activeBaseMult)
                     + ")^("
                     + activeBaseExp
                     + " - "
@@ -213,7 +207,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("Cycles every second")
             .addInfo("Every cycle, the lowest amount of antimatter in the 16 antimatter hatches is recorded")
             .addInfo(
-                "All hatches with more than the lowest amount will " + EnumChatFormatting.RED
+                "All hatches with more than the lowest amount " + EnumChatFormatting.RED
                     + "lose half the difference!"
                     + EnumChatFormatting.GRAY)
             .addInfo(
@@ -234,7 +228,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + ")) of antimatter each cycle")
-            .addInfo("Each hatch will multiply the base production per hatch with a random number pulled from")
+            .addInfo("Each hatch multiplies the base production per hatch with a random number pulled from")
             .addInfo(
                 "a normal distribution with a mean of " + baseSkew
                     + " + "
@@ -248,6 +242,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addInfo("The total gain of antimatter can be negative!")
             .addSeparator()
             .addInfo("Can be supplied with stabilization fluids to improve antimatter generation")
+            .addInfo("Each stabilization can only use one of the fluids at a time")
             .addInfo(
                 "" + EnumChatFormatting.GREEN
                     + EnumChatFormatting.BOLD
@@ -315,17 +310,16 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "^(1/3) L of fluid per cycle)")
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .addInfo("Each stabilization can only use one of the fluids at a time")
             .beginStructureBlock(53, 53, 47, false)
             .addCasingInfoMin("Antimatter Containment Casing", 512, false)
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint block with dot 1", 1)
-            .addEnergyHatch("1-9, Hint block with dot 2", 2)
+            .addInputHatch("1-6, Hint Block Number 1", 1)
+            .addEnergyHatch("1-9, Hint Block Number 2", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block with dot 3",
+                "16, Hint Block Number 3",
                 3)
             .toolTipFinisher();
         return tt;
@@ -575,6 +569,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         mEfficiencyIncrease = 10000;
         mMaxProgresstime = speed;
+        recipesDone++;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -733,42 +728,46 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 + EnumChatFormatting.GRAY,
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime)
+                + formatNumber(mProgresstime)
                 + EnumChatFormatting.RESET
                 + "t / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime)
+                + formatNumber(mMaxProgresstime)
                 + EnumChatFormatting.RESET
                 + "t",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
                 + EnumChatFormatting.BLUE
-                + GTUtility.formatNumbers(getAntimatterAmount())
+                + formatNumber(getAntimatterAmount())
                 + EnumChatFormatting.RESET
                 + " L",
             StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getPassiveConsumption())
+                + formatNumber(getPassiveConsumption())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(getActiveConsumption())
+                + formatNumber(getActiveConsumption())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
                 + EnumChatFormatting.AQUA
-                + GTUtility.formatNumbers(getAntimatterChange())
+                + formatNumber(getAntimatterChange())
                 + EnumChatFormatting.RESET
-                + " L" };
+                + " L",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     public long getAntimatterAmount() {
@@ -785,63 +784,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     public long getAntimatterChange() {
         return this.guiAntimatterChange;
-    }
-
-    protected long antimatterAmountCache;
-    protected long passiveCostCache;
-    protected long activeCostCache;
-    protected long antimatterChangeCache;
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                            + EnumChatFormatting.BLUE
-                            + numberFormat.format(antimatterAmountCache)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterAmount, val -> antimatterAmountCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                            + EnumChatFormatting.RED
-                            + GTUtility.scientificFormat(passiveCostCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getPassiveConsumption, val -> passiveCostCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                            + EnumChatFormatting.LIGHT_PURPLE
-                            + GTUtility.scientificFormat(activeCostCache)
-                            + EnumChatFormatting.WHITE
-                            + " EU/t")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getActiveConsumption, val -> activeCostCache = val))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                            + EnumChatFormatting.AQUA
-                            + numberFormat.format(antimatterChangeCache)
-                            + EnumChatFormatting.WHITE
-                            + " L")
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()))
-            .widget(new FakeSyncWidget.LongSyncer(this::getAntimatterChange, val -> antimatterChangeCache = val));
     }
 
     @Override

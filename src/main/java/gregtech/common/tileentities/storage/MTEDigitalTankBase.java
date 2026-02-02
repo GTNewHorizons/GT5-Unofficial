@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.storage;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_QTANK_GLOW;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static gregtech.api.util.GTUtility.formatNumbers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -67,7 +68,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
             aTier,
             3,
             new String[] {
-                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumbers(commonSizeCompute(aTier))),
+                translateToLocalFormatted("GT5U.machines.digitaltank.tooltip", formatNumber(commonSizeCompute(aTier))),
                 translateToLocal("GT5U.machines.digitaltank.tooltip1"), });
     }
 
@@ -124,7 +125,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 tooltip.add(
                     GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
                         + EnumChatFormatting.GREEN
-                        + formatNumbers(tContents.amount)
+                        + formatNumber(tContents.amount)
                         + " L"
                         + EnumChatFormatting.GRAY);
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
@@ -493,7 +494,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     fluid.amount + "",
                     getRealCapacity() + ""));
         } else {
-            currenttip.add(0, "Tank Empty");
+            currenttip.add(0, StatCollector.translateToLocal("GT5U.waila.digital_tank.empty"));
         }
     }
 
@@ -617,13 +618,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mAllowInputFromOutputSide = val;
                 if (isServer) {
                     if (!mAllowInputFromOutputSide) {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_off"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_off");
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            buildContext.getPlayer(),
-                            translateToLocal("gt.interact.desc.input_from_output_on"));
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "gt.interact.desc.input_from_output_on");
                     }
                 }
             })

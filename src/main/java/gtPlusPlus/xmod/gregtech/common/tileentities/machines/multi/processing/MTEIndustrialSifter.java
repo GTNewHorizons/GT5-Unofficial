@@ -98,7 +98,7 @@ public class MTEIndustrialSifter extends GTPPMultiBlockBase<MTEIndustrialSifter>
                     buildHatchAdder(MTEIndustrialSifter.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(TAE.GTPP_INDEX(21))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 5))))
                 .addElement('M', ofBlock(ModBlocks.blockCasings2Misc, 6))
                 .build();

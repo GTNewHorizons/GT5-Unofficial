@@ -152,7 +152,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
                         OutputHatch,
                         Energy,
                         RadioHatchElement.RadioHatch)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
@@ -169,7 +169,35 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Bacterial Vat, Bac Vat")
-            .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
+            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
+            .addSeparator()
+            .addInfo(
+                "Some recipes require " + EnumChatFormatting.GREEN
+                    + "R"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "A"
+                    + EnumChatFormatting.GREEN
+                    + "D"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "I"
+                    + EnumChatFormatting.GREEN
+                    + "A"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "T"
+                    + EnumChatFormatting.GREEN
+                    + "I"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "O"
+                    + EnumChatFormatting.GREEN
+                    + "N"
+                    + EnumChatFormatting.GRAY
+                    + " supplied with a "
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.GREEN
+                    + "Radio Hatch")
+            .addInfo("Radiation can be either a minimum requirement or an exact value")
+            .addInfo("Efficiency depends on Output Hatch fluid level")
+            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
@@ -613,14 +641,18 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
         this.doAllVisualThings();
-        if (aBaseMetaTileEntity.isServerSide() && this.mRadHatches.size() == 1) {
-            this.mSievert = this.mRadHatches.get(0)
-                .getSievert();
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (this.mRadHatches.size() == 1) {
+                this.mSievert = this.mRadHatches.get(0)
+                    .getSievert();
+            } else {
+                this.mSievert = 0;
+            }
             if (aBaseMetaTileEntity.isActive() && this.mNeededSievert > this.mSievert) this.mOutputFluids = null;
-        }
-        if (aBaseMetaTileEntity.isServerSide() && this.mMaxProgresstime <= 0) {
-            this.mTimes = 0;
-            this.mMaxProgresstime = 0;
+            if (this.mMaxProgresstime <= 0) {
+                this.mTimes = 0;
+                this.mMaxProgresstime = 0;
+            }
         }
     }
 
@@ -771,9 +803,9 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

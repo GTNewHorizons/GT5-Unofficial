@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.List;
@@ -79,14 +80,26 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
         try {
             updateEntityProfiled();
-        } catch (Throwable e) {
-            e.printStackTrace();
-            e.printStackTrace(GTLog.err);
+        } catch (Exception e) {
+            GT_FML_LOGGER.error(
+                "Error ticking meta tile entity {} at ({}, {}, {}) in world {}",
+                getMetaTileID(),
+                xCoord,
+                yCoord,
+                zCoord,
+                worldObj.provider.dimensionId,
+                e);
             try {
                 onTickFail();
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-                ex.printStackTrace(GTLog.err);
+            } catch (Exception ex) {
+                GT_FML_LOGGER.error(
+                    "Error calling tick fail on meta tile entity {} at ({}, {}, {}) in world {}",
+                    getMetaTileID(),
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    e);
             }
         }
 
@@ -134,12 +147,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
                     GTMod.logStackTrace(e);
                 }
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
             GTMod.logStackTrace(e);
         }
@@ -164,7 +177,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
 
             try {
                 getMetaTileEntity().loadNBTData(aNBT);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 GT_FML_LOGGER.error("Encountered Exception while loading MetaTileEntity.");
                 GTMod.logStackTrace(e);
             }
@@ -215,11 +228,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    "Average CPU load of ~" + GTUtility.formatNumbers(tAverageTime / samples)
+                    "Average CPU load of ~" + formatNumber(tAverageTime / samples)
                         + "ns over "
-                        + GTUtility.formatNumbers(samples)
+                        + formatNumber(samples)
                         + " ticks with worst time of "
-                        + GTUtility.formatNumbers(tWorstTime)
+                        + formatNumber(tWorstTime)
                         + "ns.");
             }
         } else {

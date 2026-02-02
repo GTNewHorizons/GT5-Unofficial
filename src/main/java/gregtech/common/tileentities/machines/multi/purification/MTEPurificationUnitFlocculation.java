@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -135,7 +136,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     t -> GTStructureUtility.<MTEPurificationUnitFlocculation>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(MAIN_CASING_INDEX)
-                        .dot(1)
+                        .hint(1)
                         .build()),
                 // Clean Flocculation Casing
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 6))))
@@ -264,7 +265,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()

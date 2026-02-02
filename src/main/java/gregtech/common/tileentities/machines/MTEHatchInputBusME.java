@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
@@ -119,7 +120,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
     protected boolean cachedActivity = false;
 
     public MTEHatchInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 3, 2, getDescriptionArray(autoPullAvailable));
+        super(aID, aName, aNameRegional, autoPullAvailable ? 6 : 4, 2, getDescriptionArray(autoPullAvailable));
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
@@ -571,6 +572,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
 
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
+        if (processingRecipe) {
+            return true;
+        }
         return aIndex != getManualSlot();
     }
 
@@ -593,6 +597,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         if (igte.isServerSide()) {
             GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
         }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -712,7 +721,14 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
         IEnergyGrid energy;
 
         try {
-            sg = getProxy().getStorage()
+            AENetworkProxy proxy = getProxy();
+
+            // on some setup endRecipeProcessing() somehow runs before onFirstTick();
+            // test world
+            // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
+            if (!proxy.isReady()) proxy.onReady();
+
+            sg = proxy.getStorage()
                 .getItemInventory();
             energy = getProxy().getEnergy();
         } catch (GridAccessException e) {
@@ -1065,9 +1081,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
             currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_bus.min_stack_size",
-                    GTUtility.formatNumbers(minSize)));
+                StatCollector
+                    .translateToLocalFormatted("GT5U.waila.stocking_bus.min_stack_size", formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

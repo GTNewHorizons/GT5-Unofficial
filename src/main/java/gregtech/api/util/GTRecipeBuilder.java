@@ -60,9 +60,6 @@ public class GTRecipeBuilder {
     public static final int EIGHTH_INGOTS = INGOTS / 8;
     public static final int NUGGETS = INGOTS / 9;
     public static final int STACKS = 64 * INGOTS;
-
-    /** @deprecated Use {@code INGOTS} or quantities in liters instead. */
-    @Deprecated
     public static final int BUCKETS = 1_000;
 
     static {
@@ -108,6 +105,8 @@ public class GTRecipeBuilder {
     @Nullable
     protected IRecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
+    @Nullable
+    protected ItemStack pendingIntegratedCircuit;
     /**
      * If recipe addition should be skipped.
      */
@@ -248,12 +247,49 @@ public class GTRecipeBuilder {
     // region setter
 
     /**
+     * circuit method helper. Adds appropriate integrated circuit into item inputs.
+     */
+    private ItemStack[] applyPendingCircuit(ItemStack[] baseInputs) {
+        if (pendingIntegratedCircuit == null) {
+            return baseInputs;
+        }
+        // Append pending circuit & clear it
+        ItemStack[] newInputs = new ItemStack[baseInputs.length + 1];
+        System.arraycopy(baseInputs, 0, newInputs, 0, baseInputs.length);
+        newInputs[baseInputs.length] = pendingIntegratedCircuit;
+        pendingIntegratedCircuit = null;
+        return newInputs;
+    }
+
+    /**
+     * Specialized item input method for adding integrated circuits into a recipe.
+     */
+    public GTRecipeBuilder circuit(int integratedCircuitNumber) {
+        ItemStack circuit = GTUtility.getIntegratedCircuit(integratedCircuitNumber);
+
+        if (inputsBasic != null && inputsBasic.length > 0) {
+            // Input condition
+            pendingIntegratedCircuit = circuit;
+            inputsBasic = applyPendingCircuit(inputsBasic);
+        } else {
+            // No inputs condition
+            inputsBasic = new ItemStack[] { circuit };
+            pendingIntegratedCircuit = circuit;
+        }
+
+        return this;
+    }
+
+    /**
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
-        inputsBasic = ArrayExt.removeTrailingNulls(inputs);
+
+        ItemStack[] itemInputs = ArrayExt.removeTrailingNulls(inputs);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
         return this;
@@ -265,7 +301,10 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fixItemArray(inputs, false);
+
+        ItemStack[] itemInputs = fixItemArray(inputs, false);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
         return this;
@@ -277,7 +316,10 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fixItemArray(inputs, true);
+
+        ItemStack[] itemInputs = fixItemArray(inputs, true);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
         return this;
@@ -317,7 +359,8 @@ public class GTRecipeBuilder {
         }
         ArrayList<ItemStack> list = new ArrayList<>(alts.length);
         for (final ItemStack[] ss : alts) list.add(ss.length > 0 ? ss[0] : null);
-        inputsBasic = list.isEmpty() ? GTValues.emptyItemStackArray : list.toArray(new ItemStack[0]);
+        ItemStack[] itemInputs = list.isEmpty() ? GTValues.emptyItemStackArray : list.toArray(new ItemStack[0]);
+        inputsBasic = applyPendingCircuit(itemInputs);
         return this;
     }
 
@@ -928,6 +971,7 @@ public class GTRecipeBuilder {
         specialValue = 0;
         skip = false;
         valid = true;
+        pendingIntegratedCircuit = null;
         return this;
     }
 }

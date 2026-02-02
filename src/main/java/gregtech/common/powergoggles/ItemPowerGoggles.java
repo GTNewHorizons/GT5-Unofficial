@@ -4,6 +4,7 @@ import static gregtech.api.enums.GTValues.NW;
 
 import java.util.List;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -55,14 +57,17 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     private void linkGoggles(ItemStack stack, int x, int y, int z, EntityPlayer player, TileEntity tileEntity) {
+        ItemStack oldStack = stack.copy();
+
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("x", x);
         tag.setInteger("y", y);
         tag.setInteger("z", z);
         tag.setInteger("dim", player.dimension);
         tag.setString("dimName", ((IGregTechTileEntity) tileEntity).getWorld().provider.getDimensionName());
-        NW.sendToServer(new GTPacketUpdateItem(tag));
         stack.setTagCompound(tag);
+        setEnchantmentData(oldStack, stack);
+        NW.sendToServer(new GTPacketUpdateItem(tag));
 
         player.addChatMessage(
             new ChatComponentText(StatCollector.translateToLocalFormatted("GT5U.power_goggles.link_lsc", x, y, z)));
@@ -85,8 +90,25 @@ public class ItemPowerGoggles extends GTGenericItem implements IBauble, INetwork
     }
 
     private void unlinkGoggles(ItemStack stack, EntityPlayer player) {
+        ItemStack oldStack = stack.copy();
         stack.setTagCompound(new NBTTagCompound());
+        setEnchantmentData(oldStack, stack);
         player.addChatMessage(new ChatComponentText(StatCollector.translateToLocal("GT5U.power_goggles.unlink")));
+    }
+
+    private void setEnchantmentData(ItemStack oldStack, ItemStack newStack) {
+        var enchantments = EnchantmentHelper.getEnchantments(oldStack);
+        if (!enchantments.isEmpty()) {
+            EnchantmentHelper.setEnchantments(enchantments, newStack);
+            if (oldStack.getTagCompound()
+                .hasKey("RepairCost", Constants.NBT.TAG_INT)) {
+                newStack.getTagCompound()
+                    .setInteger(
+                        "RepairCost",
+                        oldStack.getTagCompound()
+                            .getInteger("RepairCost"));
+            }
+        }
     }
 
     private ItemStack equipHeldGoggles(EntityPlayer player, ItemStack stack) {

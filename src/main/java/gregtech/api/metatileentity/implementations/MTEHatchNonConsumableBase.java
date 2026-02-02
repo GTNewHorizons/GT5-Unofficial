@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -161,19 +162,19 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                 tooltip.add(
                     GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
                         + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tSize)
+                        + formatNumber(tSize)
                         + EnumChatFormatting.GRAY);
             }
         }
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver, Object o) {
+    public void addListener(IMEMonitorHandlerReceiver meMonitorHandlerReceiver, Object o) {
         meInventoryHandler.addListener(meMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver meMonitorHandlerReceiver) {
         meInventoryHandler.removeListener(meMonitorHandlerReceiver);
     }
 

@@ -6,13 +6,12 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -20,15 +19,13 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
-public class MTEHatchEnergyDebugGui {
-
-    MTEHatchEnergyDebug base;
+public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug> {
 
     public MTEHatchEnergyDebugGui(MTEHatchEnergyDebug base) {
-        this.base = base;
+        super(base);
     }
 
     private TextFieldWidget createNumberTextField() {
@@ -103,23 +100,20 @@ public class MTEHatchEnergyDebugGui {
         return true;
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        IntSyncValue voltageTierSyncer = new IntSyncValue(
-            () -> base.getVoltageTier(),
-            tier -> base.setVoltageTier(tier));
-        IntSyncValue amperageSyncer = new IntSyncValue(() -> base.getAmperage(), amp -> base.setAmperage(amp));
-        IntSyncValue intervalSyncer = new IntSyncValue(
-            () -> base.getRefillInterval(),
-            inter -> base.setRefillInterval(inter));
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        IntSyncValue voltageTierSyncer = new IntSyncValue(hatch::getVoltageTier, hatch::setVoltageTier);
+        IntSyncValue amperageSyncer = new IntSyncValue(hatch::getAmperage, hatch::setAmperage);
+        IntSyncValue intervalSyncer = new IntSyncValue(hatch::getRefillInterval, hatch::setRefillInterval);
         Flow numberInputColumn = Flow.column();
-        numberInputColumn.widthRel(1f)
-            .height(18 * 3 + 4 * 3)
-            .paddingTop(4);
+        numberInputColumn.sizeRel(1)
+            .paddingTop(4)
+            .paddingLeft(4)
+            .crossAxisAlignment(Alignment.CrossAxis.START);
 
         Flow voltageRow = Flow.row()
             .height(18)
             .coverChildrenWidth()
-            .left(4)
             .marginBottom(4);
 
         // add a number input field to determine voltage tier
@@ -150,7 +144,6 @@ public class MTEHatchEnergyDebugGui {
 
         Flow amperageRow = Flow.row()
             .height(18)
-            .left(4)
             .marginBottom(16)
             .coverChildrenWidth();
 
@@ -177,8 +170,8 @@ public class MTEHatchEnergyDebugGui {
         // row to allow setting of 'refill interval'
         Flow intervalRow = Flow.row()
             .height(18)
-            .coverChildrenWidth()
-            .left(6);
+            .alignX(0)
+            .coverChildrenWidth();
 
         intervalRow.child(
             createNumberTextField().width(40)
@@ -196,10 +189,6 @@ public class MTEHatchEnergyDebugGui {
         numberInputColumn.child(voltageRow);
         numberInputColumn.child(amperageRow);
         numberInputColumn.child(intervalRow);
-
-        return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
-            .doesAddGregTechLogo(true)
-            .build()
-            .child(numberInputColumn);
+        return super.createContentSection(panel, syncManager).child(numberInputColumn);
     }
 }

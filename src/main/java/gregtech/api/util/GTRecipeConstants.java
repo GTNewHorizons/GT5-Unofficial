@@ -29,6 +29,7 @@ import gregtech.api.util.recipe.Scanning;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -151,6 +152,9 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<String> FOG_UPGRADE_NAME_SHORT = SimpleRecipeMetadataKey
         .create(String.class, "fog_plasma_upgrade_name_short");
 
+    public static final RecipeMetadataKey<FoundryModule> FOUNDRY_MODULE = SimpleRecipeMetadataKey
+        .create(FoundryModule.class, "foundry_module");
+
     /**
      * DEFC Casing tier.
      */
@@ -162,6 +166,12 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "chemplant_casing_tier");
+
+    /**
+     * Algae Pond tier.
+     */
+    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "algae_pond_tier");
 
     /**
      * QFT Focus tier.
@@ -593,7 +603,7 @@ public class GTRecipeConstants {
             GTValues.RA.stdBuilder()
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
-                .special(tRecipe.newDataStickForNEI("Writes Research result"))
+                .special(tRecipe.newDataStickForNEI("Writes Research result", 1))
                 .duration(scanningData.time)
                 .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
@@ -606,7 +616,7 @@ public class GTRecipeConstants {
                 false,
                 r.mInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result") },
+                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result", 0) },
                 r.mFluidInputs,
                 null,
                 r.mDuration,
@@ -662,10 +672,10 @@ public class GTRecipeConstants {
                         .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
             } else {
-                items.add(GTUtility.getIntegratedCircuit(circuitConfig));
                 ret.addAll(
                     builder.copy()
                         .itemInputs(items.toArray(new ItemStack[0]))
+                        .circuit(circuitConfig)
                         .fluidInputs()
                         .duration((int) Math.max(baseDuration * 1.25, 1))
                         .addTo(RecipeMaps.blastFurnaceRecipes));
@@ -745,6 +755,7 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(ALGAE_POND_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);

@@ -24,7 +24,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
@@ -40,7 +39,7 @@ public class RecipeLoaderMilling {
 
     private static void addVacuumFurnaceRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 64),
@@ -57,7 +56,7 @@ public class RecipeLoaderMilling {
             .addTo(vacuumFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 64),
@@ -395,7 +394,7 @@ public class RecipeLoaderMilling {
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64),
                 GTOreDictUnificator.get(OrePrefixes.milled, Materials.Netherrack, 64))
             .fluidInputs(Materials.NefariousOil.getFluid(8_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.NetherrackFlotationFroth, 8_000))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_LuV)
             .addTo(flotationCellRecipes);
@@ -429,7 +428,8 @@ public class RecipeLoaderMilling {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(16), GregtechItemList.CrushedPineMaterials.get(64))
+            .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
+            .circuit(16)
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
@@ -443,7 +443,8 @@ public class RecipeLoaderMilling {
             .addTo(chemicalPlantRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(18), GregtechItemList.CrushedPineMaterials.get(64))
+            .itemInputs(GregtechItemList.CrushedPineMaterials.get(64))
+            .circuit(18)
             .itemOutputs(
                 Materials.Ash.getDustTiny(5),
                 Materials.Ash.getDustTiny(5),
@@ -459,7 +460,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineLogRecipe(ItemStack log) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), log)
+            .itemInputs(log)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(64))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -469,7 +471,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineLeafRecipe(ItemStack leaf) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), leaf)
+            .itemInputs(leaf)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(8))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -479,7 +482,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineSaplingRecipe(ItemStack sapling) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), sapling)
+            .itemInputs(sapling)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(16))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
@@ -489,7 +493,8 @@ public class RecipeLoaderMilling {
 
     private static void addPineconeRecipe(ItemStack cone) {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(14), cone)
+            .itemInputs(cone)
+            .circuit(14)
             .itemOutputs(GregtechItemList.CrushedPineMaterials.get(4))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)

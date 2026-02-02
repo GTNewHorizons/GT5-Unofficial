@@ -44,7 +44,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -91,12 +90,12 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
-    private Boolean piston = true;
+    private boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);
     private int mBlockTier = 0;
     private int mCasing;
-    private boolean isSuccessful = true;
+    private boolean isSuccessful = false;
 
     public MTEElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -168,7 +167,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 'B',
                 buildHatchAdder(MTEElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
@@ -177,7 +176,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 buildHatchAdder(MTEElectricImplosionCompressor.class)
                     .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 4))))
@@ -322,7 +321,6 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
     }
 
     private void resetPiston(int tier) {
-        if (!pistonEnabled) return;
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
@@ -480,9 +478,9 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

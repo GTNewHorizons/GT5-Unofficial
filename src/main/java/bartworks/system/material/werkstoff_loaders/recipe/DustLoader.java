@@ -85,7 +85,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         final ISubTagContainer key = container.getKey();
                         final int value = container.getValue();
                         if (key instanceof Materials materialKey) {
-                            if ((materialKey.getGas(0) != null || materialKey.getFluid(0) != null
+                            if ((materialKey.getGas(1) != null || materialKey.getFluid(1) != null
                                 || materialKey.mIconSet == TextureSet.SET_FLUID) && materialKey.getDust(0) == null) {
                                 FluidStack tmpFl = materialKey.getGas(1000L * value);
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
@@ -339,6 +339,13 @@ public class DustLoader implements IWerkstoffRunnable {
                 .eut(4)
                 .addTo(packagerRecipes);
 
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
+                .itemOutputs(werkstoff.get(dustSmall, 4))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+
             if (werkstoff.hasItemType(ingot) && !werkstoffStats.isBlastFurnace()) {
                 GTModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
                 GTModHandler.addSmeltingRecipe(werkstoff.get(dustTiny), werkstoff.get(nugget));
@@ -349,7 +356,8 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoff.contains(WerkstoffLoader.ANAEROBE_SMELTING)
                         || werkstoff.contains(WerkstoffLoader.NOBLE_GAS_SMELTING)) {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(11))
+                            .itemInputs(werkstoff.get(dust))
+                            .circuit(11)
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))
@@ -360,7 +368,8 @@ public class DustLoader implements IWerkstoffRunnable {
                             .addTo(BlastFurnaceWithGas);
                     } else {
                         GTValues.RA.stdBuilder()
-                            .itemInputs(werkstoff.get(dust), GTUtility.getIntegratedCircuit(1))
+                            .itemInputs(werkstoff.get(dust))
+                            .circuit(1)
                             .itemOutputs(
                                 werkstoffStats.getMeltingPoint() < 1750 ? werkstoff.get(ingot)
                                     : werkstoff.get(ingotHot))

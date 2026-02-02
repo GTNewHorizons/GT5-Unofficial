@@ -40,12 +40,12 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
         OrePrefixes.crafting.add(this);
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+        setHardness(4.5f);
 
         this.registerSmeltingRecipes();
         this.registerAssemblerRecipes();
         this.registerCraftingRecipes();
         this.registerForgeHammerRecipes();
-
     }
 
     private void registerSmeltingRecipes() {
@@ -70,13 +70,15 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
 
     private void registerAssemblerRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(this, 1, 0), GTUtility.getIntegratedCircuit(4))
+            .itemInputs(new ItemStack(this, 1, 0))
+            .circuit(4)
             .itemOutputs(new ItemStack(this, 1, 3))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(this, 1, 8), GTUtility.getIntegratedCircuit(4))
+            .itemInputs(new ItemStack(this, 1, 8))
+            .circuit(4)
             .itemOutputs(new ItemStack(this, 1, 11))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)

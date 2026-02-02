@@ -32,12 +32,12 @@ public class MEItemInventoryHandler<T extends IMetaTileEntity & IMEAwareItemInve
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> l, Object verificationToken) {
+    public void addListener(IMEMonitorHandlerReceiver l, Object verificationToken) {
         listeners.put(l, verificationToken);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> l) {
+    public void removeListener(IMEMonitorHandlerReceiver l) {
         listeners.remove(l);
     }
 

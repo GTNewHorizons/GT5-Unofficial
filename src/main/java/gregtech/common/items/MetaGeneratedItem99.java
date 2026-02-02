@@ -7,6 +7,7 @@ import java.util.BitSet;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -92,7 +93,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GTLanguageManager.addStringLocalization(
             getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getToolTip(cellMolten.getMaterialAmount() / M));
+            tMaterial.getChemicalTooltip(cellMolten.getMaterialAmount() / M));
 
         if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -112,7 +113,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GTLanguageManager.addStringLocalization(
                 getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(prefix.getMaterialAmount() / M));
+                tMaterial.getChemicalTooltip(prefix.getMaterialAmount() / M));
 
             if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
@@ -127,6 +128,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     /** Returns null for item damage out of bounds. */
     private Materials getMaterial(int damage) {
         if (damage < 0) {
+            return null;
+        }
+        if (damage >= 32000) {
             return null;
         }
         return GregTechAPI.sGeneratedMaterials[damage % 1_000];
@@ -212,6 +216,17 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             return prefix.getDefaultStackSize();
         } else {
             return 64;
+        }
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= 32000) return;
+        Materials material = getMaterial(aStack.getItemDamage());
+        if (material == null) return;
+        String flavorText = material.getFlavorText();
+        if (flavorText != null && !flavorText.isEmpty()) {
+            aList.add("§8§o" + flavorText);
         }
     }
 }

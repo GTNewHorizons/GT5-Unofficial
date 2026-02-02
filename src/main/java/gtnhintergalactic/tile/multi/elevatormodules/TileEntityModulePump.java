@@ -418,7 +418,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -508,7 +508,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -598,7 +598,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT4"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .toolTipFinisher();
             return tt;
         }

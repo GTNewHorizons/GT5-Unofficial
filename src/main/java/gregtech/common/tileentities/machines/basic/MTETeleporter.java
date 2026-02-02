@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
@@ -31,7 +32,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -60,6 +60,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
 import ic2.core.block.EntityItnt;
@@ -187,13 +188,13 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
         return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.x",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetX) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.y",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetY) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.z",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetZ) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.dimension",
                 "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
@@ -307,28 +308,19 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
                                 tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
                             }
                         }
-                        if (tTile instanceof IInventory) {
-                            int tStacksize = mInventory[0].stackSize;
-                            GTUtility.moveOneItemStack(
-                                this,
-                                tTile,
-                                ForgeDirection.DOWN,
-                                ForgeDirection.DOWN,
-                                null,
-                                false,
-                                (byte) 64,
-                                (byte) 1,
-                                (byte) 64,
-                                (byte) 1);
-                            if (mInventory[0] == null || mInventory[0].stackSize < tStacksize) {
-                                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                    (long) (Math.pow(tDistance, 1.5) * tDistance
-                                        * (tStacksize - (mInventory[0] == null ? 0 : mInventory[0].stackSize))
-                                        * sFPowerMultiplyer),
-                                    false);
-                            }
-                        }
+
+                        GTItemTransfer transfer = new GTItemTransfer();
+
+                        transfer.source(this, ForgeDirection.UNKNOWN);
+                        transfer.sink(tTile, ForgeDirection.UNKNOWN);
+
+                        int transferred = transfer.transfer();
+
+                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                            (long) (Math.pow(tDistance, 1.5) * tDistance * transferred * sFPowerMultiplyer),
+                            false);
                     }
+
                     List<Entity> entities_in_box = getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             Entity.class,

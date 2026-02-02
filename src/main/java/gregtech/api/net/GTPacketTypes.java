@@ -7,6 +7,9 @@ import bartworks.common.net.PacketBioVatRenderer;
 import bartworks.common.net.PacketEIC;
 import bartworks.common.net.PacketOreDictCache;
 import bartworks.common.net.PacketServerJoined;
+import gregtech.api.net.cape.GTPacketBroadcastCapes;
+import gregtech.api.net.cape.GTPacketListCapes;
+import gregtech.api.net.cape.GTPacketSetCape;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -25,7 +28,7 @@ public enum GTPacketTypes {
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
     SET_MOLD(18, new GTPacketSetMold()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
-    // Free ID 20
+    SET_SHAPE(20, new GTPacketSetShape()),
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
@@ -45,6 +48,10 @@ public enum GTPacketTypes {
     ON_POWERFAIL(37, new GTPacketOnPowerfail()),
     CLEAR_POWERFAIL(38, new GTPacketClearPowerfail()),
     CHAT(39, new GTPacketChat()),
+    BROADCAST_CAPES(40, new GTPacketBroadcastCapes()),
+    LIST_CAPES(41, new GTPacketListCapes()),
+    SET_CAPE(42, new GTPacketSetCape()),
+
     // merge conflict prevention comment, keep a trailing comma above
     ;
 

@@ -56,6 +56,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -80,6 +81,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
+import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class AdditionalRecipes {
 
@@ -219,8 +221,9 @@ public class AdditionalRecipes {
             for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
                     GTValues.RA.stdBuilder()
-                        .itemInputs(GTUtility.getIntegratedCircuit(1), new ItemStack(Items.sugar, 64))
+                        .itemInputs(new ItemStack(Items.sugar, 64))
                         .special(BioItemList.getPetriDish(bioCulture))
+                        .circuit(1)
                         .fluidInputs(fluidStack)
                         .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
                         .metadata(GLASS, 3)
@@ -255,7 +258,10 @@ public class AdditionalRecipes {
             ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
             ImmutablePair.of(Materials.SulfuricAcid, 18),
             ImmutablePair.of(Materials.AceticAcid, 11),
-            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40));
+            ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
+            ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
+            ImmutablePair.of(Materials.PhthalicAcid, 270),
+            ImmutablePair.of(Materials.NaphthenicAcid, 250));
         for (Pair<Materials, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -270,6 +276,30 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Empty.getCells(1))
             .metadata(FUEL_VALUE, 10)
             .addTo(BartWorksRecipeMaps.acidGenFuels);
+        // should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1000),
+                    ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 320)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry.fillFluidContainer(
+                    new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1000),
+                    ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 224)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                FluidContainerRegistry
+                    .fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid, 1000), ItemList.Cell_Empty.get(1L)))
+            .itemOutputs(Materials.Empty.getCells(1))
+            .metadata(FUEL_VALUE, 150)
+            .addTo(BartWorksRecipeMaps.acidGenFuels);
     }
 
     public static void run() {
@@ -283,7 +313,7 @@ public class AdditionalRecipes {
             .metadata(ADDITIVE_AMOUNT, 4)
             .addTo(implosionRecipes);
 
-        // Thorium/Yttrium Glas
+        // Thorium/Yttrium Glass
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
             .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))
@@ -353,7 +383,8 @@ public class AdditionalRecipes {
         // Cubic Circonia
         // 2Y + 3O = Y2O3
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Yttrium.getDust(2), GTUtility.getIntegratedCircuit(5))
+            .itemInputs(Materials.Yttrium.getDust(2))
+            .circuit(5)
             .itemOutputs(WerkstoffLoader.YttriumOxide.get(dust, 5))
             .fluidInputs(Materials.Oxygen.getGas(3_000))
             .duration(3 * MINUTES + 24 * SECONDS + 16 * TICKS)
@@ -372,7 +403,8 @@ public class AdditionalRecipes {
 
         // Tellurium
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(GTOreDictUnificator.get(crushed, Materials.Lead, 1L))
+            .circuit(17)
             .itemOutputs(Materials.Lead.getIngots(1), Materials.Tellurium.getNuggets(2))
             .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -434,7 +466,7 @@ public class AdditionalRecipes {
         // Milk
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(
                 Materials.Sugar.getDustSmall(21),
                 Materials.Calcium.getDustTiny(1),

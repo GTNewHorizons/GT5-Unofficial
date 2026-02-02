@@ -21,7 +21,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.EnumChatFormatting.DARK_AQUA;
 import static net.minecraft.util.EnumChatFormatting.DARK_GRAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_GREEN;
-import static net.minecraft.util.EnumChatFormatting.DARK_RED;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.Objects;
@@ -142,7 +141,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             buildHatchAdder(MTELatex.class)
                 .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTELatex::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
         .addElement('D', ofFrame(Materials.PolyvinylChloride))
         .build();
@@ -278,9 +277,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     + TooltipHelper.coloredText("Multi-Amp energy hatch", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
-            .addSeparator()
-            .addInfo(DARK_RED + "Cable Recipes in the Assembler TO BE REMOVED in the next major update!")
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(5, 8, 5, false)
             .addController("Front Center")
             .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)

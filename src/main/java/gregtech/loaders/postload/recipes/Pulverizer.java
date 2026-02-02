@@ -2,7 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
-import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.ProjectRedExploration;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -729,18 +728,6 @@ public class Pulverizer implements Runnable {
             .eut(2)
             .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
-
-        if (HardcoreEnderExpansion.isModLoaded()) {
-            GTValues.RA.stdBuilder()
-                .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
-                .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Endium, 2),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1))
-                .outputChances(10000, 5000)
-                .duration(20 * SECONDS)
-                .eut(2)
-                .addTo(maceratorRecipes);
-        }
 
         if (BiomesOPlenty.isModLoaded()) {
             GTValues.RA.stdBuilder()

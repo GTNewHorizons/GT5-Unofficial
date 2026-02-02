@@ -5,13 +5,12 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.joml.AxisAngle4f;
-import org.joml.Matrix4f;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+
+import gregtech.api.util.GTUtility;
 
 public class TileEntityLaser extends TileEntity {
 
@@ -56,42 +55,10 @@ public class TileEntityLaser extends TileEntity {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    public void setRotationFields(ForgeDirection direction, Rotation rotation, Flip flip) {
-        Matrix4f rotationMatrix = new Matrix4f().identity();
+    public void setRotationFields(ExtendedFacing extendedFacing) {
 
-        float localAngle = switch (rotation) {
-            case NORMAL -> 0;
-            case CLOCKWISE -> 90;
-            case COUNTER_CLOCKWISE -> -90;
-            case UPSIDE_DOWN -> 180;
-        };
-        localAngle *= (flip == Flip.HORIZONTAL || flip == Flip.VERTICAL) ? 1 : -1;
-        localAngle = (float) Math.toRadians(localAngle);
-        rotationMatrix.rotate(localAngle, direction.offsetX, direction.offsetY, direction.offsetZ);
-
-        float x = 0, y = 0;
-        float angle = switch (direction) {
-            case DOWN, UP -> {
-                x = 1;
-                yield -90;
-            }
-            case EAST, SOUTH -> {
-                y = 1;
-                yield 90;
-            }
-            case WEST, NORTH -> {
-                y = 1;
-                yield -90;
-            }
-            case UNKNOWN -> 0.0F;
-        };
-        angle = (float) Math.toRadians(angle);
-        rotationMatrix.rotate(angle, x, y, 0);
-
-        AxisAngle4f rotationVector = new AxisAngle4f();
-        rotationMatrix.getRotation(rotationVector);
-
-        rotationAngle = rotationVector.angle / (float) Math.PI * 180;
+        AxisAngle4f rotationVector = GTUtility.getRotationAxisAngle4f(extendedFacing);
+        rotationAngle = rotationVector.angle;
         rotAxisX = rotationVector.x;
         rotAxisY = rotationVector.y;
         rotAxisZ = rotationVector.z;

@@ -3,12 +3,10 @@ package gregtech.common.covers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +19,7 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.cover.CoverArmGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
@@ -53,77 +52,27 @@ public class CoverArm extends Cover {
             return;
         }
 
-        final TileEntity toTile;
-        final TileEntity fromTile;
+        GTItemTransfer transfer = new GTItemTransfer();
+
         final int toSlot;
         final int fromSlot;
 
         if (export) {
-            fromTile = tileEntity;
-            toTile = coverable.getTileEntityAtSide(coverSide);
+            transfer.push(coverable, coverSide);
+
             fromSlot = internalSlotId;
             toSlot = externalSlotId;
         } else {
-            fromTile = coverable.getTileEntityAtSide(coverSide);
-            toTile = tileEntity;
+            transfer.pull(coverable, coverSide);
+
             fromSlot = externalSlotId;
             toSlot = internalSlotId;
         }
 
-        if (fromSlot > 0 && toSlot > 0) {
-            if (fromTile instanceof IInventory fromInventory && toTile instanceof IInventory toInventory)
-                GTUtility.moveFromSlotToSlot(
-                    fromInventory,
-                    toInventory,
-                    fromSlot - 1,
-                    toSlot - 1,
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1);
-        } else if (toSlot > 0) {
-            final ForgeDirection toSide = export ? coverSide : coverSide.getOpposite();
-            GTUtility.moveOneItemStackIntoSlot(
-                fromTile,
-                toTile,
-                toSide,
-                toSlot - 1,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
-        } else if (fromSlot > 0) {
-            final ForgeDirection toSide = export ? coverSide : coverSide.getOpposite();
-            if (fromTile instanceof IInventory fromInventory) GTUtility.moveFromSlotToSide(
-                fromInventory,
-                toTile,
-                fromSlot - 1,
-                toSide,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
-        } else {
-            final ForgeDirection fromSide = export ? coverSide : coverSide.getOpposite();
-            final ForgeDirection toSide = fromSide.getOpposite();
-            GTUtility.moveOneItemStack(
-                fromTile,
-                toTile,
-                fromSide,
-                toSide,
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1);
-        }
+        if (fromSlot > 0) transfer.setSourceSlots(fromSlot - 1);
+        if (toSlot > 0) transfer.setSinkSlots(toSlot - 1);
+
+        transfer.transfer();
     }
 
     @Override

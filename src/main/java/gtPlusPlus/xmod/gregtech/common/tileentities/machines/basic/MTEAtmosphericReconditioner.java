@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -40,7 +41,6 @@ import gregtech.common.pollution.Pollution;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -522,7 +522,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 Logger.INFO("Bad Rotor.");
                 return false;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         return false;
@@ -760,7 +760,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
                     reduction));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             aTooltipSuper.add(
                 StatCollector.translateToLocalFormatted(
                     "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
@@ -851,8 +851,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_RECYCLE)
                     .setPos(106, 24))
             .widget(
-                new SlotWidget(inventoryHandler, 7)
-                    .setFilter(stack -> GTUtility.areStacksEqual(stack, CI.getConveyor(mTier, 1), true))
+                new SlotWidget(inventoryHandler, 7).setFilter(stack -> checkConveyor(stack, mTier))
                     .setPos(124, 62));
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
@@ -867,5 +866,20 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     (widget, val) -> widget.notifyTooltipChange())
                 .setPos(163, 5)
                 .setSize(7, 18));
+    }
+
+    private static boolean checkConveyor(ItemStack stack, int tier) {
+        return (switch (tier) {
+            case 1 -> ItemList.Conveyor_Module_LV;
+            case 2 -> ItemList.Conveyor_Module_MV;
+            case 3 -> ItemList.Conveyor_Module_HV;
+            case 4 -> ItemList.Conveyor_Module_EV;
+            case 5 -> ItemList.Conveyor_Module_IV;
+            case 6 -> ItemList.Conveyor_Module_LuV;
+            case 7 -> ItemList.Conveyor_Module_ZPM;
+            case 8 -> ItemList.Conveyor_Module_UV;
+            case 9 -> ItemList.Conveyor_Module_UHV;
+            default -> throw new IllegalArgumentException("Tier not allowed for Atmospheric Reconditioner!");
+        }).isStackEqual(stack, false, true);
     }
 }
