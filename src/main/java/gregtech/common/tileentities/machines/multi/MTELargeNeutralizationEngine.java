@@ -58,9 +58,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     transpose(
-                        new String[][] { { " CCC ", " PPP ", " CCC " }, { " F F ", "  P  ", " F F " },
-                            { " F F ", "  P  ", " F F " }, { " F F ", "  P  ", " F F " }, { "CCCCC", "CCPCC", "CCCCC" },
-                            { "PC~CP", "P-P-P", "PCCCP" }, { "CCCCC", "CCPCC", "CCCCC" } }))
+                        new String[][] { { "           ", "   PPPPP   ", "           " },
+                            { "   CC~CC   ", "  P-----P  ", "   CCCCC   " },
+                            { "  CCFFFCC  ", " P--CCC--P ", "  CCFFFCC  " },
+                            { " CCF   FCC ", "P--C   C--P", " CCF   FCC " },
+                            { " CF     FC ", "P-CF   FC-P", " CF     FC " },
+                            { " CF     FC ", "P-CF   FC-P", " CF     FC " },
+                            { " F F   F F ", " CFCF FCFC ", " F F   F F " } }))
                 .addElement(
                     'C',
                     ofChain(
