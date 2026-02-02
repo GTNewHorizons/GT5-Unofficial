@@ -547,6 +547,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.factory.test.TestFactoryHatch;
 import gregtech.api.factory.test.TestFactoryPipe;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCapacitor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCreativeData;
 import tectech.thing.metaTileEntity.hatch.MTEHatchCreativeMaintenance;
@@ -1945,7 +1946,14 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_OwnerDetector.set(
-            new MTEOwnerDetector(Ownerdetector.ID, "machine.tt.ownerdetector", "Owner detector", 3).getStackForm(1L));
+            new MTEOwnerDetector(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Ownerdetector.ID)
+                    .translateKey("machine.tt.ownerdetector")
+                    .nameEnglish("Owner detector")
+                    .tier(3)
+                    .build()).getStackForm(1L));
 
         // ===================================================================================================
         // Buck Converters

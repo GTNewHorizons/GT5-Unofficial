@@ -4,6 +4,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
@@ -11,8 +13,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 public abstract class MTETieredMachineBlock extends MetaTileEntity {
 
@@ -31,6 +38,47 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
      */
     public final ITexture[][][] mTextures;
 
+    @Data
+    @NoArgsConstructor
+    @EqualsAndHashCode(callSuper = true)
+    @SuperBuilder(toBuilder = true)
+    public static class Args extends CommonMetaTileEntity.Args {
+
+        // Initialization Args
+        /// the tier of the machine.
+        /// the value will be clamped in `[0, 15]`.
+        private int tier;
+        /// the description text array.
+        /// each element in the array represents a line of the text.
+        @Nullable
+        private String[] descriptionArray;
+
+        /// the raw texture array that will be passed to [MTETieredMachineBlock#getTextureSet(ITexture\[\])].
+        /// [#bakedTextures] will be used first if present.
+        private ITexture[] textures;
+        /// the texture array that was processed by [MTETieredMachineBlock#getTextureSet(ITexture\[\])].
+        /// this array will be used first if present.
+        private ITexture[][][] bakedTextures;
+    }
+
+    public MTETieredMachineBlock(Args args) {
+        super(args);
+        mTier = (byte) GTUtility.clamp(args.getTier(), 0, 15);
+        mDescriptionArray = args.getDescriptionArray();
+        if (GTMod.GT.isClientSide()) {
+            if (args.getBakedTextures() != null) {
+                mTextures = args.getBakedTextures();
+            } else {
+                mTextures = getTextureSet(args.getTextures());
+                // preserve the baked textures
+                args.setBakedTextures(mTextures);
+            }
+        } else {
+            mTextures = null;
+        }
+    }
+
+    @Deprecated
     public MTETieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
@@ -41,6 +89,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         else mTextures = null;
     }
 
+    @Deprecated
     public MTETieredMachineBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
         String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
@@ -52,6 +101,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
         else mTextures = null;
     }
 
+    @Deprecated
     public MTETieredMachineBlock(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);

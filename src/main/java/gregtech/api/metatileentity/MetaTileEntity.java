@@ -92,6 +92,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     private String playerLang;
 
+    protected MetaTileEntity(CommonMetaTileEntity.Args args) {
+        super(args);
+        if (args.isRegisterToApi()) {
+            // if this is instantiated for registration, there won't be a BMTE for this instance.
+            // thus we create it manually here.
+            setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
+            getBaseMetaTileEntity().setMetaTileID((short) args.getId());
+        }
+
+        inventoryHandler = new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                MetaTileEntity.this.onContentsChanged(slot);
+            }
+        };
+        colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
+    }
+
     /**
      * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
      * also the list in the API package - it has a description that contains all the reservations.
@@ -109,6 +128,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      *
      * @param aID the machine ID
      */
+    @Deprecated
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
         super(aID, aBasicName, aRegionalName, aInvSlotCount);
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
@@ -126,6 +146,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     /**
      * This is the normal Constructor.
      */
+    @Deprecated
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
         inventoryHandler = new ItemStackHandler(mInventory) {

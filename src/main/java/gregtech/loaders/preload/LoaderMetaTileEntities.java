@@ -49,6 +49,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.metatileentity.CommonMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -275,9 +276,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.Machine_Bricked_BlastFurnace.set(
             new MTEBrickedBlastFurnace(
-                BRICKED_BLAST_FURNACE_CONTROLLER.ID,
-                "multimachine.brickedblastfurnace",
-                "Bricked Blast Furnace").getStackForm(1L));
+                CommonMetaTileEntity.Args.builder()
+                    .registerToApi(true)
+                    .id(BRICKED_BLAST_FURNACE_CONTROLLER.ID)
+                    .translateKey("multimachine.brickedblastfurnace")
+                    .nameEnglish("Bricked Blast Furnace")
+                    .build()).getStackForm(1L));
 
         ItemList.Machine_Multi_BlastFurnace.set(
             new MTEElectricBlastFurnace(EBF_CONTROLLER.ID, "multimachine.blastfurnace", "Electric Blast Furnace")

@@ -32,6 +32,19 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
     private String uuid;
     private boolean interdimensional = true;
 
+    public MTEOwnerDetector(Args args) {
+        super(
+            args.toBuilder()
+                .descriptionArray(
+                    new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.1"),
+                        EnumChatFormatting.BLUE
+                            + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") })
+                .build());
+    }
+
+    @Deprecated
     public MTEOwnerDetector(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -45,13 +58,14 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.ownerdetector.desc.2") });
     }
 
+    @Deprecated
     public MTEOwnerDetector(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEOwnerDetector(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEOwnerDetector((Args) prototype);
     }
 
     @Override

@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,6 +54,9 @@ import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * {@link IMetaTileEntity} implementation combining both machine-like ({@link MetaTileEntity}) and pipe-like
@@ -82,11 +86,48 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      */
     public long mSoundRequests = 0;
 
-    protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
+    // TODO: make it final when all deprecated ctors are removed
+    protected Args prototype;
+
+    @Data
+    @NoArgsConstructor
+    @SuperBuilder(toBuilder = true)
+    public static class Args {
+
+        // Registration Args
+        private int id;
+        private String translateKey;
+        private String nameEnglish;
+
+        // Initialization Args
+        private int inventorySlotCount;
+
+        /// `true` to register this instance to GregTech API.
+        private boolean registerToApi;
+    }
+
+    protected CommonMetaTileEntity(Args args) {
+        this(args.getTranslateKey(), args.getInventorySlotCount());
+        if (args.getTranslateKey() == null)
+            throw new IllegalStateException("Invalid machine translate key (or basicName, mName), nonnull expected");
+        if (args.isRegisterToApi()) {
+            if (args.getId() <= 0 || args.getId() >= GregTechAPI.MAXIMUM_METATILE_IDS) {
+                throw new IllegalStateException("Invalid MetaTileID " + args.getId() + ", expected in [1, 32765]");
+            }
+            registerMetaTileEntity(this, args.getId(), args.getNameEnglish());
+        }
+        // preserve the args for later instantiation whose registerToApi is false.
+        this.prototype = args.toBuilder()
+            .registerToApi(false)
+            .build();
+    }
+
+    @ApiStatus.Internal
+    private static void registerMetaTileEntity(CommonMetaTileEntity instance, int id, String nameEnglish) {
         if (GregTechAPI.sPostloadStarted || !GregTechAPI.sPreloadStarted)
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
         if (GregTechAPI.METATILEENTITIES[id] == null) {
-            GregTechAPI.METATILEENTITIES[id] = this;
+            GregTechAPI.METATILEENTITIES[id] = instance;
         } else {
             var existing = GregTechAPI.METATILEENTITIES[id];
             throw new IllegalArgumentException(
@@ -98,12 +139,18 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
                         .getCanonicalName()
                     + ").");
         }
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + instance.mName + ".name", nameEnglish);
+    }
+
+    @Deprecated
+    protected CommonMetaTileEntity(int id, String basicName, String regionalName, int invSlotCount) {
         mInventory = new ItemStack[invSlotCount];
         mName = basicName.replace(" ", "_")
             .toLowerCase(Locale.ENGLISH);
-        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", regionalName);
+        registerMetaTileEntity(this, id, regionalName);
     }
 
+    @Deprecated
     protected CommonMetaTileEntity(String name, int invSlotCount) {
         mInventory = new ItemStack[invSlotCount];
         mName = name;

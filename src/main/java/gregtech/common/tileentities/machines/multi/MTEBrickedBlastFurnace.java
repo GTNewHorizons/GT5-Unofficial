@@ -104,10 +104,19 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
 
     public ItemStack[] mOutputItems = new ItemStack[OUTPUT_SLOTS];
 
+    public MTEBrickedBlastFurnace(Args args) {
+        super(
+            args.toBuilder()
+                .inventorySlotCount(INPUT_SLOTS + OUTPUT_SLOTS)
+                .build());
+    }
+
+    @Deprecated
     public MTEBrickedBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, INPUT_SLOTS + OUTPUT_SLOTS);
     }
 
+    @Deprecated
     public MTEBrickedBlastFurnace(String aName) {
         super(aName, INPUT_SLOTS + OUTPUT_SLOTS);
     }
@@ -198,7 +207,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBrickedBlastFurnace(this.mName);
+        return new MTEBrickedBlastFurnace(prototype);
     }
 
     @Override
