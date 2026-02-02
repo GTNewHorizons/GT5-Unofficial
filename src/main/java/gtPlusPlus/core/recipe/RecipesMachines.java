@@ -90,7 +90,6 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-
         // Flask Configurator
         GTValues.RA.stdBuilder()
             .itemInputs(

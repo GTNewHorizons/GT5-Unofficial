@@ -50,7 +50,6 @@ public final class ModBlocks {
     public static Block blockHellfire;
     public static Block blockInfiniteFLuidTank;
 
-
     public static void init() {
         Logger.INFO("Initializing Blocks.");
 
