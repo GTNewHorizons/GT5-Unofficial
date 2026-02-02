@@ -3693,7 +3693,6 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
                 null,
@@ -3765,7 +3764,6 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
                 null,
