@@ -624,6 +624,19 @@ public class GTValues {
 
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
+    public static final String AuthorLeon = "Author: " + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "l"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "e"
+        + EnumChatFormatting.BLUE
+        + EnumChatFormatting.BOLD
+        + "o"
+        + EnumChatFormatting.DARK_BLUE
+        + EnumChatFormatting.BOLD
+        + "n";
+
     public static final Supplier<String> AuthorNoc = chain(
         animatedText(
             "Noc",

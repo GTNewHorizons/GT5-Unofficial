@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksT
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.GTValues.AuthorLeon;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -31,6 +32,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable {
@@ -46,6 +48,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     public MTELargeNeutralizationEngine(String aName) {
         super(aName);
+    }
+
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTELargeNeutralizationEngine(this.mName);
     }
 
     @Nullable
@@ -103,7 +110,27 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELargeNeutralizationEngine(this.mName);
+    protected MultiblockTooltipBuilder createTooltip() {
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Acid Generator, LNE")
+            .addInfo("(Dis)solves all your problems!")
+            .addInfo("Provide an acid to burn, and a base to boost efficiency")
+            .addInfo("TBD: Finish residue/base info")
+            .beginStructureBlock(11, 7, 3, true)
+            .addController("Top center")
+            .addCasingInfoRange(
+                "Tiered Casings: Strengthened Inanimate Casing, Precise Stationary Casing, Ultimate Static Casing",
+                30,
+                46,
+                false)
+            .addCasingInfoExactly("Polytetrafluoroethylene Frame Box", 34, false)
+            .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
+            .addInputBus("Any Tiered Casing", 1)
+            .addInputHatch("Any Tiered Casing", 1)
+            .addMufflerHatch("Any Tiered Casing", 1)
+            .addMaintenanceHatch("Any Tiered Casing", 1)
+            .addDynamoHatch("Any Tiered Casing", 1)
+            .toolTipFinisher(AuthorLeon);
+        return tt;
     }
 }
