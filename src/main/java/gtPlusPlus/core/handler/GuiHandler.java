@@ -12,21 +12,18 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.ContainerCircuitProgrammer;
 import gtPlusPlus.core.container.ContainerFishTrap;
 import gtPlusPlus.core.container.ContainerPestKiller;
-import gtPlusPlus.core.container.ContainerProjectTable;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.gui.beta.GUIIDRegistry;
 import gtPlusPlus.core.gui.beta.MUGuild;
 import gtPlusPlus.core.gui.machine.GUICircuitProgrammer;
 import gtPlusPlus.core.gui.machine.GUIFishTrap;
 import gtPlusPlus.core.gui.machine.GUIPestKiller;
-import gtPlusPlus.core.gui.machine.GUIProjectTable;
 import gtPlusPlus.core.gui.machine.GUIVolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -60,7 +57,6 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) return null;
 
         return switch (ID) {
-            case GUI1 -> new ContainerProjectTable(player.inventory, (TileEntityProjectTable) te);
             case GUI5 -> {
                 Logger.INFO("sad");
                 yield null;
@@ -89,7 +85,6 @@ public class GuiHandler implements IGuiHandler {
         if (te == null) return null;
 
         return switch (ID) {
-            case GUI1 -> new GUIProjectTable(player.inventory, (TileEntityProjectTable) te);
             case GUI6 -> new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
             case GUI8 -> new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
             case GUI15 -> new GUIPestKiller(player.inventory, (TileEntityPestKiller) te);
