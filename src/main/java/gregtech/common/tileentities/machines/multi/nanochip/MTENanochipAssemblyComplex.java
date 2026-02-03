@@ -117,12 +117,11 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'F',
             HatchElementBuilder.<MTENanochipAssemblyComplex>builder()
-                .atLeast(ImmutableMap.of(AssemblyHatchElement.AssemblyModule, 0, AssemblyHatchElement.IgnoredHatch, 1))
+                .atLeast(ImmutableMap.of(AssemblyHatchElement.AssemblyModule, 0, AssemblyHatchElement.IgnoredHatch, 0))
                 .casingIndex(CASING_INDEX_WHITE)
                 .hint(1)
                 // Base casing or assembly module
                 .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
-
         // Vacuum conveyor hatches that the main controller cares about go in specific slots & Energy Hatches
         .addElement(
             'H',
@@ -710,7 +709,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     // Hatch adder for modules
     public enum AssemblyHatchElement implements IHatchElement<MTENanochipAssemblyComplex> {
 
-        AssemblyModule(MTENanochipAssemblyComplex::addModuleToMachineList, MTENanochipAssemblyComplex.class) {
+        AssemblyModule(MTENanochipAssemblyComplex::addModuleToMachineList, MTENanochipAssemblyModuleBase.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
@@ -726,7 +725,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
         },
         // Hatches are allowed in the module base slots, but the assembly complex ignores these for its base operation,
         // so we need a custom adder to not add them to our hatch lists
-        IgnoredHatch(MTENanochipAssemblyComplex::ignoreAndAcceptHatch, MTENanochipAssemblyComplex.class) {
+        IgnoredHatch(MTENanochipAssemblyComplex::ignoreAndAcceptHatch, MTEHatch.class) {
 
             @Override
             public long count(MTENanochipAssemblyComplex tileEntity) {
