@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
 
@@ -22,8 +19,6 @@ import gregtech.api.factory.IFactoryNetwork;
  */
 public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSelf, TElement, TNetwork>, TElement extends IFactoryElement<TElement, TNetwork, TSelf>, TNetwork extends IFactoryNetwork<TNetwork, TElement, TSelf>>
     implements IFactoryGrid<TSelf, TElement, TNetwork> {
-
-    public static final Logger LOGGER = LogManager.getLogger("Standard Factory Network");
 
     public final HashSet<TNetwork> networks = new HashSet<>();
     public final HashSet<TElement> vertices = new HashSet<>();
@@ -125,8 +120,6 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
         // iterating its neighbours
         HashSet<TElement> discovered = new HashSet<>();
 
-        long pre = System.nanoTime();
-
         for (TElement neighbour : neighbours) {
             if (discovered.contains(neighbour)) continue;
 
@@ -165,11 +158,6 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
             }
         }
 
-        long post = System.nanoTime();
-
-        // temporary logging so that I can see what the performance is like
-        LOGGER
-            .debug("Split network in {} us (added {} new networks)", (post - pre) / 1e3, neighbouringClumps.size() - 1);
     }
 
     protected void addEdge(TElement from, TElement to) {
@@ -182,13 +170,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
         HashSet<TElement> discovered = new HashSet<>();
         HashSet<TNetwork> networks = new HashSet<>();
 
-        long pre = System.nanoTime();
-
         walkAdjacency(from, discovered, networks, false);
-
-        long post = System.nanoTime();
-
-        LOGGER.debug("Walked adjacent elements in {} us", (post - pre) / 1e3);
 
         if (networks.isEmpty()) {
             // There are no neighbours, or the neighbours didn't have a network somehow (which is an illegal state!
@@ -229,16 +211,11 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
                     biggestNetwork = network;
             }
 
-            pre = System.nanoTime();
-
             for (TNetwork network : networks) {
                 if (network != biggestNetwork) {
                     subsume(biggestNetwork, network);
                 }
             }
-
-            post = System.nanoTime();
-            LOGGER.debug("Subsumed {} networks in {} us", networks.size() - 1, (post - pre) / 1e3);
 
             for (TElement e : discovered) {
                 if (e.getNetwork() == null) {
