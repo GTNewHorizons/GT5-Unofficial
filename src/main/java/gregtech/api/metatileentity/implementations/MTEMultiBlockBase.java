@@ -1442,14 +1442,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
-        List<MTEHatch> mAnyDynamoHatches = new ArrayList<>();
         for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
-            mAnyDynamoHatches.add(aDynamo);
+            long aVoltage = aDynamo.maxEUOutput();
+            long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            // Check against voltage to check when hatch mixing
+            if (aFirstVoltageFound == -1) {
+                aFirstVoltageFound = aVoltage;
+            } else {
+                if (aFirstVoltageFound != aVoltage) {
+                    aFoundMixedDynamos = true;
+                }
+            }
+            totalOutput += aTotal;
         }
-        for (MTEHatch anExoticDynamo : validMTEList(mExoticDynamoHatches)) {
-            mAnyDynamoHatches.add(anExoticDynamo);
-        }
-        for (MTEHatch aDynamo : validMTEList(mAnyDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             long aTotal = aDynamo.maxAmperesOut() * aVoltage;
             // Check against voltage to check when hatch mixing
@@ -1473,7 +1479,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (MTEHatch aDynamo : validMTEList(mAnyDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mDynamoHatches)) {
+            leftToInject = aEU - injected;
+            aVoltage = aDynamo.maxEUOutput();
+            aAmpsToInject = (int) (leftToInject / aVoltage);
+            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aVoltage, false);
+            }
+            injected += aVoltage * ampsOnCurrentHatch;
+            if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aRemainder, false);
+                injected += aRemainder;
+            }
+        }
+        for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);
@@ -1989,9 +2012,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) return mOutputHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) return mOutputBusses.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchEnergy hatch) return mEnergyHatches.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
-            return mDynamoHatches.add(hatch);
-        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) return mDynamoHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
 
             if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
