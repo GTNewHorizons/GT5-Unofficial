@@ -1374,7 +1374,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                     }
                 }
             }
-        } catch (Throwable ignored) {}
+        } catch (Exception ignored) {}
         CraftingGridCache.unpauseRebuilds();
     }
 }

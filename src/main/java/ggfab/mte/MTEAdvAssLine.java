@@ -577,7 +577,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         }
 
         if (mInputBusses.size() < currentInputLength) {
-            criticalStopMachine("ggfab.gui.advassline.shutdown.input_busses");
+            criticalStopMachine("ggfab.gui.advassline.shutdown.input_buses");
             return false;
         }
         boolean oStuck = stuck;
@@ -948,9 +948,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -1036,6 +1036,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                     // use previously calculated parallel output
                     ItemStack output = mOutputItems[0];
                     if (addOutputAtomic(GTUtility.copy(output)) || !voidingMode.protectItem) {
+                        recipesDone += currentRecipeParallel;
                         reset();
                     } else {
                         stuck = true;

@@ -50,7 +50,6 @@ public enum MachineType {
     SCANNER(FunnyTexts.SCANNER, "gt.recipe.scanner"),
     ROCKBREAKER(FunnyTexts.ROCKBREAKER, "gt.recipe.rockbreaker"),
     SIFTER(FunnyTexts.SIFTER, "gt.recipe.sifter"),
-    SLICER(FunnyTexts.SLICER, "gt.recipe.slicer"),
     THERMAL_CENTRIFUGE(FunnyTexts.THERMAL_CENTRIFUGE, "gt.recipe.thermalcentrifuge"),
     UNPACKAGER(FunnyTexts.UNPACKAGER, "gt.recipe.unpackager"),
     WIREMILL(FunnyTexts.WIREMILL, "gt.recipe.wiremill");
@@ -102,7 +101,6 @@ public enum MachineType {
         static final String ROCKBREAKER = "gt.recipe.rockbreaker.description";
         static final String SIFTER = "gt.recipe.sifter.description";
         static final String SCANNER = "gt.recipe.scanner.description";
-        static final String SLICER = "gt.recipe.slicer.description";
         static final String THERMAL_CENTRIFUGE = "gt.recipe.thermalcentrifuge.description";
         static final String UNPACKAGER = "gt.recipe.unpackager.description";
         static final String WIREMILL = "gt.recipe.wiremill.description";

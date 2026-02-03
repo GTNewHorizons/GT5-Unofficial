@@ -57,6 +57,7 @@ import gregtech.api.recipe.maps.EFRSmokingBackend;
 import gregtech.api.recipe.maps.FluidCannerBackend;
 import gregtech.api.recipe.maps.FluidOnlyFrontend;
 import gregtech.api.recipe.maps.FormingPressBackend;
+import gregtech.api.recipe.maps.FoundryModuleFrontend;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.recipe.maps.FurnaceBackend;
 import gregtech.api.recipe.maps.IsotopeDecayFrontend;
@@ -423,13 +424,6 @@ public final class RecipeMaps {
         .maxIO(2, 3, 2, 2)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
-        .build();
-    public static final RecipeMap<FluidCannerBackend> fluidCannerRecipes = RecipeMapBuilder
-        .of("gt.recipe.fluidcanner", FluidCannerBackend::new)
-        .maxIO(1, 1, 1, 1)
-        .minInputs(1, 0)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_CANISTER : null)
-        .progressBar(GTUITextures.PROGRESSBAR_CANNER)
         .build();
     public static final RecipeMap<RecipeMapBackend> brewingRecipes = RecipeMapBuilder.of("gt.recipe.brewer")
         .maxIO(1, 0, 1, 1)
@@ -970,8 +964,9 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
         .build();
-    public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
-        .maxIO(2, 2, 0, 0)
+    public static final RecipeMap<FluidCannerBackend> cannerRecipes = RecipeMapBuilder
+        .of("gt.recipe.canner", FluidCannerBackend::new)
+        .maxIO(2, 2, 1, 1)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
@@ -984,6 +979,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CANNER)
         .build();
+
     public static final RecipeMap<RecipeMapBackend> latheRecipes = RecipeMapBuilder.of("gt.recipe.lathe")
         .maxIO(1, 2, 0, 0)
         .minInputs(1, 0)
@@ -1033,26 +1029,17 @@ public final class RecipeMaps {
                 .duration(aDuration * 2)
                 .build()
                 .ifPresent(ret::add);
-            b.fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
+            b.copy()
+                .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
                 .duration(aDuration)
+                .build()
+                .ifPresent(ret::add);
+            b.fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(clamp(aDuration * aEUt / 4000, 1, 10)))
+                .duration((int) (aDuration / 2.5))
                 .build()
                 .ifPresent(ret::add);
             return ret;
         })
-        .build();
-    public static final RecipeMap<RecipeMapBackend> slicerRecipes = RecipeMapBuilder.of("gt.recipe.slicer")
-        .maxIO(2, 1, 0, 0)
-        .minInputs(2, 0)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
-            if (isOutput) {
-                return GTUITextures.OVERLAY_SLOT_SLICER_SLICED;
-            }
-            if (index == 0) {
-                return GTUITextures.OVERLAY_SLOT_SQUARE;
-            }
-            return GTUITextures.OVERLAY_SLOT_SLICE_SHAPE;
-        })
-        .progressBar(GTUITextures.PROGRESSBAR_SLICE)
         .build();
     public static final RecipeMap<RecipeMapBackend> extruderRecipes = RecipeMapBuilder.of("gt.recipe.extruder")
         .maxIO(2, 1, 0, 0)
@@ -1324,8 +1311,7 @@ public final class RecipeMaps {
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
-        .neiRecipeBackgroundOffset(7, 0)
-        .neiRecipeBackgroundSize(165, 60)
+        .neiRecipeBackgroundSize(170, 60)
         .logoPos(150, 38)
         .frontend(CauldronFrontend::new)
         .neiHandlerInfo(builder -> {
@@ -1338,4 +1324,15 @@ public final class RecipeMaps {
         })
         .build();
 
+    public static final RecipeMap<RecipeMapBackend> foundryFakeModuleCostRecipes = RecipeMapBuilder
+        .of("gt.recipe.foundry_modules")
+        .maxIO(12, 1, 0, 0)
+        .addSpecialTexture(87, 38, 30, 13, GTUITextures.PICTURE_ARROW_GRAY)
+        .dontUseProgressBar()
+        .neiTransferRect(87, 38, 30, 13)
+        .frontend(FoundryModuleFrontend::new)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(ItemList.Machine_Multi_ExoFoundry.get(1))
+                .setHeight(100))
+        .build();
 }

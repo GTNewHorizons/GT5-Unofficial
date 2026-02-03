@@ -29,7 +29,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -468,7 +467,7 @@ public class RecipesMachinesCustom {
         // Thorium Reactor [LFTR]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ThoriumReactor.get(1),
-            new Object[] { "ABA", "CDC", "EFE", 'A', new ItemStack(ModItems.itemCircuitLFTR), 'B',
+            new Object[] { "ABA", "CDC", "EFE", 'A', GregtechItemList.LFTRControlCircuit, 'B',
                 OrePrefixes.cableGt12.get(Materials.Naquadah), 'C', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'D',
                 GregtechItemList.Gregtech_Computer_Cube, 'E', MaterialsElements.getInstance().THORIUM232.getPlate(1),
                 'F', ItemList.Hull_IV });
@@ -501,7 +500,7 @@ public class RecipesMachinesCustom {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 1),
                 ItemList.Field_Generator_HV.get(1))
-            .itemOutputs(new ItemStack(ModItems.itemCircuitLFTR))
+            .itemOutputs(GregtechItemList.LFTRControlCircuit.get(1))
             .duration(4 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -637,13 +636,13 @@ public class RecipesMachinesCustom {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.PowerSubStation.get(1),
             new Object[] { "ABA", "CDC", "EAE", 'A', MaterialsAlloy.INCOLOY_MA956.getPlate(1), 'B',
-                new ItemStack(ModItems.itemCircuitLFTR), 'C', GregtechItemList.Casing_Power_SubStation, 'D',
+                GregtechItemList.LFTRControlCircuit, 'C', GregtechItemList.Casing_Power_SubStation, 'D',
                 GregtechItemList.Casing_Vanadium_Redox, 'E', MaterialsAlloy.INCOLOY_020.getPlate(1) });
 
         // Vanadium Redox Power Cell (EV)
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemHalfCompleteCasings, 1, 1),
+                GregtechItemList.HalfCompleteCasing_II.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2))
@@ -1038,7 +1037,7 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Copper, 4),
                 getModItem(Mods.IndustrialCraft2.ID, "itemPartCarbonMesh", 64, 0))
             .circuit(18)
-            .itemOutputs(new ItemStack(ModItems.itemLavaFilter, 16))
+            .itemOutputs(GregtechItemList.LavaFilter.get(16))
             .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
             .eut(240)
