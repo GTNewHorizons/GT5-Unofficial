@@ -109,6 +109,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Usage of plutonium 241 plasma per mining operation */
     protected static int PLASMA_PLUTONIUM241_USAGE = 150;
 
+    @Override
+    protected long getAvailableData_EM() {
+        return this.parent.getAvailableDataForModules();
+    }
+
     /* Size of the whitelist in stacks **/
     protected static int WHITELIST_SIZE = 64;
     /** ID of the whitelist config window */
@@ -317,7 +322,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             validatedInputs.add(controllerSlot);
         }
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
-        for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
+        // merge items from module itself and base structure
+        List<MTEHatchInputBus> allInputBusses = new ArrayList<>();
+        if (mInputBusses != null) allInputBusses.addAll(mInputBusses);
+        if (parentInputBusses != null) allInputBusses.addAll(parentInputBusses);
+
+        for (MTEHatchInputBus inputBus : validMTEList(allInputBusses)) {
             IGregTechTileEntity tileEntity = inputBus.getBaseMetaTileEntity();
             boolean isMEBus = inputBus instanceof MTEHatchInputBusME;
             boolean isLinkedBus = inputBus instanceof MTELinkedInputBus;
@@ -501,8 +511,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         lEUt = (long) -tRecipe.mEUt * parallels;
         eAmpereFlow = 1;
-        // TODO: Implement way to get computation from master controller. Or maybe keep it this way so
-        // people can route computation to their liking?
         eRequiredData = (int) Math.ceil(data.computation * parallels * compModifier);
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;

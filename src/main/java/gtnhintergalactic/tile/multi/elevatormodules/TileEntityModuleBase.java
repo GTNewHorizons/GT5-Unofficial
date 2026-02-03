@@ -1,5 +1,7 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,6 +20,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -243,10 +246,20 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         isConnected = true;
     }
 
+    List<MTEHatchInputBus> parentInputBusses;
+    TileEntitySpaceElevator parent = null;
+
+    public void connect(TileEntitySpaceElevator parent) {
+        this.parent = parent;
+        this.parentInputBusses = parent.getElevatorInputBusses();
+        isConnected = true;
+    }
+
     /**
      * Tells the module that it no longer is connected to a Space Elevator
      */
     public void disconnect() {
+        this.parent = null;
         isConnected = false;
     }
 
