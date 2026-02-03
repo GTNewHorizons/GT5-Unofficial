@@ -34,12 +34,12 @@ public class MTEHatchVacuumConveyorInput extends MTEHatchVacuumConveyor {
     @Override
     public String[] getDescription() {
         return new String[] { translateToLocalFormatted("GT5U.tooltip.nac.hatch.vc.base.1", TOOLTIP_COLORED),
-            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.2"),
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.2"), translateToLocal("GT5U.tooltip.nac.hatch.vc.base.3"),
             translateToLocal("GT5U.tooltip.nac.hatch.vc.input.base.1"),
             EnumChatFormatting.STRIKETHROUGH
                 + "------------------------------------------------------------------------",
-            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.3"),
-            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.4") };
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.4"),
+            translateToLocal("GT5U.tooltip.nac.hatch.vc.base.5") };
     }
 
     @Override
