@@ -5261,7 +5261,7 @@ public class ChemicalRecipes implements Runnable {
             .addTo(multiblockChemicalReactorRecipes);
 
         // Same as above, but with Quicklime and Calcite. The line it's shortcutting accepts Calcium, quicklime, and
-        // Clacite
+        // Calcite
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, Materials.Quicklime.getDust(1)))
             .circuit(3)
