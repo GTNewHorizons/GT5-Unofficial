@@ -4,8 +4,8 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.StorageDrawers;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
