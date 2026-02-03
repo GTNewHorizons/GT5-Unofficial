@@ -117,8 +117,8 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     private ItemStack createNewDrawer(ItemStack drawer, ItemStack sideMat, ItemStack trimMat, ItemStack frontMat,
         int count) {
-        Block drawer_block = Block.getBlockFromItem(drawer.getItem());
-        return ItemCustomDrawers.makeItemStack(drawer_block, count, sideMat, trimMat, frontMat);
+        Block drawerBlock = Block.getBlockFromItem(drawer.getItem());
+        return ItemCustomDrawers.makeItemStack(drawerBlock, count, sideMat, trimMat, frontMat);
     }
 
     @Override
