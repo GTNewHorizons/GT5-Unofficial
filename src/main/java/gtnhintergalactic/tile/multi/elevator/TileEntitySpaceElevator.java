@@ -108,6 +108,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .filter(
                 module -> module.getBaseMetaTileEntity()
                     .isActive())
+            .filter(TileEntityModuleBase::isDataInputListEmpty)
             .count();
         if (minerModuleAmount == 0) {
             return getAvailableData_EM();

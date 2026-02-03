@@ -239,6 +239,10 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
     }
 
+    public boolean isDataInputListEmpty() {
+        return eInputData.isEmpty();
+    }
+
     /**
      * Tells the module that it's now connected to a Space Elevator
      */
