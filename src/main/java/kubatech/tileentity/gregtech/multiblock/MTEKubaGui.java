@@ -2,7 +2,6 @@ package kubatech.tileentity.gregtech.multiblock;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 
-import kubatech.tileentity.gregtech.multiblock.modularui2.EasyBooleanSyncValue;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -16,11 +15,16 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import kubatech.tileentity.gregtech.multiblock.modularui2.EasyBooleanSyncValue;
 import kubatech.tileentity.gregtech.multiblock.modularui2.LockableCycleButtonWidget;
 
 public abstract class MTEKubaGui<T extends KubaTechGTMultiBlockBase<T>> extends MTEMultiBlockBaseGui<T> {
 
-    public final EasyBooleanSyncValue isRunning = new EasyBooleanSyncValue("kuba_running", ()-> multiblock.mMaxProgresstime > 0,null);
+    public final EasyBooleanSyncValue isRunning = new EasyBooleanSyncValue(
+        "kuba_running",
+        () -> multiblock.mMaxProgresstime > 0,
+        null);
+
     public MTEKubaGui(T multiblock) {
         super(multiblock);
     }
