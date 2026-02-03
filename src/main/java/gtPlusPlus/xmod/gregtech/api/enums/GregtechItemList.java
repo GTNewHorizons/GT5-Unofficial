@@ -898,18 +898,6 @@ public enum GregtechItemList implements IItemContainer {
     SmallLithiumHydroperoxide,
     TinyLithiumHydroperoxide,
 
-    ManureByproductsDust,
-    SmallManureByproductsDust,
-    TinyManureByproductsDust,
-
-    OrganicFertilizerDust,
-    SmallOrganicFertilizerDust,
-    TinyOrganicFertilizerDust,
-
-    DriedEarthDust,
-    SmallDriedEarthDust,
-    TinyDriedEarthDust,
-
     FormaldehydeCatalystDust,
     SmallFormaldehydeCatalystDust,
     TinyFormaldehydeCatalystDust,
