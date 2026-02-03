@@ -193,7 +193,6 @@ public class DustLoader implements IWerkstoffRunnable {
                         .getKey();
                     if (werkstoffStats.isElektrolysis()) {
                         GTRecipe tRecipe = new GTRecipe(
-                            true,
                             new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
                             stOutputs.toArray(new ItemStack[0]),
                             null,
@@ -218,7 +217,6 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoffStats.isCentrifuge()) {
                         RecipeMaps.centrifugeRecipes.add(
                             new GTRecipe(
-                                true,
                                 new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
                                 stOutputs.toArray(new ItemStack[0]),
                                 null,
@@ -270,7 +268,6 @@ public class DustLoader implements IWerkstoffRunnable {
                         if (circuit != null) stOutputs.add(circuit);
                         RecipeMaps.mixerRecipes.add(
                             new GTRecipe(
-                                true,
                                 stOutputs.toArray(new ItemStack[0]),
                                 new ItemStack[] { input },
                                 null,

@@ -28,9 +28,6 @@ import ic2.core.item.resources.ItemCell;
 public class GTPPFluids {
 
     // Agricultural Chem
-    public static Fluid PoopJuice;
-    public static Fluid ManureSlurry;
-    public static Fluid FertileManureSlurry;
     public static Fluid RedMud;
     public static Fluid PropionicAcid;
     public static Fluid FermentationBase;
@@ -120,36 +117,6 @@ public class GTPPFluids {
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
     public static void init() {
-        PoopJuice = FluidUtils.generateFluidNonMolten(
-            "raw.waste",
-            "Raw Animal Waste",
-            32 + 175,
-            new short[] { 100, 70, 30, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        ManureSlurry = FluidUtils.generateFluidNonMolten(
-            "manure.slurry",
-            "Manure Slurry",
-            39 + 175,
-            new short[] { 75, 45, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        FertileManureSlurry = FluidUtils.generateFluidNonMolten(
-            "fertile.manure.slurry",
-            "Fertile Manure Slurry",
-            45 + 175,
-            new short[] { 65, 50, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
         RedMud = FluidUtils.generateFluidNoPrefix(
             "mud.red.slurry",
             "Red Mud Slurry",

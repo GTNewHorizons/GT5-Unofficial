@@ -95,7 +95,6 @@ public class RecipeGenFluidCanning implements Runnable {
         // Check validity
 
         GTRecipe aRecipe = new GTRecipe(
-            true,
             new ItemStack[] { aInput },
             new ItemStack[] { aOutput },
             null,
