@@ -152,9 +152,10 @@ public class ColorGridWidget extends Column {
                 onToggle.accept(selected);
                 return result;
             }
-        }.background(false, drawButton(Color.multiply(color, 0.5F, false)))
-            .background(true, drawButton(color))
-            .hoverOverlay(drawButton(Color.multiply(color, 0.7F, false)))
+        }.background(false, drawButton(false, Color.multiply(color, 0.5F, false)))
+            .background(true, drawButton(true, color))
+            .hoverOverlay(false, drawButton(false, Color.multiply(color, 0.7F, false)))
+            .hoverOverlay(true, drawButton(true, color))
             .tooltipDynamic(tooltip -> {
                 if (selected.contains((byte) index)) {
                     tooltip.add(Dyes.VALUES[index].getLocalizedDyeName());
@@ -168,16 +169,16 @@ public class ColorGridWidget extends Column {
             .size(buttonSize, buttonSize);
     }
 
-    public IDrawable drawButtonBorder() {
+    public IDrawable drawButtonBorder(boolean active) {
         return (context, x, y, w, h, widgetTheme) -> {
-            new Rectangle().setColor(Color.BLACK.main)
+            new Rectangle().setColor(active ? Color.RED.main : Color.BLACK.main)
                 .draw(context, new Area(x, y, buttonSize, buttonSize), widgetTheme);
         };
     }
 
-    public IDrawable drawButton(int color) {
+    public IDrawable drawButton(boolean active, int color) {
         int insideSize = buttonSize - (borderSize * 2);
-        return IDrawable.of(drawButtonBorder(), (context, x, y, w, h, widgetTheme) -> {
+        return IDrawable.of(drawButtonBorder(active), (context, x, y, w, h, widgetTheme) -> {
             new Rectangle().setColor(color)
                 .draw(context, new Area(x + borderSize, y + borderSize, insideSize, insideSize), widgetTheme);
         });
