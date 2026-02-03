@@ -67,6 +67,7 @@ import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -580,7 +581,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
                         for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                             if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect();
+                                projectModule.connect(this);
                                 long tAvailableEnergy = getEUVar();
                                 if (tAvailableEnergy > 0) {
                                     setEUVar(
@@ -593,6 +594,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         }
                     }
                 }
+
+                distributeComputationToModules();
             } else {
                 if (!mProjectModuleHatches.isEmpty()) {
                     for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
@@ -602,6 +605,26 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             }
             if (mEfficiency < 0) mEfficiency = 0;
             fixAllIssues();
+        }
+    }
+
+    private void distributeComputationToModules() {
+        long totalRequired = 0;
+        List<TileEntityModuleMiner> sharingModules = new ArrayList<>();
+        for (TileEntityModuleBase module : mProjectModuleHatches) {
+            if (module instanceof TileEntityModuleMiner miner && miner.isUsingMasterComputation()) {
+                sharingModules.add(miner);
+                totalRequired += miner.getTheoreticalComputation();
+            }
+        }
+        if (sharingModules.isEmpty()) return;
+        long available = eAvailableData;
+        for (TileEntityModuleMiner module : sharingModules) if (available > totalRequired) {
+            // setting data to big value so module doesnt disable from missing computation
+            module.setEAvailableData(100000);
+            module.startRecipeProcessing();
+        } else {
+            module.setEAvailableData(0);
         }
     }
 

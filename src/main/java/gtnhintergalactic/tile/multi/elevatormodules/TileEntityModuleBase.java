@@ -236,6 +236,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
     }
 
+    protected TileEntitySpaceElevator elevator;
+
     /**
      * Tells the module that it's now connected to a Space Elevator
      */
@@ -243,10 +245,16 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
         isConnected = true;
     }
 
+    public void connect(TileEntitySpaceElevator elevator) {
+        this.elevator = elevator;
+        isConnected = true;
+    }
+
     /**
      * Tells the module that it no longer is connected to a Space Elevator
      */
     public void disconnect() {
+        this.elevator = null;
         isConnected = false;
     }
 
