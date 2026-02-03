@@ -1047,6 +1047,8 @@ gt.recipe.unpackager=Unpackager
 gt.recipe.unpackager.description=Grabs things out of Boxes
 gt.recipe.wiremill=Wiremill
 gt.recipe.wiremill.description=Produces Wires more efficiently
+gt.recipe.drawerframer=Drawer Framer
+gt.recipe.drawerframer.description=Frames drawers exactly like the Framing Table
 
 # RecipeMaps that are not listed on MachineType enum
 gt.recipe.fakeAssemblylineProcess=Assemblyline Process

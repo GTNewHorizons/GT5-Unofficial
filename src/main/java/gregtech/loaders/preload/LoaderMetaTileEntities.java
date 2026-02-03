@@ -5,6 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
@@ -10632,6 +10633,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerDrawerFramer() {
+
+        // if storage drawers is not loaded, do not load the drawer framer machine
+        if (!StorageDrawers.isModLoaded()) return;
 
         ItemList.Machine_LV_DrawerFramer
             .set(new MTEDrawerFramer(GT_Framer_LV.ID, "framer.tier.01", "Basic Drawer Framer", 1).getStackForm(1L));

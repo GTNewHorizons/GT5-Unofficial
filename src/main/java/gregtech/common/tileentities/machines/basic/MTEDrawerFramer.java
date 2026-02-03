@@ -3,8 +3,6 @@ package gregtech.common.tileentities.machines.basic;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -12,8 +10,9 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.jaquadro.minecraft.storagedrawers.block.BlockDrawersCustom;
 import com.jaquadro.minecraft.storagedrawers.item.ItemCustomDrawers;
 
-import gregtech.api.enums.Mods;
+import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,6 +23,8 @@ import gregtech.api.render.TextureFactory;
 
 public class MTEDrawerFramer extends MTEBasicMachine {
 
+    private static final int RECIPE_DURATION = 20;
+
     public MTEDrawerFramer(int aID, String aName, String aNameRegional, int aTier) {
 
         super(
@@ -32,57 +33,39 @@ public class MTEDrawerFramer extends MTEBasicMachine {
             aNameRegional,
             aTier,
             1,
-            "Automatically frames Drawers",
+            MachineType.DRAWER_FRAMER.description(),
             4,
             1,
+            TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_SIDE_DRAWER_FRAMER)
+                .build(),
+            TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_SIDE_DRAWER_FRAMER)
+                .build(),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DRAWER_FRAMER_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DRAWER_FRAMER_ACTIVE_GLOW)
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DRAWER_FRAMER),
                 TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_GLOW)
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DRAWER_FRAMER_GLOW)
                     .glow()
                     .build()),
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_TOP_DISASSEMBLER_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_GLOW)
-                    .glow()
-                    .build()));
+            TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_TOP_DRAWER_FRAMER)
+                .build(),
+            TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_TOP_DRAWER_FRAMER)
+                .build(),
+            TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_DRAWER_FRAMER)
+                .build(),
+            TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.OVERLAY_BOTTOM_DRAWER_FRAMER)
+                .build());
     }
 
     public MTEDrawerFramer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -92,14 +75,6 @@ public class MTEDrawerFramer extends MTEBasicMachine {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEDrawerFramer(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public String[] getDescription() {
-        return ArrayUtils.addAll(
-            this.mDescriptionArray,
-            "Add Framed Drawers to Slot 1",
-            "The following slots are Side, Trim, and Front materials");
     }
 
     private static final FallbackableUITexture progressBarTexture = GTUITextures
@@ -114,9 +89,14 @@ public class MTEDrawerFramer extends MTEBasicMachine {
 
     @Override
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos).setBackground(
-            getGUITextureSet().getItemSlot(),
-            (index == 0) ? GTUITextures.OVERLAY_SLOT_BOXED : GTUITextures.OVERLAY_SLOT_EXTRUDER_SHAPE);
+        SlotWidget slot = super.createItemInputSlot(index, backgrounds, pos);
+        if (index == 0) return slot;
+        if (index == 1) return (SlotWidget) slot
+            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DRAWER_SIDE);
+        if (index == 2) return (SlotWidget) slot
+            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DRAWER_TRIM);
+        return (SlotWidget) slot
+            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DRAWER_FRONT);
     }
 
     // we don't need a special slot here
@@ -125,45 +105,43 @@ public class MTEDrawerFramer extends MTEBasicMachine {
         return null;
     }
 
-    private boolean isCustomDrawer(ItemStack aStack) {
-        return Block.getBlockFromItem(aStack.getItem()) instanceof BlockDrawersCustom;
+    private boolean isCustomDrawer(ItemStack itemStack) {
+        return Block.getBlockFromItem(itemStack.getItem()) instanceof BlockDrawersCustom;
     }
 
-    private boolean isValidMaterial(ItemStack aStack) {
-        return Block.getBlockFromItem(aStack.getItem())
-            .isOpaqueCube();
+    private boolean isValidMaterial(ItemStack itemStack) {
+        Block itemBlock = Block.getBlockFromItem(itemStack.getItem());
+        if (itemBlock == null) return false;
+        return itemBlock.isOpaqueCube();
     }
 
-    private ItemStack createNewDrawer(ItemStack aDrawer, ItemStack aSide, ItemStack aTrim, ItemStack aFront,
+    private ItemStack createNewDrawer(ItemStack drawer, ItemStack sideMat, ItemStack trimMat, ItemStack frontMat,
         int count) {
-        Block drawer_block = Block.getBlockFromItem(aDrawer.getItem());
-        return ItemCustomDrawers.makeItemStack(drawer_block, count, aSide, aTrim, aFront);
+        Block drawer_block = Block.getBlockFromItem(drawer.getItem());
+        return ItemCustomDrawers.makeItemStack(drawer_block, count, sideMat, trimMat, frontMat);
     }
 
     @Override
     public int checkRecipe() {
 
-        // if storage drawers is not loaded, a recipe could never be made
-        if (!Mods.StorageDrawers.isModLoaded()) return DID_NOT_FIND_RECIPE;
+        ItemStack drawerSlot = getInputAt(0);
+        ItemStack sideSlot = getInputAt(1);
+        ItemStack trimSlot = getInputAt(2);
+        ItemStack frontSlot = getInputAt(3);
 
-        ItemStack drawer_slot = getInputAt(0);
-        ItemStack side_slot = getInputAt(1);
-        ItemStack trim_slot = getInputAt(2);
-        ItemStack front_slot = getInputAt(3);
+        // there must be a drawer in the drawerSlot
+        if (drawerSlot == null || !isCustomDrawer(drawerSlot)) return DID_NOT_FIND_RECIPE;
 
-        // there must be a drawer in the drawer_slot
-        if (drawer_slot == null || !isCustomDrawer(drawer_slot)) return DID_NOT_FIND_RECIPE;
-
-        // there must be an item in the side_slot that is a valid material
-        if (side_slot == null || !isValidMaterial(side_slot)) return DID_NOT_FIND_RECIPE;
+        // there must be an item in the sideSlot that is a valid material
+        if (sideSlot == null || !isValidMaterial(sideSlot)) return DID_NOT_FIND_RECIPE;
 
         // there must be a valid recipe now
         getInputAt(0).stackSize -= 1;
         getInputAt(1).stackSize -= 1;
-        if (trim_slot != null) getInputAt(2).stackSize -= 1;
-        if (front_slot != null) getInputAt(3).stackSize -= 1;
+        if (trimSlot != null) getInputAt(2).stackSize -= 1;
+        if (frontSlot != null) getInputAt(3).stackSize -= 1;
 
-        ItemStack output = createNewDrawer(drawer_slot, side_slot, trim_slot, front_slot, 1);
+        ItemStack output = createNewDrawer(drawerSlot, sideSlot, trimSlot, frontSlot, 1);
 
         // check if the output is blocked
         if (!canOutput(output)) {
@@ -171,8 +149,8 @@ public class MTEDrawerFramer extends MTEBasicMachine {
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         }
 
-        // calculate overclock
-        calculateOverclockedNess(16, 20);
+        calculateOverclockedNess((int) TierEU.RECIPE_LV, RECIPE_DURATION);
+
         // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
