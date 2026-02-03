@@ -199,12 +199,18 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (!meta.isValidFacing(wrenchingSide)) return false;
+        meta.setFrontFacing(wrenchingSide);
 
-        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
-            return true;
+        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+            if (iGregTechTileEntity != null) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
+            }
         }
-        return false;
+        return true;
     }
 
     @Override
