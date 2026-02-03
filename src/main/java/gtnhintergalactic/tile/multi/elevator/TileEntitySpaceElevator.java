@@ -55,6 +55,7 @@ import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTStructureUtility;
@@ -67,6 +68,7 @@ import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -89,6 +91,29 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
     /** Motor tier of the Space Elevator */
     protected int motorTier = 0;
+
+    public List<MTEHatchInputBus> getElevatorInputBusses() {
+        return mInputBusses;
+    }
+
+    public long getAvailableDataForModules() {
+        if (mProjectModuleHatches == null || mProjectModuleHatches.isEmpty()) {
+            return getAvailableData_EM();
+        }
+
+        // filtering by isActive so computation is spread only among working modules
+        long minerModuleAmount = mProjectModuleHatches.stream()
+            .filter(module -> module instanceof TileEntityModuleMiner)
+            .filter(module -> module.getBaseMetaTileEntity() != null)
+            .filter(
+                module -> module.getBaseMetaTileEntity()
+                    .isActive())
+            .count();
+        if (minerModuleAmount == 0) {
+            return getAvailableData_EM();
+        }
+        return getAvailableData_EM() / minerModuleAmount;
+    }
 
     /** Flag if the extension for more modules is enabled */
     private boolean isExtensionEnabled = false;
@@ -580,7 +605,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
                         for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                             if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect();
+                                projectModule.connect(this);
                                 long tAvailableEnergy = getEUVar();
                                 if (tAvailableEnergy > 0) {
                                     setEUVar(
