@@ -2264,17 +2264,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 + EnumChatFormatting.RED
                 + (getIdealStatus() - getRepairStatus())
                 + EnumChatFormatting.RESET
+                + " "
                 + EnumChatFormatting.YELLOW
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
-                + " %");
+                + "%");
 
         info.add(
             translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %");
+                + "%");
 
         info.add(
             translateToLocal("GT5U.multiblock.recipesDone") + ": "

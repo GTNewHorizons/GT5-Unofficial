@@ -47,8 +47,12 @@ import ic2.api.tile.IWrenchable;
 public class ScannerHelper {
 
     // region Translate
-    private static String trans(String name) {
-        return translate("GT5U.scanner." + name);
+    private static String trans(String name, Object... param) {
+        if (param == null) {
+            return translate("GT5U.scanner." + name);
+        } else {
+            return translate("GT5U.scanner." + name, param);
+        }
     }
     // endregion
 
@@ -167,62 +171,30 @@ public class ScannerHelper {
             + EnumChatFormatting.RESET
             + EnumChatFormatting.AQUA
             + " "
-            + name
+            + trans(name)
             + " "
             + EnumChatFormatting.STRIKETHROUGH
             + padding;
     }
 
     private static void addBaseInfo(EntityPlayer player, World world, int x, int y, int z, ArrayList<String> list,
-                                    TileEntity tTileEntity, Block tBlock) {
-        list.add(addTitle(trans("title_block")));
-        list.add(trans("pos")
-            + " "
-            + trans("x")
-            + EnumChatFormatting.GOLD
-            + " "
-            + x
-            + " "
-            + EnumChatFormatting.WHITE
-            + trans("y")
-            + EnumChatFormatting.GOLD
-            + " "
-            + y
-            + " "
-            + EnumChatFormatting.WHITE
-            + trans("z")
-            + EnumChatFormatting.GOLD
-            + " "
-            + z);
+                                    TileEntity tileEntity, Block block) {
+        list.add(addTitle("title_base_info"));
+        list.add(trans("base_info_1", formatNumber(x), formatNumber(y), formatNumber(z)));
         try {
-            list.add(trans("name")
-                + EnumChatFormatting.GOLD
-                + " "
-                + ((tTileEntity instanceof IInventory inv) ? inv.getInventoryName() : tBlock.getUnlocalizedName())
-                + " "
-                + EnumChatFormatting.WHITE
-                + trans("metadata")
-                + EnumChatFormatting.GOLD
-                + " "
-                + world.getBlockMetadata(x, y, z)
-                + EnumChatFormatting.WHITE);
-            list.add(trans("hardness")
-                + EnumChatFormatting.GOLD
-                + " "
-                + tBlock.getBlockHardness(world, x, y, z)
-                + " "
-                + EnumChatFormatting.WHITE
-                + trans("blast_resistance")
-                + EnumChatFormatting.GOLD
-                + " "
-                + tBlock.getExplosionResistance(player, world, x, y, z, player.posX, player.posY, player.posZ)
-                + EnumChatFormatting.WHITE);
-            if (tBlock.isBeaconBase(world, x, y, z, x, y + 1, z))
-                list.add(EnumChatFormatting.GOLD
-                    + trans("beacon")
-                    + EnumChatFormatting.RESET);
+            String name = ((tileEntity instanceof IInventory inv) ? inv.getInventoryName() : block.getUnlocalizedName());
+            int meta = world.getBlockMetadata(x, y, z);
+            float hardness = block.getBlockHardness(world, x, y, z);
+            float explosionResist = block.getExplosionResistance(player, world, x, y, z, player.posX, player.posY, player.posZ);
+
+            list.add(trans("base_info_2", name, meta));
+            list.add(trans("base_info_3", hardness, explosionResist));
+
+            if (block.isBeaconBase(world, x, y, z, x, y + 1, z)) {
+                list.add(trans("base_info_4"));
+            }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_block"));
+            list.add(EnumChatFormatting.RED + trans("error_base_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -233,28 +205,19 @@ public class ScannerHelper {
             if (tileEntity instanceof IFluidHandler fluidHandler) {
                 final FluidTankInfo[] tanks = fluidHandler.getTankInfo(side);
                 if (tanks != null && tanks.length > 0) {
-                    list.add(addTitle(trans("title_tank")));
+                    list.add(addTitle("title_fluid_handler_info"));
                     for (byte i = 0; i < tanks.length; i++) {
-                        list.add(trans("tank")
-                            + " "
-                            + i + ": "
-                            + EnumChatFormatting.GOLD
-                            + formatNumber((tanks[i].fluid == null ? 0 : tanks[i].fluid.amount))
-                            + "L"
-                            + EnumChatFormatting.WHITE
-                            + " / "
-                            + EnumChatFormatting.GOLD
-                            + formatNumber(tanks[i].capacity)
-                            + "L"
-                            + EnumChatFormatting.WHITE
-                            + " "
-                            + getFluidName(tanks[i].fluid, true));
+                        String currAmount = formatNumber((tanks[i].fluid == null ? 0 : tanks[i].fluid.amount));
+                        String maxAmount = formatNumber(tanks[i].capacity);
+                        String name = getFluidName(tanks[i].fluid, true);
+
+                        list.add(trans("fluid_handler_info_1", i, currAmount, maxAmount, name));
                         euAmount += 500;
                     }
                 }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_tank"));
+            list.add(EnumChatFormatting.RED + trans("error_fluid_handler_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -268,24 +231,15 @@ public class ScannerHelper {
             }
             if (tileEntity instanceof IReactor reactor) {
                 euAmount += 500;
-                list.add(addTitle(trans("title_reactor")));
-                list.add(trans("heat")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(reactor.getHeat())
-                    + EnumChatFormatting.WHITE
-                    + " / "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(reactor.getMaxHeat())
-                    + EnumChatFormatting.WHITE
-                    + " "
-                    + trans("hem")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + reactor.getHeatEffectModifier());
+                list.add(addTitle("title_reactor_info"));
+                String currHeat = formatNumber(reactor.getHeat());
+                String maxHeat = formatNumber(reactor.getMaxHeat());
+                float heatModifier = reactor.getHeatEffectModifier();
+
+                list.add(trans("reactor_info_1", currHeat, maxHeat, heatModifier));
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_reactor"));
+            list.add(EnumChatFormatting.RED + trans("error_reactor_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -298,12 +252,12 @@ public class ScannerHelper {
                 euAmount += 500;
                 final ArrayList<String> temp = debugableBlock.getDebugInfo(player, x, y, z, 3);
                 if (temp != null && !temp.isEmpty()) {
-                    list.add(addTitle(trans("title_debug")));
+                    list.add(addTitle("title_debug_info"));
                     list.addAll(temp);
                 }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_debug"));
+            list.add(EnumChatFormatting.RED + trans("error_debug_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -316,11 +270,11 @@ public class ScannerHelper {
 
                 if (resultList.isEmpty()) return;
 
-                list.add(addTitle(trans("title_machine")));
+                list.add(addTitle("title_machine_info"));
                 list.addAll(resultList);
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_machine"));
+            list.add(EnumChatFormatting.RED + trans("error_machine_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -334,11 +288,11 @@ public class ScannerHelper {
 
                 if (resultList.isEmpty()) return;
 
-                list.add(addTitle(trans("title_custom")));
+                list.add(addTitle("title_custom_info"));
                 list.addAll(resultList);
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_machine"));
+            list.add(EnumChatFormatting.RED + trans("error_custom_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -350,15 +304,12 @@ public class ScannerHelper {
                 final IAlignment alignment = alignmentProvider.getAlignment();
                 if (alignment != null) {
                     euAmount += 100;
-                    list.add(addTitle(trans("title_side")));
-                    list.add(trans("side")
-                        + " "
-                        + EnumChatFormatting.GOLD
-                        + alignment.getExtendedFacing());
+                    list.add(addTitle("title_side_info"));
+                    list.add(trans("side_info_1", alignment.getExtendedFacing()));
                 }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + "error_side");
+            list.add(EnumChatFormatting.RED + "error_side_info");
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -369,28 +320,20 @@ public class ScannerHelper {
         try {
             if (tileEntity instanceof IWrenchable wrenchable) {
                 euAmount += 100;
+                short face = wrenchable.getFacing();
+                float chance = wrenchable.getWrenchDropRate() * 100;
 
-                list.add(addTitle(trans("title_wrench")));
-                list.add(trans("facing")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + wrenchable.getFacing()
-                    + EnumChatFormatting.WHITE
-                    + " / "
-                    + trans("chance")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + (wrenchable.getWrenchDropRate() * 100)
-                    + "%");
-                list.add(wrenchable.wrenchCanRemove(player)
-                    ? EnumChatFormatting.GOLD
-                    + trans("wrench_yes")
-                    + EnumChatFormatting.WHITE
-                    : EnumChatFormatting.RED
-                    + trans("wrench_no"));
+                list.add(addTitle("title_wrench_info"));
+                list.add(trans("wrench_info_1", face, chance));
+
+                if (wrenchable.wrenchCanRemove(player)) {
+                    list.add(trans("wrench_info_2"));
+                } else {
+                    list.add(trans("wrench_info_3"));
+                }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_wrench"));
+            list.add(EnumChatFormatting.RED + trans("error_wrench_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -403,33 +346,22 @@ public class ScannerHelper {
 
             if (tileEntity instanceof IEnergyConductor conductor) {
                 euAmount += 200;
-                resultList.add(trans("conduction_loss")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + conductor.getConductionLoss());
+                resultList.add(trans("ic2_info_1", conductor.getConductionLoss()));
             }
 
             if (tileEntity instanceof IEnergyStorage storage) {
                 euAmount += 200;
-                resultList.add(trans("contained_energy")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(storage.getStored())
-                    + " "
-                    + trans("eu")
-                    + EnumChatFormatting.WHITE
-                    + " / "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(storage.getCapacity())
-                    + " "
-                    + trans("eu"));
+                String currStored = formatNumber(storage.getStored());
+                String maxStored = formatNumber(storage.getCapacity());
+
+                resultList.add(trans("ic2_info_2", currStored, maxStored));
             }
 
             if (resultList.isEmpty()) return euAmount;
-            list.add(addTitle(trans("title_ic2")));
+            list.add(addTitle("title_ic2_info"));
             list.addAll(resultList);
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_ic2"));
+            list.add(EnumChatFormatting.RED + trans("error_ic2_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -441,15 +373,15 @@ public class ScannerHelper {
             if (tileEntity instanceof ICoverable coverable) {
                 euAmount += 300;
 
-                final String tString = coverable.getCoverAtSide(side).getDescription();
+                final String coverInfo = coverable.getCoverAtSide(side).getDescription();
 
-                if (tString != null && !tString.equals(E)) {
-                    list.add(addTitle(trans("title_cover")));
-                    list.add(tString);
+                if (coverInfo != null && !coverInfo.equals(E)) {
+                    list.add(addTitle("title_cover_info"));
+                    list.add(coverInfo);
                 }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_cover"));
+            list.add(EnumChatFormatting.RED + trans("error_cover_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -458,55 +390,25 @@ public class ScannerHelper {
     private static void addEnergyContainerInfo(ArrayList<String> list, TileEntity tileEntity) {
         try {
             if (tileEntity instanceof IBasicEnergyContainer energyContainer && energyContainer.getEUCapacity() > 0) {
-                list.add(addTitle(trans("title_energy")));
-                list.add(trans("max_in")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(energyContainer.getInputVoltage())
-                    + EnumChatFormatting.WHITE
-                    + " ("
-                    + GTValues.VN[getTier(energyContainer.getInputVoltage())]
-                    + ") "
-                    + " "
-                    + trans("eu")
-                    + " "
-                    + trans("at")
-                    + EnumChatFormatting.GOLD
-                    + " "
-                    + formatNumber(energyContainer.getInputAmperage())
-                    + " "
-                    + trans("a"));
-                list.add(trans("max_out")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(energyContainer.getOutputVoltage())
-                    + EnumChatFormatting.WHITE
-                    + " ("
-                    + GTValues.VN[getTier(energyContainer.getOutputVoltage())]
-                    + ") "
-                    + " "
-                    + trans("eu")
-                    + " "
-                    + trans("at")
-                    + EnumChatFormatting.GOLD
-                    + " "
-                    + formatNumber(energyContainer.getOutputAmperage())
-                    + trans("a"));
-                list.add(trans("energy")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(energyContainer.getStoredEU())
-                    + " "
-                    + trans("eu")
-                    + EnumChatFormatting.WHITE
-                    + " / "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(energyContainer.getEUCapacity())
-                    + " "
-                    + trans("eu"));
+                list.add(addTitle("title_energy_info"));
+                String inputVoltage = formatNumber(energyContainer.getInputVoltage());
+                String inputTier = GTValues.VN[getTier(energyContainer.getInputVoltage())];
+                String inputAmperage = formatNumber(energyContainer.getInputAmperage());
+
+                String outputVoltage = formatNumber(energyContainer.getOutputVoltage());
+                String outputTier = GTValues.VN[getTier(energyContainer.getOutputVoltage())];
+                String outputAmperage = formatNumber(energyContainer.getOutputAmperage());
+
+                String storedEU = formatNumber(energyContainer.getStoredEU());
+                String euCapacity = formatNumber(energyContainer.getEUCapacity());
+
+                list.add(trans("energy_info_1", inputVoltage, inputTier, inputAmperage));
+                list.add(trans("energy_info_2", outputVoltage, outputTier, outputAmperage));
+                list.add(trans("energy_info_3", storedEU, euCapacity));
+
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_device_energy"));
+            list.add(EnumChatFormatting.RED + trans("error_energy_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -516,70 +418,28 @@ public class ScannerHelper {
         try {
             if (tileEntity instanceof ICropTile crop) {
                 euAmount += 1000;
-                list.add(addTitle(trans("title_crop")));
+                list.add(addTitle("title_crop_info"));
                 if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                 if (crop.getCrop() != null) {
-                    list.add(trans("crop_name")
-                        + " "
-                        + EnumChatFormatting.GOLD
-                        + crop.getCrop().name()
-                        + EnumChatFormatting.WHITE
-                        + " "
-                        + trans("growth")
-                        + " "
-                        + EnumChatFormatting.GOLD
-                        + crop.getGrowth()
-                        + EnumChatFormatting.WHITE
-                        + " "
-                        + trans("gain")
-                        + " "
-                        + EnumChatFormatting.GOLD
-                        + crop.getGain()
-                        + EnumChatFormatting.WHITE
-                        + " "
-                        + trans("resistance")
-                        + " "
-                        + EnumChatFormatting.GOLD
-                        + crop.getResistance());
+                    String cropName = crop.getCrop().name();
+                    byte growth = crop.getGrowth();
+                    byte gain = crop.getGain();
+                    byte resist = crop.getResistance();
+
+                    list.add(trans("crop_info_1", cropName, growth, gain, resist));
                 }
-                list.add(trans("fertilizer")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getNutrientStorage()
-                    + EnumChatFormatting.WHITE
-                    + " "
-                    + trans("water")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getHydrationStorage()
-                    + EnumChatFormatting.WHITE
-                    + " "
-                    + trans("weed_ex")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getWeedExStorage()
-                    + EnumChatFormatting.WHITE
-                    + " "
-                    + trans("scan_level")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getScanLevel());
-                list.add(trans("nutrients")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getNutrients()
-                    + EnumChatFormatting.WHITE
-                    + " "
-                    + trans("humidity")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getHumidity()
-                    + EnumChatFormatting.WHITE
-                    + " "
-                    + trans("air_quality")
-                    + " "
-                    + EnumChatFormatting.GOLD
-                    + crop.getAirQuality());
+                int fertilizer = crop.getNutrientStorage();
+                int hydration = crop.getHydrationStorage();
+                int weedEx = crop.getWeedExStorage();
+                int scanLevel = crop.getScanLevel();
+
+                int nutrients = crop.getNutrients();
+                int humidity = crop.getHumidity();
+                int airQuality = crop.getAirQuality();
+
+                list.add(trans("crop_info_2", fertilizer, hydration, weedEx, scanLevel));
+                list.add(trans("crop_info_3", nutrients, humidity, airQuality));
+
                 if (crop.getCrop() != null) {
                     final StringBuilder attributeList = new StringBuilder();
                     for (final String attribute : crop.getCrop()
@@ -587,17 +447,13 @@ public class ScannerHelper {
                         attributeList.append(", ")
                             .append(attribute);
                     }
-                    list.add(trans("attributes")
-                        + EnumChatFormatting.GOLD
-                        + attributeList.toString().replaceFirst(",", E));
-                    list.add(trans("discovered")
-                        + EnumChatFormatting.GOLD
-                        + " "
-                        + crop.getCrop().discoveredBy());
+                    list.add(trans("crop_info_4", attributeList.toString().replaceFirst(",", E)));
+
+                    list.add(trans("crop_info_5", crop.getCrop().discoveredBy()));
                 }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_crop"));
+            list.add(EnumChatFormatting.RED + trans("error_crop_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -611,49 +467,36 @@ public class ScannerHelper {
                 if (tree != null) {
                     euAmount += 1000;
                     if (!tree.isAnalyzed()) tree.analyze();
-                    list.add(addTitle(trans("title_leaves")));
+                    list.add(addTitle("title_leaves_info"));
                     tree.addTooltip(list);
                 }
             }
         } catch (Exception e) {
-            list.add(EnumChatFormatting.RED + trans("error_leaves"));
+            list.add(EnumChatFormatting.RED + trans("error_leaves_info"));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
     }
 
     private static void addChunkInfo(ArrayList<String> list, Chunk currentChunk, EntityPlayer player) {
-        list.add(addTitle(trans("title_chunk")));
+        list.add(addTitle("title_chunk_info"));
         if (Pollution.hasPollution(currentChunk)) {
-            list.add(trans("pollution_yes")
-                + " "
-                + EnumChatFormatting.RED
-                + formatNumber(Pollution.getPollution(currentChunk))
-                + EnumChatFormatting.RESET
-                + trans("gibbl"));
+            String pollution = formatNumber(Pollution.getPollution(currentChunk));
+            list.add(trans("chunk_info_1", pollution));
         } else {
-            list.add(EnumChatFormatting.GREEN
-                + trans("pollution_no")
-                + EnumChatFormatting.RESET);
+            list.add(trans("chunk_info_2"));
         }
 
         if (player.capabilities.isCreativeMode) {
             final FluidStack fluid = undergroundOilReadInformation(currentChunk);
             if (fluid != null) {
-                list.add(EnumChatFormatting.WHITE
-                    + fluid.getLocalizedName()
-                    + ": "
-                    + EnumChatFormatting.GOLD
-                    + formatNumber(fluid.amount)
-                    + " L");
+                String fluidName = fluid.getLocalizedName();
+                String fluidAmount = formatNumber(fluid.amount);
+
+                list.add(trans("chunk_info_3", fluidName, fluidAmount));
             }
             else {
-                list.add(EnumChatFormatting.WHITE
-                    + trans("nothing")
-                    + ": "
-                    + EnumChatFormatting.GOLD
-                    + '0'
-                    + " L");
+                list.add(trans("chunk_info_4"));
             }
         }
     }
