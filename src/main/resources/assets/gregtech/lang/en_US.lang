@@ -1611,7 +1611,7 @@ GT5U.gui.text.nac.info.introduction.header=Introduction
 GT5U.gui.text.nac.info.introduction.body.1=Welcome to the Nanochip Assembly Complex! This machine is designed to handle all your circuit assembling needs. This multi operates on a "vacuum conveyor" system, where you must route items around with pipes to the various modules to assemble circuits. This info panel should help to explain all the intricacies of this massive structure.
 GT5U.gui.text.nac.info.nac_basics.header=Vacuum Conveyor Basics
 GT5U.gui.text.nac.info.nac_basics.body.1=The "Vacuum Conveyor" system is a way to route items from Vacuum Conveyor Inputs (VCIs) to Vacuum Conveyor Outputs (VCOs). VCOs of any specific color will send their goods to VCIs of the same color, given they are connected by colored Vacuum Conveyor Pipes. Vacuum Conveyors are NAC-specific, meaning that you can not send CCs between NACs, they must stay within the same NAC.
-GT5U.gui.text.nac.info.nac_basics.body.2=The Vacuum Conveyor system starts and ends at the NAC. The NAC will convert items into Circuit Components (CCs) every 5 seconds and send them to its VCOs. The NAC can also convert CCs into item equivalents and send them to its Output Bus.
+GT5U.gui.text.nac.info.nac_basics.body.2=The Vacuum Conveyor system starts and ends at the NAC. The NAC will convert items into Circuit Components (CCs) every 5 seconds and send them to its VCOs. The NAC can also convert CCs into item equivalents and send them to its Output Bus. Vacuum Conveyor connections are 1 to 1.
 GT5U.gui.text.nac.info.nac_basics.body.3=The Nanopart Splitter module allows the player to set custom routing rules to its hatches. The Splitter allows filtering by color input type, color output type, item type, and supplied redstone level. Utilizing all of these is key to an efficient and properly operating NAC.
 GT5U.gui.text.nac.info.module_basics.header=Module Basics
 GT5U.gui.text.nac.info.module_basics.body.1=Modules also operate with colors. A module will pull inputs from a colored VCI and output into the same colored VCO on its structure. If the recipe takes multiple inputs, they can be taken from VCIs with different colors, and the output will be placed in the VCO with the color of the first input in the recipe. Certain modules have extra mechanics and gimmicks that must be dealt with to ensure optimum processing.
@@ -1751,9 +1751,9 @@ GT5U.tooltip.nac.hatch.vc.input.base.1=Provides §eCircuit Component§7 input fo
 GT5U.tooltip.nac.hatch.vc.output.base.1=Provides §eCircuit Component§7 output for NAC modules
 GT5U.tooltip.nac.hatch.vc.base.1=Must be %s to work
 GT5U.tooltip.nac.hatch.vc.base.2=Can be installed in the §aNanochip Assembly Complex
-GT5U.tooltip.nac.hatch.vc.base.3=§eOutputs from recipes with inputs from a colored Vacuum Conveyor Input
-GT5U.tooltip.nac.hatch.vc.base.4=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
-
+GT5U.tooltip.nac.hatch.vc.base.3=Vacuum Conveyor Connections are 1 to 1
+GT5U.tooltip.nac.hatch.vc.base.4=§eOutputs from recipes with inputs from a colored Vacuum Conveyor Input
+GT5U.tooltip.nac.hatch.vc.base.5=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
 GT5U.tooltip.nac.module.scanner.current_eu=§eCurrent EU Stored: %s
 GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
 
