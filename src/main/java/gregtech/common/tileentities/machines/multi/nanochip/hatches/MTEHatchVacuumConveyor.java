@@ -200,7 +200,7 @@ public abstract class MTEHatchVacuumConveyor extends MTEHatch implements VacuumF
     public void getNeighbours(Collection<VacuumFactoryElement> neighbours) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) return;
-
+        if (base.getColorization() == -1) return;
         if (base.getTileEntityAtSide(base.getFrontFacing()) instanceof IGregTechTileEntity igte
             && igte.getColorization() == base.getColorization()
             && igte.getMetaTileEntity() instanceof VacuumFactoryElement element) {
