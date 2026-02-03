@@ -121,7 +121,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
     public void getNeighbours(Collection<VacuumFactoryElement> neighbours) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (base == null || base.isDead()) return;
+        if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
@@ -160,7 +160,7 @@ public class MTEVacuumConveyorPipe extends MTEBaseFactoryPipe implements VacuumF
 
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (base == null || base.isDead()) return;
+        if (base == null || base.isDead() || base.getColorization() == -1) return;
 
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             if (base.getTileEntityAtSide(dir) instanceof IGregTechTileEntity igte) {
