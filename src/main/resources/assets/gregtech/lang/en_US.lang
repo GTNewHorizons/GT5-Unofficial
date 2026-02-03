@@ -3562,6 +3562,16 @@ GT5U.infodata.purification_plant.linked_units.status.online=Online
 GT5U.infodata.purification_plant.linked_units.status.disabled=Disabled
 GT5U.infodata.purification_plant.linked_units.status.incomplete=Incomplete Structure
 
+GT5U.gui.purification.tier= §3Water grade: §r%s
+GT5U.gui.multimachine.purificationunitclarifier=Clarifier
+GT5U.gui.multimachine.purificationunitozonation=Ozonation
+GT5U.gui.multimachine.purificationunitflocculator=Flocculation
+GT5U.gui.multimachine.purificationunitphadjustment=PH Neutralization
+GT5U.gui.multimachine.purificationunitplasmaheater=Temperature Fluctuation
+GT5U.gui.multimachine.purificationunituvtreatment=Laser Purification
+GT5U.gui.multimachine.purificationunitdegasifier=Residual Degasser
+GT5U.gui.multimachine.purificationunitextractor=Baryonic Perfection
+
 GT5U.infodata.pubp.catalyst_history=Catalyst insertion history for this recipe cycle
 GT5U.infodata.pubp.quark_combination=Quark Combination correctly identified: %s
 
