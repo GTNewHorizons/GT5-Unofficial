@@ -220,6 +220,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
     protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
+    protected List<MTEHatch> mAnyDynamoHatches = new ArrayList<>();
+
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
@@ -1430,7 +1432,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aEU <= 0) {
             return true;
         }
-        if (!mDynamoHatches.isEmpty()) {
+        if (!mAnyDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;
@@ -1441,7 +1443,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         long totalOutput = 0;
         long aFirstVoltageFound = -1;
         boolean aFoundMixedDynamos = false;
-        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mAnyDynamoHatches)) {
             long aVoltage = aDynamo.maxEUOutput();
             long aTotal = aDynamo.maxAmperesOut() * aVoltage;
             // Check against voltage to check when hatch mixing
@@ -1465,7 +1467,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mAnyDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);
@@ -1981,7 +1983,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) return mOutputHatches.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) return mOutputBusses.add(hatch);
         if (aMetaTileEntity instanceof MTEHatchEnergy hatch) return mEnergyHatches.add(hatch);
-        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) return mDynamoHatches.add(hatch);
+        if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
+            updateAnyDynamoHatchList(hatch);
+            return mDynamoHatches.add(hatch);
+        }
         if (aMetaTileEntity instanceof MTEHatchMaintenance hatch) {
 
             if (hatch instanceof MTEHatchDroneDownLink droneDownLink) {
@@ -2059,6 +2064,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchDynamo hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            updateAnyDynamoHatchList(hatch);
             return mDynamoHatches.add(hatch);
         }
         return false;
@@ -2071,7 +2077,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti mteHatchDynamoMulti) {
             mteHatchDynamoMulti.updateTexture(aBaseCasingIndex);
             mteHatchDynamoMulti.updateCraftingIcon(this.getMachineCraftingIcon());
+            updateAnyDynamoHatchList(mteHatchDynamoMulti);
             return mExoticDynamoHatches.add(mteHatchDynamoMulti);
+        }
+        return false;
+    }
+
+    private boolean updateAnyDynamoHatchList(IMetaTileEntity aMetaTileEntity) {
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof MTEHatch aHatch) {
+            return mAnyDynamoHatches.add(aHatch);
         }
         return false;
     }
