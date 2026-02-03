@@ -250,6 +250,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
+            .addTecTechHatchInfo()
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
