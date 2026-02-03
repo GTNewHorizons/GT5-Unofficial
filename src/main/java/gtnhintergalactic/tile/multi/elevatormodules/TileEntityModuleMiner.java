@@ -88,6 +88,20 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  */
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase implements IOverclockDescriptionProvider {
 
+    public long theoreticalComputation;
+
+    public long getTheoreticalComputation() {
+        return theoreticalComputation;
+    }
+
+    public void setTheoreticalComputation(long value) {
+        theoreticalComputation = value;
+    }
+
+    public void setEAvailableData(long value) {
+        eAvailableData = value;
+    }
+
     /** Max chance to get a bonus stack from space mining */
     protected static int BONUS_STACK_MAX_CHANCE = 7500;
 
@@ -272,8 +286,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
      */
     @Override
     public @NotNull CheckRecipeResult checkProcessing_EM() {
-        if (!overdriveSetting.getStatus(false).isOk) return SimpleCheckRecipeResult.ofFailure("invalid_overdrive");
+        if (!overdriveSetting.getStatus(false).isOk) {
+            System.out.println("invalid_overdrive");
+            return SimpleCheckRecipeResult.ofFailure("invalid_overdrive");
+        }
         if (V[tTier] * (long) parallelSetting.get() > getEUVar()) {
+            System.out.println("insufficientPower");
             return CheckRecipeResultRegistry.insufficientPower(V[tTier] * (long) parallelSetting.get());
         }
 
@@ -286,6 +304,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mOutputFluids = null;
         List<FluidStack> inputFluids = getStoredFluids();
         if (inputFluids.isEmpty()) {
+            System.out.println("no_plasma");
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
 
@@ -367,7 +386,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
         if (plasma == null || availablePlasmaTier <= 0) {
+            System.out.println("no_plasma");
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
+        }
+
+        // if no input data hatches presented, assume it is using master
+        if (eInputData.isEmpty() && elevator == null) {
+            System.out.println("no_master_computation");
+            return SimpleCheckRecipeResult.ofFailure("no_master_computation");
         }
 
         // Get all asteroid pools that this drone can pull from
@@ -435,8 +461,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        // Limit parallels by available computation, return if not enough computation is available
-        maxParallels = (int) Math.min(maxParallels, getAvailableData_EM() / (data.computation * compModifier));
+        theoreticalComputation = (long) Math.ceil(data.computation * maxParallels * compModifier);
+
+        if (!eInputData.isEmpty()) {
+            long availableComputation = getAvailableData_EM();
+            if (availableComputation < data.computation * compModifier) {
+                System.out.println("insufficient_computation");
+                return SimpleCheckRecipeResult.ofSuccess("insufficient_computation");
+            }
+            maxParallels = (int) Math.min(maxParallels, availableComputation / (data.computation * compModifier));
+        }
         if (maxParallels <= 0) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
@@ -515,6 +549,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    public boolean isUsingMasterComputation() {
+        return eInputData.isEmpty();
     }
 
     /** Determine what drones exist and have the required drills/rods for at least one recipe in a list of inputs */

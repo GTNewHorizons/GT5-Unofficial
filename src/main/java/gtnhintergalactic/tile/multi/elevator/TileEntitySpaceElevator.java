@@ -618,6 +618,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         }
                     }
                 }
+
+                distributeComputationToModules();
             } else {
                 if (!mProjectModuleHatches.isEmpty()) {
                     for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
@@ -627,6 +629,26 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             }
             if (mEfficiency < 0) mEfficiency = 0;
             fixAllIssues();
+        }
+    }
+
+    private void distributeComputationToModules() {
+        long totalRequired = 0;
+        List<TileEntityModuleMiner> sharingModules = new ArrayList<>();
+        for (TileEntityModuleBase module : mProjectModuleHatches) {
+            if (module instanceof TileEntityModuleMiner miner && miner.isUsingMasterComputation()) {
+                sharingModules.add(miner);
+                totalRequired += miner.getTheoreticalComputation();
+            }
+        }
+        if (sharingModules.isEmpty()) return;
+        long available = eAvailableData;
+        for (TileEntityModuleMiner module : sharingModules) if (available > totalRequired) {
+            // setting data to big value so module doesnt disable from missing computation
+            module.setEAvailableData(100000);
+            module.startRecipeProcessing();
+        } else {
+            module.setEAvailableData(0);
         }
     }
 
