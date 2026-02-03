@@ -69,7 +69,7 @@ public class MTEDebugPollutor extends MTETieredMachineBlock implements IAddUIWid
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        POLLUTOR = TextureFactory.of(new Textures.BlockIcons.CustomIcon("iconsets/POLLUTOR"));
+        POLLUTOR = TextureFactory.of(Textures.BlockIcons.CustomIcon.create("iconsets/POLLUTOR"));
     }
 
     @Override

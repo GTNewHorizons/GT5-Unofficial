@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,9 +20,9 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements
     private static final String sideIconPath = "iconsets/OVERLAY_BO_SIDES";
     private static final String connIconPath = "iconsets/BO_CONN";
 
-    private static final Textures.BlockIcons.CustomIcon activeIcon = new Textures.BlockIcons.CustomIcon(activeIconPath);
-    private static final Textures.BlockIcons.CustomIcon sideIcon = new Textures.BlockIcons.CustomIcon(sideIconPath);
-    private static final Textures.BlockIcons.CustomIcon connIcon = new Textures.BlockIcons.CustomIcon(connIconPath);
+    private static final IIconContainer activeIcon = Textures.BlockIcons.CustomIcon.create(activeIconPath);
+    private static final IIconContainer sideIcon = Textures.BlockIcons.CustomIcon.create(sideIconPath);
+    private static final IIconContainer connIcon = Textures.BlockIcons.CustomIcon.create(connIconPath);
 
     public MTEHatchOutputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");

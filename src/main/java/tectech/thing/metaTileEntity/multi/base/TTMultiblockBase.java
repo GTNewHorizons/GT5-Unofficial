@@ -68,6 +68,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
@@ -121,8 +122,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
     // Front icon holders - static so it is default one for my blocks
     // just add new static ones in your class and and override getTexture
-    protected static Textures.BlockIcons.CustomIcon ScreenOFF;
-    protected static Textures.BlockIcons.CustomIcon ScreenON;
+    protected static IIconContainer ScreenOFF;
+    protected static IIconContainer ScreenON;
 
     /** Base ID for the LED window popup. LED 1 I0 will have ID 100, LED 1 I1 101... */
     protected static int LED_WINDOW_BASE_ID = 100;
@@ -465,8 +466,8 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/EM_CONTROLLER");
+        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/EM_CONTROLLER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

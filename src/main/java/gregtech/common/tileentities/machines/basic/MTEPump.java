@@ -89,51 +89,59 @@ public class MTEPump extends MTEBasicMachine {
             2,
             2,
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE", true)),
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW", true))
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE", true)),
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_GLOW", true))
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE", true)),
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW", true))
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT", true)),
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_GLOW", true))
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE", true)),
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW", true))
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP", true)),
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_GLOW", true))
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE", true)),
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW", true))
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM", true)),
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_GLOW", true))
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
 

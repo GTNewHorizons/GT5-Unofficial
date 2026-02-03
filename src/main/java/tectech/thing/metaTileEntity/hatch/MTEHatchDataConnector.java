@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -30,9 +31,9 @@ import tectech.util.CommonValues;
  */
 public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTEHatch implements IConnectsToDataPipe {
 
-    public static Textures.BlockIcons.CustomIcon EM_D_SIDES;
-    public static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
-    public static Textures.BlockIcons.CustomIcon EM_D_CONN;
+    public static IIconContainer EM_D_SIDES;
+    public static IIconContainer EM_D_ACTIVE;
+    public static IIconContainer EM_D_CONN;
 
     private String clientLocale = "en_US";
 
@@ -52,9 +53,9 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_D_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_D_ACTIVE");
-        EM_D_SIDES = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_D_SIDES");
-        EM_D_CONN = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA_CONN");
+        EM_D_ACTIVE = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_EM_D_ACTIVE");
+        EM_D_SIDES = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_EM_D_SIDES");
+        EM_D_CONN = Textures.BlockIcons.CustomIcon.create("iconsets/EM_DATA_CONN");
     }
 
     @Override

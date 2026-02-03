@@ -44,6 +44,7 @@ import ggfab.mte.MTELinkedInputBus;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -957,7 +958,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     }
 
     /** Texture that will be displayed on the side of the module */
-    protected static Textures.BlockIcons.CustomIcon engraving;
+    protected static IIconContainer engraving;
 
     /**
      * Get the texture of this controller
@@ -988,7 +989,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_SIDE_MINER_MODULE");
+        engraving = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_SIDE_MINER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 

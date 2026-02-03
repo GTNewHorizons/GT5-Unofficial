@@ -28,9 +28,10 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
 
     private boolean looseFit = false;
 
-    private static final IIconContainer turbineOn = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_05");
-    private static final IIconContainer turbineOff = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_15");
-    private static final IIconContainer turbineEmpty = new Textures.BlockIcons.CustomIcon("icons/turbines/TURBINE_25");
+    private static final IIconContainer turbineOn = Textures.BlockIcons.CustomIcon.create("icons/turbines/TURBINE_05");
+    private static final IIconContainer turbineOff = Textures.BlockIcons.CustomIcon.create("icons/turbines/TURBINE_15");
+    private static final IIconContainer turbineEmpty = Textures.BlockIcons.CustomIcon
+        .create("icons/turbines/TURBINE_25");
 
     public MTESupercriticalFluidTurbine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

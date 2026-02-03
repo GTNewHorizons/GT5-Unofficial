@@ -152,19 +152,19 @@ public class TextureSet {
         for (int i = 0; i < 192; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 switch (SUFFIXES[i]) {
-                    case "/ore", "/oreSmall" -> mTextures[i] = new Textures.BlockIcons.CustomAlphaIcon(
-                        aTextMatIconDir + aSetName + SUFFIXES[i]);
-                    default -> mTextures[i] = new Textures.BlockIcons.CustomIcon(
-                        aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons.CustomIcon
+                        .createAlpha(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    default -> mTextures[i] = Textures.BlockIcons.CustomIcon
+                        .create(aTextMatIconDir + aSetName + SUFFIXES[i]);
                 }
             } else {
                 // Check nanites folder for nanites texture to avoid copy pasting large file multiple times.
                 // Exemption for CUSTOM textures so they can be overriden as normal by placing nanite image in
                 // their respective folder.
                 if (SUFFIXES[i].equals("/nanites") && (!aSetName.contains("CUSTOM"))) {
-                    mTextures[i] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + "NANITES" + SUFFIXES[i]);
+                    mTextures[i] = Textures.ItemIcons.CustomIcon.create(aTextMatIconDir + "NANITES" + SUFFIXES[i]);
                 } else {
-                    mTextures[i] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    mTextures[i] = Textures.ItemIcons.CustomIcon.create(aTextMatIconDir + aSetName + SUFFIXES[i]);
                 }
             }
         }
@@ -188,13 +188,13 @@ public class TextureSet {
         for (int i = 0; i < 192; i++) {
             if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
                 if (overrideBlock) {
-                    mTextures[i] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + SUFFIXES[i]);
+                    mTextures[i] = Textures.BlockIcons.CustomIcon.create(aTextMatIconDir + mSetName + SUFFIXES[i]);
                 } else {
                     mTextures[i] = origin.mTextures[i];
                 }
             } else {
                 if (overrideItem) {
-                    mTextures[i] = new Textures.ItemIcons.CustomIcon(aTextMatIconDir + aSetName + SUFFIXES[i]);
+                    mTextures[i] = Textures.ItemIcons.CustomIcon.create(aTextMatIconDir + aSetName + SUFFIXES[i]);
                 } else {
                     mTextures[i] = origin.mTextures[i];
                 }

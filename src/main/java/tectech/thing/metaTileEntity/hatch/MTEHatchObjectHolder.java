@@ -18,6 +18,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -32,8 +33,8 @@ import tectech.util.CommonValues;
  */
 public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
 
-    private static Textures.BlockIcons.CustomIcon EM_H;
-    private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
+    private static IIconContainer EM_H;
+    private static IIconContainer EM_H_ACTIVE;
 
     public MTEHatchObjectHolder(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -54,8 +55,8 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = new Textures.BlockIcons.CustomIcon("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.CustomIcon.create("iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.CustomIcon.create("iconsets/EM_HOLDER");
     }
 
     @Override

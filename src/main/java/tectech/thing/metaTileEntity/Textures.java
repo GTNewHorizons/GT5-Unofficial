@@ -10,33 +10,35 @@ import gregtech.api.render.TextureFactory;
 @Deprecated
 public class Textures {
 
-    public static final IIconContainer OVERLAY_ENERGY_IN_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_POWER");
-    public static final IIconContainer OVERLAY_ENERGY_OUT_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_POWER");
-    public static final IIconContainer OVERLAY_ENERGY_IN_LASER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_LASER");
-    public static final IIconContainer OVERLAY_ENERGY_OUT_LASER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_LASER");
-    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_4A = new CustomIcon(
-        "iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
-    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_16A = new CustomIcon(
-        "iconsets/OVERLAY_ENERGY_ON_WIRELESS_16A");
-    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_LASER = new CustomIcon(
-        "iconsets/OVERLAY_ENERGY_ON_WIRELESS_LASER");
-    public static final IIconContainer MACHINE_UEV_SIDE = new CustomIcon("iconsets/MACHINE_UEV_SIDE");
-    public static final IIconContainer MACHINE_UIV_SIDE = new CustomIcon("iconsets/MACHINE_UIV_SIDE");
-    public static final IIconContainer MACHINE_UMV_SIDE = new CustomIcon("iconsets/MACHINE_UMV_SIDE");
-    public static final IIconContainer MACHINE_UXV_SIDE = new CustomIcon("iconsets/MACHINE_UXV_SIDE");
-    public static final IIconContainer MACHINE_MAX_SIDE = new CustomIcon("iconsets/MACHINE_MAX_SIDE");
-    public static final IIconContainer MACHINE_UEV_TOP = new CustomIcon("iconsets/MACHINE_UEV_TOP");
-    public static final IIconContainer MACHINE_UIV_TOP = new CustomIcon("iconsets/MACHINE_UIV_TOP");
-    public static final IIconContainer MACHINE_UMV_TOP = new CustomIcon("iconsets/MACHINE_UMV_TOP");
-    public static final IIconContainer MACHINE_UXV_TOP = new CustomIcon("iconsets/MACHINE_UXV_TOP");
-    public static final IIconContainer MACHINE_MAX_TOP = new CustomIcon("iconsets/MACHINE_MAX_TOP");
-    public static final IIconContainer MACHINE_UEV_BOTTOM = new CustomIcon("iconsets/MACHINE_UEV_BOTTOM");
-    public static final IIconContainer MACHINE_UIV_BOTTOM = new CustomIcon("iconsets/MACHINE_UIV_BOTTOM");
-    public static final IIconContainer MACHINE_UMV_BOTTOM = new CustomIcon("iconsets/MACHINE_UMV_BOTTOM");
-    public static final IIconContainer MACHINE_UXV_BOTTOM = new CustomIcon("iconsets/MACHINE_UXV_BOTTOM");
-    public static final IIconContainer MACHINE_MAX_BOTTOM = new CustomIcon("iconsets/MACHINE_MAX_BOTTOM");
+    public static final IIconContainer OVERLAY_ENERGY_IN_POWER = CustomIcon.create("iconsets/OVERLAY_ENERGY_IN_POWER");
+    public static final IIconContainer OVERLAY_ENERGY_OUT_POWER = CustomIcon
+        .create("iconsets/OVERLAY_ENERGY_OUT_POWER");
+    public static final IIconContainer OVERLAY_ENERGY_IN_LASER = CustomIcon.create("iconsets/OVERLAY_ENERGY_IN_LASER");
+    public static final IIconContainer OVERLAY_ENERGY_OUT_LASER = CustomIcon
+        .create("iconsets/OVERLAY_ENERGY_OUT_LASER");
+    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_4A = CustomIcon
+        .create("iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
+    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_16A = CustomIcon
+        .create("iconsets/OVERLAY_ENERGY_ON_WIRELESS_16A");
+    public static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_LASER = CustomIcon
+        .create("iconsets/OVERLAY_ENERGY_ON_WIRELESS_LASER");
+    public static final IIconContainer MACHINE_UEV_SIDE = CustomIcon.create("iconsets/MACHINE_UEV_SIDE");
+    public static final IIconContainer MACHINE_UIV_SIDE = CustomIcon.create("iconsets/MACHINE_UIV_SIDE");
+    public static final IIconContainer MACHINE_UMV_SIDE = CustomIcon.create("iconsets/MACHINE_UMV_SIDE");
+    public static final IIconContainer MACHINE_UXV_SIDE = CustomIcon.create("iconsets/MACHINE_UXV_SIDE");
+    public static final IIconContainer MACHINE_MAX_SIDE = CustomIcon.create("iconsets/MACHINE_MAX_SIDE");
+    public static final IIconContainer MACHINE_UEV_TOP = CustomIcon.create("iconsets/MACHINE_UEV_TOP");
+    public static final IIconContainer MACHINE_UIV_TOP = CustomIcon.create("iconsets/MACHINE_UIV_TOP");
+    public static final IIconContainer MACHINE_UMV_TOP = CustomIcon.create("iconsets/MACHINE_UMV_TOP");
+    public static final IIconContainer MACHINE_UXV_TOP = CustomIcon.create("iconsets/MACHINE_UXV_TOP");
+    public static final IIconContainer MACHINE_MAX_TOP = CustomIcon.create("iconsets/MACHINE_MAX_TOP");
+    public static final IIconContainer MACHINE_UEV_BOTTOM = CustomIcon.create("iconsets/MACHINE_UEV_BOTTOM");
+    public static final IIconContainer MACHINE_UIV_BOTTOM = CustomIcon.create("iconsets/MACHINE_UIV_BOTTOM");
+    public static final IIconContainer MACHINE_UMV_BOTTOM = CustomIcon.create("iconsets/MACHINE_UMV_BOTTOM");
+    public static final IIconContainer MACHINE_UXV_BOTTOM = CustomIcon.create("iconsets/MACHINE_UXV_BOTTOM");
+    public static final IIconContainer MACHINE_MAX_BOTTOM = CustomIcon.create("iconsets/MACHINE_MAX_BOTTOM");
 
-    public static final IIconContainer TESLA_TRANSCEIVER_TOP = new CustomIcon("iconsets/TESLA_TRANSCEIVER_TOP");
+    public static final IIconContainer TESLA_TRANSCEIVER_TOP = CustomIcon.create("iconsets/TESLA_TRANSCEIVER_TOP");
 
     public static IIconContainer[] MACHINECASINGS_SIDE_TT = new IIconContainer[] { MACHINE_ULV_SIDE, MACHINE_LV_SIDE,
         MACHINE_MV_SIDE, MACHINE_HV_SIDE, MACHINE_EV_SIDE, MACHINE_IV_SIDE, MACHINE_LuV_SIDE, MACHINE_ZPM_SIDE,

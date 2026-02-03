@@ -16,6 +16,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -24,7 +25,7 @@ import gregtech.common.render.GTTextureBuilder;
 
 public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamline {
 
-    private static Textures.BlockIcons.CustomIcon pipe;
+    private static IIconContainer pipe;
 
     private byte connectionCount = 0;
 
@@ -124,7 +125,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        pipe = new Textures.BlockIcons.CustomIcon("iconsets/pipe");
+        pipe = Textures.BlockIcons.CustomIcon.create("iconsets/pipe");
         super.registerIcons(aBlockIconRegister);
     }
 

@@ -65,52 +65,59 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             2,
             2,
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE", true)),
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW", true))
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE", true)),
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_SIDE_GLOW", true))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE", true)),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW", true))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT", true)),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_FRONT_GLOW", true))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE", true)),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW", true))
-                    .glow()
-                    .build()),
-            TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP", true)),
-                TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_TOP_GLOW", true))
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
                 TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE", true)),
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW", true))
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM", true)),
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/miner/OVERLAY_BOTTOM_GLOW", true))
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_FRONT_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_TOP_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_TOP_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_TOP")),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_TOP_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory
+                    .of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.builder()
+                    .addIcon(
+                        Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_BOTTOM")),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.CustomIcon.createOptional("basicmachines/miner/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
         mSpeed = SPEED[aTier];

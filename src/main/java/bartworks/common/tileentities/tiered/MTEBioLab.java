@@ -32,7 +32,7 @@ import bartworks.util.BioPlasmid;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -65,67 +65,51 @@ public class MTEBioLab extends MTEBasicMachine {
             6,
             2,
             TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW",
-                            true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/fluid_extractor/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW", true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/fluid_extractor/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW", true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/microwave/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/microwave/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/microwave/OVERLAY_FRONT_GLOW", true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/microwave/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(
-                    new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon(
-                            "basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW",
-                            true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build() /* this is topactive */),
             TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/chemical_reactor/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW", true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/chemical_reactor/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build() /* this is top */),
             TextureFactory.of(
-                TextureFactory
-                    .of(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(
-                        new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW", true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/polarizer/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM", true)),
+                TextureFactory.of(CustomIcon.createOptional("basicmachines/polarizer/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW", true))
+                    .addIcon(CustomIcon.createOptional("basicmachines/polarizer/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
     }

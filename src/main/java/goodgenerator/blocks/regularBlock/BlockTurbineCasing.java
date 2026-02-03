@@ -11,7 +11,7 @@ public class BlockTurbineCasing extends BlockCasing {
 
     public BlockTurbineCasing(String name, String texture) {
         super(name, new String[] { GoodGenerator.MOD_ID + ":" + texture });
-        base = new Textures.BlockIcons.CustomIcon("icons/" + texture);
+        base = Textures.BlockIcons.CustomIcon.create("icons/" + texture);
     }
 
     @Override

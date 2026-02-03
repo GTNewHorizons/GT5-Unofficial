@@ -54,6 +54,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -110,8 +111,8 @@ public class MTETeslaTower extends TTMultiblockBase
     private Map<ITeslaConnectableSimple, Integer> ampsLastTickMap = new HashMap<>();
     private int sparkCount = 20;
     // Face icons
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenOFF;
+    private static IIconContainer ScreenON;
 
     private int mTier = 0; // Determines max voltage (LV to ZPM)
     private int plasmaTier = 0; // 0 is None, 1 is Helium or Nitrogen, 2 is Radon (Does not match actual plasma tiers)
@@ -636,8 +637,8 @@ public class MTETeslaTower extends TTMultiblockBase
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override

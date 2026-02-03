@@ -50,8 +50,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private final Set<DroneConnection> connections = new HashSet<>();
     private final Set<MTEMultiBlockBase> machines = new HashSet<>();
 
-    private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+    private static final IIconContainer moduleActive = Textures.BlockIcons.CustomIcon
+        .create("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public MTEHatchDroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);

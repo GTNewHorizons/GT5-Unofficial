@@ -19,13 +19,13 @@ import tectech.thing.item.ItemTeslaCoilCover;
 public class CoverLoader implements Runnable {
 
     public void run() {
-        final IIconContainer TESLA_OVERLAY = new Textures.BlockIcons.CustomIcon("iconsets/TESLA_OVERLAY");
-        final IIconContainer TESLA_OVERLAY_ULTIMATE = new Textures.BlockIcons.CustomIcon(
-            "iconsets/TESLA_OVERLAY_ULTIMATE");
-        final IIconContainer ENDERFLUIDLINK_OVERLAY = new Textures.BlockIcons.CustomIcon(
-            "iconsets/ENDERFLUIDLINK_OVERLAY");
-        final IIconContainer POWERPASSUPGRADE_OVERLAY = new Textures.BlockIcons.CustomIcon(
-            "iconsets/POWERPASSUPGRADE_OVERLAY");
+        final IIconContainer TESLA_OVERLAY = Textures.BlockIcons.CustomIcon.create("iconsets/TESLA_OVERLAY");
+        final IIconContainer TESLA_OVERLAY_ULTIMATE = Textures.BlockIcons.CustomIcon
+            .create("iconsets/TESLA_OVERLAY_ULTIMATE");
+        final IIconContainer ENDERFLUIDLINK_OVERLAY = Textures.BlockIcons.CustomIcon
+            .create("iconsets/ENDERFLUIDLINK_OVERLAY");
+        final IIconContainer POWERPASSUPGRADE_OVERLAY = Textures.BlockIcons.CustomIcon
+            .create("iconsets/POWERPASSUPGRADE_OVERLAY");
 
         CoverRegistry.registerCover(
             new ItemStack(ItemTeslaCoilCover.INSTANCE, 1, 0),

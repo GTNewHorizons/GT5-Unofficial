@@ -5,11 +5,15 @@ import static gregtech.api.enums.Textures.GlobalIcons.RENDERING_ERROR;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+
+import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
@@ -2553,32 +2557,68 @@ public class Textures {
 
             protected final ResourceLocation iconResource, overlayResource;
             protected final String mIconName, mOverlayName;
-            protected final boolean optionalResource;
             protected IIcon mIcon, mOverlay = null;
 
-            public CustomIcon(String aIconName) {
-                this(aIconName, false);
-            }
-
-            public CustomIcon(String aIconName, boolean optionalResource) {
+            private CustomIcon(@NotNull String aIconName) {
                 mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
                 iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
 
                 mOverlayName = mIconName + _OVERLAY;
                 overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
-                this.optionalResource = optionalResource;
                 // Prevents scheduling multiple registrations of same custom block icon
                 GregTechAPI.sGTBlockIconload.add(this);
                 if (Gregtech.debug.logRegisterIcons) {
-                    GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
+                    GTLog.ico.println("R " + iconResource);
                     GTLog.ico.println("O " + overlayResource);
                 }
             }
 
+            // 2026-02-03: Counted 1771 unique CustomIcons, so 2.5K will avoid resize until 1920 entries
+            private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(2560);
+
+            /**
+             * Registers a Custom Block {@link IIconContainer}
+             *
+             * @param aIconName The unique identifier of the icon container.
+             * @return The new or cached instance
+             */
+            public static @NotNull IIconContainer create(@NotNull String aIconName) {
+                sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
+                return createOptional(aIconName);
+            }
+
+            // 2026-02-03: Counted 3723 unique CustomOptionalIcons, so 5K will avoid resize until 3840 entries
+            private static final Map<String, IIconContainer> sCustomOptionalIcons = new ConcurrentHashMap<>(5120);
+
+            /**
+             * Registers a Custom Optional Block {@link IIconContainer}
+             *
+             * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+             *                  (see: {@link IIconRegister#registerIcon}).
+             * @return The new or cached instance
+             */
+            public static @NotNull IIconContainer createOptional(@NotNull String aIconName) {
+                // optionalResource is not part of the CustomIcon identity, so not composed in to the key
+                return sCustomOptionalIcons.computeIfAbsent(aIconName, k -> new CustomOptionalIcon(k));
+            }
+
+            // 2026-02-03: Counted 160 unique BlockIcons.CustomIcons, so 255 will avoid resize until 162 entries
+            private static final Map<String, IIconContainer> sCustomAlphaIcons = new ConcurrentHashMap<>(256);
+
+            /**
+             * Registers a Custom Optional Block {@link IIconContainer} to be rendered alpha-blended in pass 1
+             *
+             * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+             *                  (see: {@link IIconRegister#registerIcon}).
+             * @return The new or cached instance
+             */
+            public static @NotNull IIconContainer createAlpha(@NotNull String aIconName) {
+                return sCustomAlphaIcons.computeIfAbsent(aIconName, CustomAlphaIcon::new);
+            }
+
             @Override
             public void run() {
-                mIcon = optionalResource && !ResourceUtils.resourceExists(iconResource) ? InvisibleIcon.INVISIBLE_ICON
-                    : GregTechAPI.sBlockIcons.registerIcon(mIconName);
+                mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
                 // This makes the block _OVERLAY icon totally optional
                 if (ResourceUtils.resourceExists(overlayResource)) {
                     mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
@@ -2601,10 +2641,27 @@ public class Textures {
             }
         }
 
-        public static class CustomAlphaIcon extends CustomIcon {
+        private static class CustomOptionalIcon extends CustomIcon {
 
-            public CustomAlphaIcon(String aIconName) {
-                super(aIconName, true);
+            private CustomOptionalIcon(@NotNull String aIconName) {
+                super(aIconName);
+            }
+
+            @Override
+            public void run() {
+                mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sBlockIcons.registerIcon(mIconName)
+                    : InvisibleIcon.INVISIBLE_ICON;
+                // This makes the block _OVERLAY icon totally optional
+                if (ResourceUtils.resourceExists(overlayResource)) {
+                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
+                }
+            }
+        }
+
+        private static class CustomAlphaIcon extends CustomIcon {
+
+            private CustomAlphaIcon(@NotNull String aIconName) {
+                super(aIconName);
             }
 
             @Override
@@ -2704,20 +2761,13 @@ public class Textures {
             }
         }
 
-        private static ResourceLocation getResourceLocation(String iconPath) {
-            final int semicolon = iconPath.indexOf(':');
-            final String domain = iconPath.substring(0, semicolon);
-            final String path = "textures/items/" + iconPath.substring(semicolon + 1) + ".png";
-            return new ResourceLocation(domain, path);
-        }
-
         public static class CustomIcon implements IIconContainer, Runnable {
 
             protected IIcon mIcon, mOverlay;
             protected String mIconName, mOverlayName;
             protected ResourceLocation iconResource, overlayResource;
 
-            public CustomIcon(String aIconName) {
+            private CustomIcon(@NotNull String aIconName) {
                 mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
                 iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
                 mOverlayName = mIconName + _OVERLAY;
@@ -2728,6 +2778,24 @@ public class Textures {
                     GTLog.ico.println("R " + iconResource);
                     GTLog.ico.println("O " + overlayResource);
                 }
+            }
+
+            // 2026-02-03: Counted 1928 unique BlockIcons.CustomIcons, so 3K will avoid resize until 2304 entries
+            private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(3072);
+
+            /**
+             * Registers a Custom Item {@link IIconContainer}
+             * <p>
+             * Each custom item icon consists of a main icon, an overlay, or both.
+             * At least one of the icon or overlay must be present; individually, each is optional.
+             *
+             * @param aIconName The unique identifier of the custom item icon container.
+             *
+             * @return The new or cached {@link CustomIcon} instance
+             */
+            public static @NotNull IIconContainer create(@NotNull String aIconName) {
+                // optionalResource is not part of the CustomIcon identity, so not composed in to the key
+                return sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
             }
 
             @Override
