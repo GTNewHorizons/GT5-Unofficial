@@ -3456,7 +3456,7 @@ GT5U.scanner.error_reactor=An exception was thrown while fetching this reactor's
 GT5U.scanner.error_debug=An exception was thrown while fetching this block's debug info
 GT5U.scanner.error_machine=An exception was thrown while fetching this machine's info
 GT5U.scanner.error_side=An exception was thrown while fetching this device's alignment info
-GT5U.scanner.error_wrench=An exception was thrown while fetching this device's IC@ wrenchability
+GT5U.scanner.error_wrench=An exception was thrown while fetching this device's IC2 wrenchability
 GT5U.scanner.error_ic2=An exception was thrown while fetching this device's info
 GT5U.scanner.error_cover=An exception was thrown while fetching this device's covers
 GT5U.scanner.error_device_energy=An exception was thrown while fetching this device's energy info
@@ -3464,7 +3464,7 @@ GT5U.scanner.error_crop=An exception was thrown while fetching this crop's info
 GT5U.scanner.error_leaves=An exception was thrown while fetching this leaves' info
 
 GT5U.scanner.name=Name:
-GT5U.scanner.metadata=MetaData:
+GT5U.scanner.metadata=Metadata:
 GT5U.scanner.hardness=Hardness:
 GT5U.scanner.blast_resistance=Blast Resistance:
 GT5U.scanner.beacon=Is valid Beacon Pyramid Material
