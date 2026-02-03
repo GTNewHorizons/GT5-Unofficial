@@ -60,6 +60,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -100,6 +101,10 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
     public List<MTEHatchInputBus> getElevatorInputBusses() {
         return mInputBusses;
+    }
+
+    public List<MTEHatchInput> getElevatorFluidHatches() {
+        return mInputHatches != null ? Collections.unmodifiableList(mInputHatches) : Collections.emptyList();
     }
 
     public long getAvailableDataForModules() {

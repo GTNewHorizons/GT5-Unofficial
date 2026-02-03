@@ -285,7 +285,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mPollution = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        List<FluidStack> inputFluids = getStoredFluids();
+        List<FluidStack> inputFluids = getAllStoredFluids();
         if (inputFluids.isEmpty()) {
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
