@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -88,7 +90,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private DroneCentreGuiUtil.SortMode sortMode = DroneCentreGuiUtil.SortMode.NAME;
     private String key = "";
 
-    public List<String> group = new ArrayList<>(Collections.nCopies(8, "+"));
+    public List<String> group = IntStream.rangeClosed(0, 7)
+        .mapToObj(String::valueOf)
+        .collect(Collectors.toList());
     public ProductionRecord productionDataRecorder = new ProductionRecord();
     public List<DroneConnection> connectionList = new ArrayList<>();
 
@@ -466,14 +470,16 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void turnOnAll() {
         for (DroneConnection droneConnection : connectionList) {
-            if (droneConnection.isValid()) droneConnection.getLinkedMachine()
-                .enableWorking();
+            if (droneConnection.isValid() && (activeGroup == 0 || droneConnection.getGroup() == activeGroup)) {
+                droneConnection.getLinkedMachine()
+                    .enableWorking();
+            }
         }
     }
 
     public void turnOffAll(boolean force) {
         for (DroneConnection droneConnection : connectionList) {
-            if (droneConnection.isValid()) {
+            if (droneConnection.isValid() && (activeGroup == 0 || droneConnection.getGroup() == activeGroup)) {
                 MTEMultiBlockBase mte = droneConnection.getLinkedMachine();
                 mte.disableWorking();
                 if (force && mte.getBaseMetaTileEntity() != null) {

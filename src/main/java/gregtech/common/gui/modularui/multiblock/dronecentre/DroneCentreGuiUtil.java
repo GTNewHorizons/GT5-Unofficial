@@ -7,16 +7,27 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
+import gregtech.common.gui.modularui.multiblock.dronecentre.sync.ProductionStatsSyncHandler;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -89,6 +100,72 @@ public class DroneCentreGuiUtil {
         } else {
             return String.format(Locale.ROOT, "%.1f%c", formattedValue, unit);
         }
+    }
+
+    public static void syncDroneValues(PanelSyncManager syncManager, MTEDroneCentre multiblock) {
+        syncManager.syncValue("onall", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.turnOnAll();
+                syncManager.getPlayer()
+                    .closeScreen();
+                syncManager.getPlayer()
+                    .addChatComponentMessage(
+                        new ChatComponentTranslation(
+                            "GT5U.machines.dronecentre.turnon",
+                            multiblock.group.get(multiblock.getActiveGroup())));
+            }
+        }));
+        syncManager.syncValue("offall", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.turnOffAll(var.shift);
+                syncManager.getPlayer()
+                    .closeScreen();
+                syncManager.getPlayer()
+                    .addChatComponentMessage(
+                        new ChatComponentTranslation(
+                            var.shift ? "GT5U.machines.dronecentre.forceturnoff" : "GT5U.machines.dronecentre.turnoff",
+                            multiblock.group.get(multiblock.getActiveGroup())));
+            }
+        }));
+
+        DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
+            multiblock::getConnectionList);
+        EnumSyncValue<SortMode> sortModeSyncHandler = new EnumSyncValue<>(
+            DroneCentreGuiUtil.SortMode.class,
+            multiblock::getSortMode,
+            multiblock::setSortMode);
+        StringSyncValue searchFilterSyncHandler = new StringSyncValue(
+            multiblock::getSearchBarText,
+            multiblock::setSearchBarText);
+        IntSyncValue activeGroupSyncHandler = new IntSyncValue(multiblock::getActiveGroup, multiblock::setActiveGroup);
+        BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
+            multiblock::getSearchOriginalName,
+            multiblock::setSearchOriginalName);
+        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(multiblock::getEditMode, multiblock::setEditMode);
+        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate);
+
+        GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
+            () -> multiblock.group,
+            null,
+            packetBuffer -> packetBuffer.readStringFromBuffer(32768),
+            PacketBuffer::writeStringToBuffer,
+            String::equals,
+            null);
+
+        syncManager.syncValue("droneList", droneConnectionListSyncHandler);
+        syncManager.syncValue("sortMode", sortModeSyncHandler);
+        syncManager.syncValue("searchFilter", searchFilterSyncHandler);
+        syncManager.syncValue("groupNameList", groupSyncHandler);
+        syncManager.syncValue("activeGroup", activeGroupSyncHandler);
+        syncManager.syncValue("searchOri", searchOriSyncHandler);
+        syncManager.syncValue("editMode", editModeSyncHandler);
+        syncManager.syncValue("update", updateSyncHandler);
+
+        IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime);
+        ProductionStatsSyncHandler productionStatsSyncHandler = new ProductionStatsSyncHandler(
+            () -> multiblock.productionDataRecorder.getStatsInDuration(multiblock.getSelectedTime() * 1000L));
+        syncManager.syncValue("selectTime", selectTimeSyncHandler);
+        syncManager.syncValue("productionStats", productionStatsSyncHandler);
     }
 
     public enum SortMode {
