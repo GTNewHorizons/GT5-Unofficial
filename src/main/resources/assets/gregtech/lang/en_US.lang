@@ -96,8 +96,7 @@ gt.crop.zomplant.name=Zomplant
 # Tooltip info of tile-entities
 gt.tileentity.eup_in=Voltage IN: §e%d §7(%s§7)
 gt.tileentity.eup_out=Voltage OUT: §e%d §7(%s§7)
-gt.tileentity.eup_amount=Amperage: §e%d§7 A
-gt.tileentity.eup_store=Capacity: §e%d§7 EU
+gt.tileentity.eup_amount=Amperage: §b%d§7 A
 gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)

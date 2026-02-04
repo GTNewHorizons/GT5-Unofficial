@@ -96,7 +96,6 @@ gt.crop.zomplant.name=Zomplant
 gt.tileentity.eup_in=Входной вольтаж: §a%d (%s§a)§7
 gt.tileentity.eup_out=Выходной вольтаж: §a%d (%s§a)§7
 gt.tileentity.eup_amount=Ампераж: §e%d§7
-gt.tileentity.eup_store=Ёмкость: §9%d§7 EU
 gt.tileentity.has_muffler=есть улучшение глушитель
 gt.tileentity.has_steam_upgrade=есть улучшение пар
 gt.tileentity.colored=Colored (%s%s§7)

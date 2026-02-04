@@ -112,10 +112,6 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                                 "gt.tileentity.eup_amount",
                                 formatNumber(tTileEntity.getOutputAmperage())));
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            formatNumber(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
