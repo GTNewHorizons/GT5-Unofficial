@@ -45,9 +45,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 10L);
+            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 3L : 12L);
         }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 5L : 20L);
+        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 6L : 24L);
     }
 
     @Override
