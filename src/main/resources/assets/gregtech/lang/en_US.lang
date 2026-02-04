@@ -166,6 +166,7 @@ gt.item.desc.device_at=Device at:
 gt.item.desc.state=State: %s
 gt.item.desc.breeder_tip=Bathe with neutrons in a hot reactor
 gt.item.desc.progress=Progress: %s/%s
+gt.item.desc.progress.bare=%ss/%ss
 gt.item.desc.haz_rad=Radiation Hazard
 gt.item.desc.turbine_eff=Turbine Efficiency (Loose): %s
 gt.item.desc.steam_rate=Optimal Steam flow (Loose): %s L/t
@@ -3558,7 +3559,8 @@ GT5U.infodata.wormhole_generator.hatch.front=Front
 GT5U.infodata.purification_plant.status_button=Status
 GT5U.infodata.purification_plant.status_title=§lPurification Unit Status
 GT5U.infodata.purification_plant.linked_units=Linked Purification Units:
-GT5U.infodata.purification_plant.linked_units.status.online=Online
+GT5U.infodata.purification_plant.linked_units.status.active=Active
+GT5U.infodata.purification_plant.linked_units.status.idle=Idle
 GT5U.infodata.purification_plant.linked_units.status.disabled=Disabled
 GT5U.infodata.purification_plant.linked_units.status.incomplete=Incomplete Structure
 

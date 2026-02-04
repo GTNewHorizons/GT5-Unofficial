@@ -13,14 +13,16 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
+import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -97,32 +99,18 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         }
 
         widget.child(machineTierRow(unitByTier));
-        widget.child(createProgressBar());
-        widget.child(createProgressText());
+        widget.childIf(
+            multiblock.getBaseMetaTileEntity()
+                .isActive(),
+            createProgressBar().align(Alignment.TopLeft));
         return widget;
     }
 
-    private Row createProgressText() {
-        Row row = new Row();
-        row.marginTop(2)
-            .child(IKey.dynamic(() -> {
-                int progress = multiblock.getProgresstime() / 20;
-                int maxProgress = multiblock.getMaxProgresstime() / 20;
-                return StatCollector.translateToLocalFormatted("gt.item.desc.progress", progress, maxProgress);
-            })
-                .asWidget()
-                .widthRel(1f));
-        row.coverChildrenHeight();
-        return row;
-    }
-
     public Row machineTierRow(Map<Integer, LinkedPurificationUnit> unitByTier) {
-        // TODO: make overlays for idle/online/incomplete
         Row row = new Row();
         row.paddingTop(4)
             .paddingBottom(4)
             .coverChildrenHeight();
-
         for (int tier = 1; tier <= 8; tier++) {
             LinkedPurificationUnit unit = unitByTier.get(tier);
 
@@ -132,14 +120,16 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
 
                 int finalTier = tier;
                 row.child(
-                    new ItemDisplayWidget().background(IDrawable.EMPTY)
-                        .disableHoverBackground()
+                    new ItemDisplayWidget().disableHoverBackground()
                         .size(20)
+                        .background(IDrawable.EMPTY)
+                        .overlay(getOverlayIcon(unit))
                         .item(mte.getStackForm(1))
                         .tooltip(tooltip -> {
                             tooltip.addLine(
                                 StatCollector.translateToLocalFormatted("GT5U.gui.purification.tier", finalTier));
                             tooltip.addLine(moduleName);
+                            tooltip.addLine(unit.getStatusString());
                         }));
             }
         }
@@ -147,19 +137,33 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         return row;
     }
 
-    private Column createProgressBar() {
-        Column column = new Column();
-        column.paddingTop(2)
-            .paddingBottom(4)
-            .child(
-                new ProgressWidget()
-                    .progress(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime())
-                    .direction(ProgressWidget.Direction.RIGHT)
-                    .size(147, 9)
-                    .leftRelOffset(0, 0)
-                    .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147 / 2))
-            .coverChildrenHeight();
-        return column;
+    private IDrawable getOverlayIcon(LinkedPurificationUnit LinkedUnit) {
+        String status = LinkedUnit.getStatusUnlocalized();
+        return switch (status) {
+            case "active" -> GTGuiTextures.WATER_PURIFICATION_ONLINE;
+            case "disabled", "idle" -> GTGuiTextures.WATER_PURIFICATION_IDLE; // only incomplete left
+            default -> GTGuiTextures.WATER_PURIFICATION_OFFLINE;
+        };
+    }
+
+    private ParentWidget<Flow> createProgressBar() {
+        ParentWidget<Flow> holder = new ParentWidget<>();
+        ProgressWidget widget = new ProgressWidget();
+        widget.progress(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime())
+            .direction(ProgressWidget.Direction.RIGHT)
+            .size(147, 9)
+            .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147 / 2);
+        TextWidget<?> text = new TextWidget<>(IKey.dynamic(() -> {
+            int progress = multiblock.getProgresstime() / 20;
+            int maxProgress = multiblock.getMaxProgresstime() / 20;
+            return StatCollector.translateToLocalFormatted("gt.item.desc.progress.bare", progress, maxProgress);
+        })).horizontalCenter()
+            .color(0x999999);
+
+        holder.size(147, 9);
+        holder.child(widget);
+        holder.child(text);
+        return holder;
     }
 
     @Override

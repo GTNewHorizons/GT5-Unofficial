@@ -902,6 +902,26 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_EXOFOUNDRY_HR)
         .build();
+
+    public static final UITexture WATER_PURIFICATION_ONLINE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_online")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_ONLINE)
+        .build();
+    public static final UITexture WATER_PURIFICATION_IDLE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_idle")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_IDLE)
+        .build();
+    public static final UITexture WATER_PURIFICATION_OFFLINE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/water_purification_offline")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_WATER_PURIFICATION_OFFLINE)
+        .build();
+
     public static final UITexture EXOFOUNDRY_HC = UITexture.builder()
         .location(GregTech.ID, "gui/picture/exofoundry_hypercooler")
         .fullImage()

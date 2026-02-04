@@ -418,7 +418,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             MTEPurificationUnitBase<?> metaTileEntity = unit.metaTileEntity();
             PurificationUnitStatus status = metaTileEntity.status();
             // Unit needs to be online to be considered active.
-            if (status == PurificationUnitStatus.ONLINE) {
+            if (status == PurificationUnitStatus.ACTIVE) {
                 // Perform recipe check for unit and start it if successful
                 if (metaTileEntity.doPurificationRecipeCheck()) {
                     unit.setActive(true);
@@ -509,9 +509,13 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             PurificationUnitStatus status = unit.metaTileEntity()
                 .status();
             switch (status) {
-                case ONLINE -> {
+                case ACTIVE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.online");
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+                }
+                case IDLE -> {
+                    text = text + EnumChatFormatting.GREEN
+                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW

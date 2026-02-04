@@ -143,4 +143,7 @@ public final class GTTextureIds {
     public static final String PICTURE_EXOFOUNDRY_PAIR_UC_HC_ACTIVE = "gregtech:picture_exofoundry_pair_uc_hc_active";
     public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF = "gregtech:picture_exofoundry_pair_hr_self";
     public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF_ACTIVE = "gregtech:picture_exofoundry_pair_hr_self_active";
+    public static final String PICTURE_WATER_PURIFICATION_ONLINE = "gregtech:picture_water_purification_online";
+    public static final String PICTURE_WATER_PURIFICATION_IDLE = "gregtech:picture_water_purification_idle";
+    public static final String PICTURE_WATER_PURIFICATION_OFFLINE = "gregtech:picture_water_purification_offline";
 }
