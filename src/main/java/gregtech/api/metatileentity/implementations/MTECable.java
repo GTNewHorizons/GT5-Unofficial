@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -512,8 +512,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
         return new String[] {
             StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + " %%%"
                 + TooltipHelper.voltageText(mVoltage),
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%"
-                + TooltipHelper.ampText(mAmperage),
+            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%" + TooltipHelper.ampText(mAmperage),
             StatCollector.translateToLocal("GT5U.item.cable.loss") + ": %%%"
                 + TooltipHelper.cableLossText(mCableLossPerMeter) };
     }
