@@ -83,6 +83,16 @@ public class Textures {
     }
 
     public enum BlockIcons implements IIconContainer, Runnable {
+    /**
+     * @deprecated Use {@link GlobalIcons#VOID} instead
+     */
+        @Deprecated
+        VOID, // The Empty Texture
+    /**
+     * @deprecated use {@link GlobalIcons#RENDERING_ERROR} instead
+     */
+        @Deprecated
+        RENDERING_ERROR,
 
         // ADDED
         MACHINE_UEV_SIDE,
@@ -2194,7 +2204,7 @@ public class Textures {
             .addIcon(HIDDEN_FACE)
             .stdOrient()
             .build() };
-        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
+        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(Textures.GlobalIcons.RENDERING_ERROR) };
 
         public static final ITexture[] OVERLAYS_ENERGY_IN = { TextureFactory.of(OVERLAY_ENERGY_IN),
             TextureFactory.of(OVERLAY_ENERGY_IN_ULV), TextureFactory.of(OVERLAY_ENERGY_IN_LV),
@@ -2567,7 +2577,12 @@ public class Textures {
             protected final String mIconName, mOverlayName;
             protected IIcon mIcon, mOverlay = null;
 
-            private CustomIcon(@NotNull String aIconName) {
+            /**
+             * @deprecated Use {@link #create(String)} instead.
+             *             This constructor will become private later.
+             */
+            @Deprecated
+            public CustomIcon(@NotNull String aIconName) {
                 mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
                 iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
 
@@ -2681,6 +2696,17 @@ public class Textures {
 
     public enum ItemIcons implements IIconContainer, Runnable {
 
+        /**
+         * @deprecated Use {@link GlobalIcons#VOID} instead
+         */
+        @Deprecated
+        VOID, // The Empty Texture
+        /**
+         * @deprecated use {@link GlobalIcons#RENDERING_ERROR} instead
+         */
+        @Deprecated
+        RENDERING_ERROR,
+
         MORTAR,
         ROLLING_PIN,
         HANDLE_SWORD,
@@ -2721,7 +2747,7 @@ public class Textures {
             ENERGY_BAR = { ENERGY_BAR_0, ENERGY_BAR_1, ENERGY_BAR_2, ENERGY_BAR_3, ENERGY_BAR_4, ENERGY_BAR_5,
                 ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, };
 
-        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
+        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(Textures.GlobalIcons.RENDERING_ERROR) };
 
         IIcon mIcon, mOverlay;
         final String mIconName;
@@ -2765,7 +2791,7 @@ public class Textures {
                     : InvisibleIcon.INVISIBLE_ICON;
             } else {
                 mIcon = InvisibleIcon.INVISIBLE_ICON;
-                mOverlay = RENDERING_ERROR.getOverlayIcon();
+                mOverlay = Textures.GlobalIcons.RENDERING_ERROR.getOverlayIcon();
             }
         }
 
@@ -2775,7 +2801,12 @@ public class Textures {
             protected String mIconName, mOverlayName;
             protected ResourceLocation iconResource, overlayResource;
 
-            private CustomIcon(@NotNull String aIconName) {
+            /**
+             * @deprecated Use {@link #create(String)} instead.
+             *             This constructor will become private later.
+             */
+            @Deprecated
+            public CustomIcon(@NotNull String aIconName) {
                 mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
                 iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
                 mOverlayName = mIconName + _OVERLAY;
@@ -2831,7 +2862,7 @@ public class Textures {
                         : InvisibleIcon.INVISIBLE_ICON;
                 } else {
                     mIcon = InvisibleIcon.INVISIBLE_ICON;
-                    mOverlay = RENDERING_ERROR.getOverlayIcon();
+                    mOverlay = Textures.GlobalIcons.RENDERING_ERROR.getOverlayIcon();
                 }
             }
         }
