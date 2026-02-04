@@ -90,34 +90,6 @@ public class RecipesMachines {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // Agricultural Sewer
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_MV.get(1),
-                ItemList.FluidRegulator_MV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 2),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                MaterialsAlloy.POTIN.getScrew(6))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector))
-            .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(4 * INGOTS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        // Biocomposite Collector
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                new ItemStack(ModBlocks.blockPooCollector),
-                ItemList.FluidRegulator_IV.get(2),
-                GTOreDictUnificator.get("pipeHugeStaballoy", 4),
-                MaterialsAlloy.ZERON_100.getScrew(16))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector, 1, 8))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(9 * INGOTS))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(assemblerRecipes);
-
         // Flask Configurator
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -143,51 +115,36 @@ public class RecipesMachines {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.GT4_Tesseract_Terminal.get(1),
             new Object[] { "PCP", "CEC", "PHP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitElite",
-                'E', new ItemStack(Blocks.ender_chest), 'X', ItemList.Hull_EV });
+                'E', new ItemStack(Blocks.ender_chest), 'H', ItemList.Hull_EV });
 
         // Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake.get(1),
-            new Object[] { "PCP", "PRP", "IHI", 'I', OrePrefixes.plate.get(Materials.Redstone), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', OrePrefixes.plate.get(Materials.Redstone), 'C',
                 ItemList.Casing_Grate, 'R', ItemList.FluidRegulator_IV, 'I', "circuitElite", 'H',
                 ItemList.Hatch_Input_IV });
 
         // Extreme Air Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Extreme.get(1),
-            new Object[] { "PCP", "PRP", "IHI", 'I', MaterialsAlloy.PIKYONIUM.getPlate(1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'C',
                 GregtechItemList.Hatch_Air_Intake, 'R', ItemList.FluidRegulator_ZPM, 'I', "circuitUltimate", 'H',
                 ItemList.Hatch_Input_ZPM });
 
         // Atmospheric Intake Hatch
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Air_Intake_Atmospheric.get(1),
-            new Object[] { "PCP", "PRP", "IHI", 'I', MaterialsAlloy.OCTIRON.getPlate(1), 'C',
+            new Object[] { "PCP", "PRP", "IHI", 'P', MaterialsAlloy.OCTIRON.getPlate(1), 'C',
                 GregtechItemList.Hatch_Air_Intake_Extreme, 'R', ItemList.FluidRegulator_UHV, 'I', "circuitInfinite",
                 'H', ItemList.Hatch_Input_UHV });
 
-        // todo
+        // Large Semifluid Burner
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Controller_LargeSemifluidGenerator.get(1L),
             BITSD,
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
-
-        // Project Table
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                ItemList.Emitter_EV.get(2),
-                ItemList.Robot_Arm_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 8),
-                MaterialsAlloy.TANTALUM_CARBIDE.getScrew(8),
-                MaterialsAlloy.INCONEL_625.getPlate(4))
-            .itemOutputs(new ItemStack(ModBlocks.blockProjectTable))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(4 * INGOTS))
-            .duration(1 * MINUTES + 30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
 
         // Reservoir Hatch
         if (RemoteIO.isModLoaded()) {

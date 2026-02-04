@@ -44,6 +44,14 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/pattern_me");
 
+    public static final UITexture OVERLAY_SLOT_DRAWER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/drawer");
+    public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_side");
+    public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_front");
+    public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_trim");
+
     public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_1");
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture
@@ -136,10 +144,6 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/recycle");
     public static final UITexture OVERLAY_SLOT_ROD_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/rod_1");
     public static final UITexture OVERLAY_SLOT_ROD_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/rod_2");
-    public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_slot/slice_shape");
-    public static final UITexture OVERLAY_SLOT_SLICER_SLICED = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_slot/slicer_sliced");
     public static final UITexture OVERLAY_SLOT_SQUARE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/square");
     public static final UITexture OVERLAY_SLOT_UUA = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/uua");
     public static final UITexture OVERLAY_SLOT_UUM = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/uum");
@@ -207,7 +211,6 @@ public class GTUITextures {
     public static final UITexture PROGRESSBAR_MIXER = UITexture.fullImage(GregTech.ID, "gui/progressbar/mixer");
     public static final UITexture PROGRESSBAR_RECYCLE = UITexture.fullImage(GregTech.ID, "gui/progressbar/recycle");
     public static final UITexture PROGRESSBAR_SIFT = UITexture.fullImage(GregTech.ID, "gui/progressbar/sift");
-    public static final UITexture PROGRESSBAR_SLICE = UITexture.fullImage(GregTech.ID, "gui/progressbar/slice");
     public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(GregTech.ID, "gui/progressbar/stored_eu");
     public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.ID, "gui/progressbar/wiremill");
     public static final UITexture PROGRESSBAR_FLOCCULATION = UITexture
@@ -461,10 +464,6 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_bending");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_forming");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_slicing");
-    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = UITexture
-        .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_cutting");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/machine_mode_compressing");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SINGULARITY = UITexture
@@ -490,6 +489,8 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray");
     public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_%s");
+    public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture
+        .fullImage(GregTech.ID, "gui/picture/exofoundry_logo");
     public static final UITexture PICTURE_INFORMATION = UITexture
         .fullImage(GregTech.ID, "gui/picture/information_symbol");
     public static final UITexture PICTURE_STALLED_ELECTRICITY = UITexture

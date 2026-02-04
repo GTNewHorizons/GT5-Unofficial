@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.RecipeBits.BUFFERED;
@@ -18,6 +19,8 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
 import codechicken.nei.api.API;
 import gregtech.GTMod;
@@ -69,7 +72,6 @@ public class MTERecipeLoader implements Runnable {
         registerExtractor();
         registerExtruder();
         registerFermenter();
-        registerFluidCanner();
         registerFluidExtractor();
         registerFluidHeater();
         registerFluidSolidifier();
@@ -88,10 +90,10 @@ public class MTERecipeLoader implements Runnable {
         registerPrinter();
         registerRecycler();
         registerSifter();
-        registerSlicer();
         registerThermalCentrifuge();
         registerUnpackager();
         registerWiremill();
+        registerDrawerFramer();
     }
 
     private static void registerAlloySmelter() {
@@ -880,44 +882,6 @@ public class MTERecipeLoader implements Runnable {
 
     }
 
-    private static void registerFluidCanner() {
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_LV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            1);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_MV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            2);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_HV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            3);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_EV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            4);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_FluidCanner.get(1),
-            new Object[] { "GCG", "GMG", "WPW", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PUMP, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE, 'G', MTEBasicMachineWithRecipe.X.GLASS },
-            5);
-
-    }
-
     private static void registerFluidExtractor() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_FluidExtractor.get(1),
@@ -1665,44 +1629,6 @@ public class MTERecipeLoader implements Runnable {
 
     }
 
-    private static void registerSlicer() {
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_LV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            1);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_MV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            2);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_HV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            3);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_EV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            4);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_Slicer.get(1),
-            new Object[] { aTextWireCoil, "PMV", aTextWireCoil, 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PISTON, 'V', MTEBasicMachineWithRecipe.X.CONVEYOR, 'C',
-                MTEBasicMachineWithRecipe.X.CIRCUIT, 'W', MTEBasicMachineWithRecipe.X.WIRE },
-            5);
-
-    }
-
     private static void registerThermalCentrifuge() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_ThermalCentrifuge.get(1),
@@ -1842,6 +1768,33 @@ public class MTERecipeLoader implements Runnable {
                 MTEBasicMachineWithRecipe.X.MOTOR, 'C', MTEBasicMachineWithRecipe.X.CIRCUIT, 'W',
                 MTEBasicMachineWithRecipe.X.WIRE },
             5);
+    }
+
+    private static void registerDrawerFramer() {
+
+        // only register if storage drawers is loaded
+        if (!StorageDrawers.isModLoaded()) return;
+
+        GTModHandler.addMachineCraftingRecipe(
+            ItemList.Machine_LV_DrawerFramer.get(1L),
+            new Object[] { "PDP", "RHR", "PCP", 'H', MTEBasicMachineWithRecipe.X.HULL, 'R',
+                MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'P', OrePrefixes.plate.get(Materials.Steel), 'C',
+                MTEBasicMachineWithRecipe.X.CIRCUIT, 'D', OreDictNames.craftingChest },
+            1);
+
+        GTModHandler.addMachineCraftingRecipe(
+            ItemList.Machine_MV_DrawerFramer.get(1L),
+            new Object[] { "PDP", "RHR", "PCP", 'H', MTEBasicMachineWithRecipe.X.HULL, 'R',
+                MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'P', OrePrefixes.plate.get(Materials.Aluminium), 'C',
+                MTEBasicMachineWithRecipe.X.CIRCUIT, 'D', OreDictNames.craftingChest },
+            2);
+
+        GTModHandler.addMachineCraftingRecipe(
+            ItemList.Machine_HV_DrawerFramer.get(1L),
+            new Object[] { "PDP", "RHR", "PCP", 'H', MTEBasicMachineWithRecipe.X.HULL, 'R',
+                MTEBasicMachineWithRecipe.X.ROBOT_ARM, 'P', OrePrefixes.plate.get(Materials.StainlessSteel), 'C',
+                MTEBasicMachineWithRecipe.X.CIRCUIT, 'D', OreDictNames.craftingChest },
+            3);
     }
 
     private static void registerShapedCraftingRecipes() {
