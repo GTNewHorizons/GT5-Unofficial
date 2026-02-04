@@ -3431,6 +3431,61 @@ GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
+# Scanner info
+GT5U.scanner.title_base_info=Block Info
+GT5U.scanner.title_fluid_handler_info=Tank Info
+GT5U.scanner.title_reactor_info=Reactor Info
+GT5U.scanner.title_debug_info=Debug Info
+GT5U.scanner.title_machine_info=Machine Info
+GT5U.scanner.title_custom_info=Custom Info
+GT5U.scanner.title_side_info=Side Info
+GT5U.scanner.title_wrench_info=Wrench Info
+GT5U.scanner.title_ic2_info=IC2 Info
+GT5U.scanner.title_cover_info=Cover Info
+GT5U.scanner.title_energy_info=Energy Info
+GT5U.scanner.title_crop_info=Crop Info
+GT5U.scanner.title_leaves_info=Leaves Info
+GT5U.scanner.title_chunk_info=Chunk Info
+
+GT5U.scanner.error_base_info=An exception was thrown while fetching this block's info
+GT5U.scanner.error_fluid_handler_info=An exception was thrown while fetching this tile's fluid tank info
+GT5U.scanner.error_reactor_info=An exception was thrown while fetching this reactor's info
+GT5U.scanner.error_debug_info=An exception was thrown while fetching this block's debug info
+GT5U.scanner.error_machine_info=An exception was thrown while fetching this machine's info
+GT5U.scanner.error_custom_info=An exception was thrown while fetching this machine's custom info
+GT5U.scanner.error_side_info=An exception was thrown while fetching this device's alignment info
+GT5U.scanner.error_wrench_info=An exception was thrown while fetching this device's IC2 wrenchability
+GT5U.scanner.error_ic2_info=An exception was thrown while fetching this device's info
+GT5U.scanner.error_cover_info=An exception was thrown while fetching this device's covers
+GT5U.scanner.error_energy_info=An exception was thrown while fetching this device's energy info
+GT5U.scanner.error_crop_info=An exception was thrown while fetching this crop's info
+GT5U.scanner.error_leaves_info=An exception was thrown while fetching this leaves' info
+
+GT5U.scanner.base_info_1=Position X: §6%s§r Y: §6%s§r Z: §6%s
+GT5U.scanner.base_info_2=Name: §6%s §fMetadata: §6%s
+GT5U.scanner.base_info_3=Hardness: §6%s §fBlast Resistance: §6%s
+GT5U.scanner.base_info_4=§6Is valid Beacon Pyramid Material
+GT5U.scanner.fluid_handler_info_1=Tank %s: §6%sL §f/ §6%sL §f%s
+GT5U.scanner.reactor_info_1=Heat: §6%s §f/ §6%s §fHeating Modifier: §6%s
+GT5U.scanner.side_info_1=Extended Facing: §6%s
+GT5U.scanner.wrench_info_1=Facing: §6%s §f/ Chance: §6%s%%
+GT5U.scanner.wrench_info_2=§6You can remove this with a Wrench
+GT5U.scanner.wrench_info_3=§cYou can NOT remove this with a Wrench
+GT5U.scanner.ic2_info_1=Conduction Loss: §6%s
+GT5U.scanner.ic2_info_2=Contained Energy: §6%s EU §f/ §6%s EU
+GT5U.scanner.energy_info_1=Max IN: §6%s §f(%s) EU at §6%s A
+GT5U.scanner.energy_info_2=Max OUT: §6%s §f(%s) EU at §6%s A
+GT5U.scanner.energy_info_3=Energy: §6%s EU §f/ §6%s EU
+GT5U.scanner.crop_info_1=Crop name: §6%s §fGrowth: §6%s §fGain: §6%s §fResistance: §6%s
+GT5U.scanner.crop_info_2=Fertilizer: §6%s §fWater: §6%s §fWeed-Ex: §6%s §fScan-Level: §6%s
+GT5U.scanner.crop_info_3=Nutrients: §6%s §fHumidity: §6%s §fAir-Quality: §6%s
+GT5U.scanner.crop_info_4=Attributes: §6%s
+GT5U.scanner.crop_info_5=Discovered by:: §6%s
+GT5U.scanner.chunk_info_1=§cPollution in Chunk: %s gibbl
+GT5U.scanner.chunk_info_2=§aNo Pollution in Chunk! HAYO!
+GT5U.scanner.chunk_info_3=§f%s: §6%sL
+GT5U.scanner.chunk_info_4=Nothing: §60L
+
 # info data
 GT5U.infodata.no_network=No Network
 GT5U.infodata.battery_buffer.stored_items=Stored Items: %s EU / %s EU
