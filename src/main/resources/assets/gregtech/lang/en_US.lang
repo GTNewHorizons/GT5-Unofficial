@@ -454,7 +454,6 @@ gtpp.material.Lutetium=Lutetium
 gtpp.material.Magic=Magic
 gtpp.material.Magnesium=Magnesium
 gtpp.material.Manganese=Manganese
-gtpp.material.ManureByproduct=Manure Byproduct
 gtpp.material.MaragingSteel250=Maraging Steel 250
 gtpp.material.MaragingSteel300=Maraging Steel 300
 gtpp.material.MaragingSteel350=Maraging Steel 350
@@ -698,15 +697,6 @@ GTPP.algae.green_algae.name=Green Algae
 GTPP.algae.red_algae.name=Red Algae
 GTPP.algae.brown_algae.name=Brown Algae
 GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
-
-GTPP.algae.tooltip.requires_light=Requires Light: %s
-GTPP.algae.tooltip.salt_water=Salt Water: %s
-GTPP.algae.tooltip.fresh_water=Fresh Water: %s
-GTPP.algae.tooltip.temp_tolerance=Temperature Tolerance: %d
-GTPP.algae.tooltip.growth=Growth: %d
-GTPP.algae.tooltip.production=Production: %d
-GTPP.algae.tooltip.lifespan=Lifespan in days: %d
-GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
@@ -1294,6 +1284,7 @@ GT5U.machines.invert_redstone.tooltip=Invert redstone
 GT5U.machines.buffer_stocking_mode.tooltip=Enable stocking mode
 GT5U.machines.buffer_stocking_mode.tooltip.extended=§7Keeps this many items in destination rather than transfer items in batches of this amount.
 GT5U.machines.buffer_stocking_mode.tooltip.extended.1=§7This mode can be server unfriendly.
+GT5U.machines.target_stack_size.tooltip=Target stack size
 GT5U.machines.sorting_mode.tooltip=Sort stacks
 GT5U.machines.one_stack_limit.tooltip=Limit insertion
 GT5U.machines.one_stack_limit.tooltip.extended=§7Up to 1 stack of each item can be inserted
@@ -1302,6 +1293,7 @@ GT5U.machines.allow_nbt.tooltip=Allow items with NBT
 GT5U.machines.allow_nbt.tooltip.extended=§7By default, all items with NBT are blocked.
 GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
+GT5U.machines.item_distributor.distribution.tooltip=Items per side
 GT5U.machines.stocking_bus.cannot_set_slot=§8Cannot set slot while auto-pull mode is enabled
 GT5U.machines.stocking_bus.auto_pull.tooltip.1=Click to toggle automatic item pulling from ME.
 GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional parameters.
@@ -3207,10 +3199,16 @@ gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
 
+# Tooltips for GT Tools
+gt.softmallet.tooltip=Activates and Deactivates Machines
+gt.softmallet.tooltip.mode=Mode Cycles Between Toggle/Activate/Deactivate
+
 #Tool modes
 key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
+gt.softmallet.mode.1=Activation Mode
+gt.softmallet.mode.2=Deactivation Mode
 
 # Tooltip for vajra
 gt.vajra.tooltip.flavor=Your friendly instant block breaker

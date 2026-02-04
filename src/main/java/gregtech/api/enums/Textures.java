@@ -2575,7 +2575,8 @@ public class Textures {
         ENERGY_BAR_8,
         WIRELESS_HEADPHONES,
         HALO,
-        HALO_FUZZY;
+        HALO_FUZZY,
+        JACKHAMMER_BASE;
 
         public static final IIconContainer[] DURABILITY_BAR = { DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2,
             DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7,
