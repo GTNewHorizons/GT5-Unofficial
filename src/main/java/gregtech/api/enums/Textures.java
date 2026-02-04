@@ -1993,6 +1993,11 @@ public class Textures {
         OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW,
         OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
 
+        OVERLAY_FRONT_LNE,
+        OVERLAY_FRONT_LNE_ACTIVE,
+        OVERLAY_FRONT_LNE_ACTIVE_GLOW,
+        OVERLAY_FRONT_LNE_GLOW,
+
         // semicolon after the comment to reduce merge conflicts
         ;
 
