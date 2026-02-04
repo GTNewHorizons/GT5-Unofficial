@@ -135,7 +135,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             buildHatchAdder(MTEBlackHoleCompressor.class)
                 .atLeast(Energy.or(ExoticEnergy), InputBus, OutputBus, InputHatch, SpecialHatchElement.UtilityHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(12))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEBlackHoleCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 12))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 11))
@@ -145,7 +145,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputHatch)
                 .adder(MTEBlackHoleCompressor::addSpacetimeInput)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(11))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
         .build();
 
@@ -497,16 +497,21 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
-                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
                 currentTip.add(
-                    EnumChatFormatting.DARK_PURPLE + "Stability: "
-                        + EnumChatFormatting.BOLD
-                        + Math.round(tag.getFloat("blackHoleStability"))
-                        + "%");
+                    EnumChatFormatting.DARK_PURPLE
+                        + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.black_hole_compressor.stability",
+                        "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
             } else {
-                currentTip.add(EnumChatFormatting.RED + "BLACK HOLE UNSTABLE");
+                currentTip.add(
+                    EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.unstable"));
             }
-        } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
+        } else currentTip.add(
+            EnumChatFormatting.DARK_PURPLE
+                + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.offline"));
     }
 
     private int getModeFromCircuit(ItemStack[] t) {

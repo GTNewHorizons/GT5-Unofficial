@@ -845,7 +845,7 @@ public class AssemblyLineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 16),
                 new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
                 NewHorizonsCoreMod.isModLoaded()
-                    ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4)
+                    ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4)
                     : ItemList.Casing_Firebox_TungstenSteel.get(16),
                 ItemList.Large_Fluid_Cell_Osmium.get(1),
                 GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1),

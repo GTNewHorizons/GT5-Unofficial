@@ -90,7 +90,7 @@ public class MTEIndustrialThermalCentrifuge extends GTPPMultiBlockBase<MTEIndust
                         buildHatchAdder(MTEIndustrialThermalCentrifuge.class)
                             .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 0)),
                         onElementPass(x -> ++x.mCasing, ofBlock(GregTechAPI.sBlockCasings3, 9))))

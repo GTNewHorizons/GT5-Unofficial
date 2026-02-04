@@ -141,7 +141,14 @@ public class MTEHatchInputDebug extends MTEHatchInput {
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
-        return aFluid.copy();
+
+        if (aFluid == null) return null;
+        for (FluidStack stack : fluidList) {
+            if (stack != null && stack.getFluid() == aFluid.getFluid()) {
+                return aFluid.copy();
+            }
+        }
+        return null;
     }
 
     @Override

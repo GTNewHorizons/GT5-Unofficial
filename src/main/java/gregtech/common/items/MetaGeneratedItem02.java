@@ -1789,7 +1789,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Food_Large_Sandwich_Steak.ID,
                 "Large Steak Sandwich",
-                "Yes, I once accidentially called it 'Steam Sandwich'",
+                "Yes, I once accidentally called it 'Steam Sandwich'",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2415,7 +2415,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
             GTUtility.getField(tCrop = Crops.instance.getCropList()[14], "mDrop")
                 .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
             }

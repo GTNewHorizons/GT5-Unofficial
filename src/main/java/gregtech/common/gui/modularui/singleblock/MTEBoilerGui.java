@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.FloatSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
@@ -17,6 +18,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.util.GTUtility;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 
@@ -32,6 +34,8 @@ public class MTEBoilerGui {
     // author: miozune
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         syncManager.registerSlotGroup("item_inv", 0);
+        FloatSyncValue heat = new FloatSyncValue(() -> (float) base.mTemperature / base.maxProgresstime());
+        syncManager.syncValue("heat", heat);
         IWidget waterSlots = Flow.column()
             .coverChildren()
             .child(
@@ -67,8 +71,9 @@ public class MTEBoilerGui {
                     .alwaysShowFull(false)
                     .size(10, 54))
             .child(
-                new GTProgressWidget()
-                    .value(new DoubleSyncValue(() -> (float) base.mTemperature / base.maxProgresstime()))
+                new GTProgressWidget().syncHandler("heat")
+                    .tooltipDynamic(
+                        (a) -> { a.add(String.format("%.2f%%", GTUtility.clamp(heat.getFloatValue() * 100, 0, 100))); })
                     .direction(ProgressWidget.Direction.UP)
                     .widgetTheme(GTWidgetThemes.PROGRESSBAR_BOILER_HEAT)
                     .size(10, 54));

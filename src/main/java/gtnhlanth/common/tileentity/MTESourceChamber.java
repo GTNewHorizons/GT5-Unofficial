@@ -1,5 +1,6 @@
 package gtnhlanth.common.tileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -13,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 
@@ -81,26 +82,26 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 'b',
                 buildHatchAdder(MTESourceChamber.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTESourceChamber::addBeamLineOutputHatch)
                     .build())
             .addElement(
                 'i',
                 buildHatchAdder(MTESourceChamber.class).atLeast(InputBus)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .build())
             .addElement(
                 'd',
                 buildHatchAdder(MTESourceChamber.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
-                    .dot(3)
+                    .hint(3)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
 
             .build();
@@ -155,7 +156,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo(sourceLine("Long LaB6 Rods", "0.3"))
             .addSeparator()
             .addInfo(EnumChatFormatting.WHITE + "Actual Beam Energy = min(" + energyText("Max Particle Energy") + ", " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.GRAY + ")")
-            .addInfo("Where " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.WHITE + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.WHITE+" * (1 - 1.001^(" + ratioText("Energy Ratio") + " * (" + EnumChatFormatting.AQUA + "EU/t required"+EnumChatFormatting.WHITE+" - "+EnumChatFormatting.RED+"EU/t provided"+EnumChatFormatting.WHITE+")))")
+            .addInfo("Where " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.WHITE + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.WHITE+" * (1 - 1.001^(" + ratioText("-Energy Ratio") + " * (" + EnumChatFormatting.RED + "EU/t provided"+EnumChatFormatting.WHITE+" - "+EnumChatFormatting.AQUA+"EU/t required"+EnumChatFormatting.WHITE+")))")
             .addInfo("In short, the " + particleText("particle beam's") + " energy is capped to the " + energyText("Max Particle Energy"))
             .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .beginStructureBlock(5, 5, 6, true)
@@ -163,11 +164,11 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
-            .addEnergyHatch(addDotText(3))
-            .addMaintenanceHatch(addDotText(3))
-            .addInputBus(addDotText(1))
-            .addOutputBus(addDotText(2))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
+            .addEnergyHatch(addHintNumber(3))
+            .addMaintenanceHatch(addHintNumber(3))
+            .addInputBus(addHintNumber(1))
+            .addOutputBus(addHintNumber(2))
             .toolTipFinisher();
         return tt;
         //spotless:on
@@ -226,8 +227,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         float maxMaterialEnergy = metadata.maxEnergy; // The maximum energy for the recipe processed
 
         this.outputEnergy = (float) Math.min(
-            (-maxMaterialEnergy) * Math.pow(1.001, -(metadata.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))
-                + maxMaterialEnergy,
+            maxMaterialEnergy * (1 - Math.pow(1.001, -(metadata.energyRatio) * (tVoltageMaxTier - tRecipe.mEUt))),
             maxParticleEnergy);
         if (outputEnergy <= 0) {
             stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.scerror"));
@@ -290,30 +290,30 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             // from super()
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + formatNumber(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
+                + formatNumber(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
@@ -333,6 +333,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
+            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET,
             // Beamline-specific
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
                 + ": "

@@ -106,6 +106,14 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .duration(5 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, 200 * 30 / 4000))))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -172,6 +180,14 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, 200 * 30 / 4000))))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
                 break;
             case "Basalt":
                 GTValues.RA.stdBuilder()
@@ -200,6 +216,17 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .duration(10 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, 200 * 30 / 4000))))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
             case "Quartzite":
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -249,6 +276,15 @@ public class ProcessingStone implements IOreRecipeRegistrator {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, 200 * 30 / 4000))))
+                    .duration(4 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
                         GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial, 1L),
                         GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L))
@@ -279,6 +315,15 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                     .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, 200 * 30 / 1280))))
                     .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                    .fluidInputs(
+                        Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, 200 * 30 / 4000))))
+                    .duration(4 * SECONDS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
 

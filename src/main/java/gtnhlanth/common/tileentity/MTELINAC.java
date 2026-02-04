@@ -1,5 +1,6 @@
 package gtnhlanth.common.tileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -13,7 +14,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -123,14 +124,14 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 'i',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchInputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(3)
+                    .hint(3)
                     .adder(MTELINAC::addBeamLineInputHatch)
                     .build())
             .addElement(
                 'o',
                 buildHatchAdder(MTELINAC.class).hatchClass(MTEHatchOutputBeamline.class)
                     .casingIndex(CASING_INDEX)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTELINAC::addBeamLineOutputHatch)
                     .build())
             .addElement('v', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
@@ -141,13 +142,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 'h',
                 buildHatchAdder(MTELINAC.class).atLeast(InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX)
-                    .dot(2)
+                    .hint(2)
                     .build())
             .addElement(
                 'j',
                 buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0)))
             .build();
     }
@@ -178,19 +179,21 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo("Requires " + EnumChatFormatting.WHITE + "Length * kL/s " + EnumChatFormatting.GRAY + "of " + EnumChatFormatting.AQUA + "coolant" + EnumChatFormatting.GRAY + " for operation")
             .addInfo(createFocusText("Beam Focus") + " loss can be mitigated more effectively with lower temperature " + EnumChatFormatting.AQUA+"coolant")
             .addInfo("Valid coolants:")
-            .addInfo(coolantLine("Coolant",300))
             .addInfo(coolantLine("Liquid Nitrogen",90))
             .addInfo(coolantLine("Liquid Oxygen",90))
+            .addInfo(coolantLine("Coolant",60))
             .addInfo(coolantLine("Super Coolant",1))
             .addSeparator()
             .addInfo(createEnergyText("Output Beam Energy") + EnumChatFormatting.WHITE + " = max("+EnumChatFormatting.YELLOW+"V"+EnumChatFormatting.WHITE+", 50) * 10^"+EnumChatFormatting.RED+"IE")
             .addInfo("where " + EnumChatFormatting.YELLOW + "V" + EnumChatFormatting.WHITE + " = (Length - 1) * cbrt(" + EnumChatFormatting.DARK_GREEN + "Machine Voltage" + EnumChatFormatting.WHITE + ") / 4")
-            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1+min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Source Energy")
+            .addInfo("and " + EnumChatFormatting.RED + "IE " + EnumChatFormatting.WHITE + "= 1 + min(" + EnumChatFormatting.LIGHT_PURPLE + "Input Beam Energy" + EnumChatFormatting.WHITE + ", 7500) / " + EnumChatFormatting.GREEN + "Maximum Particle Energy")
             .addInfo(EnumChatFormatting.RED + "Input Beam Energies" + EnumChatFormatting.GRAY + " higher than 7500keV are treated as if they are 7500keV")
-            .addInfo(EnumChatFormatting.GREEN +"Maximum Source Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
+            .addInfo(EnumChatFormatting.GREEN +"Maximum Particle Energy"+EnumChatFormatting.GRAY + " refers to values in the Source Chamber Tooltip")
             .addSeparator()
-            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
+            .addInfo(createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + "depends on the relation between " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " and " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE)
             .addInfo("where " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + " = min(max((-0.9 * (Length-1) * 1.1^(0.2 * " + EnumChatFormatting.GOLD + "Coolant Temperature" + EnumChatFormatting.WHITE + ") + 110), 5), 90)")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " > " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = (" + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " + " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ")/2")
+            .addInfo("If " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " <= " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + ", " + createFocusText("Output Beam Focus") + EnumChatFormatting.WHITE + " = " + EnumChatFormatting.YELLOW + "Input Beam Focus" + EnumChatFormatting.WHITE + " * " + EnumChatFormatting.DARK_AQUA + "Machine Focus" + EnumChatFormatting.WHITE + "/100")
             .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
             .addController("Front bottom")
             .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 325, 1285, false)
@@ -200,12 +203,12 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
             .addCasingInfoExactly("Grate Machine Casing", 47, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
-            .addEnergyHatch(addDotText(1))
-            .addMaintenanceHatch(addDotText(1))
-            .addInputHatch(addDotText(2))
-            .addOutputHatch(addDotText(2))
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(3))
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(4))
+            .addEnergyHatch(addHintNumber(1))
+            .addMaintenanceHatch(addHintNumber(1))
+            .addInputHatch(addHintNumber(2))
+            .addOutputHatch(addHintNumber(2))
+            .addOtherStructurePart("Beamline Input Hatch", addHintNumber(3))
+            .addOtherStructurePart("Beamline Output Hatch", addHintNumber(4))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         //spotless:on
@@ -288,7 +291,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         this.outputRate = inputRate;
 
-        final int fluidConsumed = 1000 * (length);
+        final int fluidConsumed = 1000 * (this.length);
         if (Util.coolantFluidCheck(fluidCoolant, fluidConsumed)) {
             this.stopMachine(SimpleShutDownReason.ofCritical("gtnhlanth.inscoolant"));
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -478,30 +481,30 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             // from super()
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + formatNumber(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
+                + formatNumber(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + getMaxInputAmps()

@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -64,8 +64,9 @@ public class GTDamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(
-                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " got frozen");
+            return new ChatComponentTranslation(
+                "GT5U.die.frozen",
+                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE);
         }
     }
 
@@ -79,10 +80,9 @@ public class GTDamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(
-                EnumChatFormatting.RED + aTarget.getCommandSenderName()
-                    + EnumChatFormatting.WHITE
-                    + " was boiled alive");
+            return new ChatComponentTranslation(
+                "GT5U.die.boiled",
+                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE);
         }
     }
 
@@ -112,8 +112,9 @@ public class GTDamageSources {
 
         @Override
         public IChatComponent func_151519_b(EntityLivingBase aTarget) {
-            return new ChatComponentText(
-                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE + " exploded");
+            return new ChatComponentTranslation(
+                "GT5U.die.exploded",
+                EnumChatFormatting.RED + aTarget.getCommandSenderName() + EnumChatFormatting.WHITE);
         }
     }
 }

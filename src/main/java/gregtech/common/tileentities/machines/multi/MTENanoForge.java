@@ -17,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -42,14 +40,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -81,7 +71,6 @@ import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
-import tectech.thing.gui.TecTechUITextures;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -337,7 +326,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             'B',
             buildHatchAdder(MTENanoForge.class)
                 .atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy.or(ExoticEnergy))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                 .buildAndChain(GregTechAPI.sBlockCasings8, 10))
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
@@ -351,7 +340,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             'V',
             buildHatchAdder(MTENanoForge.class).atLeast(
                 ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
-                .dot(1)
+                .hint(1)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
@@ -363,7 +352,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
     private boolean renderDisabled = false;
-    private static final int INFO_WINDOW_ID = 10;
 
     public MTENanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -753,21 +741,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.button.tier") + " " + mSpecialTier)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> getErrorDisplayID() == 0))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> (int) mSpecialTier,
-                    val -> mSpecialTier = (byte) (val % Byte.MAX_VALUE)));
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Nanite Fabricator")
@@ -868,79 +841,11 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         return new MTENanoForgeGui(this);
     }
 
-    protected ModularWindow createT4InfoWindow(final EntityPlayer player) {
-        final int WIDTH = 250;
-        final int HEIGHT = 250;
-        final Scrollable scrollable = new Scrollable().setVerticalScroll();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        scrollable
-            .widget(
-                new TextWidget(EnumChatFormatting.BOLD + translateToLocal("GT5U.machines.nano_forge.t4_info_header"))
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(0, 0)
-                    .setSize(244, 20))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.1")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 20)
-                    .setSize(244, 60))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.2")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 75)
-                    .setSize(244, 60))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.3")
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 135)
-                    .setSize(244, 20))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.4")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 160)
-                    .setSize(244, 40))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.5")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 200)
-                    .setSize(244, 30))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.6")
-                    .setDefaultColor(EnumChatFormatting.GREEN)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 230)
-                    .setSize(244, 20))
-            .widget(
-                TextWidget.localised("GT5U.machines.nano_forge.t4_info_text.7")
-                    .setDefaultColor(EnumChatFormatting.GOLD)
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(0, 255)
-                    .setSize(244, 50));
-        builder.widget(
-            scrollable.setSize(244, 244)
-                .setPos(3, 3))
-            .widget(
-                ButtonWidget.closeWindowButton(true)
-                    .setPos(233, 4));
-        return builder.build();
-    }
-
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         renderDisabled = !renderDisabled;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled"));
     }
 
     @Override
@@ -949,9 +854,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

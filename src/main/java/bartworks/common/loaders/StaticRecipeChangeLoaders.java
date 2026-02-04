@@ -147,7 +147,7 @@ public class StaticRecipeChangeLoaders {
                             if (GTUtility.areStacksEqual(mOutput, toReplace)) {
                                 toremRecipeList.add(recipe);
                                 // recipe.mOutputs[i] = data.filledContainer;
-                                if (map == RecipeMaps.fluidCannerRecipes
+                                if (map == RecipeMaps.cannerRecipes
                                     && GTUtility.areStacksEqual(mOutput, data.filledContainer)
                                     && !recipe.mFluidInputs[0].equals(data.fluid)) {
                                     toremRecipeList.add(recipe);

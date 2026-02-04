@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -36,13 +37,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import bartworks.MainMod;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
 import bartworks.util.BWUtil;
 import bartworks.util.MurmurHash3;
-import bartworks.util.NonNullWrappedHashMap;
 import bwcrossmod.BartWorksCrossmod;
 import bwcrossmod.tgregworks.MaterialsInjector;
 import cpw.mods.fml.common.Loader;
@@ -61,6 +62,8 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import thaumcraft.api.aspects.Aspect;
@@ -111,6 +114,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return this.bridgeMaterial;
     }
 
+    @Override
+    public @Nullable Materials getGTMaterial() {
+        return bridgeMaterial;
+    }
+
     public void setBridgeMaterial(Materials bridgeMaterial) {
         this.bridgeMaterial = bridgeMaterial;
     }
@@ -158,6 +166,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         this.stats.setRadioactive(materials.isRadioactive());
         this.stats.setBlastFurnace(materials.mBlastFurnaceRequired);
         this.stats.setMeltingVoltage(120);
+        this.stats.isProxy = true;
         if (type == Types.COMPOUND) {
             this.stats.setElektrolysis(true);
             this.generationFeatures.addChemicalRecipes();
@@ -608,6 +617,11 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return WerkstoffLoader.getCorrespondingItemStack(prefixes, this);
     }
 
+    @Override
+    public ItemStack getPart(OrePrefixes prefix, int amount) {
+        return GTUtility.copyAmountUnsafe(amount, get(prefix));
+    }
+
     public FluidStack getFluidOrGas(int fluidAmount) {
         return new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(this)), fluidAmount);
     }
@@ -657,21 +671,30 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
                     .getKey()));
     }
 
-    /**
-     * Checks if the generation feature is enabled and if its not in the blacklist
-     */
-    public boolean hasItemType(OrePrefixes prefixes) {
-        int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes);
-        return (this.getGenerationFeatures().toGenerate & unpacked) != 0
-            && (this.getGenerationFeatures().blacklist & unpacked) == 0;
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        return hasItemType(prefix);
     }
 
     /**
-     * DOES NOT CHECK BLACKLIST!
+     * Checks if the generation feature is enabled and if its not in the blacklist
      */
-    public boolean hasGenerationFeature(OrePrefixes prefixes) {
-        int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes);
+    public boolean hasItemType(OrePrefixes prefix) {
+        // Proxy materials are only used to generate (re)bolted casings, so we don't want to generate sheetmetals for
+        // them. There's no good way to blacklist this, so we just add a dedicated check for it.
+        if (prefix == OrePrefixes.sheetmetal && stats.isProxy) return false;
+
+        // Explicit overrides take priority over the bitmask
+        if (this.getGenerationFeatures().disabledPrefixes.contains(prefix)) return false;
+        if (this.getGenerationFeatures().enablePrefixes.contains(prefix)) return true;
+
+        int unpacked = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefix);
         return (this.getGenerationFeatures().toGenerate & unpacked) != 0;
+    }
+
+    @Deprecated
+    public boolean hasGenerationFeature(OrePrefixes prefix) {
+        return hasItemType(prefix);
     }
 
     /**
@@ -720,83 +743,120 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
     public static class GenerationFeatures {
 
         public static final GenerationFeatures DISABLED = new GenerationFeatures().disable();
-        long toGenerate = 0b0001001;
-        // logic gate shit
-        /*
-         * dust 1 metal 10 (ingot, nugget) gem 100 ore 1000 cell 10000 plasma 100000 molten 1000000 crafting metal
-         * 10000000 (sticks, plates) meta crafting metal 100000000 (gears, screws, bolts, springs) multiple ingotWorth
-         * stuff 1000000000 (double and dense plates) 1000000000 (triple, quadruple and quintuple plates)
-         */
+
+        public static final int DUSTS = 0b1;
+        public static final int METALS = 0b1 << 1;
+        public static final int GEMS = 0b1 << 2;
+        public static final int ORES = 0b1 << 3;
+        public static final int LIQUID_CELLS = 0b1 << 4;
+        /// Unused
+        public static final int BOTTLES = 0b1 << 5;
+        public static final int MOLTEN_CELLS = 0b1 << 6;
+        public static final int SIMPLE_METALWORKING = 0b1 << 7;
+        public static final int CRAFTING_METALWORKING = 0b1 << 8;
+        /// Double and dense plates
+        public static final int DOUBLE_DENSE_PLATES = 0b1 << 9;
+        /// Triple, quadruple, and quintuple plates
+        public static final int MULTI_PLATES = 0b1 << 10;
+
+        long toGenerate = DUSTS | ORES;
+
         private boolean isExtension;
-        private static final NonNullWrappedHashMap<OrePrefixes, Integer> prefixLogic = new NonNullWrappedHashMap<>(0);
+        private static final Object2IntOpenHashMap<OrePrefixes> prefixLogic = new Object2IntOpenHashMap<>(0);
+        private final HashSet<OrePrefixes> disabledPrefixes = new HashSet<>(0);
+        private final HashSet<OrePrefixes> enablePrefixes = new HashSet<>(0);
+
+        public boolean enforceUnification;
+
+        private final EnumSet<ExtraRecipes> extraRecipes = EnumSet.noneOf(ExtraRecipes.class);
+
+        public short mixCircuit = -1;
+
+        private enum ExtraRecipes {
+            /// Adds a chemical reactor recipe that synthesizes this material from its contained parts.
+            ChemicalSynthesis,
+            /// Adds solidification recipes for metal crafting parts (see [#initPrefixLogic()] and
+            /// [#CRAFTING_METALWORKING]).
+            MetalCraftingSolidification,
+            /// Adds solidification recipes for metal parts (see [#initPrefixLogic()] and [#SIMPLE_METALWORKING]).
+            MetalSolidification,
+            /// Adds mixing recipe that creates this material from its contained parts.
+            Mixing,
+            /// Adds a sifting oreproc recipe for this material's ore. Also adds a 9x gem -> block compressor recipe for
+            /// some reason.
+            Sifting;
+        }
 
         public GenerationFeatures() {}
 
         public static void initPrefixLogic() {
-            Arrays.stream(OrePrefixes.VALUES)
-                .forEach(e -> prefixLogic.put(e, 0));
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dust, 0b1);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustTiny, 0b1);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustSmall, 0b1);
+            prefixLogic.defaultReturnValue(0);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingot, 0b10);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotHot, 0b10);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.nugget, 0b10);
+            prefixLogic.put(OrePrefixes.dust, DUSTS);
+            prefixLogic.put(OrePrefixes.dustTiny, DUSTS);
+            prefixLogic.put(OrePrefixes.dustSmall, DUSTS);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gem, 0b100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawed, 0b100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemExquisite, 0b100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemChipped, 0b100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gemFlawless, 0b100);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.lens, 0b100);
+            prefixLogic.put(OrePrefixes.ingot, METALS);
+            prefixLogic.put(OrePrefixes.ingotHot, METALS);
+            prefixLogic.put(OrePrefixes.nugget, METALS);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.block, 0b110);
+            prefixLogic.put(OrePrefixes.gem, GEMS);
+            prefixLogic.put(OrePrefixes.gemFlawed, GEMS);
+            prefixLogic.put(OrePrefixes.gemExquisite, GEMS);
+            prefixLogic.put(OrePrefixes.gemChipped, GEMS);
+            prefixLogic.put(OrePrefixes.gemFlawless, GEMS);
+            prefixLogic.put(OrePrefixes.lens, GEMS);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ore, 0b1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustImpure, 0b1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.dustPure, 0b1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushed, 0b1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedPurified, 0b1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.crushedCentrifuged, 0b1000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rawOre, 0b1000);
+            prefixLogic.put(OrePrefixes.block, METALS | GEMS);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cell, 0b10000);
+            prefixLogic.put(OrePrefixes.ore, ORES);
+            prefixLogic.put(OrePrefixes.dustImpure, ORES);
+            prefixLogic.put(OrePrefixes.dustPure, ORES);
+            prefixLogic.put(OrePrefixes.crushed, ORES);
+            prefixLogic.put(OrePrefixes.crushedPurified, ORES);
+            prefixLogic.put(OrePrefixes.crushedCentrifuged, ORES);
+            prefixLogic.put(OrePrefixes.rawOre, ORES);
+
+            prefixLogic.put(OrePrefixes.cell, LIQUID_CELLS);
             if (Mods.Forestry.isModLoaded()) {
-                Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.capsule, 0b10000);
-                Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.capsuleMolten, 0b1000000);
+                prefixLogic.put(OrePrefixes.capsule, LIQUID_CELLS);
+                prefixLogic.put(OrePrefixes.capsuleMolten, MOLTEN_CELLS);
             }
-            // Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.bottle,0b10000);
+            // prefixLogic.put(OrePrefixes.bottle, BOTTLES);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cellMolten, 0b1000000);
+            prefixLogic.put(OrePrefixes.cellMolten, MOLTEN_CELLS);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.foil, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stick, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.stickLong, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadHammer, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadWrench, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.toolHeadSaw, 0b10000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.turbineBlade, 0b10000000);
+            prefixLogic.put(OrePrefixes.plate, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.foil, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.stick, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.stickLong, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.toolHeadHammer, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.toolHeadWrench, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.toolHeadSaw, SIMPLE_METALWORKING);
+            prefixLogic.put(OrePrefixes.turbineBlade, SIMPLE_METALWORKING);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.screw, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGt, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.gearGtSmall, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.bolt, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ring, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.spring, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.springSmall, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.rotor, 0b100000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.wireFine, 0b100000000);
+            prefixLogic.put(OrePrefixes.screw, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.gearGt, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.gearGtSmall, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.bolt, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.ring, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.spring, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.springSmall, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.rotor, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.wireFine, CRAFTING_METALWORKING);
+            prefixLogic.put(OrePrefixes.sheetmetal, CRAFTING_METALWORKING);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDouble, 0x200);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateDense, 0x200);
+            prefixLogic.put(OrePrefixes.plateDouble, DOUBLE_DENSE_PLATES);
+            prefixLogic.put(OrePrefixes.plateDense, DOUBLE_DENSE_PLATES);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateTriple, 0x400);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuadruple, 0x400);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plateQuintuple, 0x400);
+            prefixLogic.put(OrePrefixes.plateTriple, MULTI_PLATES);
+            prefixLogic.put(OrePrefixes.plateQuadruple, MULTI_PLATES);
+            prefixLogic.put(OrePrefixes.plateQuintuple, MULTI_PLATES);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.blockCasing, 0x380);
-            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.blockCasingAdvanced, 0x380);
+            prefixLogic.put(OrePrefixes.blockCasing, SIMPLE_METALWORKING | CRAFTING_METALWORKING | DOUBLE_DENSE_PLATES);
+            prefixLogic.put(
+                OrePrefixes.blockCasingAdvanced,
+                SIMPLE_METALWORKING | CRAFTING_METALWORKING | DOUBLE_DENSE_PLATES);
         }
 
         public void setExtension() {
@@ -805,35 +865,22 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
 
         public static int getPrefixDataRaw(OrePrefixes prefixes) {
             if (prefixes == null) throw new IllegalArgumentException("OrePrefixes is NULL!");
-            return GenerationFeatures.prefixLogic.get(prefixes);
+            return prefixLogic.getInt(prefixes);
         }
 
         public boolean isExtension() {
             return this.isExtension;
         }
 
-        // public byte toGenerateSecondary = 0b0000000;
-        public byte blacklist;
+        /// Removes a specific prefix without interacting with other prefixes.
+        public Werkstoff.GenerationFeatures removePrefix(OrePrefixes p) {
+            this.disabledPrefixes.add(p);
+            return this;
+        }
 
-        public boolean enforceUnification;
-
-        /*
-         * Auto add Chemical Recipes 1 Auto add mixer Recipes 10 Auto add Sifter Recipe 100 Auto add
-         * MetalWorking(sticks, plates) Recipe 1000 Auto add MetalWorking(crafting components) Recipe 10000
-         */
-        public byte extraRecipes;
-
-        /*
-         * Here so that new recipes don't fuck with existing functionality Auto add Crafting Metal Solidifier recipes 1
-         * Auto add Meta Crafting Metal Solidifier recipes 10 Auto add Multiple Ingot Metal Solidifier recipes 100
-         * (Unused)
-         */
-        public byte extraRecipes2;
-
-        public short mixCircuit = -1;
-
-        public Werkstoff.GenerationFeatures setBlacklist(OrePrefixes p) {
-            this.blacklist |= getPrefixDataRaw(p);
+        /// Adds a specific prefix without interacting with other prefixes.
+        public Werkstoff.GenerationFeatures addPrefix(OrePrefixes p) {
+            this.enablePrefixes.add(p);
             return this;
         }
 
@@ -842,77 +889,63 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             return this;
         }
 
+        /// Adds a chemical reactor recipe that synthesizes this material from its contained parts.
         public Werkstoff.GenerationFeatures addChemicalRecipes() {
-            this.extraRecipes = (byte) (this.extraRecipes | 1);
+            this.extraRecipes.add(ExtraRecipes.ChemicalSynthesis);
             return this;
         }
 
         public boolean hasChemicalRecipes() {
-            return (this.extraRecipes & 1) != 0;
+            return this.extraRecipes.contains(ExtraRecipes.ChemicalSynthesis);
         }
 
+        /// Adds solidification recipes for metal crafting parts (see [#initPrefixLogic()] and
+        /// [#CRAFTING_METALWORKING]).
         public Werkstoff.GenerationFeatures addMetalCraftingSolidifierRecipes() {
-            this.extraRecipes2 = (byte) (this.extraRecipes2 | 1);
+            this.extraRecipes.add(ExtraRecipes.MetalCraftingSolidification);
             return this;
         }
 
         public boolean hasMetalCraftingSolidifierRecipes() {
-            return (this.extraRecipes2 & 1) != 0;
+            return this.extraRecipes.contains(ExtraRecipes.MetalCraftingSolidification);
         }
 
+        /// Adds solidification recipes for metal parts (see [#initPrefixLogic()] and [#SIMPLE_METALWORKING]).
         public Werkstoff.GenerationFeatures addMetaSolidifierRecipes() {
-            this.extraRecipes2 = (byte) (this.extraRecipes2 | 10);
+            this.extraRecipes.add(ExtraRecipes.MetalSolidification);
             return this;
         }
 
         public boolean hasMetaSolidifierRecipes() {
-            return (this.extraRecipes2 & 10) != 0;
+            return this.extraRecipes.contains(ExtraRecipes.MetalSolidification);
         }
 
-        public Werkstoff.GenerationFeatures addMultipleMetalSolidifierRecipes() {
-            this.extraRecipes2 = (byte) (this.extraRecipes2 | 100);
-            return this;
-        }
-
-        public boolean hasMultipleMetalSolidifierRecipes() {
-            return (this.extraRecipes2 & 100) != 0;
-        }
-
+        /// Adds mixing recipe that creates this material from its contained parts.
         public Werkstoff.GenerationFeatures addMixerRecipes() {
-            this.extraRecipes = (byte) (this.extraRecipes | 10);
+            this.extraRecipes.add(ExtraRecipes.Mixing);
             return this;
         }
 
+        /// Adds mixing recipe that creates this material from its contained parts.
         public Werkstoff.GenerationFeatures addMixerRecipes(short aCircuit) {
-            this.extraRecipes = (byte) (this.extraRecipes | 10);
+            this.extraRecipes.add(ExtraRecipes.Mixing);
             if (aCircuit >= 1 && aCircuit <= 24) this.mixCircuit = aCircuit;
             return this;
         }
 
         public boolean hasMixerRecipes() {
-            return (this.extraRecipes & 10) != 0;
+            return this.extraRecipes.contains(ExtraRecipes.Mixing);
         }
 
+        /// Adds a sifting oreproc recipe for this material's ore. Also adds a 9x gem -> block compressor recipe for
+        /// some reason.
         public Werkstoff.GenerationFeatures addSifterRecipes() {
-            this.extraRecipes = (byte) (this.extraRecipes | 100);
+            this.extraRecipes.add(ExtraRecipes.Sifting);
             return this;
         }
 
         public boolean hasSifterRecipes() {
-            return (this.extraRecipes & 100) != 0;
-        }
-
-        public Werkstoff.GenerationFeatures onlyDust() {
-            this.toGenerate = 0b1;
-            return this;
-        }
-
-        /**
-         * Automatically adds Simple Metal Working Items
-         */
-        public Werkstoff.GenerationFeatures addMetalItems() {
-            this.toGenerate = this.addSimpleMetalWorkingItems().toGenerate | 0b10;
-            return this;
+            return this.extraRecipes.contains(ExtraRecipes.Sifting);
         }
 
         public Werkstoff.GenerationFeatures disable() {
@@ -920,13 +953,27 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
             return this;
         }
 
+        public Werkstoff.GenerationFeatures onlyDust() {
+            this.toGenerate = DUSTS;
+            return this;
+        }
+
+        /**
+         * Automatically adds Simple Metal Working Items
+         */
+        public Werkstoff.GenerationFeatures addMetalItems() {
+            this.toGenerate |= METALS;
+            this.toGenerate |= SIMPLE_METALWORKING;
+            return this;
+        }
+
         public Werkstoff.GenerationFeatures addCells() {
-            this.toGenerate = this.toGenerate | 0b10000;
+            this.toGenerate |= LIQUID_CELLS;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addMolten() {
-            this.toGenerate = this.toGenerate | 0b1000000;
+            this.toGenerate |= MOLTEN_CELLS;
             return this;
         }
 
@@ -934,27 +981,31 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
          * Automatically adds Simple Metal Working Items
          */
         public Werkstoff.GenerationFeatures addGems() {
-            this.toGenerate = this.addSimpleMetalWorkingItems().toGenerate | 0x4;
+            this.toGenerate |= SIMPLE_METALWORKING;
+            this.toGenerate |= GEMS;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addSimpleMetalWorkingItems() {
-            this.toGenerate = this.toGenerate | 0b10000000;
+            this.toGenerate |= SIMPLE_METALWORKING;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addCasings() {
-            this.toGenerate = this.toGenerate | 0x382;
+            this.toGenerate |= SIMPLE_METALWORKING;
+            this.toGenerate |= CRAFTING_METALWORKING;
+            this.toGenerate |= DOUBLE_DENSE_PLATES;
+            this.toGenerate |= METALS;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addCraftingMetalWorkingItems() {
-            this.toGenerate = this.toGenerate | 0x100;
+            this.toGenerate |= CRAFTING_METALWORKING;
             return this;
         }
 
         public Werkstoff.GenerationFeatures addDoubleAndDensePlates() {
-            this.toGenerate = this.toGenerate | 0x200;
+            this.toGenerate |= DOUBLE_DENSE_PLATES;
             return this;
         }
 
@@ -962,17 +1013,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
          * Due to rebolted casings, double plates had to be excluded from this
          */
         public Werkstoff.GenerationFeatures addMultiPlates() {
-            this.toGenerate = this.toGenerate | 0x400;
-            return this;
-        }
-
-        public Werkstoff.GenerationFeatures addPrefix(OrePrefixes prefixes) {
-            this.toGenerate = this.toGenerate | getPrefixDataRaw(prefixes);
-            return this;
-        }
-
-        public Werkstoff.GenerationFeatures removePrefix(OrePrefixes prefixes) {
-            this.toGenerate = this.toGenerate ^ getPrefixDataRaw(prefixes);
+            this.toGenerate |= MULTI_PLATES;
             return this;
         }
     }
@@ -1074,6 +1115,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         private long mass;
         private double ebfGasRecipeTimeMultiplier = -1.0;
         private double ebfGasRecipeConsumedAmountMultiplier = 1.0;
+        /// Whether this material is a proxy for a GT material. See [BWGTMaterialReference].
+        private boolean isProxy = false;
 
         private boolean autoGenerateBlastFurnaceRecipes = true;
         private boolean autoGenerateVacuumFreezerRecipes = true;

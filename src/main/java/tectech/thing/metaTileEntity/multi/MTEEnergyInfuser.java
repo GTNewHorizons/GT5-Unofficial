@@ -70,7 +70,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
             buildHatchAdder(MTEEnergyInfuser.class)
                 .atLeast(Energy.or(HatchElement.EnergyMulti), Maintenance, InputBus, InputHatch, OutputBus)
                 .casingIndex(Casings.HighPowerCasing.getTextureId())
-                .dot(1)
+                .hint(1)
                 .buildAndChain(Casings.HighPowerCasing.asElement()))
         .build();
     // endregion

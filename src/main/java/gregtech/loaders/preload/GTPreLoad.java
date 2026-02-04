@@ -40,6 +40,7 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.config.MachineStats;
@@ -74,7 +75,7 @@ public class GTPreLoad {
             }
             Objects.requireNonNull(GTUtility.getField(tLoadController, "activeModList", true, true))
                 .set(tLoadController, tNewModsList);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.logStackTrace(e);
         }
     }
@@ -143,7 +144,7 @@ public class GTPreLoad {
         if (!GTLog.mLogFile.exists()) {
             try {
                 GTLog.mLogFile.createNewFile();
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
         try {
             GTLog.out = GTLog.err = new PrintStream(GTLog.mLogFile);
@@ -154,12 +155,12 @@ public class GTPreLoad {
             if (!GTLog.mOreDictLogFile.exists()) {
                 try {
                     GTLog.mOreDictLogFile.createNewFile();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
             List<String> tList = ((GTLog.LogBuffer) GTLog.ore).mBufferedOreDictLog;
             try {
                 GTLog.ore = new PrintStream(GTLog.mOreDictLogFile);
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
             GTLog.ore.println("******************************************************************************");
             GTLog.ore.println("* This is the complete log of the GT5-Unofficial OreDictionary Handler. It   *");
             GTLog.ore.println("* processes all OreDictionary entries and can sometimes cause errors. All    *");
@@ -173,11 +174,11 @@ public class GTPreLoad {
             if (!GTLog.mExplosionLog.exists()) {
                 try {
                     GTLog.mExplosionLog.createNewFile();
-                } catch (Throwable ignored) {}
+                } catch (Exception ignored) {}
             }
             try {
                 GTLog.exp = new PrintStream(GTLog.mExplosionLog);
-            } catch (Throwable ignored) {}
+            } catch (Exception ignored) {}
         }
     }
 
@@ -334,7 +335,7 @@ public class GTPreLoad {
             ((List<?>) Objects
                 .requireNonNull(GTUtility.getFieldContent(ic2.api.recipe.Recipes.scrapboxDrops, "drops", true, true)))
                     .clear();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (GTValues.D1) {
                 e.printStackTrace(GTLog.err);
             }
@@ -427,8 +428,6 @@ public class GTPreLoad {
         GregTechAPI.sMachineThunderExplosions = Gregtech.machines.machineThunderExplosions;
         GregTechAPI.sColoredGUI = Gregtech.machines.coloredGUI;
         GregTechAPI.sMachineMetalGUI = Gregtech.machines.machineMetalGUI;
-        // Implementation for this is actually handled in NewHorizonsCoreMod in MainRegistry.java!
-        GregTechAPI.sUseMachineMetal = Gregtech.machines.useMachineMetal;
 
         // client
         loadClientConfig();
@@ -532,6 +531,51 @@ public class GTPreLoad {
 
         GTMod.proxy.mWailaTransformerVoltageTier = Client.waila.wailaTransformerVoltageTier;
         GTMod.proxy.wailaAverageNS = Client.waila.wailaAverageNS;
+        if (Client.waila.ProgressBarColor != TTRenderGTProgressBar.ProgressBarColor.Custom) {
+            switch (Client.waila.ProgressBarColor) {
+                case Green:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFF109010;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFF0D7D0D;
+                    break;
+                case LightBlue:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFF6060FF;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFF5050E0;
+                    break;
+                case DarkBlue:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFF3333DA;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFF2020D0;
+                    break;
+                case Red:
+                    GTMod.proxy.wailaProgressBarColor1 = 0xFFC02222;
+                    GTMod.proxy.wailaProgressBarColor2 = 0xFFA00000;
+                    break;
+            }
+        } else {
+            try {
+                GTMod.proxy.wailaProgressBarColor1 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressBarCustomColor1, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBarColor1 = 0xFF3333DA;
+            }
+            try {
+                GTMod.proxy.wailaProgressBarColor2 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressBarCustomColor2, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBarColor2 = 0xFF2020D0;
+            }
+            try {
+                GTMod.proxy.wailaProgressBorderColor1 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressCustomBorderColor1, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBorderColor1 = 0xFF505050;
+            }
+            try {
+                GTMod.proxy.wailaProgressBorderColor2 = 0xFF000000
+                    + Integer.parseInt(Client.waila.ProgressCustomBorderColor2, 16);
+            } catch (NumberFormatException e) {
+                GTMod.proxy.wailaProgressBorderColor2 = 0xFF505050;
+            }
+        }
 
         GTMod.proxy.reloadNEICache();
     }

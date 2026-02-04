@@ -17,7 +17,7 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -85,15 +85,15 @@ public class ToolScrewdriver extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead
+        return aIsToolHead
             ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver
                 .getTextureIndex()]
-            : Textures.ItemIcons.HANDLE_SCREWDRIVER;
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleScrewdriver];
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return !aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
 

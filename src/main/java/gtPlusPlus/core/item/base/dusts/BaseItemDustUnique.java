@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -20,7 +19,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -122,13 +120,6 @@ public class BaseItemDustUnique extends Item {
     }
 
     private String getCorrectTexture(final String pileSize) {
-        if (!Configuration.visual.useGregtechTextures) {
-            if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
-                this.setTextureName(GTPlusPlus.ID + ":" + "dust");
-            } else {
-                this.setTextureName(GTPlusPlus.ID + ":" + "dust" + pileSize);
-            }
-        }
         if (pileSize.toLowerCase()
             .contains("small")) {
             return GregTech.ID + ":" + "materialicons/SHINY/dustSmall";

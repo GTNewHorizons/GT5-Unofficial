@@ -1,6 +1,6 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -237,7 +237,7 @@ public class ProductionPanel extends ModularPanel {
                         IKey.lang("GT5U.gui.text.drone_power_total", time)
                             .asWidget())
                     .child(
-                        IKey.str(formatNumbers(euConsumed) + " EU")
+                        IKey.str(formatNumber(euConsumed) + " EU")
                             .asWidget())
                     .child(
                         IKey.lang("GT5U.gui.text.drone_average", time)
@@ -245,7 +245,7 @@ public class ProductionPanel extends ModularPanel {
                             .setEnabledIf(w -> selectedTime != -1))
                     .child(
                         IKey.str(
-                            formatNumbers(euConsumed / selectedTime) + " EU/t "
+                            formatNumber(euConsumed / selectedTime) + " EU/t "
                                 + GTUtility.getTierNameWithParentheses(euConsumed / selectedTime))
                             .asWidget()
                             .setEnabledIf(w -> selectedTime != -1)))
@@ -374,7 +374,7 @@ public class ProductionPanel extends ModularPanel {
                     .child(displayWidgetFactory.apply(item))
                     .child(
                         new TextWidget<>(DroneCentreGuiUtil.formatValueWithUnits(stackSize))
-                            .tooltipBuilder(builder -> builder.add(formatNumbers(stackSize))));
+                            .tooltipBuilder(builder -> builder.add(formatNumber(stackSize))));
             })
             .collect(Collectors.toList());
 

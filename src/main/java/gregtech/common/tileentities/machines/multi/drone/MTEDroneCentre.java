@@ -112,7 +112,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             'C',
             buildHatchAdder(MTEDroneCentre.class).atLeast(InputBus)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTEDroneCentre::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 2))))
         .addElement('A', chainAllGlasses())
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 11))

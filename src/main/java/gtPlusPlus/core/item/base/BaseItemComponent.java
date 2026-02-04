@@ -29,7 +29,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
@@ -60,11 +59,8 @@ public class BaseItemComponent extends Item {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
         this.setMaxStackSize(64);
-        // this.setTextureName(this.getCorrectTextures());
         this.componentColour = material.getRgbAsHex();
         GameRegistry.registerItem(this, this.unlocalName);
-
-        // if (componentType != ComponentTypes.DUST)
 
         GTOreDictUnificator
             .registerOre(componentType.getOreDictName() + material.getUnlocalizedName(), new ItemStack(this));
@@ -157,28 +153,16 @@ public class BaseItemComponent extends Item {
     }
 
     public String getCorrectTextures() {
-        if (!Configuration.visual.useGregtechTextures) {
-            return GTPlusPlus.ID + ":" + "item" + this.componentType.COMPONENT_NAME;
-        }
-        String metType = "9j4852jyo3rjmh3owlhw9oe";
+        String metType = null;
         if (this.componentMaterial != null) {
             TextureSet u = this.componentMaterial.getTextureSet();
             if (u != null) {
                 metType = u.mSetName;
             }
         }
-        metType = (metType.equals("9j4852jyo3rjmh3owlhw9oe") ? "METALLIC" : metType);
+        metType = (metType == null ? "METALLIC" : metType);
         return GregTech.ID + ":" + "materialicons/" + metType + "/" + this.componentType.getOreDictName();
-
-        // return GregTech.ID + ":" + "materialicons/"+metType+"/" + this.componentType.COMPONENT_NAME.toLowerCase();
     }
-
-    /*
-     * @Override public String getItemStackDisplayName(final ItemStack p_77653_1_) { if (this.componentType ==
-     * ComponentTypes.SMALLGEAR){ return "Small " + this.materialName+" Gear"; } if (this.componentMaterial != null) {
-     * return (this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME); } return
-     * this.materialName+" Cell"; }
-     */
 
     public final String getMaterialName() {
         return this.materialName;
@@ -251,7 +235,7 @@ public class BaseItemComponent extends Item {
                     list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
             }
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
 
         super.addInformation(stack, aPlayer, list, bool);
     }
@@ -274,22 +258,23 @@ public class BaseItemComponent extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
-        return Configuration.visual.useGregtechTextures;
+        return true;
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
         if (this.componentType == ComponentTypes.CELL || this.componentType == ComponentTypes.PLASMACELL) {
-            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
-                return Utils.rgbtoHexValue(255, 255, 255);
-            }
-            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
+            if (renderPass == 1) {
                 return Utils.rgbtoHexValue(255, 255, 255);
             }
         }
 
         try {
+            if (renderPass != 0) {
+                return Utils.rgbtoHexValue(255, 255, 255);
+            }
+
             if (this.componentMaterial == null) {
                 if (extraData != null) {
                     return Utils.rgbtoHexValue(extraData[0], extraData[1], extraData[2]);
@@ -318,7 +303,7 @@ public class BaseItemComponent extends Item {
                 }
             }
 
-        } catch (Throwable t) {
+        } catch (Exception t) {
 
         }
         return this.componentColour;
@@ -326,25 +311,16 @@ public class BaseItemComponent extends Item {
 
     @Override
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-        if (Configuration.visual.useGregtechTextures) {
-            if (pass == 0) {
-                return this.base;
-            }
-            return this.overlay;
+        if (pass == 0) {
+            return this.base;
         }
-        return this.base;
+        return this.overlay;
     }
 
     @Override
     public void registerIcons(final IIconRegister i) {
-
-        if (Configuration.visual.useGregtechTextures) {
-            this.base = i.registerIcon(getCorrectTextures());
-            this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
-        } else {
-            this.base = i.registerIcon(getCorrectTextures());
-            // this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
-        }
+        this.base = i.registerIcon(getCorrectTextures());
+        this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
     }
 
     public enum ComponentTypes {

@@ -200,6 +200,7 @@ public class CoverFluidRegulator extends Cover {
     }
 
     public int getMaxSpeed() {
+        if ((long) mTransferRate * tickRate > Integer.MAX_VALUE) return Integer.MAX_VALUE;
         return mTransferRate * tickRate;
     }
 

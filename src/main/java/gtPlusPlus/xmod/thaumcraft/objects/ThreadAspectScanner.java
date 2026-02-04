@@ -147,7 +147,7 @@ public class ThreadAspectScanner extends Thread {
                                 if (mAspectCacheFile != null && mList.size() >= 3) {
                                     FileUtils.appendListToFile(mAspectCacheFile, mList);
                                 }
-                            } catch (Throwable t) {
+                            } catch (Exception t) {
                                 Logger.INFO("Error while iterating one item. " + t);
                             }
                         }

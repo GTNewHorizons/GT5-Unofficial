@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -16,7 +17,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.ArrayList;
 
@@ -78,7 +78,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     lazy(
                         t -> buildHatchAdder(MTELargeBoiler.class).atLeast(OutputHatch)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(2)
+                            .hint(2)
                             .buildAndChain(
                                 onElementPass(
                                     MTELargeBoiler::onCasingAdded,
@@ -88,7 +88,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                     lazy(
                         t -> buildHatchAdder(MTELargeBoiler.class).atLeast(Maintenance, InputHatch, InputBus, Muffler)
                             .casingIndex(t.getFireboxTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(
                                 onElementPass(
                                     MTELargeBoiler::onFireboxAdded,
@@ -128,18 +128,18 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
             tt.addInfo(
-                "Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
+                "Produces " + formatNumber((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
                     + "L of Superheated Steam with 1 Coal at "
-                    + formatNumbers((getEUt() * 40L) / superToNormalSteam)
+                    + formatNumber((getEUt() * 40L) / superToNormalSteam)
                     + "L/s") // ?
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
                 .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
         } else {
             tt.addInfo(
-                "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
+                "Produces " + formatNumber((getEUt() * 40) * (runtimeBoost(20) / 20f))
                     + "L of Steam with 1 Coal at "
-                    + formatNumbers(getEUt() * 40L)
+                    + formatNumber(getEUt() * 40L)
                     + "L/s") // ?
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
@@ -147,7 +147,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         tt.addInfo(
             String.format(
                 "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+                formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
             .addController("Front bottom")
