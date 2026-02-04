@@ -24,13 +24,24 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
+import gregtech.api.enums.ItemList;
+import gregtech.common.gui.modularui.multiblock.MTEVoidMinerBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -66,15 +77,16 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     private ModDimensionDef dimensionDef;
     private boolean canVoidMine = true;
-    private VoidMinerUtility.DropMap dropMap = null;
-    private VoidMinerUtility.DropMap extraDropMap = null;
+    public VoidMinerUtility.DropMap dropMap = null;
+    public VoidMinerUtility.DropMap extraDropMap = null;
     protected int casingTextureIndex;
     private float totalWeight;
 
     private int multiplier = 1;
     protected final byte TIER_MULTIPLIER;
 
-    private boolean mBlacklist = false;
+    public ItemStackHandler selected = new ItemStackHandler();
+    public boolean mBlacklist = false;
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -86,12 +98,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mBlacklist", this.mBlacklist);
+        aNBT.setTag("selected", selected.serializeNBT());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         this.mBlacklist = aNBT.getBoolean("mBlacklist");
+        this.selected.deserializeNBT(aNBT.getCompoundTag("selected"));
     }
 
     public MTEVoidMinerBase(String aName, int tier) {
@@ -253,6 +267,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         calculateDropMap();
+        int size = dropMap.getOres().length;
+        if (selected.getSlots() != size) {
+            selected.setSize(size);
+        }
     }
 
     /**
@@ -294,9 +312,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             final ItemStack output = this.nextOre();
             output.stackSize = multiplier * batchMultiplier;
 
-            boolean matchesFilter = contains(inputOres, output);
+            boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
 
-            if (inputOres.isEmpty() || (this.mBlacklist ? !matchesFilter : matchesFilter)) {
+            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.mBlacklist ? !matchesFilter : matchesFilter)) {
                 this.addOutputPartial(output);
             }
         }
@@ -310,6 +328,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         }
 
         return false;
+    }
+
+    private boolean isSelectedEmpty() {
+        for (ItemStack stack : selected.getStacks()) {
+            if (stack != null) return false;
+        }
+        return true;
     }
 
     @Override
