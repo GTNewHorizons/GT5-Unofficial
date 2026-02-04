@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -91,26 +92,16 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
-                        final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
-                        aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_in",
-                                formatNumber(tTileEntity.getInputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(inputTier)));
+                        aList.add(translateToLocal("gt.tileentity.eup_in") + " "
+                            + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
-                        aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_out",
-                                formatNumber(tTileEntity.getOutputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(outputTier)));
+                        aList.add(translateToLocal("gt.tileentity.eup_out") + " "
+                            + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
-                        aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
-                                formatNumber(tTileEntity.getOutputAmperage())));
+                        aList.add(translateToLocal("gt.tileentity.eup_amount") + " "
+                            + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
                     }
                 }
             }

@@ -93,9 +93,9 @@ gt.crop.withereed.name=Угольный тростник
 gt.crop.zomplant.name=Zomplant
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Входной вольтаж: §§e%d §7(%s§7)
-gt.tileentity.eup_out=Выходной вольтаж: §e%d §7(%s§7)
-gt.tileentity.eup_amount=Ампераж: §b%d§7 А
+gt.tileentity.eup_in=Входной вольтаж:
+gt.tileentity.eup_out=Выходной вольтаж:
+gt.tileentity.eup_amount=Ампераж:
 gt.tileentity.has_muffler=есть улучшение глушитель
 gt.tileentity.has_steam_upgrade=есть улучшение пар
 gt.tileentity.colored=Colored (%s%s§7)
