@@ -5260,6 +5260,32 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(multiblockChemicalReactorRecipes);
 
+        // Same as above, but with Quicklime and Calcite. The line it's shortcutting accepts Calcium, quicklime, and
+        // Calcite
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(0, Materials.Quicklime.getDust(1)))
+            .circuit(3)
+            .fluidInputs(Materials.AceticAcid.getFluid(2_000))
+            .fluidOutputs(
+                Materials.Acetone.getFluid(1_000),
+                Materials.CarbonDioxide.getGas(1_000),
+                Materials.Water.getFluid(1_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(0, Materials.Calcite.getDust(1)))
+            .circuit(3)
+            .fluidInputs(Materials.AceticAcid.getFluid(2_000))
+            .fluidOutputs(
+                Materials.Acetone.getFluid(1_000),
+                Materials.CarbonDioxide.getGas(1_000),
+                Materials.Water.getFluid(1_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
         // C + 4H + O = CH3OH
 
         GTValues.RA.stdBuilder()

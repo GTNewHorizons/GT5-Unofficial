@@ -1101,6 +1101,7 @@ public class RecipeLoader {
             }
         }
 
+        // Neutron Accelerator ULV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[0].copy(),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
@@ -1110,19 +1111,21 @@ public class RecipeLoader {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Wood, 1), 'H', ItemList.Hull_ULV, 'I',
                 ItemRefer.Inverter.get(1), });
 
+        // Neutron Accelerator LV
         GTModHandler.addCraftingRecipe(
             Loaders.NeutronAccelerators[1].copy(),
             GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.REVERSIBLE,
-            new Object[] { "WPM", "CHI", "WPM", 'W', GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tin, 1),
-                'P', GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1), 'M',
-                ItemList.Electric_Motor_LV, 'C', "plateAnyRubber", 'H', ItemList.Hull_LV, 'I',
-                ItemRefer.Inverter.get(1), });
+            new Object[] { "WPM", "CHI", "WPM", 'W',
+                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'P',
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1), 'M', ItemList.Electric_Motor_LV,
+                'C', "plateAnyRubber", 'H', ItemList.Hull_LV, 'I', ItemRefer.Inverter.get(1), });
 
+        // Neutron Accelerator MV
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_MV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.AnyCopper, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polyethylene, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Beryllium, 2),
                 ItemList.Electric_Motor_MV.get(2))
@@ -1131,17 +1134,48 @@ public class RecipeLoader {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
+        // Neutron Accelerator HV
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemRefer.Inverter.get(1),
                 ItemList.Hull_HV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.PolyvinylChloride, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Beryllium, 2),
                 ItemList.Electric_Motor_HV.get(2))
             .itemOutputs(Loaders.NeutronAccelerators[3].copy())
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        // Neutron Accelerator EV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Inverter.get(1),
+                ItemList.Hull_EV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.IronMagnetic, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide, 2),
+                ItemList.Electric_Motor_EV.get(2))
+            .itemOutputs(Loaders.NeutronAccelerators[4].copy())
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
+        // Neutron Accelerator IV
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemRefer.Inverter.get(1),
+                ItemList.Hull_IV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RubberSilicone, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.SteelMagnetic, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 2),
+                ItemList.Electric_Motor_IV.get(2))
+            .itemOutputs(Loaders.NeutronAccelerators[5].copy())
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
         // Neutron Accelerator LuV
@@ -1151,12 +1185,11 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_LuV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polybenzimidazole, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NeodymiumMagnetic, 8),
-                ItemList.Electric_Motor_LuV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorMV, 4))
+                ItemList.Electric_Motor_LuV.get(2))
             .fluidInputs(Materials.Argon.getGas(3_000))
             .itemOutputs(Loaders.NeutronAccelerators[6].copy())
             .eut(TierEU.RECIPE_LuV)
@@ -1170,12 +1203,11 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(2),
                 ItemList.Hull_ZPM.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.VanadiumGallium, 2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 1),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Polybenzimidazole, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.SamariumMagnetic, 8),
-                ItemList.Electric_Motor_ZPM.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorEV, 4))
+                ItemList.Electric_Motor_ZPM.get(2))
             .fluidInputs(WerkstoffLoader.Xenon.getFluidOrGas(3_000))
             .itemOutputs(Loaders.NeutronAccelerators[7].copy())
             .eut(TierEU.RECIPE_ZPM)
@@ -1189,13 +1221,12 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(4),
                 ItemList.Hull_UV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.NaquadahAlloy, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.NetherStar, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Polybenzimidazole, 4),
                 ItemList.ZPM_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.NickelZincFerrite, 16),
-                ItemList.Electric_Motor_UV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4))
+                ItemList.Electric_Motor_UV.get(2))
             .fluidInputs(WerkstoffLoader.Oganesson.getFluidOrGas(3_000))
             .itemOutputs(Loaders.NeutronAccelerators[8].copy())
             .eut(TierEU.RECIPE_UV)
@@ -1209,13 +1240,12 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(8),
                 ItemList.Hull_MAX.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 2),
                 GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Kevlar, 8),
                 ItemList.UV_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Neutronium, 16),
-                ItemList.Electric_Motor_UHV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorZPM, 4))
+                ItemList.Electric_Motor_UHV.get(2))
             .fluidInputs(
                 WerkstoffLoader.Oganesson.getFluidOrGas(12_000),
                 Materials.Grade5PurifiedWater.getFluid(16_000))
@@ -1231,13 +1261,12 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(16),
                 ItemList.Hull_UEV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Draconium, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 4),
                 GGMaterial.orundum.get(OrePrefixes.plate, 8),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Kevlar, 16),
                 ItemList.UHV_Coil.get(8),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TengamAttuned, 16),
-                ItemList.Electric_Motor_UEV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 4))
+                ItemList.Electric_Motor_UEV.get(2))
             .fluidInputs(
                 GGMaterial.metastableOganesson.getMolten(3 * INGOTS),
                 Materials.Grade6PurifiedWater.getFluid(16_000))
@@ -1253,14 +1282,13 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(32),
                 ItemList.Hull_UIV.get(1L),
-                MaterialsElements.STANDALONE.HYPOGEN.getWire01(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.RadoxPolymer, 16),
                 ItemList.Tesseract.get(8),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UIV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 4))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 16))
             .fluidInputs(
                 GGMaterial.metastableOganesson.getMolten(12 * INGOTS),
                 Materials.DimensionallyShiftedSuperfluid.getFluid(4_000),
@@ -1277,15 +1305,14 @@ public class RecipeLoader {
             .itemInputs(
                 ItemRefer.Inverter.get(64),
                 ItemList.Hull_UMV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 4),
                 MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPolymer, 1),
                 ItemList.EnergisedTesseract.get(12),
                 ItemList.Electromagnet_Tengam.get(1),
                 ItemList.Electric_Motor_UMV.get(2),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 16),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 16),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 4))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 16))
             .fluidInputs(
                 GGMaterial.shirabon.getMolten(3 * INGOTS),
                 Materials.DimensionallyShiftedSuperfluid.getFluid(8_000),
@@ -1330,34 +1357,6 @@ public class RecipeLoader {
     }
 
     public static void InitLoadRecipe() {
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemRefer.Inverter.get(1),
-                ItemList.Hull_EV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StyreneButadieneRubber, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.IronMagnetic, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide, 2),
-                ItemList.Electric_Motor_EV.get(2))
-            .itemOutputs(Loaders.NeutronAccelerators[4].copy())
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemRefer.Inverter.get(1),
-                ItemList.Hull_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.cableGt01, Materials.Tungsten, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RubberSilicone, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.SteelMagnetic, 4),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.TungstenCarbide, 2),
-                ItemList.Electric_Motor_IV.get(2))
-            .itemOutputs(Loaders.NeutronAccelerators[5].copy())
-            .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
 
         // Al2O3 + 2N + 3C = 2AlN + 3CO
         GTValues.RA.stdBuilder()
