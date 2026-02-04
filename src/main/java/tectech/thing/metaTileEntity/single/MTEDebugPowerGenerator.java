@@ -55,6 +55,19 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     public boolean producing = true;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
+    public MTEDebugPowerGenerator(Args args) {
+        super(
+            args.toBuilder()
+                .descriptionArray(
+                    new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.debug.tt.genny.desc.0"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.debug.tt.genny.desc.3"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.1"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") })
+                .build());
+    }
+
+    @Deprecated
     public MTEDebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -68,13 +81,14 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
                 EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.genny.desc.2") });
     }
 
+    @Deprecated
     public MTEDebugPowerGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEDebugPowerGenerator(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEDebugPowerGenerator(getPrototype());
     }
 
     @Override

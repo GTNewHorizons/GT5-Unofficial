@@ -2046,88 +2046,208 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_TeslaCoil_1by1_LV.set(
-            new MTETeslaCoil(BasicTeslaTransceiver1by1.ID, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 1)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BasicTeslaTransceiver1by1.ID)
+                    .translateKey("machine.tt.tesla.01")
+                    .nameEnglish("Basic Tesla Transceiver")
+                    .tier(1)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_1by1_MV.set(
-            new MTETeslaCoil(AdvancedTeslaTransceiver1by1.ID, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 1)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(AdvancedTeslaTransceiver1by1.ID)
+                    .translateKey("machine.tt.tesla.02")
+                    .nameEnglish("Advanced Tesla Transceiver")
+                    .tier(2)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_1by1_HV.set(
-            new MTETeslaCoil(EpycTeslaTransceiver1by1.ID, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 1)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(EpycTeslaTransceiver1by1.ID)
+                    .translateKey("machine.tt.tesla.03")
+                    .nameEnglish("Epyc Tesla Transceiver")
+                    .tier(3)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_1by1_EV.set(
             new MTETeslaCoil(
-                UltimatePowerTeslaTransceiver1by1.ID,
-                "machine.tt.tesla.04",
-                "Ultimate Power Tesla Transceiver",
-                4,
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(UltimatePowerTeslaTransceiver1by1.ID)
+                    .translateKey("machine.tt.tesla.04")
+                    .nameEnglish("Ultimate Power Tesla Transceiver")
+                    .tier(4)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_1by1_IV.set(
-            new MTETeslaCoil(InsaneTeslaTransceiver1by1.ID, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 1)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(InsaneTeslaTransceiver1by1.ID)
+                    .translateKey("machine.tt.tesla.05")
+                    .nameEnglish("Insane Tesla Transceiver")
+                    .tier(5)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
 
         Machine_TeslaCoil_2by2_LV.set(
-            new MTETeslaCoil(BasicTeslaTransceiver2by2.ID, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 4)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BasicTeslaTransceiver2by2.ID)
+                    .translateKey("machine.tt.tesla.01")
+                    .nameEnglish("Basic Tesla Transceiver")
+                    .tier(1)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_2by2_MV.set(
-            new MTETeslaCoil(AdvancedTeslaTransceiver2by2.ID, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 4)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(AdvancedTeslaTransceiver2by2.ID)
+                    .translateKey("machine.tt.tesla.02")
+                    .nameEnglish("Advanced Tesla Transceiver")
+                    .tier(2)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_2by2_HV.set(
-            new MTETeslaCoil(EpycTeslaTransceiver2by2.ID, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 4)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(EpycTeslaTransceiver2by2.ID)
+                    .translateKey("machine.tt.tesla.03")
+                    .nameEnglish("Epyc Tesla Transceiver")
+                    .tier(3)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_2by2_EV.set(
             new MTETeslaCoil(
-                UltimatePowerTeslaTransceiver2by2.ID,
-                "machine.tt.tesla.04",
-                "Ultimate Power Tesla Transceiver",
-                4,
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(UltimatePowerTeslaTransceiver2by2.ID)
+                    .translateKey("machine.tt.tesla.04")
+                    .nameEnglish("Ultimate Power Tesla Transceiver")
+                    .tier(4)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_2by2_IV.set(
-            new MTETeslaCoil(InsaneTeslaTransceiver2by2.ID, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 4)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(InsaneTeslaTransceiver2by2.ID)
+                    .translateKey("machine.tt.tesla.05")
+                    .nameEnglish("Insane Tesla Transceiver")
+                    .tier(5)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         Machine_TeslaCoil_3by3_LV.set(
-            new MTETeslaCoil(BasicTeslaTransceiver3by3.ID, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 9)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BasicTeslaTransceiver3by3.ID)
+                    .translateKey("machine.tt.tesla.01")
+                    .nameEnglish("Basic Tesla Transceiver")
+                    .tier(1)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_3by3_MV.set(
-            new MTETeslaCoil(AdvancedTeslaTransceiver3by3.ID, "machine.tt.tesla.02", "Advanced Tesla Transceiver", 2, 9)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(AdvancedTeslaTransceiver3by3.ID)
+                    .translateKey("machine.tt.tesla.02")
+                    .nameEnglish("Advanced Tesla Transceiver")
+                    .tier(2)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_3by3_HV.set(
-            new MTETeslaCoil(EpycTeslaTransceiver3by3.ID, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 9)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(EpycTeslaTransceiver3by3.ID)
+                    .translateKey("machine.tt.tesla.03")
+                    .nameEnglish("Epyc Tesla Transceiver")
+                    .tier(3)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_3by3_EV.set(
             new MTETeslaCoil(
-                UltimatePowerTeslaTransceiver3by3.ID,
-                "machine.tt.tesla.04",
-                "Ultimate Power Tesla Transceiver",
-                4,
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(UltimatePowerTeslaTransceiver3by3.ID)
+                    .translateKey("machine.tt.tesla.04")
+                    .nameEnglish("Ultimate Power Tesla Transceiver")
+                    .tier(4)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_3by3_IV.set(
-            new MTETeslaCoil(InsaneTeslaTransceiver3by3.ID, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 9)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(InsaneTeslaTransceiver3by3.ID)
+                    .translateKey("machine.tt.tesla.05")
+                    .nameEnglish("Insane Tesla Transceiver")
+                    .tier(5)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
 
         Machine_TeslaCoil_4by4_LV.set(
-            new MTETeslaCoil(BasicTeslaTransceiver4by4.ID, "machine.tt.tesla.01", "Basic Tesla Transceiver", 1, 16)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BasicTeslaTransceiver4by4.ID)
+                    .translateKey("machine.tt.tesla.01")
+                    .nameEnglish("Basic Tesla Transceiver")
+                    .tier(1)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_4by4_MV.set(
             new MTETeslaCoil(
-                AdvancedTeslaTransceiver4by4.ID,
-                "machine.tt.tesla.02",
-                "Advanced Tesla Transceiver",
-                2,
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(AdvancedTeslaTransceiver4by4.ID)
+                    .translateKey("machine.tt.tesla.02")
+                    .nameEnglish("Advanced Tesla Transceiver")
+                    .tier(2)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_4by4_HV.set(
-            new MTETeslaCoil(EpycTeslaTransceiver4by4.ID, "machine.tt.tesla.03", "Epyc Tesla Transceiver", 3, 16)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(EpycTeslaTransceiver4by4.ID)
+                    .translateKey("machine.tt.tesla.03")
+                    .nameEnglish("Epyc Tesla Transceiver")
+                    .tier(3)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_4by4_EV.set(
             new MTETeslaCoil(
-                UltimatePowerTeslaTransceiver4by4.ID,
-                "machine.tt.tesla.04",
-                "Ultimate Power Tesla Transceiver",
-                4,
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(UltimatePowerTeslaTransceiver4by4.ID)
+                    .translateKey("machine.tt.tesla.04")
+                    .nameEnglish("Ultimate Power Tesla Transceiver")
+                    .tier(4)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         Machine_TeslaCoil_4by4_IV.set(
-            new MTETeslaCoil(InsaneTeslaTransceiver4by4.ID, "machine.tt.tesla.05", "Insane Tesla Transceiver", 5, 16)
-                .getStackForm(1L));
+            new MTETeslaCoil(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(InsaneTeslaTransceiver4by4.ID)
+                    .translateKey("machine.tt.tesla.05")
+                    .nameEnglish("Insane Tesla Transceiver")
+                    .tier(5)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
 
         // ===================================================================================================
         // Debug Stuff
@@ -2144,8 +2264,14 @@ public class MachineLoader implements Runnable {
                 "Auto-Taping Maintenance Hatch",
                 8).getStackForm(1L));
         Machine_DebugGenny.set(
-            new MTEDebugPowerGenerator(DebugPowerGenerator.ID, "debug.tt.genny", "Debug Power Generator", 14)
-                .getStackForm(1L));
+            new MTEDebugPowerGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(DebugPowerGenerator.ID)
+                    .translateKey("debug.tt.genny")
+                    .nameEnglish("Debug Power Generator")
+                    .tier(14)
+                    .build()).getStackForm(1L));
         Machine_DebugWriter.set(
             new MTEDebugStructureWriter(DebugStructureWriter.ID, "debug.tt.writer", "Debug Structure Writer", 14)
                 .getStackForm(1L));

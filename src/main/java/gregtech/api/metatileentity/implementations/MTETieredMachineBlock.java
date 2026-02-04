@@ -65,7 +65,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     public MTETieredMachineBlock(Args args) {
         super(args);
         mTier = (byte) GTUtility.clamp(args.getTier(), 0, 15);
-        mDescriptionArray = args.getDescriptionArray();
+        mDescriptionArray = args.getDescriptionArray() != null ? args.getDescriptionArray() : new String[0];
         if (GTMod.GT.isClientSide()) {
             if (args.getBakedTextures() != null) {
                 mTextures = args.getBakedTextures();

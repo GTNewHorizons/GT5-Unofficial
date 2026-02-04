@@ -12,18 +12,24 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
  */
 public class MTETurboCharger extends MTECharger {
 
+    public MTETurboCharger(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTETurboCharger(int aID, String aName, String aNameRegional, int aTier, String aDescription,
         int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
     }
 
+    @Deprecated
     public MTETurboCharger(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTETurboCharger(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
+        return new MTETurboCharger(getPrototype());
     }
 
     @Override

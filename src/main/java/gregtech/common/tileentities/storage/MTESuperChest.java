@@ -8,10 +8,16 @@ import gregtech.api.metatileentity.MetaTileEntity;
 
 public class MTESuperChest extends MTEQuantumChest {
 
+    public MTESuperChest(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTESuperChest(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
+    @Deprecated
     public MTESuperChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
@@ -23,6 +29,6 @@ public class MTESuperChest extends MTEQuantumChest {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESuperChest(mName, mTier, mDescriptionArray, mTextures);
+        return new MTESuperChest(getPrototype());
     }
 }

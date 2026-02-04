@@ -64,10 +64,16 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
     private final long outputVoltage = V[mTier];
     private boolean overdriveToggle = false;
 
+    public MTETeslaCoil(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTETeslaCoil(int aID, String aName, String aNameRegional, int aTier, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, "", aSlotCount);
     }
 
+    @Deprecated
     public MTETeslaCoil(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
@@ -208,7 +214,7 @@ public class MTETeslaCoil extends MTEBasicBatteryBuffer implements ITeslaConnect
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTETeslaCoil(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
+        return new MTETeslaCoil(getPrototype());
     }
 
     @Override

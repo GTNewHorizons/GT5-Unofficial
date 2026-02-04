@@ -67,6 +67,18 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
     private int lastTrueCount;
 
+    public MTEDigitalChestBase(Args args) {
+        super(
+            args.toBuilder()
+                .inventorySlotCount(3)
+                .descriptionArray(
+                    new String[] { "Stores " + formatNumber(commonSizeCompute(args.getTier())) + " items",
+                        "Use a screwdriver to enable", "voiding items on overflow",
+                        "Will keep its contents when harvested", })
+                .build());
+    }
+
+    @Deprecated
     public MTEDigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -94,6 +106,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
         };
     }
 
+    @Deprecated
     public MTEDigitalChestBase(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }

@@ -13,17 +13,23 @@ import gregtech.api.util.GTUtility;
 
 public class MTECharger extends MTEBasicBatteryBuffer {
 
+    public MTECharger(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTECharger(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
     }
 
+    @Deprecated
     public MTECharger(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTECharger(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
+        return new MTECharger(getPrototype());
     }
 
     @Override

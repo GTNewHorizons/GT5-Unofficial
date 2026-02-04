@@ -46,11 +46,17 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
     private long mStored = 0;
     private long mMax = 0;
 
+    public MTEBasicBatteryBuffer(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEBasicBatteryBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription,
         int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
+    @Deprecated
     public MTEBasicBatteryBuffer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
         int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
@@ -85,7 +91,7 @@ public class MTEBasicBatteryBuffer extends MTETieredMachineBlock implements IAdd
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBasicBatteryBuffer(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
+        return new MTEBasicBatteryBuffer(getPrototype());
     }
 
     @Override

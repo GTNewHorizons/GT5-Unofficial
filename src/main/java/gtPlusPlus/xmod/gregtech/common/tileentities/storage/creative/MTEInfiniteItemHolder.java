@@ -23,10 +23,16 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTETieredChest;
 
 public class MTEInfiniteItemHolder extends MTETieredChest {
 
+    public MTEInfiniteItemHolder(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEInfiniteItemHolder(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
+    @Deprecated
     public MTEInfiniteItemHolder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
@@ -96,7 +102,7 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEInfiniteItemHolder(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEInfiniteItemHolder(getPrototype());
     }
 
     @Override

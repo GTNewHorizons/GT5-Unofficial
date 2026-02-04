@@ -21,17 +21,23 @@ public class MTEQuantumChest extends MTEDigitalChestBase {
     public ItemStack mItemStack = null;
     NBTTagList mInvData = null;
 
+    public MTEQuantumChest(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEQuantumChest(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
 
+    @Deprecated
     public MTEQuantumChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEQuantumChest(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEQuantumChest(getPrototype());
     }
 
     @Override

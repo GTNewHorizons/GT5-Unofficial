@@ -35,6 +35,18 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
     public ItemStack mItemStack = null;
     private static final double mStorageFactor = (270000.0D / 16);
 
+    public MTETieredChest(Args args) {
+        super(
+            args.toBuilder()
+                .inventorySlotCount(3)
+                .descriptionArray(
+                    new String[] {
+                        "This Chest stores " + (int) (GTUtility.powInt(6.0D, args.getTier()) * mStorageFactor)
+                            + " Items" })
+                .build());
+    }
+
+    @Deprecated
     public MTETieredChest(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -45,6 +57,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
             "This Chest stores " + (int) (GTUtility.powInt(6.0D, aTier) * mStorageFactor) + " Items");
     }
 
+    @Deprecated
     public MTETieredChest(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -60,7 +73,7 @@ public class MTETieredChest extends MTETieredMachineBlock implements IAddUIWidge
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTETieredChest(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTETieredChest(getPrototype());
     }
 
     @Override

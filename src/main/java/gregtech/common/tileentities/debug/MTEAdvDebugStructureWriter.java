@@ -53,17 +53,23 @@ public class MTEAdvDebugStructureWriter extends MTETieredMachineBlock implements
     private boolean showHighlightBox = true;
     private String[] result = new String[] { StatCollector.translateToLocal("GT5U.infodata.undefined") };
 
+    public MTEAdvDebugStructureWriter(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEAdvDebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
     }
 
+    @Deprecated
     public MTEAdvDebugStructureWriter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAdvDebugStructureWriter(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEAdvDebugStructureWriter(getPrototype());
     }
 
     @Override

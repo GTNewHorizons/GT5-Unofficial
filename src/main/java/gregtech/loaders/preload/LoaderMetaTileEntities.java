@@ -9110,15 +9110,50 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerQuantumChest() {
         ItemList.Quantum_Chest_LV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_LV.ID, "quantum.chest.tier.06", "Quantum Chest I", 6).getStackForm(1L));
+            new MTEQuantumChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(QUANTUM_CHEST_LV.ID)
+                    .translateKey("quantum.chest.tier.06")
+                    .nameEnglish("Quantum Chest I")
+                    .tier(6)
+                    .build()).getStackForm(1L));
         ItemList.Quantum_Chest_MV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_MV.ID, "quantum.chest.tier.07", "Quantum Chest II", 7).getStackForm(1L));
+            new MTEQuantumChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(QUANTUM_CHEST_MV.ID)
+                    .translateKey("quantum.chest.tier.07")
+                    .nameEnglish("Quantum Chest II")
+                    .tier(7)
+                    .build()).getStackForm(1L));
         ItemList.Quantum_Chest_HV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_HV.ID, "quantum.chest.tier.08", "Quantum Chest III", 8).getStackForm(1L));
+            new MTEQuantumChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(QUANTUM_CHEST_HV.ID)
+                    .translateKey("quantum.chest.tier.08")
+                    .nameEnglish("Quantum Chest III")
+                    .tier(8)
+                    .build()).getStackForm(1L));
         ItemList.Quantum_Chest_EV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_EV.ID, "quantum.chest.tier.09", "Quantum Chest IV", 9).getStackForm(1L));
+            new MTEQuantumChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(QUANTUM_CHEST_EV.ID)
+                    .translateKey("quantum.chest.tier.09")
+                    .nameEnglish("Quantum Chest IV")
+                    .tier(9)
+                    .build()).getStackForm(1L));
         ItemList.Quantum_Chest_IV.set(
-            new MTEQuantumChest(QUANTUM_CHEST_IV.ID, "quantum.chest.tier.10", "Quantum Chest V", 10).getStackForm(1L));
+            new MTEQuantumChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(QUANTUM_CHEST_IV.ID)
+                    .translateKey("quantum.chest.tier.10")
+                    .nameEnglish("Quantum Chest V")
+                    .tier(10)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerSuperTank() {
@@ -9135,16 +9170,51 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     }
 
     private static void registerSuperChest() {
-        ItemList.Super_Chest_LV
-            .set(new MTESuperChest(SUPER_CHEST_LV.ID, "super.chest.tier.01", "Super Chest I", 1).getStackForm(1L));
-        ItemList.Super_Chest_MV
-            .set(new MTESuperChest(SUPER_CHEST_MV.ID, "super.chest.tier.02", "Super Chest II", 2).getStackForm(1L));
-        ItemList.Super_Chest_HV
-            .set(new MTESuperChest(SUPER_CHEST_HV.ID, "super.chest.tier.03", "Super Chest III", 3).getStackForm(1L));
-        ItemList.Super_Chest_EV
-            .set(new MTESuperChest(SUPER_CHEST_EV.ID, "super.chest.tier.04", "Super Chest IV", 4).getStackForm(1L));
-        ItemList.Super_Chest_IV
-            .set(new MTESuperChest(SUPER_CHEST_IV.ID, "super.chest.tier.05", "Super Chest V", 5).getStackForm(1L));
+        ItemList.Super_Chest_LV.set(
+            new MTESuperChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SUPER_CHEST_LV.ID)
+                    .translateKey("super.chest.tier.01")
+                    .nameEnglish("Super Chest I")
+                    .tier(1)
+                    .build()).getStackForm(1L));
+        ItemList.Super_Chest_MV.set(
+            new MTESuperChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SUPER_CHEST_MV.ID)
+                    .translateKey("super.chest.tier.02")
+                    .nameEnglish("Super Chest II")
+                    .tier(2)
+                    .build()).getStackForm(1L));
+        ItemList.Super_Chest_HV.set(
+            new MTESuperChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SUPER_CHEST_HV.ID)
+                    .translateKey("super.chest.tier.03")
+                    .nameEnglish("Super Chest III")
+                    .tier(3)
+                    .build()).getStackForm(1L));
+        ItemList.Super_Chest_EV.set(
+            new MTESuperChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SUPER_CHEST_EV.ID)
+                    .translateKey("super.chest.tier.04")
+                    .nameEnglish("Super Chest IV")
+                    .tier(4)
+                    .build()).getStackForm(1L));
+        ItemList.Super_Chest_IV.set(
+            new MTESuperChest(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SUPER_CHEST_IV.ID)
+                    .translateKey("super.chest.tier.05")
+                    .nameEnglish("Super Chest V")
+                    .tier(5)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerLongDistancePipe() {
@@ -9310,631 +9380,793 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private static void registerBatteryBuffer1x1() {
         ItemList.Battery_Buffer_1by1_ULV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_ULV.ID,
-                "batterybuffer.01.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_ULV.ID)
+                    .translateKey("batterybuffer.01.tier.00")
+                    .nameEnglish("Ultra Low Voltage Battery Buffer")
+                    .tier(0)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_LV.ID,
-                "batterybuffer.01.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_LV.ID)
+                    .translateKey("batterybuffer.01.tier.01")
+                    .nameEnglish("Low Voltage Battery Buffer")
+                    .tier(1)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_MV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_MV.ID,
-                "batterybuffer.01.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_MV.ID)
+                    .translateKey("batterybuffer.01.tier.02")
+                    .nameEnglish("Medium Voltage Battery Buffer")
+                    .tier(2)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_HV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_HV.ID,
-                "batterybuffer.01.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_HV.ID)
+                    .translateKey("batterybuffer.01.tier.03")
+                    .nameEnglish("High Voltage Battery Buffer")
+                    .tier(3)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_EV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_EV.ID,
-                "batterybuffer.01.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_EV.ID)
+                    .translateKey("batterybuffer.01.tier.04")
+                    .nameEnglish("Extreme Voltage Battery Buffer")
+                    .tier(4)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_IV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_IV.ID,
-                "batterybuffer.01.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_IV.ID)
+                    .translateKey("batterybuffer.01.tier.05")
+                    .nameEnglish("Insane Voltage Battery Buffer")
+                    .tier(5)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_LuV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_LuV.ID,
-                "batterybuffer.01.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_LuV.ID)
+                    .translateKey("batterybuffer.01.tier.06")
+                    .nameEnglish("Ludicrous Voltage Battery Buffer")
+                    .tier(6)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_ZPM.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_ZPM.ID,
-                "batterybuffer.01.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_ZPM.ID)
+                    .translateKey("batterybuffer.01.tier.07")
+                    .nameEnglish("ZPM Voltage Battery Buffer")
+                    .tier(7)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UV.ID,
-                "batterybuffer.01.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_UV.ID)
+                    .translateKey("batterybuffer.01.tier.08")
+                    .nameEnglish("Ultimate Voltage Battery Buffer")
+                    .tier(8)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_1by1_UHV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UHV.ID,
-                "batterybuffer.01.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_UHV.ID)
+                    .translateKey("batterybuffer.01.tier.09")
+                    .nameEnglish("Highly Ultimate Voltage Battery Buffer")
+                    .tier(9)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UEV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UEV.ID,
-                "batterybuffer.01.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_UEV.ID)
+                    .translateKey("batterybuffer.01.tier.10")
+                    .nameEnglish("Extremely Ultimate Battery Buffer")
+                    .tier(10)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UIV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UIV.ID,
-                "batterybuffer.01.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_UIV.ID)
+                    .translateKey("batterybuffer.01.tier.11")
+                    .nameEnglish("Insanely Ultimate Battery Buffer")
+                    .tier(11)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UMV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UMV.ID,
-                "batterybuffer.01.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_UMV.ID)
+                    .translateKey("batterybuffer.01.tier.12")
+                    .nameEnglish("Mega Ultimate Battery Buffer")
+                    .tier(12)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_UXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_UXV.ID,
-                "batterybuffer.01.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_UXV.ID)
+                    .translateKey("batterybuffer.01.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Battery Buffer")
+                    .tier(13)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_1by1_MAXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_1_BY_1_MAX.ID,
-                "batterybuffer.01.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_1_BY_1_MAX.ID)
+                    .translateKey("batterybuffer.01.tier.14")
+                    .nameEnglish("Maximum Battery Buffer")
+                    .tier(14)
+                    .inventorySlotCount(1)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerBatteryBuffer2x2() {
         ItemList.Battery_Buffer_2by2_ULV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_ULV.ID,
-                "batterybuffer.04.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_ULV.ID)
+                    .translateKey("batterybuffer.04.tier.00")
+                    .nameEnglish("Ultra Low Voltage Battery Buffer")
+                    .tier(0)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_LV.ID,
-                "batterybuffer.04.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_LV.ID)
+                    .translateKey("batterybuffer.04.tier.01")
+                    .nameEnglish("Low Voltage Battery Buffer")
+                    .tier(1)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_MV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_MV.ID,
-                "batterybuffer.04.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_MV.ID)
+                    .translateKey("batterybuffer.04.tier.02")
+                    .nameEnglish("Medium Voltage Battery Buffer")
+                    .tier(2)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_HV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_HV.ID,
-                "batterybuffer.04.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_HV.ID)
+                    .translateKey("batterybuffer.04.tier.03")
+                    .nameEnglish("High Voltage Battery Buffer")
+                    .tier(3)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_EV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_EV.ID,
-                "batterybuffer.04.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_EV.ID)
+                    .translateKey("batterybuffer.04.tier.04")
+                    .nameEnglish("Extreme Voltage Battery Buffer")
+                    .tier(4)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_IV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_IV.ID,
-                "batterybuffer.04.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_IV.ID)
+                    .translateKey("batterybuffer.04.tier.05")
+                    .nameEnglish("Insane Voltage Battery Buffer")
+                    .tier(5)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_LuV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_LuV.ID,
-                "batterybuffer.04.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_LuV.ID)
+                    .translateKey("batterybuffer.04.tier.06")
+                    .nameEnglish("Ludicrous Voltage Battery Buffer")
+                    .tier(6)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_ZPM.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_ZPM.ID,
-                "batterybuffer.04.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_ZPM.ID)
+                    .translateKey("batterybuffer.04.tier.07")
+                    .nameEnglish("ZPM Voltage Battery Buffer")
+                    .tier(7)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UV.ID,
-                "batterybuffer.04.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_UV.ID)
+                    .translateKey("batterybuffer.04.tier.08")
+                    .nameEnglish("Ultimate Voltage Battery Buffer")
+                    .tier(8)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_2by2_UHV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UHV.ID,
-                "batterybuffer.04.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_UHV.ID)
+                    .translateKey("batterybuffer.04.tier.09")
+                    .nameEnglish("Highly Ultimate Voltage Battery Buffer")
+                    .tier(9)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UEV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UEV.ID,
-                "batterybuffer.04.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_UEV.ID)
+                    .translateKey("batterybuffer.04.tier.10")
+                    .nameEnglish("Extremely Ultimate Battery Buffer")
+                    .tier(10)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UIV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UIV.ID,
-                "batterybuffer.04.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_UIV.ID)
+                    .translateKey("batterybuffer.04.tier.11")
+                    .nameEnglish("Insanely Ultimate Battery Buffer")
+                    .tier(11)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UMV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UMV.ID,
-                "batterybuffer.04.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_UMV.ID)
+                    .translateKey("batterybuffer.04.tier.12")
+                    .nameEnglish("Mega Ultimate Battery Buffer")
+                    .tier(12)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_UXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_UXV.ID,
-                "batterybuffer.04.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_UXV.ID)
+                    .translateKey("batterybuffer.04.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Battery Buffer")
+                    .tier(13)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_2by2_MAXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_2_BY_2_MAX.ID,
-                "batterybuffer.04.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_2_BY_2_MAX.ID)
+                    .translateKey("batterybuffer.04.tier.14")
+                    .nameEnglish("Maximum Battery Buffer")
+                    .tier(14)
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerBatteryBuffer3x3() {
         ItemList.Battery_Buffer_3by3_ULV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_ULV.ID,
-                "batterybuffer.09.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_ULV.ID)
+                    .translateKey("batterybuffer.09.tier.00")
+                    .nameEnglish("Ultra Low Voltage Battery Buffer")
+                    .tier(0)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_LV.ID,
-                "batterybuffer.09.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_LV.ID)
+                    .translateKey("batterybuffer.09.tier.01")
+                    .nameEnglish("Low Voltage Battery Buffer")
+                    .tier(1)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_MV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_MV.ID,
-                "batterybuffer.09.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_MV.ID)
+                    .translateKey("batterybuffer.09.tier.02")
+                    .nameEnglish("Medium Voltage Battery Buffer")
+                    .tier(2)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_HV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_HV.ID,
-                "batterybuffer.09.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_HV.ID)
+                    .translateKey("batterybuffer.09.tier.03")
+                    .nameEnglish("High Voltage Battery Buffer")
+                    .tier(3)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_EV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_EV.ID,
-                "batterybuffer.09.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_EV.ID)
+                    .translateKey("batterybuffer.09.tier.04")
+                    .nameEnglish("Extreme Voltage Battery Buffer")
+                    .tier(4)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_IV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_IV.ID,
-                "batterybuffer.09.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_IV.ID)
+                    .translateKey("batterybuffer.09.tier.05")
+                    .nameEnglish("Insane Voltage Battery Buffer")
+                    .tier(5)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_LuV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_LuV.ID,
-                "batterybuffer.09.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_LuV.ID)
+                    .translateKey("batterybuffer.09.tier.06")
+                    .nameEnglish("Ludicrous Voltage Battery Buffer")
+                    .tier(6)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_ZPM.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_ZPM.ID,
-                "batterybuffer.09.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_ZPM.ID)
+                    .translateKey("batterybuffer.09.tier.07")
+                    .nameEnglish("ZPM Voltage Battery Buffer")
+                    .tier(7)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UV.ID,
-                "batterybuffer.09.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_UV.ID)
+                    .translateKey("batterybuffer.09.tier.08")
+                    .nameEnglish("Ultimate Voltage Battery Buffer")
+                    .tier(8)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_3by3_UHV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UHV.ID,
-                "batterybuffer.09.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_UHV.ID)
+                    .translateKey("batterybuffer.09.tier.09")
+                    .nameEnglish("Highly Ultimate Voltage Battery Buffer")
+                    .tier(9)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UEV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UEV.ID,
-                "batterybuffer.09.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_UEV.ID)
+                    .translateKey("batterybuffer.09.tier.10")
+                    .nameEnglish("Extremely Ultimate Battery Buffer")
+                    .tier(10)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UIV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UIV.ID,
-                "batterybuffer.09.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_UIV.ID)
+                    .translateKey("batterybuffer.09.tier.11")
+                    .nameEnglish("Insanely Ultimate Battery Buffer")
+                    .tier(11)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UMV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UMV.ID,
-                "batterybuffer.09.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_UMV.ID)
+                    .translateKey("batterybuffer.09.tier.12")
+                    .nameEnglish("Mega Ultimate Battery Buffer")
+                    .tier(12)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_UXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_UXV.ID,
-                "batterybuffer.09.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_UXV.ID)
+                    .translateKey("batterybuffer.09.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Battery Buffer")
+                    .tier(13)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_3by3_MAXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_3_BY_3_MAX.ID,
-                "batterybuffer.09.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_3_BY_3_MAX.ID)
+                    .translateKey("batterybuffer.09.tier.14")
+                    .nameEnglish("Maximum Battery Buffer")
+                    .tier(14)
+                    .inventorySlotCount(9)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerBatteryBuffer4x4() {
         ItemList.Battery_Buffer_4by4_ULV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_ULV.ID,
-                "batterybuffer.16.tier.00",
-                "Ultra Low Voltage Battery Buffer",
-                0,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_ULV.ID)
+                    .translateKey("batterybuffer.16.tier.00")
+                    .nameEnglish("Ultra Low Voltage Battery Buffer")
+                    .tier(0)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_LV.ID,
-                "batterybuffer.16.tier.01",
-                "Low Voltage Battery Buffer",
-                1,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_LV.ID)
+                    .translateKey("batterybuffer.16.tier.01")
+                    .nameEnglish("Low Voltage Battery Buffer")
+                    .tier(1)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_MV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_MV.ID,
-                "batterybuffer.16.tier.02",
-                "Medium Voltage Battery Buffer",
-                2,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_MV.ID)
+                    .translateKey("batterybuffer.16.tier.02")
+                    .nameEnglish("Medium Voltage Battery Buffer")
+                    .tier(2)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_HV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_HV.ID,
-                "batterybuffer.16.tier.03",
-                "High Voltage Battery Buffer",
-                3,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_HV.ID)
+                    .translateKey("batterybuffer.16.tier.03")
+                    .nameEnglish("High Voltage Battery Buffer")
+                    .tier(3)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_EV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_EV.ID,
-                "batterybuffer.16.tier.04",
-                "Extreme Voltage Battery Buffer",
-                4,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_EV.ID)
+                    .translateKey("batterybuffer.16.tier.04")
+                    .nameEnglish("Extreme Voltage Battery Buffer")
+                    .tier(4)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_IV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_IV.ID,
-                "batterybuffer.16.tier.05",
-                "Insane Voltage Battery Buffer",
-                5,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_IV.ID)
+                    .translateKey("batterybuffer.16.tier.05")
+                    .nameEnglish("Insane Voltage Battery Buffer")
+                    .tier(5)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_LuV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_LuV.ID,
-                "batterybuffer.16.tier.06",
-                "Ludicrous Voltage Battery Buffer",
-                6,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_LuV.ID)
+                    .translateKey("batterybuffer.16.tier.06")
+                    .nameEnglish("Ludicrous Voltage Battery Buffer")
+                    .tier(6)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_ZPM.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_ZPM.ID,
-                "batterybuffer.16.tier.07",
-                "ZPM Voltage Battery Buffer",
-                7,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_ZPM.ID)
+                    .translateKey("batterybuffer.16.tier.07")
+                    .nameEnglish("ZPM Voltage Battery Buffer")
+                    .tier(7)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UV.ID,
-                "batterybuffer.16.tier.08",
-                "Ultimate Voltage Battery Buffer",
-                8,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_UV.ID)
+                    .translateKey("batterybuffer.16.tier.08")
+                    .nameEnglish("Ultimate Voltage Battery Buffer")
+                    .tier(8)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UHV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UHV.ID,
-                "batterybuffer.16.tier.09",
-                "Highly Ultimate Voltage Battery Buffer",
-                9,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_UHV.ID)
+                    .translateKey("batterybuffer.16.tier.09")
+                    .nameEnglish("Highly Ultimate Voltage Battery Buffer")
+                    .tier(9)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Buffer_4by4_UEV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UEV.ID,
-                "batterybuffer.16.tier.10",
-                "Extremely Ultimate Battery Buffer",
-                10,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_UEV.ID)
+                    .translateKey("batterybuffer.16.tier.10")
+                    .nameEnglish("Extremely Ultimate Battery Buffer")
+                    .tier(10)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UIV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UIV.ID,
-                "batterybuffer.16.tier.11",
-                "Insanely Ultimate Battery Buffer",
-                11,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_UIV.ID)
+                    .translateKey("batterybuffer.16.tier.11")
+                    .nameEnglish("Insanely Ultimate Battery Buffer")
+                    .tier(11)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UMV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UMV.ID,
-                "batterybuffer.16.tier.12",
-                "Mega Ultimate Battery Buffer",
-                12,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_UMV.ID)
+                    .translateKey("batterybuffer.16.tier.12")
+                    .nameEnglish("Mega Ultimate Battery Buffer")
+                    .tier(12)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_UXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_UXV.ID,
-                "batterybuffer.16.tier.13",
-                "Extended Mega Ultimate Battery Buffer",
-                13,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_UXV.ID)
+                    .translateKey("batterybuffer.16.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Battery Buffer")
+                    .tier(13)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Buffer_4by4_MAXV.set(
             new MTEBasicBatteryBuffer(
-                BATTERY_BUFFER_4_BY_4_MAX.ID,
-                "batterybuffer.16.tier.14",
-                "Maximum Battery Buffer",
-                14,
-                "",
-                16).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_BUFFER_4_BY_4_MAX.ID)
+                    .translateKey("batterybuffer.16.tier.14")
+                    .nameEnglish("Maximum Battery Buffer")
+                    .tier(14)
+                    .inventorySlotCount(16)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerCharger4x4() {
         ItemList.Battery_Charger_4by4_ULV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_ULV.ID,
-                "batterycharger.16.tier.00",
-                "Ultra Low Voltage Battery Charger",
-                0,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_ULV.ID)
+                    .translateKey("batterycharger.16.tier.00")
+                    .nameEnglish("Ultra Low Voltage Battery Charger")
+                    .tier(0)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_LV.ID,
-                "batterycharger.16.tier.01",
-                "Low Voltage Battery Charger",
-                1,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_LV.ID)
+                    .translateKey("batterycharger.16.tier.01")
+                    .nameEnglish("Low Voltage Battery Charger")
+                    .tier(1)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_MV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_MV.ID,
-                "batterycharger.16.tier.02",
-                "Medium Voltage Battery Charger",
-                2,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_MV.ID)
+                    .translateKey("batterycharger.16.tier.02")
+                    .nameEnglish("Medium Voltage Battery Charger")
+                    .tier(2)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_HV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_HV.ID,
-                "batterycharger.16.tier.03",
-                "High Voltage Battery Charger",
-                3,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_HV.ID)
+                    .translateKey("batterycharger.16.tier.03")
+                    .nameEnglish("High Voltage Battery Charger")
+                    .tier(3)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_EV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_EV.ID,
-                "batterycharger.16.tier.04",
-                "Extreme Voltage Battery Charger",
-                4,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_EV.ID)
+                    .translateKey("batterycharger.16.tier.04")
+                    .nameEnglish("Extreme Voltage Battery Charger")
+                    .tier(4)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_IV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_IV.ID,
-                "batterycharger.16.tier.05",
-                "Insane Voltage Battery Charger",
-                5,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_IV.ID)
+                    .translateKey("batterycharger.16.tier.05")
+                    .nameEnglish("Insane Voltage Battery Charger")
+                    .tier(5)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_LuV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_LuV.ID,
-                "batterycharger.16.tier.06",
-                "Ludicrous Voltage Battery Charger",
-                6,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_LuV.ID)
+                    .translateKey("batterycharger.16.tier.06")
+                    .nameEnglish("Ludicrous Voltage Battery Charger")
+                    .tier(6)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_ZPM.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_ZPM.ID,
-                "batterycharger.16.tier.07",
-                "ZPM Voltage Battery Charger",
-                7,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_ZPM.ID)
+                    .translateKey("batterycharger.16.tier.07")
+                    .nameEnglish("ZPM Voltage Battery Charger")
+                    .tier(7)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_UV.ID,
-                "batterycharger.16.tier.08",
-                "Ultimate Voltage Battery Charger",
-                8,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_UV.ID)
+                    .translateKey("batterycharger.16.tier.08")
+                    .nameEnglish("Ultimate Voltage Battery Charger")
+                    .tier(8)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
         ItemList.Battery_Charger_4by4_UHV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_BY_4_UHV.ID,
-                "batterycharger.16.tier.09",
-                "Highly Ultimate Voltage Battery Charger",
-                9,
-                "Each battery gives 8A in/4A out (min 4A/2A)",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_BY_4_UHV.ID)
+                    .translateKey("batterycharger.16.tier.09")
+                    .nameEnglish("Highly Ultimate Voltage Battery Charger")
+                    .tier(9)
+                    .descriptionArray(new String[] { "Each battery gives 8A in/4A out (min 4A/2A)" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UEV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_4_UEV.ID,
-                "batterycharger.16.tier.10",
-                "Extremely Ultimate Battery Charger",
-                10,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_4_UEV.ID)
+                    .translateKey("batterycharger.16.tier.10")
+                    .nameEnglish("Extremely Ultimate Battery Charger")
+                    .tier(10)
+                    .descriptionArray(new String[] { "" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UIV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_4_UIV.ID,
-                "batterycharger.16.tier.11",
-                "Insanely Ultimate Battery Charger",
-                11,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_4_UIV.ID)
+                    .translateKey("batterycharger.16.tier.11")
+                    .nameEnglish("Insanely Ultimate Battery Charger")
+                    .tier(11)
+                    .descriptionArray(new String[] { "" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UMV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_4_UMV.ID,
-                "batterycharger.16.tier.12",
-                "Mega Ultimate Battery Charger",
-                12,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_4_UMV.ID)
+                    .translateKey("batterycharger.16.tier.12")
+                    .nameEnglish("Mega Ultimate Battery Charger")
+                    .tier(12)
+                    .descriptionArray(new String[] { "" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_Charger_4by4_UXV.set(
             new MTECharger(
-                BATTERY_CHARGER_4_4_UXV.ID,
-                "batterycharger.16.tier.13",
-                "Extended Mega Ultimate Battery Charger",
-                13,
-                "",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(BATTERY_CHARGER_4_4_UXV.ID)
+                    .translateKey("batterycharger.16.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Battery Charger")
+                    .tier(13)
+                    .descriptionArray(new String[] { "" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
     }
 
     private void registerCircuitAssembler() {
@@ -10362,93 +10594,123 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private void registerTurboCharger4By4() {
         ItemList.Battery_TurboCharger_4by4_ULV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_ULV.ID,
-                "batteryturbocharger.16.tier.00",
-                "Ultra Low Voltage Turbo Charger",
-                0,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_ULV.ID)
+                    .translateKey("batteryturbocharger.16.tier.00")
+                    .nameEnglish("Ultra Low Voltage Turbo Charger")
+                    .tier(0)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_LV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_LV.ID,
-                "batteryturbocharger.16.tier.01",
-                "Low Voltage Turbo Charger",
-                1,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_LV.ID)
+                    .translateKey("batteryturbocharger.16.tier.01")
+                    .nameEnglish("Low Voltage Turbo Charger")
+                    .tier(1)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_MV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_MV.ID,
-                "batteryturbocharger.16.tier.02",
-                "Medium Voltage Turbo Charger",
-                2,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_MV.ID)
+                    .translateKey("batteryturbocharger.16.tier.02")
+                    .nameEnglish("Medium Voltage Turbo Charger")
+                    .tier(2)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_HV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_HV.ID,
-                "batteryturbocharger.16.tier.03",
-                "High Voltage Turbo Charger",
-                3,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_HV.ID)
+                    .translateKey("batteryturbocharger.16.tier.03")
+                    .nameEnglish("High Voltage Turbo Charger")
+                    .tier(3)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_EV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_EV.ID,
-                "batteryturbocharger.16.tier.04",
-                "Extreme Voltage Turbo Charger",
-                4,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_EV.ID)
+                    .translateKey("batteryturbocharger.16.tier.04")
+                    .nameEnglish("Extreme Voltage Turbo Charger")
+                    .tier(4)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_IV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_IV.ID,
-                "batteryturbocharger.16.tier.05",
-                "Insane Voltage Turbo Charger",
-                5,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_IV.ID)
+                    .translateKey("batteryturbocharger.16.tier.05")
+                    .nameEnglish("Insane Voltage Turbo Charger")
+                    .tier(5)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_LuV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_LuV.ID,
-                "batteryturbocharger.16.tier.06",
-                "Ludicrous Voltage Turbo Charger",
-                6,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_LuV.ID)
+                    .translateKey("batteryturbocharger.16.tier.06")
+                    .nameEnglish("Ludicrous Voltage Turbo Charger")
+                    .tier(6)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_ZPM.set(
             new MTETurboCharger(
-                TURBO_CHARGER_ZPM.ID,
-                "batteryturbocharger.16.tier.07",
-                "ZPM Voltage Turbo Charger",
-                7,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_ZPM.ID)
+                    .translateKey("batteryturbocharger.16.tier.07")
+                    .nameEnglish("ZPM Voltage Turbo Charger")
+                    .tier(7)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_UV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_UV.ID,
-                "batteryturbocharger.16.tier.08",
-                "Ultimate Voltage Turbo Charger",
-                8,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_UV.ID)
+                    .translateKey("batteryturbocharger.16.tier.08")
+                    .nameEnglish("Ultimate Voltage Turbo Charger")
+                    .tier(8)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
         ItemList.Battery_TurboCharger_4by4_UHV.set(
             new MTETurboCharger(
-                TURBO_CHARGER_UHV.ID,
-                "batteryturbocharger.16.tier.09",
-                "Highly Ultimate Voltage Turbo Charger",
-                9,
-                "64A in /16A out, 120A/item, Disable to force Charge",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(TURBO_CHARGER_UHV.ID)
+                    .translateKey("batteryturbocharger.16.tier.09")
+                    .nameEnglish("Highly Ultimate Voltage Turbo Charger")
+                    .tier(9)
+                    .descriptionArray(new String[] { "64A in /16A out, 120A/item, Disable to force Charge" })
+                    .inventorySlotCount(4)
+                    .build()).getStackForm(1L));
 
     }
 
@@ -10958,10 +11220,13 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
-                ADVANCED_DEBUG_STRUCTURE_WRITTER.ID,
-                "advdebugstructurewriter",
-                "Advanced Debug Structure Writer",
-                5).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(ADVANCED_DEBUG_STRUCTURE_WRITTER.ID)
+                    .translateKey("advdebugstructurewriter")
+                    .nameEnglish("Advanced Debug Structure Writer")
+                    .tier(5)
+                    .build()).getStackForm(1L));
         ItemList.Hatch_Maintenance.set(
             new MTEHatchMaintenance(MAINTENANCE_HATCH.ID, "hatch.maintenance", "Maintenance Hatch", 1)
                 .getStackForm(1L));
