@@ -2548,6 +2548,49 @@ public class Textures {
             return id == null ? ERROR_TEXTURE_INDEX : id;
         }
 
+        // 2026-02-03: Counted 1771 unique CustomIcons, so 2.5K will avoid resize until 1920 entries
+        private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(2560);
+
+        /**
+         * Registers a Custom Block {@link IIconContainer}
+         *
+         * @param aIconName The unique identifier of the icon container.
+         * @return The new or cached instance
+         */
+        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
+            sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
+            return customOptional(aIconName);
+        }
+
+        // 2026-02-03: Counted 3723 unique CustomOptionalIcons, so 5K will avoid resize until 3840 entries
+        private static final Map<String, IIconContainer> sCustomOptionalIcons = new ConcurrentHashMap<>(5120);
+
+        /**
+         * Registers a Custom Optional Block {@link IIconContainer}
+         *
+         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         *                  (see: {@link IIconRegister#registerIcon}).
+         * @return The new or cached instance
+         */
+        public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
+            // optionalResource is not part of the CustomIcon identity, so not composed in to the key
+            return sCustomOptionalIcons.computeIfAbsent(aIconName, k -> new CustomOptionalIcon(k));
+        }
+
+        // 2026-02-03: Counted 160 unique BlockIcons.CustomIcons, so 255 will avoid resize until 162 entries
+        private static final Map<String, IIconContainer> sCustomAlphaIcons = new ConcurrentHashMap<>(256);
+
+        /**
+         * Registers a Custom Optional Block {@link IIconContainer} to be rendered alpha-blended in pass 1
+         *
+         * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
+         *                  (see: {@link IIconRegister#registerIcon}).
+         * @return The new or cached instance
+         */
+        public static @NotNull IIconContainer customAlpha(@NotNull String aIconName) {
+            return sCustomAlphaIcons.computeIfAbsent(aIconName, CustomAlphaIcon::new);
+        }
+
         @Override
         public IIcon getIcon() {
             return mIcon;
@@ -2571,6 +2614,19 @@ public class Textures {
                 : InvisibleIcon.INVISIBLE_ICON;
         }
 
+        /**
+         * @deprecated This is an internal implementation detail.
+         *             Will be moved to a non-public package in a future release.
+         *             <p>
+         *             Use the factory methods on {@link BlockIcons}:
+         *             <ul>
+         *             <li>{@link BlockIcons#custom(String)}</li>
+         *             <li>{@link BlockIcons#customOptional(String)}</li>
+         *             <li>{@link BlockIcons#customAlpha(String)}</li>
+         *             </ul>
+         */
+        // TODO: Move this to an internal package once the deprecated API is no longer used
+        @Deprecated
         public static class CustomIcon implements IIconContainer, Runnable {
 
             protected final ResourceLocation iconResource, overlayResource;
@@ -2578,7 +2634,7 @@ public class Textures {
             protected IIcon mIcon, mOverlay = null;
 
             /**
-             * @deprecated Use {@link #create(String)} instead.
+             * @deprecated Use {@link BlockIcons#custom(String)} instead.
              *             This constructor will become private later.
              */
             @Deprecated
@@ -2594,49 +2650,6 @@ public class Textures {
                     GTLog.ico.println("R " + iconResource);
                     GTLog.ico.println("O " + overlayResource);
                 }
-            }
-
-            // 2026-02-03: Counted 1771 unique CustomIcons, so 2.5K will avoid resize until 1920 entries
-            private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(2560);
-
-            /**
-             * Registers a Custom Block {@link IIconContainer}
-             *
-             * @param aIconName The unique identifier of the icon container.
-             * @return The new or cached instance
-             */
-            public static @NotNull IIconContainer create(@NotNull String aIconName) {
-                sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
-                return createOptional(aIconName);
-            }
-
-            // 2026-02-03: Counted 3723 unique CustomOptionalIcons, so 5K will avoid resize until 3840 entries
-            private static final Map<String, IIconContainer> sCustomOptionalIcons = new ConcurrentHashMap<>(5120);
-
-            /**
-             * Registers a Custom Optional Block {@link IIconContainer}
-             *
-             * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
-             *                  (see: {@link IIconRegister#registerIcon}).
-             * @return The new or cached instance
-             */
-            public static @NotNull IIconContainer createOptional(@NotNull String aIconName) {
-                // optionalResource is not part of the CustomIcon identity, so not composed in to the key
-                return sCustomOptionalIcons.computeIfAbsent(aIconName, k -> new CustomOptionalIcon(k));
-            }
-
-            // 2026-02-03: Counted 160 unique BlockIcons.CustomIcons, so 255 will avoid resize until 162 entries
-            private static final Map<String, IIconContainer> sCustomAlphaIcons = new ConcurrentHashMap<>(256);
-
-            /**
-             * Registers a Custom Optional Block {@link IIconContainer} to be rendered alpha-blended in pass 1
-             *
-             * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
-             *                  (see: {@link IIconRegister#registerIcon}).
-             * @return The new or cached instance
-             */
-            public static @NotNull IIconContainer createAlpha(@NotNull String aIconName) {
-                return sCustomAlphaIcons.computeIfAbsent(aIconName, CustomAlphaIcon::new);
             }
 
             @Override
@@ -2748,6 +2761,8 @@ public class Textures {
                 ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, };
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(Textures.GlobalIcons.RENDERING_ERROR) };
+        // 2026-02-03: Counted 1928 unique BlockIcons.CustomIcons, so 3K will avoid resize until 2304 entries
+        private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(3072);
 
         IIcon mIcon, mOverlay;
         final String mIconName;
@@ -2764,6 +2779,21 @@ public class Textures {
                 GTLog.ico.println("R " + iconResource);
                 GTLog.ico.println("O " + overlayResource);
             }
+        }
+
+        /**
+         * Registers a Custom Item {@link IIconContainer}
+         * <p>
+         * Each custom item icon consists of a main icon, an overlay, or both.
+         * At least one of the icon or overlay must be present; individually, each is optional.
+         *
+         * @param aIconName The unique identifier of the custom item icon container.
+         *
+         * @return The new or cached {@link CustomIcon} instance
+         */
+        public static @NotNull IIconContainer custom(@NotNull String aIconName) {
+            // optionalResource is not part of the CustomIcon identity, so not composed in to the key
+            return sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
         }
 
         @Override
@@ -2795,6 +2825,14 @@ public class Textures {
             }
         }
 
+        /**
+         * @deprecated This is an internal implementation detail.
+         *             Will be moved to a non-public package in a future release.
+         *             <p>
+         *             Use the factory method {@link ItemIcons#custom(String)} instead.
+         */
+        // TODO: Move this to an internal package once the deprecated API is no longer used
+        @Deprecated
         public static class CustomIcon implements IIconContainer, Runnable {
 
             protected IIcon mIcon, mOverlay;
@@ -2802,7 +2840,7 @@ public class Textures {
             protected ResourceLocation iconResource, overlayResource;
 
             /**
-             * @deprecated Use {@link #create(String)} instead.
+             * @deprecated Use {@link ItemIcons#custom(String)} instead.
              *             This constructor will become private later.
              */
             @Deprecated
@@ -2817,24 +2855,6 @@ public class Textures {
                     GTLog.ico.println("R " + iconResource);
                     GTLog.ico.println("O " + overlayResource);
                 }
-            }
-
-            // 2026-02-03: Counted 1928 unique BlockIcons.CustomIcons, so 3K will avoid resize until 2304 entries
-            private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(3072);
-
-            /**
-             * Registers a Custom Item {@link IIconContainer}
-             * <p>
-             * Each custom item icon consists of a main icon, an overlay, or both.
-             * At least one of the icon or overlay must be present; individually, each is optional.
-             *
-             * @param aIconName The unique identifier of the custom item icon container.
-             *
-             * @return The new or cached {@link CustomIcon} instance
-             */
-            public static @NotNull IIconContainer create(@NotNull String aIconName) {
-                // optionalResource is not part of the CustomIcon identity, so not composed in to the key
-                return sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
             }
 
             @Override

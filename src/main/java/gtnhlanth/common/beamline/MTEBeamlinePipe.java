@@ -125,7 +125,7 @@ public class MTEBeamlinePipe extends MetaPipeEntity implements IConnectsToBeamli
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        pipe = Textures.BlockIcons.CustomIcon.create("iconsets/pipe");
+        pipe = Textures.BlockIcons.custom("iconsets/pipe");
         super.registerIcons(aBlockIconRegister);
     }
 

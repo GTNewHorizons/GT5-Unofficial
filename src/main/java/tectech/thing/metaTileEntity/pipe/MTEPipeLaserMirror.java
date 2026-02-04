@@ -51,7 +51,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = Textures.BlockIcons.CustomIcon.create("iconsets/EM_LASERMIRROR");
+        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASERMIRROR");
         super.registerIcons(aBlockIconRegister);
     }
 

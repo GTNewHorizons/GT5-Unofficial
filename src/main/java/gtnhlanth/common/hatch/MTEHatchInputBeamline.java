@@ -22,9 +22,9 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
     private static final String sideIconPath = "iconsets/OVERLAY_BI_SIDES";
     private static final String connIconPath = "iconsets/BI_CONN";
 
-    private static final IIconContainer activeIcon = Textures.BlockIcons.CustomIcon.create(activeIconPath);
-    private static final IIconContainer sideIcon = Textures.BlockIcons.CustomIcon.create(sideIconPath);
-    private static final IIconContainer connIcon = Textures.BlockIcons.CustomIcon.create(connIconPath);
+    private static final IIconContainer activeIcon = Textures.BlockIcons.custom(activeIconPath);
+    private static final IIconContainer sideIcon = Textures.BlockIcons.custom(sideIconPath);
+    private static final IIconContainer connIcon = Textures.BlockIcons.custom(connIconPath);
 
     public MTEHatchInputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");

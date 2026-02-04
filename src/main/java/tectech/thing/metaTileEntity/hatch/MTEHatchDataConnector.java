@@ -53,9 +53,9 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_D_ACTIVE = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_EM_D_ACTIVE");
-        EM_D_SIDES = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_EM_D_SIDES");
-        EM_D_CONN = Textures.BlockIcons.CustomIcon.create("iconsets/EM_DATA_CONN");
+        EM_D_ACTIVE = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_ACTIVE");
+        EM_D_SIDES = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_SIDES");
+        EM_D_CONN = Textures.BlockIcons.custom("iconsets/EM_DATA_CONN");
     }
 
     @Override

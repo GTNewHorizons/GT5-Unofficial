@@ -192,11 +192,10 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons.CustomIcon.create("iconsets/TFFT");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons.CustomIcon
-        .create("iconsets/TFFT_ACTIVE");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = Textures.BlockIcons.CustomIcon
-        .create("iconsets/TFFT_ACTIVE_GLOW");
+    private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = Textures.BlockIcons
+        .custom("iconsets/TFFT_ACTIVE_GLOW");
     private static final int CASING_TEXTURE_ID_1 = (12 << 7) | 127;
     private static final int CASING_TEXTURE_ID_2 = 176;
 

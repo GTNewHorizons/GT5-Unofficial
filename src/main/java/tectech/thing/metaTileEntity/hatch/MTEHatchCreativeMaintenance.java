@@ -48,7 +48,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        face = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
+        face = Textures.BlockIcons.custom("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
     }
 
     @Override

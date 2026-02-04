@@ -67,8 +67,8 @@ public class MTEHatchCapacitor extends MTEHatch implements IAddUIWidgets {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        TM_H_ACTIVE = Textures.BlockIcons.CustomIcon.create("iconsets/TM_TESLA_CAPS_ACTIVE");
-        TM_H = Textures.BlockIcons.CustomIcon.create("iconsets/TM_TESLA_CAPS");
+        TM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS_ACTIVE");
+        TM_H = Textures.BlockIcons.custom("iconsets/TM_TESLA_CAPS");
     }
 
     @Override

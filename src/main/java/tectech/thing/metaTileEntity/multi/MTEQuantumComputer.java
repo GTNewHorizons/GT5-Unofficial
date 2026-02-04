@@ -422,8 +422,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/EM_COMPUTER");
-        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/EM_COMPUTER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_COMPUTER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/EM_COMPUTER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

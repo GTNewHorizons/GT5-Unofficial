@@ -57,9 +57,9 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = Textures.BlockIcons.CustomIcon.create("iconsets/EM_DATA");
-        EMbar = Textures.BlockIcons.CustomIcon.create("iconsets/EM_BAR");
-        EMbarActive = Textures.BlockIcons.CustomIcon.create("iconsets/EM_BAR_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom("iconsets/EM_DATA");
+        EMbar = Textures.BlockIcons.custom("iconsets/EM_BAR");
+        EMbarActive = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

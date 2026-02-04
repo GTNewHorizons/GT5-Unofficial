@@ -55,8 +55,8 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = Textures.BlockIcons.CustomIcon.create("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = Textures.BlockIcons.CustomIcon.create("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.custom("iconsets/EM_HOLDER");
     }
 
     @Override

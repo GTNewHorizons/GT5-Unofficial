@@ -16,7 +16,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HarvestTool;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,9 +28,9 @@ import tectech.mechanics.pipe.PipeActivity;
 
 public abstract class MTEBaseFactoryPipe extends MetaPipeEntity implements IActivePipe {
 
-    public static final IIconContainer EM_PIPE = CustomIcon.create("iconsets/EM_DATA");
-    public static final IIconContainer EM_BAR = CustomIcon.create("iconsets/EM_BAR");
-    public static final IIconContainer EM_BAR_ACTIVE = CustomIcon.create("iconsets/EM_BAR_ACTIVE");
+    public static final IIconContainer EM_PIPE = Textures.BlockIcons.custom("iconsets/EM_DATA");
+    public static final IIconContainer EM_BAR = Textures.BlockIcons.custom("iconsets/EM_BAR");
+    public static final IIconContainer EM_BAR_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_BAR_ACTIVE");
 
     protected boolean mIsActive;
 

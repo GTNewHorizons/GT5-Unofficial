@@ -55,9 +55,9 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMcandy = Textures.BlockIcons.CustomIcon.create("iconsets/EM_CANDY");
-        EMCandyActive = Textures.BlockIcons.CustomIcon.create("iconsets/EM_CANDY_ACTIVE");
-        EMpipe = Textures.BlockIcons.CustomIcon.create("iconsets/EM_LASER");
+        EMcandy = Textures.BlockIcons.custom("iconsets/EM_CANDY");
+        EMCandyActive = Textures.BlockIcons.custom("iconsets/EM_CANDY_ACTIVE");
+        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASER");
         super.registerIcons(aBlockIconRegister);
     }
 

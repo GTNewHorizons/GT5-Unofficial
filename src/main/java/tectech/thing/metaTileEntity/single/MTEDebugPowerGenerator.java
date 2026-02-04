@@ -88,7 +88,7 @@ public class MTEDebugPowerGenerator extends MTETieredMachineBlock
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = TextureFactory.of(Textures.BlockIcons.CustomIcon.create("iconsets/GENNY"));
+        GENNY = TextureFactory.of(Textures.BlockIcons.custom("iconsets/GENNY"));
     }
 
     @Override

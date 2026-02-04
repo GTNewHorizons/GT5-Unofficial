@@ -989,7 +989,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_SIDE_MINER_MODULE");
+        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_MINER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 

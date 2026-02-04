@@ -46,7 +46,7 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                Textures.BlockIcons.CustomIcon.create(
+                                Textures.BlockIcons.custom(
                                     "materialicons/" + SET.getName()
                                         .substring(4) + "/" + prefixes));
                         } catch (IllegalAccessException e) {
@@ -72,7 +72,7 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                Textures.ItemIcons.CustomIcon.create(
+                                Textures.ItemIcons.custom(
                                     "materialicons/" + SET.getName()
                                         .substring(4) + "/" + prefixes));
                         } catch (IllegalAccessException e) {

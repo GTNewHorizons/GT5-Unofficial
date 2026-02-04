@@ -637,8 +637,8 @@ public class MTETeslaTower extends TTMultiblockBase
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/TM_TESLA_TOWER");
-        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override

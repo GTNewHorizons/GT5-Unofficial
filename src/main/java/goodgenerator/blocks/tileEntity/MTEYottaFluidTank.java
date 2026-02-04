@@ -71,13 +71,11 @@ import tectech.thing.metaTileEntity.multi.base.Parameters;
 
 public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements IConstructable, ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons.CustomIcon
-        .create("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.CustomIcon
-        .create("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons.CustomIcon
-        .create("iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .custom("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEYottaFluidTank> multiDefinition = null;
     protected final ArrayList<MTEYOTTAHatch> mYottaHatch = new ArrayList<>();

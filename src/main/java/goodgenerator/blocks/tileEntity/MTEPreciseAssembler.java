@@ -88,13 +88,11 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
     implements IConstructable, ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_QTANK");
-    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons.CustomIcon
-        .create("iconsets/OVERLAY_QTANK_GLOW");
-    private static final IIconContainer textureFontOff = Textures.BlockIcons.CustomIcon
-        .create("iconsets/OVERLAY_QCHEST");
-    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons.CustomIcon
-        .create("iconsets/OVERLAY_QCHEST_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("iconsets/OVERLAY_QCHEST");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .custom("iconsets/OVERLAY_QCHEST_GLOW");
 
     protected IStructureDefinition<MTEPreciseAssembler> multiDefinition = null;
     protected int casingAmount;

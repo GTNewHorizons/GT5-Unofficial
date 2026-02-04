@@ -73,8 +73,8 @@ public class MTEHatchUncertainty extends MTEHatch implements IAddGregtechLogo, I
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/UC");
-        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/UC_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/UC");
+        ScreenON = Textures.BlockIcons.custom("iconsets/UC_ACTIVE");
     }
 
     @Override

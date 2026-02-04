@@ -190,7 +190,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase imp
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        engraving = Textures.BlockIcons.CustomIcon.create("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
+        engraving = Textures.BlockIcons.custom("iconsets/OVERLAY_SIDE_ASSEMBLER_MODULE");
         super.registerIcons(aBlockIconRegister);
     }
 

@@ -97,8 +97,8 @@ public class MTEHatchRack extends MTEHatch implements IAddGregtechLogo, IAddUIWi
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_R_ACTIVE = Textures.BlockIcons.CustomIcon.create("iconsets/EM_RACK_ACTIVE");
-        EM_R = Textures.BlockIcons.CustomIcon.create("iconsets/EM_RACK");
+        EM_R_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_RACK_ACTIVE");
+        EM_R = Textures.BlockIcons.custom("iconsets/EM_RACK");
     }
 
     @Override

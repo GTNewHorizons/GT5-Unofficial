@@ -220,7 +220,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/GODFORGE_CONTROLLER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_CONTROLLER");
         super.registerIcons(aBlockIconRegister);
     }
 

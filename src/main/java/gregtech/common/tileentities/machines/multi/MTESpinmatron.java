@@ -104,11 +104,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static final IIconContainer TEXTURE_CONTROLLER = Textures.BlockIcons.CustomIcon.create("iconsets/TFFT");
-    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = Textures.BlockIcons.CustomIcon
-        .create("iconsets/TFFT_ACTIVE");
-    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = Textures.BlockIcons.CustomIcon
-        .create("iconsets/TFFT_ACTIVE_GLOW");
+    private static final IIconContainer TEXTURE_CONTROLLER = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = Textures.BlockIcons
+        .custom("iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
 
     private boolean staticAnimations = false;

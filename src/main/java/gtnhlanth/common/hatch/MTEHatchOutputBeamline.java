@@ -20,9 +20,9 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements
     private static final String sideIconPath = "iconsets/OVERLAY_BO_SIDES";
     private static final String connIconPath = "iconsets/BO_CONN";
 
-    private static final IIconContainer activeIcon = Textures.BlockIcons.CustomIcon.create(activeIconPath);
-    private static final IIconContainer sideIcon = Textures.BlockIcons.CustomIcon.create(sideIconPath);
-    private static final IIconContainer connIcon = Textures.BlockIcons.CustomIcon.create(connIconPath);
+    private static final IIconContainer activeIcon = Textures.BlockIcons.custom(activeIconPath);
+    private static final IIconContainer sideIcon = Textures.BlockIcons.custom(sideIconPath);
+    private static final IIconContainer connIcon = Textures.BlockIcons.custom(connIconPath);
 
     public MTEHatchOutputBeamline(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, "");

@@ -25,9 +25,8 @@ import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
 
 public class MTENeutronSensor extends MTEHatch {
 
-    private static final IIconContainer textureFont = Textures.BlockIcons.CustomIcon.create("icons/NeutronSensorFont");
-    private static final IIconContainer textureFont_Glow = Textures.BlockIcons.CustomIcon
-        .create("icons/NeutronSensorFont_GLOW");
+    private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/NeutronSensorFont");
+    private static final IIconContainer textureFont_Glow = Textures.BlockIcons.custom("icons/NeutronSensorFont_GLOW");
 
     protected int threshold = 0;
     protected boolean inverted = false;

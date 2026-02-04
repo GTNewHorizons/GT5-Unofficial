@@ -1135,8 +1135,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/EM_BHG");
-        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/EM_BHG_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_BHG");
+        ScreenON = Textures.BlockIcons.custom("iconsets/EM_BHG_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 

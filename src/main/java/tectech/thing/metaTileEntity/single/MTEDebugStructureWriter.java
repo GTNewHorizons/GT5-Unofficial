@@ -70,7 +70,7 @@ public class MTEDebugStructureWriter extends MTETieredMachineBlock implements IA
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        MARK = TextureFactory.of(Textures.BlockIcons.CustomIcon.create("iconsets/MARK"));
+        MARK = TextureFactory.of(Textures.BlockIcons.custom("iconsets/MARK"));
     }
 
     @Override

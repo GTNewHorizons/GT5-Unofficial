@@ -54,8 +54,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons.CustomIcon
-        .create("iconsets/TFFT_HATCH");
+    private static final IIconContainer TEXTURE_TFFT_HATCH = Textures.BlockIcons.custom("iconsets/TFFT_HATCH");
 
     private HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private MTETankTFFT controller;

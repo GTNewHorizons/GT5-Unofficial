@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,9 +17,9 @@ import gregtech.api.render.TextureFactory;
 
 public abstract class MTEBaseFactoryHatch extends MTEHatch {
 
-    public static final IIconContainer EM_D_ACTIVE = CustomIcon.create("iconsets/OVERLAY_EM_D_ACTIVE");
-    public static final IIconContainer EM_D_SIDES = CustomIcon.create("iconsets/OVERLAY_EM_D_SIDES");
-    public static final IIconContainer EM_D_CONN = CustomIcon.create("iconsets/EM_DATA_CONN");
+    public static final IIconContainer EM_D_ACTIVE = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_ACTIVE");
+    public static final IIconContainer EM_D_SIDES = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_SIDES");
+    public static final IIconContainer EM_D_CONN = Textures.BlockIcons.custom("iconsets/EM_DATA_CONN");
 
     protected MTEBaseFactoryHatch(MTEBaseFactoryHatch prototype) {
         super(prototype.mName, prototype.mTier, 0, prototype.mDescriptionArray, prototype.mTextures);

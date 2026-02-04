@@ -413,8 +413,8 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements IConstru
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenON = Textures.BlockIcons.CustomIcon.create("iconsets/GODFORGE_MODULE_ACTIVE");
-        ScreenOFF = Textures.BlockIcons.CustomIcon.create("iconsets/SCREEN_OFF");
+        ScreenON = Textures.BlockIcons.custom("iconsets/GODFORGE_MODULE_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/SCREEN_OFF");
         super.registerIcons(aBlockIconRegister);
     }
 
