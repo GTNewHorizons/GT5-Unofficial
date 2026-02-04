@@ -1,12 +1,20 @@
 package gregtech.common.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.V;
+
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -27,6 +36,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
@@ -35,6 +45,7 @@ import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.ToolboxSelectGuiFactory;
 import gregtech.api.net.GTPacketToolboxEvent;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.item.ToolboxInventoryGui;
 import gregtech.crossmod.backhand.Backhand;
@@ -161,20 +172,63 @@ public class ItemToolbox extends GTGenericItem
 
                     //noinspection SimplifyOptionalCallChains
                     return toolMode > 0
-                            ? StatCollector.translateToLocalFormatted(
-                                "GT5U.item.toolbox.name_template.mode",
-                                base,
-                                toolName,
-                                potentialTool.map(currentTool -> currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem
-                                    ? mgToolItem.getToolModeName(currentTool)
-                                    : "").orElse(""))
-                            : StatCollector
-                                .translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
+                        ? StatCollector.translateToLocalFormatted(
+                        "GT5U.item.toolbox.name_template.mode",
+                        base,
+                        toolName,
+                        potentialTool.map(currentTool -> currentTool.getItem() instanceof final MetaGeneratedTool mgToolItem
+                            ? mgToolItem.getToolModeName(currentTool)
+                            : "").orElse(""))
+                        : StatCollector
+                        .translateToLocalFormatted("GT5U.item.toolbox.name_template", base, toolName);
                 })
                 .orElse(base);
         }
 
         return base;
+    }
+
+    @Override
+    public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
+        final boolean f3mode) {
+        final NBTTagCompound tag = toolbox.getTagCompound();
+        final boolean hasCurrentTool = tag != null && tag.hasKey(CURRENT_TOOL_NBT_KEY)
+            && tag.getInteger(CURRENT_TOOL_NBT_KEY) > NO_TOOL_SELECTED;
+
+        // TODO: Add information and author byline
+
+        final GameSettings settings = Minecraft.getMinecraft().gameSettings;
+
+        if (!hasCurrentTool) {
+            tooltipList.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.item.toolbox.tooltip.open_toolbox",
+                    GameSettings.getKeyDisplayString(settings.keyBindUseItem.getKeyCode())));
+        }
+
+        tooltipList.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.item.toolbox.tooltip.select_tool",
+                GameSettings.getKeyDisplayString(settings.keyBindPickBlock.getKeyCode())));
+
+        if (hasCurrentTool) {
+            tooltipList.add(
+                StatCollector.translateToLocalFormatted(
+                    "gt.behaviour.switch_mode.tooltip",
+                    GameSettings.getKeyDisplayString(GTMod.proxy.TOOL_MODE_SWITCH_KEYBIND.getKeyCode())));
+        }
+
+        withBatteryAndManager(toolbox, (battery, manager) -> {
+            final IElectricItem batteryItem = Objects.requireNonNull((IElectricItem) battery.getItem());
+            final int voltageTier = GTUtility.clamp(batteryItem.getTier(battery), 0, V.length - 1);
+
+            tooltipList.add(
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "gt.item.desc.eu_info",
+                    formatNumber(manager.getCharge(battery)),
+                    formatNumber(batteryItem.getMaxCharge(battery)),
+                    formatNumber(V[voltageTier])));
+        });
     }
 
     @Override
@@ -288,6 +342,21 @@ public class ItemToolbox extends GTGenericItem
                     .setTag(CONTENTS_NBT_KEY, handler.serializeNBT());
             }
         });
+    }
+
+    /**
+     * Helper method for getting the currently equipped tool.
+     *
+     * @param toolbox The ItemStack of the toolbox
+     * @return The equipped tool, or empty if one isn't equipped
+     */
+    public static Optional<ItemStack> getSelectedTool(final ItemStack toolbox) {
+        if (toolbox == null || !(toolbox.getItem() instanceof ItemToolbox)) {
+            return Optional.empty();
+        }
+
+        ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
+        return handler.getCurrentTool();
     }
 
     /**
@@ -407,6 +476,20 @@ public class ItemToolbox extends GTGenericItem
         return getBattery(toolbox).map(battery -> battery.getItem() instanceof final IElectricItem item ? item.getTransferLimit(battery) : 0d).orElse(0d);
     }
 
+    @Override
+    public int getTier(final ItemStack toolbox) {
+        return getBattery(toolbox).map(battery -> {
+            if (GTModHandler.isElectricItem(battery)) {
+                final IElectricItem item = (IElectricItem) battery.getItem();
+                return item == null ? null : item.getTier(battery);
+            }
+
+            return null;
+        })
+            .orElse(0);
+
+    }
+
     /**
      * Get the {@link IElectricItemManager} for the battery inside a toolbox.
      *
@@ -422,6 +505,21 @@ public class ItemToolbox extends GTGenericItem
 
         return stack.flatMap(ItemToolbox::getElectricManager)
             .map(manager -> mapper.apply(stack.get(), manager));
+    }
+
+    /**
+     * Get the {@link IElectricItemManager} for the battery inside a toolbox and runs an action with no return value.
+     * 
+     * @param toolbox The toolbox to search
+     * @param action  A function to run if a battery is found inside the toolbox.
+     *                Arguments are the battery's {@link ItemStack} and its manager.
+     */
+    private static void withBatteryAndManager(final ItemStack toolbox,
+        BiConsumer<? super ItemStack, ? super IElectricItemManager> action) {
+        final Optional<ItemStack> stack = getBattery(toolbox);
+
+        stack.flatMap(ItemToolbox::getElectricManager)
+            .ifPresent(manager -> action.accept(stack.get(), manager));
     }
 
     /**

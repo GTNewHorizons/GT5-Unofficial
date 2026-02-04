@@ -117,6 +117,7 @@ import gregtech.common.render.WormholeRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
+import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
@@ -344,6 +345,8 @@ public class GTClient extends GTProxy {
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_8k.getItem(), flaskRenderer);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.VOLUMETRIC_FLASK_32k.getItem(), flaskRenderer);
         MinecraftForgeClient.registerItemRenderer(GregtechItemList.KLEIN_BOTTLE.getItem(), flaskRenderer);
+
+        MinecraftForgeClient.registerItemRenderer(ItemList.ToolBox.getItem(), new ToolboxRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemList.Display_Fluid.getItem(), new FluidDisplayStackRenderer());
         MetaGeneratedItemRenderer.registerSpecialRenderer(ItemList.Tool_DataStick, new DataStickRenderer());

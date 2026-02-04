@@ -86,8 +86,6 @@ public class ToolboxInventoryGui {
                     : new ModularSlot(inv, index));
         }
 
-        // syncManager.registerSlotGroup(SLOT_GROUP_SYNC_NAME, itemHandler.getSlots());
-
         Flow column = Flow.column()
             .sizeRel(1);
         column.child(

@@ -10,7 +10,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.objects.GTHashSet;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemToolbox;
 
@@ -20,14 +22,10 @@ import gregtech.common.items.ItemToolbox;
  */
 public enum ToolboxSlot {
 
-    WRENCH(0, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sWrenchList),
-        GTGuiTextures.OVERLAY_TOOLBOX_WRENCH),
-    WIRE_CUTTER(1, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sWireCutterList),
-        GTGuiTextures.OVERLAY_TOOLBOX_WIRE_CUTTER),
-    SCREWDRIVER(2, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sScrewdriverList),
-        GTGuiTextures.OVERLAY_TOOLBOX_SCREWDRIVER),
-    SOFT_MALLET(3, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSoftMalletList),
-        GTGuiTextures.OVERLAY_TOOLBOX_SOFT_MALLET),
+    WRENCH(0, isItemInToolSet(GregTechAPI.sWrenchList), GTGuiTextures.OVERLAY_TOOLBOX_WRENCH),
+    WIRE_CUTTER(1, isItemInToolSet(GregTechAPI.sWireCutterList), GTGuiTextures.OVERLAY_TOOLBOX_WIRE_CUTTER),
+    SCREWDRIVER(2, isItemInToolSet(GregTechAPI.sScrewdriverList), GTGuiTextures.OVERLAY_TOOLBOX_SCREWDRIVER),
+    SOFT_MALLET(3, isItemInToolSet(GregTechAPI.sSoftMalletList), GTGuiTextures.OVERLAY_TOOLBOX_SOFT_MALLET),
 
     GENERIC_SLOT0(4),
     GENERIC_SLOT1(5),
@@ -35,16 +33,16 @@ public enum ToolboxSlot {
 
     // Charges any item in the toolbox.
     BATTERY(7, OrePrefixes.battery::containsUnCached, GTGuiTextures.OVERLAY_TOOLBOX_BATTERY),
-    HARD_HAMMER(8, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sHardHammerList),
-        GTGuiTextures.OVERLAY_TOOLBOX_HARD_HAMMER),
-    CROWBAR(9, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sCrowbarList),
-        GTGuiTextures.OVERLAY_TOOLBOX_CROWBAR),
-    SOLDERING_IRON(10, itemStack -> GTUtility.isStackInList(itemStack, GregTechAPI.sSolderingToolList),
-        GTGuiTextures.OVERLAY_TOOLBOX_SOLDERING_IRON),
+    HARD_HAMMER(8, isItemInToolSet(GregTechAPI.sHardHammerList), GTGuiTextures.OVERLAY_TOOLBOX_HARD_HAMMER),
+    CROWBAR(9, isItemInToolSet(GregTechAPI.sCrowbarList), GTGuiTextures.OVERLAY_TOOLBOX_CROWBAR),
+    SOLDERING_IRON(10, isItemInToolSet(GregTechAPI.sSolderingToolList), GTGuiTextures.OVERLAY_TOOLBOX_SOLDERING_IRON),
 
     GENERIC_SLOT3(11),
     GENERIC_SLOT4(12),
-    GENERIC_SLOT5(13),;
+    GENERIC_SLOT5(13),
+
+    // merge conflict defeater comment
+    ;
 
     public static final ImmutableList<ToolboxSlot> GENERIC_SLOTS = ImmutableList
         .of(GENERIC_SLOT0, GENERIC_SLOT1, GENERIC_SLOT2, GENERIC_SLOT3, GENERIC_SLOT4, GENERIC_SLOT5);
@@ -95,7 +93,6 @@ public enum ToolboxSlot {
             return false;
         }
 
-        // TODO: Also do not allow single-use tools in the tool slots
         return itemStackTest.test(stack);
     }
 
@@ -132,5 +129,15 @@ public enum ToolboxSlot {
     public static boolean slotIsTool(int slot) {
         return getBySlot(slot).map(ToolboxSlot::isTool)
             .orElse(false);
+    }
+
+    private static Predicate<ItemStack> isItemInToolSet(GTHashSet toolSet) {
+        return (ItemStack itemStack) -> {
+            if (!(itemStack.getItem() instanceof MetaGeneratedTool)) {
+                return false;
+            }
+
+            return GTUtility.isStackInList(itemStack, toolSet);
+        };
     }
 }
