@@ -78,17 +78,15 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
         Block block = itemBlock.field_150939_a;
 
-        if (block instanceof GTBlockOre) return;
-        if (block instanceof BWMetaGeneratedOres) return;
-        if (block instanceof BlockBaseOre) return;
+        if (isGTOre(block)) return;
 
         ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(event.Ore.getItemDamage()));
 
         for (OrePrefixes ore : ORE_ORE_PREFIXES) {
-            if (!event.Name.startsWith(ore.name())) continue;
+            if (!event.Name.startsWith(ore.getName())) continue;
 
             String matName = event.Name.substring(
-                ore.name()
+                ore.getName()
                     .length());
 
             Materials mat = Materials.get(matName);
@@ -100,13 +98,21 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
         }
     }
 
+    /// Checks if the ore block is a GT block, which means that it should be supported by another adapter. These blocks
+    /// will not be indexed when their ore dictionary names are added.
+    private static boolean isGTOre(Block block) {
+        if (block instanceof GTBlockOre) return true;
+        if (block instanceof BWMetaGeneratedOres) return true;
+        return block instanceof BlockBaseOre;
+    }
+
     private static void init() {
         for (String name : OreDictionary.getOreNames()) {
             for (OrePrefixes prefix : ORE_ORE_PREFIXES) {
-                if (!name.startsWith(prefix.name())) continue;
+                if (!name.startsWith(prefix.getName())) continue;
 
                 String matName = name.substring(
-                    prefix.name()
+                    prefix.getName()
                         .length());
 
                 Materials mat = Materials.get(matName);
@@ -118,9 +124,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
 
                     Block block = itemBlock.field_150939_a;
 
-                    if (block instanceof GTBlockOre) return;
-                    if (block instanceof BWMetaGeneratedOres) return;
-                    if (block instanceof BlockBaseOre) return;
+                    if (isGTOre(block)) return;
 
                     ImmutableBlockMeta bm = new BlockMeta(block, itemBlock.getMetadata(ore.getItemDamage()));
 
