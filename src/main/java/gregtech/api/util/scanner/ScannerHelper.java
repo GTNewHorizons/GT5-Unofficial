@@ -343,10 +343,10 @@ public class ScannerHelper {
     private static int addIC2Info(List<String> list, TileEntity tileEntity) {
         int euAmount = 0;
         try {
-            list.add(addTitle("title_ic2_info"));
+            List<String> tempList = new ArrayList<>();
             if (tileEntity instanceof IEnergyConductor conductor) {
                 euAmount += 200;
-                list.add(trans("ic2_info_1", conductor.getConductionLoss()));
+                tempList.add(trans("ic2_info_1", conductor.getConductionLoss()));
             }
 
             if (tileEntity instanceof IEnergyStorage storage) {
@@ -354,8 +354,14 @@ public class ScannerHelper {
                 String currStored = formatNumber(storage.getStored());
                 String maxStored = formatNumber(storage.getCapacity());
 
-                list.add(trans("ic2_info_2", currStored, maxStored));
+                tempList.add(trans("ic2_info_2", currStored, maxStored));
             }
+
+            if (!tempList.isEmpty()) {
+                list.add(addTitle("title_ic2_info"));
+                list.addAll(tempList);
+            }
+
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_ic2_info"));
             if (D1) e.printStackTrace(GTLog.err);
