@@ -20,17 +20,23 @@ public class MTEWetTransformer extends MTETransformer {
 
     private boolean mHalfMode = false;
 
+    public MTEWetTransformer(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
+    @Deprecated
     public MTEWetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEWetTransformer(mName, mTier, mDescriptionArray, mTextures);
+        return new MTEWetTransformer(getPrototype());
     }
 
     @Override

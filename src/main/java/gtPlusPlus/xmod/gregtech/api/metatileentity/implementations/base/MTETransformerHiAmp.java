@@ -20,10 +20,16 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     private boolean mHalfMode = false;
 
+    public MTETransformerHiAmp(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTETransformerHiAmp(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
+    @Deprecated
     public MTETransformerHiAmp(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
@@ -83,7 +89,7 @@ public class MTETransformerHiAmp extends MTETransformer {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTETransformerHiAmp(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTETransformerHiAmp(getPrototype());
     }
 
     @Override

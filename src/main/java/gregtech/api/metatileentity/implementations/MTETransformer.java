@@ -41,10 +41,16 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  */
 public class MTETransformer extends MTETieredMachineBlock {
 
+    public MTETransformer(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTETransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
         super(aID, aName, aNameRegional, aTier, 0, aDescription);
     }
 
+    @Deprecated
     public MTETransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -90,7 +96,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTETransformer(mName, mTier, mDescriptionArray, mTextures);
+        return new MTETransformer(getPrototype());
     }
 
     @Override

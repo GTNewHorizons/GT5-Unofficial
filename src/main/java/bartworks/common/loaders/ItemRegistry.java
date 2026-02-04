@@ -65,6 +65,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.api.item.IKineticRotor;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
@@ -336,10 +337,12 @@ public class ItemRegistry {
                 StatCollector.translateToLocal("tile.diode.name") + " 16A " + GTValues.VN[i],
                 i).getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
-                EnergyDistributors[i],
-                "energydistributor" + GTValues.VN[i],
-                StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i],
-                i).getStackForm(1L);
+                MTETieredMachineBlock.Args.builder()
+                    .id(EnergyDistributors[i])
+                    .translateKey("energydistributor" + GTValues.VN[i])
+                    .nameEnglish(StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i])
+                    .tier(i)
+                    .build()).getStackForm(1L);
         }
 
         ItemRegistry.acidGens[0] = new MTEAcidGenerator(

@@ -1960,47 +1960,77 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_BuckConverter_IV.set(
-            new MTEBuckConverter(InsaneBuckConverter.ID, "machine.tt.buck.05", "Insane Buck Converter", 5)
-                .getStackForm(1L));
+            new MTEBuckConverter(
+                MTETieredMachineBlock.Args.builder()
+                    .id(InsaneBuckConverter.ID)
+                    .translateKey("machine.tt.buck.05")
+                    .nameEnglish("Insane Buck Converter")
+                    .tier(5)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_LuV.set(
-            new MTEBuckConverter(LudicrousBuckConverter.ID, "machine.tt.buck.06", "Ludicrous Buck Converter", 6)
-                .getStackForm(1L));
+            new MTEBuckConverter(
+                MTETieredMachineBlock.Args.builder()
+                    .id(LudicrousBuckConverter.ID)
+                    .translateKey("machine.tt.buck.06")
+                    .nameEnglish("Ludicrous Buck Converter")
+                    .tier(6)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_ZPM.set(
-            new MTEBuckConverter(ZPMVoltageBuckConverter.ID, "machine.tt.buck.07", "ZPM Voltage Buck Converter", 7)
-                .getStackForm(1L));
+            new MTEBuckConverter(
+                MTETieredMachineBlock.Args.builder()
+                    .id(ZPMVoltageBuckConverter.ID)
+                    .translateKey("machine.tt.buck.07")
+                    .nameEnglish("ZPM Voltage Buck Converter")
+                    .tier(7)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_UV.set(
             new MTEBuckConverter(
-                UltimatePowerBuckConverter.ID,
-                "machine.tt.buck.08",
-                "Ultimate Power Buck Converter",
-                8).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(UltimatePowerBuckConverter.ID)
+                    .translateKey("machine.tt.buck.08")
+                    .nameEnglish("Ultimate Power Buck Converter")
+                    .tier(8)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_UHV.set(
             new MTEBuckConverter(
-                HighlyUltimateBuckConverter.ID,
-                "machine.tt.buck.09",
-                "Highly Ultimate Buck Converter",
-                9).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(HighlyUltimateBuckConverter.ID)
+                    .translateKey("machine.tt.buck.09")
+                    .nameEnglish("Highly Ultimate Buck Converter")
+                    .tier(9)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_UEV.set(
             new MTEBuckConverter(
-                ExtremelyUltimateBuckConverter.ID,
-                "machine.tt.buck.10",
-                "Extremely Ultimate Buck Converter",
-                10).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(ExtremelyUltimateBuckConverter.ID)
+                    .translateKey("machine.tt.buck.10")
+                    .nameEnglish("Extremely Ultimate Buck Converter")
+                    .tier(10)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_UIV.set(
             new MTEBuckConverter(
-                InsanelyUltimateBuckConverter.ID,
-                "machine.tt.buck.11",
-                "Insanely Ultimate Buck Converter",
-                11).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(InsanelyUltimateBuckConverter.ID)
+                    .translateKey("machine.tt.buck.11")
+                    .nameEnglish("Insanely Ultimate Buck Converter")
+                    .tier(11)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_UMV.set(
-            new MTEBuckConverter(MegaUltimateBuckConverter.ID, "machine.tt.buck.12", "Mega Ultimate Buck Converter", 12)
-                .getStackForm(1L));
+            new MTEBuckConverter(
+                MTETieredMachineBlock.Args.builder()
+                    .id(MegaUltimateBuckConverter.ID)
+                    .translateKey("machine.tt.buck.12")
+                    .nameEnglish("Mega Ultimate Buck Converter")
+                    .tier(12)
+                    .build()).getStackForm(1L));
         Machine_BuckConverter_UXV.set(
             new MTEBuckConverter(
-                ExtendedMegaUltimateBuckConverter.ID,
-                "machine.tt.buck.13",
-                "Extended Mega Ultimate Buck Converter",
-                13).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(ExtendedMegaUltimateBuckConverter.ID)
+                    .translateKey("machine.tt.buck.13")
+                    .nameEnglish("Extended Mega Ultimate Buck Converter")
+                    .tier(13)
+                    .build()).getStackForm(1L));
 
         // ===================================================================================================
         // Tesla Transceiver

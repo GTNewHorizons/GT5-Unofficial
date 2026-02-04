@@ -55,6 +55,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -87,7 +88,13 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     public long mSoundRequests = 0;
 
     // TODO: make it final when all deprecated ctors are removed
-    protected Args prototype;
+    /**
+     * The args passed in when instantiating.
+     *
+     * @see #getPrototype()
+     */
+    @Getter
+    private Args prototype;
 
     @Data
     @NoArgsConstructor

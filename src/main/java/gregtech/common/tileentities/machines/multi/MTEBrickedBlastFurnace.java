@@ -207,7 +207,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEBrickedBlastFurnace(prototype);
+        return new MTEBrickedBlastFurnace(getPrototype());
     }
 
     @Override

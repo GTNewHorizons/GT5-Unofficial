@@ -111,6 +111,11 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     }
 
     @Override
+    public Args getPrototype() {
+        return (Args) super.getPrototype();
+    }
+
+    @Override
     public byte getTileEntityBaseType() {
         if (mTier <= 0) return HarvestTool.WrenchLevel0.toTileEntityBaseType();
 

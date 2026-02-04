@@ -65,7 +65,7 @@ public class MTEOwnerDetector extends MTETieredMachineBlock {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEOwnerDetector((Args) prototype);
+        return new MTEOwnerDetector(getPrototype());
     }
 
     @Override

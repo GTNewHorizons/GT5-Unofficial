@@ -26,6 +26,28 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
     private int playersConnected;
     private int range = -1;
 
+    public MTEMagLevPylon(Args args) {
+        super(
+            args.toBuilder()
+                .descriptionArray(
+                    new String[] { "Grants creative flight to everyone wearing a MagLev Harness in range.",
+                        "Range is a cube centered on the pylon.",
+                        String.format(
+                            "Unpowered Range: %s%d blocks",
+                            EnumChatFormatting.WHITE,
+                            getPylonRange(args.getTier(), false)),
+                        String.format(
+                            "Powered Range: %s%d blocks (%s%d EU/t%s)",
+                            EnumChatFormatting.WHITE,
+                            getPylonRange(args.getTier(), true),
+                            EnumChatFormatting.GREEN,
+                            getPylonPowerCost(args.getTier()),
+                            EnumChatFormatting.WHITE),
+                        "Only consumes power while any players are tethered." })
+                .build());
+    }
+
+    @Deprecated
     public MTEMagLevPylon(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -46,6 +68,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
                 "Only consumes power while any players are tethered." });
     }
 
+    @Deprecated
     public MTEMagLevPylon(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
@@ -100,12 +123,7 @@ public class MTEMagLevPylon extends MTETieredMachineBlock {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMagLevPylon(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new MTEMagLevPylon(getPrototype());
     }
 
     @Override

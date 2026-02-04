@@ -24,17 +24,23 @@ import gregtech.api.metatileentity.implementations.MTETransformer;
 
 public class MTEEnergyDistributor extends MTETransformer {
 
+    public MTEEnergyDistributor(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEEnergyDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, null);
     }
 
+    @Deprecated
     public MTEEnergyDistributor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEEnergyDistributor(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new MTEEnergyDistributor(getPrototype());
     }
 
     @Override

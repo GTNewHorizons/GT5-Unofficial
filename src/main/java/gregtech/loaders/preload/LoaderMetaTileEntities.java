@@ -73,6 +73,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.metatileentity.implementations.MTETransformer;
 import gregtech.api.metatileentity.implementations.MTEWetTransformer;
 import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
@@ -1657,14 +1658,29 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerMagLevPylon() {
         ItemList.MagLevPython_MV.set(
-            new MTEMagLevPylon(MAGLEV_PYLON_MV.ID, "basicmachine.maglev.tier.02", "Advanced MagLev Pylon", 2)
-                .getStackForm(1L));
+            new MTEMagLevPylon(
+                MTETieredMachineBlock.Args.builder()
+                    .id(MAGLEV_PYLON_MV.ID)
+                    .translateKey("basicmachine.maglev.tier.02")
+                    .nameEnglish("Advanced MagLev Pylon")
+                    .tier(2)
+                    .build()).getStackForm(1L));
         ItemList.MagLevPython_HV.set(
-            new MTEMagLevPylon(MAGLEV_PYLON_HV.ID, "basicmachine.maglev.tier.03", "Advanced MagLev Pylon II", 3)
-                .getStackForm(1L));
+            new MTEMagLevPylon(
+                MTETieredMachineBlock.Args.builder()
+                    .id(MAGLEV_PYLON_HV.ID)
+                    .translateKey("basicmachine.maglev.tier.03")
+                    .nameEnglish("Advanced MagLev Pylon II")
+                    .tier(3)
+                    .build()).getStackForm(1L));
         ItemList.MagLevPython_EV.set(
-            new MTEMagLevPylon(MAGLEV_PYLON_EV.ID, "basicmachine.maglev.tier.04", "Advanced MagLev Pylon III", 4)
-                .getStackForm(1L));
+            new MTEMagLevPylon(
+                MTETieredMachineBlock.Args.builder()
+                    .id(MAGLEV_PYLON_EV.ID)
+                    .translateKey("basicmachine.maglev.tier.04")
+                    .nameEnglish("Advanced MagLev Pylon III")
+                    .tier(4)
+                    .build()).getStackForm(1L));
     }
 
     private void registerWorldAccelerator() {
@@ -2208,106 +2224,134 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private static void registerTransformer() {
         ItemList.Transformer_LV_ULV.set(
             new MTETransformer(
-                transformer_LV_ULV.ID,
-                "transformer.tier.00",
-                "Ultra Low Voltage Transformer",
-                0,
-                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_LV_ULV.ID)
+                    .translateKey("transformer.tier.00")
+                    .nameEnglish("Ultra Low Voltage Transformer")
+                    .tier(0)
+                    .descriptionArray(new String[] { "LV -> ULV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_MV_LV.set(
             new MTETransformer(
-                transformer_MV_LV.ID,
-                "transformer.tier.01",
-                "Low Voltage Transformer",
-                1,
-                "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_MV_LV.ID)
+                    .translateKey("transformer.tier.01")
+                    .nameEnglish("Low Voltage Transformer")
+                    .tier(1)
+                    .descriptionArray(new String[] { "MV -> LV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_HV_MV.set(
             new MTETransformer(
-                transformer_HV_MV.ID,
-                "transformer.tier.02",
-                "Medium Voltage Transformer",
-                2,
-                "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_HV_MV.ID)
+                    .translateKey("transformer.tier.02")
+                    .nameEnglish("Medium Voltage Transformer")
+                    .tier(2)
+                    .descriptionArray(new String[] { "HV -> MV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_EV_HV.set(
             new MTETransformer(
-                transformer_EV_HV.ID,
-                "transformer.tier.03",
-                "High Voltage Transformer",
-                3,
-                "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_EV_HV.ID)
+                    .translateKey("transformer.tier.03")
+                    .nameEnglish("High Voltage Transformer")
+                    .tier(3)
+                    .descriptionArray(new String[] { "EV -> HV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_IV_EV.set(
             new MTETransformer(
-                transformer_IV_EV.ID,
-                "transformer.tier.04",
-                "Extreme Transformer",
-                4,
-                "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_IV_EV.ID)
+                    .translateKey("transformer.tier.04")
+                    .nameEnglish("Extreme Transformer")
+                    .tier(4)
+                    .descriptionArray(new String[] { "IV -> EV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_LuV_IV.set(
             new MTETransformer(
-                transformer_LuV_IV.ID,
-                "transformer.tier.05",
-                "Insane Transformer",
-                5,
-                "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_LuV_IV.ID)
+                    .translateKey("transformer.tier.05")
+                    .nameEnglish("Insane Transformer")
+                    .tier(5)
+                    .descriptionArray(new String[] { "LuV -> IV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_ZPM_LuV.set(
             new MTETransformer(
-                transformer_ZPM_LuV.ID,
-                "transformer.tier.06",
-                "Ludicrous Transformer",
-                6,
-                "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_ZPM_LuV.ID)
+                    .translateKey("transformer.tier.06")
+                    .nameEnglish("Ludicrous Transformer")
+                    .tier(6)
+                    .descriptionArray(new String[] { "ZPM -> LuV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_UV_ZPM.set(
             new MTETransformer(
-                transformer_UV_ZPM.ID,
-                "transformer.tier.07",
-                "ZPM Voltage Transformer",
-                7,
-                "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_UV_ZPM.ID)
+                    .translateKey("transformer.tier.07")
+                    .nameEnglish("ZPM Voltage Transformer")
+                    .tier(7)
+                    .descriptionArray(new String[] { "UV -> ZPM (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_MAX_UV.set(
             new MTETransformer(
-                transformer_UHV_UV.ID,
-                "transformer.tier.08",
-                "Ultimate Transformer",
-                8,
-                "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(transformer_UHV_UV.ID)
+                    .translateKey("transformer.tier.08")
+                    .nameEnglish("Ultimate Transformer")
+                    .tier(8)
+                    .descriptionArray(new String[] { "UHV -> UV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_UEV_UHV.set(
             new MTETransformer(
-                TRANSFORMER_UEV_UHV.ID,
-                "transformer.tier.09",
-                "Highly Ultimate Transformer",
-                9,
-                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(TRANSFORMER_UEV_UHV.ID)
+                    .translateKey("transformer.tier.09")
+                    .nameEnglish("Highly Ultimate Transformer")
+                    .tier(9)
+                    .descriptionArray(new String[] { "UEV -> UHV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.Transformer_UIV_UEV.set(
             new MTETransformer(
-                TRANSFORMER_UIV_UEV.ID,
-                "transformer.tier.10",
-                "Extremely Ultimate Transformer",
-                10,
-                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(TRANSFORMER_UIV_UEV.ID)
+                    .translateKey("transformer.tier.10")
+                    .nameEnglish("Extremely Ultimate Transformer")
+                    .tier(10)
+                    .descriptionArray(new String[] { "UIV -> UEV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.Transformer_UMV_UIV.set(
             new MTETransformer(
-                TRANSFORMER_UMV_UIV.ID,
-                "transformer.tier.11",
-                "Insanely Ultimate Transformer",
-                11,
-                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(TRANSFORMER_UMV_UIV.ID)
+                    .translateKey("transformer.tier.11")
+                    .nameEnglish("Insanely Ultimate Transformer")
+                    .tier(11)
+                    .descriptionArray(new String[] { "UMV -> UIV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.Transformer_UXV_UMV.set(
             new MTETransformer(
-                TRANSFORMER_UXV_UMV.ID,
-                "transformer.tier.12",
-                "Mega Ultimate Transformer",
-                12,
-                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(TRANSFORMER_UXV_UMV.ID)
+                    .translateKey("transformer.tier.12")
+                    .nameEnglish("Mega Ultimate Transformer")
+                    .tier(12)
+                    .descriptionArray(new String[] { "UXV -> UMV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.Transformer_MAX_UXV.set(
             new MTETransformer(
-                TRANSFORMER_MAX_UXV.ID,
-                "transformer.tier.13",
-                "Extended Mega Ultimate Transformer",
-                13,
-                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(TRANSFORMER_MAX_UXV.ID)
+                    .translateKey("transformer.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Transformer")
+                    .tier(13)
+                    .descriptionArray(new String[] { "MAX -> UXV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
     }
 
     private void registerChemicalBath() {
@@ -10067,153 +10111,191 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private void registerWetTransformer() {
         ItemList.WetTransformer_LV_ULV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_LV_ULV.ID,
-                "wettransformer.tier.00",
-                "Ultra Low Voltage Power Transformer",
-                0,
-                "LV -> ULV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_LV_ULV.ID)
+                    .translateKey("wettransformer.tier.00")
+                    .nameEnglish("Ultra Low Voltage Power Transformer")
+                    .tier(0)
+                    .descriptionArray(new String[] { "LV -> ULV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_MV_LV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_MV_LV.ID,
-                "wetransformer.tier.01",
-                "Low Voltage Power Transformer",
-                1,
-                "MV -> LV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_MV_LV.ID)
+                    .translateKey("wetransformer.tier.01")
+                    .nameEnglish("Low Voltage Power Transformer")
+                    .tier(1)
+                    .descriptionArray(new String[] { "MV -> LV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_HV_MV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_HV_MV.ID,
-                "wettransformer.tier.02",
-                "Medium Voltage Power Transformer",
-                2,
-                "HV -> MV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_HV_MV.ID)
+                    .translateKey("wettransformer.tier.02")
+                    .nameEnglish("Medium Voltage Power Transformer")
+                    .tier(2)
+                    .descriptionArray(new String[] { "HV -> MV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_EV_HV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_EV_HV.ID,
-                "wettransformer.tier.03",
-                "High Voltage Power Transformer",
-                3,
-                "EV -> HV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_EV_HV.ID)
+                    .translateKey("wettransformer.tier.03")
+                    .nameEnglish("High Voltage Power Transformer")
+                    .tier(3)
+                    .descriptionArray(new String[] { "EV -> HV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_IV_EV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_IV_EV.ID,
-                "wettransformer.tier.04",
-                "Extreme Power Transformer",
-                4,
-                "IV -> EV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_IV_EV.ID)
+                    .translateKey("wettransformer.tier.04")
+                    .nameEnglish("Extreme Power Transformer")
+                    .tier(4)
+                    .descriptionArray(new String[] { "IV -> EV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_LuV_IV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_LuV_IV.ID,
-                "wettransformer.tier.05",
-                "Insane Power Transformer",
-                5,
-                "LuV -> IV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_LuV_IV.ID)
+                    .translateKey("wettransformer.tier.05")
+                    .nameEnglish("Insane Power Transformer")
+                    .tier(5)
+                    .descriptionArray(new String[] { "LuV -> IV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_ZPM_LuV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_ZPM_LuV.ID,
-                "wettransformer.tier.06",
-                "Ludicrous Power Transformer",
-                6,
-                "ZPM -> LuV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_ZPM_LuV.ID)
+                    .translateKey("wettransformer.tier.06")
+                    .nameEnglish("Ludicrous Power Transformer")
+                    .tier(6)
+                    .descriptionArray(new String[] { "ZPM -> LuV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_UV_ZPM.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_UV_ZPM.ID,
-                "wettransformer.tier.07",
-                "ZPM Voltage Power Transformer",
-                7,
-                "UV -> ZPM (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_UV_ZPM.ID)
+                    .translateKey("wettransformer.tier.07")
+                    .nameEnglish("ZPM Voltage Power Transformer")
+                    .tier(7)
+                    .descriptionArray(new String[] { "UV -> ZPM (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_UHV_UV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_UHV_UV.ID,
-                "wettransformer.tier.08",
-                "Ultimate Power Transformer",
-                8,
-                "UHV -> UV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_UHV_UV.ID)
+                    .translateKey("wettransformer.tier.08")
+                    .nameEnglish("Ultimate Power Transformer")
+                    .tier(8)
+                    .descriptionArray(new String[] { "UHV -> UV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_UEV_UHV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_UEV_UHV.ID,
-                "wettransformer.tier.09",
-                "Highly Ultimate Power Transformer",
-                9,
-                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_UEV_UHV.ID)
+                    .translateKey("wettransformer.tier.09")
+                    .nameEnglish("Highly Ultimate Power Transformer")
+                    .tier(9)
+                    .descriptionArray(new String[] { "UEV -> UHV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_UIV_UEV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_UIV_UEV.ID,
-                "wettransformer.tier.10",
-                "Extremely Ultimate Power Transformer",
-                10,
-                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_UIV_UEV.ID)
+                    .translateKey("wettransformer.tier.10")
+                    .nameEnglish("Extremely Ultimate Power Transformer")
+                    .tier(10)
+                    .descriptionArray(new String[] { "UIV -> UEV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_UMV_UIV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_UMV_UIV.ID,
-                "wettransformer.tier.11",
-                "Insanely Ultimate Power Transformer",
-                11,
-                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_UMV_UIV.ID)
+                    .translateKey("wettransformer.tier.11")
+                    .nameEnglish("Insanely Ultimate Power Transformer")
+                    .tier(11)
+                    .descriptionArray(new String[] { "UMV -> UIV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_UXV_UMV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_UXV_UMV.ID,
-                "wettransformer.tier.12",
-                "Mega Ultimate Power Transformer",
-                12,
-                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_UXV_UMV.ID)
+                    .translateKey("wettransformer.tier.12")
+                    .nameEnglish("Mega Ultimate Power Transformer")
+                    .tier(12)
+                    .descriptionArray(new String[] { "UXV -> UMV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
         ItemList.WetTransformer_MAX_UXV.set(
             new MTEWetTransformer(
-                WET_TRANSFORMER_MAX_UXV.ID,
-                "wettransformer.tier.13",
-                "Extended Mega Ultimate Power Transformer",
-                13,
-                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(WET_TRANSFORMER_MAX_UXV.ID)
+                    .translateKey("wettransformer.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Power Transformer")
+                    .tier(13)
+                    .descriptionArray(new String[] { "MAX -> UXV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
     }
 
     private void registerHighAmpTransformer() {
         ItemList.Transformer_HA_UEV_UHV.set(
             new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UEV_UHV.ID,
-                "transformer.ha.tier.09",
-                "Highly Ultimate Hi-Amp Transformer",
-                9,
-                "UEV -> UHV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(HIGH_AMP_TRANSFORMER_UEV_UHV.ID)
+                    .translateKey("transformer.ha.tier.09")
+                    .nameEnglish("Highly Ultimate Hi-Amp Transformer")
+                    .tier(9)
+                    .descriptionArray(new String[] { "UEV -> UHV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_HA_UIV_UEV.set(
             new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UIV_UEV.ID,
-                "transformer.ha.tier.10",
-                "Extremely Ultimate Hi-Amp Transformer",
-                10,
-                "UIV -> UEV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(HIGH_AMP_TRANSFORMER_UIV_UEV.ID)
+                    .translateKey("transformer.ha.tier.10")
+                    .nameEnglish("Extremely Ultimate Hi-Amp Transformer")
+                    .tier(10)
+                    .descriptionArray(new String[] { "UIV -> UEV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_HA_UMV_UIV.set(
             new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UMV_UIV.ID,
-                "transformer.ha.tier.11",
-                "Insanely Ultimate Hi-Amp Transformer",
-                11,
-                "UMV -> UIV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(HIGH_AMP_TRANSFORMER_UMV_UIV.ID)
+                    .translateKey("transformer.ha.tier.11")
+                    .nameEnglish("Insanely Ultimate Hi-Amp Transformer")
+                    .tier(11)
+                    .descriptionArray(new String[] { "UMV -> UIV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_HA_UXV_UMV.set(
             new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_UXV_UMV.ID,
-                "transformer.ha.tier.12",
-                "Mega Ultimate Hi-Amp Transformer",
-                12,
-                "UXV -> UMV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(HIGH_AMP_TRANSFORMER_UXV_UMV.ID)
+                    .translateKey("transformer.ha.tier.12")
+                    .nameEnglish("Mega Ultimate Hi-Amp Transformer")
+                    .tier(12)
+                    .descriptionArray(new String[] { "UXV -> UMV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
         ItemList.Transformer_HA_MAX_UXV.set(
             new MTETransformerHiAmp(
-                HIGH_AMP_TRANSFORMER_MAX_UXV.ID,
-                "transformer.ha.tier.13",
-                "Extended Mega Ultimate Hi-Amp Transformer",
-                13,
-                "MAX -> UXV (Use Soft Mallet to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .id(HIGH_AMP_TRANSFORMER_MAX_UXV.ID)
+                    .translateKey("transformer.ha.tier.13")
+                    .nameEnglish("Extended Mega Ultimate Hi-Amp Transformer")
+                    .tier(13)
+                    .descriptionArray(new String[] { "MAX -> UXV (Use Soft Mallet to invert)" })
+                    .build()).getStackForm(1L));
 
     }
 
