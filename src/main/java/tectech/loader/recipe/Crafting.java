@@ -17,6 +17,12 @@ public class Crafting implements Runnable {
     @Override
     public void run() {
 
+        GTModHandler.addCraftingRecipe(
+            ItemList.ModificationTable.get(1),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "fPR", " RP", "S h", 'P', OrePrefixes.plate.get(Materials.Cobalt), 'R',
+                OrePrefixes.stick.get(Materials.Cobalt), 'S', OrePrefixes.stick.get(Materials.Wood), });
+
         // Front Rotation Tool
         GTModHandler.addCraftingRecipe(
             GTModHandler.getModItem(StructureLibAPI.MOD_ID, "item.structurelib.frontRotationTool", 1L, 0),

@@ -75,6 +75,42 @@ public class AssemblerRecipes implements Runnable {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireFine.get(Materials.EnergeticAlloy), 16L),
+                    getModItem(IndustrialCraft2.ID, "itemPartCarbonPlate", 5))
+                .itemOutputs(ItemList.Mechanical_Helmet.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireFine.get(Materials.EnergeticAlloy), 64L),
+                    getModItem(IndustrialCraft2.ID, "itemPartCarbonPlate", 8))
+                .itemOutputs(ItemList.Mechanical_Chestplate.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireFine.get(Materials.EnergeticAlloy), 32L),
+                    getModItem(IndustrialCraft2.ID, "itemPartCarbonPlate", 7))
+                .itemOutputs(ItemList.Mechanical_Leggings.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.wireFine.get(Materials.EnergeticAlloy), 16L),
+                    getModItem(IndustrialCraft2.ID, "itemPartCarbonPlate", 4))
+                .itemOutputs(ItemList.Mechanical_Boots.get(1))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(assemblerRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                     GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
                 .circuit(1)

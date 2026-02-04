@@ -26,6 +26,39 @@ public class AutoclaveRecipes implements Runnable {
 
     @Override
     public void run() {
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_EnergyCrystal.get(1L))
+            .fluidInputs(Materials.EnergeticAlloy.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.Armor_Core_T1.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.IC2_LapotronCrystal.get(1L))
+            .fluidInputs(Materials.VibrantAlloy.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.Armor_Core_T2.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Energy_LapotronicOrb.get(1L))
+            .fluidInputs(Materials.Europium.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.Armor_Core_T3.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.BatteryHull_UHV_Full.get(1L))
+            .fluidInputs(Materials.Neutronium.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.Armor_Core_T4.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(autoclaveRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Energium_Dust.get(9L))
             .itemOutputs(ItemList.IC2_EnergyCrystal.get(1L))
