@@ -131,6 +131,10 @@ public enum Casings implements ICasing {
     ReboltedIridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
 
+    SolidSteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings2, 0, 16),
+    FrostProofMachineCasing
+        (() -> GregTechAPI.sBlockCasings2, 1, 17),
 
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 4, 0)),

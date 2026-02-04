@@ -433,7 +433,6 @@ gtpp.material.Lutetium=Лютеций
 gtpp.material.Magic=Магический металл
 gtpp.material.Magnesium=Магний
 gtpp.material.Manganese=Марганец
-gtpp.material.ManureByproduct=Побочный продукт навоза
 gtpp.material.MaragingSteel250=Мартенситностареющая сталь 250
 gtpp.material.MaragingSteel300=Мартенситностареющая сталь 300
 gtpp.material.MaragingSteel350=Мартенситностареющая сталь 350
@@ -677,15 +676,6 @@ GTPP.algae.green_algae.name=Зелёные водоросли
 GTPP.algae.red_algae.name=Красные водоросли
 GTPP.algae.brown_algae.name=Бурые водоросли
 GTPP.algae.yellow-green_algae.name=Желто-зелёные водоросли
-
-GTPP.algae.tooltip.requires_light=Требуется свет: %s
-GTPP.algae.tooltip.salt_water=Солёная вода: %s
-GTPP.algae.tooltip.fresh_water=Свежая вода: %s
-GTPP.algae.tooltip.temp_tolerance=Температура: %d
-GTPP.algae.tooltip.growth=Рост: %d
-GTPP.algae.tooltip.production=Производство: %d
-GTPP.algae.tooltip.lifespan=Модификатор срока жизни: %d
-GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Открыть конфигурацию очков
