@@ -117,8 +117,11 @@ public class BlockBaseModular extends BasicBlock {
             case STANDARD -> {
                 return OrePrefixes.block.getName();
             }
-            case FRAME, ORE -> {
+            case FRAME -> {
                 return OrePrefixes.frameGt.getName();
+            }
+            case ORE -> {
+                return OrePrefixes.ore.getName();
             }
         }
         return OrePrefixes.ore.getName();
