@@ -1,20 +1,12 @@
 package gregtech.common.gui.modularui.item;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
-
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
@@ -23,94 +15,47 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import gregtech.common.gui.modularui.multiblock.dronecentre.panel.DroneConnectionListPanel;
 import gregtech.common.gui.modularui.multiblock.dronecentre.panel.ProductionPanel;
-import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
-import gregtech.common.gui.modularui.multiblock.dronecentre.sync.ProductionRecordSyncHandler;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
 public class DroneRemoteInterfaceGUI {
 
-    private final MTEDroneCentre centre;
+    private final MTEDroneCentre multiblock;
     PanelSyncManager pSyncManager;
 
-    public DroneRemoteInterfaceGUI(PanelSyncManager syncManager, MTEDroneCentre centre) {
+    public DroneRemoteInterfaceGUI(PanelSyncManager syncManager, MTEDroneCentre multiblock) {
         if (NetworkUtils.isClient()) {
-            this.centre = new MTEDroneCentre("fakeCentre");
+            this.multiblock = new MTEDroneCentre("fakeCentre");
         } else {
-            this.centre = centre;
+            this.multiblock = multiblock;
         }
         pSyncManager = syncManager;
         registerSyncValues(syncManager);
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
-        syncManager.syncValue("onall", new InteractionSyncHandler().setOnMousePressed(var -> {
-            if (!NetworkUtils.isClient()) {
-                centre.turnOnAll();
-                syncManager.getPlayer()
-                    .closeScreen();
-                syncManager.getPlayer()
-                    .addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.turnon"));
-            }
-        }));
-        syncManager.syncValue("offall", new InteractionSyncHandler().setOnMousePressed(var -> {
-            if (!NetworkUtils.isClient()) {
-                centre.turnOffAll(var.shift);
-                syncManager.getPlayer()
-                    .closeScreen();
-                syncManager.getPlayer()
-                    .addChatComponentMessage(
-                        new ChatComponentTranslation(
-                            var.shift ? "GT5U.machines.dronecentre.forceturnoff"
-                                : "GT5U.machines.dronecentre.turnoff"));
-            }
-        }));
+        DroneCentreGuiUtil.syncDroneValues(syncManager, multiblock);
+    }
 
-        DroneConnectionListSyncHandler droneConnectionListSyncHandler = new DroneConnectionListSyncHandler(
-            centre::getConnectionList);
-        EnumSyncValue<DroneCentreGuiUtil.SortMode> sortModeSyncHandler = new EnumSyncValue<>(
-            DroneCentreGuiUtil.SortMode.class,
-            centre::getSortMode,
-            centre::setSortMode);
-        StringSyncValue searchFilterSyncHandler = new StringSyncValue(
-            centre::getSearchBarText,
-            centre::setSearchBarText);
-        IntSyncValue activeGroupSyncHandler = new IntSyncValue(centre::getActiveGroup, centre::setActiveGroup);
-        BooleanSyncValue searchOriSyncHandler = new BooleanSyncValue(
-            centre::getSearchOriginalName,
-            centre::setSearchOriginalName);
-        BooleanSyncValue editModeSyncHandler = new BooleanSyncValue(centre::getEditMode, centre::setEditMode);
-        BooleanSyncValue updateSyncHandler = new BooleanSyncValue(centre::shouldUpdate, centre::setUpdate);
+    private IWidget createOnButton() {
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(new DrawableStack(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_ON))
+            .syncHandler("onall")
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_poweron_all")));
+    }
 
-        GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
-            () -> centre.group,
-            null,
-            packetBuffer -> packetBuffer.readStringFromBuffer(32768),
-            PacketBuffer::writeStringToBuffer,
-            String::equals,
-            null);
-
-        syncManager.syncValue("droneList", droneConnectionListSyncHandler);
-        syncManager.syncValue("sortMode", sortModeSyncHandler);
-        syncManager.syncValue("searchFilter", searchFilterSyncHandler);
-        syncManager.syncValue("groupNameList", groupSyncHandler);
-        syncManager.syncValue("activeGroup", activeGroupSyncHandler);
-        syncManager.syncValue("searchOri", searchOriSyncHandler);
-        syncManager.syncValue("editMode", editModeSyncHandler);
-        syncManager.syncValue("update", updateSyncHandler);
-
-        IntSyncValue selectTimeSyncHandler = new IntSyncValue(centre::getSelectedTime, centre::setSelectedTime);
-        ProductionRecordSyncHandler productionRecordSyncHandler = new ProductionRecordSyncHandler(
-            () -> centre.productionDataRecorder);
-        syncManager.syncValue("selectTime", selectTimeSyncHandler);
-        syncManager.syncValue("productionRecord", productionRecordSyncHandler);
+    private IWidget createOffButton() {
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(new DrawableStack(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_POWER_SWITCH_OFF))
+            .syncHandler("offall")
+            .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_poweroff_all")));
     }
 
     public ModularPanel build() {
         IPanelHandler productionPanel = pSyncManager
-            .panel("productionPanel", (k, v) -> new ProductionPanel(pSyncManager, centre), true);
+            .panel("productionPanel", (k, v) -> new ProductionPanel(pSyncManager, multiblock), true);
         IPanelHandler machineListPanel = pSyncManager.panel(
             "machineListPanel",
-            (k, v) -> new DroneConnectionListPanel(pSyncManager, centre, productionPanel),
+            (k, v) -> new DroneConnectionListPanel(pSyncManager, multiblock, productionPanel),
             true);
         return new ModularPanel("remoteControl").height(50)
             .width(180)
@@ -126,12 +71,6 @@ public class DroneRemoteInterfaceGUI {
                             .coverChildren()
                             .child(
                                 IKey.lang("GT5U.gui.text.drone_remote_text")
-                                    .asWidget())
-                            .child(
-                                IKey.dynamic(
-                                    () -> centre == null || !centre.isValid()
-                                        ? StatCollector.translateToLocal("GT5U.gui.text.status.offline")
-                                        : StatCollector.translateToLocal("GT5U.gui.text.status.online"))
                                     .asWidget()))
                     .child(
                         Flow.row()
@@ -142,10 +81,12 @@ public class DroneRemoteInterfaceGUI {
                                 new ButtonWidget<>().size(18)
                                     .overlay(GTGuiTextures.BUTTON_STANDARD, GTGuiTextures.OVERLAY_BUTTON_WHITELIST)
                                     .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_open_list")))
-                                    .setEnabledIf(var -> centre == null || !centre.isValid())
+                                    .setEnabledIf(var -> multiblock == null || !multiblock.isValid())
                                     .onMousePressed(mouseButton -> {
                                         machineListPanel.openPanel();
                                         return true;
-                                    }))));
+                                    }))
+                            .child(createOnButton())
+                            .child(createOffButton())));
     }
 }

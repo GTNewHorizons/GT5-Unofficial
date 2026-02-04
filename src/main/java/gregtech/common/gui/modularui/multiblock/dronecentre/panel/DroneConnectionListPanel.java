@@ -194,7 +194,9 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .value(syncManager.findSyncHandler("update", BooleanSyncValue.class))
                     .background(GTGuiTextures.BUTTON_STANDARD)
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CYCLIC)
-                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_pause"))))
+                    .tooltipBuilder(
+                        t -> t.addLine(IKey.lang("GT5U.gui.button.drone_pause.1"))
+                            .addLine(IKey.lang("GT5U.gui.button.drone_pause.2"))))
             .child(new TextFieldWidget() {
 
                 @Override

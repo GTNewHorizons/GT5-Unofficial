@@ -186,17 +186,10 @@ public class DroneConnection {
 
     public static boolean areEqual(DroneConnection a, DroneConnection b) {
         if (a == null || b == null) return false;
-
-        long aTick = a.cachedCentre.getBaseMetaTileEntity()
-            .getTimer();
-        // do sync every 10 ticks
-        if (aTick % 10 == 0) {
-            return a.customName.equals(b.customName) && a.isSelected == b.isSelected
-                && a.machineStatus == b.machineStatus
-                && a.shutdownReason.equals(b.shutdownReason)
-                && a.group == b.group;
-        } else return true;
-
+        return a.customName.equals(b.customName) && a.isSelected == b.isSelected
+            && a.machineStatus == b.machineStatus
+            && a.shutdownReason.equals(b.shutdownReason)
+            && a.group == b.group;
     }
 
     public boolean isActive() {
