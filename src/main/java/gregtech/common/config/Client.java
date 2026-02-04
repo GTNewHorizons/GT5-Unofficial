@@ -7,6 +7,7 @@ import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeCategorySetting;
+import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 
 @Config(modid = Mods.ModIDs.GREG_TECH, category = "client", configSubDirectory = "GregTech", filename = "Client")
 @Config.LangKey("GT5U.gui.config.client")
@@ -36,6 +37,9 @@ public class Client {
     @Config.Comment("Chat message section")
     public static final Chat chat = new Chat();
 
+    @Config.Comment("Tooltip section")
+    public static final Tooltip tooltip = new Tooltip();
+
     public static void save() {
         ConfigurationManager.save(Client.class);
     }
@@ -46,8 +50,11 @@ public class Client {
         @Config.Comment("RGB values for the cable insulation color modulation.")
         public CableInsulation cableInsulation = new CableInsulation();
 
-        @Config.Comment("RGB values for the machine metal color modulation (default GUI color).")
+        @Config.Comment("RGB values for the machine metal color modulation.")
         public MachineMetal machineMetal = new MachineMetal();
+
+        @Config.Comment("RGB values for the gui metal color modulation (default GUI color).")
+        public GuiMetal guiMetal = new GuiMetal();
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.cable_insulation")
         public static class CableInsulation {
@@ -67,6 +74,22 @@ public class Client {
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.machine_metal")
         public static class MachineMetal {
+
+            @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
+            public int red;
+
+            @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
+            public int green;
+
+            @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
+            public int blue;
+        }
+
+        @Config.LangKey("GT5U.gui.config.client.color_modulation.gui_metal")
+        public static class GuiMetal {
 
             @Config.DefaultInt(210)
             @Config.RangeInt(min = 0, max = 255)
@@ -232,6 +255,11 @@ public class Client {
         @Config.Name("Render Powerfail Notifications")
         public boolean renderPowerfailNotifications;
 
+        @Config.DefaultFloat(1.0f)
+        @Config.Name("Powerfail Icon Size")
+        @Config.RangeFloat(min = 0.1f, max = 10f)
+        public float powerfailIconSize;
+
         @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
         @Config.DefaultInt(0)
         @Config.Name("Powerfail Notification Timeout")
@@ -255,6 +283,30 @@ public class Client {
         @Config.Comment("if true, enables showing voltage tier of transformer for Waila, instead of raw voltage number.")
         @Config.DefaultBoolean(false)
         public boolean wailaAverageNS;
+
+        @Config.Comment({ "First color (in hex RGB) of the progress bar.",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("3333DA")
+        public String ProgressBarCustomColor1;
+
+        @Config.Comment({ "Second color (in hex RGB) of the progress bar.",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("2020D0")
+        public String ProgressBarCustomColor2;
+
+        @Config.Comment({ "First color (in hex RGB) of the progress bar's border (top and left).",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("505050")
+        public String ProgressCustomBorderColor1;
+
+        @Config.Comment({ "Second color (in hex RGB) of the progress bar's border (bottom and right).",
+            "Only active when progress bar color is set to Custom" })
+        @Config.DefaultString("505050")
+        public String ProgressCustomBorderColor2;
+
+        @Config.Comment({ "The color preset of the waila progress bar", "Set to Custom to specify your own color" })
+        @Config.DefaultEnum("Green")
+        public TTRenderGTProgressBar.ProgressBarColor ProgressBarColor = TTRenderGTProgressBar.ProgressBarColor.Green;
     }
 
     @Config.LangKey("GT5U.gui.config.client.nei")
@@ -332,5 +384,44 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Print Powerfail Help Text")
         public boolean printPowerfailHelpText;
+    }
+
+    @Config.LangKey("GT5U.gui.config.client.tooltip")
+    public static class Tooltip {
+
+        @Config.Comment("Enabled show Formula")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Formula")
+        public boolean showFormula;
+
+        @Config.Comment("Enabled show Flavor Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Flavor Text")
+        public boolean showFlavorText;
+
+        @Config.Comment("Enabled show GT++ Radioactive Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Radioactive Text")
+        public boolean showRadioactiveText;
+
+        @Config.Comment("Enabled show GT++ Hot Ingot Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Hot Ingot Text")
+        public boolean showHotIngotText;
+
+        @Config.Comment("Enabled show GT++ Ctrl Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Ctrl Text")
+        public boolean showCtrlText;
+
+        @Config.Comment("Enabled show GT++ Ore contains Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Ore contains Text")
+        public boolean showOreContainsText;
+
+        @Config.Comment("Enabled show GT++ Mining Level Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Mining Level Text")
+        public boolean showMiningLevelText;
     }
 }

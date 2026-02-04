@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.classic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -104,8 +106,25 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
         if (this.fuelstack != null && this.fuel == 0) {
             this.fuel = this.maxfuel = TileEntityFurnace.getItemBurnTime(this.fuelstack);
             --this.fuelstack.stackSize;
-            if (this.fuelstack.stackSize <= 0) this.fuelstack = fuelstack.getItem()
+
+            assert fuelstack.getItem() != null;
+            ItemStack containerItem = fuelstack.getItem()
                 .getContainerItem(fuelstack);
+
+            if (fuelstack.stackSize <= 0) {
+                // clear the fuelstack if the fuels are all consumed
+                fuelstack = null;
+            }
+
+            if (containerItem != null) {
+                if (fuelstack == null) {
+                    // replace with the container item
+                    fuelstack = containerItem;
+                } else {
+                    // drop the container to the world if there's more fuels left in the slot
+                    GTUtility.dropItemToBlockPos(worldObj, xCoord, yCoord + 1, zCoord, containerItem);
+                }
+            }
         }
     }
 
@@ -184,8 +203,9 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
+    public boolean canExtractItem(int index, ItemStack item, int side) {
+        // allow extracting leftover items of fuels like buckets
+        return GTUtility.isEmptyFluidContainer(item);
     }
 
     @Override
@@ -331,7 +351,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     public String[] getInfoData() {
         return new String[] {
             StatCollector.translateToLocal("tooltip.tile.waterpump.0.name") + " "
-                + GTUtility.formatNumbers(Configuration.singleBlocks.mbWaterperSec)
+                + formatNumber(Configuration.singleBlocks.mbWaterperSec)
                 + StatCollector.translateToLocalFormatted(
                     "tooltip.tile.waterpump.1.name",
                     PollutionConfig.pollutionHeatedWaterPumpSecond),

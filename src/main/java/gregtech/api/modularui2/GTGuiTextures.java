@@ -40,6 +40,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_BRONZE, GTTextureIds.BACKGROUND_STEEL, GTTextureIds.BACKGROUND_PRIMITIVE)
         .build();
+    public static final UITexture BACKGROUND_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/background/foundry_default")
+        .imageSize(176, 166)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_FOUNDRY)
+        .build();
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -57,7 +64,13 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_TITLE_STEEL,
             GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
         .build();
-
+    public static final UITexture BACKGROUND_TITLE_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_foundry")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .build();
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
         .imageSize(195, 136)
@@ -89,6 +102,20 @@ public final class GTGuiTextures {
         .name(GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
 
+    public static final UITexture FOUNDRY_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/popup_foundry")
+        .imageSize(195, 136)
+        .adaptable(4)
+        .name(GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
+        .build();
+
+    public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
+        .location(GregTech.ID, "gui/background/contributors_foundry")
+        .imageSize(298, 298)
+        .name(GTTextureIds.BACKGROUND_CONTRIBUTORS_FOUNDRY)
+        .adaptable(1)
+        .build();
+
     public static final UITexture BACKGROUND_REDSTONE_SNIFFER = UITexture.builder()
         .location(GregTech.ID, "gui/background/redstone_sniffer")
         .imageSize(195, 136)
@@ -118,6 +145,11 @@ public final class GTGuiTextures {
         .fullImage(MODID, "gui/background/white_glow_half");
     public static final UITexture BACKGROUND_GLOW_RAINBOW = UITexture.fullImage(MODID, "gui/background/rainbow_glow");
     public static final UITexture BACKGROUND_SPACE = UITexture.fullImage(MODID, "gui/background/space");
+    public static final UITexture BACKGROUND_GRAY_BORDER = UITexture.builder()
+        .adaptable(1)
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/picture/gray_rectangle")
+        .build();
     // endregion background
 
     // region overlay
@@ -141,9 +173,17 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/icons/structureIncomplete");
     public static final UITexture OVERLAY_MANUAL_SHUTDOWN = UITexture
         .fullImage(GregTech.ID, "gui/icons/manualShutdown");
+    public static final UITexture OVERLAY_COMPUTATION_LOSS = UITexture
+        .fullImage(GregTech.ID, "gui/icons/stalled_computation");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
-    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
+    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_none");
+    public static final UITexture OVERLAY_SOME_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_some");
+    public static final UITexture OVERLAY_ALL_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_all");
+
     // endregion overlay
     // region slot
 
@@ -181,6 +221,15 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .build();
+
+    public static final UITexture SLOT_ITEM_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_foundry")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_FOUNDRY)
+        .build();
+
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_standard")
         .imageSize(18, 18)
@@ -268,6 +317,7 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
         .build();
     public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = fullImageColorableGT("overlay_slot/int_circuit");
+    public static final UITexture OVERLAY_SLOT_CIRCUIT = fullImage(GregTech.ID, "gui/overlay_slot/circuit");
     public static final UITexture OVERLAY_SLOT_FURNACE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/furnace")
         .fullImage()
@@ -324,6 +374,12 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.OVERLAY_SLOT_BLOCK_STANDARD)
+        .build();
+    public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/extruder_shape")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_EXTRUDER_SHAPE)
         .build();
     private static final SteamTextureRegisterer OVERLAY_SLOT_BLOCK_STEAM = SteamTextureRegisterer.builder()
         .location("gui/overlay_slot/block_%s")
@@ -536,6 +592,20 @@ public final class GTGuiTextures {
             GTTextureIds.BUTTON_STEEL_PRESSED,
             GTTextureIds.BUTTON_PRIMITIVE_PRESSED)
         .build();
+    public static final UITexture BUTTON_FOUNDRY = UITexture.builder()
+        .location(GregTech.ID, "gui/button/foundry")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_FOUNDRY)
+        .build();
+    public static final UITexture BUTTON_FOUNDRY_PRESSED = UITexture.builder()
+        .location(GregTech.ID, "gui/button/foundry_pressed")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_FOUNDRY_PRESSED)
+        .build();
     public static final UITexture BUTTON_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_normal")
         .fullImage()
@@ -717,6 +787,11 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_on");
     public static final UITexture OVERLAY_BUTTON_LMA_ANIMATION_OFF = UITexture
         .fullImage(GregTech.ID, "gui/overlay_button/lma_animation_off");
+    public static final UITexture FOUNDRY_CALCULATOR = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/foundry_calculator")
+        .fullImage()
+        .canApplyTheme()
+        .build();
 
     // endregion button overlay
 
@@ -750,6 +825,11 @@ public final class GTGuiTextures {
         .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
         .fullImage()
         .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
+        .build();
+    public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()
@@ -798,6 +878,117 @@ public final class GTGuiTextures {
         .adaptable(1, 1, 1, 1)
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_RADIATION_SHUTTER_INSIDE)
+        .build();
+    public static final UITexture EXOFOUNDRY_BASE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_base")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_BASE)
+        .build();
+    public static final UITexture EXOFOUNDRY_UNSET = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_unset")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_UNSET)
+        .build();
+    public static final UITexture EXOFOUNDRY_HR = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_heliocast_reinforcement")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_HR)
+        .build();
+    public static final UITexture EXOFOUNDRY_HC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_hypercooler")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_HC)
+        .build();
+    public static final UITexture EXOFOUNDRY_TDS = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_tds")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_TDS)
+        .build();
+    public static final UITexture EXOFOUNDRY_EFF_OC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_efficient_oc")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_EOC)
+        .build();
+    public static final UITexture EXOFOUNDRY_ECB = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_extra_casting_basins")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_ECB)
+        .build();
+    public static final UITexture EXOFOUNDRY_SLC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_streamlined_casters")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_SLC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PES = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_power_efficient_subsystems")
+        .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PES)
+        .build();
+
+    public static final UITexture EXOFOUNDRY_PAIR_PES_EOC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_pes_eoc_pair")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_PES_EOC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_ECB_SLC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_ecb_slc_pair")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_ECB_SLC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_UC_HC = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_uc_hc_pair")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_UC_HC)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_HR_SELF = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_hr_self_pair")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_HR_SELF)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_PES_EOC_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_pes_eoc_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_PES_EOC_ACTIVE)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_ecb_slc_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_UC_HC_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_uc_hc_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_UC_HC_ACTIVE)
+        .build();
+    public static final UITexture EXOFOUNDRY_PAIR_HR_SELF_ACTIVE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/exofoundry_hr_self_pair_active")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .name(GTTextureIds.PICTURE_EXOFOUNDRY_PAIR_HR_SELF_ACTIVE)
         .build();
 
     public static final UITexture PICTURE_GODFORGE_MILESTONE_CHARGE = UITexture
@@ -915,6 +1106,7 @@ public final class GTGuiTextures {
         .imageSize(10, 16)
         .canApplyTheme()
         .build();
+    public static final UITexture PICTURE_PLUS_RED = UITexture.fullImage(GregTech.ID, "gui/picture/plus_red");
     // endregion picture
 
     // region machine modes
@@ -955,6 +1147,30 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_mass_fabrication");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_distilling");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_tower");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SCANNER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_scanner");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ARC = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_arc");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_plasma_arc");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RESEARCH = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_research");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RECYCLING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_recycling");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_slicing");

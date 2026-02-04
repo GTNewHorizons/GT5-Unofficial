@@ -8,6 +8,7 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllCasings;
 
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -18,6 +19,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,18 +30,19 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -48,31 +51,21 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ReflectionUtil;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.objects.Logger;
+import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 
 public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> implements ISurvivalConstructable {
 
-    // TODO add a NEI handler for this machine
-
-    private int mLevel = -1;
+    private int tier = -1;
     private int mCasing;
     private static IStructureDefinition<MTEAlgaePondBase> STRUCTURE_DEFINITION = null;
     private int checkMeta;
-    private static final Class<?> cofhWater;
 
-    static {
-        cofhWater = ReflectionUtil.getClass("cofh.asmhooks.block.BlockWater");
-    }
+    private static final int MINIMUM_CASINGS = 75;
 
     public MTEAlgaePondBase(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -105,13 +98,12 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             .addInfo("Provide compost to boost production by one tier")
             .addInfo("Does not require power or maintenance")
             .addInfo("All Machine Casings must be the same tier, this dictates machine speed")
-            .addInfo("Requires one Input Hatch that matches the tier of the Casings")
             .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front Center")
-            .addCasingInfoMin("Machine Casings", 64, true)
-            .addCasingInfoMin("Sterile Farm Casings", 64, false)
+            .addCasingInfoMin("Machine Casings", MINIMUM_CASINGS, true)
+            .addCasingInfoExactly("Sterile Farm Casings", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -150,19 +142,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
                             .build(),
                         onElementPass(
                             x -> ++x.mCasing,
-                            addTieredBlock(
-                                GregTechAPI.sBlockCasings1,
-                                MTEAlgaePondBase::setMeta,
-                                MTEAlgaePondBase::getMeta,
-                                10)),
-                        onElementPass(
-                            x -> ++x.mCasing,
-                            addTieredBlock(
-                                GregTechAPI.sBlockCasingsNH,
-                                MTEAlgaePondBase::setMeta,
-                                MTEAlgaePondBase::getMeta,
-                                10,
-                                15))))
+                            chainAllCasings(-1, MTEAlgaePondBase::setMeta, MTEAlgaePondBase::getMeta))))
                 .addElement('X', ofBlock(ModBlocks.blockCasings2Misc, 15))
                 .build();
         }
@@ -183,19 +163,14 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasing = 0;
-        mLevel = 0;
-        checkMeta = 0;
+        tier = -1;
+        checkMeta = -1;
 
-        if (checkPiece(mName, 4, 2, 0) && mCasing >= 64
+        if (checkPiece(mName, 4, 2, 0) && mCasing >= MINIMUM_CASINGS
             && checkMeta > 0
             && !mInputHatches.isEmpty()
             && !mOutputBusses.isEmpty()) {
-            mLevel = checkMeta - 1;
-            for (MTEHatchInput inputHatch : mInputHatches) {
-                if (inputHatch.mTier < mLevel) {
-                    return false;
-                }
-            }
+            tier = checkMeta - 1;
             return true;
         }
         return false;
@@ -233,23 +208,13 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
 
     @Override
     protected int getCasingTextureId() {
-        int aID = TAE.getIndexFromPage(1, 15);
-        if (mLevel > -1) {
-            aID = mLevel;
-        }
-        return aID;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 2;
+        return TAE.getIndexFromPage(1, 15);
     }
 
     public boolean checkForWater() {
 
         // Get Facing direction
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
-        int mDirectionX = aBaseMetaTileEntity.getBackFacing().offsetX;
         int mCurrentDirectionX;
         int mCurrentDirectionZ;
         int mOffsetX_Lower = 0;
@@ -265,59 +230,54 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         mOffsetZ_Lower = -4;
         mOffsetZ_Upper = 4;
 
-        // if (aBaseMetaTileEntity.fac)
-
         final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * mCurrentDirectionX;
         final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * mCurrentDirectionZ;
+        boolean success = true;
 
-        int tAmount = 0;
         for (int i = mOffsetX_Lower + 1; i <= mOffsetX_Upper - 1; ++i) {
             for (int j = mOffsetZ_Lower + 1; j <= mOffsetZ_Upper - 1; ++j) {
-                for (int h = 0; h < 2; h++) {
-                    Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    int tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-                    if (isNotStaticWater(tBlock, tMeta)) {
-                        if (this.getStoredFluids() != null) {
-                            for (FluidStack stored : this.getStoredFluids()) {
-                                if (stored.isFluidEqual(Materials.Water.getFluid(1))) {
-                                    if (stored.amount >= 1000) {
-                                        // Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
-                                        stored.amount -= 1000;
-                                        Block fluidUsed = Blocks.water;
-                                        aBaseMetaTileEntity.getWorld()
-                                            .setBlock(
-                                                aBaseMetaTileEntity.getXCoord() + xDir + i,
-                                                aBaseMetaTileEntity.getYCoord() + h,
-                                                aBaseMetaTileEntity.getZCoord() + zDir + j,
-                                                fluidUsed);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                    if (tBlock == Blocks.water || tBlock == Blocks.flowing_water
-                        || tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)) {
-                        ++tAmount;
-                        // Logger.INFO("Found Water");
-                    }
+
+                Block block = aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j);
+
+                boolean isCOFHCoreWater = Mods.COFHCore.isModLoaded() && (block instanceof BlockWater);
+                boolean isWater = (block == Blocks.water) || isCOFHCoreWater;
+                boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
+                if (isWater) continue;
+
+                if (!isAir) { // invalid block to process
+                    success = false;
+                    continue;
                 }
+                // no fluids to fill a non static water block
+                // we return directly here because we cannot fill water so there is no point into processing next blocks
+                if (this.getStoredFluids() == null) return false;
+
+                boolean hasBeenFilled = false;
+
+                // trying to fill with water
+                for (FluidStack stored : this.getStoredFluids()) {
+                    if (!stored.isFluidEqual(Materials.Water.getFluid(1))) continue;
+
+                    if (stored.amount < 1000) continue;
+
+                    stored.amount -= 1000;
+                    Block fluidUsed = Blocks.water;
+                    aBaseMetaTileEntity.getWorld()
+                        .setBlock(
+                            aBaseMetaTileEntity.getXCoord() + xDir + i,
+                            aBaseMetaTileEntity.getYCoord() + 1,
+                            aBaseMetaTileEntity.getZCoord() + zDir + j,
+                            fluidUsed);
+                    hasBeenFilled = true;
+
+                    break; // don't deplete other water sources
+                }
+
+                if (!hasBeenFilled) success = false; // did not get filled with water
+
             }
         }
-
-        boolean isValidWater = tAmount >= 49;
-
-        if (isValidWater) {
-            Logger.INFO("Filled structure.");
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private boolean isNotStaticWater(Block block, int meta) {
-        return block == Blocks.air || block == Blocks.flowing_water
-            || (cofhWater != null && cofhWater.isAssignableFrom(block.getClass()) && meta != 0);
+        return success;
     }
 
     @Override
@@ -330,7 +290,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         super.onPreTick(aBaseMetaTileEntity, aTick);
         // Silly Client Syncing
         if (aBaseMetaTileEntity.isClientSide()) {
-            this.mLevel = getCasingTier();
+            this.tier = getCasingTier();
         }
     }
 
@@ -341,7 +301,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
-                return GTStreamUtil.ofNullable(getTieredRecipe(mLevel, inputItems));
+                return GTStreamUtil.ofNullable(getRecipe(tier, inputItems));
             }
 
             @NotNull
@@ -359,7 +319,7 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
     private int getCasingTier() {
         if (this.getBaseMetaTileEntity()
             .getWorld() == null) {
-            return 0;
+            return -1;
         }
         try {
             Block aInitStructureCheck;
@@ -371,13 +331,18 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
             aInitStructureCheckMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir, -1, zDir);
             if (aInitStructureCheck == GregTechAPI.sBlockCasings1
                 || aInitStructureCheck == GregTechAPI.sBlockCasingsNH) {
-                return aInitStructureCheckMeta;
+                return aInitStructureCheckMeta - 1;
             }
             return 0;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
-            return 0;
+            return -1;
         }
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return GTPPRecipeMaps.algaePondRecipes;
     }
 
     @Override
@@ -391,15 +356,37 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         return SoundResource.GT_MACHINES_ALGAE_LOOP;
     }
 
-    private static GTRecipe getTieredRecipe(int aTier, ItemStack[] aItemInputs) {
-        return generateBaseRecipe(aTier, isUsingCompost(aItemInputs, aTier));
+    private static GTRecipe getRecipe(int tier, ItemStack[] itemInputs) {
+        if (tier == -1) return null;
+
+        GTRecipe matchingRecipe = null;
+
+        final ItemStack[] inputs;
+
+        if (isUsingCompost(tier, itemInputs)) {
+            inputs = new ItemStack[] { GregtechItemList.Compost.get(compostForTier(tier)) };
+            tier++;
+        } else {
+            inputs = GTValues.emptyItemStackArray;
+        }
+
+        for (GTRecipe recipe : GTPPRecipeMaps.algaePondRecipes.getAllRecipes()) {
+            // We assume the unicity of tiered recipes
+            if (recipe.mSpecialValue == tier) {
+                matchingRecipe = recipe.copyShallow();
+                matchingRecipe.mInputs = inputs;
+                break;
+            }
+        }
+
+        return matchingRecipe;
     }
 
-    private static boolean isUsingCompost(ItemStack[] aItemInputs, int aTier) {
+    private static boolean isUsingCompost(int tier, ItemStack[] itemInputs) {
         ItemStack aCompost = GregtechItemList.Compost.get(1);
-        final int compostForTier = compostForTier(aTier);
+        final int compostForTier = compostForTier(tier);
         int compostFound = 0;
-        for (ItemStack i : aItemInputs) {
+        for (ItemStack i : itemInputs) {
             if (GTUtility.areStacksEqual(aCompost, i)) {
                 compostFound += i.stackSize;
                 if (compostFound >= compostForTier) {
@@ -414,115 +401,10 @@ public class MTEAlgaePondBase extends GTPPMultiBlockBase<MTEAlgaePondBase> imple
         return aTier > 1 ? (int) Math.min(64, GTUtility.powInt(2, aTier - 1)) : 1;
     }
 
-    private static GTRecipe generateBaseRecipe(int aTier, boolean isUsingCompost) {
-
-        if (aTier < 0) return null; // Type Safety
-
-        final ItemStack[] aInputs;
-        if (isUsingCompost) {
-            // Make it use 4 compost per tier if we have some available
-            // Compost consumption maxes out at 1 stack per cycle
-            ItemStack aCompost = GregtechItemList.Compost.get(compostForTier(aTier));
-            aInputs = new ItemStack[] { aCompost };
-            // Boost Tier by one if using compost, so it gets a speed boost
-            aTier++;
-        } else {
-            aInputs = GTValues.emptyItemStackArray;
-        }
-
-        ItemStack[] aOutputs = getOutputsForTier(aTier);
-        GTRecipe tRecipe = new GTRecipe(
-            false,
-            aInputs,
-            aOutputs,
-            null,
-            GTValues.emptyIntArray,
-            new FluidStack[] { GTValues.NF },
-            new FluidStack[] { GTValues.NF },
-            getRecipeDuration(aTier),
-            0,
-            0);
-        tRecipe.mSpecialValue = tRecipe.hashCode();
-        return tRecipe;
-    }
-
-    private static final int[] aDurations = new int[] { 2000, 1800, 1600, 1400, 1200, 1000, 512, 256, 128, 64, 32, 16,
-        8, 4, 2, 1 };
-
-    private static int getRecipeDuration(int aTier) {
-        final float randFloat = GTPPCore.RANDOM.nextFloat();
-        float randMult;
-        if (randFloat < 0.96237624) randMult = 1f;
-        else if (randFloat < 0.9912871) randMult = 2f;
-        else randMult = 3f;
-        return (int) (aDurations[aTier] * randMult / 2);
-    }
-
-    private static ItemStack[] getOutputsForTier(int aTier) {
-        ArrayList<ItemStack> outputList = new ArrayList<>();
-
-        if (aTier >= 0) {
-            outputList.add(GregtechItemList.AlgaeBiomass.get(2));
-            outputList.add(GregtechItemList.AlgaeBiomass.get(4));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
-            }
-        }
-        if (aTier >= 1) {
-            outputList.add(GregtechItemList.AlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 2) {
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(2));
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(3));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GreenAlgaeBiomass.get(8));
-            }
-        }
-        if (aTier >= 3) {
-            outputList.add(GregtechItemList.GreenAlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(1));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.BrownAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 4) {
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(2));
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(3));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 5) {
-            outputList.add(GregtechItemList.BrownAlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(2));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.RedAlgaeBiomass.get(4));
-            }
-        }
-        if (aTier >= 6) {
-            outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(4));
-            outputList.add(GregtechItemList.RedAlgaeBiomass.get(2));
-            if (MathUtils.randInt(0, 10) > 9) {
-                outputList.add(GregtechItemList.RedAlgaeBiomass.get(8));
-            }
-            // Iterate a special loop at higher tiers to provide more Red/Gold Algae.
-            for (int i = 0; i < 20; i++) {
-                if (aTier >= (6 + i)) {
-                    int aMulti = i + 1;
-                    outputList.add(GregtechItemList.GreenAlgaeBiomass.get(aMulti * 4));
-                    outputList.add(GregtechItemList.BrownAlgaeBiomass.get(aMulti * 3));
-                    outputList.add(GregtechItemList.GoldenBrownAlgaeBiomass.get(aMulti * 2));
-                    outputList.add(GregtechItemList.RedAlgaeBiomass.get(aMulti));
-                } else {
-                    break;
-                }
-            }
-        }
-
-        return outputList.toArray(new ItemStack[0]);
+    @Override
+    public String[] getExtraInfoData() {
+        ArrayList<String> mInfo = new ArrayList<>();
+        mInfo.add(StatCollector.translateToLocalFormatted("GTPP.multiblock.ap.tier", this.tier));
+        return mInfo.toArray(new String[0]);
     }
 }

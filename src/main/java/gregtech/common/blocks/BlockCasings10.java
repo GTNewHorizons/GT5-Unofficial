@@ -56,8 +56,8 @@ public class BlockCasings10 extends BlockCasingsAbstract {
             case 10 -> Textures.BlockIcons.HEATING_DUCT_CASING.getIcon();
             case 11 -> Textures.BlockIcons.EXTREME_DENSITY_CASING.getIcon();
             case 12 -> Textures.BlockIcons.RADIATION_ABSORBENT_CASING.getIcon();
-            case 13 -> Textures.BlockIcons.MACHINE_CASING_MS160.getIcon();
-            case 14 -> Textures.BlockIcons.RADIATOR_MS160.getIcon();
+            case 13 -> Textures.BlockIcons.MASS_SOLIDIFIER_CASING.getIcon();
+            case 14 -> Textures.BlockIcons.MASS_SOLIDIFIER_RADIATOR_CASING.getIcon();
             case 15 -> ordinalSide > 1 ? Textures.BlockIcons.CASING_REINFORCED_WOOD.getIcon()
                 : Textures.BlockIcons.CASING_REINFORCED_WOOD_TOP.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
