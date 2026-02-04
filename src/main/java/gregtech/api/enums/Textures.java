@@ -1,7 +1,6 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.enums.Textures.GlobalIcons.RENDERING_ERROR;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,14 +82,15 @@ public class Textures {
     }
 
     public enum BlockIcons implements IIconContainer, Runnable {
-    /**
-     * @deprecated Use {@link GlobalIcons#VOID} instead
-     */
+
+        /**
+         * @deprecated Use {@link GlobalIcons#VOID} instead
+         */
         @Deprecated
         VOID, // The Empty Texture
-    /**
-     * @deprecated use {@link GlobalIcons#RENDERING_ERROR} instead
-     */
+        /**
+         * @deprecated use {@link GlobalIcons#RENDERING_ERROR} instead
+         */
         @Deprecated
         RENDERING_ERROR,
 
