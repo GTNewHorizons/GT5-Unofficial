@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -2213,68 +2214,80 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     @Override
     public String[] getInfoData() {
+        List<String> info = new ArrayList<>();
         long storedEnergy = 0;
         long maxEnergy = 0;
+        long seconds = (this.mTotalRunTime / 20);
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+        long hours = TimeUnit.SECONDS.toHours(seconds);
+        String ownerName = "None";
+        String metaID = "";
+        String accessData = "";
+        String isMetaTileEntity = "";
+
+        // spotless:off
+        String timeValue =
+            hours > 0 ? String.valueOf(hours)
+                : minutes > 0 ? String.valueOf(minutes)
+                : seconds > 0 ? String.valueOf(seconds)
+                : String.valueOf(this.mTotalRunTime);
+        String timeKey =
+            hours > 0 ? "GT5U.multiblock.totalRunHours"
+                : minutes > 0 ? "GT5U.multiblock.totalRunMinutes"
+                : seconds > 0 ? "GT5U.multiblock.totalRunSeconds"
+                : "GT5U.multiblock.totalRunTicks";
+
+        if (getBaseMetaTileEntity() != null) {
+            ownerName = getBaseMetaTileEntity().getOwnerName();
+            metaID = formatNumber(getBaseMetaTileEntity().getMetaTileID());
+            accessData = GTUtility.translate(getBaseMetaTileEntity().canAccessData()
+                ? "GT5U.multiblock.valid"
+                : "GT5U.multiblock.invalid");
+            if (getBaseMetaTileEntity().getMetaTileEntity() == null) {
+                isMetaTileEntity = GTUtility.translate("GT5U.multiblock.is_meta_tile_entity");
+            }
+        }
+
         for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
             storedEnergy += baseMetaTileEntity.getStoredEU();
             maxEnergy += baseMetaTileEntity.getEUCapacity();
         }
+        // spotless:on
 
-        return new String[] {
-            /* 1 */ translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getMaxInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*2A) "
-                + translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getMaxInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 6 */ translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            /* 7 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(GTUtility.translate("GT5U.multiblock.owned_by", ownerName));
+
+        info.add(GTUtility.translate("GT5U.multiblock.meta_tile_entity", metaID)
+            + " "
+            + accessData
+            + " "
+            + isMetaTileEntity);
+
+        if (mProgresstime > 0) {
+            info.add(GTUtility.translate("GT5U.multiblock.Progress", formatNumber(mProgresstime / 20), formatNumber(mMaxProgresstime / 20)));
+        }
+
+        info.add(GTUtility.translate("GT5U.multiblock.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+
+        if (getActualEnergyUsage() > 0) {
+            info.add(GTUtility.translate("GT5U.multiblock.usage", formatNumber(getActualEnergyUsage())));
+        }
+
+        info.add(GTUtility.translate("GT5U.multiblock.mei", formatNumber(getMaxInputVoltage()), VN[GTUtility.getTier(getMaxInputVoltage())]));
+
+        info.add(GTUtility.translate("GT5U.multiblock.problems", formatNumber(getIdealStatus() - getRepairStatus())));
+
+        info.add(GTUtility.translate("GT5U.multiblock.efficiency", formatNumber(mEfficiency / 100.0F)));
+
+        info.add(GTUtility.translate("GT5U.multiblock.pollution", formatNumber(getAveragePollutionPercentage())));
+
+        info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+
+        if (Long.parseLong(timeValue) > 0) {
+            info.add(GTUtility.translate(timeKey, timeValue));
+        }
+
+        return info.toArray(new String[0]);
     }
 
     @Override

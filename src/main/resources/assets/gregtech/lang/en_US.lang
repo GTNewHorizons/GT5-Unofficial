@@ -1836,14 +1836,14 @@ GT5U.hatch.item.filter.disable=Item output filtering disabled
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to
-GT5U.multiblock.energy=Stored Energy
-GT5U.multiblock.Progress=Progress
-GT5U.multiblock.efficiency=Efficiency
-GT5U.multiblock.problems=Problems
-GT5U.multiblock.mei=Max Energy Income
+GT5U.multiblock.pollution=Pollution reduced to: §a%s§r%%
+GT5U.multiblock.energy=Stored Energy: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.Progress=Progress: §a%s §rs / §e%s §rs
+GT5U.multiblock.efficiency=Efficiency: §e%s§r%%
+GT5U.multiblock.problems=Problems: §c%s
+GT5U.multiblock.mei=Max Energy Income: §e%s §rEU/t (*2A) Tier: §e%s
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Currently uses
+GT5U.multiblock.usage=Currently uses: §c%s §rEU/t
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -1854,7 +1854,17 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.totalRunHours=Total run hours: §6%s
+GT5U.multiblock.totalRunMinutes=Total run minutes: §6%s
+GT5U.multiblock.totalRunSeconds=Total run seconds: §6%s
+GT5U.multiblock.totalRunTicks=Total run ticks: §6%s
+GT5U.multiblock.owned_by=Owned by: §6%s
+GT5U.multiblock.meta_tile_entity=Meta-ID: §6%s
+GT5U.multiblock.valid=§avalid
+GT5U.multiblock.invalid=§cinvalid
+GT5U.multiblock.is_meta_tile_entity=§cMetaTileEntity == null!
+
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
