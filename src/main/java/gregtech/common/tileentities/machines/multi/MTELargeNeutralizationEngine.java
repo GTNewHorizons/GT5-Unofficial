@@ -7,6 +7,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.AuthorLeon;
 import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -17,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,6 +43,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int structureTier;
     private int mCasing;
+
+    private static final int HORIZONTAL_OFF_SET=5;
+    private static final int VERTICAL_OFF_SET=1;
+    private static final int DEPTH_OFF_SET=0;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -86,7 +92,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     'C',
                     ofChain(
                         buildHatchAdder(MTELargeNeutralizationEngine.class)
-                            .atLeast(Dynamo, Maintenance, InputBus, InputHatch, Muffler)
+                            .atLeast(Dynamo.or(ExoticDynamo), Maintenance, InputBus, InputHatch, Muffler)
                             .casingIndex(Casings.StrengthenedInanimateCasing.getTextureId())
                             .allowOnly(ForgeDirection.NORTH)
                             .hint(1)
@@ -132,5 +138,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addDynamoHatch("Any Tiered Casing", 1)
             .toolTipFinisher(AuthorLeon);
         return tt;
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing=0;
+        structureTier=-1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (mCasing<30 || structureTier<1) return false;
+        return (!mMufflerHatches.isEmpty() && mMaintenanceHatches.size()==1);
     }
 }
