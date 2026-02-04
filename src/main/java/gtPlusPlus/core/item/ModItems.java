@@ -68,7 +68,6 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.plugin.agrichem.item.algae.ItemAgrichemBase;
-import gtPlusPlus.plugin.agrichem.item.algae.ItemAlgaeBase;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.VolumetricFlaskHelper;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -190,8 +189,6 @@ public final class ModItems {
         GregtechItemList.AirFilter_Tier1.set(new ItemStack(airFilter, 1, 0));
         GregtechItemList.AirFilter_Tier2.set(new ItemStack(airFilter, 1, 1));
         GregtechItemList.LavaFilter.set(new ItemLavaFilter());
-
-        GregtechItemList.Algae.set(new ItemAlgaeBase());
 
         // Agrichem Items
         Item agrichemItem = new ItemAgrichemBase();
