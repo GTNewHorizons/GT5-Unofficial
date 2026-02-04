@@ -82,6 +82,7 @@ public final class GTTextureIds {
     public static final String PROGRESSBAR_FUEL_BRONZE = "gregtech:progressbar_fuel_bronze";
     public static final String PROGRESSBAR_FUEL_STEEL = "gregtech:progressbar_fuel_steel";
     public static final String PROGRESSBAR_SIEVERT = "gregtech:progressbar_sievert";
+    public static final String PROGRESSBAR_WATER_PURIFICATION = "gregtech:water_purification";
 
     public static final String BUTTON_STANDARD = "gregtech:button_standard";
     public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";

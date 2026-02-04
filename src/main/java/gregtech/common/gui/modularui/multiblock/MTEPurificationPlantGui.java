@@ -1,6 +1,10 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import gregtech.api.metatileentity.MetaTileEntity;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
@@ -9,23 +13,22 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
+import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.purification.LinkedPurificationUnit;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationPlant;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificationPlant> {
 
@@ -38,8 +41,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         "multimachine.purificationunitplasmaheater",
         "multimachine.purificationunituvtreatment",
         "multimachine.purificationunitdegasifier",
-        "multimachine.purificationunitextractor"
-    );
+        "multimachine.purificationunitextractor");
 
     static {
         for (int i = 0; i < TIER_ORDER.size(); i++) {
@@ -79,71 +81,119 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         ListWidget<IWidget, ?> widget = super.createTerminalTextWidget(syncManager, parent);
+
         GenericListSyncHandler linkedPurifications = syncManager
             .findSyncHandler("linkedPurifierUnits", GenericListSyncHandler.class);
-        List<LinkedPurificationUnit> sortedUnits = new ArrayList<>();
+
+        Map<Integer, LinkedPurificationUnit> unitByTier = new HashMap<>();
+
         for (Object obj : linkedPurifications.getValue()) {
             if (obj instanceof LinkedPurificationUnit unit) {
-                sortedUnits.add(unit);
+                Integer tier = getModuleTier(unit.metaTileEntity());
+                if (tier != null) {
+                    unitByTier.put(tier, unit);
+                }
             }
         }
-        sortedUnits.sort(Comparator.comparingInt(unit -> {
-            Integer tier = getModuleTier(unit.metaTileEntity());
-            return tier != null ? tier : Integer.MAX_VALUE;
-        }));
-        for (LinkedPurificationUnit unit : sortedUnits) widget.child(machineRow(unit));
+
+        widget.child(machineTierRow(unitByTier));
+        widget.child(createProgressBar());
+        widget.child(createProgressText());
         return widget;
+    }
+
+    private Row createProgressText() {
+        Row row = new Row();
+        row.marginTop(2)
+            .child(IKey.dynamic(() -> {
+                int progress = multiblock.getProgresstime() / 20;
+                int maxProgress = multiblock.getMaxProgresstime() / 20;
+                return StatCollector.translateToLocalFormatted("gt.item.desc.progress", progress, maxProgress);
+            })
+                .asWidget()
+                .widthRel(1f));
+        row.coverChildrenHeight();
+        return row;
+    }
+
+    public Row machineTierRow(Map<Integer, LinkedPurificationUnit> unitByTier) {
+        // TODO: make overlays for idle/online/incomplete
+        Row row = new Row();
+        row.paddingTop(4)
+            .paddingBottom(4)
+            .coverChildrenHeight();
+
+        for (int tier = 1; tier <= 8; tier++) {
+            LinkedPurificationUnit unit = unitByTier.get(tier);
+
+            if (unit != null) {
+                MetaTileEntity mte = unit.metaTileEntity();
+                String moduleName = getLocalizedModuleName(mte);
+
+                int finalTier = tier;
+                row.child(
+                    new ItemDisplayWidget().background(IDrawable.EMPTY)
+                        .disableHoverBackground()
+                        .size(20)
+                        .item(mte.getStackForm(1))
+                        .tooltip(tooltip -> {
+                            tooltip.addLine(
+                                StatCollector.translateToLocalFormatted("GT5U.gui.purification.tier", finalTier));
+                            tooltip.addLine(moduleName);
+                        }));
+            }
+        }
+
+        return row;
+    }
+
+    private Column createProgressBar() {
+        Column column = new Column();
+        column.paddingTop(2)
+            .paddingBottom(4)
+            .child(
+                new ProgressWidget()
+                    .progress(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime())
+                    .direction(ProgressWidget.Direction.RIGHT)
+                    .size(147, 9)
+                    .leftRelOffset(0, 0)
+                    .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147 / 2))
+            .coverChildrenHeight();
+        return column;
     }
 
     @Override
     protected Flow createButtonColumn(ModularPanel panel, PanelSyncManager syncManager) {
         BooleanSyncValue debugMode = syncManager.findSyncHandler("debugMode", BooleanSyncValue.class);
         return super.createButtonColumn(panel, syncManager).child(new ButtonWidget<>().onMousePressed((a) -> {
-                    if (multiblock.getBaseMetaTileEntity()
-                        .isActive()) {
-                        return false;
-                    }
-                    debugMode.setBoolValue(!debugMode.getBoolValue());
-                    return true;
-                })
-                .tooltip(
-                    new RichTooltip().add(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode")))
-                .overlay(new DynamicDrawable(() -> {
-                        if (multiblock.getBaseMetaTileEntity()
-                            .isAllowedToWork()) {
-                            return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
-                        }
-                        return GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT;
+            if (multiblock.getBaseMetaTileEntity()
+                .isActive()) {
+                return false;
+            }
+            debugMode.setBoolValue(!debugMode.getBoolValue());
+            return true;
+        })
+            .tooltip(
+                new RichTooltip().add(StatCollector.translateToLocal("GT5U.gui.tooltip.purification_plant.debug_mode")))
+            .overlay(new DynamicDrawable(() -> {
+                if (multiblock.getBaseMetaTileEntity()
+                    .isAllowedToWork()) {
+                    return GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED;
+                }
+                return GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT;
 
-                    })
+            })
 
-                )
-                .background(new DynamicDrawable(() -> {
-                    if (debugMode.getBoolValue()) {
-                        return GTGuiTextures.BUTTON_STANDARD_PRESSED;
-                    } else {
-                        return GTGuiTextures.BUTTON_STANDARD;
-                    }
-                }))
+            )
+            .background(new DynamicDrawable(() -> {
+                if (debugMode.getBoolValue()) {
+                    return GTGuiTextures.BUTTON_STANDARD_PRESSED;
+                } else {
+                    return GTGuiTextures.BUTTON_STANDARD;
+                }
+            }))
 
         );
-    }
-
-    public Flow machineRow(LinkedPurificationUnit LinkedUnit) {
-        MetaTileEntity mte = LinkedUnit.metaTileEntity();
-        String moduleName = getLocalizedModuleName(mte);
-        return new Row().paddingBottom(4)
-            .paddingTop(4)
-            .coverChildrenHeight()
-            .child(
-                new ItemDisplayWidget().background(IDrawable.EMPTY)
-                    .disableHoverBackground()
-                    .size(20)
-                    .item(mte.getStackForm(1))
-                    .tooltip((tooltip) -> {
-                        tooltip.addLine(StatCollector.translateToLocalFormatted("GT5U.gui.purification.tier", getModuleTier(mte)));
-                        tooltip.addLine(moduleName);
-                    }));
     }
 
     private String getLocalizedModuleName(MetaTileEntity mte) {
