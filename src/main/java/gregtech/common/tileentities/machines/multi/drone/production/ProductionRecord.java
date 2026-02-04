@@ -30,15 +30,17 @@ public class ProductionRecord {
     private final StatsBundle currentTotal = new StatsBundle();
     private final LinkedList<Snapshot> history = new LinkedList<>();
 
-    // ~2.5MB at maximum size
-    private static final int MAX_SIZE = 10240;
-
     public static ProductionRecord deserialize(PacketBuffer packetBuffer) throws IOException {
         return new ProductionRecord().readFromNBT(packetBuffer.readNBTTagCompoundFromBuffer());
     }
 
     public static void serialize(PacketBuffer packetBuffer, ProductionRecord productionRecord) throws IOException {
         packetBuffer.writeNBTTagCompoundToBuffer(productionRecord.writeToNBT());
+    }
+
+    public void clear() {
+        currentTotal.clear();
+        history.clear();
     }
 
     private static class Snapshot {
@@ -63,7 +65,7 @@ public class ProductionRecord {
     }
 
     public void addStack(ItemStack stack, long amount) {
-        if (stack == null || amount == 0 || currentTotal.data.size() > MAX_SIZE) return;
+        if (stack == null || amount == 0) return;
         currentTotal.merge(RecordUtil.packItem(stack), amount);
     }
 
@@ -78,7 +80,7 @@ public class ProductionRecord {
     }
 
     public void addFluid(FluidStack stack, long amount) {
-        if (stack == null || amount == 0 || currentTotal.data.size() > MAX_SIZE) return;
+        if (stack == null || amount == 0) return;
         currentTotal.merge(RecordUtil.packFluid(stack), amount);
     }
 
@@ -273,19 +275,29 @@ public class ProductionRecord {
         return res;
     }
 
-    private StatsBundle getStatsInDuration(long durationMillis) {
-        if (durationMillis <= 0) return currentTotal.copy();
-        long targetTime = lastUpdateTime - durationMillis;
+    public long getRevision() {
+        return revision;
+    }
 
-        Snapshot closest = null;
-        for (Snapshot snap : history) {
-            if (snap.timestamp <= targetTime) {
-                closest = snap;
-                break;
+    public StatsBundle getStatsInDuration(long durationMillis) {
+        StatsBundle res;
+        if (durationMillis <= 0) {
+            res = currentTotal.copy();
+        } else {
+            long targetTime = lastUpdateTime - durationMillis;
+
+            Snapshot closest = null;
+            for (Snapshot snap : history) {
+                if (snap.timestamp <= targetTime) {
+                    closest = snap;
+                    break;
+                }
             }
+            StatsBundle startData = (closest != null) ? closest.data : new StatsBundle();
+            res = currentTotal.diff(startData);
         }
-        StatsBundle startData = (closest != null) ? closest.data : new StatsBundle();
-        return currentTotal.diff(startData);
+        res.setRevision(revision ^ durationMillis);
+        return res;
     }
 
     public Map<ItemStack, Long> getItemStatsIn(long durationMillis) {
