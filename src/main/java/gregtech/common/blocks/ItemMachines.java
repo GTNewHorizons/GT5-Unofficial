@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.api.util.tooltip.TooltipHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -45,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -92,16 +91,19 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
-                        aList.add(translateToLocal("gt.tileentity.eup_in") + " "
-                            + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
+                        aList.add(
+                            translateToLocal("gt.tileentity.eup_in") + " "
+                                + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        aList.add(translateToLocal("gt.tileentity.eup_out") + " "
-                            + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
+                        aList.add(
+                            translateToLocal("gt.tileentity.eup_out") + " "
+                                + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
-                        aList.add(translateToLocal("gt.tileentity.eup_amount") + " "
-                            + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
+                        aList.add(
+                            translateToLocal("gt.tileentity.eup_amount") + " "
+                                + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
                     }
                 }
             }

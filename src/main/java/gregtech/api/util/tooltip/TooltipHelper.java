@@ -2,13 +2,14 @@ package gregtech.api.util.tooltip;
 
 import java.text.DecimalFormat;
 
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
-import gregtech.api.util.GTUtility;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.VoltageIndex;
-import net.minecraft.util.StatCollector;
+import gregtech.api.util.GTUtility;
 
 /**
  * A list of helper methods that can be useful in creating tooltips.
@@ -145,14 +146,15 @@ public class TooltipHelper {
      * <br>
      * If the voltage index is out of range, it returns "Invalid Voltage Tier".
      *
-     * @param voltageIndex The voltage index, as defined in {@link VoltageIndex}.
+     * @param voltageIndex   The voltage index, as defined in {@link VoltageIndex}.
      * @param withTierSuffix If true, returns the string like "UHV-tier". If false, returns like "UHV"
      * @return A formatted string representing the voltage tier.
      */
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX) return "Invalid Voltage Tier";
-        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex] + EnumChatFormatting.GRAY +
-            (withTierSuffix ? "" : "-tier");
+        return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
+            + EnumChatFormatting.GRAY
+            + (withTierSuffix ? "" : "-tier");
     }
 
     /**
@@ -167,8 +169,8 @@ public class TooltipHelper {
      */
     public static String voltageText(long voltage) {
         final byte tier = GTUtility.getTier(voltage);
-        return EU_VOLT_COLOR + NumberFormatUtil.formatNumber(voltage) + EnumChatFormatting.GRAY
-            + " (" + voltageTierText(tier, false) + ")";
+        return EU_VOLT_COLOR + NumberFormatUtil
+            .formatNumber(voltage) + EnumChatFormatting.GRAY + " (" + voltageTierText(tier, false) + ")";
     }
 
     /**
@@ -182,7 +184,9 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + " " + EnumChatFormatting.GRAY
+        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
+            + " "
+            + EnumChatFormatting.GRAY
             + StatCollector.translateToLocal("GT5U.item.cable.eu_volt");
     }
 }
