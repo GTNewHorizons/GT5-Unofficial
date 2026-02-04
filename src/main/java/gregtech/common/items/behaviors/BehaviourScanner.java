@@ -3,7 +3,6 @@ package gregtech.common.items.behaviors;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.util.scanner.ScannerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -17,6 +16,7 @@ import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.scanner.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 

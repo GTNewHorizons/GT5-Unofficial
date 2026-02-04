@@ -2257,14 +2257,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
         info.add(GTUtility.translate("GT5U.multiblock.owned_by", ownerName));
 
-        info.add(GTUtility.translate("GT5U.multiblock.meta_tile_entity", metaID)
-            + " "
-            + accessData
-            + " "
-            + isMetaTileEntity);
+        info.add(
+            GTUtility.translate("GT5U.multiblock.meta_tile_entity", metaID) + " "
+                + accessData
+                + " "
+                + isMetaTileEntity);
 
         if (mProgresstime > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.Progress", formatNumber(mProgresstime / 20), formatNumber(mMaxProgresstime / 20)));
+            info.add(
+                GTUtility.translate(
+                    "GT5U.multiblock.Progress",
+                    formatNumber(mProgresstime / 20),
+                    formatNumber(mMaxProgresstime / 20)));
         }
 
         info.add(GTUtility.translate("GT5U.multiblock.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
@@ -2273,7 +2277,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             info.add(GTUtility.translate("GT5U.multiblock.usage", formatNumber(getActualEnergyUsage())));
         }
 
-        info.add(GTUtility.translate("GT5U.multiblock.mei", formatNumber(getMaxInputVoltage()), VN[GTUtility.getTier(getMaxInputVoltage())]));
+        info.add(
+            GTUtility.translate(
+                "GT5U.multiblock.mei",
+                formatNumber(getMaxInputVoltage()),
+                VN[GTUtility.getTier(getMaxInputVoltage())]));
 
         info.add(GTUtility.translate("GT5U.multiblock.problems", formatNumber(getIdealStatus() - getRepairStatus())));
 

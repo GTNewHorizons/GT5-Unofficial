@@ -59,7 +59,7 @@ public class ScannerHelper {
 
     // region init
     public static int scan(List<String> list, EntityPlayer player, World world, int scanLevel, int x, int y, int z,
-                           ForgeDirection side, float clickX, float clickY, float clickZ) {
+        ForgeDirection side, float clickX, float clickY, float clickZ) {
         if (list == null) return 0;
 
         final List<String> resultList = new ArrayList<>();

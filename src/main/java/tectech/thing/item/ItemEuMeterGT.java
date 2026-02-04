@@ -6,7 +6,6 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.util.scanner.ScannerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -24,6 +23,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.scanner.ScannerHelper;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import tectech.Reference;
 import tectech.TecTech;

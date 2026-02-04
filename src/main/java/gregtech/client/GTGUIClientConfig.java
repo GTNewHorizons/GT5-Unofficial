@@ -2,12 +2,12 @@ package gregtech.client;
 
 import static gregtech.api.enums.Mods.GregTech;
 
-import gregtech.api.util.scanner.ScannerConfig;
 import net.minecraft.client.gui.GuiScreen;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.SimpleGuiConfig;
 
+import gregtech.api.util.scanner.ScannerConfig;
 import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.config.MachineStats;
