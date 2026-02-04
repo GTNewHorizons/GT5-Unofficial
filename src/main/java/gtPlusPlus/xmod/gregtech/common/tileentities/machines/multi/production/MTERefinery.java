@@ -143,13 +143,13 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
                         buildHatchAdder(MTERefinery.class)
                             .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
                             .casingIndex(TAE.GTPP_INDEX(18))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTERefinery.class).atLeast(Muffler)
                             .adder(MTERefinery::addMufflerToMachineList)
                             .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
                             .casingIndex(TAE.GTPP_INDEX(18))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
                 .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))

@@ -7,7 +7,6 @@ import static gregtech.api.enums.OrePrefixes.stickLong;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
@@ -25,9 +24,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 
 public class FissionFuelLoader implements Runnable {
@@ -85,10 +84,8 @@ public class FissionFuelLoader implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodThorium.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                    GTUtility.getIntegratedCircuit(2))
+                .itemInputs(ItemList.RodThorium.get(2), GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+                .circuit(2)
                 .itemOutputs(ItemList.RodThorium2.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -96,17 +93,15 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.RodThorium.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                    GTUtility.getIntegratedCircuit(4))
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6))
+                .circuit(4)
                 .itemOutputs(ItemList.RodThorium4.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodThorium2.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                    GTUtility.getIntegratedCircuit(5))
+                .itemInputs(ItemList.RodThorium2.get(2), GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+                .circuit(5)
                 .itemOutputs(ItemList.RodThorium4.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -194,10 +189,8 @@ public class FissionFuelLoader implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodUranium.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                    GTUtility.getIntegratedCircuit(2))
+                .itemInputs(ItemList.RodUranium.get(2), GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+                .circuit(2)
                 .itemOutputs(ItemList.RodUranium2.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -205,17 +198,15 @@ public class FissionFuelLoader implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemList.RodUranium.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                    GTUtility.getIntegratedCircuit(4))
+                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6))
+                .circuit(4)
                 .itemOutputs(ItemList.RodUranium4.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodUranium2.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                    GTUtility.getIntegratedCircuit(5))
+                .itemInputs(ItemList.RodUranium2.get(2), GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+                .circuit(5)
                 .itemOutputs(ItemList.RodUranium4.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -309,28 +300,22 @@ public class FissionFuelLoader implements Runnable {
                 .addTo(cannerRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodMOX.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                    GTUtility.getIntegratedCircuit(2))
+                .itemInputs(ItemList.RodMOX.get(2), GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+                .circuit(2)
                 .itemOutputs(ItemList.RodMOX2.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodMOX.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6),
-                    GTUtility.getIntegratedCircuit(4))
+                .itemInputs(ItemList.RodMOX.get(4), GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 6))
+                .circuit(4)
                 .itemOutputs(ItemList.RodMOX4.get(1))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.RodMOX2.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
-                    GTUtility.getIntegratedCircuit(5))
+                .itemInputs(ItemList.RodMOX2.get(2), GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+                .circuit(5)
                 .itemOutputs(ItemList.RodMOX4.get(1))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -417,28 +402,22 @@ public class FissionFuelLoader implements Runnable {
             .addTo(cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodHighDensityUranium.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(ItemList.RodHighDensityUranium.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(2)
             .itemOutputs(ItemList.RodHighDensityUranium2.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodHighDensityUranium2.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(5))
+            .itemInputs(ItemList.RodHighDensityUranium2.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(5)
             .itemOutputs(ItemList.RodHighDensityUranium4.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodHighDensityUranium.get(4),
-                GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
-                GTUtility.getIntegratedCircuit(4))
+            .itemInputs(ItemList.RodHighDensityUranium.get(4), GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6))
+            .circuit(4)
             .itemOutputs(ItemList.RodHighDensityUranium4.get(1))
             .duration(11 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -496,28 +475,22 @@ public class FissionFuelLoader implements Runnable {
             .addTo(cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodHighDensityPlutonium.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(ItemList.RodHighDensityPlutonium.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(2)
             .itemOutputs(ItemList.RodHighDensityPlutonium2.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodHighDensityPlutonium2.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(5))
+            .itemInputs(ItemList.RodHighDensityPlutonium2.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(5)
             .itemOutputs(ItemList.RodHighDensityPlutonium4.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodHighDensityPlutonium.get(4),
-                GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
-                GTUtility.getIntegratedCircuit(4))
+            .itemInputs(ItemList.RodHighDensityPlutonium.get(4), GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6))
+            .circuit(4)
             .itemOutputs(ItemList.RodHighDensityPlutonium4.get(1))
             .duration(11 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -573,31 +546,25 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(ItemList.RodExcitedUranium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(fluidCannerRecipes);
+            .addTo(RecipeMaps.cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodExcitedUranium.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(ItemList.RodExcitedUranium.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(2)
             .itemOutputs(ItemList.RodExcitedUranium2.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodExcitedUranium2.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(5))
+            .itemInputs(ItemList.RodExcitedUranium2.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(5)
             .itemOutputs(ItemList.RodExcitedUranium4.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodExcitedUranium.get(4),
-                GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
-                GTUtility.getIntegratedCircuit(4))
+            .itemInputs(ItemList.RodExcitedUranium.get(4), GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6))
+            .circuit(4)
             .itemOutputs(ItemList.RodExcitedUranium4.get(1))
             .duration(11 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -632,31 +599,25 @@ public class FissionFuelLoader implements Runnable {
             .itemOutputs(ItemList.RodExcitedPlutonium.get(1))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(fluidCannerRecipes);
+            .addTo(RecipeMaps.cannerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodExcitedPlutonium.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(2))
+            .itemInputs(ItemList.RodExcitedPlutonium.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(2)
             .itemOutputs(ItemList.RodExcitedPlutonium2.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodExcitedPlutonium2.get(2),
-                GGMaterial.zircaloy2.get(OrePrefixes.stick, 4),
-                GTUtility.getIntegratedCircuit(5))
+            .itemInputs(ItemList.RodExcitedPlutonium2.get(2), GGMaterial.zircaloy2.get(OrePrefixes.stick, 4))
+            .circuit(5)
             .itemOutputs(ItemList.RodExcitedPlutonium4.get(1))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.RodExcitedPlutonium.get(4),
-                GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6),
-                GTUtility.getIntegratedCircuit(4))
+            .itemInputs(ItemList.RodExcitedPlutonium.get(4), GGMaterial.zircaloy2.get(OrePrefixes.stickLong, 6))
+            .circuit(4)
             .itemOutputs(ItemList.RodExcitedPlutonium4.get(1))
             .duration(11 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -695,8 +656,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadah.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(2))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4))
+            .circuit(2)
             .itemOutputs(ItemList.RodNaquadah2.get(1))
             .duration(5 * SECONDS)
             .eut(400)
@@ -704,8 +665,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadah.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 6),
-                GTUtility.getIntegratedCircuit(4))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 6))
+            .circuit(4)
             .itemOutputs(ItemList.RodNaquadah4.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
@@ -713,8 +674,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadah2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(5))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4))
+            .circuit(5)
             .itemOutputs(ItemList.RodNaquadah4.get(1))
             .duration(5 * SECONDS)
             .eut(400)
@@ -796,8 +757,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadria.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(2))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4))
+            .circuit(2)
             .itemOutputs(ItemList.RodNaquadria2.get(1))
             .duration(5 * SECONDS)
             .eut(400)
@@ -805,8 +766,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadria.get(4),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 6),
-                GTUtility.getIntegratedCircuit(4))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 6))
+            .circuit(4)
             .itemOutputs(ItemList.RodNaquadria4.get(1))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(400)
@@ -814,8 +775,8 @@ public class FissionFuelLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.RodNaquadria2.get(2),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4),
-                GTUtility.getIntegratedCircuit(5))
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 4))
+            .circuit(5)
             .itemOutputs(ItemList.RodNaquadria4.get(1))
             .duration(5 * SECONDS)
             .eut(400)

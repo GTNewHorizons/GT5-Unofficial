@@ -103,7 +103,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void loadNBTData(NBTTagCompound aNBT);
 
     /**
-     * Adds the NBT-Information to the ItemStack, when being dismanteled properly Used to store Machine specific Upgrade
+     * Adds the NBT-Information to the ItemStack, when being dismantled properly Used to store Machine specific Upgrade
      * Data.
      */
     void setItemNBT(NBTTagCompound aNBT);
@@ -207,6 +207,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *         upon Block destruction and for Inventory Access Management
      */
     boolean isValidSlot(int aIndex);
+
+    /// Checks if the slot is an I/O slot that contributes to [GTItemSink#getStoredItemsInSink(ItemStackPredicate)].
+    /// Also controls which slots block AE pattern pushes for blocking mode.
+    default boolean isIOSlot(int slot) {
+        return true;
+    }
 
     /**
      * Gets the max stack size limit for a slot and a stack.
@@ -410,7 +416,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return Dyes.MACHINE_METAL.toInt();
+            return Dyes.GUI_METAL.toInt();
         }
     }
 

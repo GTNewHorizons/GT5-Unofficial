@@ -2,6 +2,9 @@ package tectech;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -12,7 +15,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.api.objects.XSTR;
 import tectech.loader.ConfigHandler;
 import tectech.loader.MainLoader;
@@ -27,8 +29,7 @@ import tectech.recipe.TecTechRecipeMaps;
     name = Reference.NAME,
     version = Reference.VERSION,
     guiFactory = "tectech.loader.gui.TecTechGUIFactory",
-    dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:YAMCore@[0.5.70,);"
-        + "required-after:structurelib;"
+    dependencies = "required-after:Forge@[10.13.4.1614,);" + "required-after:structurelib;"
         + "after:ComputerCraft;"
         + "after:OpenComputers;"
         + "required-after:gtneioreplugin;"
@@ -53,7 +54,7 @@ public class TecTech {
     public static TecTech instance;
 
     public static final XSTR RANDOM = XSTR.XSTR_INSTANCE;
-    public static final LogHelper LOGGER = new LogHelper(Reference.MODID);
+    public static final Logger LOGGER = LogManager.getLogger(Reference.MODID);
     public static CreativeTabTecTech creativeTabTecTech;
 
     public static EnderWorldSavedData enderWorldSavedData;
@@ -63,8 +64,6 @@ public class TecTech {
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
-        LOGGER.setDebugOutput(true);
-
         enderWorldSavedData = new EnderWorldSavedData();
         FMLCommonHandler.instance()
             .bus()

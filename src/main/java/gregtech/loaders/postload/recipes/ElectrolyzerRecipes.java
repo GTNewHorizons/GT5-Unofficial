@@ -16,7 +16,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ElectrolyzerRecipes implements Runnable {
@@ -26,7 +25,8 @@ public class ElectrolyzerRecipes implements Runnable {
         // H2O = 2H + O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Cell_Empty.get(1L))
+            .itemInputs(ItemList.Cell_Empty.get(1L))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
             .fluidInputs(Materials.Water.getFluid(1_000))
             .fluidOutputs(Materials.Hydrogen.getGas(2_000))
@@ -35,7 +35,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2), ItemList.Cell_Empty.get(1L))
+            .itemInputs(ItemList.Cell_Empty.get(1L))
+            .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L))
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(Materials.Hydrogen.getGas(2_000))
@@ -44,7 +45,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3), ItemList.Cell_Empty.get(2L))
+            .itemInputs(ItemList.Cell_Empty.get(2L))
+            .circuit(3)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L))
             .fluidInputs(Materials.Water.getFluid(1_000))
             .fluidOutputs(Materials.Oxygen.getGas(1_000))
@@ -53,7 +55,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(4), ItemList.Cell_Empty.get(2L))
+            .itemInputs(ItemList.Cell_Empty.get(2L))
+            .circuit(4)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2L))
             .fluidInputs(GTModHandler.getDistilledWater(1_000))
             .fluidOutputs(Materials.Oxygen.getGas(1_000))
@@ -133,7 +136,7 @@ public class ElectrolyzerRecipes implements Runnable {
         // CO2 = C + 2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(Materials.Carbon.getDust(1))
             .fluidInputs(Materials.CarbonDioxide.getGas(1_000))
             .fluidOutputs(Materials.Oxygen.getGas(2_000))
@@ -142,7 +145,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(11), Materials.Empty.getCells(2))
+            .itemInputs(Materials.Empty.getCells(2))
+            .circuit(11)
             .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(2))
             .fluidInputs(Materials.CarbonDioxide.getGas(1_000))
             .duration(45 * SECONDS)
@@ -151,7 +155,7 @@ public class ElectrolyzerRecipes implements Runnable {
         // CO = C + O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(Materials.Carbon.getDust(1))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
             .fluidOutputs(Materials.Oxygen.getGas(1_000))
@@ -160,7 +164,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(11), Materials.Empty.getCells(1))
+            .itemInputs(Materials.Empty.getCells(1))
+            .circuit(11)
             .itemOutputs(Materials.Carbon.getDust(1), Materials.Oxygen.getCells(1))
             .fluidInputs(Materials.CarbonMonoxide.getGas(1_000))
             .duration(15 * SECONDS)
@@ -194,7 +199,7 @@ public class ElectrolyzerRecipes implements Runnable {
         // SO2 = S + 2O
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
+            .circuit(1)
             .itemOutputs(Materials.Sulfur.getDust(1))
             .fluidInputs(Materials.SulfurDioxide.getGas(1_000))
             .fluidOutputs(Materials.Oxygen.getGas(2_000))
@@ -203,7 +208,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(11), Materials.Empty.getCells(2))
+            .itemInputs(Materials.Empty.getCells(2))
+            .circuit(11)
             .itemOutputs(Materials.Sulfur.getDust(1), Materials.Oxygen.getCells(2))
             .fluidInputs(Materials.SulfurDioxide.getGas(1_000))
             .duration(15 * SECONDS)
@@ -221,7 +227,8 @@ public class ElectrolyzerRecipes implements Runnable {
         // (NaCl·H2O)= NaOH + H
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(Materials.Empty.getCells(1))
+            .circuit(1)
             .itemOutputs(Materials.SodiumHydroxide.getDust(3), Materials.Hydrogen.getCells(1))
             .fluidInputs(Materials.SaltWater.getFluid(1_000))
             .fluidOutputs(Materials.Chlorine.getGas(1_000))
@@ -230,7 +237,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(Materials.Empty.getCells(1))
+            .circuit(11)
             .itemOutputs(Materials.SodiumHydroxide.getDust(3), Materials.Chlorine.getCells(1))
             .fluidInputs(Materials.SaltWater.getFluid(1_000))
             .fluidOutputs(Materials.Hydrogen.getGas(1_000))
@@ -240,7 +248,8 @@ public class ElectrolyzerRecipes implements Runnable {
         // HCl = H + Cl
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(Materials.Empty.getCells(1))
+            .circuit(1)
             .itemOutputs(Materials.Hydrogen.getCells(1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Chlorine.getGas(1_000))
@@ -249,7 +258,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Empty.getCells(1), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(Materials.Empty.getCells(1))
+            .circuit(11)
             .itemOutputs(Materials.Chlorine.getCells(1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(1_000))
             .fluidOutputs(Materials.Hydrogen.getGas(1_000))
@@ -258,7 +268,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.HydrochloricAcid.getCells(1), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(Materials.HydrochloricAcid.getCells(1))
+            .circuit(1)
             .itemOutputs(Materials.Hydrogen.getCells(1))
             .fluidOutputs(Materials.Chlorine.getGas(1_000))
             .duration(36 * SECONDS)
@@ -266,7 +277,8 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(electrolyzerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.HydrochloricAcid.getCells(1), GTUtility.getIntegratedCircuit(11))
+            .itemInputs(Materials.HydrochloricAcid.getCells(1))
+            .circuit(11)
             .itemOutputs(Materials.Chlorine.getCells(1))
             .fluidOutputs(Materials.Hydrogen.getGas(1_000))
             .duration(36 * SECONDS)

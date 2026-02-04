@@ -9,34 +9,28 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.block.machine.BlockSuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.container.ContainerCircuitProgrammer;
 import gtPlusPlus.core.container.ContainerFishTrap;
 import gtPlusPlus.core.container.ContainerPestKiller;
-import gtPlusPlus.core.container.ContainerProjectTable;
-import gtPlusPlus.core.container.ContainerSuperJukebox;
 import gtPlusPlus.core.container.ContainerVolumetricFlaskSetter;
 import gtPlusPlus.core.gui.beta.GUIIDRegistry;
 import gtPlusPlus.core.gui.beta.MUGuild;
 import gtPlusPlus.core.gui.machine.GUICircuitProgrammer;
 import gtPlusPlus.core.gui.machine.GUIFishTrap;
 import gtPlusPlus.core.gui.machine.GUIPestKiller;
-import gtPlusPlus.core.gui.machine.GUIProjectTable;
-import gtPlusPlus.core.gui.machine.GUISuperJukebox;
 import gtPlusPlus.core.gui.machine.GUIVolumetricFlaskSetter;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 
 public class GuiHandler implements IGuiHandler {
 
-    public static final int GUI1 = 0; // Project Table
+    public static final int GUI1 = 0; // None
     public static final int GUI2 = 1; // None
     public static final int GUI3 = 2; // None
-    public static final int GUI4 = 3; // Workbench
+    public static final int GUI4 = 3; // None
     public static final int GUI5 = 4; // Workbench Adv
     public static final int GUI6 = 5; // Fish trap
     public static final int GUI7 = 6; // None
@@ -45,7 +39,7 @@ public class GuiHandler implements IGuiHandler {
     public static final int GUI10 = 9; // None
     public static final int GUI11 = 10; // None
     public static final int GUI12 = 11; // None
-    public static final int GUI14 = 13; // Super Jukebox
+    public static final int GUI14 = 13; // None
     public static final int GUI15 = 14; // Pest Killer
     public static final int GUI16 = 15; // None
     public static final int GUI17 = 16; // None
@@ -56,74 +50,48 @@ public class GuiHandler implements IGuiHandler {
         NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler());
     }
 
-    @Override // ContainerModTileEntity
+    @Override
     public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x,
         final int y, final int z) {
-        final TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te == null) return null;
 
-        if (te != null) {
-            if (ID == GUI1) {
-                return new ContainerProjectTable(player.inventory, (TileEntityProjectTable) te);
-            }
-        }
-
-        if (te != null) {
-            if (ID == GUI5) {
+        return switch (ID) {
+            case GUI5 -> {
                 Logger.INFO("sad");
-                // return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced) te);
-            } else if (ID == GUI6) {
-                return new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
-            } else if (ID == GUI8) {
-                return new ContainerCircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            } else if (ID == GUI14) {
-                return new ContainerSuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
-            } else if (ID == GUI15) {
-                return new ContainerPestKiller(player.inventory, (TileEntityPestKiller) te);
-            } else if (ID == GUI18) {
-                return new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
+                yield null;
             }
-        }
-
-        return null;
+            case GUI6 -> new ContainerFishTrap(player.inventory, (TileEntityFishTrap) te);
+            case GUI8 -> new ContainerCircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+            case GUI15 -> new ContainerPestKiller(player.inventory, (TileEntityPestKiller) te);
+            case GUI18 -> new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te);
+            default -> null;
+        };
     }
 
-    @Override // GuiModTileEntity
+    @Override
     public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x,
         final int y, final int z) {
         Logger.WARNING(
-            "getClientGuiElement Called by: " + player
-                + ", in world: "
-                + player.dimension
-                + " at x:"
-                + x
-                + ", y:"
-                + y
-                + ", z:"
-                + z
-                + ".");
-        final TileEntity te = world.getTileEntity(x, y, z);
-        if (te != null) {
-            if (ID == GUI1) {
-                return new GUIProjectTable(player.inventory, (TileEntityProjectTable) te);
-            }
-        }
+            String.format(
+                "getClientGuiElement Called by: %s, in world: %d at x:%d, y:%d, z:%d.",
+                player,
+                player.dimension,
+                x,
+                y,
+                z));
 
-        if (te != null) {
-            if (ID == GUI6) {
-                return new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
-            } else if (ID == GUI8) {
-                return new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
-            } else if (ID == GUI14) {
-                return new GUISuperJukebox(player.inventory, (TileEntitySuperJukebox) te);
-            } else if (ID == GUI15) {
-                return new GUIPestKiller(player.inventory, (TileEntityPestKiller) te);
-            } else if (ID == GUI18) {
-                return new GUIVolumetricFlaskSetter(
-                    new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
-            }
-        }
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te == null) return null;
 
-        return null;
+        return switch (ID) {
+            case GUI6 -> new GUIFishTrap(player.inventory, (TileEntityFishTrap) te);
+            case GUI8 -> new GUICircuitProgrammer(player.inventory, (TileEntityCircuitProgrammer) te);
+            case GUI15 -> new GUIPestKiller(player.inventory, (TileEntityPestKiller) te);
+            case GUI18 -> new GUIVolumetricFlaskSetter(
+                new ContainerVolumetricFlaskSetter(player.inventory, (TileEntityVolumetricFlaskSetter) te));
+            default -> null;
+        };
     }
 
     // New Methods

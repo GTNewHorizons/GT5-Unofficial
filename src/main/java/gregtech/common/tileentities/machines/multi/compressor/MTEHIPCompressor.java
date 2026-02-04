@@ -88,7 +88,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             'B',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(4))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 9))
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings10, 10))
@@ -100,7 +100,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
             'G',
             buildHatchAdder(MTEHIPCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 5))))
         .addElement('H', ofBlock(GregTechAPI.sBlockCasings10, 5))
         .build();
@@ -345,18 +345,14 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        if (tag.getBoolean("cooling")) currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.RED
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
-        else currentTip.add(
-            "HIP Heat: " + EnumChatFormatting.AQUA
-                + EnumChatFormatting.BOLD
-                + tag.getInteger("heat")
-                + "%"
-                + EnumChatFormatting.RESET);
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.hip_compressor.heat",
+                "" + (tag.getBoolean("cooling") ? EnumChatFormatting.RED : EnumChatFormatting.AQUA)
+                    + EnumChatFormatting.BOLD
+                    + tag.getInteger("heat")
+                    + "%"
+                    + EnumChatFormatting.RESET));
     }
 
     @Override

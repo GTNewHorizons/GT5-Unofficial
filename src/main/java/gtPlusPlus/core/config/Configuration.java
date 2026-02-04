@@ -41,10 +41,6 @@ public class Configuration {
         @Config.Comment("Enables Animated GT++ Textures")
         @Config.DefaultBoolean(true)
         public boolean enableAnimatedTextures;
-
-        @Config.Comment("Use GT textures")
-        @Config.DefaultBoolean(true)
-        public boolean useGregtechTextures;
     }
 
     @Config.Comment("Worldgen section")

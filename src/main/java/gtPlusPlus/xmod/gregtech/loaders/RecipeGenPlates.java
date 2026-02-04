@@ -14,7 +14,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -70,7 +69,8 @@ public class RecipeGenPlates extends RecipeGenBase {
         // Bender
         if (ingotStackOne != null && plate_Single != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(1))
+                .itemInputs(ingotStackOne)
+                .circuit(1)
                 .itemOutputs(plate_Single)
                 .duration(Math.max(material.getMass() * 1L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -81,7 +81,8 @@ public class RecipeGenPlates extends RecipeGenBase {
 
         if (ingotStackOne != null && foil_SingleFour != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackOne, GTUtility.getIntegratedCircuit(10))
+                .itemInputs(ingotStackOne)
+                .circuit(10)
                 .itemOutputs(foil_SingleFour)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -116,7 +117,8 @@ public class RecipeGenPlates extends RecipeGenBase {
         // Making Double Plates
         if (ingotStackTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackTwo, GTUtility.getIntegratedCircuit(2))
+                .itemInputs(ingotStackTwo)
+                .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -127,7 +129,8 @@ public class RecipeGenPlates extends RecipeGenBase {
 
         if (plate_SingleTwo != null && plate_Double != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(plate_SingleTwo, GTUtility.getIntegratedCircuit(2))
+                .itemInputs(plate_SingleTwo)
+                .circuit(2)
                 .itemOutputs(plate_Double)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -138,7 +141,8 @@ public class RecipeGenPlates extends RecipeGenBase {
         // Bender
         if (material.getPlate(1) != null && material.getFoil(1) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getPlate(1), GTUtility.getIntegratedCircuit(1))
+                .itemInputs(material.getPlate(1))
+                .circuit(1)
                 .itemOutputs(material.getFoil(4))
                 .duration(Math.max(material.getMass(), 1L))
                 .eut(material.vVoltageMultiplier)
@@ -153,7 +157,8 @@ public class RecipeGenPlates extends RecipeGenBase {
         // Making Dense Plates
         if (ingotStackNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(ingotStackNine, GTUtility.getIntegratedCircuit(9))
+                .itemInputs(ingotStackNine)
+                .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
@@ -164,7 +169,8 @@ public class RecipeGenPlates extends RecipeGenBase {
 
         if (plate_SingleNine != null && plate_Dense != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(plate_SingleNine, GTUtility.getIntegratedCircuit(9))
+                .itemInputs(plate_SingleNine)
+                .circuit(9)
                 .itemOutputs(plate_Dense)
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)

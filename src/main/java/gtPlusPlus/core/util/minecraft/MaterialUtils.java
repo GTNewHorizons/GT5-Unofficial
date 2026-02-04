@@ -18,7 +18,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
@@ -83,7 +82,7 @@ public class MaterialUtils {
             TextureSet iconSet = null;
             if (aCustomTextures == null) {
                 if (material.isRadioactive()) {
-                    iconSet = TextureSets.NUCLEAR.get();
+                    iconSet = TextureSet.SET_NUCLEAR;
                 } else {
                     iconSet = material.mIconSet;
                 }
@@ -166,7 +165,7 @@ public class MaterialUtils {
                         + " | Valid RGB? "
                         + (hasValidRGBA(rgba)));
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.mName);
             t.printStackTrace();
         }

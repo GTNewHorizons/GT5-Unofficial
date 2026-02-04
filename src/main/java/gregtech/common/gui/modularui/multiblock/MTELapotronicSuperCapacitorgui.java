@@ -1,9 +1,8 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
-import java.math.BigInteger;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
@@ -26,7 +25,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kekztech.common.tileentities.MTELapotronicSuperCapacitor;
 import kekztech.util.Util;
@@ -70,15 +68,14 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                 .asWidget())
 
             .child(IKey.dynamic(() -> {
-                String avgString = EnumChatFormatting.GREEN + GTUtility.formatNumbers(avgIn.getValue())
-                    .toString() + EnumChatFormatting.WHITE;
+                String avgString = EnumChatFormatting.GREEN + formatNumber(avgIn.getValue()).toString()
+                    + EnumChatFormatting.WHITE;
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_in", avgString);
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String euOut = EnumChatFormatting.RED + GTUtility.formatNumbers(avgOut.getValue())
-                    + EnumChatFormatting.WHITE;
+                String euOut = EnumChatFormatting.RED + formatNumber(avgOut.getValue()) + EnumChatFormatting.WHITE;
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.gui.lapotronic_super_capacitor.text.avg_eu_out", euOut);
             })
@@ -96,8 +93,7 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
             })
                 .asWidget())
             .child(IKey.dynamic(() -> {
-                String lost = EnumChatFormatting.RED + GTUtility.formatNumbers(loss.getValue())
-                    .toString();
+                String lost = EnumChatFormatting.RED + formatNumber(loss.getValue()).toString();
                 return EnumChatFormatting.WHITE + StatCollector
                     .translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.passive_loss", lost);
             })
@@ -197,13 +193,6 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
                             .asWidget()));
     }
 
-    private String formatNumber(BigInteger aNumber) {
-        // lol random random number thats big (pulled from old ui)
-        return aNumber.compareTo(BigInteger.valueOf(1_000_000_000L)) > 0 ? GTUtility.scientificFormat(aNumber)
-            : GTUtility.formatNumbers(aNumber);
-
-    }
-
     public String getTimeTo(double avgIn, double avgOut, double passLoss, double cap, double sto) {
         if (avgIn >= avgOut + passLoss) {
             // Calculate time to full if charging
@@ -269,9 +258,11 @@ public class MTELapotronicSuperCapacitorgui extends MTEMultiBlockBaseGui<MTELapo
         BigIntSyncValue stored = new BigIntSyncValue(multiblock::getStored, multiblock::setStored);
         LongSyncValue passiveDischargeSync = new LongSyncValue(multiblock::getPassiveDischargeAmount);
         LongSyncValue avgEuIn = new LongSyncValue(
-            () -> multiblock.getEnergyInputValues5m()
+            () -> multiblock.getEnergyInputValues()
                 .avgLong());
-        LongSyncValue avgEuOut = new LongSyncValue(multiblock::getPassiveDischargeAmount);
+        LongSyncValue avgEuOut = new LongSyncValue(
+            () -> multiblock.getEnergyOutputValues()
+                .avgLong());
         BooleanSyncValue wirelessMode = new BooleanSyncValue(multiblock::isWireless_mode, multiblock::setWireless_mode);
         BooleanSyncValue warningSync = new BooleanSyncValue(multiblock::getShowWarning, multiblock::setShowWarning);
         BooleanSyncValue canRebalance = new BooleanSyncValue(multiblock::getCanRebalance, multiblock::setCanRebalance);

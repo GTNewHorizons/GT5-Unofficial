@@ -191,7 +191,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         reloadOwner();
     }
 
-    public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
+    public GTRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         if (aInputs == null) aInputs = GTValues.emptyItemStackArray;
         else aInputs = ArrayExt.removeTrailingNulls(aInputs);
@@ -209,40 +209,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
-
-        if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> stacks = new ArrayList<>(aInputs.length + aOutputs.length);
-            for (final ItemStack s : aInputs) if (s != null) stacks.add(s);
-            for (final ItemStack s : aOutputs) if (s != null) stacks.add(s);
-
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) {
-                if (aDuration / i >= 16) {
-                    boolean temp = true;
-                    // noinspection ForLoopReplaceableByForEach
-                    for (int j = 0, size = stacks.size(); j < size; j++) {
-                        if (stacks.get(j).stackSize % i != 0) {
-                            temp = false;
-                            break;
-                        }
-                    }
-                    if (temp) for (final FluidStack f : aFluidInputs) if (f.amount % i != 0) {
-                        temp = false;
-                        break;
-                    }
-                    if (temp) for (final FluidStack f : aFluidOutputs) if (f.amount % i != 0) {
-                        temp = false;
-                        break;
-                    }
-                    if (temp) {
-                        // noinspection ForLoopReplaceableByForEach
-                        for (int j = 0, size = stacks.size(); j < size; j++) stacks.get(j).stackSize /= i;
-                        for (final FluidStack f : aFluidInputs) f.amount /= i;
-                        for (final FluidStack f : aFluidOutputs) f.amount /= i;
-                        aDuration /= i;
-                    }
-                }
-            }
-        }
 
         mInputs = aInputs;
         mOutputs = aOutputs;
@@ -262,7 +228,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
         int aSpecialValue, int aType) {
         this(
-            true,
             new ItemStack[] { aInput1 },
             new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
             null,
@@ -301,22 +266,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
             }
         }
-    }
-
-    // Dummy GTRecipe maker...
-    public GTRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
-        FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
-        this(
-            true,
-            aInputs,
-            aOutputs,
-            aSpecialItems,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUt,
-            aSpecialValue);
     }
 
     /**
@@ -984,8 +933,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * WARNING: this class will maintain a strong reference over ALL data sticks created this way. DO NOT call this
          * methods recklessly as it will cause memory leak!
          */
-        public ItemStack newDataStickForNEI(String aDisplayName) {
-            ItemStack dataStick = ItemList.Tool_DataStick.getWithName(1L, aDisplayName);
+        public ItemStack newDataStickForNEI(String aDisplayName, long amount) {
+            ItemStack dataStick = ItemList.Tool_DataStick.getWithName(amount, aDisplayName);
             // we don't actually needs to set the recipe data here. no one will read the recipe data before a world load
             // and before a world load id remap will happen and the recipe data will be finally set in the below
             // reInit() method
@@ -1232,11 +1181,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
             this.mOreDictAlt = mOreDictAlt;
         }
 
-        public GTRecipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
-            int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
-            int aSpecialValue, ItemStack[][] aAlt) {
+        public GTRecipe_WithAlt(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
+            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
+            ItemStack[][] aAlt) {
             super(
-                aOptimize,
                 aInputs,
                 aOutputs,
                 aSpecialItems,

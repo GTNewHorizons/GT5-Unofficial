@@ -124,7 +124,6 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
 
         if (!(info.material instanceof Werkstoff w)) return false;
         if (!w.hasItemType(OrePrefixes.ore)) return false;
-        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return false;
 
         return true;
     }
@@ -153,7 +152,6 @@ public final class BWOreAdapter implements IOreAdapter<Werkstoff> {
         if (!(stone instanceof StoneType stoneType)) return null;
         if (!(info.material instanceof Werkstoff w)) return null;
         if (!w.hasItemType(OrePrefixes.ore)) return null;
-        if ((w.getGenerationFeatures().blacklist & 0b1000) != 0) return null;
 
         Ores ores = this.ores.get(stoneType);
         if (ores == null) return null;

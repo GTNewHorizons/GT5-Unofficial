@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -206,11 +207,12 @@ public class MTEPipeData extends MetaPipeEntity implements IConnectsToDataPipe, 
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
                         new PipeActivityMessage.PipeActivityData(this),
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256);
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()

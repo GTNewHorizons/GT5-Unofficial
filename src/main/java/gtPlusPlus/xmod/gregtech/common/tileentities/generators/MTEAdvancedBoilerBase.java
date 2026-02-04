@@ -9,14 +9,10 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -28,7 +24,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.boilers.MTEBoiler;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 
 public class MTEAdvancedBoilerBase extends MTEBoiler {
 
@@ -300,42 +295,7 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
     }
 
     @Override
-    protected IDrawable[] getFuelSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_COAL };
-    }
-
-    @Override
-    protected IDrawable[] getAshSlotBackground() {
-        return new IDrawable[] { getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DUST };
-    }
-
-    @Override
     public int getTitleColor() {
         return COLOR_TITLE.get();
-    }
-
-    @Override
-    protected IDrawable getOverlaySlotIn() {
-        return GTUITextures.OVERLAY_SLOT_IN;
-    }
-
-    @Override
-    protected IDrawable getOverlaySlotOut() {
-        return GTUITextures.OVERLAY_SLOT_OUT;
-    }
-
-    @Override
-    protected IDrawable getOverlaySlotCanister() {
-        return GTPPUITextures.OVERLAY_SLOT_CANISTER_DARK;
-    }
-
-    @Override
-    protected UITexture getProgressbarEmpty() {
-        return GTPPUITextures.PROGRESSBAR_BOILER_EMPTY;
-    }
-
-    @Override
-    protected UITexture getProgressbarFuel() {
-        return GTPPUITextures.PROGRESSBAR_FUEL;
     }
 }

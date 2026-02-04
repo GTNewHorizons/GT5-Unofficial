@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION1_GLOW;
 
@@ -47,11 +48,11 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
         tt.addMachineType("Fusion Reactor")
             .addInfo("Power overload!!!")
             .addInfo(
-                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
+                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
                     + " EU/t and "
                     + EnumChatFormatting.AQUA
-                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
+                    + formatNumber(capableStartupCanonical() / 32 / M)
                     + "M"
                     + EnumChatFormatting.GRAY
                     + " EU capacity per Energy Hatch")
@@ -67,9 +68,9 @@ public class MTELargeFusionComputer1 extends MTELargeFusionComputer {
             .addCasingInfoMin("Ameliorated Superconduct Coil", 560, false)
             .addCasingInfoMin("Naquadah Alloy Frame Boxes", 128, false)
             .addCasingInfoMin("Rhodium-Plated Palladium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block with dot 2", 2)
-            .addInputHatch("1-16, Hint block with dot 1", 1)
-            .addOutputHatch("1-16, Hint block with dot 1", 1)
+            .addEnergyHatch("1-32, Hint Block Number 2", 2)
+            .addInputHatch("1-16, Hint Block Number 1", 1)
+            .addOutputHatch("1-16, Hint Block Number 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
                 "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())

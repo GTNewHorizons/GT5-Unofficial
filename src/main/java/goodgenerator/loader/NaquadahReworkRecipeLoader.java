@@ -151,7 +151,8 @@ public class NaquadahReworkRecipeLoader {
 
         // Naquadah Rework Line
         GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2))
+            .circuit(1)
             .fluidInputs(GGMaterial.fluoroantimonicAcid.getFluidOrGas(3_000))
             .fluidOutputs(GGMaterial.lowQualityNaquadahEmulsion.getFluidOrGas(2_000))
             .itemOutputs(GGMaterial.titaniumTrifluoride.get(OrePrefixes.dust, 4))
@@ -162,7 +163,8 @@ public class NaquadahReworkRecipeLoader {
 
         // TiF3 + 3H = Ti + 3HF
         GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.titaniumTrifluoride.get(OrePrefixes.dust, 4), GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GGMaterial.titaniumTrifluoride.get(OrePrefixes.dust, 4))
+            .circuit(1)
             .fluidInputs(Materials.Hydrogen.getGas(3_000))
             .fluidOutputs(Materials.HydrofluoricAcid.getFluid(3_000))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.Titanium, 1))
@@ -266,9 +268,8 @@ public class NaquadahReworkRecipeLoader {
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 27))
+            .circuit(1)
             .fluidInputs(GGMaterial.lowQualityNaquadahEmulsion.getFluidOrGas(10_000))
             .itemOutputs(
                 GGMaterial.galliumHydroxide.get(OrePrefixes.dust, 64),
@@ -376,9 +377,9 @@ public class NaquadahReworkRecipeLoader {
         // 2InPO4 + 3Ca = 2In + Ca3(PO4)2
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
                 GGMaterial.indiumPhosphate.get(OrePrefixes.dust, 12),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 3))
+            .circuit(1)
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Indium, 2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.TricalciumPhosphate, 5))
@@ -440,8 +441,8 @@ public class NaquadahReworkRecipeLoader {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GGMaterial.indiumPhosphate.get(OrePrefixes.dust, 6),
-                GGMaterial.galliumHydroxide.get(OrePrefixes.dust, 7),
-                GTUtility.getIntegratedCircuit(2))
+                GGMaterial.galliumHydroxide.get(OrePrefixes.dust, 7))
+            .circuit(2)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.IndiumGalliumPhosphide, 3))
             .duration(15 * TICKS)
             .eut(TierEU.RECIPE_ULV)
@@ -522,7 +523,8 @@ public class NaquadahReworkRecipeLoader {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2), GTUtility.getIntegratedCircuit(2))
+            .itemInputs(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2))
+            .circuit(2)
             .itemOutputs(Materials.Naquadah.getNuggets(1))
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_IV)
@@ -532,7 +534,7 @@ public class NaquadahReworkRecipeLoader {
 
         // C2H4 + H2O(g) = C2H6O
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(24))
+            .circuit(24)
             .fluidInputs(Materials.Ethylene.getGas(1_000), Materials.Steam.getGas(2_000))
             .fluidOutputs(Materials.Ethanol.getFluid(1_000))
             .duration(20 * SECONDS)
@@ -540,7 +542,8 @@ public class NaquadahReworkRecipeLoader {
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Ethylene.getCells(1), GTUtility.getIntegratedCircuit(24))
+            .itemInputs(Materials.Ethylene.getCells(1))
+            .circuit(24)
             .fluidInputs(Materials.Steam.getGas(2_000))
             .itemOutputs(Materials.Ethanol.getCells(1))
             .duration(20 * SECONDS)

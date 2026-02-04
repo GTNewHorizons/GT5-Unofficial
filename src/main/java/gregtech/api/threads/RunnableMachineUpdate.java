@@ -107,12 +107,16 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     protected static void postTaskToRun(Runnable runnable) {
+        initExecutorService();
         CompletableFuture<Void> f = CompletableFuture.runAsync(runnable, EXECUTOR_SERVICE);
         TASK_COUNTER.incrementAndGet();
         f.thenRun(SEMAPHORE::release);
     }
 
-    public static void initExecutorService() {
+    private static void initExecutorService() {
+        if (EXECUTOR_SERVICE != null) {
+            return;
+        }
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(
             Math.max(
                 1,
@@ -123,6 +127,9 @@ public class RunnableMachineUpdate implements Runnable {
     }
 
     public static void shutdownExecutorService() {
+        if (EXECUTOR_SERVICE == null) {
+            return;
+        }
         try {
             GTMod.GT_FML_LOGGER.info("Shutting down Machine block update executor service");
             EXECUTOR_SERVICE.shutdown(); // Disable new tasks from being submitted
@@ -148,6 +155,7 @@ public class RunnableMachineUpdate implements Runnable {
             EXECUTOR_SERVICE.shutdownNow();
         } finally {
             GTMod.GT_FML_LOGGER.info("Leaving... RunnableMachineUpdate.shutdownExecutorService");
+            EXECUTOR_SERVICE = null;
         }
     }
 

@@ -6,13 +6,14 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 
+import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.xmod.gregtech.api.interfaces.IGregtechItemContainer;
 
-public enum GregtechItemList implements IGregtechItemContainer {
+public enum GregtechItemList implements IItemContainer {
 
     /**
      * Items
@@ -500,6 +501,12 @@ public enum GregtechItemList implements IGregtechItemContainer {
     Hatch_Solidifier_III,
     Hatch_Solidifier_IV,
 
+    // Extrusion Hatches for Industrial Extruder
+    Hatch_Extrusion_I,
+    Hatch_Extrusion_II,
+    Hatch_Extrusion_III,
+    Hatch_Extrusion_IV,
+
     // ----------------------------------------------------------------------------
 
     /**
@@ -730,7 +737,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     AlgagenicGrowthPromoterCatalyst,
 
     // Algae Items
-    Algae,
     AlgaeBiomass,
     GreenAlgaeBiomass,
     BrownAlgaeBiomass,
@@ -891,18 +897,6 @@ public enum GregtechItemList implements IGregtechItemContainer {
     SmallLithiumHydroperoxide,
     TinyLithiumHydroperoxide,
 
-    ManureByproductsDust,
-    SmallManureByproductsDust,
-    TinyManureByproductsDust,
-
-    OrganicFertilizerDust,
-    SmallOrganicFertilizerDust,
-    TinyOrganicFertilizerDust,
-
-    DriedEarthDust,
-    SmallDriedEarthDust,
-    TinyDriedEarthDust,
-
     FormaldehydeCatalystDust,
     SmallFormaldehydeCatalystDust,
     TinyFormaldehydeCatalystDust,
@@ -910,6 +904,46 @@ public enum GregtechItemList implements IGregtechItemContainer {
     AmmoniumNitrateDust,
     SmallAmmoniumNitrateDust,
     TinyAmmoniumNitrateDust,
+
+    LithiumCarbonateDust,
+    SmallLithiumCarbonateDust,
+    TinyLithiumCarbonateDust,
+
+    LithiumPeroxideDust,
+    SmallLithiumPeroxideDust,
+    TinyLithiumPeroxideDust,
+
+    LithiumHydroxideDust,
+    SmallLithiumHydroxideDust,
+    TinyLithiumHydroxideDust,
+
+    CalciumHydroxideDust,
+    SmallCalciumHydroxideDust,
+    TinyCalciumHydroxideDust,
+
+    CalciumCarbonateDust,
+    SmallCalciumCarbonateDust,
+    TinyCalciumCarbonateDust,
+
+    Li2CO3CaOH2Dust,
+    SmallLi2CO3CaOH2Dust,
+    TinyLi2CO3CaOH2Dust,
+
+    Neptunium238Dust,
+    Neptunium239Dust,
+    Radium226Dust,
+    DecayedRadium226Dust,
+    Protactinium233Dust,
+
+    ZirconiumPellet,
+
+    ZrCl4Dust,
+    SmallZrCl4Dust,
+    TinyZrCl4Dust,
+
+    CookedZrCl4Dust,
+    SmallCookedZrCl4Dust,
+    TinyCookedZrCl4Dust,
 
     SimpleHandPump,
     AdvancedHandPump,
@@ -920,9 +954,54 @@ public enum GregtechItemList implements IGregtechItemContainer {
     DehydratorCoilWireIV,
     DehydratorCoilWireLuV,
     DehydratorCoilWireZPM,
+    DehydratorCoilEV,
+    DehydratorCoilIV,
+    DehydratorCoilLuV,
+    DehydratorCoilZPM,
     PersonalCloakingDevice,
     PersonalHealingDevice,
     Hatch_Input_Debug_Steam,
+    SupremePizzaGloves,
+    LFTRControlCircuit,
+
+    ChargePack_LV,
+    ChargePack_MV,
+    ChargePack_HV,
+    ChargePack_EV,
+    ChargePack_IV,
+    ChargePack_LuV,
+    ChargePack_ZPM,
+    ChargePack_UV,
+    ChargePack_UHV,
+
+    HalfCompleteCasing_I,
+    HalfCompleteCasing_II,
+    HalfCompleteCasing_III,
+    HalfCompleteCasing_IV,
+
+    BoilerChassis_Tier0,
+    BoilerChassis_Tier1,
+    BoilerChassis_Tier2,
+
+    AirFilter_Tier1,
+    AirFilter_Tier2,
+    LavaFilter,
+
+    BitCoin,
+    HandPumpToken_I,
+    HandPumpToken_II,
+    HandPumpToken_III,
+    HandPumpToken_IV,
+
+    RawHumanMeat,
+    CookedHumanMeat,
+    RawHorseMeat,
+    CookedHorseMeat,
+    RawWolfMeat,
+    CookedWolfMeat,
+    RawOcelotMeat,
+    CookedOcelotMeat,
+    BlazeFlesh,
 
     ;
 
@@ -948,6 +1027,12 @@ public enum GregtechItemList implements IGregtechItemContainer {
     }
 
     @Override
+    public IItemContainer hidden() {
+        codechicken.nei.api.API.hideItem(get(1));
+        return this;
+    }
+
+    @Override
     public Item getItem() {
         if (this.mHasNotBeenSet) {
             throw new IllegalAccessError("The Enum '" + this.name() + "' has not been set to an Item at this time!");
@@ -969,6 +1054,11 @@ public enum GregtechItemList implements IGregtechItemContainer {
     @Override
     public final boolean hasBeenSet() {
         return !this.mHasNotBeenSet;
+    }
+
+    @Override
+    public IItemContainer setRender(IItemRenderer aRender) {
+        throw new UnsupportedOperationException("Custom renderer not implemented for GT++ items!");
     }
 
     @Override

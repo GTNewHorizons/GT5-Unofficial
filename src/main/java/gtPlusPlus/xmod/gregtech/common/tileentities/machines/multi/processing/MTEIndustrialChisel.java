@@ -79,7 +79,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
             .addBulkMachineInfo(16, 3f, 0.75f)
             .addInfo("Factory Grade Auto Chisel")
             .addInfo("Target block goes in Controller slot for common Input Buses")
-            .addInfo("You can also set a target block in each Chisel Input Bus and use them as an Input Bus")
+            .addInfo("You can also set a target block in each Chisel Bus and use them as an Input Bus")
             .addInfo("If no target is provided for common buses, the result of the first chisel is used")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
@@ -113,7 +113,7 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                     buildHatchAdder(MTEIndustrialChisel.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(90)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings5Misc, 5))))
                 .build();
         }
@@ -227,7 +227,6 @@ public class MTEIndustrialChisel extends GTPPMultiBlockBase<MTEIndustrialChisel>
                 }
                 // We can chisel this
                 GTRecipe aRecipe = new GTRecipe(
-                    false,
                     new ItemStack[] { GTUtility.copyAmount(1, aInput) },
                     new ItemStack[] { GTUtility.copyAmount(1, tOutput) },
                     null,

@@ -65,7 +65,7 @@ public class ItemVolumetricFlaskGui {
             .widthRel(1)
             .height(18);
 
-        closeRow.child(createPanelCloseButton());
+        closeRow.child(createPanelCloseButton(capacitySyncer));
 
         mainColumn.child(capacityFieldRow);
         mainColumn.child(closeRow);
@@ -75,7 +75,7 @@ public class ItemVolumetricFlaskGui {
     }
 
     // a slightly altered default close button implementation, this one is aligned left as opposed to positioned
-    private ButtonWidget<?> createPanelCloseButton() {
+    private ButtonWidget<?> createPanelCloseButton(IntValue.Dynamic capacitySyncer) {
         ButtonWidget<?> buttonWidget = new ButtonWidget<>();
         return buttonWidget.widgetTheme(IThemeApi.CLOSE_BUTTON)
             .align(Alignment.CenterLeft)
@@ -84,6 +84,7 @@ public class ItemVolumetricFlaskGui {
             .overlay(IKey.lang("GT5U.gui.text.volumetric_flask.confirm"))
             .onMousePressed(mouseButton -> {
                 if (mouseButton == 0 || mouseButton == 1) {
+                    capacitySyncer.setIntValue(capacitySyncer.getIntValue());
                     buttonWidget.getPanel()
                         .closeIfOpen();
                     return true;

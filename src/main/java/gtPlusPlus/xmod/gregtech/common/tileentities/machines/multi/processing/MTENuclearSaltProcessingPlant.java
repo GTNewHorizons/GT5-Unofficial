@@ -142,31 +142,31 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                     'B',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(InputBus, InputHatch)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(2)
+                        .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'C',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(OutputBus, OutputHatch)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(3)
+                        .hint(3)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'D',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Muffler)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(4)
+                        .hint(4)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'E',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Energy)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(5)
+                        .hint(5)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'F',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(6)
+                        .hint(6)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .build();
         }

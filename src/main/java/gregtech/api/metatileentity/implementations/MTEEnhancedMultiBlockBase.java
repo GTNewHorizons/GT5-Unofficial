@@ -509,10 +509,26 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        if (aBaseMetaTileEntity.isClientSide())
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+        data.setByte(
+            "eRotation",
+            (byte) mExtendedFacing.getRotation()
+                .getIndex());
+        data.setByte(
+            "eFlip",
+            (byte) mExtendedFacing.getFlip()
+                .getIndex());
+        return data;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onDescriptionPacket(NBTTagCompound data) {
+        mExtendedFacing = ExtendedFacing.of(
+            getBaseMetaTileEntity().getFrontFacing(),
+            Rotation.byIndex(data.getByte("eRotation")),
+            Flip.byIndex(data.getByte("eFlip")));
     }
 
     public static class StructureSize {

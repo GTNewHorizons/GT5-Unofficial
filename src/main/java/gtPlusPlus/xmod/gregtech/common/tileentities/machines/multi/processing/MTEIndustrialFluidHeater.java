@@ -97,7 +97,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(InputBus, InputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .addElement('X', ofBlock(getCasingBlock1(), getCasingMeta1()))
                 .addElement(
@@ -105,7 +105,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .build();
         }
