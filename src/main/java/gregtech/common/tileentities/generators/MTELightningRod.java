@@ -19,10 +19,19 @@ import gregtech.api.render.TextureFactory;
 
 public class MTELightningRod extends MTETieredMachineBlock {
 
+    public MTELightningRod(Args args) {
+        super(
+            args.toBuilder()
+                .descriptionArray(new String[] { "Generates EU From Lightning Bolts" })
+                .build());
+    }
+
+    @Deprecated
     public MTELightningRod(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");
     }
 
+    @Deprecated
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
@@ -51,12 +60,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTELightningRod(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new MTELightningRod(getPrototype());
     }
 
     @Override

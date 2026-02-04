@@ -29,11 +29,17 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
     protected static final byte DEFAULT_OUTPUT_AMPERAGE = 4;
     protected byte aCurrentOutputAmperage = DEFAULT_OUTPUT_AMPERAGE;
 
+    public MTEEnergyBuffer(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEEnergyBuffer(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
+    @Deprecated
     public MTEEnergyBuffer(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
@@ -140,12 +146,7 @@ public class MTEEnergyBuffer extends MTETieredMachineBlock {
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEEnergyBuffer(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mInventory.length);
+        return new MTEEnergyBuffer(getPrototype());
     }
 
     @Override

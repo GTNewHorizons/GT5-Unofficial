@@ -41,6 +41,17 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
+    public MTESolarGenerator(Args args) {
+        super(
+            args.toBuilder()
+                .inventorySlotCount(4)
+                .descriptionArray(
+                    new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
+                        "Cleans itself automatically", "Does not explode in rain!" })
+                .build());
+    }
+
+    @Deprecated
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -52,6 +63,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                 "Cleans itself automatically", "Does not explode in rain!" });
     }
 
+    @Deprecated
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
@@ -78,12 +90,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTESolarGenerator(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new MTESolarGenerator(getPrototype());
     }
 
     @Override

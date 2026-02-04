@@ -1608,52 +1608,76 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private static void registerMonsterRepellator() {
         ItemList.MobRep_LV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_LV.ID,
-                "basicmachine.mobrep.tier.01",
-                "Basic Monster Repellator",
-                1).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_LV.ID)
+                    .translateKey("basicmachine.mobrep.tier.01")
+                    .nameEnglish("Basic Monster Repellator")
+                    .tier(1)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_MV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_MV.ID,
-                "basicmachine.mobrep.tier.02",
-                "Advanced Monster Repellator",
-                2).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_MV.ID)
+                    .translateKey("basicmachine.mobrep.tier.02")
+                    .nameEnglish("Advanced Monster Repellator")
+                    .tier(2)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_HV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_HV.ID,
-                "basicmachine.mobrep.tier.03",
-                "Advanced Monster Repellator II",
-                3).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_HV.ID)
+                    .translateKey("basicmachine.mobrep.tier.03")
+                    .nameEnglish("Advanced Monster Repellator II")
+                    .tier(3)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_EV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_EV.ID,
-                "basicmachine.mobrep.tier.04",
-                "Advanced Monster Repellator III",
-                4).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_EV.ID)
+                    .translateKey("basicmachine.mobrep.tier.04")
+                    .nameEnglish("Advanced Monster Repellator III")
+                    .tier(4)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_IV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_IV.ID,
-                "basicmachine.mobrep.tier.05",
-                "Advanced Monster Repellator IV",
-                5).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_IV.ID)
+                    .translateKey("basicmachine.mobrep.tier.05")
+                    .nameEnglish("Advanced Monster Repellator IV")
+                    .tier(5)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_LuV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_LuV.ID,
-                "basicmachine.mobrep.tier.06",
-                "Advanced Monster Repellator V",
-                6).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_LuV.ID)
+                    .translateKey("basicmachine.mobrep.tier.06")
+                    .nameEnglish("Advanced Monster Repellator V")
+                    .tier(6)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_ZPM.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_ZPM.ID,
-                "basicmachine.mobrep.tier.07",
-                "Advanced Monster Repellator VI",
-                7).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_ZPM.ID)
+                    .translateKey("basicmachine.mobrep.tier.07")
+                    .nameEnglish("Advanced Monster Repellator VI")
+                    .tier(7)
+                    .build()).getStackForm(1L));
         ItemList.MobRep_UV.set(
             new MTEMonsterRepellent(
-                MONSTER_REPELLATOR_UV.ID,
-                "basicmachine.mobrep.tier.08",
-                "Advanced Monster Repellator VII",
-                8).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(MONSTER_REPELLATOR_UV.ID)
+                    .translateKey("basicmachine.mobrep.tier.08")
+                    .nameEnglish("Advanced Monster Repellator VII")
+                    .tier(8)
+                    .build()).getStackForm(1L));
     }
 
     private static void registerMagLevPylon() {
@@ -10523,41 +10547,107 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerLightningRods() {
         ItemList.Machine_HV_LightningRod.set(
-            new MTELightningRod(LIGHTNING_ROD_HV.ID, "basicgenerator.lightningrod.03", "Lightning Rod", 3)
-                .getStackForm(1));
+            new MTELightningRod(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(LIGHTNING_ROD_HV.ID)
+                    .translateKey("basicgenerator.lightningrod.03")
+                    .nameEnglish("Lightning Rod")
+                    .tier(3)
+                    .build()).getStackForm(1));
         ItemList.Machine_EV_LightningRod.set(
-            new MTELightningRod(LIGHTNING_ROD_EV.ID, "basicgenerator.lightningrod.04", "Lightning Rod II", 4)
-                .getStackForm(1));
+            new MTELightningRod(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(LIGHTNING_ROD_EV.ID)
+                    .translateKey("basicgenerator.lightningrod.04")
+                    .nameEnglish("Lightning Rod II")
+                    .tier(4)
+                    .build()).getStackForm(1));
         ItemList.Machine_IV_LightningRod.set(
-            new MTELightningRod(LIGHTNING_ROD_IV.ID, "basicgenerator.lightningrod.05", "Lightning Rod III", 5)
-                .getStackForm(1));
+            new MTELightningRod(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(LIGHTNING_ROD_IV.ID)
+                    .translateKey("basicgenerator.lightningrod.05")
+                    .nameEnglish("Lightning Rod III")
+                    .tier(5)
+                    .build()).getStackForm(1));
     }
 
     private static void registerSolarPanels() {
         ItemList.Machine_LV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_LV.ID, "basicgenerator.solarpanel.01", "Basic Solar Panel", 1)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_LV.ID)
+                    .translateKey("basicgenerator.solarpanel.01")
+                    .nameEnglish("Basic Solar Panel")
+                    .tier(1)
+                    .build()).getStackForm(1));
         ItemList.Machine_MV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_MV.ID, "basicgenerator.solarpanel.02", "Advanced Solar Panel", 2)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_MV.ID)
+                    .translateKey("basicgenerator.solarpanel.02")
+                    .nameEnglish("Advanced Solar Panel")
+                    .tier(2)
+                    .build()).getStackForm(1));
         ItemList.Machine_HV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_HV.ID, "basicgenerator.solarpanel.03", "Advanced Solar Panel II", 3)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_HV.ID)
+                    .translateKey("basicgenerator.solarpanel.03")
+                    .nameEnglish("Advanced Solar Panel II")
+                    .tier(3)
+                    .build()).getStackForm(1));
         ItemList.Machine_EV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_EV.ID, "basicgenerator.solarpanel.04", "Advanced Solar Panel III", 4)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_EV.ID)
+                    .translateKey("basicgenerator.solarpanel.04")
+                    .nameEnglish("Advanced Solar Panel III")
+                    .tier(4)
+                    .build()).getStackForm(1));
         ItemList.Machine_IV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_IV.ID, "basicgenerator.solarpanel.05", "Advanced Solar Panel IV", 5)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_IV.ID)
+                    .translateKey("basicgenerator.solarpanel.05")
+                    .nameEnglish("Advanced Solar Panel IV")
+                    .tier(5)
+                    .build()).getStackForm(1));
         ItemList.Machine_LuV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_LuV.ID, "basicgenerator.solarpanel.06", "Elite Solar Panel", 6)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_LuV.ID)
+                    .translateKey("basicgenerator.solarpanel.06")
+                    .nameEnglish("Elite Solar Panel")
+                    .tier(6)
+                    .build()).getStackForm(1));
         ItemList.Machine_ZPM_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_ZPM.ID, "basicgenerator.solarpanel.07", "Elite Solar Panel II", 7)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_ZPM.ID)
+                    .translateKey("basicgenerator.solarpanel.07")
+                    .nameEnglish("Elite Solar Panel II")
+                    .tier(7)
+                    .build()).getStackForm(1));
         ItemList.Machine_UV_SolarPanel.set(
-            new MTESolarGenerator(SOLAR_PANEL_UV.ID, "basicgenerator.solarpanel.08", "Ultimate Solar Panel", 8)
-                .getStackForm(1));
+            new MTESolarGenerator(
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(SOLAR_PANEL_UV.ID)
+                    .translateKey("basicgenerator.solarpanel.08")
+                    .nameEnglish("Ultimate Solar Panel")
+                    .tier(8)
+                    .build()).getStackForm(1));
     }
 
     private static void registerCombustionGenerators() {

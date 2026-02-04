@@ -22,6 +22,20 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     private int mRange = -1;
 
+    public MTEMonsterRepellent(Args args) {
+        super(
+            args.toBuilder()
+                .descriptionArray(
+                    new String[] { "Repels nasty Creatures. Radius: " + (4 + (12 * args.getTier()))
+                        + " unpowered / "
+                        + (16 + (48 * args.getTier()))
+                        + " powered. Costs "
+                        + (1L << (args.getTier() * 2))
+                        + " EU/t" })
+                .build());
+    }
+
+    @Deprecated
     public MTEMonsterRepellent(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -37,6 +51,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
                 + " EU/t");
     }
 
+    @Deprecated
     public MTEMonsterRepellent(String aName, int aTier, int aInvSlotCount, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
@@ -44,12 +59,7 @@ public class MTEMonsterRepellent extends MTETieredMachineBlock {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMonsterRepellent(
-            this.mName,
-            this.mTier,
-            this.mInventory.length,
-            this.mDescriptionArray,
-            this.mTextures);
+        return new MTEMonsterRepellent(getPrototype());
     }
 
     @Override
