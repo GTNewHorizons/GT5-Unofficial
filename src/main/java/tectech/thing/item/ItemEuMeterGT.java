@@ -6,6 +6,7 @@ import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.util.scanner.ScannerHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -141,9 +142,9 @@ public class ItemEuMeterGT extends Item {
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {
-                    ArrayList<String> tList = new ArrayList<>();
-                    GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
-                    for (String str : tList) {
+                    List<String> list = new ArrayList<>();
+                    ScannerHelper.scan(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
+                    for (String str : list) {
                         GTUtility.sendChatToPlayer(aPlayer, str);
                     }
                 }
