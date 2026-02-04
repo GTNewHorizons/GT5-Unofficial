@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -44,9 +45,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 8L);
+            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 10L);
         }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 4L : 16L);
+        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 5L : 20L);
     }
 
     @Override
@@ -90,8 +91,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Accepts 4A and outputs 16A",
-            "Toggle 2A/8A half-mode with Screwdriver",
+            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerHiAmp.descLn1"),
+            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerHiAmp.descLn2"),
+            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerHiAmp.descLn3"),
             GTPPCore.GT_Tooltip.get());
     }
 

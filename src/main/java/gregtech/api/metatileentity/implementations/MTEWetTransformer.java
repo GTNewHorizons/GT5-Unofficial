@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -69,8 +70,9 @@ public class MTEWetTransformer extends MTETransformer {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             mDescriptionArray,
-            "Accepts 16A and outputs 64A",
-            "Toggle 2A/8A half-mode with Screwdriver",
+            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerWet.descLn1"),
+            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerWet.descLn2"),
+            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerWet.descLn3"),
             EnumChatFormatting.BLUE + "Tec"
                 + EnumChatFormatting.DARK_BLUE
                 + "Tech"
@@ -94,9 +96,9 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (mHalfMode) {
-            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
+            return getBaseMetaTileEntity().isAllowedToWork() ? 10 : 40;
         }
-        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
+        return getBaseMetaTileEntity().isAllowedToWork() ? 20 : 80;
     }
 
     @Override
