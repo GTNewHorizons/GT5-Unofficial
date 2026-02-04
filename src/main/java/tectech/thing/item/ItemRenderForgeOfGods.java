@@ -1,12 +1,9 @@
 package tectech.thing.item;
 
-import static tectech.rendering.EOH.EOHRenderingUtils.renderStarLayer;
-import static tectech.rendering.EOH.EOHTileEntitySR.*;
+import static tectech.rendering.EOH.EOHRenderingUtils.renderGORGEStar;
 import static tectech.thing.block.RenderForgeOfGods.disableOpaqueColorInversion;
 import static tectech.thing.block.RenderForgeOfGods.enableOpaqueColorInversion;
 import static tectech.thing.block.RenderForgeOfGods.enablePseudoTransparentColorInversion;
-
-import java.awt.Color;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -39,21 +36,14 @@ public class ItemRenderForgeOfGods implements IItemRenderer {
             }
 
         {
-
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_BLEND);
-
-            // Innermost layer should be opaque
             enableOpaqueColorInversion();
-            renderStarLayer(0, STAR_LAYER_0, new Color(1.0f, 0.4f, 0.05f, 1.0f), 1.0f, 1);
+            renderGORGEStar(type, 0L, 0.82);
             disableOpaqueColorInversion();
 
             enablePseudoTransparentColorInversion();
-            renderStarLayer(1, STAR_LAYER_1, new Color(1.0f, 0.4f, 0.05f, 1.0f), 0.4f, 1);
-            renderStarLayer(2, STAR_LAYER_2, new Color(1.0f, 0.4f, 0.05f, 1.0f), 0.2f, 1);
-
-            GL11.glPopAttrib();
-            GL11.glPopMatrix();
         }
+
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
     }
 }
