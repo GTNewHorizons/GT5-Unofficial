@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.ExoticDynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE_GLOW;
@@ -104,7 +103,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     'C',
                     ofChain(
                         buildHatchAdder(MTELargeNeutralizationEngine.class)
-                            .atLeast(Dynamo.or(ExoticDynamo), Maintenance, InputBus, InputHatch, Muffler)
+                            .atLeast(Dynamo.or(ExoticDynamo), Maintenance, InputBus, InputHatch)
                             .casingIndex(Casings.StrengthenedInanimateCasing.getTextureId())
                             .allowOnly(ForgeDirection.NORTH)
                             .hint(1)
@@ -145,7 +144,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
             .addInputBus("Any Tiered Casing", 1)
             .addInputHatch("Any Tiered Casing", 1)
-            .addMufflerHatch("Any Tiered Casing", 1)
             .addMaintenanceHatch("Any Tiered Casing", 1)
             .addDynamoHatch("Any Tiered Casing", 1)
             .toolTipFinisher(AuthorLeon);
@@ -158,7 +156,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         structureTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (mCasing < 30 || structureTier < 1) return false;
-        return (!mMufflerHatches.isEmpty() && mMaintenanceHatches.size() == 1);
+        return mMaintenanceHatches.size() == 1;
     }
 
     /*
@@ -196,7 +194,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
 
     @Override
@@ -239,6 +237,15 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 2, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 }
