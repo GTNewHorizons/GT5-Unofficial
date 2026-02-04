@@ -2,6 +2,7 @@ package gregtech.client;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import gregtech.api.util.scanner.ScannerConfig;
 import net.minecraft.client.gui.GuiScreen;
 
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
@@ -25,6 +26,7 @@ public class GTGUIClientConfig extends SimpleGuiConfig {
             Gregtech.class,
             MachineStats.class,
             PollutionConfig.class,
+            ScannerConfig.class,
             Worldgen.class);
     }
 }
