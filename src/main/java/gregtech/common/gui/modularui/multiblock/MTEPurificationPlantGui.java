@@ -151,16 +151,16 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         ProgressWidget widget = new ProgressWidget();
         widget.progress(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime())
             .direction(ProgressWidget.Direction.RIGHT)
-            .size(147, 9)
-            .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147 / 2);
+            .size(147, 11)
+            .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147);
         TextWidget<?> text = new TextWidget<>(IKey.dynamic(() -> {
             int progress = multiblock.getProgresstime() / 20;
             int maxProgress = multiblock.getMaxProgresstime() / 20;
             return StatCollector.translateToLocalFormatted("gt.item.desc.progress.bare", progress, maxProgress);
-        })).horizontalCenter()
+        })).center()
             .color(0x999999);
 
-        holder.size(147, 9);
+        holder.size(147, 11);
         holder.child(widget);
         holder.child(text);
         return holder;
