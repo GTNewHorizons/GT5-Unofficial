@@ -1,6 +1,7 @@
 package gregtech.api.events;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +17,7 @@ public class BlockScanningEvent extends WorldEvent {
 
     public final EntityPlayer mPlayer;
     public final int mX, mY, mZ, mScanLevel;
-    public final ArrayList<String> mList;
+    public final List<String> mList;
     public final ForgeDirection mSide;
     public final float mClickX, mClickY, mClickZ;
     public final TileEntity mTileEntity;
@@ -28,8 +29,8 @@ public class BlockScanningEvent extends WorldEvent {
     public int mEUCost = 0;
 
     public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, ForgeDirection side,
-        int aScanLevel, Block aBlock, TileEntity aTileEntity, ArrayList<String> aList, float aClickX, float aClickY,
-        float aClickZ) {
+                              int aScanLevel, Block aBlock, TileEntity aTileEntity, List<String> aList, float aClickX, float aClickY,
+                              float aClickZ) {
         super(aWorld);
         mPlayer = aPlayer;
         mScanLevel = aScanLevel;
