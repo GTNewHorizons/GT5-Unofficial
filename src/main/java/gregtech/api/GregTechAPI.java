@@ -205,11 +205,6 @@ public class GregTechAPI {
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
-    /**
-     * Option to not use MACHINE_METAL mixing into colors
-     */
-    public static boolean sUseMachineMetal = false;
-
     public static boolean mUseOnlyGoodSolderingMaterials = false;
 
     private static final String aTextIC2Lower = IndustrialCraft2.ID.toLowerCase(Locale.ENGLISH);
