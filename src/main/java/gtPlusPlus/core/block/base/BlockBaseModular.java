@@ -34,10 +34,10 @@ public class BlockBaseModular extends BasicBlock {
     public BlockTypes blockType;
     protected String materialName;
 
-    private static final HashMap<String, Block> BlockCache = new HashMap<>();
+    private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
     public static Block getMaterialBlock(Material aMaterial, BlockTypes aType) {
-        return BlockCache.get(aMaterial.getUnlocalizedName() + "." + aType.name());
+        return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
 
     public BlockBaseModular(final Material material, final BlockTypes blockType) {
@@ -54,7 +54,7 @@ public class BlockBaseModular extends BasicBlock {
             Math.min(Math.max(material.vTier, 1), 6));
         this.material = material;
         registerComponent();
-        BlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
+        BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
         GTLanguageManager
             .addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", this.blockType.getProperName());
     }
