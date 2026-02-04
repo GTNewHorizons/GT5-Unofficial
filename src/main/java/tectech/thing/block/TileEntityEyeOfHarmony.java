@@ -132,16 +132,16 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     }
 
     private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
-    private static final Set<String> BLACKLISTED_BLOCKS = Collections
+    private static final Set<String> BLACKLISTED_PLANETS = Collections
         .unmodifiableSet(new HashSet<>(Arrays.asList("Tf", "Ow", "ED", "EA", "VA")));
     // Map of strings to blocks
-    private static final Map<String, Block> BLOCKS = new HashMap<>();
+    private static final Map<String, Block> PLANETS = new HashMap<>();
 
     static {
-        // Initialize the map of blocks
+        // Initialize the map of planet blocks.
         ModBlocks.blocks.forEach((dimString, dimBlock) -> {
-            if (!BLACKLISTED_BLOCKS.contains(dimString)) {
-                BLOCKS.put(dimString, dimBlock);
+            if (!BLACKLISTED_PLANETS.contains(dimString)) {
+                PLANETS.put(dimString, dimBlock);
             }
         });
     }
@@ -152,7 +152,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     public void generateImportantInfo() {
 
         int index = 0;
-        for (Block block : selectNRandomElements(BLOCKS.values(), tier + 1)) {
+        for (Block block : selectNRandomElements(PLANETS.values(), tier + 1)) {
 
             float xAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);
             float zAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);

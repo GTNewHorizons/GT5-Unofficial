@@ -2,15 +2,15 @@ package tectech.rendering.EOH;
 
 import static tectech.rendering.EOH.EOHRenderingUtils.renderBlockInWorld;
 import static tectech.rendering.EOH.EOHRenderingUtils.renderOuterSpaceShell;
-import static tectech.rendering.EOH.EOHRenderingUtils.renderStar;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
@@ -22,71 +22,83 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
     public static final ResourceLocation STAR_LAYER_0 = new ResourceLocation(Reference.MODID, "models/StarLayer0.png");
     public static final ResourceLocation STAR_LAYER_1 = new ResourceLocation(Reference.MODID, "models/StarLayer1.png");
     public static final ResourceLocation STAR_LAYER_2 = new ResourceLocation(Reference.MODID, "models/StarLayer2.png");
-    public static IModelCustom starModel;
-    public static IModelCustom spaceModel;
 
-    public EOHTileEntitySR() {
-        starModel = AdvancedModelLoader.loadModel(new ResourceLocation(Reference.MODID, "models/Star.obj"));
-        spaceModel = AdvancedModelLoader.loadModel(new ResourceLocation(Reference.MODID, "models/Space.obj"));
-    }
+    private static final float STAR_RESCALE = 0.2f;
+    private static final float SPEED_SCALE = 0.1f; // keep your old tuning
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof TileEntityEyeOfHarmony EOHRenderTile)) return;
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTicks) {
+
+        if (!(tile instanceof TileEntityEyeOfHarmony te)) return;
+
+        World world = te.getWorldObj();
+        if (world == null) return; // Just in-case
+
+        // Smooth global animation clock
+        float time = world.getTotalWorldTime() + partialTicks;
 
         GL11.glPushMatrix();
-        // Required to centre the render to the middle of the block.
         GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
 
-        // Space shell.
-        renderOuterSpaceShell();
+        // For LOD calculations.
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        renderOuterSpaceShell(player.getDistance(x, y, z));
 
-        // Render the planets.
-        renderOrbitObjects(EOHRenderTile);
+        renderOrbitObjects(te, time);
 
-        // Render the star itself.
-        renderStar(IItemRenderer.ItemRenderType.INVENTORY, 1);
+        EOHRenderingUtils.renderEOHStar(IItemRenderer.ItemRenderType.INVENTORY, time, 1.5);
+
         GL11.glPopAttrib();
-
         GL11.glPopMatrix();
     }
 
-    private void renderOrbitObjects(final TileEntityEyeOfHarmony EOHRenderTile) {
+    private void renderOrbitObjects(TileEntityEyeOfHarmony te, float time) {
 
-        if (EOHRenderTile.getOrbitingObjects() != null) {
+        var objects = te.getOrbitingObjects();
 
-            if (EOHRenderTile.getOrbitingObjects()
-                .isEmpty()) {
-                EOHRenderTile.generateImportantInfo();
-            }
+        if (objects == null || objects.isEmpty()) {
+            te.generateImportantInfo();
+            objects = te.getOrbitingObjects();
 
-            for (TileEntityEyeOfHarmony.OrbitingObject t : EOHRenderTile.getOrbitingObjects()) {
-                renderOrbit(EOHRenderTile, t);
-            }
+            if (objects == null || objects.isEmpty()) return;
+        }
+
+        for (TileEntityEyeOfHarmony.OrbitingObject obj : objects) {
+            renderOrbit(te, obj, time);
         }
     }
 
-    void renderOrbit(final TileEntityEyeOfHarmony EOHRenderTile,
-        final TileEntityEyeOfHarmony.OrbitingObject orbitingObject) {
-        // Render orbiting body.
+    private void renderOrbit(TileEntityEyeOfHarmony te, TileEntityEyeOfHarmony.OrbitingObject obj, float time) {
+
         GL11.glPushMatrix();
 
-        GL11.glRotatef(orbitingObject.zAngle, 0, 0, 1);
-        GL11.glRotatef(orbitingObject.xAngle, 1, 0, 0);
-        GL11.glRotatef((orbitingObject.rotationSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
-        GL11.glTranslated(-0.2 - orbitingObject.distance - STAR_RESCALE * EOHRenderTile.getSize(), 0, 0);
-        GL11.glRotatef((orbitingObject.orbitSpeed * 0.1f * EOHRenderTile.angle) % 360.0f, 0F, 1F, 0F);
+        // Precompute angles
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
-        renderBlockInWorld(orbitingObject.block, 0, orbitingObject.scale);
+        float orbitAngle = (obj.orbitSpeed * SPEED_SCALE * time) % 360f;
+        float spinAngle = (obj.rotationSpeed * SPEED_SCALE * time) % 360f;
+
+        float distance = -0.2f - obj.distance - STAR_RESCALE * te.getSize();
+
+        GL11.glRotatef(obj.zAngle, 0, 0, 1);
+        GL11.glRotatef(obj.xAngle, 1, 0, 0);
+
+        // Orbit around the star
+        GL11.glRotatef(orbitAngle, 0F, 1F, 0F);
+
+        // Move outward from center
+        GL11.glTranslatef(distance, 0, 0);
+
+        // Local planet spin
+        GL11.glRotatef(spinAngle, 0F, 1F, 0F);
+
+        bindTexture(TextureMap.locationBlocksTexture);
+        renderBlockInWorld(obj.block, 0, obj.scale);
 
         GL11.glPopMatrix();
     }
-
-    private static final float STAR_RESCALE = 0.2f;
-
 }
