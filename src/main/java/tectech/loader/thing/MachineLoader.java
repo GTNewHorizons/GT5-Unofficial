@@ -1962,6 +1962,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_IV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(InsaneBuckConverter.ID)
                     .translateKey("machine.tt.buck.05")
                     .nameEnglish("Insane Buck Converter")
@@ -1970,6 +1971,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_LuV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(LudicrousBuckConverter.ID)
                     .translateKey("machine.tt.buck.06")
                     .nameEnglish("Ludicrous Buck Converter")
@@ -1978,6 +1980,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_ZPM.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(ZPMVoltageBuckConverter.ID)
                     .translateKey("machine.tt.buck.07")
                     .nameEnglish("ZPM Voltage Buck Converter")
@@ -1986,6 +1989,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(UltimatePowerBuckConverter.ID)
                     .translateKey("machine.tt.buck.08")
                     .nameEnglish("Ultimate Power Buck Converter")
@@ -1994,6 +1998,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UHV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(HighlyUltimateBuckConverter.ID)
                     .translateKey("machine.tt.buck.09")
                     .nameEnglish("Highly Ultimate Buck Converter")
@@ -2002,6 +2007,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UEV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(ExtremelyUltimateBuckConverter.ID)
                     .translateKey("machine.tt.buck.10")
                     .nameEnglish("Extremely Ultimate Buck Converter")
@@ -2010,6 +2016,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UIV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(InsanelyUltimateBuckConverter.ID)
                     .translateKey("machine.tt.buck.11")
                     .nameEnglish("Insanely Ultimate Buck Converter")
@@ -2018,6 +2025,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UMV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(MegaUltimateBuckConverter.ID)
                     .translateKey("machine.tt.buck.12")
                     .nameEnglish("Mega Ultimate Buck Converter")
@@ -2026,6 +2034,7 @@ public class MachineLoader implements Runnable {
         Machine_BuckConverter_UXV.set(
             new MTEBuckConverter(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(ExtendedMegaUltimateBuckConverter.ID)
                     .translateKey("machine.tt.buck.13")
                     .nameEnglish("Extended Mega Ultimate Buck Converter")

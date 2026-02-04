@@ -47,6 +47,7 @@ import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
+import lombok.extern.log4j.Log4j2;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
@@ -64,6 +65,7 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
+@Log4j2
 public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
 
     /**
@@ -99,6 +101,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
             // thus we create it manually here.
             setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
             getBaseMetaTileEntity().setMetaTileID((short) args.getId());
+        } else if (!GregTechAPI.sPostloadFinished) {
+            log.warn(
+                "{} was instantiated during initialization, but not for registration purpose. Is this a bug?!",
+                args.getNameEnglish(),
+                new Exception("Unexpected Instantiation for MetaTileEntity"));
         }
 
         inventoryHandler = new ItemStackHandler(mInventory) {

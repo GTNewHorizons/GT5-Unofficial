@@ -16,6 +16,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTETransformerHiAmp;
@@ -32,67 +33,94 @@ public class GregtechHiAmpTransformer {
 
         GregtechItemList.Transformer_HA_LV_ULV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_LV_ULV.ID,
-                "transformer.ha.tier.00",
-                "ULV Hi-Amp Transformer",
-                0,
-                "LV -> ULV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_LV_ULV.ID)
+                    .translateKey("transformer.ha.tier.00")
+                    .nameEnglish("ULV Hi-Amp Transformer")
+                    .tier(0)
+                    .descriptionArray(new String[] { "LV -> ULV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_MV_LV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_MV_LV.ID,
-                "transformer.ha.tier.01",
-                "LV Hi-Amp Transformer",
-                1,
-                "MV -> LV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_MV_LV.ID)
+                    .translateKey("transformer.ha.tier.01")
+                    .nameEnglish("LV Hi-Amp Transformer")
+                    .tier(1)
+                    .descriptionArray(new String[] { "MV -> LV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_HV_MV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_HV_MV.ID,
-                "transformer.ha.tier.02",
-                "MV Hi-Amp Transformer",
-                2,
-                "HV -> MV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_HV_MV.ID)
+                    .translateKey("transformer.ha.tier.02")
+                    .nameEnglish("MV Hi-Amp Transformer")
+                    .tier(2)
+                    .descriptionArray(new String[] { "HV -> MV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_EV_HV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_EV_HV.ID,
-                "transformer.ha.tier.03",
-                "HV Hi-Amp Transformer",
-                3,
-                "EV -> HV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_EV_HV.ID)
+                    .translateKey("transformer.ha.tier.03")
+                    .nameEnglish("HV Hi-Amp Transformer")
+                    .tier(3)
+                    .descriptionArray(new String[] { "EV -> HV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_IV_EV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_IV_EV.ID,
-                "transformer.ha.tier.04",
-                "EV Hi-Amp Transformer",
-                4,
-                "IV -> EV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_IV_EV.ID)
+                    .translateKey("transformer.ha.tier.04")
+                    .nameEnglish("EV Hi-Amp Transformer")
+                    .tier(4)
+                    .descriptionArray(new String[] { "IV -> EV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_LuV_IV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_LuV_IV.ID,
-                "transformer.ha.tier.05",
-                "IV Hi-Amp Transformer",
-                5,
-                "LuV -> IV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_LuV_IV.ID)
+                    .translateKey("transformer.ha.tier.05")
+                    .nameEnglish("IV Hi-Amp Transformer")
+                    .tier(5)
+                    .descriptionArray(new String[] { "LuV -> IV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_ZPM_LuV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_ZPM_LuV.ID,
-                "transformer.ha.tier.06",
-                "LuV Hi-Amp Transformer",
-                6,
-                "ZPM -> LuV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_ZPM_LuV.ID)
+                    .translateKey("transformer.ha.tier.06")
+                    .nameEnglish("LuV Hi-Amp Transformer")
+                    .tier(6)
+                    .descriptionArray(new String[] { "ZPM -> LuV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_UV_ZPM.set(
             new MTETransformerHiAmp(
-                Transformer_HA_UV_ZPM.ID,
-                "transformer.ha.tier.07",
-                "ZPM Hi-Amp Transformer",
-                7,
-                "UV -> ZPM (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_UV_ZPM.ID)
+                    .translateKey("transformer.ha.tier.07")
+                    .nameEnglish("ZPM Hi-Amp Transformer")
+                    .tier(7)
+                    .descriptionArray(new String[] { "UV -> ZPM (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         GregtechItemList.Transformer_HA_MAX_UV.set(
             new MTETransformerHiAmp(
-                Transformer_HA_MAX_UV.ID,
-                "transformer.ha.tier.08",
-                "UV Hi-Amp Transformer",
-                8,
-                "UHV -> UV (Use Soft " + mHammerName + " to invert)").getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Transformer_HA_MAX_UV.ID)
+                    .translateKey("transformer.ha.tier.08")
+                    .nameEnglish("UV Hi-Amp Transformer")
+                    .tier(8)
+                    .descriptionArray(new String[] { "UHV -> UV (Use Soft " + mHammerName + " to invert)" })
+                    .build()).getStackForm(1L));
         ItemStack mItem_1;
         ItemStack mItem_2;
         ItemStack mItem_3;

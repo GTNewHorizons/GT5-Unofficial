@@ -12,6 +12,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Cleaner_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Creator;
 import static gregtech.api.enums.MetaTileEntityIDs.Pollution_Detector;
 
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.MTEAtmosphericReconditioner;
@@ -36,12 +37,14 @@ public class GregtechPollutionDevices {
                 0).getStackForm(1L));
         GregtechItemList.Pollution_Creator.set(
             new MTEPollutionCreator(
-                Pollution_Creator.ID,
-                "pollutioncreator.01.tier.single",
-                "Smog Device",
-                4,
-                "Polluting the skies.",
-                0).getStackForm(1L));
+                MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
+                    .id(Pollution_Creator.ID)
+                    .translateKey("pollutioncreator.01.tier.single")
+                    .nameEnglish("Smog Device")
+                    .tier(4)
+                    .descriptionArray(new String[] { "Polluting the skies." })
+                    .build()).getStackForm(1L));
 
         GregtechItemList.Pollution_Cleaner_LV.set(
             new MTEAtmosphericReconditioner(

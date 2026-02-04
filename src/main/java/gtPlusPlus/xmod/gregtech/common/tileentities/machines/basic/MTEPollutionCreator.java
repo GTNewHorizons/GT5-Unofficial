@@ -30,11 +30,17 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     private int mArrayPos = 0;
     private int mTickTimer = 0;
 
+    public MTEPollutionCreator(Args args) {
+        super(args);
+    }
+
+    @Deprecated
     public MTEPollutionCreator(final int aID, final String aName, final String aNameRegional, final int aTier,
         final String aDescription, final int aSlotCount) {
         super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
     }
 
+    @Deprecated
     public MTEPollutionCreator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures, final int aSlotCount) {
         super(aName, aTier, aSlotCount, aDescription, aTextures);
@@ -136,12 +142,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEPollutionCreator(
-            this.mName,
-            this.mTier,
-            this.mDescriptionArray,
-            this.mTextures,
-            this.mInventory.length);
+        return new MTEPollutionCreator(getPrototype());
     }
 
     @Override

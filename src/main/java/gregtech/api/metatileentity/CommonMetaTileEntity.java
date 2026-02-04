@@ -3,6 +3,7 @@ package gregtech.api.metatileentity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -55,7 +56,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
@@ -93,7 +93,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
      *
      * @see #getPrototype()
      */
-    @Getter
     private Args prototype;
 
     @Data
@@ -110,6 +109,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         private int inventorySlotCount;
 
         /// `true` to register this instance to GregTech API.
+        /// also generates a [BaseMetaTileEntity] for this instance, because it won't exist in worlds.
         private boolean registerToApi;
     }
 
@@ -161,6 +161,13 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     protected CommonMetaTileEntity(String name, int invSlotCount) {
         mInventory = new ItemStack[invSlotCount];
         mName = name;
+    }
+
+    public @NotNull Args getPrototype() {
+        // check if the prototype exists.
+        // it can be null when the MTE is not constructed in the new way.
+        // but for whomever calls this, I believe they think this is a Args-constrcuted MTE.
+        return Objects.requireNonNull(prototype, "This MetaTileEntity doesn't have a prototype!");
     }
 
     /**

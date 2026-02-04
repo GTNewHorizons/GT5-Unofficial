@@ -338,6 +338,7 @@ public class ItemRegistry {
                 i).getStackForm(1L);
             ItemRegistry.energyDistributor[i] = new MTEEnergyDistributor(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(EnergyDistributors[i])
                     .translateKey("energydistributor" + GTValues.VN[i])
                     .nameEnglish(StatCollector.translateToLocal("tile.energydistributor.name") + " " + GTValues.VN[i])

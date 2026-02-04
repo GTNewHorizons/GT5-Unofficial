@@ -4,6 +4,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
@@ -111,7 +112,7 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     }
 
     @Override
-    public Args getPrototype() {
+    public @NotNull Args getPrototype() {
         return (Args) super.getPrototype();
     }
 

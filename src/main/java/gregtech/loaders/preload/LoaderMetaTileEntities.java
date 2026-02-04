@@ -1660,6 +1660,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.MagLevPython_MV.set(
             new MTEMagLevPylon(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(MAGLEV_PYLON_MV.ID)
                     .translateKey("basicmachine.maglev.tier.02")
                     .nameEnglish("Advanced MagLev Pylon")
@@ -1668,6 +1669,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.MagLevPython_HV.set(
             new MTEMagLevPylon(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(MAGLEV_PYLON_HV.ID)
                     .translateKey("basicmachine.maglev.tier.03")
                     .nameEnglish("Advanced MagLev Pylon II")
@@ -1676,6 +1678,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.MagLevPython_EV.set(
             new MTEMagLevPylon(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(MAGLEV_PYLON_EV.ID)
                     .translateKey("basicmachine.maglev.tier.04")
                     .nameEnglish("Advanced MagLev Pylon III")
@@ -2225,6 +2228,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_LV_ULV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_LV_ULV.ID)
                     .translateKey("transformer.tier.00")
                     .nameEnglish("Ultra Low Voltage Transformer")
@@ -2234,6 +2238,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_MV_LV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_MV_LV.ID)
                     .translateKey("transformer.tier.01")
                     .nameEnglish("Low Voltage Transformer")
@@ -2243,6 +2248,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_HV_MV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_HV_MV.ID)
                     .translateKey("transformer.tier.02")
                     .nameEnglish("Medium Voltage Transformer")
@@ -2252,6 +2258,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_EV_HV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_EV_HV.ID)
                     .translateKey("transformer.tier.03")
                     .nameEnglish("High Voltage Transformer")
@@ -2261,6 +2268,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_IV_EV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_IV_EV.ID)
                     .translateKey("transformer.tier.04")
                     .nameEnglish("Extreme Transformer")
@@ -2270,6 +2278,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_LuV_IV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_LuV_IV.ID)
                     .translateKey("transformer.tier.05")
                     .nameEnglish("Insane Transformer")
@@ -2279,6 +2288,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_ZPM_LuV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_ZPM_LuV.ID)
                     .translateKey("transformer.tier.06")
                     .nameEnglish("Ludicrous Transformer")
@@ -2288,6 +2298,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_UV_ZPM.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_UV_ZPM.ID)
                     .translateKey("transformer.tier.07")
                     .nameEnglish("ZPM Voltage Transformer")
@@ -2297,6 +2308,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_MAX_UV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(transformer_UHV_UV.ID)
                     .translateKey("transformer.tier.08")
                     .nameEnglish("Ultimate Transformer")
@@ -2306,6 +2318,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_UEV_UHV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(TRANSFORMER_UEV_UHV.ID)
                     .translateKey("transformer.tier.09")
                     .nameEnglish("Highly Ultimate Transformer")
@@ -2316,6 +2329,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_UIV_UEV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(TRANSFORMER_UIV_UEV.ID)
                     .translateKey("transformer.tier.10")
                     .nameEnglish("Extremely Ultimate Transformer")
@@ -2326,6 +2340,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_UMV_UIV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(TRANSFORMER_UMV_UIV.ID)
                     .translateKey("transformer.tier.11")
                     .nameEnglish("Insanely Ultimate Transformer")
@@ -2336,6 +2351,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_UXV_UMV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(TRANSFORMER_UXV_UMV.ID)
                     .translateKey("transformer.tier.12")
                     .nameEnglish("Mega Ultimate Transformer")
@@ -2346,6 +2362,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_MAX_UXV.set(
             new MTETransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(TRANSFORMER_MAX_UXV.ID)
                     .translateKey("transformer.tier.13")
                     .nameEnglish("Extended Mega Ultimate Transformer")
@@ -10112,6 +10129,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_LV_ULV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_LV_ULV.ID)
                     .translateKey("wettransformer.tier.00")
                     .nameEnglish("Ultra Low Voltage Power Transformer")
@@ -10122,6 +10140,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_MV_LV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_MV_LV.ID)
                     .translateKey("wetransformer.tier.01")
                     .nameEnglish("Low Voltage Power Transformer")
@@ -10132,6 +10151,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_HV_MV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_HV_MV.ID)
                     .translateKey("wettransformer.tier.02")
                     .nameEnglish("Medium Voltage Power Transformer")
@@ -10142,6 +10162,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_EV_HV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_EV_HV.ID)
                     .translateKey("wettransformer.tier.03")
                     .nameEnglish("High Voltage Power Transformer")
@@ -10152,6 +10173,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_IV_EV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_IV_EV.ID)
                     .translateKey("wettransformer.tier.04")
                     .nameEnglish("Extreme Power Transformer")
@@ -10162,6 +10184,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_LuV_IV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_LuV_IV.ID)
                     .translateKey("wettransformer.tier.05")
                     .nameEnglish("Insane Power Transformer")
@@ -10172,6 +10195,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_ZPM_LuV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_ZPM_LuV.ID)
                     .translateKey("wettransformer.tier.06")
                     .nameEnglish("Ludicrous Power Transformer")
@@ -10182,6 +10206,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_UV_ZPM.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_UV_ZPM.ID)
                     .translateKey("wettransformer.tier.07")
                     .nameEnglish("ZPM Voltage Power Transformer")
@@ -10192,6 +10217,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_UHV_UV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_UHV_UV.ID)
                     .translateKey("wettransformer.tier.08")
                     .nameEnglish("Ultimate Power Transformer")
@@ -10202,6 +10228,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_UEV_UHV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_UEV_UHV.ID)
                     .translateKey("wettransformer.tier.09")
                     .nameEnglish("Highly Ultimate Power Transformer")
@@ -10212,6 +10239,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_UIV_UEV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_UIV_UEV.ID)
                     .translateKey("wettransformer.tier.10")
                     .nameEnglish("Extremely Ultimate Power Transformer")
@@ -10222,6 +10250,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_UMV_UIV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_UMV_UIV.ID)
                     .translateKey("wettransformer.tier.11")
                     .nameEnglish("Insanely Ultimate Power Transformer")
@@ -10232,6 +10261,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_UXV_UMV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_UXV_UMV.ID)
                     .translateKey("wettransformer.tier.12")
                     .nameEnglish("Mega Ultimate Power Transformer")
@@ -10242,6 +10272,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.WetTransformer_MAX_UXV.set(
             new MTEWetTransformer(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(WET_TRANSFORMER_MAX_UXV.ID)
                     .translateKey("wettransformer.tier.13")
                     .nameEnglish("Extended Mega Ultimate Power Transformer")
@@ -10254,6 +10285,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_HA_UEV_UHV.set(
             new MTETransformerHiAmp(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(HIGH_AMP_TRANSFORMER_UEV_UHV.ID)
                     .translateKey("transformer.ha.tier.09")
                     .nameEnglish("Highly Ultimate Hi-Amp Transformer")
@@ -10263,6 +10295,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_HA_UIV_UEV.set(
             new MTETransformerHiAmp(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(HIGH_AMP_TRANSFORMER_UIV_UEV.ID)
                     .translateKey("transformer.ha.tier.10")
                     .nameEnglish("Extremely Ultimate Hi-Amp Transformer")
@@ -10272,6 +10305,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_HA_UMV_UIV.set(
             new MTETransformerHiAmp(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(HIGH_AMP_TRANSFORMER_UMV_UIV.ID)
                     .translateKey("transformer.ha.tier.11")
                     .nameEnglish("Insanely Ultimate Hi-Amp Transformer")
@@ -10281,6 +10315,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_HA_UXV_UMV.set(
             new MTETransformerHiAmp(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(HIGH_AMP_TRANSFORMER_UXV_UMV.ID)
                     .translateKey("transformer.ha.tier.12")
                     .nameEnglish("Mega Ultimate Hi-Amp Transformer")
@@ -10290,6 +10325,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Transformer_HA_MAX_UXV.set(
             new MTETransformerHiAmp(
                 MTETieredMachineBlock.Args.builder()
+                    .registerToApi(true)
                     .id(HIGH_AMP_TRANSFORMER_MAX_UXV.ID)
                     .translateKey("transformer.ha.tier.13")
                     .nameEnglish("Extended Mega Ultimate Hi-Amp Transformer")
