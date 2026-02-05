@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines.outputme;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,6 @@ import appeng.helpers.IPriorityHost;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -261,13 +262,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
-            tooltip.add(
-                "Current cache capacity: " + EnumChatFormatting.YELLOW
-                    + ReadableNumberConverter.INSTANCE
-                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))
-                    + "L");
-        }
+        provider.addAdditionalTooltipInformation(stack, tooltip);
     }
 
     @Override
@@ -286,11 +281,9 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         NBTTagCompound tag = accessor.getNBTData();
 
         ss.add(
-            String.format(
-                "Fluid cache capacity: %s%s L%s",
-                EnumChatFormatting.GOLD,
-                formatNumber(tag.getLong("cacheCapacity")),
-                EnumChatFormatting.RESET));
+            translateToLocalFormatted(
+                "GT5U.waila.hatch.outputme.fluid_cache_capacity",
+                formatNumber(tag.getLong("cacheCapacity"))));
     }
 
     @Override
@@ -311,14 +304,12 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         int stackCount = tag.getInteger("stackCount");
 
         if (stackCount == 0) {
-            ss.add("This hatch has no cached fluids");
+            ss.add(translateToLocal("GT5U.waila.hatch.outputme.fluid_cache_empty"));
         } else {
             ss.add(
-                String.format(
-                    "The hatch contains %s%d%s cached fluid%s: ",
-                    EnumChatFormatting.GOLD,
+                translateToLocalFormatted(
+                    "GT5U.waila.hatch.outputme.fluid_cache_detail",
                     stackCount,
-                    EnumChatFormatting.RESET,
                     stackCount > 1 ? "s" : ""));
 
             for (int i = 0; i < stacks.tagCount(); i++) {
@@ -335,7 +326,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             }
 
             if (stackCount > stacks.tagCount()) {
-                ss.add(EnumChatFormatting.ITALIC + "And " + (stackCount - stacks.tagCount()) + " more...");
+                ss.add(
+                    translateToLocalFormatted(
+                        "GT5U.waila.hatch.outputme.fluid_cache_detail.more",
+                        stackCount - stacks.tagCount()));
             }
         }
     }

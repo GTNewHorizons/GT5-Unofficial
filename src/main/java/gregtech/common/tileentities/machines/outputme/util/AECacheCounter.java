@@ -14,24 +14,24 @@ public class AECacheCounter<T> {
     }
 
     /**
-     * <b>Note:</b> The caller <b>MUST NOT</b> modify this stack after insertion.
+     * <b>Note:</b> The caller <b>MUST NOT</b> modify this key after insertion.
      */
-    public void insert(T stack, long added) {
+    public void insert(T key, long added) {
         if (added <= 0) return;
         total += added;
-        cacheMap.addTo(stack, added);
+        cacheMap.addTo(key, added);
     }
 
-    public void extract(T stack, long removed) {
+    public void extract(T key, long removed) {
         if (removed <= 0) return;
-        long old = cacheMap.getLong(stack);
+        long old = cacheMap.getLong(key);
         if (old == 0) return;
         if (removed >= old) {
             total -= old;
-            cacheMap.put(stack, 0L);
+            cacheMap.put(key, 0L);
         } else {
             total -= removed;
-            cacheMap.put(stack, old - removed);
+            cacheMap.put(key, old - removed);
         }
     }
 
@@ -42,7 +42,7 @@ public class AECacheCounter<T> {
     @FunctionalInterface
     public interface EntryProcessor<T> {
 
-        long apply(T stack, long currentAmount);
+        long apply(T key, long currentAmount);
     }
 
     public void updateAll(EntryProcessor<T> filter) {
@@ -65,8 +65,8 @@ public class AECacheCounter<T> {
         return total == 0;
     }
 
-    public long get(T stack) {
-        return cacheMap.getLong(stack);
+    public long get(T key) {
+        return cacheMap.getLong(key);
     }
 
     public void iterateAll(ObjLongConsumer<T> consumer) {

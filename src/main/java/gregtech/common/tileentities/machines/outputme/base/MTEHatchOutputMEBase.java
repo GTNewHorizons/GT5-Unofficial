@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.outputme.base;
 
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +19,6 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -61,6 +61,7 @@ import appeng.me.storage.CellInventory;
 import appeng.me.storage.CellInventoryHandler;
 import appeng.me.storage.MEInventoryHandler;
 import appeng.util.Platform;
+import appeng.util.ReadableNumberConverter;
 import gregtech.api.enums.Dyes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -182,18 +183,15 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             checkMode = !checkMode;
-            aPlayer.addChatComponentMessage(new ChatComponentText("Check Mode: " + (this.checkMode ? "On" : "Off")));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode." + this.checkMode);
             if (checkMode) {
-                aPlayer.addChatComponentMessage(
-                    new ChatComponentText(
-                        "NOTE: Check Mode checks whether there is enough space for the output, resulting in more lag."));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode.desc");
             }
         } else {
             cacheMode = !cacheMode;
-            aPlayer.addChatComponentMessage(new ChatComponentText("Cache Mode: " + (this.cacheMode ? "On" : "Off")));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
             if (cacheMode) {
-                aPlayer.addChatComponentMessage(
-                    new ChatComponentText("Stores to the internal cell instead of to the ME Network."));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode.desc");
             }
             updateState();
         }
@@ -646,6 +644,16 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         List<T> stackList = new ArrayList<>();
         cache.iterateAll((stack, amount) -> stackList.add(stack.setStackSize(amount)));
         return stackList;
+    }
+
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("baseCapacity")) {
+            tooltip.add(
+                translateToLocalFormatted(
+                    "GT5U.hatch.outputme.cache_capacity_label",
+                    ReadableNumberConverter.INSTANCE
+                        .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))));
+        }
     }
 
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
