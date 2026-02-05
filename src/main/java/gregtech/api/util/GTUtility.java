@@ -25,7 +25,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.AbstractCollection;
@@ -196,11 +195,6 @@ import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
  * Just a few Utility Functions I use.
  */
 public class GTUtility {
-
-    /**
-     * Formats a number with group separator and at most 2 fraction digits.
-     */
-    private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
 
     /*
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
@@ -2529,19 +2523,6 @@ public class GTUtility {
             }
         }
         return UNKNOWN;
-    }
-
-    private static DecimalFormat getDecimalFormat() {
-        return decimalFormatters.computeIfAbsent(Locale.getDefault(Locale.Category.FORMAT), locale -> {
-            DecimalFormat numberFormat = new DecimalFormat(); // uses the necessary locale inside anyway
-            numberFormat.setGroupingUsed(true);
-            numberFormat.setMaximumFractionDigits(2);
-            numberFormat.setRoundingMode(RoundingMode.HALF_UP);
-            DecimalFormatSymbols decimalFormatSymbols = numberFormat.getDecimalFormatSymbols();
-            decimalFormatSymbols.setGroupingSeparator(','); // Use sensible separator for best clarity.
-            numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
-            return numberFormat;
-        });
     }
 
     public static String scientificFormat(long aNumber) {
