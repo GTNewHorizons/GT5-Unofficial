@@ -287,9 +287,6 @@ public class BeamCrafterRecipes implements Runnable {
             .duration(2 * SECONDS)
             .addTo(beamcrafterRecipes);
 
-        // todo: gravitons
-        // todo: new items to scan for grade 8 casings
-
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.StableEmptyContainmentUnit.get(1))
             .itemOutputs(ItemList.StableBaryonContainmentUnit.get(1))
