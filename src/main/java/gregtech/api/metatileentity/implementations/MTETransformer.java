@@ -156,7 +156,7 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesIn() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
+        return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
     }
 
     @Override
