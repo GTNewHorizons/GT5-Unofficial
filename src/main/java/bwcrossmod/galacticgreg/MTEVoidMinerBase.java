@@ -357,6 +357,55 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     @Override
+    public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
+                                float x, float y, float z) {
+        if (!baseMetaTileEntity.isServerSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
+        }
+
+        if (!pasteCopiedData(player, dataStick.stackTagCompound)) return false;
+
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.loaded"));
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player) {
+        if (!baseMetaTileEntity.isServerSide()) return;
+        ItemStack dataStick = player.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
+            super.onLeftclick(baseMetaTileEntity, player);
+        }
+        dataStick.stackTagCompound = getCopiedData(player);
+        dataStick.setStackDisplayName("Void Miner Filter Data");
+        player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
+    }
+
+    public NBTTagCompound getCopiedData(EntityPlayer player) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", "voidminer");
+        tag.setString("dimension", dimensionDef.getDimIdentifier());
+        tag.setTag("selected", selected.serializeNBT());
+        tag.setBoolean("blacklist", mBlacklist);
+        return tag;
+    }
+
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !(nbt.getString("type").equals("voidminer"))) return false;
+        if (!nbt.getString("dimension").equals(dimensionDef.getDimIdentifier())) return false;
+        this.selected.deserializeNBT(nbt.getCompoundTag("selected"));
+        this.mBlacklist = nbt.getBoolean("blacklist");
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEVoidMinerBaseGui(this);
+    }
+
+    @Override
     public boolean supportsBatchMode() {
         return true;
     }
