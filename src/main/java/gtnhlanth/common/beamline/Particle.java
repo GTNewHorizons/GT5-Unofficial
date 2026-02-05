@@ -43,7 +43,6 @@ public enum Particle {
     UPSILON(false, 17, 9460.3f, 0, "upsilon", "\u03A5", 0, null, 40, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_UPSILON),
     // Nuclei
     ALPHA(true, 18, 3727.38f, 8000, "alpha", "\u03B1", 2, null, 0, GTGuiTextures.OVERLAY_BUTTON_PARTICLE_ALPHA);
-    // todo: gregs boson
 
     // The IDs must be in order.
 
