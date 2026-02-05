@@ -1753,7 +1753,7 @@ GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
 GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
-GT5U.gui.text.BeamlineHatch.emptylist=No List to choose from :(
+GT5U.gui.text.BeamlineHatch.emptylist=No list to choose from
 
 GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
 GT5U.gui.text.LHC.beamrate=Current Beam Rate
