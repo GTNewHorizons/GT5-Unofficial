@@ -9,21 +9,19 @@ import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import kubatech.tileentity.gregtech.multiblock.modularui2.EasyBooleanSyncValue;
 import kubatech.tileentity.gregtech.multiblock.modularui2.LockableCycleButtonWidget;
 
 public abstract class MTEKubaGui<T extends KubaTechGTMultiBlockBase<T>> extends MTEMultiBlockBaseGui<T> {
 
-    public final EasyBooleanSyncValue isRunning = new EasyBooleanSyncValue(
-        "kuba_running",
-        () -> multiblock.mMaxProgresstime > 0,
-        null);
+    public final String KUBA_RUNNING = "kuba_running";
+    public final BooleanSyncValue isRunning = new BooleanSyncValue(() -> multiblock.mMaxProgresstime > 0);
 
     public MTEKubaGui(T multiblock) {
         super(multiblock);
@@ -32,7 +30,7 @@ public abstract class MTEKubaGui<T extends KubaTechGTMultiBlockBase<T>> extends 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        isRunning.registerSyncValue(syncManager);
+        syncManager.syncValue(KUBA_RUNNING, isRunning);
     }
 
     public class KubaCycleButtonWidget extends LockableCycleButtonWidget {

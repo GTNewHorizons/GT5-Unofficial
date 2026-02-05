@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -18,7 +19,6 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import crazypants.enderio.EnderIO;
 import gregtech.api.modularui2.GTGuiTextures;
-import kubatech.tileentity.gregtech.multiblock.modularui2.EasyBooleanSyncValue;
 
 public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrusher> {
 
@@ -55,33 +55,37 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        mIsProducingInfernalDrops.registerSyncValue(syncManager);
-        voidAllDamagedAndEnchantedItems.registerSyncValue(syncManager);
-        mPreserveWeapon.registerSyncValue(syncManager);
-        mCycleWeapons.registerSyncValue(syncManager);
-        isInRitualMode.registerSyncValue(syncManager);
+        syncManager.syncValue(mIsProducingInfernalDrops_name, mIsProducingInfernalDrops);
+        syncManager.syncValue(voidAllDamagedAndEnchantedItems_name, voidAllDamagedAndEnchantedItems);
+        syncManager.syncValue(mPreserveWeapon_name, mPreserveWeapon);
+        syncManager.syncValue(mCycleWeapons_name, mCycleWeapons);
+        syncManager.syncValue(isInRitualMode_name, isInRitualMode);
     }
 
-    public final EasyBooleanSyncValue mIsProducingInfernalDrops = new EasyBooleanSyncValue(
-        "mIsProducingInfernalDrops",
+    public final BooleanSyncValue mIsProducingInfernalDrops = new BooleanSyncValue(
         multiblock::isProducingInfernalDrops,
         multiblock::setIsProducingInfernalDrops);
-    public final EasyBooleanSyncValue voidAllDamagedAndEnchantedItems = new EasyBooleanSyncValue(
-        "voidAllDamagedAndEnchantedItems",
+    public final String mIsProducingInfernalDrops_name = "mIsProducingInfernalDrops";
+
+    public final BooleanSyncValue voidAllDamagedAndEnchantedItems = new BooleanSyncValue(
         multiblock::isVoidAllDamagedAndEnchantedItems,
         multiblock::setVoidAllDamagedAndEnchantedItems);
-    public final EasyBooleanSyncValue mPreserveWeapon = new EasyBooleanSyncValue(
-        "mPreserveWeapon",
+    public final String voidAllDamagedAndEnchantedItems_name = "voidAllDamagedAndEnchantedItems";
+
+    public final BooleanSyncValue mPreserveWeapon = new BooleanSyncValue(
         multiblock::isPreserveWeapon,
         multiblock::setPreserveWeapon);
-    public final EasyBooleanSyncValue mCycleWeapons = new EasyBooleanSyncValue(
-        "mCycleWeapons",
+    public final String mPreserveWeapon_name = "mPreserveWeapon";
+
+    public final BooleanSyncValue mCycleWeapons = new BooleanSyncValue(
         multiblock::isCycleWeapons,
         multiblock::setCycleWeapons);
-    public final EasyBooleanSyncValue isInRitualMode = new EasyBooleanSyncValue(
-        "isInRitualMode",
+    public final String mCycleWeapons_name = "mCycleWeapons";
+
+    public final BooleanSyncValue isInRitualMode = new BooleanSyncValue(
         multiblock::isInRitualMode,
         multiblock::setIsInRitualMode);
+    public final String isInRitualMode_name = "isInRitualMode";
 
     @Override
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
@@ -98,9 +102,9 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
 
         protected PreserveWeaponButton(PanelSyncManager syncManager) {
             super();
-            this.baseDynamicOverlay(() -> yesNo(mPreserveWeapon, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
+            this.baseDynamicOverlay(() -> _yesNo(mPreserveWeapon, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
                 .size(18, 18)
-                .syncHandler(mPreserveWeapon.name)
+                .syncHandler(mPreserveWeapon_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
         }
@@ -119,9 +123,9 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
 
         protected CycleWeaponsButton(PanelSyncManager syncManager) {
             super();
-            this.baseDynamicOverlay(() -> yesNo(mCycleWeapons, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
+            this.baseDynamicOverlay(() -> _yesNo(mCycleWeapons, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
                 .size(18, 18)
-                .syncHandler(mCycleWeapons.name)
+                .syncHandler(mCycleWeapons_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
         }
@@ -143,9 +147,10 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
 
         protected VoidDamagedAndEnchantedButton(PanelSyncManager syncManager) {
             super();
-            this.baseDynamicOverlay(() -> yesNo(voidAllDamagedAndEnchantedItems, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
+            this.baseDynamicOverlay(
+                () -> _yesNo(voidAllDamagedAndEnchantedItems, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
                 .size(18, 18)
-                .syncHandler(voidAllDamagedAndEnchantedItems.name)
+                .syncHandler(voidAllDamagedAndEnchantedItems_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
         }
@@ -167,9 +172,9 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
 
         protected allowInfernalDropButton(PanelSyncManager syncManager) {
             super();
-            this.baseDynamicOverlay(() -> yesNo(mIsProducingInfernalDrops, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
+            this.baseDynamicOverlay(() -> _yesNo(mIsProducingInfernalDrops, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
                 .size(18, 18)
-                .syncHandler(mIsProducingInfernalDrops.name)
+                .syncHandler(mIsProducingInfernalDrops_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
         }
@@ -191,9 +196,9 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
 
         protected RitualModeButton(PanelSyncManager syncManager) {
             super();
-            this.baseDynamicOverlay(() -> yesNo(isInRitualMode, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
+            this.baseDynamicOverlay(() -> _yesNo(isInRitualMode, OVERLAY_BUTTON_ON, OVERLAY_BUTTON_OFF))
                 .size(18, 18)
-                .syncHandler(isInRitualMode.name)
+                .syncHandler(isInRitualMode_name)
                 .length(2)
                 .tooltipBuilder(this::createTooltip);
         }
@@ -208,11 +213,11 @@ public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrush
         }
     }
 
-    private <T> T yesNo(EasyBooleanSyncValue Value, T yes, T no) {
+    private <T> T _yesNo(BooleanSyncValue Value, T yes, T no) {
         return Value.getValue() ? yes : no;
     }
 
-    private String yesNo(EasyBooleanSyncValue v) {
-        return yesNo(v, "_on", "_off");
+    private String yesNo(BooleanSyncValue v) {
+        return _yesNo(v, "_on", "_off");
     }
 }
