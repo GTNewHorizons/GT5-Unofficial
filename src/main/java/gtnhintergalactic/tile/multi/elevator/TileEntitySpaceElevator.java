@@ -103,8 +103,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         return mInputBusses;
     }
 
-    public List<MTEHatchInput> getElevatorFluidHatches() {
-        return mInputHatches != null ? Collections.unmodifiableList(mInputHatches) : Collections.emptyList();
+    public List<MTEHatchInput> getElevatorInputHatches() {
+        return mInputHatches;
     }
 
     public long getAvailableDataForModules() {

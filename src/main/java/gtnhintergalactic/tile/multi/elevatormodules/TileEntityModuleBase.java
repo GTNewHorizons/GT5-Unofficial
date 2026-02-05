@@ -259,20 +259,24 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     TileEntitySpaceElevator parent = null;
 
     public List<MTEHatchInput> getAllFluidInputHatches() {
-        List<MTEHatchInput> allFluidHatches = new ArrayList<>();
-        if (mInputHatches != null)
-            for (MTEHatchInput obj : validMTEList(mInputHatches)) if (obj != null) allFluidHatches.add(obj);
-        if (parent != null && parent.getElevatorFluidHatches() != null)
-            for (MTEHatchInput hatch : parent.getElevatorFluidHatches()) if (hatch != null) allFluidHatches.add(hatch);
-        return allFluidHatches;
+        List<MTEHatchInput> allInputHatches = new ArrayList<>();
+        if (mInputHatches != null) {
+            for (MTEHatchInput obj : validMTEList(mInputHatches)) if (obj != null) allInputHatches.add(obj);
+        }
+        if (parent != null && parent.getElevatorInputHatches() != null) {
+            for (MTEHatchInput hatch : parent.getElevatorInputHatches()) if (hatch != null) allInputHatches.add(hatch);
+        }
+        return allInputHatches;
     }
 
     protected List<FluidStack> getAllStoredFluids() {
         List<FluidStack> fluids = new ArrayList<>();
         List<MTEHatchInput> allHatches = getAllFluidInputHatches();
-        for (MTEHatchInput hatch : allHatches) if (hatch != null && hatch.getBaseMetaTileEntity() != null) {
+        for (MTEHatchInput hatch : allHatches) {
             FluidStack fluid = hatch.getFluid();
-            if (fluid != null && fluid.amount > 0) fluids.add(fluid);
+            if (fluid != null && fluid.amount > 0) {
+                fluids.add(fluid);
+            }
         }
         return fluids;
     }
