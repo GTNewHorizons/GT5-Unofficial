@@ -23,7 +23,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
-import gregtech.common.gui.modularui.multiblock.dronecentre.panel.ConnectionKeyPanel;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
@@ -59,8 +58,10 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     }
 
     private IWidget createKeyButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler keyPanel = syncManager
-            .panel("keyPanel", (p_syncManager, syncHandler) -> new ConnectionKeyPanel(syncManager, parent), true);
+        IPanelHandler keyPanel = syncManager.panel(
+            "keyPanel",
+            (p_syncManager, syncHandler) -> DroneCentreGuiUtil.createConnectionKeyPanel(syncManager, parent),
+            true);
         return new ButtonWidget<>().size(12, 12)
             .right(4)
             .top(4)

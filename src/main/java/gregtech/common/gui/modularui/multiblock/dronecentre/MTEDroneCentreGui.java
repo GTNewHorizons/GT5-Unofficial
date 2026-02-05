@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.dronecentre.panel.ConnectionKeyPanel;
 import gregtech.common.gui.modularui.multiblock.dronecentre.panel.DroneConnectionListPanel;
 import gregtech.common.gui.modularui.multiblock.dronecentre.panel.ProductionPanel;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -55,8 +54,10 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
 
     @Override
     protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler keyPanel = syncManager
-            .panel("keyPanel", (p_syncManager, syncHandler) -> new ConnectionKeyPanel(syncManager, parent), true);
+        IPanelHandler keyPanel = syncManager.panel(
+            "keyPanel",
+            (p_syncManager, syncHandler) -> DroneCentreGuiUtil.createConnectionKeyPanel(syncManager, parent),
+            true);
         return new ButtonWidget<>().size(18, 18)
             .marginTop(4)
             .marginLeft(4)
