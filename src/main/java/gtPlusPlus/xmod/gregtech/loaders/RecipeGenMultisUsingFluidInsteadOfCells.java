@@ -156,7 +156,6 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
                     continue; // Skip this recipe entirely if we find an item we don't like
                 }
                 GTRecipe aNewRecipe = new GTRecipe(
-                    false,
                     aNewItemInputs,
                     aNewItemOutputs,
                     x.mSpecialItems,

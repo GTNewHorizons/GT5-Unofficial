@@ -78,6 +78,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.22-GTNH:dev")
+    compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.9-GTNH:dev") { transitive = false }
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.13-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.3:dev") { transitive = false }
