@@ -470,18 +470,4 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         RenderBeamSegment(forgeTile, x, y, z, timer, needsBeamUpdate);
 
     }
-
-    public static void enablePseudoTransparentColorInversion() {
-        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glLogicOp(GL11.GL_OR_INVERTED);
-    }
-
-    public static void enableOpaqueColorInversion() {
-        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glLogicOp(GL11.GL_COPY_INVERTED);
-    }
-
-    public static void disableOpaqueColorInversion() {
-        GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
-    }
 }
