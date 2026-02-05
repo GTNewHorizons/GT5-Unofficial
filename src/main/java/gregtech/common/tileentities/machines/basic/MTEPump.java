@@ -77,7 +77,7 @@ public class MTEPump extends MTEBasicMachine {
             aTier,
             1,
             new String[] { "The best way to empty Oceans!",
-                EnumChatFormatting.BLUE + ""
+                EnumChatFormatting.YELLOW + ""
                     + getEuUsagePerTier(aTier)
                     + EnumChatFormatting.GRAY
                     + ""
