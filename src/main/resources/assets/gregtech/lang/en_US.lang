@@ -1084,6 +1084,7 @@ gt.recipe.purificationplantdegasifier=Degassing
 gt.recipe.purificationplantquarkextractor=Baryonic Perfection
 gt.recipe.quantumcomputer=QC Components
 gt.recipe.cal-imprinting=Circuit Assembly Line Imprinting
+gt.recipe.beamcrafter=Beam Crafter
 gt.recipe.foundry_modules=Foundry Module Components
 
 # Recipe categories
