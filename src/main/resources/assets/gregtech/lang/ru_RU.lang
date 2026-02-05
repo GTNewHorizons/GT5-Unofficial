@@ -93,10 +93,9 @@ gt.crop.withereed.name=Угольный тростник
 gt.crop.zomplant.name=Zomplant
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Входной вольтаж: §a%d (%s§a)§7
-gt.tileentity.eup_out=Выходной вольтаж: §a%d (%s§a)§7
-gt.tileentity.eup_amount=Ампераж: §e%d§7
-gt.tileentity.eup_store=Ёмкость: §9%d§7 EU
+gt.tileentity.eup_in=Входной вольтаж:
+gt.tileentity.eup_out=Выходной вольтаж:
+gt.tileentity.eup_amount=Ампераж:
 gt.tileentity.has_muffler=есть улучшение глушитель
 gt.tileentity.has_steam_upgrade=есть улучшение пар
 gt.tileentity.colored=Colored (%s%s§7)
@@ -1466,7 +1465,8 @@ GT5U.gui.text.beta-plus=β+ распад
 GT5U.gui.config.client=Клиент
 GT5U.gui.config.client.color_modulation=Модуляция цвета
 GT5U.gui.config.client.color_modulation.cable_insulation=Изоляция кабеля
-GT5U.gui.config.client.color_modulation.machine_metal=Металл механизма (Цвет GUI по умолчанию)
+GT5U.gui.config.client.color_modulation.machine_metal=Металл механизма
+GT5U.gui.config.client.color_modulation.gui_metal=Металл GUI (Цвет GUI по умолчанию)
 GT5U.gui.config.client.interface=Интерфейс
 GT5U.gui.config.client.preference=Preference
 GT5U.gui.config.client.render=Render
