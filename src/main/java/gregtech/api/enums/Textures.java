@@ -2549,7 +2549,7 @@ public class Textures {
         }
 
         // 2026-02-03: Counted 1771 unique CustomIcons, so 2.5K will avoid resize until 1920 entries
-        private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(2560);
+        private static final Map<String, IIconContainer> CUSTOM_ICONS = new ConcurrentHashMap<>(2560);
 
         /**
          * Registers a Custom Block {@link IIconContainer}
@@ -2558,12 +2558,11 @@ public class Textures {
          * @return The new or cached instance
          */
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
-            return customOptional(aIconName);
+            return CUSTOM_ICONS.computeIfAbsent(aIconName, CustomIcon::new);
         }
 
         // 2026-02-03: Counted 3723 unique CustomOptionalIcons, so 5K will avoid resize until 3840 entries
-        private static final Map<String, IIconContainer> sCustomOptionalIcons = new ConcurrentHashMap<>(5120);
+        private static final Map<String, IIconContainer> CUSTOM_OPTIONAL_ICONS = new ConcurrentHashMap<>(5120);
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer}
@@ -2573,12 +2572,11 @@ public class Textures {
          * @return The new or cached instance
          */
         public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
-            // optionalResource is not part of the CustomIcon identity, so not composed in to the key
-            return sCustomOptionalIcons.computeIfAbsent(aIconName, k -> new CustomOptionalIcon(k));
+            return CUSTOM_OPTIONAL_ICONS.computeIfAbsent(aIconName, CustomOptionalIcon::new);
         }
 
         // 2026-02-03: Counted 160 unique BlockIcons.CustomIcons, so 255 will avoid resize until 162 entries
-        private static final Map<String, IIconContainer> sCustomAlphaIcons = new ConcurrentHashMap<>(256);
+        private static final Map<String, IIconContainer> CUSTOM_ALPHA_ICONS = new ConcurrentHashMap<>(256);
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer} to be rendered alpha-blended in pass 1
@@ -2588,7 +2586,7 @@ public class Textures {
          * @return The new or cached instance
          */
         public static @NotNull IIconContainer customAlpha(@NotNull String aIconName) {
-            return sCustomAlphaIcons.computeIfAbsent(aIconName, CustomAlphaIcon::new);
+            return CUSTOM_ALPHA_ICONS.computeIfAbsent(aIconName, CustomAlphaIcon::new);
         }
 
         @Override
