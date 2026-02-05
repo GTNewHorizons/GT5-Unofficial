@@ -2217,12 +2217,23 @@ public class GTUtility {
         if (aStack != null) aParentTag.setTag(aTagName, saveItem(aStack));
     }
 
+    public static void saveFluid(NBTTagCompound parentTag, String tagName, FluidStack stack) {
+        if (stack != null) parentTag.setTag(tagName, saveFluid(stack));
+    }
+
     public static NBTTagCompound saveItem(ItemStack aStack) {
         if (aStack == null) return new NBTTagCompound();
         NBTTagCompound t = new NBTTagCompound();
         aStack.writeToNBT(t);
         if (aStack.stackSize > Byte.MAX_VALUE) t.setInteger("Count", aStack.stackSize);
         return t;
+    }
+
+    public static NBTTagCompound saveFluid(FluidStack stack) {
+        if (stack == null) return new NBTTagCompound();
+        NBTTagCompound tag = new NBTTagCompound();
+        stack.writeToNBT(tag);
+        return tag;
     }
 
     public static NBTTagList saveItemList(List<ItemStack> stacks) {

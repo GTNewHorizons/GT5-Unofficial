@@ -196,10 +196,9 @@ public class MTEPotionBrewer extends MTEBasicMachine {
             return 0;
         }
 
-        this.mOutputFluid = FluidRegistry.getFluidStack(aFluidName, 750);
-        if (this.mOutputFluid == null) {
-            this.mOutputFluid = FluidRegistry.getFluidStack("potion.mundane", getFillableStack().amount);
-        }
+        FluidStack toOutput = FluidRegistry.getFluidStack(aFluidName, 750);
+        if (toOutput == null) toOutput = FluidRegistry.getFluidStack("potion.mundane", getFillableStack().amount);
+        this.mOutputFluids[0] = toOutput;
 
         getInputAt(0).stackSize -= 1;
         getFillableStack().amount -= 750;

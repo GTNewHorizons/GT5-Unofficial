@@ -162,7 +162,7 @@ public class MTEMassfabricator extends MTEBasicMachine {
     public int checkRecipe() {
         FluidStack tFluid = getDrainableStack();
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
-            this.mOutputFluid = Materials.UUMatter.getFluid(1L);
+            this.mOutputFluids[0] = Materials.UUMatter.getFluid(1L);
             calculateCustomOverclock(containsUUA(getFillableStack()) ? uuaRecipe : nonUUARecipe);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
