@@ -134,7 +134,6 @@ import com.google.auto.value.AutoValue;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -261,9 +260,6 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     static {
-        GregTechAPI.sItemStackMappings.add(sFilledContainerToData);
-        GregTechAPI.sItemStackMappings.add(sEmptyContainerToFluidToData);
-
         // 1 is the magic index to get the cobblestone block.
         // See: GT_Block_Stones.java, GT_Block_Granites.java
         Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
@@ -2293,48 +2289,6 @@ public class GTUtility {
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
         return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = null;
-        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
-        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
-        // would not be used to rehash if we just create a new HashMap.
-        if (aMap instanceof Cloneable) {
-            try {
-                tMap = (Map<X, Y>) aMap.getClass()
-                    .getMethod("clone")
-                    .invoke(aMap);
-            } catch (Exception e) {
-                GTLog.err.println("Failed to clone Map of type " + aMap.getClass());
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
-        if (tMap == null) {
-            tMap = new HashMap<>(aMap);
-        }
-
-        aMap.clear();
-        aMap.putAll(tMap);
-        return aMap;
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
-        @SuppressWarnings("unchecked")
-        Map.Entry<X, Y>[] entries = aMap.entries()
-            .toArray(new Map.Entry[0]);
-        aMap.clear();
-        for (Map.Entry<X, Y> entry : entries) {
-            aMap.put(entry.getKey(), entry.getValue());
-        }
-        return aMap;
     }
 
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {

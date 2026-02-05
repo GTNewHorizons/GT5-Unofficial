@@ -67,15 +67,6 @@ import gregtech.common.covers.CoverPosition;
 public class GregTechAPI {
 
     /**
-     * Fixes the HashMap Mappings for ItemStacks once the Server started <br>
-     * <br>
-     * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
-     * {@link GTItemStack}
-     */
-    public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<GTItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
-
-    /**
      * The MetaTileEntity-ID-List-Length
      */
     public static final short MAXIMUM_METATILE_IDS = Short.MAX_VALUE - 1;

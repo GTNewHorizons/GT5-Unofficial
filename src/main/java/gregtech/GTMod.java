@@ -764,12 +764,6 @@ public class GTMod {
     public void onIDChangingEvent(FMLModIdMappingEvent event) {
         GTUtility.reInit();
         GTRecipe.reInit();
-        for (Map<?, ?> gt_itemStackMap : GregTechAPI.sItemStackMappings) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
-        for (SetMultimap<GTItemStack, ?> gt_itemStackMap : GregTechAPI.itemStackMultiMaps) {
-            GTUtility.reMap(gt_itemStackMap);
-        }
         RemovedMetaRegistry.init();
     }
 
