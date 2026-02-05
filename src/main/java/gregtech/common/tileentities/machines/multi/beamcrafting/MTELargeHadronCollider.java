@@ -2967,10 +2967,8 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         int outRate = inputRate;
 
         long machineVoltage = getAverageInputVoltage();
-
-        if (inputEnergy <= playerTargetBeamEnergyeV / 1000) { // inputEnergy is in keV, playerTargetBeamEnergyeV is in
-                                                              // eV
-                                                              // did this so player can type '2G eV' instead of '2M keV'
+        // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV did this so player can type '2G eV' instead of '2M keV'
+        if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
             outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
                 * machineVoltage
                 * keVEURatio);
@@ -2980,7 +2978,6 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
                     outRate,
                     particle.getParticleId(),
                     particle.getFocus());
-                // or should this crash the machine instead?
             }
 
         } else {
@@ -2992,10 +2989,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
         long machineVoltage = getAverageInputVoltage();
+        // counter starts at 0, so +1
+        return (long) (machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
 
-        return (long) (machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate()); // counter
-                                                                                                         // starts at 0,
-                                                                                                         // so +1
+
     }
 
     @Override
@@ -3009,9 +3006,14 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
     @Override
     public void onValueUpdate(byte aValue) {
-        boolean oldMachineMode = machineMode == 1;
-        machineMode = ((aValue & 1) == 1) ? 1 : 0;
-        if (oldMachineMode != (machineMode == 1)) getBaseMetaTileEntity().issueTextureUpdate();
+        int oldMachineMode = machineMode;
+        if (aValue == 0){
+            machineMode = 0;
+        }
+        else{
+            machineMode = 1;
+        }
+        if (oldMachineMode != machineMode) getBaseMetaTileEntity().issueTextureUpdate();
     }
 
     @Override
