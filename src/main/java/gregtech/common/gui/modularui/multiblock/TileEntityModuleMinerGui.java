@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -46,7 +47,6 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.WidgetTree;
-import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
@@ -1112,20 +1112,6 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private ModularPanel getSpaceMinerCalculator(PanelSyncManager syncManager, IPanelHandler panelSyncHandler,
         ModularPanel parent) {
         IntSyncValue selectedAsteroidSyncer = syncManager.findSyncHandler("selectedAsteroid", IntSyncValue.class);
-
-        Area parentArea = parent.getArea();
-        ModularPanel panel = new ModularPanel("spaceMinerCalculator") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.size(200, 164)
-            .pos(parentArea.x, parentArea.y)
-            .paddingTop(4)
-            .paddingLeft(4)
-            .paddingRight(4);
-
         AtomicInteger distance = new AtomicInteger(0);
         IntSyncValue distanceSyncer = new IntSyncValue(distance::get, distance::set);
 
@@ -1133,8 +1119,10 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue moduleTierSyncer = new IntSyncValue(moduleTier::get, moduleTier::set);
 
         IntSyncValue droneSyncer = syncManager.findSyncHandler("droneFilter", IntSyncValue.class);
+        droneSelectorButtonCalculator = new SlotLikeButtonWidget(
+            () -> droneSyncer.getValue() >= 0 ? MINING_DRONES[droneSyncer.getValue()] : null);
+        IPanelHandler droneSelectorPanel = panelMap.get("droneSelectorCalculator");
 
-        Flow column = new Column().sizeRel(1);
         ListWidget<IWidget, ?> outputListWidget = new ListWidget<>()
             .background(new DrawableStack(new Rectangle().setColor(Color.rgb(91, 110, 225))))
             .widthRel(1)
@@ -1143,98 +1131,121 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .padding(2)
             .child(
                 new Column().widthRel(1)
+                    .child(createTextPrompt("tt.spaceminer.calculator.missing.distance", w -> distance.get() <= 0))
+                    .child(createTextPrompt("tt.spaceminer.calculator.missing.moduleTier", w -> moduleTier.get() <= 0))
                     .child(
-                        IKey.lang("tt.spaceminer.calculator.missing.distance")
-                            .asWidget()
-                            .setEnabledIf(w -> distance.get() <= 0)
-                            .alignX(0)
-                            .marginBottom(4))
-                    .child(
-                        IKey.lang("tt.spaceminer.calculator.missing.moduleTier")
-                            .asWidget()
-                            .setEnabledIf(w -> moduleTier.get() <= 0)
-                            .alignX(0)
-                            .marginBottom(4))
-                    .child(
-                        IKey.lang("tt.spaceminer.calculator.missing.drone")
-                            .asWidget()
-                            .setEnabledIf(w -> droneSyncer.getValue() < 0)
-                            .alignX(0)
-                            .marginBottom(4)));
-        column.child(outputListWidget);
-        droneSelectorButtonCalculator = new SlotLikeButtonWidget(
-            () -> droneSyncer.getValue() >= 0 ? MINING_DRONES[droneSyncer.getValue()] : null);
-        IPanelHandler droneSelectorPanel = panelMap.get("droneSelectorCalculator");
+                        createTextPrompt("tt.spaceminer.calculator.missing.drone", w -> droneSyncer.getValue() < 0)));
 
-        column.child(
-            new Column().widthRel(1)
-                .height(18 * 4)
-                .child(
-                    new Row().widthRel(1)
-                        .coverChildrenHeight()
-                        .child(
-                            IKey.lang("tt.spaceminer.textFieldDistance")
-                                .asWidget()
-                                .marginBottom(4)
-                                .width(50)
-                                .color(Color.WHITE.main))
-                        .child(
-                            new TextFieldWidget().marginBottom(4)
-                                .size(60, 9)
-                                .value(distanceSyncer)
-                                .setDefaultNumber(0)
-                                .setNumbers(0, Integer.MAX_VALUE)))
-                .child(
-                    new Row().widthRel(1)
-                        .coverChildrenHeight()
-                        .child(
-                            IKey.lang("tt.spaceminer.textFieldTier")
-                                .asWidget()
-                                .marginBottom(4)
-                                .width(50)
-                                .color(Color.WHITE.main))
-                        .child(
-                            new TextFieldWidget().size(60, 9)
-                                .value(moduleTierSyncer)
-                                .marginBottom(9)
-                                .setDefaultNumber(0)
-                                .setNumbers(0, 3)))
-                .child(
-                    new Row().widthRel(1)
-                        .height(18)
-                        .child(
-                            droneSelectorButtonCalculator.size(18, 18)
-                                .alignX(0)
-                                .onMousePressed(mouseData -> {
-                                    if (!droneSelectorPanel.isPanelOpen()) {
-                                        isDroneSelectorForOptimizer = false;
-                                        droneSelectorPanel.openPanel();
-                                    } else {
-                                        droneSelectorPanel.closePanel();
-                                    }
-                                    return true;
-                                })
-                                .align(Alignment.CenterLeft))
-                        .child(
-                            new ButtonWidget<>().size(18, 18)
-                                .overlay(
-                                    GTGuiTextures.TT_OVERLAY_BUTTON_CALCULATE.asIcon()
-                                        .size(16, 16))
-                                .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculator.calculate")))
-                                .align(Alignment.CenterRight)
-                                .onMousePressed(mouseData -> {
-                                    List<IWidget> output = calculateOutput(
-                                        distanceSyncer.getValue(),
-                                        moduleTierSyncer.getValue(),
-                                        droneSyncer.getValue(),
-                                        selectedAsteroidSyncer);
-                                    outputListWidget.getChildren()
-                                        .clear();
-                                    outputListWidget.children(output);
-                                    WidgetTree.resize(outputListWidget);
-                                    return true;
-                                }))));
-        return panel.child(column);
+        return new ModularPanel("spaceMinerCalculator") {
+
+            @Override
+            public boolean isDraggable() {
+                return false;
+            }
+        }.size(200, 164)
+            .relative(parent)
+            .topRel(0)
+            .leftRel(0)
+            .paddingTop(4)
+            .paddingLeft(4)
+            .paddingRight(4)
+            .child(
+                new Column().sizeRel(1)
+                    .child(outputListWidget)
+                    .child(
+                        new Column().widthRel(1)
+                            .height(18 * 4)
+                            .child(createCalculatorDistanceInput(distanceSyncer))
+                            .child(createCalculatorTierInput(moduleTierSyncer))
+                            .child(
+                                createCalculatorDroneInput(
+                                    droneSelectorPanel,
+                                    distanceSyncer,
+                                    moduleTierSyncer,
+                                    droneSyncer,
+                                    selectedAsteroidSyncer,
+                                    outputListWidget))));
+    }
+
+    private IWidget createTextPrompt(String langKey, Predicate enableIf) {
+        return IKey.lang(langKey)
+            .asWidget()
+            .alignX(0)
+            .marginBottom(4)
+            .setEnabledIf(enableIf);
+    }
+
+    private IWidget createCalculatorDistanceInput(IntSyncValue distanceSyncer) {
+        return new Row().widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.lang("tt.spaceminer.textFieldDistance")
+                    .asWidget()
+                    .marginBottom(4)
+                    .width(50)
+                    .color(Color.WHITE.main))
+            .child(
+                new TextFieldWidget().marginBottom(4)
+                    .size(60, 9)
+                    .value(distanceSyncer)
+                    .setDefaultNumber(0)
+                    .setNumbers(0, Integer.MAX_VALUE));
+    }
+
+    private IWidget createCalculatorTierInput(IntSyncValue moduleTierSyncer) {
+        return new Row().widthRel(1)
+            .coverChildrenHeight()
+            .child(
+                IKey.lang("tt.spaceminer.textFieldTier")
+                    .asWidget()
+                    .marginBottom(4)
+                    .width(50)
+                    .color(Color.WHITE.main))
+            .child(
+                new TextFieldWidget().size(60, 9)
+                    .value(moduleTierSyncer)
+                    .marginBottom(9)
+                    .setDefaultNumber(0)
+                    .setNumbers(0, 3));
+    }
+
+    private IWidget createCalculatorDroneInput(IPanelHandler droneSelectorPanel, IntSyncValue distanceSyncer,
+        IntSyncValue moduleTierSyncer, IntSyncValue droneSyncer, IntSyncValue selectedAsteroidSyncer,
+        ListWidget<IWidget, ?> outputListWidget) {
+        return new Row().widthRel(1)
+            .height(18)
+            .child(
+                droneSelectorButtonCalculator.size(18, 18)
+                    .alignX(0)
+                    .onMousePressed(mouseData -> {
+                        if (!droneSelectorPanel.isPanelOpen()) {
+                            isDroneSelectorForOptimizer = false;
+                            droneSelectorPanel.openPanel();
+                        } else {
+                            droneSelectorPanel.closePanel();
+                        }
+                        return true;
+                    })
+                    .align(Alignment.CenterLeft))
+            .child(
+                new ButtonWidget<>().size(18, 18)
+                    .overlay(
+                        GTGuiTextures.TT_OVERLAY_BUTTON_CALCULATE.asIcon()
+                            .size(16, 16))
+                    .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.calculator.calculate")))
+                    .align(Alignment.CenterRight)
+                    .onMousePressed(mouseData -> {
+                        List<IWidget> output = calculateOutput(
+                            distanceSyncer.getValue(),
+                            moduleTierSyncer.getValue(),
+                            droneSyncer.getValue(),
+                            selectedAsteroidSyncer);
+                        outputListWidget.getChildren()
+                            .clear();
+                        outputListWidget.children(output);
+                        WidgetTree.resize(outputListWidget);
+                        return true;
+                    }));
     }
 
     private List<IWidget> calculateOutput(Integer distance, Integer moduleTier, Integer droneTier,
