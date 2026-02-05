@@ -37,7 +37,7 @@ public class MTEHatchAdvancedOutputBeamlineGui extends MTEHatchBaseGui<MTEHatchA
         super.registerSyncValues(syncManager);
         GenericMapSyncHandler<Particle, Boolean> mapSyncHandler = new GenericMapSyncHandler.Builder<Particle, Boolean>()
             .getter(hatch::getParticleMap)
-            .setter(hatch::setMap)
+            .setter(hatch::setAcceptedInputMap)
             .valueAdapter(new ValueBooleanAdapter())
             .keyAdapter(new KeyParticleAdapter())
             .build();

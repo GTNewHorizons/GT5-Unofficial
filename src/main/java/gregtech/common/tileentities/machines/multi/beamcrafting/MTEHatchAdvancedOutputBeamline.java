@@ -21,9 +21,10 @@ import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
-    private final String NBT_KEY_DESCRIPTOR = "KEY"; // specifically for the Particle value in the input map, will save
-                                                     // with id
-    private final String NBT_VALUE_DESCRIPTOR = "VALUE"; // specifically for the Boolean value in the input map
+    // specifically for the Particle value in the input map, will save with id
+    private final String NBT_KEY_DESCRIPTOR = "KEY";
+    // specifically for the Boolean value in the input map
+    private final String NBT_VALUE_DESCRIPTOR = "VALUE";
 
     private boolean initialized = false;
 
@@ -101,7 +102,7 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
         return this.acceptedInputMap;
     }
 
-    public void setMap(Map<Particle, Boolean> inMap) {
+    public void setAcceptedInputMap(Map<Particle, Boolean> inMap) {
         acceptedInputMap.clear();
         acceptedInputMap.putAll(inMap);
 
