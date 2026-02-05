@@ -86,7 +86,7 @@ public class MTEBeamMirror
         .addElement(
             'B', // collider casing
             ofBlock(GregTechAPI.sBlockCasings13, 10))
-        .addElement('A', chainAllGlasses()) // new glass type todo: (?)
+        .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamMirror.class).hatchClass(MTEHatchInputBeamline.class)
