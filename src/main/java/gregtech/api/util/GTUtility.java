@@ -131,7 +131,6 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
@@ -247,10 +246,6 @@ public class GTUtility {
      * Associates the name of the fluid with all filled container items.
      */
     private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
-    /**
-     * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
-     */
-    private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -258,20 +253,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    static {
-        // 1 is the magic index to get the cobblestone block.
-        // See: GT_Block_Stones.java, GT_Block_Granites.java
-        Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
-            () -> GTOreDictUnificator.getOres(OrePrefixes.stone, m)
-                .get(1))::get;
-        sOreToCobble.put(OrePrefixes.oreBlackgranite, materialToCobble.apply(Materials.GraniteBlack));
-        sOreToCobble.put(OrePrefixes.oreRedgranite, materialToCobble.apply(Materials.GraniteRed));
-        sOreToCobble.put(OrePrefixes.oreMarble, materialToCobble.apply(Materials.Marble));
-        sOreToCobble.put(OrePrefixes.oreBasalt, materialToCobble.apply(Materials.Basalt));
-        sOreToCobble.put(OrePrefixes.oreNetherrack, () -> new ItemStack(Blocks.netherrack));
-        sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
-    }
 
     public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
         return sFilledContainerToData;
@@ -3661,26 +3642,6 @@ public class GTUtility {
         }
         sOreTable.put(tItem, false);
         return false;
-    }
-
-    /**
-     * Do <b>NOT</b> mutate the returned {@code ItemStack}! We return {@code ItemStack} instead of {@code Block} so that
-     * we can include metadata.
-     */
-    public static ItemStack getCobbleForOre(Block ore, short metaData) {
-        // We need to convert small ores to regular ores because small ores don't have associated ItemData.
-        // We take the modulus of the metadata by 16000 because that is the magic number to convert small ores to
-        // regular ores.
-        // See: GT_TileEntity_Ores.java
-        ItemData association = GTOreDictUnificator
-            .getAssociation(new ItemStack(Item.getItemFromBlock(ore), 1, metaData % 16000));
-        if (association != null) {
-            Supplier<ItemStack> supplier = sOreToCobble.get(association.mPrefix);
-            if (supplier != null) {
-                return supplier.get();
-            }
-        }
-        return new ItemStack(Blocks.cobblestone);
     }
 
     public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
