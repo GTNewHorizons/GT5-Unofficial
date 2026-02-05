@@ -30,6 +30,7 @@ import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -75,21 +76,27 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    protected static DecimalFormat standardFormat;
-    static {
+    static DecimalFormat createDecimalFormat() {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.US);
         dfs.setExponentSeparator("e");
-        standardFormat = new DecimalFormat("0.00E0", dfs);
-    }
-    private static final NavigableMap<Long, String> suffixes = new TreeMap<>();
-    static {
-        suffixes.put(1_000L, "k");
-        suffixes.put(1_000_000L, "M");
-        suffixes.put(1_000_000_000L, "G");
-        suffixes.put(1_000_000_000_000L, "T");
+        return new DecimalFormat("0.00E0", dfs);
     }
 
+    protected static DecimalFormat standardFormat = createDecimalFormat();
+
+    private static final NavigableMap<Long, String> suffixes = new TreeMap<>(
+        ImmutableMap.of(1_000L, "k", 1_000_000L, "M", 1_000_000_000L, "G", 1_000_000_000_000L, "T"));
+
     public static String format(long value) {
+        // This formats so that we use the nearest metric prefix. If the 3-digit number before the prefix is under 10
+        // AND has non-zero digit after the decimal point, then show it.
+        // examples:
+        // 10_000 -> 10k
+        // 10_100 -> 10k
+        // 9_900 -> 9.9k
+        // 9_000 -> 9k
+        // This format was chosen purely out of personal preference - decimal points look cumbersome on the GUI.
+
         // Long.MIN_VALUE == -Long.MIN_VALUE so we need an adjustment here
         if (value == Long.MIN_VALUE) return format(Long.MIN_VALUE + 1);
         if (value < 0) return "-" + format(-value);
@@ -99,9 +106,15 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         Long divideBy = e.getKey();
         String suffix = e.getValue();
 
-        long truncated = value / (divideBy / 10); // the number part of the output times 10
-        boolean hasDecimal = truncated < 100 && (truncated / 10d) != (truncated / 10);
-        return hasDecimal ? (truncated / 10d) + " " + suffix : (truncated / 10) + " " + suffix;
+        long truncatedx10 = value / (divideBy / 10); // the number part of the output times 10 - i.e. first few digits
+                                                     // up to one decimal point, but drop the decimal for now
+        boolean truncatedValueUnderTen = truncatedx10 < 100;
+        boolean truncatedValueHasNonZeroDecimal = (truncatedx10 / 10d) != (truncatedx10 / 10);
+
+        if (truncatedValueUnderTen && truncatedValueHasNonZeroDecimal) {
+            return (truncatedx10 / 10d) + " " + suffix;
+        }
+        return (truncatedx10 / 10) + " " + suffix;
     }
 
     public String getMachineModeText(int machineMode) {
@@ -125,16 +138,13 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
+                        // *1000 because cached is in keV, but formatting expects eV
                         () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
                             "GT5U.gui.text.LHC.beamenergykeV",
                             (cachedOutputBeamEnergy.getDoubleValue() * 1000
                                 > (playerTargetBeamEnergyeV.getDoubleValue()) ? EnumChatFormatting.GREEN
                                     : EnumChatFormatting.RED)
-                                + format((long) cachedOutputBeamEnergy.getDoubleValue() * 1000))) // *1000 because
-                                                                                                  // cached is in keV,
-                                                                                                  // but formatting
-                                                                                                  // expects eV
-                ).marginBottom(9))
+                                + format((long) cachedOutputBeamEnergy.getDoubleValue() * 1000)))).marginBottom(9))
             .child(
                 new TextWidget<>(
                     IKey.dynamic(
