@@ -21,6 +21,7 @@ import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -254,8 +255,8 @@ public class DroneConnectionListPanel extends ModularPanel {
         if (clientConnections.isEmpty()) {
             return IKey.lang("GT5U.gui.text.drone_no_connection")
                 .asWidget()
-                .alignment(com.cleanroommc.modularui.utils.Alignment.CENTER)
-                .align(com.cleanroommc.modularui.utils.Alignment.CENTER)
+                .alignment(Alignment.CENTER)
+                .align(Alignment.CENTER)
                 .widthRel(0.95f)
                 .scale(2);
         } else {
