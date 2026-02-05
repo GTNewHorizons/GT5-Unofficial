@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -104,7 +105,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     ofChain(
                         buildHatchAdder(MTELargeNeutralizationEngine.class)
                             .atLeast(Dynamo.or(ExoticDynamo), Maintenance, InputBus, InputHatch)
-                            .casingIndex(Casings.StrengthenedInanimateCasing.getTextureId())
+                            .casingIndex(getCasingTextureId())
                             .allowOnly(ForgeDirection.NORTH)
                             .hint(1)
                             .build(),
@@ -188,8 +189,16 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return new ITexture[] { getCasingTexture() };
     }
 
-    private static ITexture getCasingTexture() {
-        return Textures.BlockIcons.getCasingTextureForId(2129);
+    private ITexture getCasingTexture() {
+        return getCasingTextureForId(getCasingTextureId());
+    }
+
+    private int getCasingTextureId() {
+        return switch (structureTier) {
+            case 2 -> Casings.PreciseStationaryCasing.getTextureId();
+            case 3 -> Casings.UltimateStaticCasing.getTextureId();
+            default -> Casings.StrengthenedInanimateCasing.getTextureId();
+        };
     }
 
     @Override
