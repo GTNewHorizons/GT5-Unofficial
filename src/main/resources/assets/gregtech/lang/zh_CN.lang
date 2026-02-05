@@ -1052,15 +1052,6 @@ GTPP.machines.tier=等级
 GTPP.machines.input=输入
 GTPP.machines.output=输出
 
-GTPP.multiblock.pollutionreduced=减少污染至
-GTPP.multiblock.pollution=污染
-GTPP.multiblock.energy=能量存储
-GTPP.multiblock.progress=进程
-GTPP.multiblock.efficiency=效率
-GTPP.multiblock.problems=维护问题
-GTPP.multiblock.mei=最大能量输入
-GTPP.multiblock.usage=NEI功率
-GTPP.multiblock.generation=可能生成
 GTPP.multiblock.specialvalue=特殊值
 GTPP.multiblock.duration=NEI时间
 
@@ -1068,7 +1059,6 @@ GTPP.multiblock.duration=NEI时间
 
 GTPP.CC.machinetier=控制核心等级
 GTPP.CC.discount=EU损耗
-GTPP.CC.parallel=最大并行
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=在Baubles的腰带栏内使用

@@ -154,11 +154,7 @@ public class ScannerHelper {
 
         if (name == null) name = "";
 
-        if (maxWidth < name.length() + 2) {
-            maxWidth = name.length() + 2;
-        }
-
-        int paddingLength = (maxWidth - name.length() - 2) / 2;
+        int paddingLength = Math.max(0, maxWidth - name.length() - 2) / 2;
 
         StringBuilder padding = new StringBuilder();
 
@@ -231,13 +227,13 @@ public class ScannerHelper {
                 tileEntity = (TileEntity) chamber.getReactor();
             }
             if (tileEntity instanceof IReactor reactor) {
-                euAmount += 500;
                 list.add(addTitle("title_reactor_info"));
                 String currHeat = formatNumber(reactor.getHeat());
                 String maxHeat = formatNumber(reactor.getMaxHeat());
                 float heatModifier = reactor.getHeatEffectModifier();
 
                 list.add(trans("reactor_info_1", currHeat, maxHeat, heatModifier));
+                euAmount += 500;
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_reactor_info"));
@@ -250,11 +246,11 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (block instanceof IDebugableBlock debugableBlock) {
-                euAmount += 500;
                 final List<String> temp = debugableBlock.getDebugInfo(player, x, y, z, 3);
                 if (temp != null && !temp.isEmpty()) {
                     list.add(addTitle("title_debug_info"));
                     list.addAll(temp);
+                    euAmount += 500;
                 }
             }
         } catch (Exception e) {
@@ -267,12 +263,12 @@ public class ScannerHelper {
     private static void addMachineInfo(List<String> list, TileEntity tileEntity) {
         try {
             if (tileEntity instanceof IGregTechDeviceInformation info && info.isGivingInformation()) {
-                final List<String> resultList = new ArrayList<>(Arrays.asList(info.getInfoData()));
+                final List<String> resultList = Arrays.asList(info.getInfoData());
 
                 if (resultList.isEmpty()) return;
 
                 list.add(addTitle("title_machine_info"));
-                list.addAll(resultList);
+                list.addAll(Arrays.asList(info.getInfoData()));
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_machine_info"));
@@ -304,9 +300,9 @@ public class ScannerHelper {
             if (tileEntity instanceof IAlignmentProvider alignmentProvider) {
                 final IAlignment alignment = alignmentProvider.getAlignment();
                 if (alignment != null) {
-                    euAmount += 100;
                     list.add(addTitle("title_side_info"));
                     list.add(trans("side_info_1", alignment.getExtendedFacing()));
+                    euAmount += 100;
                 }
             }
         } catch (Exception e) {
@@ -320,7 +316,6 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (tileEntity instanceof IWrenchable wrenchable) {
-                euAmount += 100;
                 short face = wrenchable.getFacing();
                 float chance = wrenchable.getWrenchDropRate() * 100;
 
@@ -332,6 +327,7 @@ public class ScannerHelper {
                 } else {
                     list.add(trans("wrench_info_3"));
                 }
+                euAmount += 100;
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_wrench_info"));
@@ -373,13 +369,12 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (tileEntity instanceof ICoverable coverable) {
-                euAmount += 300;
-
                 final String coverInfo = coverable.getCoverAtSide(side).getDescription();
 
                 if (coverInfo != null && !coverInfo.equals(E)) {
                     list.add(addTitle("title_cover_info"));
                     list.add(coverInfo);
+                    euAmount += 300;
                 }
             }
         } catch (Exception e) {
@@ -419,7 +414,6 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (tileEntity instanceof ICropTile crop) {
-                euAmount += 1000;
                 list.add(addTitle("title_crop_info"));
                 if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                 if (crop.getCrop() != null) {
@@ -447,6 +441,7 @@ public class ScannerHelper {
 
                     list.add(trans("crop_info_5", crop.getCrop().discoveredBy()));
                 }
+                euAmount += 1000;
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_crop_info"));
@@ -461,10 +456,10 @@ public class ScannerHelper {
             if (Mods.Forestry.isModLoaded() && tileEntity instanceof TileLeaves tileLeaves) {
                 final ITree tree = tileLeaves.getTree();
                 if (tree != null) {
-                    euAmount += 1000;
                     if (!tree.isAnalyzed()) tree.analyze();
                     list.add(addTitle("title_leaves_info"));
                     tree.addTooltip(list);
+                    euAmount += 1000;
                 }
             }
         } catch (Exception e) {

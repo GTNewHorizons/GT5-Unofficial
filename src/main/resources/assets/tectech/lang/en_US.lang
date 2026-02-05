@@ -1958,7 +1958,7 @@ tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier 
 
 tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
 tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
-tt.infodata.multi.computation=Computation: %s / %s
+tt.infodata.multi.computation=Computation: §a%s §r/ §e%s
 tt.infodata.multi.max_parallel=Max Parallel: %s
 tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
 tt.infodata.multi.multiplier.energy=Energy multiplier: %s

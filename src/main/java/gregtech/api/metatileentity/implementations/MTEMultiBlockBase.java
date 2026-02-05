@@ -2217,13 +2217,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         List<String> info = new ArrayList<>();
         long storedEnergy = 0;
         long maxEnergy = 0;
+        int hatchCount = 0;
         long seconds = (this.mTotalRunTime / 20);
         long minutes = TimeUnit.SECONDS.toMinutes(seconds);
         long hours = TimeUnit.SECONDS.toHours(seconds);
-        String ownerName = "None";
-        String metaID = "";
-        String accessData = "";
-        String isMetaTileEntity = "";
 
         // spotless:off
         String timeValue =
@@ -2237,31 +2234,31 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 : seconds > 0 ? "GT5U.multiblock.totalRunSeconds"
                 : "GT5U.multiblock.totalRunTicks";
 
-        if (getBaseMetaTileEntity() != null) {
-            ownerName = getBaseMetaTileEntity().getOwnerName();
-            metaID = formatNumber(getBaseMetaTileEntity().getMetaTileID());
-            accessData = GTUtility.translate(getBaseMetaTileEntity().canAccessData()
-                ? "GT5U.multiblock.valid"
-                : "GT5U.multiblock.invalid");
-            if (getBaseMetaTileEntity().getMetaTileEntity() == null) {
-                isMetaTileEntity = GTUtility.translate("GT5U.multiblock.is_meta_tile_entity");
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            final IGregTechTileEntity te = tHatch.getBaseMetaTileEntity();
+            if (te != null) {
+                storedEnergy += te.getStoredEU();
+                maxEnergy += te.getEUCapacity();
+                hatchCount++;
             }
         }
 
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
-            storedEnergy += baseMetaTileEntity.getStoredEU();
-            maxEnergy += baseMetaTileEntity.getEUCapacity();
+        if (getBaseMetaTileEntity() != null) {
+            IGregTechTileEntity te = getBaseMetaTileEntity();
+
+            info.add(GTUtility.translate("GT5U.multiblock.owned_by", te.getOwnerName()));
+
+            if (getBaseMetaTileEntity().getMetaTileEntity() == null) {
+                info.add(
+                    GTUtility.translate("GT5U.multiblock.meta_tile_entity", te.getMetaTileEntity()) + " "
+                        + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.valid"
+                        : "GT5U.multiblock.invalid")
+                        + " "
+                        + GTUtility.translate("GT5U.multiblock.is_meta_tile_entity"));
+            }
         }
+
         // spotless:on
-
-        info.add(GTUtility.translate("GT5U.multiblock.owned_by", ownerName));
-
-        info.add(
-            GTUtility.translate("GT5U.multiblock.meta_tile_entity", metaID) + " "
-                + accessData
-                + " "
-                + isMetaTileEntity);
 
         if (mProgresstime > 0) {
             info.add(
@@ -2271,29 +2268,36 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     formatNumber(mMaxProgresstime / 20)));
         }
 
-        info.add(GTUtility.translate("GT5U.multiblock.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+        if (hatchCount > 0) {
+            info.add(
+                GTUtility.translate("GT5U.multiblock.energy", formatNumber(storedEnergy), formatNumber(maxEnergy)));
+
+            info.add(
+                GTUtility.translate(
+                    "GT5U.multiblock.mei",
+                    formatNumber(getMaxInputVoltage()),
+                    VN[GTUtility.getTier(getMaxInputVoltage())]));
+        }
 
         if (getActualEnergyUsage() > 0) {
             info.add(GTUtility.translate("GT5U.multiblock.usage", formatNumber(getActualEnergyUsage())));
         }
 
-        info.add(
-            GTUtility.translate(
-                "GT5U.multiblock.mei",
-                formatNumber(getMaxInputVoltage()),
-                VN[GTUtility.getTier(getMaxInputVoltage())]));
-
         info.add(GTUtility.translate("GT5U.multiblock.problems", formatNumber(getIdealStatus() - getRepairStatus())));
 
-        info.add(GTUtility.translate("GT5U.multiblock.efficiency", formatNumber(mEfficiency / 100.0F)));
-
-        info.add(GTUtility.translate("GT5U.multiblock.pollution", formatNumber(getAveragePollutionPercentage())));
-
-        info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
-
-        if (Long.parseLong(timeValue) > 0) {
-            info.add(GTUtility.translate(timeKey, timeValue));
+        if (mEfficiency > 0) {
+            info.add(GTUtility.translate("GT5U.multiblock.efficiency", formatNumber(mEfficiency / 100.0F)));
         }
+
+        if (getPollutionPerSecond(getStackForm(1)) > 0) {
+            info.add(GTUtility.translate("GT5U.multiblock.pollution", formatNumber(getAveragePollutionPercentage())));
+        }
+
+        if (recipesDone > 0) {
+            info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+        }
+
+        info.add(GTUtility.translate(timeKey, timeValue));
 
         return info.toArray(new String[0]);
     }

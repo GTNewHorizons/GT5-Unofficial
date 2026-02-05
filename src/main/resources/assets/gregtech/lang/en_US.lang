@@ -3263,15 +3263,6 @@ GTPP.machines.tier=Tier
 GTPP.machines.input=Input
 GTPP.machines.output=Output
 
-GTPP.multiblock.pollutionreduced=Pollution reduced to
-GTPP.multiblock.pollution=Pollution
-GTPP.multiblock.energy=Stored Energy
-GTPP.multiblock.progress=Progress
-GTPP.multiblock.efficiency=Efficiency
-GTPP.multiblock.problems=Problems
-GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Currently uses
-GTPP.multiblock.generation=Currently generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -3283,7 +3274,6 @@ GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
-GTPP.CC.parallel=Maximum Parallel
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
