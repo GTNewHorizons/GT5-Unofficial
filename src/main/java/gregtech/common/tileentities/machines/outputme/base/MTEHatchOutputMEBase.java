@@ -318,7 +318,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
                     .getStorage();
                 Platform.postChanges(gs, null, env.getCellStack(), env.getActionSource());
             } catch (GridAccessException e) {
-                throw new RuntimeException(e);
+                // :(
             }
         }
     }
@@ -360,18 +360,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         env.dispatchMarkDirty();
     }
 
-    boolean hadCell = false;
-
     private void updateFilter() {
         ItemStack upgradeItemStack = env.getCellStack();
 
-        if (hadCell == (upgradeItemStack != null)) {
-            return;
-        }
-
         if (upgradeItemStack != null && upgradeItemStack.getItem() instanceof ICellWorkbenchItem cellWorkbenchItem) {
-            hadCell = true;
-
             if (filter.isFiltered()) {
                 return;
             }
@@ -385,8 +377,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             }
             env.dispatchMarkDirty();
         } else {
-            hadCell = false;
-
             if (!filter.isFiltered()) {
                 return;
             }
@@ -567,7 +557,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setTag("cache", cacheTag);
         aNBT.setLong("baseCapacity", baseCapacity);
-        aNBT.setBoolean("hadCell", hadCell);
         aNBT.setBoolean("cacheMode", cacheMode);
         aNBT.setBoolean("checkMode", checkMode);
         aNBT.setInteger("myPriority", myPriority);
@@ -589,7 +578,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         additionalConnection = aNBT.getBoolean("additionalConnection");
         baseCapacity = aNBT.getLong("baseCapacity");
         if (baseCapacity == 0) baseCapacity = DEFAULT_CAPACITY;
-        hadCell = aNBT.getBoolean("hadCell");
         cacheMode = aNBT.getBoolean("cacheMode");
         checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");
