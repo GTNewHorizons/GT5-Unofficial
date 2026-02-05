@@ -51,8 +51,8 @@ public abstract class EOHRenderingUtils {
         renderStar(type, GORGEStarColour, partialTicks, starRadius);
     }
 
-    public static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha, float time,
-        double starRadius) {
+    public static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
+        float partialTicks, double starRadius) {
 
         if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
 
@@ -75,7 +75,7 @@ public abstract class EOHRenderingUtils {
         float[] rotationSpeeds = { 1.5f, 1.2f, 1.6f };
         float[] baseRotations = { 130f, -49f, 67f };
 
-        float rotation = (baseRotations[layer] + rotationSpeeds[layer] * time) % 360f;
+        float rotation = (baseRotations[layer] + rotationSpeeds[layer] * partialTicks) % 360f;
 
         switch (layer) {
             case 0 -> GL11.glRotatef(rotation, 0F, 1F, 1F);

@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,29 +52,20 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         return boundingBox;
     }
 
-    public void setSize(float size) {
-        this.size = size;
+    public void setStarSize(double size) {
+        this.starSize = size;
     }
 
-    public void setRotationSpeed(float rotationSpeed) {
-        this.rotationSpeed = rotationSpeed;
-    }
+    private double starSize = 1;
 
-    private float size = 10;
-    private float rotationSpeed = 10;
+    public static List<Block> selectNRandomElements(Collection<Block> input, long n) {
+        if (n > input.size()) {
+            throw new IllegalArgumentException("n must be <= collection size");
+        }
 
-    // Fun fact, these methods were entirely written by ChatGPT3... Take that as you will.
-    public static <T> ArrayList<T> selectNRandomElements(Collection<T> inputList, long n) {
-        ArrayList<T> randomElements = new ArrayList<>((int) n);
-        ArrayList<T> inputArray = new ArrayList<>(inputList);
-        Random rand = new Random();
-        IntStream.range(0, (int) n)
-            .forEach(i -> {
-                int randomIndex = rand.nextInt(inputArray.size());
-                randomElements.add(inputArray.get(randomIndex));
-                inputArray.remove(randomIndex);
-            });
-        return randomElements;
+        List<Block> list = new ArrayList<>(input);
+        Collections.shuffle(list);
+        return list.subList(0, (int) n);
     }
 
     public static float generateRandomFloat(float a, float b) {
@@ -92,17 +83,8 @@ public class TileEntityEyeOfHarmony extends TileEntity {
 
     private long tier = 9;
 
-    public float getSize() {
-        return size;
-    }
-
-    public float getRotationSpeed() {
-        return rotationSpeed;
-    }
-
-    @Override
-    public void updateEntity() {
-        angle += 10.0f;
+    public double getStarSize() {
+        return starSize;
     }
 
     public static class OrbitingObject {
@@ -151,7 +133,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     // This must be set last.
     public void generateImportantInfo() {
 
-        int index = 0;
+        int index = 1;
         for (Block block : selectNRandomElements(PLANETS.values(), tier + 1)) {
 
             float xAngle = generateRandomFloat(-MAX_ANGLE, MAX_ANGLE);
@@ -169,7 +151,6 @@ public class TileEntityEyeOfHarmony extends TileEntity {
     public float angle;
 
     private static final String EOH_NBT_TAG = "EOH:";
-    private static final String ROTATION_SPEED_NBT_TAG = EOH_NBT_TAG + "rotationSpeed";
     private static final String SIZE_NBT_TAG = EOH_NBT_TAG + "size";
     private static final String TIER_NBT_TAG = EOH_NBT_TAG + "tier";
 
@@ -178,8 +159,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         super.writeToNBT(compound);
 
         // Save other stats.
-        compound.setFloat(ROTATION_SPEED_NBT_TAG, rotationSpeed);
-        compound.setFloat(SIZE_NBT_TAG, size);
+        compound.setDouble(SIZE_NBT_TAG, starSize);
         compound.setLong(TIER_NBT_TAG, tier);
     }
 
@@ -188,8 +168,7 @@ public class TileEntityEyeOfHarmony extends TileEntity {
         super.readFromNBT(compound);
 
         // Load other stats.
-        rotationSpeed = compound.getFloat(ROTATION_SPEED_NBT_TAG);
-        size = compound.getFloat(SIZE_NBT_TAG);
+        starSize = compound.getDouble(SIZE_NBT_TAG);
         tier = compound.getLong(TIER_NBT_TAG);
     }
 
