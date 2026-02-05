@@ -438,6 +438,8 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         mEfficiency = 10_000;
         lEUt = 0;
 
+        boolean didWork = false;
+
         List<ItemStack> outputs = new ArrayList<>();
 
         int productAmount = MathHelper.floor_double(storedProduct + EPSILON);
@@ -456,6 +458,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                 lEUt -= EU_PER_IO * ejected;
 
                 outputs.add(GTUtility.copyAmountUnsafe(ejected, product));
+                didWork = true;
             }
         }
 
@@ -474,6 +477,7 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                     lEUt -= EU_PER_IO * ejected;
 
                     outputs.add(GTUtility.copyAmountUnsafe(ejected, isotope));
+                    didWork = true;
                 }
             }
         }
@@ -512,10 +516,15 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
                         pendingInputs.add(toConsume);
                         remainingIOQuota -= toConsume.stackSize;
                         lEUt -= EU_PER_IO * toConsume.stackSize;
+                        didWork = true;
                         if (remainingIOQuota <= 0) break;
                     }
                 }
             }
+        }
+
+        if (!didWork) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
