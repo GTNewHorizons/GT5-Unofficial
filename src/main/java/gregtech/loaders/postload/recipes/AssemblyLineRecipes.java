@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
-import gtPlusPlus.core.material.MaterialsElements;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -26,6 +25,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -919,9 +919,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ItemList.ZPM3.get(1),
                 ItemList.SpaceElevatorMotorT3.get(64))
             .itemOutputs(ItemList.TierdDrone3.get(1))
-            .fluidInputs(
-                Materials.ExcitedDTCC.getFluid(8_000),
-                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8_000))
+            .fluidInputs(Materials.ExcitedDTCC.getFluid(8_000), MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8_000))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(AssemblyLine);
