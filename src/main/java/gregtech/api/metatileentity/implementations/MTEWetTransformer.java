@@ -70,9 +70,9 @@ public class MTEWetTransformer extends MTETransformer {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             mDescriptionArray,
-            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerWet.descLn1"),
-            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerWet.descLn2"),
-            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerWet.descLn3"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn1"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn2"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerWet.descLn3"),
             EnumChatFormatting.BLUE + "Tec"
                 + EnumChatFormatting.DARK_BLUE
                 + "Tech"

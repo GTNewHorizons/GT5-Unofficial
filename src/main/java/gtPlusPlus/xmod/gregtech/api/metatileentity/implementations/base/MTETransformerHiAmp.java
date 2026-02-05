@@ -91,9 +91,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerHiAmp.descLn1"),
-            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerHiAmp.descLn2"),
-            StatCollector.translateToLocalFormatted("GT5U.machines.MTETransformerHiAmp.descLn3"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn1"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn2"),
+            StatCollector.translateToLocal("GT5U.machines.MTETransformerHiAmp.descLn3"),
             GTPPCore.GT_Tooltip.get());
     }
 
