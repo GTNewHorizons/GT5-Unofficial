@@ -21,6 +21,7 @@ public class EOHItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        // Hack
         World world = Minecraft.getMinecraft().theWorld;
         if (world == null) return;
         float time = world.getTotalWorldTime() * 0.2f;

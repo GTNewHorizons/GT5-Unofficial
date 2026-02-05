@@ -5,7 +5,9 @@ import static tectech.thing.block.RenderForgeOfGods.disableOpaqueColorInversion;
 import static tectech.thing.block.RenderForgeOfGods.enableOpaqueColorInversion;
 import static tectech.thing.block.RenderForgeOfGods.enablePseudoTransparentColorInversion;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -28,20 +30,16 @@ public class ItemRenderForgeOfGods implements IItemRenderer {
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
-        if (type == IItemRenderer.ItemRenderType.INVENTORY) GL11.glRotated(180, 0, 1, 0);
-        else if (type == IItemRenderer.ItemRenderType.EQUIPPED
-            || type == IItemRenderer.ItemRenderType.EQUIPPED_FIRST_PERSON) {
-                GL11.glTranslated(0.5, 0.5, 0.5);
-                if (type == IItemRenderer.ItemRenderType.EQUIPPED) GL11.glRotated(90, 0, 1, 0);
-            }
+        // Hack
+        World world = Minecraft.getMinecraft().theWorld;
+        if (world == null) return;
+        float time = world.getTotalWorldTime() * 0.2f;
 
-        {
-            enableOpaqueColorInversion();
-            renderGORGEStar(type, 0L, 0.82);
-            disableOpaqueColorInversion();
+        enableOpaqueColorInversion();
+        renderGORGEStar(type, time, 0.82);
+        disableOpaqueColorInversion();
 
-            enablePseudoTransparentColorInversion();
-        }
+        enablePseudoTransparentColorInversion();
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();

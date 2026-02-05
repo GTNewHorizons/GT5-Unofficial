@@ -51,7 +51,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
 
         renderOrbitObjects(te, time);
 
-        EOHRenderingUtils.renderEOHStar(IItemRenderer.ItemRenderType.INVENTORY, time, 1.5);
+        EOHRenderingUtils.renderEOHStar(IItemRenderer.ItemRenderType.INVENTORY, time, te.getStarSize());
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();
@@ -82,7 +82,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         float orbitAngle = (obj.orbitSpeed * SPEED_SCALE * time) % 360f;
         float spinAngle = (obj.rotationSpeed * SPEED_SCALE * time) % 360f;
 
-        float distance = -0.2f - obj.distance - STAR_RESCALE * te.getSize();
+        double distance = -0.2f - obj.distance - STAR_RESCALE * te.getStarSize();
 
         GL11.glRotatef(obj.zAngle, 0, 0, 1);
         GL11.glRotatef(obj.xAngle, 1, 0, 0);
@@ -91,7 +91,7 @@ public class EOHTileEntitySR extends TileEntitySpecialRenderer {
         GL11.glRotatef(orbitAngle, 0F, 1F, 0F);
 
         // Move outward from center
-        GL11.glTranslatef(distance, 0, 0);
+        GL11.glTranslated(distance, 0, 0);
 
         // Local planet spin
         GL11.glRotatef(spinAngle, 0F, 1F, 0F);
