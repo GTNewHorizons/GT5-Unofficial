@@ -292,7 +292,6 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
             .addCasingInfoExactly("Beamline Output Hatch", 1, false)
             .addEnergyHatch("Any Collider Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            // .addTecTechHatchInfo()
             .toolTipFinisher();
         return tt;
     }
@@ -337,8 +336,10 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
 
     int storedParticleID = 0;
     float storedBeamEnergy = 0;
-    int cumulativeBeamRate = 0; // Stored particle Amount
-    float storedBeamFocus = 0; // for completeness. not used anywhere but beamline
+    // Stored particle Amount
+    int cumulativeBeamRate = 0;
+    // for completeness. not used anywhere but beamline
+    float storedBeamFocus = 0;
 
     private void cumulateStoredBeamPacket() {
         BeamInformation inputParticle = getInputParticle();
