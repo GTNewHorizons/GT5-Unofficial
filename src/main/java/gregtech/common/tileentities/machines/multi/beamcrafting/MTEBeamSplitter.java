@@ -136,7 +136,7 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
 
         if (mte instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) mte).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModules.AllParticles.acceptedParticles);
+            hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
             this.mAdvancedOutputBeamline.add(hatch);
             return true;
         }

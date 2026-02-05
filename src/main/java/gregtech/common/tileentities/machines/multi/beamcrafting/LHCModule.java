@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import gtnhlanth.common.beamline.Particle;
 
-public enum LHCModules {
+public enum LHCModule {
 
     EM("EM",
         ImmutableList.of(
@@ -67,7 +67,7 @@ public enum LHCModules {
     public final String structurePiece;
     public final ImmutableList<Particle> acceptedParticles;
 
-    private LHCModules(String structurePiece, ImmutableList<Particle> acceptedParticles) {
+    private LHCModule(String structurePiece, ImmutableList<Particle> acceptedParticles) {
         this.structurePiece = structurePiece;
         this.acceptedParticles = acceptedParticles;
     }
