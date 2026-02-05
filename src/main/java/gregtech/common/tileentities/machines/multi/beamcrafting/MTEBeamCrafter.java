@@ -52,7 +52,7 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class MTEBeamCrafter
-    extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>
+    extends MTEExtendedPowerMultiBlockBase<MTEBeamCrafter>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -60,7 +60,7 @@ public class MTEBeamCrafter
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
-    private static final IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>builder()
+    private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
@@ -139,7 +139,7 @@ public class MTEBeamCrafter
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
-        .addElement('A', chainAllGlasses()) // new glass type todo: (?)
+        .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamCrafter.class).hatchClass(MTEHatchInputBeamline.class)
@@ -171,13 +171,13 @@ public class MTEBeamCrafter
     }
 
     @Override
-    public IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter> getStructureDefinition() {
+    public IStructureDefinition<MTEBeamCrafter> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter(this.mName);
+        return new MTEBeamCrafter(this.mName);
     }
 
     @Override
@@ -287,19 +287,10 @@ public class MTEBeamCrafter
     }
 
     @Nullable
-    private BeamInformation getInputParticle_A() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-            return in.dataPacket.getContent();
-        }
-        return null;
-    }
-
-    @Nullable
-    private BeamInformation getInputParticle_B() {
+    private BeamInformation getNthInputParticle(int n) {
         int i = 0;
         for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (i == 1) {
+            if (i == n) {
                 if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
                 return in.dataPacket.getContent();
             }
@@ -308,8 +299,8 @@ public class MTEBeamCrafter
         return null;
     }
 
-    private boolean checkIfInputParticleInRecipe(BeamInformation inputParticle_A, BeamInformation inputParticle_B,
-        BeamCrafterMetadata metadata) {
+    private boolean isInputParticleInRecipe(BeamInformation inputParticle_A, BeamInformation inputParticle_B,
+                                            BeamCrafterMetadata metadata) {
 
         int particleID_x = metadata.particleID_A;
         int particleID_y = metadata.particleID_B;
@@ -340,8 +331,8 @@ public class MTEBeamCrafter
     @Override
     protected void incrementProgressTime() {
 
-        BeamInformation inputParticle_A = this.getInputParticle_A();
-        BeamInformation inputParticle_B = this.getInputParticle_B();
+        BeamInformation inputParticle_A = this.getNthInputParticle(0);
+        BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
         int particleRateA = inputParticle_A.getRate();
         int particleRateB = inputParticle_B.getRate();
@@ -360,39 +351,6 @@ public class MTEBeamCrafter
 
     @Override
     public @NotNull CheckRecipeResult checkProcessing() {
-
-        // particleARate - the Rate value of beam packet A. for this multi,
-        // think of it as the number of particles in the packet
-        // particleBRate - the Rate value of beam packet B.
-        // craftProgressA - part of the progress of the current craft.
-        // if a new craft starts that is a different recipe than the previous, reset to 0
-        // if the recipe is the same as the previous recipe, keep track of the current craftProgressA
-        // craftProgressB - the other part of the progress of the current craft.
-        // if a new craft starts that is a different recipe than the previous, reset to 0
-        // if the recipe is the same as the previous recipe, keep track of the current craftProgressB
-        // recipeParticleACount - the total number of required particle A for the ongoing recipe
-        // recipeParticleBCount - the total number of required particle B for the ongoing recipe
-        //
-        // run the following every second
-        //
-        // if there is no ongoing recipe, check the item/fluid inputs for a valid recipe
-        // if not found, do nothing for this processing cycle, and consume a tiny amount of power
-        // if found, start a craft, and consume the recipe's amount of power until it is done
-        //
-        // add particleRateA to craftProgressA, add particleRateB to craftProgressB
-        // every cycle, for every integer number of completed craftProgressA and B,
-        // deliver output. subtract that much progress from craftProgressA and B such that they are both <
-        // recipeParticle(A/B)Count
-        // if all cached inputs are *not* consumed, wait for more particle packets (do not fail the craft!)
-        //
-        // if all cached inputs are consumed delivered, check for the same recipe again. if present, continue the
-        // process without
-        // resetting craftProgressA/B. otherwise, reset craftProgressA/B
-        //
-        // repeat forever
-        //
-        // how would batch mode work? how would parallels work? are parallels even needed, since the machine has
-        // linear scaling of processing speed with particleRate?
 
         this.currentRecipeCurrentAmountA = 0;
         this.currentRecipeCurrentAmountB = 0;
@@ -414,11 +372,11 @@ public class MTEBeamCrafter
                 BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
                 if (metadata == null) return false;
 
-                BeamInformation inputParticle_A = this.getInputParticle_A();
-                BeamInformation inputParticle_B = this.getInputParticle_B();
+                BeamInformation inputParticle_A = this.getNthInputParticle(0);
+                BeamInformation inputParticle_B = this.getNthInputParticle(1);
 
                 if ((inputParticle_A != null) || (inputParticle_B != null)) {
-                    return checkIfInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata);
+                    return isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata);
                 }
                 return false;
             })
@@ -429,19 +387,17 @@ public class MTEBeamCrafter
         BeamCrafterMetadata metadata = tRecipe.getMetadata(BEAMCRAFTER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        BeamInformation inputParticle_A = this.getInputParticle_A();
-        BeamInformation inputParticle_B = this.getInputParticle_B();
+        BeamInformation inputParticle_A = this.getNthInputParticle(0);
+        BeamInformation inputParticle_B = this.getNthInputParticle(1);
         if (inputParticle_A == null || inputParticle_B == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (!checkIfInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
+        if (!isInputParticleInRecipe(inputParticle_A, inputParticle_B, metadata))
             return CheckRecipeResultRegistry.NO_RECIPE;
 
         this.currentRecipeMaxAmountA = metadata.amount_A;
         this.currentRecipeMaxAmountB = metadata.amount_B;
-        this.mMaxProgresstime = this.currentRecipeMaxAmountA + this.currentRecipeMaxAmountB; // total time to finish
-                                                                                             // recipe in ticks is the
-                                                                                             // sum of the required
-                                                                                             // Amounts
+        // total time to finish recipe in ticks is the sum of the required Amounts
+        this.mMaxProgresstime = this.currentRecipeMaxAmountA + this.currentRecipeMaxAmountB;
 
         if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
             return CheckRecipeResultRegistry.NO_RECIPE;

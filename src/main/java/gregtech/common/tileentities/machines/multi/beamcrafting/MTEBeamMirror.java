@@ -38,7 +38,7 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEBeamMirror
-    extends MTEExtendedPowerMultiBlockBase<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>
+    extends MTEExtendedPowerMultiBlockBase<MTEBeamMirror>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -47,7 +47,7 @@ public class MTEBeamMirror
     private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
-    private static final IStructureDefinition<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>builder()
+    private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             // spotless:off
