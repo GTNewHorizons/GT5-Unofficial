@@ -1252,15 +1252,36 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
         IntSyncValue selectedAsteroidSyncer) {
         List<IWidget> listResult = new ArrayList<>();
 
-        List<Pair<Integer, GTRecipe>> asteroids = SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
+        List<Pair<Integer, GTRecipe>> asteroids = getReachableAsteroids(distance, moduleTier, droneTier);
+        AtomicInteger weightSum = getAsteroidWeightSum(asteroids);
+
+        for (Pair<Integer, GTRecipe> asteroidPair : asteroids) {
+            GTRecipe asteroid = asteroidPair.second();
+            SpaceMiningData data = asteroid.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
+            listResult.add(
+                new Row().widthRel(1)
+                    .height(18)
+                    .child(createCalculatedAsteroidButton(asteroid, selectedAsteroidSyncer, asteroidPair, data))
+                    .child(
+                        IKey.lang(
+                            "tt.spaceminer.calculator.asteroidChance",
+                            String.format("%.3f%%", ((double) data.recipeWeight / weightSum.get() * 100)))
+                            .asWidget()
+                            .marginLeft(4)));
+        }
+        return listResult;
+    }
+
+    private List<Pair<Integer, GTRecipe>> getReachableAsteroids(Integer distance, Integer moduleTier,
+        Integer droneTier) {
+        return SpaceMiningRecipes.asteroidDistanceMap.get(droneTier)
             .computeIfAbsent(distance, w -> new ArrayList<>())
             .stream()
             .filter(pair -> {
                 GTRecipe recipe = pair.second();
                 Integer requiredModuleTier = recipe.getMetadata(IGRecipeMaps.MODULE_TIER);
                 assert requiredModuleTier != null;
-                if (moduleTier < requiredModuleTier) return false;
-                return true;
+                return moduleTier >= requiredModuleTier;
             })
             .sorted(
                 (a, b) -> Objects.requireNonNull(
@@ -1270,46 +1291,36 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                         a.second()
                             .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight)
             .collect(toList());
+    }
 
-        AtomicInteger weightSum = new AtomicInteger();
+    private AtomicInteger getAsteroidWeightSum(List<Pair<Integer, GTRecipe>> asteroids) {
+        AtomicInteger result = new AtomicInteger();
         asteroids.forEach(
-            asteroid -> weightSum.addAndGet(
+            asteroid -> result.addAndGet(
                 Objects.requireNonNull(
                     asteroid.second()
                         .getMetadata(IGRecipeMaps.SPACE_MINING_DATA)).recipeWeight));
 
-        for (Pair<Integer, GTRecipe> asteroidPair : asteroids) {
-            GTRecipe asteroid = asteroidPair.second();
-            SpaceMiningData data = asteroid.getMetadata(IGRecipeMaps.SPACE_MINING_DATA);
-            ButtonWidget asteroidButton = new ButtonWidget<>().size(18, 18)
-                .overlay(
-                    new DynamicDrawable(
-                        () -> {
-                            return new ItemDrawable(asteroid.mOutputs[0]).asIcon()
-                                .size(16, 16);
-                        }))
-                .tooltipBuilder(
-                    t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized()))
-                        .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo")))
-                .onMousePressed(mouseData -> {
-                    selectedAsteroidSyncer.setValue(asteroidPair.first());
-                    isAsteroidPanelForFilter = false;
-                    panelMap.get("asteroidInfoPanel" + asteroidPair.first())
-                        .openPanel();
-                    return true;
-                });
-            listResult.add(
-                new Row().widthRel(1)
-                    .height(18)
-                    .child(asteroidButton)
-                    .child(
-                        IKey.lang(
-                            "tt.spaceminer.calculator.asteroidChance",
-                            String.format("%.3f%%", ((double) data.recipeWeight / weightSum.get() * 100)))
-                            .asWidget()
-                            .marginLeft(4)));
-        }
-        return listResult;
+        return result;
+    }
+
+    private IWidget createCalculatedAsteroidButton(GTRecipe asteroid, IntSyncValue selectedAsteroidSyncer,
+        Pair<Integer, GTRecipe> asteroidPair, SpaceMiningData data) {
+        return new ButtonWidget<>().size(18, 18)
+            .overlay(
+                new DynamicDrawable(
+                    () -> new ItemDrawable(asteroid.mOutputs[0]).asIcon()
+                        .size(16, 16)))
+            .tooltipBuilder(
+                t -> t.addLine(IKey.str(EnumChatFormatting.DARK_RED + data.getAsteroidNameLocalized()))
+                    .addLine(IKey.lang("tt.spaceminer.asteroidButtonTooltipInfo")))
+            .onMousePressed(mouseData -> {
+                selectedAsteroidSyncer.setValue(asteroidPair.first());
+                isAsteroidPanelForFilter = false;
+                panelMap.get("asteroidInfoPanel" + asteroidPair.first())
+                    .openPanel();
+                return true;
+            });
     }
 
     @Override
