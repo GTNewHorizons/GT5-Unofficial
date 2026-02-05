@@ -143,6 +143,9 @@ public class ProcessingLogic {
      *         cached successfully. {@code false} if there is no recipe found.
      */
     public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+        // call getCurrentRecipeMap here to clear dualInv recipe cache if recipe map changes
+        RecipeMap<?> recipeMap = getCurrentRecipeMap();
+
         if (!inv.shouldBeCached()) {
             return true;
         }
@@ -157,8 +160,7 @@ public class ProcessingLogic {
         GTDualInputPattern inputs = inv.getPatternInputs();
         setInputItems(prepareCatalyst(inputs.inputItems));
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
-            .collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<GTRecipe> recipes = findRecipeMatches(recipeMap).collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();

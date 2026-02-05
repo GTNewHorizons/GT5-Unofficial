@@ -207,9 +207,9 @@ public class SpaceProjectManager {
 
         public final String projectName;
 
-        public FakeSpaceProjectRecipe(boolean aOptimize, ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration,
-            int aEUt, int aSpecialValue, String projectName) {
-            super(aOptimize, aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
+        public FakeSpaceProjectRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs, int aDuration, int aEUt,
+            int aSpecialValue, String projectName) {
+            super(aInputs, null, null, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue);
             this.projectName = projectName;
         }
     }
@@ -223,7 +223,6 @@ public class SpaceProjectManager {
         spaceProjects.put(project.getProjectName(), project);
         RecipeMaps.spaceProjectFakeRecipes.add(
             new FakeSpaceProjectRecipe(
-                false,
                 project.getTotalItemsCost(),
                 project.getTotalFluidsCost(),
                 project.getProjectBuildTime(),

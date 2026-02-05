@@ -735,7 +735,7 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected boolean hasValidMetaTileEntity() {
+    protected final boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
@@ -820,11 +820,10 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                         if (mWorks) disableWorking();
                         else enableWorking();
                         mMetaTileEntity.markDirty();
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             aPlayer,
-                            GTUtility.trans("090", "Machine Processing: ")
-                                + (isAllowedToWork() ? GTUtility.trans("088", "Enabled")
-                                    : GTUtility.trans("087", "Disabled")));
+                            isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                : "GT5U.chat.machine.processing.disable");
                         sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
                     }
                     return true;
@@ -850,12 +849,12 @@ public class BaseMetaPipeEntity extends CommonBaseMetaTileEntity
                     } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mMetaTileEntity.markDirty();
                         mStrongRedstone ^= wrenchingSide.flag;
-                        GTUtility.sendChatToPlayer(
+                        // FIXME: localize wrenchingSide
+                        GTUtility.sendChatTrans(
                             aPlayer,
-                            GTUtility.trans("091", "Redstone Output at Side ") + wrenchingSide
-                                + GTUtility.trans("092", " set to: ")
-                                + ((mStrongRedstone & wrenchingSide.flag) != 0 ? GTUtility.trans("093", "Strong")
-                                    : GTUtility.trans("094", "Weak")));
+                            (mStrongRedstone & wrenchingSide.flag) != 0 ? "GT5U.chat.machine.redstone_output_set.strong"
+                                : "GT5U.chat.machine.redstone_output_set.weak",
+                            wrenchingSide);
                         sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                         issueBlockUpdate();
                     }

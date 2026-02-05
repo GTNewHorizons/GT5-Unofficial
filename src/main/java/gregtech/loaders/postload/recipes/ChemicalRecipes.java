@@ -1289,7 +1289,7 @@ public class ChemicalRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 Materials.CobaltIINitrate.getDust(9),
-                getModItem(NewHorizonsCoreMod.ID, "item.PotassiumHydroxideDust", 6L, 0))
+                getModItem(NewHorizonsCoreMod.ID, "PotassiumHydroxideDust", 6L, 0))
             .itemOutputs(Materials.CobaltIIHydroxide.getDust(5), Materials.Saltpeter.getDust(10))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -4123,7 +4123,7 @@ public class ChemicalRecipes implements Runnable {
         }
     }
 
-    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
+    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, Fluid aPolymer) {
         // Oxygen/Titaniumtetrafluoride -> +50% Output each
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Cell_Air.get(1))
@@ -4146,21 +4146,21 @@ public class ChemicalRecipes implements Runnable {
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(aBasicMaterialCell)
+            .itemInputs(ItemList.Cell_Air.get(8))
             .circuit(9)
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Air.getGas(14_000))
-            .fluidOutputs(new FluidStack(aPolymer, 1_000))
+            .itemOutputs(Materials.Empty.getCells(8))
+            .fluidInputs(new FluidStack(aBasicMaterial, 8 * INGOTS))
+            .fluidOutputs(new FluidStack(aPolymer, 8 * INGOTS))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(aBasicMaterialCell)
+            .itemInputs(Materials.Oxygen.getCells(8))
             .circuit(9)
-            .itemOutputs(Materials.Empty.getCells(1))
-            .fluidInputs(Materials.Oxygen.getGas(7_000))
-            .fluidOutputs(new FluidStack(aPolymer, 1_500))
+            .itemOutputs(Materials.Empty.getCells(8))
+            .fluidInputs(new FluidStack(aBasicMaterial, 8 * INGOTS))
+            .fluidOutputs(new FluidStack(aPolymer, 12 * INGOTS))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
@@ -4190,30 +4190,17 @@ public class ChemicalRecipes implements Runnable {
     }
 
     public void polymerizationRecipes() {
-        addDefaultPolymerizationRecipes(
-            Materials.VinylAcetate.mFluid,
-            Materials.VinylAcetate.getCells(1),
-            Materials.PolyvinylAcetate.mFluid);
+        addDefaultPolymerizationRecipes(Materials.VinylAcetate.mFluid, Materials.PolyvinylAcetate.mFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.Ethylene.mGas,
-            Materials.Ethylene.getCells(1),
-            Materials.Polyethylene.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.Ethylene.mGas, Materials.Polyethylene.mStandardMoltenFluid);
 
         addDefaultPolymerizationRecipes(
             Materials.Tetrafluoroethylene.mGas,
-            Materials.Tetrafluoroethylene.getCells(1),
             Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.VinylChloride.mGas,
-            Materials.VinylChloride.getCells(1),
-            Materials.PolyvinylChloride.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.VinylChloride.mGas, Materials.PolyvinylChloride.mStandardMoltenFluid);
 
-        addDefaultPolymerizationRecipes(
-            Materials.Styrene.mFluid,
-            Materials.Styrene.getCells(1),
-            Materials.Polystyrene.mStandardMoltenFluid);
+        addDefaultPolymerizationRecipes(Materials.Styrene.mFluid, Materials.Polystyrene.mStandardMoltenFluid);
     }
 
     public void singleBlockOnly() {
@@ -5263,6 +5250,32 @@ public class ChemicalRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, Materials.Calcium.getDust(1)))
+            .circuit(3)
+            .fluidInputs(Materials.AceticAcid.getFluid(2_000))
+            .fluidOutputs(
+                Materials.Acetone.getFluid(1_000),
+                Materials.CarbonDioxide.getGas(1_000),
+                Materials.Water.getFluid(1_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // Same as above, but with Quicklime and Calcite. The line it's shortcutting accepts Calcium, quicklime, and
+        // Calcite
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(0, Materials.Quicklime.getDust(1)))
+            .circuit(3)
+            .fluidInputs(Materials.AceticAcid.getFluid(2_000))
+            .fluidOutputs(
+                Materials.Acetone.getFluid(1_000),
+                Materials.CarbonDioxide.getGas(1_000),
+                Materials.Water.getFluid(1_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(0, Materials.Calcite.getDust(1)))
             .circuit(3)
             .fluidInputs(Materials.AceticAcid.getFluid(2_000))
             .fluidOutputs(
