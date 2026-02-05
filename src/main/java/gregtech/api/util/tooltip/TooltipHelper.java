@@ -154,7 +154,7 @@ public class TooltipHelper {
         if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX) return "Invalid Voltage Tier";
         return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
             + EnumChatFormatting.GRAY
-            + (withTierSuffix ? "" : "-tier");
+            + (withTierSuffix ? "-tier" : "");
     }
 
     /**
