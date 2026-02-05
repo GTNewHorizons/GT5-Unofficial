@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,6 +20,10 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.client.ResourceUtils;
+import gregtech.client.textures.blocks.GTCustomAlphaBlockIconContainer;
+import gregtech.client.textures.blocks.GTCustomBlockIconContainer;
+import gregtech.client.textures.blocks.GTCustomOptionalBlockIconContainer;
+import gregtech.client.textures.items.GTCustomItemIconContainer;
 import gregtech.common.config.Gregtech;
 
 public class Textures {
@@ -2548,45 +2551,36 @@ public class Textures {
             return id == null ? ERROR_TEXTURE_INDEX : id;
         }
 
-        // 2026-02-03: Counted 1771 unique CustomIcons, so 2.5K will avoid resize until 1920 entries
-        private static final Map<String, IIconContainer> CUSTOM_ICONS = new ConcurrentHashMap<>(2560);
-
         /**
          * Registers a Custom Block {@link IIconContainer}
          *
          * @param aIconName The unique identifier of the icon container.
-         * @return The new or cached instance
+         * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            return CUSTOM_ICONS.computeIfAbsent(aIconName, CustomIcon::new);
+            return GTCustomBlockIconContainer.create(aIconName);
         }
-
-        // 2026-02-03: Counted 3723 unique CustomOptionalIcons, so 5K will avoid resize until 3840 entries
-        private static final Map<String, IIconContainer> CUSTOM_OPTIONAL_ICONS = new ConcurrentHashMap<>(5120);
 
         /**
          * Registers a Custom Optional Block {@link IIconContainer}
          *
          * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
          *                  (see: {@link IIconRegister#registerIcon}).
-         * @return The new or cached instance
+         * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer customOptional(@NotNull String aIconName) {
-            return CUSTOM_OPTIONAL_ICONS.computeIfAbsent(aIconName, CustomOptionalIcon::new);
+            return GTCustomOptionalBlockIconContainer.create(aIconName);
         }
 
-        // 2026-02-03: Counted 160 unique BlockIcons.CustomIcons, so 255 will avoid resize until 162 entries
-        private static final Map<String, IIconContainer> CUSTOM_ALPHA_ICONS = new ConcurrentHashMap<>(256);
-
         /**
-         * Registers a Custom Optional Block {@link IIconContainer} to be rendered alpha-blended in pass 1
+         * Registers a Custom Alpha-blended Block {@link IIconContainer} (to be rendered in pass 1)
          *
          * @param aIconName The unique {@code [<modid>:]path/name} icon identifier<br>
          *                  (see: {@link IIconRegister#registerIcon}).
-         * @return The new or cached instance
+         * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer customAlpha(@NotNull String aIconName) {
-            return CUSTOM_ALPHA_ICONS.computeIfAbsent(aIconName, CustomAlphaIcon::new);
+            return GTCustomAlphaBlockIconContainer.create(aIconName);
         }
 
         @Override
@@ -2613,94 +2607,25 @@ public class Textures {
         }
 
         /**
-         * @deprecated This is an internal implementation detail.
-         *             Will be moved to a non-public package in a future release.
+         * @deprecated Internal implementation detail. Will be removed in a future release.
          *             <p>
-         *             Use the factory methods on {@link BlockIcons}:
+         *             Use the factory methods on {@link BlockIcons} instead:
          *             <ul>
          *             <li>{@link BlockIcons#custom(String)}</li>
          *             <li>{@link BlockIcons#customOptional(String)}</li>
          *             <li>{@link BlockIcons#customAlpha(String)}</li>
          *             </ul>
          */
-        // TODO: Move this to an internal package once the deprecated API is no longer used
+        // TODO: Delete this once the deprecated API is no longer used
         @Deprecated
-        public static class CustomIcon implements IIconContainer, Runnable {
-
-            protected final ResourceLocation iconResource, overlayResource;
-            protected final String mIconName, mOverlayName;
-            protected IIcon mIcon, mOverlay = null;
+        public static class CustomIcon extends GTCustomBlockIconContainer {
 
             /**
              * @deprecated Use {@link BlockIcons#custom(String)} instead.
-             *             This constructor will become private later.
              */
             @Deprecated
             public CustomIcon(@NotNull String aIconName) {
-                mIconName = aIconName.contains(":") ? aIconName : GregTech.getResourcePath(aIconName);
-                iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
-
-                mOverlayName = mIconName + _OVERLAY;
-                overlayResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mOverlayName);
-                // Prevents scheduling multiple registrations of same custom block icon
-                GregTechAPI.sGTBlockIconload.add(this);
-                if (Gregtech.debug.logRegisterIcons) {
-                    GTLog.ico.println("R " + iconResource);
-                    GTLog.ico.println("O " + overlayResource);
-                }
-            }
-
-            @Override
-            public void run() {
-                mIcon = GregTechAPI.sBlockIcons.registerIcon(mIconName);
-                // This makes the block _OVERLAY icon totally optional
-                if (ResourceUtils.resourceExists(overlayResource)) {
-                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
-                }
-            }
-
-            @Override
-            public IIcon getIcon() {
-                return mIcon;
-            }
-
-            @Override
-            public IIcon getOverlayIcon() {
-                return mOverlay;
-            }
-
-            @Override
-            public ResourceLocation getTextureFile() {
-                return TextureMap.locationBlocksTexture;
-            }
-        }
-
-        private static class CustomOptionalIcon extends CustomIcon {
-
-            private CustomOptionalIcon(@NotNull String aIconName) {
                 super(aIconName);
-            }
-
-            @Override
-            public void run() {
-                mIcon = ResourceUtils.resourceExists(iconResource) ? GregTechAPI.sBlockIcons.registerIcon(mIconName)
-                    : InvisibleIcon.INVISIBLE_ICON;
-                // This makes the block _OVERLAY icon totally optional
-                if (ResourceUtils.resourceExists(overlayResource)) {
-                    mOverlay = GregTechAPI.sBlockIcons.registerIcon(mOverlayName);
-                }
-            }
-        }
-
-        private static class CustomAlphaIcon extends CustomIcon {
-
-            private CustomAlphaIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
-
-            @Override
-            public int getRenderIconPass() {
-                return 1;
             }
         }
     }
@@ -2759,8 +2684,6 @@ public class Textures {
                 ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, };
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(Textures.GlobalIcons.RENDERING_ERROR) };
-        // 2026-02-03: Counted 1928 unique BlockIcons.CustomIcons, so 3K will avoid resize until 2304 entries
-        private static final Map<String, IIconContainer> sCustomIcons = new ConcurrentHashMap<>(3072);
 
         IIcon mIcon, mOverlay;
         final String mIconName;
@@ -2787,11 +2710,10 @@ public class Textures {
          *
          * @param aIconName The unique identifier of the custom item icon container.
          *
-         * @return The new or cached {@link CustomIcon} instance
+         * @return The {@link IIconContainer} instance
          */
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
-            // optionalResource is not part of the CustomIcon identity, so not composed in to the key
-            return sCustomIcons.computeIfAbsent(aIconName, CustomIcon::new);
+            return GTCustomItemIconContainer.create(aIconName);
         }
 
         @Override
@@ -2824,18 +2746,13 @@ public class Textures {
         }
 
         /**
-         * @deprecated This is an internal implementation detail.
-         *             Will be moved to a non-public package in a future release.
+         * @deprecated Internal implementation detail. Will be removed in a future release.
          *             <p>
-         *             Use the factory method {@link ItemIcons#custom(String)} instead.
+         *             Use the factory methods on {@link ItemIcons#custom(String)} instead:
          */
-        // TODO: Move this to an internal package once the deprecated API is no longer used
+        // TODO: Delete this once the deprecated API is no longer used
         @Deprecated
-        public static class CustomIcon implements IIconContainer, Runnable {
-
-            protected IIcon mIcon, mOverlay;
-            protected String mIconName, mOverlayName;
-            protected ResourceLocation iconResource, overlayResource;
+        public static class CustomIcon extends GTCustomItemIconContainer {
 
             /**
              * @deprecated Use {@link ItemIcons#custom(String)} instead.
@@ -2843,45 +2760,7 @@ public class Textures {
              */
             @Deprecated
             public CustomIcon(@NotNull String aIconName) {
-                mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
-                iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
-                mOverlayName = mIconName + _OVERLAY;
-                overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
-                // Prevents scheduling multiple registrations of same custom item icon
-                GregTechAPI.sGTItemIconload.add(this);
-                if (Gregtech.debug.logRegisterIcons) {
-                    GTLog.ico.println("R " + iconResource);
-                    GTLog.ico.println("O " + overlayResource);
-                }
-            }
-
-            @Override
-            public IIcon getIcon() {
-                return mIcon;
-            }
-
-            @Override
-            public IIcon getOverlayIcon() {
-                return mOverlay;
-            }
-
-            @Override
-            public ResourceLocation getTextureFile() {
-                return TextureMap.locationItemsTexture;
-            }
-
-            @Override
-            public void run() {
-                final boolean iconExists = ResourceUtils.resourceExists(iconResource);
-                final boolean overlayExists = ResourceUtils.resourceExists(overlayResource);
-                if (iconExists || overlayExists) {
-                    mIcon = iconExists ? GregTechAPI.sItemIcons.registerIcon(mIconName) : InvisibleIcon.INVISIBLE_ICON;
-                    mOverlay = overlayExists ? GregTechAPI.sItemIcons.registerIcon(mOverlayName)
-                        : InvisibleIcon.INVISIBLE_ICON;
-                } else {
-                    mIcon = InvisibleIcon.INVISIBLE_ICON;
-                    mOverlay = Textures.GlobalIcons.RENDERING_ERROR.getOverlayIcon();
-                }
+                super(aIconName);
             }
         }
     }
