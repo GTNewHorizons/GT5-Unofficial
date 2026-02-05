@@ -151,7 +151,7 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         ProgressWidget widget = new ProgressWidget();
         widget.progress(() -> (float) multiblock.getProgresstime() / multiblock.getMaxProgresstime())
             .direction(ProgressWidget.Direction.RIGHT)
-            .size(147, 11)
+            .size(182, 11)
             .texture(GTGuiTextures.PROGRESSBAR_PURIFICATION_UNIT, 147);
         TextWidget<?> text = new TextWidget<>(IKey.dynamic(() -> {
             int progress = multiblock.getProgresstime() / 20;
@@ -160,7 +160,8 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
         })).center()
             .color(0x999999);
 
-        holder.size(147, 11);
+        holder.height(11);
+        holder.widthRel(1);
         holder.child(widget);
         holder.child(text);
         return holder;
