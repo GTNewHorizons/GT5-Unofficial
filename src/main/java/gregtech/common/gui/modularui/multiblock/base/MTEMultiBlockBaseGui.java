@@ -120,6 +120,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.POWER_LOSS.getKey(), GTGuiTextures.OVERLAY_POWER_LOSS);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NO_REPAIR.getKey(), GTGuiTextures.OVERLAY_TOO_DAMAGED);
         this.shutdownReasonTextureMap.put(ShutDownReasonRegistry.NONE.getKey(), GTGuiTextures.OVERLAY_MANUAL_SHUTDOWN);
+        this.shutdownReasonTextureMap.put("computation_loss", GTGuiTextures.OVERLAY_COMPUTATION_LOSS);
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.STRUCTURE_INCOMPLETE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.incomplete"));
@@ -132,7 +133,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         this.shutdownReasonTooltipMap.put(
             ShutDownReasonRegistry.NONE.getKey(),
             EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.hoverable.manualshutdown"));
-
+        this.shutdownReasonTooltipMap.put(
+            "computation_loss",
+            EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("GT5U.gui.text.computation_loss"));
     }
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
@@ -245,10 +248,21 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
 
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IntSyncValue startupCheckSyncer = new IntSyncValue(multiblock::getmStartUpCheck);
+        StringSyncValue machineModeSyncer = new StringSyncValue(multiblock::getMachineModeName);
         syncManager.syncValue("startupCheck", startupCheckSyncer);
+        syncManager.syncValue("machineModeName", machineModeSyncer);
 
         return new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childIf(
+                multiblock.supportsMachineModeSwitch(),
+                IKey.dynamic(
+                    () -> StatCollector
+                        .translateToLocalFormatted("gt.interact.desc.mb.mode", machineModeSyncer.getStringValue()))
+                    .asWidget()
+                    .marginBottom(2)
+                    .widthRel(1))
+
             .child(
                 IKey.lang("GT5U.multiblock.startup")
                     .color(Color.WHITE.main)
@@ -259,7 +273,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .widthRel(1))
             .childIf(
                 multiblock.hasRunningText(),
-                new TextWidget<>(GTUtility.trans("142", "Running perfectly.")).color(Color.WHITE.main)
+                new TextWidget<>(StatCollector.translateToLocalFormatted("gt.interact.desc.mb.running"))
+                    .color(Color.WHITE.main)
                     .setEnabledIf(widget -> multiblock.getErrorDisplayID() == 0 && baseMetaTileEntity.isActive())
                     .marginBottom(2)
                     .widthRel(1))
@@ -368,7 +383,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private final int DISPLAY_ROW_HEIGHT = 15;
+    private static final int DISPLAY_ROW_HEIGHT = 15;
+    private static final int DISPLAY_ROW_CHAR_LIMIT = 46;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -508,15 +524,31 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
-
         String amountString = EnumChatFormatting.WHITE + " x "
             + EnumChatFormatting.GOLD
             + GTUtility.formatShortenedLong(amount)
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String itemTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(itemName, 46 - amountString.length())
-            + amountString;
-        return itemTextLine;
+        String truncatedItemName = GTUtility.truncateText(itemName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
+        String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.ItemTextLine");
+        if (!localizedLine.equals("gt.interact.desc.mb.ItemTextLine")) {
+            String amountShort = GTUtility.formatShortenedLong(amount);
+            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
+                GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()));
+            String trimmedRate = rateText.trim();
+            String rateInner = trimmedRate;
+            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
+                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
+            }
+            return StatCollector.translateToLocalFormatted(
+                "gt.interact.desc.mb.ItemTextLine",
+                truncatedItemName,
+                amountShort,
+                "(",
+                rateInner,
+                ")");
+        }
+        return EnumChatFormatting.AQUA + truncatedItemName + amountString;
     }
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
@@ -550,9 +582,26 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             + "L"
             + EnumChatFormatting.WHITE
             + GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue());
-        String fluidTextLine = EnumChatFormatting.AQUA + GTUtility.truncateText(fluidName, 46 - amountString.length())
-            + amountString;
-        return fluidTextLine;
+        String truncatedFluidName = GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
+        String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.FluidTextLine");
+        if (!localizedLine.equals("gt.interact.desc.mb.FluidTextLine")) {
+            String amountShort = GTUtility.formatShortenedLong(amount);
+            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
+                GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()));
+            String trimmedRate = rateText.trim();
+            String rateInner = trimmedRate;
+            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
+                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
+            }
+            return StatCollector.translateToLocalFormatted(
+                "gt.interact.desc.mb.FluidTextLine",
+                truncatedFluidName,
+                amountShort,
+                "(",
+                rateInner,
+                ")");
+        }
+        return EnumChatFormatting.AQUA + truncatedFluidName + amountString;
     }
 
     /**
@@ -756,7 +805,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return machineModeIcons.get(index);
     }
 
-    private void createModeSwitchTooltip(RichTooltip t) {
+    protected void createModeSwitchTooltip(RichTooltip t) {
         t.addLine(IKey.dynamic(() -> StatCollector.translateToLocal("GT5U.gui.button.mode_switch")))
             .addLine(IKey.dynamic(multiblock::getMachineModeName));
     }
@@ -1082,10 +1131,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .reverseLayout(true)
             .childIf(
                 multiblock.doesBindPlayerInventory(),
-                new ItemSlot()
-                    .slot(
-                        new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex())
-                            .slotGroup("item_inv"))
+                new ItemSlot().slot(new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()) {
+
+                    @Override
+                    public int getSlotStackLimit() {
+                        return multiblock.getInventoryStackLimit();
+                    }
+                }.slotGroup("item_inv"))
                     .marginTop(4))
             .child(createPowerSwitchButton())
             .child(createStructureUpdateButton(syncManager));

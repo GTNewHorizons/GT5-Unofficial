@@ -60,11 +60,16 @@ public class RecipesMachinesCustom {
 
     private static void xlTurbines() {
         // Turbine Shaft
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Casing_Turbine_Shaft.get(1),
-            new Object[] { "PMP", "LCL", "PMP", 'P', MaterialsAlloy.INCOLOY_DS.getPlateDouble(1), 'M',
-                ItemList.Electric_Motor_HV.get(1), 'L', OrePrefixes.cell.get(Materials.Lubricant), 'C',
-                ItemList.Casing_Gearbox_Titanium.get(1) });
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.INCOLOY_DS.getPlateDouble(4),
+                ItemList.Electric_Motor_HV.get(2),
+                ItemList.Casing_Gearbox_Titanium.get(1))
+            .itemOutputs(GregtechItemList.Casing_Turbine_Shaft.get(1))
+            .fluidInputs(Materials.Lubricant.getFluid(2_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
 
         // Rotor Assembly
         GTValues.RA.stdBuilder()
