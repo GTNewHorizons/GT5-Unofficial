@@ -71,7 +71,7 @@ import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 
 public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFilterBase<T, ?, I>, I> {
 
-    public interface Environment<T extends IAEStack<T>> {
+    public interface Environment<T extends IAEStack<T>, F extends MEFilterBase<T, ?, I>, I> {
 
         @Nullable
         IGregTechTileEntity getBaseMetaTileEntity();
@@ -101,9 +101,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         ItemStack getVisual();
 
         void dispatchMarkDirty();
+
+        MTEHatchOutputMEBase<T, F, I> getProvider();
     }
 
-    private final Environment<T> env;
+    private final Environment<T, F, I> env;
     protected AENetworkProxy proxy;
     protected final F filter;
     protected final AECacheCounter<T> cache = new AECacheCounter<>();
@@ -111,7 +113,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     protected long baseCapacity;
     protected long cacheCapacity;
 
-    public MTEHatchOutputMEBase(Environment<T> env, final F filter, final long baseCapacity) {
+    public MTEHatchOutputMEBase(Environment<T, F, I> env, final F filter, final long baseCapacity) {
         this.env = env;
         this.filter = filter;
         DEFAULT_CAPACITY = baseCapacity;
@@ -440,7 +442,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public boolean canAcceptAnyInput() {
-        if (getCheckMode()) return false;
+        if (shouldCheck()) return false;
         return lastInputTick == tickCounter || hasAvailableSpace();
     }
 
@@ -486,12 +488,20 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         lastOutputTick = tickCounter;
     }
 
-    public boolean getCheckMode() {
+    public boolean shouldCheck() {
         return checkMode && cacheMode && cell != null;
     }
 
+    public boolean getCheckMode() {
+        return checkMode;
+    }
+
+    public void setCheckMode(boolean cacheMode) {
+        this.checkMode = cacheMode;
+    }
+
     public boolean canStore(@NotNull I stack) {
-        if (getCheckMode()) {
+        if (shouldCheck()) {
             T input = filter.fromNative(stack);
             input.setStackSize(input.getStackSize() + cache.get(input));
             final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
@@ -501,7 +511,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     public boolean canStore(@NotNull I stack, long size) {
-        if (getCheckMode()) {
+        if (shouldCheck()) {
             T input = filter.fromNative(stack);
             input.setStackSize(size);
             final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
@@ -543,6 +553,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     public void setCacheMode(boolean cacheMode) {
         this.cacheMode = cacheMode;
+        updateState();
     }
 
     public void saveNBTData(NBTTagCompound aNBT) {
