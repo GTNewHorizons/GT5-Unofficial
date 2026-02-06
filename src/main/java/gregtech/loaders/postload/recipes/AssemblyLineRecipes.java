@@ -910,7 +910,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.DroneRemoteInterface.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.ingot, MaterialsElements.STANDALONE.HYPOGEN, 1),
+                MaterialsElements.STANDALONE.HYPOGEN.getIngot(1),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
                 ItemList.Field_Generator_UHV.get(16),
