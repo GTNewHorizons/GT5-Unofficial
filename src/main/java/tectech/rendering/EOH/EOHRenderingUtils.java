@@ -281,7 +281,7 @@ public abstract class EOHRenderingUtils {
         if (!wasCull) GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
-    private static void renderTessellatedSphere(int slices, int stacks, double radiusInBlocks) {
+    public static void renderTessellatedSphere(int slices, int stacks, double radiusInBlocks) {
         // Make sure texturing is actually on (binding alone doesn't enable it)
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 

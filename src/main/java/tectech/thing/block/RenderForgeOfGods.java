@@ -29,6 +29,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 
 import tectech.Reference;
+import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.util.StructureVBO;
@@ -37,7 +38,6 @@ import tectech.util.TextureUpdateRequester;
 public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     private static ShaderProgram starProgram;
-    private static IModelCustom starModel;
     private static final float modelNormalize = .0067f * 2;
 
     private static boolean initialized = false;
@@ -87,8 +87,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             System.out.println(e.getMessage());
             return;
         }
-
-        starModel = AdvancedModelLoader.loadModel(new ResourceLocation(Reference.MODID, "models/Star.obj"));
 
         try {
             beamProgram = new ShaderProgram(
@@ -183,7 +181,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         matrixBuffer.clear();
         GL20.glUniformMatrix4(u_ModelMatrix, false, starModelMatrix.get(matrixBuffer));
         GL20.glUniform4f(u_Color, color.x, color.y, color.z, color.w);
-        starModel.renderAll();
+        EOHRenderingUtils.renderTessellatedSphere(128, 128, 72);
 
         starModelMatrix.popMatrix();
     }
