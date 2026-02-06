@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import appeng.api.storage.data.IAEStackType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -269,7 +270,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             return null;
         }
 
-        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getChannel());
+        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, (IAEStackType<StackType>) h.getStackType());
         ih.setPriority(this.myPriority);
         ih.setBaseAccess(myAccess);
 
