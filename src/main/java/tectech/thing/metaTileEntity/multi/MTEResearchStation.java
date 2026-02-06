@@ -38,22 +38,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -79,6 +66,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTEResearchStationGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -106,9 +94,10 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
     private final ArrayList<MTEHatchObjectHolder> eHolders = new ArrayList<>();
     private ItemStack holderStackToConsume = null;
-    private ItemStack researchOutputForGUI = null;
-    private long computationRemaining = 0, computationRequired = 0;
-    private int ticksUntilPacketLossFail = PACKET_LOSS_FULL_WINDOW;
+    public ItemStack researchOutputForGUI = null;
+    public long computationRemaining = 0;
+    public long computationRequired = 0;
+    public int ticksUntilPacketLossFail = PACKET_LOSS_FULL_WINDOW;
     private long packetLossDecayFrom = 0;
 
     private static final String[] description = new String[] {
@@ -831,152 +820,28 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         return false;
     }
 
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.researching_item",
-                            this.researchOutputForGUI == null ? "" : this.researchOutputForGUI.getDisplayName()))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> this.computationRequired > 0 && this.researchOutputForGUI != null))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.research_progress",
-                            getComputationConsumed(),
-                            getComputationRequired(),
-                            formatNumber(getComputationProgress())))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> this.computationRequired > 0 && this.researchOutputForGUI != null))
-            .widget(new TextWidget().setStringSupplier(() -> {
-                if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
-                    return EnumChatFormatting.YELLOW
-                        + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
-                        + EnumChatFormatting.RESET;
-                }
-                return EnumChatFormatting.RED
-                    + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
-                    + EnumChatFormatting.RESET;
-            })
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(
-                    widget -> this.computationRequired > 0 && this.researchOutputForGUI != null
-                        && this.ticksUntilPacketLossFail < PACKET_LOSS_FULL_WINDOW))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.computationRequired,
-                    aLong -> this.computationRequired = aLong))
-            .widget(
-                new FakeSyncWidget.LongSyncer(
-                    () -> this.computationRemaining,
-                    aLong -> this.computationRemaining = aLong))
-            .widget(
-                new FakeSyncWidget.ItemStackSyncer(
-                    () -> this.researchOutputForGUI,
-                    aStack -> this.researchOutputForGUI = aStack))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> this.ticksUntilPacketLossFail,
-                    aLong -> this.ticksUntilPacketLossFail = aLong));
-    }
-
-    private long getComputationConsumed() {
-        return (this.computationRequired - this.computationRemaining) / 20L;
-    }
-
-    private long getComputationRequired() {
-        return this.computationRequired / 20L;
-    }
-
-    private double getComputationProgress() {
-        return 100d
-            * (getComputationRequired() > 0d ? (double) getComputationConsumed() / getComputationRequired() : 0d);
-    }
-
     // endregion gui
 
     // region MUI2
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<MTEResearchStation>(this) {
-
-            @Override
-            protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager,
-                ModularPanel parent) {
-
-                GenericSyncValue<ItemStack> outputSyncer = new GenericSyncValue<>(
-                    () -> researchOutputForGUI,
-                    val -> researchOutputForGUI = val,
-                    com.gtnewhorizons.modularui.common.internal.network.NetworkUtils::readItemStack,
-                    com.gtnewhorizons.modularui.common.internal.network.NetworkUtils::writeItemStack,
-                    (a, b) -> GTUtility.areStacksEqual(a, b, true) && a.stackSize == b.stackSize,
-                    null);
-
-                LongSyncValue computationReqSyncer = new LongSyncValue(
-                    () -> computationRequired,
-                    val -> computationRequired = val);
-                LongSyncValue computationRemSyncer = new LongSyncValue(
-                    () -> computationRemaining,
-                    val -> computationRemaining = val);
-                IntSyncValue ticksUntilPacketLossFailSyncger = new IntSyncValue(
-                    () -> ticksUntilPacketLossFail,
-                    val -> ticksUntilPacketLossFail = val);
-
-                syncManager.syncValue("outputName", outputSyncer);
-                syncManager.syncValue("computationRequired", computationReqSyncer);
-                syncManager.syncValue("computationRemaining", computationRemSyncer);
-                syncManager.syncValue("ticksUntilPacketLossFail", ticksUntilPacketLossFailSyncger);
-
-                ListWidget<IWidget, ?> terminal = super.createTerminalTextWidget(syncManager, parent);
-                terminal.child(IKey.dynamic(() -> {
-                    if (researchOutputForGUI == null) return "";
-                    return StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.text.researching_item",
-                        researchOutputForGUI.getDisplayName());
-                })
-                    .asWidget()
-                    .setEnabledIf(ignored -> outputSyncer.getValue() != null))
-                    .child(
-                        IKey.dynamic(
-                            () -> StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.research_progress",
-                                getComputationConsumed(),
-                                getComputationRequired(),
-                                formatNumber(getComputationProgress())))
-                            .asWidget()
-                            .setEnabledIf(ignored -> computationRequired > 0 && researchOutputForGUI != null))
-                    .child(IKey.dynamic(() -> {
-                        if (ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
-                            return EnumChatFormatting.YELLOW
-                                + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
-                                + EnumChatFormatting.RESET;
-                        }
-                        return EnumChatFormatting.RED
-                            + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
-                            + EnumChatFormatting.RESET;
-
-                    })
-                        .asWidget()
-                        .setEnabledIf(
-                            ignored -> computationRequired > 0 && researchOutputForGUI != null
-                                && ticksUntilPacketLossFail < PACKET_LOSS_FULL_WINDOW));
-                return terminal;
-            }
-        }.withMachineModeIcons(
+        return new MTEResearchStationGui(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_RESEARCH,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SCANNER);
     }
 
-    @Override
-    protected boolean useMui2() {
+    public long getComputationConsumed() {
+        return (this.computationRequired - this.computationRemaining) / 20L;
+    }
 
-        return true;
+    public long getComputationRequired() {
+        return this.computationRequired / 20L;
     }
 
     // endregion MUI2
