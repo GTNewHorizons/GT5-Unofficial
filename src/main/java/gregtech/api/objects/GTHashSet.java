@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTUtility;
 
 public class GTHashSet extends AbstractSet<GTItemStack> {
@@ -21,28 +20,23 @@ public class GTHashSet extends AbstractSet<GTItemStack> {
 
     public GTHashSet() {
         map = new HashMap<>();
-        GregTechAPI.sItemStackMappings.add(map);
     }
 
     public GTHashSet(Collection<GTItemStack> c) {
         map = new HashMap<>(Math.max((int) (c.size() / .75f) + 1, 16));
         addAll(c);
-        GregTechAPI.sItemStackMappings.add(map);
     }
 
     public GTHashSet(int initialCapacity, float loadFactor) {
         map = new HashMap<>(initialCapacity, loadFactor);
-        GregTechAPI.sItemStackMappings.add(map);
     }
 
     public GTHashSet(int initialCapacity) {
         map = new HashMap<>(initialCapacity);
-        GregTechAPI.sItemStackMappings.add(map);
     }
 
     GTHashSet(int initialCapacity, float loadFactor, boolean dummy) {
         map = new LinkedHashMap<>(initialCapacity, loadFactor);
-        GregTechAPI.sItemStackMappings.add(map);
     }
 
     public Map<GTItemStack, Object> getMap() {
