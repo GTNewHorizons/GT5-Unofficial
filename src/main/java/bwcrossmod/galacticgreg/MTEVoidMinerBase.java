@@ -13,7 +13,6 @@
 
 package bwcrossmod.galacticgreg;
 
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -25,24 +24,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.cleanroommc.modularui.utils.item.ItemStackHandler;
-import gregtech.api.enums.ItemList;
-import gregtech.api.interfaces.IDataCopyable;
-import gregtech.common.gui.modularui.multiblock.MTEVoidMinerBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,6 +38,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -61,6 +50,8 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -71,6 +62,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEVoidMinerBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtneioreplugin.util.DimensionHelper;
 
@@ -188,9 +181,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .addInfo("Ores selected in the Controller UI or added to an Input Bus are")
             .addInfo("added to the Whitelist/Blacklist")
             .addInfo("Use the Controller UI or a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo(
-                "Blacklisted or non Whitelisted Ore will be " + EnumChatFormatting.DARK_RED
-                    + "VOIDED")
+            .addInfo("Blacklisted or non Whitelisted Ore will be " + EnumChatFormatting.DARK_RED + "VOIDED")
             .addInfo("Can copy/paste Ore filter configuration with a " + EnumChatFormatting.GREEN + "Data Stick");
         return tt;
     }
@@ -359,7 +350,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     @Override
     public boolean onRightclick(IGregTechTileEntity baseMetaTileEntity, EntityPlayer player, ForgeDirection side,
-                                float x, float y, float z) {
+        float x, float y, float z) {
         if (!baseMetaTileEntity.isServerSide()) return super.onRightclick(baseMetaTileEntity, player, side, x, y, z);
         ItemStack dataStick = player.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) {
@@ -401,8 +392,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null || !(nbt.getString("type").equals(COPIED_DATA_IDENTIFIER))) return false;
-        if (!nbt.getString("dimension").equals(dimensionDef.getDimIdentifier())) return false;
+        if (nbt == null || !(nbt.getString("type")
+            .equals(COPIED_DATA_IDENTIFIER))) return false;
+        if (!nbt.getString("dimension")
+            .equals(dimensionDef.getDimIdentifier())) return false;
         this.selected.deserializeNBT(nbt.getCompoundTag("selected"));
         this.mBlacklist = nbt.getBoolean("blacklist");
         return true;
