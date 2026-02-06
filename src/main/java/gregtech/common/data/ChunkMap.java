@@ -81,7 +81,7 @@ public class ChunkMap<V> extends Long2ObjectOpenHashMap<V> {
         }
     }
 
-    private FastChunkEntrySet entrySet = new FastChunkEntrySet();
+    private FastChunkEntrySet entrySet;
 
     public FastEntrySet<V> chunkEntrySet() {
         if (entrySet == null) entrySet = new FastChunkEntrySet();
