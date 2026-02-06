@@ -82,9 +82,8 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     ? TextureFactory.of(
                         texSet.mTextures[PrefixTextureLinker.blockTexMap
                             .getOrDefault(texSet, (short) block.getTextureIndex())],
-                        werkstoff.getRGBA(),
-                        false)
-                    : TextureFactory.of(texSet.mTextures[block.getTextureIndex()], werkstoff.getRGBA(), false);
+                        werkstoff.getRGBA())
+                    : TextureFactory.of(texSet.mTextures[block.getTextureIndex()], werkstoff.getRGBA());
                 CoverRegistry.registerDecorativeCover(werkstoff.get(plate), texture);
 
                 return;
@@ -132,7 +131,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
 
             CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plate),
-                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA(), false));
+                TextureFactory.of(werkstoff.getTexSet().mTextures[71], werkstoff.getRGBA()));
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))
