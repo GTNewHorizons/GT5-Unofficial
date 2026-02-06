@@ -1597,7 +1597,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
 
             if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                if (!tMEHatch.canFillFluid()) continue;
+                if (!tMEHatch.canAcceptFluid()) continue;
             }
 
             int tAmount = tHatch.fill(copiedFluidStack, false);
@@ -1989,9 +1989,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                withPattern.setProcessingLogic(processingLogic);
+                if (this.processingLogic != null) {
+                    // processingLogic might be null, like a Space Elevator
+                    withPattern.setProcessingLogic(processingLogic);
+                }
             }
             return mDualInputHatches.add(hatch);
         }
@@ -2137,6 +2141,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                if (this.processingLogic != null) {
+                    // processingLogic might be null, like a Space Elevator
+                    withPattern.setProcessingLogic(processingLogic);
+                }
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
@@ -2792,7 +2802,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             for (MTEHatchOutputBusME busME : meBusses) {
                 // If the bus has reached its max capacity, it can't accept anything
-                if (!busME.canAcceptItem()) continue;
+                if (!busME.canAcceptAnyItem()) continue;
 
                 // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
                 // We don't care about bus ordering here because we're just checking if it's possible
@@ -2816,7 +2826,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
+                if (((MTEHatchOutputME) tHatch).canFillFluid()) {
                     return true;
                 }
             }
