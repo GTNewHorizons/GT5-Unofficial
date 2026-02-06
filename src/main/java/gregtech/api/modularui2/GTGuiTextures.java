@@ -2,6 +2,7 @@ package gregtech.api.modularui2;
 
 import static com.cleanroommc.modularui.drawable.UITexture.fullImage;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
+import static gregtech.api.enums.Mods.GTNHLanthanides;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static tectech.Reference.MODID;
@@ -1228,6 +1229,12 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ACCELERATOR = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_lhc_accelerator");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COLLIDER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_lhc_collider");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_mass_fabrication");
@@ -1267,6 +1274,50 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_STEAM = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_dehp_steam");
+
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ALPHA = fullImage(GTNHLanthanides.ID, "items/particle/alpha");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/electron");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRONNEUTRINO = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/electronneutrino");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ETA = fullImage(GTNHLanthanides.ID, "items/particle/eta");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_GRAVITON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/graviton");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_HIGGS = fullImage(GTNHLanthanides.ID, "items/particle/higgs");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_JPSI = fullImage(GTNHLanthanides.ID, "items/particle/jpsi");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_LAMBDA = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/lambda");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_MUON = fullImage(GTNHLanthanides.ID, "items/particle/muon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/muonneutrino");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_NEUTRON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/neutron");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_OMEGA = fullImage(GTNHLanthanides.ID, "items/particle/omega");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_PHOTON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/photon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_PROTON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/proton");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_TAU = fullImage(GTNHLanthanides.ID, "items/particle/tau");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_TAUNEUTRINO = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/tauneutrino");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_UPSILON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/upsilon");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_WBOSON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/wboson");
+    public static final UITexture OVERLAY_BUTTON_PARTICLE_ZBOSON = fullImage(
+        GTNHLanthanides.ID,
+        "items/particle/zboson");
 
     public static final UITexture OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE = fullImageColorableGT(
         "overlay_slot/overlay_coke_oven_fluid_slot_gauge");
