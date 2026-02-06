@@ -98,7 +98,6 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
                             if (toolStack != null) {
                                 builder.option()
                                     .label(new ItemDrawable(toolStack).asIcon())
-                                    // .label(IKey.lang("GT5U.gui.text.toolbox.slot_title." + slot.getSlotID()))
                                     .onClicked(onClick(inventorySlot, slot.getSlotID()))
                                     .done();
                                 count++;

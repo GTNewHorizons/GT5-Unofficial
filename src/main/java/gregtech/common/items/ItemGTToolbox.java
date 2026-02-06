@@ -440,7 +440,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     }
 
     //region Vanilla Tool Harvesting Methods
-    // TODO: Fix wirecutter not dropping block (probably needs to implement GTProxy on harvest/speed events)
     @Override
     public boolean canHarvestBlock(final Block block, final ItemStack toolbox) {
         return ToolboxUtil.getSelectedTool(toolbox).map(

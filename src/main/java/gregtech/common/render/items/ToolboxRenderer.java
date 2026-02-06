@@ -16,9 +16,6 @@ public class ToolboxRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(final ItemStack itemStack, final ItemRenderType type) {
-        // We need to be explicit with the tag checks. getInteger annoyingly returns 0 if the key is missing, and a
-        // value of 0 actually indicates that the wrench is equipped, while the tag being missing indicates that no tool
-        // is selected.
         return type == ItemRenderType.EQUIPPED_FIRST_PERSON && itemStack != null
             && itemStack.getItem() instanceof ItemGTToolbox
             && ToolboxUtil.getSelectedToolType(itemStack)
