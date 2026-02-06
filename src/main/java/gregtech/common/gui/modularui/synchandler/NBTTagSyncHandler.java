@@ -71,4 +71,10 @@ public class NBTTagSyncHandler extends ValueSyncHandler<NBTTagCompound> {
     public NBTTagCompound getValue() {
         return cache;
     }
+
+    @Override
+    public Class<NBTTagCompound> getValueType() {
+        return NBTTagCompound.class;
+    }
 }
+
