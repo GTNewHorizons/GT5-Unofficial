@@ -172,6 +172,9 @@ public class CellLoader implements IWerkstoffRunnable {
                             stOutputs.toArray(new ItemStack[0]),
                             null,
                             null,
+                            null,
+                            null,
+                            null,
                             new FluidStack[] { null },
                             new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                             (int) Math.max(
@@ -195,6 +198,9 @@ public class CellLoader implements IWerkstoffRunnable {
                         new GTRecipe(
                             new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
                             stOutputs.toArray(new ItemStack[0]),
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             new FluidStack[] { null },
