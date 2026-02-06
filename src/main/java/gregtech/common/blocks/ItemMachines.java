@@ -1,6 +1,5 @@
 package gregtech.common.blocks;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTUtility.formatStringSafe;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -44,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -91,31 +91,20 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
-                        final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_in",
-                                formatNumber(tTileEntity.getInputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(inputTier)));
+                            translateToLocal("gt.tileentity.eup_in") + " "
+                                + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_out",
-                                formatNumber(tTileEntity.getOutputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(outputTier)));
+                            translateToLocal("gt.tileentity.eup_out") + " "
+                                + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
-                                formatNumber(tTileEntity.getOutputAmperage())));
+                            translateToLocal("gt.tileentity.eup_amount") + " "
+                                + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            formatNumber(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
