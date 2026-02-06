@@ -626,8 +626,9 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
 
                 int insertable = Math.min((forced ? Integer.MAX_VALUE : getItemCapacity()) - getItemCount(), remaining);
 
-                if (!simulated) {
-                    if (ItemUtil.isStackEmpty(getItemStack())) {
+                    if (insertable <= 0) return remaining;
+
+                    if (getItemCount() <= 0) {
                         setItemStack(stack.toStack(0));
                     }
 
