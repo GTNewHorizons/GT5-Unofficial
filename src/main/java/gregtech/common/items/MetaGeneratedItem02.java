@@ -1789,7 +1789,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Food_Large_Sandwich_Steak.ID,
                 "Large Steak Sandwich",
-                "Yes, I once accidentially called it 'Steam Sandwich'",
+                "Yes, I once accidentally called it 'Steam Sandwich'",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
