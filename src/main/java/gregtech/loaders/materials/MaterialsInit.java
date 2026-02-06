@@ -2574,6 +2574,7 @@ public class MaterialsInit {
         Materials.Amber = loadAmber();
         Materials.Ammonium = loadAmmonium();
         Materials.Amordrine = loadAmordrine();
+        Materials.AncientDebris = loadAncientDebris();
         Materials.Andesite = loadAndesite();
         Materials.Ardite = loadArdite();
         Materials.Aredrite = loadAredrite();
@@ -2793,6 +2794,13 @@ public class MaterialsInit {
             .addOreItems()
             .addToolHeadItems()
             .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadAncientDebris() {
+        return new MaterialBuilder().setName("Debris")
+            .setDefaultLocalName("Ancient Debris")
+            .setARGB(0x351a0b)
             .constructMaterial();
     }
 
@@ -13681,9 +13689,10 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_DULL)
             .setColor(Dyes.dyePurple)
             .setARGB(0x00850080)
-            .setTool(346, 3, 8.0f)
+            .setTool(600000, 3, 8.0f)
             .addDustItems()
             .addMetalItems()
+            .addToolHeadItems()
             .addCell()
             .addGas()
             .setMeltingPoint(6_203)
@@ -13693,6 +13702,7 @@ public class MaterialsInit {
             .addMaterial(Materials.Silver, 3)
             .addMaterial(Materials.CallistoIce, 1)
             .addAspect(TCAspects.HUMANUS, 2)
+            .addSubTag(SubTag.SOFT)
             .removeOrePrefix(OrePrefixes.cell) // non molten cell is useless
             .constructMaterial()
             .setGasTemperature(12_406);
