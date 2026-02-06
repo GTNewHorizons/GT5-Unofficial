@@ -126,6 +126,7 @@ import gregtech.api.util.VoidProtectionHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
+import gregtech.client.volumetric.ISoundPosition;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -529,13 +530,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
-            doStructureValidation();
+            onStructureCheckFinished();
         }
         mStructureChanged = false;
         return mMachine;
     }
 
-    protected final void doStructureValidation() {
+    protected void onStructureCheckFinished() {
         structureErrors = EnumSet.noneOf(StructureError.class);
         structureErrorContext = new NBTTagCompound();
 
@@ -646,7 +647,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
         } else {
-            doActivitySound(getActivitySoundLoop());
+            startActivitySound();
         }
     }
 
@@ -907,14 +908,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @SideOnly(Side.CLIENT)
+    protected void restartActivitySound() {
+        if (activitySoundLoop != null) {
+            activitySoundLoop.stop();
+            activitySoundLoop = null;
+        }
+
+        startActivitySound();
+    }
+
+    /// Cleans up old sound loops and starts new ones if needed. Called once per tick.
+    @SideOnly(Side.CLIENT)
+    protected void startActivitySound() {
+        if (activitySoundLoop != null && activitySoundLoop.isDonePlaying()) {
+            activitySoundLoop = null;
+        }
+
+        doActivitySound(getActivitySoundLoop());
+    }
+
+    @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
-                activitySoundLoop = new GTSoundLoop(
-                    activitySound.resourceLocation,
-                    getBaseMetaTileEntity(),
-                    false,
-                    true);
+                activitySoundLoop = createSoundLoop(activitySound);
                 Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
@@ -925,6 +942,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 activitySoundLoop = null;
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected @NotNull GTSoundLoop createSoundLoop(SoundResource activitySound) {
+        return new GTSoundLoop(activitySound.resourceLocation, getBaseMetaTileEntity(), false, true)
+            .setPosition(getSoundPosition());
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected ISoundPosition getSoundPosition() {
+        return null;
     }
 
     /**
