@@ -65,9 +65,8 @@ import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput
-    implements IPowerChannelState, IMEConnectable, IDataCopyable, ICellContainer, IGridProxyable, IPriorityHost,
-    MTEHatchOutputMEBase.Environment<IAEFluidStack, MEFilterFluid, FluidStack> {
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
@@ -171,7 +170,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public boolean isEmptyAndAcceptsAnyFluid() {
-        return !provider.isFiltered() && !provider.shouldCheck();
+        return !provider.isFiltered() && !provider.getCheckMode();
     }
 
     BaseActionSource requestSource;
@@ -548,9 +547,5 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     public void dispatchMarkDirty() {
         this.markDirty();
-    }
-
-    public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
-        return provider;
     }
 }

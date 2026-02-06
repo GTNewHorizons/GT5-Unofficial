@@ -76,7 +76,7 @@ import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.block.BlockGodforgeGlass;

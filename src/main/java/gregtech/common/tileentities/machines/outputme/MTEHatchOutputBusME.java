@@ -64,9 +64,8 @@ import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputBusME extends MTEHatchOutputBus
-    implements IPowerChannelState, IMEConnectable, ICellContainer, IGridProxyable, IPriorityHost,
-    MTEHatchOutputMEBase.Environment<IAEItemStack, MEFilterItem, ItemStack> {
+public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEItemStack> {
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -215,7 +214,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         }
 
         public boolean canStore(GTUtility.ItemId id, ItemStack stack) {
-            if (provider.shouldCheck()) {
+            if (provider.getCheckMode()) {
                 return provider.canStore(stack, stack.stackSize + cache.get(id));
             }
             return hasAvailableSpace() && provider.getFilter()
@@ -609,9 +608,5 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     public void dispatchMarkDirty() {
         this.markDirty();
-    }
-
-    public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
-        return provider;
     }
 }
