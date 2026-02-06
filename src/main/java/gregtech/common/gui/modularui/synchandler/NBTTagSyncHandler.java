@@ -77,4 +77,3 @@ public class NBTTagSyncHandler extends ValueSyncHandler<NBTTagCompound> {
         return NBTTagCompound.class;
     }
 }
-
