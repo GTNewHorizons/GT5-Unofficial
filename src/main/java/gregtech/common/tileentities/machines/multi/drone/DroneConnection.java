@@ -94,8 +94,8 @@ public class DroneConnection {
         return cachedMachine;
     }
 
-    public Optional<MTEMultiBlockBase> getLinkedCentre() {
-        return Optional.ofNullable(cachedCentre);
+    public MTEMultiBlockBase getLinkedCentre() {
+        return cachedCentre;
     }
 
     public String getCustomName() {
@@ -216,7 +216,7 @@ public class DroneConnection {
         this.group = group;
     }
 
-    public Object getMachineWorld() {
+    public int getMachineWorld() {
         return machineWorld;
     }
 }

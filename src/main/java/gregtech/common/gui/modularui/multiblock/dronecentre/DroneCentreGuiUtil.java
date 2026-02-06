@@ -1,15 +1,19 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.api.MCHelper;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -29,6 +33,9 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import appeng.api.util.DimensionalCoord;
+import appeng.client.render.highlighter.BlockPosHighlighter;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.ProductionStatsSyncHandler;
@@ -47,22 +54,43 @@ public class DroneCentreGuiUtil {
         DroneCentreGuiUtil.TIME_OPTIONS.put(-1, "All");
     }
 
-    public static IWidget createHighLightButton(DroneConnection conn, PanelSyncManager syncManager) {
-        return new ButtonWidget<>().size(16)
+    public static IWidget createHighLightButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+        return new ButtonWidget<>().syncHandler(
+            dynamicSyncManager.getOrCreateSyncHandler(
+                "teleportPlayer" + conn.uuid.toString(),
+                InteractionSyncHandler.class,
+                () -> new InteractionSyncHandler().setOnMousePressed(var -> {
+                    EntityPlayer player = dynamicSyncManager.getPlayer();
+                    if (!NetworkUtils.isClient() && var.shift && conn.getLinkedCentre() instanceof MTEDroneCentre dc) {
+                        int level = dc.getDroneLevel();
+                        if (level < 4) {
+                            player.addChatMessage(new ChatComponentTranslation("GT5U.gui.chat.drone_level_low"));
+                            player.closeScreen();
+                            return;
+                        }
+                        DroneCentreGuiUtil.teleportPlayerToMachine(conn, player);
+                        player.closeScreen();
+                    } else if (NetworkUtils.isClient() && !var.shift) {
+                        ChunkCoordinates machineCoord = conn.getMachineCoord();
+                        DimensionalCoord blockPos = new DimensionalCoord(
+                            machineCoord.posX,
+                            machineCoord.posY,
+                            machineCoord.posZ,
+                            player.dimension);
+                        BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                        player.closeScreen();
+                    }
+                })))
+            .size(16)
             .background(GTGuiTextures.BUTTON_STANDARD)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_REDSTONE_ON)
-            .onMousePressed(mouseButton -> {
-                EntityPlayer player = syncManager.getPlayer();
-                MTEDroneCentre.highlightMachine(player, conn.getMachineCoord());
-                player.closeScreen();
-                return true;
-            })
             .tooltipBuilder(
                 t -> t.addLine(IKey.lang("GT5U.gui.button.drone_highlight"))
                     .addLine("x:" + conn.getMachineCoord().posX)
                     .addLine("y:" + conn.getMachineCoord().posY)
                     .addLine("z:" + conn.getMachineCoord().posZ)
-                    .addLine(IKey.lang("GT5U.infodata.dimension", conn.getMachineWorld())));
+                    .addLine(IKey.lang("GT5U.infodata.dimension", conn.getMachineWorld()))
+                    .addLine(IKey.lang("GT5U.gui.button.drone_teleport")));
     }
 
     public static ModularPanel createConnectionKeyPanel(PanelSyncManager syncManager, ModularPanel parent) {
@@ -125,6 +153,34 @@ public class DroneCentreGuiUtil {
         } else {
             return String.format(Locale.ROOT, "%.1f%c", formattedValue, unit);
         }
+    }
+
+    public static void teleportPlayerToMachine(DroneConnection connection, EntityPlayer player) {
+        IGregTechTileEntity igt = connection.getLinkedMachine()
+            .getBaseMetaTileEntity();
+        if (igt == null || !(player instanceof EntityPlayerMP playerMP)) return;
+        ChunkCoordinates machineCoord = connection.getMachineCoord();
+        int x = machineCoord.posX;
+        int y = machineCoord.posY;
+        int z = machineCoord.posZ;
+        int dim = connection.getMachineWorld();
+        ForgeDirection facing = igt.getFrontFacing();
+        double frontX = x + facing.offsetX + 0.5;
+        double frontY = y + facing.offsetY;
+        double frontZ = z + facing.offsetZ + 0.5;
+
+        double dx = (x + 0.5) - frontX;
+        double dy = (y + 0.5) - (frontY + playerMP.getEyeHeight());
+        double dz = (z + 0.5) - frontZ;
+
+        double d3 = Math.sqrt(dx * dx + dz * dz);
+        float yaw = (float) (Math.atan2(dz, dx) * 180.0D / Math.PI) - 90.0F;
+        float pitch = (float) (-(Math.atan2(dy, d3) * 180.0D / Math.PI));
+        if (playerMP.dimension != dim) {
+            playerMP.mcServer.getConfigurationManager()
+                .transferPlayerToDimension(playerMP, dim);
+        }
+        playerMP.playerNetServerHandler.setPlayerLocation(frontX, frontY, frontZ, yaw, pitch);
     }
 
     public static void syncDroneValues(PanelSyncManager syncManager, MTEDroneCentre multiblock) {

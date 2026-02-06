@@ -10,7 +10,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -41,8 +39,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import appeng.api.util.DimensionalCoord;
-import appeng.client.render.highlighter.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -407,6 +403,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         };
     }
 
+    public int getDroneLevel() {
+        return droneLevel;
+    }
+
     public Vec3Impl getCoords() {
         return centreCoord;
     }
@@ -499,16 +499,6 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTEDroneCentreGui(this);
-    }
-
-    // Just like HIGHLIGHT_INTERFACE (and exactly from it)
-    public static void highlightMachine(EntityPlayer player, ChunkCoordinates machineCoord) {
-        DimensionalCoord blockPos = new DimensionalCoord(
-            machineCoord.posX,
-            machineCoord.posY,
-            machineCoord.posZ,
-            player.dimension);
-        BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
     }
 
     public static HashMultimap<Integer, MTEDroneCentre> getCentreMap() {

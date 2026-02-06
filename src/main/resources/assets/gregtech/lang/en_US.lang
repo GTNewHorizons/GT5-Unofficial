@@ -1418,7 +1418,8 @@ GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.button.drone_setname=Set custom name for machine
-GT5U.gui.button.drone_highlight=Highlight machine in the world
+GT5U.gui.button.drone_highlight=Highlighting machine in the world
+GT5U.gui.button.drone_teleport=Press shift to teleport to the machine
 GT5U.gui.button.drone_open_list=Open Machine List
 GT5U.gui.button.drone_poweron_all=Turn on all machines in selected group
 GT5U.gui.button.drone_poweroff_all=Turn on all machines in selected group (Press Shift to disable machine control covers)
@@ -1780,6 +1781,7 @@ GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
 GT5U.gui.chat.bindcentre=Successfully bind drone centre.
+GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
 # chats
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
