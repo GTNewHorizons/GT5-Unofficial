@@ -27,7 +27,7 @@ public final class OreManager {
     private OreManager() {}
 
     private static final List<IOreAdapter<?>> ORE_ADAPTERS = ImmutableList
-        .of(GTOreAdapter.INSTANCE, GTPPOreAdapter.INSTANCE, BWOreAdapter.INSTANCE);
+        .of(GTOreAdapter.INSTANCE, GTPPOreAdapter.INSTANCE, BWOreAdapter.INSTANCE, UnificationOreAdapter.INSTANCE);
 
     public static OptionalBoolean isOre(Block block, int meta) {
         int size = ORE_ADAPTERS.size();
