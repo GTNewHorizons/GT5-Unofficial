@@ -1,9 +1,10 @@
 package gregtech.common.render.items;
 
+import gregtech.common.items.toolbox.ToolboxUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-import gregtech.common.items.ItemToolbox;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 
 /**
@@ -19,12 +20,9 @@ public class ToolboxRenderer implements IItemRenderer {
         // value of 0 actually indicates that the wrench is equipped, while the tag being missing indicates that no tool
         // is selected.
         return type == ItemRenderType.EQUIPPED_FIRST_PERSON && itemStack != null
-            && itemStack.getItem() instanceof ItemToolbox
-            && itemStack.hasTagCompound()
-            && itemStack.getTagCompound()
-                .hasKey(ItemToolbox.CURRENT_TOOL_NBT_KEY)
-            && itemStack.getTagCompound()
-                .getInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY) != ItemToolbox.NO_TOOL_SELECTED;
+            && itemStack.getItem() instanceof ItemGTToolbox
+            && ToolboxUtil.getSelectedToolType(itemStack)
+                .isPresent();
     }
 
     @Override
@@ -35,7 +33,7 @@ public class ToolboxRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack toolboxStack, final Object... data) {
-        ItemToolbox.getSelectedTool(toolboxStack)
+        ToolboxUtil.getSelectedTool(toolboxStack)
             .ifPresent(selectedTool -> META_TOOL_RENDERER.renderItem(type, selectedTool, data));
     }
 }

@@ -28,14 +28,15 @@ import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuBuilder;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuTheme;
-import gregtech.common.items.ItemToolbox;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxItemStackHandler;
 import gregtech.crossmod.backhand.Backhand;
 
 /**
  * GUI for selecting the active tool.
  * <p>
  * <b>NOTE:</b> This GUI may not always open depending on the situation that the toolbox finds itself in (e.g. only one
- * tool inside.) See {@link ItemToolbox#onMiddleClick(ItemStack, EntityPlayer)} for more information.
+ * tool inside.) See {@link ItemGTToolbox#onMiddleClick(ItemStack, EntityPlayer)} for more information.
  *
  * @see gregtech.common.gui.modularui.item.ToolboxInventoryGui
  */
@@ -76,7 +77,7 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
             final int inventorySlot = getToolboxSlot(data.getPlayer()).orElseThrow(
                 () -> new IllegalArgumentException("Tried to open the toolbox radial UI without equipping a toolbox"));
             final ItemStack toolbox = data.getPlayer().inventory.getStackInSlot(inventorySlot);
-            final ItemToolbox.ToolboxItemStackHandler itemHandler = new ItemToolbox.ToolboxItemStackHandler(toolbox);
+            final ToolboxItemStackHandler itemHandler = new ToolboxItemStackHandler(toolbox);
 
             final ModularPanel panel = ModularPanel.defaultPanel("ToolboxSelectUI");
             panel.fullScreenInvisible();
@@ -88,7 +89,7 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
                         builder.innerIcon(toolbox)
                             .option()
                             .label(IKey.lang("GT5U.gui.text.toolbox.radial.unselect"))
-                            .onClicked(onClick(inventorySlot, ItemToolbox.NO_TOOL_SELECTED))
+                            .onClicked(onClick(inventorySlot, ItemGTToolbox.NO_TOOL_SELECTED))
                             .done();
 
                         int count = 0;
@@ -143,7 +144,7 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
                 }
 
                 final ItemStack stack = player.inventory.getStackInSlot(slot);
-                if (stack != null && stack.getItem() instanceof ItemToolbox) {
+                if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
                     return Optional.of(slot);
                 }
             }

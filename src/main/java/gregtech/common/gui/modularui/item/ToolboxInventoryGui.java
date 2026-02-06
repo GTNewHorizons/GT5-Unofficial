@@ -29,7 +29,7 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.items.ItemToolbox;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.crossmod.backhand.Backhand;
 import ic2.api.item.IElectricItem;
 
@@ -65,10 +65,10 @@ public class ToolboxInventoryGui {
         final ItemStack offHandStack = Backhand.getOffhandItem(data.getPlayer());
         final ItemStack mainHandStack = data.getUsedItemStack();
 
-        if (offHandStack != null && offHandStack.getItem() instanceof ItemToolbox
+        if (offHandStack != null && offHandStack.getItem() instanceof ItemGTToolbox
             && Backhand.getOffhandSlot(data.getPlayer()) != -1) {
             usedSlot = Backhand.getOffhandSlot(data.getPlayer());
-        } else if (mainHandStack != null && mainHandStack.getItem() instanceof ItemToolbox) {
+        } else if (mainHandStack != null && mainHandStack.getItem() instanceof ItemGTToolbox) {
             usedSlot = data.getSlotIndex();
         } else {
             throw new RuntimeException("Tried to open the toolbox GUI with no toolbox in main hand or offhand");

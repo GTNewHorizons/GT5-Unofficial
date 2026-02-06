@@ -2406,7 +2406,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
         ItemList.ChaosLocator
             .set(new ItemChaosLocator("Item_Chaos_Locator", "Chaos Locator", "Warps to areas with extreme entropy"));
 
-        final ItemToolbox itemToolbox = new ItemToolbox(
+        final ItemGTToolbox itemToolbox = new ItemGTToolbox(
             "Item_Toolbox",
             "Field Engineer's Toolbox",
             "A container to hold your tools!");

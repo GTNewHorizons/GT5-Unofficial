@@ -15,7 +15,7 @@ import com.google.common.io.ByteArrayDataInput;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.ItemToolbox;
+import gregtech.common.items.ItemGTToolbox;
 import io.netty.buffer.ByteBuf;
 
 public class GTPacketToolboxEvent extends GTPacket {
@@ -30,7 +30,7 @@ public class GTPacketToolboxEvent extends GTPacket {
     }
 
     public GTPacketToolboxEvent(final Action action, int slot) {
-        this(action, slot, ItemToolbox.NO_TOOL_SELECTED);
+        this(action, slot, ItemGTToolbox.NO_TOOL_SELECTED);
     }
 
     public GTPacketToolboxEvent(final Action action, int slot, int optionalArgument) {
@@ -92,7 +92,7 @@ public class GTPacketToolboxEvent extends GTPacket {
             void execute(final EntityPlayerMP player, final ItemStack itemStack, int toolboxSlot, final int unused) {
                 final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound()
                     : new NBTTagCompound();
-                tag.setBoolean(ItemToolbox.TOOLBOX_OPEN_NBT_KEY, true);
+                tag.setBoolean(ItemGTToolbox.TOOLBOX_OPEN_NBT_KEY, true);
                 itemStack.setTagCompound(tag);
 
                 player.inventory.setInventorySlotContents(toolboxSlot, itemStack);
@@ -116,15 +116,15 @@ public class GTPacketToolboxEvent extends GTPacket {
                     : new NBTTagCompound();
                 boolean dirty = false;
 
-                if (selectedTool == ItemToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemToolbox.CURRENT_TOOL_NBT_KEY)) {
-                    tag.removeTag(ItemToolbox.CURRENT_TOOL_NBT_KEY);
+                if (selectedTool == ItemGTToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)) {
+                    tag.removeTag(ItemGTToolbox.CURRENT_TOOL_NBT_KEY);
                     dirty = true;
-                } else if (selectedTool != ItemToolbox.NO_TOOL_SELECTED && ToolboxSlot.slotIsTool(selectedTool)) {
-                    final int oldToolSelection = tag.hasKey(ItemToolbox.CURRENT_TOOL_NBT_KEY)
-                        ? tag.getInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY)
-                        : ItemToolbox.NO_TOOL_SELECTED;
+                } else if (selectedTool != ItemGTToolbox.NO_TOOL_SELECTED && ToolboxSlot.slotIsTool(selectedTool)) {
+                    final int oldToolSelection = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
+                        ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
+                        : ItemGTToolbox.NO_TOOL_SELECTED;
                     if (oldToolSelection != selectedTool) {
-                        tag.setInteger(ItemToolbox.CURRENT_TOOL_NBT_KEY, selectedTool);
+                        tag.setInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY, selectedTool);
                         dirty = true;
                     }
                 }
@@ -135,10 +135,10 @@ public class GTPacketToolboxEvent extends GTPacket {
 
                     GTUtility.sendSoundToPlayers(
                         player.worldObj,
-                        selectedTool == ItemToolbox.NO_TOOL_SELECTED ? SoundResource.GT_TOOLBOX_CLOSE
+                        selectedTool == ItemGTToolbox.NO_TOOL_SELECTED ? SoundResource.GT_TOOLBOX_CLOSE
                             : SoundResource.GT_TOOLBOX_DRAW,
                         1.0F,
-                        selectedTool == ItemToolbox.NO_TOOL_SELECTED ? 1
+                        selectedTool == ItemGTToolbox.NO_TOOL_SELECTED ? 1
                             : ThreadLocalRandom.current()
                                 .nextFloat() * 0.3F + 0.7F,
                         player.posX,

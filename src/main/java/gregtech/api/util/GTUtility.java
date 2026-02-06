@@ -62,6 +62,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import gregtech.common.items.toolbox.ToolboxUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -191,6 +192,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
@@ -2288,7 +2290,13 @@ public class GTUtility {
         if (aStack == null) {
             return false;
         }
-        return isStackInList(new GTItemStack(aStack), aList);
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            return ToolboxUtil.getSelectedTool(aStack)
+                .map(selected -> isStackInList(new GTItemStack(selected), aList))
+                .orElse(false);
+        } else {
+            return isStackInList(new GTItemStack(aStack), aList);
+        }
     }
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {

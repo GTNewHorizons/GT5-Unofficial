@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import gregtech.common.items.toolbox.ToolboxUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -67,6 +68,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
@@ -98,6 +100,7 @@ import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.misc.GTCapeCommand;
 import gregtech.common.misc.GTPowerfailCommandClient;
 import gregtech.common.pollution.Pollution;
@@ -683,6 +686,11 @@ public class GTClient extends GTProxy {
         if (player == null) return false;
         final ItemStack tCurrentItem = player.getCurrentEquippedItem();
         if (tCurrentItem == null) return false;
+        if (tCurrentItem.getItem() instanceof ItemGTToolbox && ToolboxUtil.getSelectedToolType(tCurrentItem)
+            .map(toolboxSlot -> toolboxSlot == ToolboxSlot.SOLDERING_IRON)
+            .orElse(false)) {
+            return true;
+        }
         final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
         for (int i : ids) {
             String oreName = OreDictionary.getOreName(i);

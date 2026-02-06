@@ -14,7 +14,7 @@ import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.GTHashSet;
 import gregtech.api.util.GTUtility;
-import gregtech.common.items.ItemToolbox;
+import gregtech.common.items.ItemGTToolbox;
 
 /**
  * Defines the various slots in the toolbox. Used both to enforce inventory restrictions as well assist with drawing
@@ -89,7 +89,7 @@ public enum ToolboxSlot {
             return false;
         }
 
-        if (stack.getItem() instanceof ItemToolbox) {
+        if (stack.getItem() instanceof ItemGTToolbox) {
             return false;
         }
 
