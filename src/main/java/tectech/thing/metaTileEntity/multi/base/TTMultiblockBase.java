@@ -1045,8 +1045,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
                                 }
 
-                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) { // progress increase
-                                                                                                   // and done
+                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                                     hatchesStatusUpdate_EM();
 
                                     outputAfterRecipe_EM();
