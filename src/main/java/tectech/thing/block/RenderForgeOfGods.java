@@ -7,6 +7,7 @@ import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.nio.FloatBuffer;
 
+import gregtech.common.GTClient;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -452,8 +453,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         // Based on system time to prevent tps issues from causing stutters
         // Need to look into different timing system to prevent stutters based on tps issues
         // But prevent bypassing the pause menu
-        long millis = System.currentTimeMillis() % (1000 * 36000);
-        float timer = millis / (50f); // to ticks
 
         forgeTile.incrementColors();
 
@@ -464,6 +463,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             this.cachedRingCount = forgeTile.getRingCount();
         }
 
+        float timer = GTClient.getAnimationRenderTicks();
         RenderEntireStar(forgeTile, x, y, z, timer);
         RenderRings(forgeTile, x, y, z, timer);
 
