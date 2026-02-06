@@ -61,7 +61,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTStructureUtility;
@@ -98,10 +97,6 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
     /** Motor tier of the Space Elevator */
     protected int motorTier = 0;
-
-    public List<MTEHatchInputBus> getElevatorInputBusses() {
-        return mInputBusses;
-    }
 
     public List<MTEHatchInput> getElevatorInputHatches() {
         return mInputHatches;

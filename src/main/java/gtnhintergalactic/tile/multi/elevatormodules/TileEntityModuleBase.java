@@ -283,7 +283,6 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
 
     public void connect(TileEntitySpaceElevator parent) {
         this.parent = parent;
-        this.parentInputBusses = parent.getElevatorInputBusses();
         isConnected = true;
     }
 

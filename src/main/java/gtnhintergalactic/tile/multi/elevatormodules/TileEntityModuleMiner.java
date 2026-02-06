@@ -323,12 +323,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             validatedInputs.add(controllerSlot);
         }
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
-        // merge items from module itself and base structure
-        List<MTEHatchInputBus> allInputBusses = new ArrayList<>();
-        if (mInputBusses != null) allInputBusses.addAll(mInputBusses);
-        if (parentInputBusses != null) allInputBusses.addAll(parentInputBusses);
 
-        for (MTEHatchInputBus inputBus : validMTEList(allInputBusses)) {
+        for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
             IGregTechTileEntity tileEntity = inputBus.getBaseMetaTileEntity();
             boolean isMEBus = inputBus instanceof MTEHatchInputBusME;
             boolean isLinkedBus = inputBus instanceof MTELinkedInputBus;
