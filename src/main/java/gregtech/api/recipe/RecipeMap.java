@@ -155,6 +155,7 @@ public final class RecipeMap<B extends RecipeMapBackend> implements IRecipeMap {
         return addFakeRecipe(
             aCheckForCollisions,
             new GTRecipe.GTRecipe_WithAlt(
+                false,
                 aInputs,
                 aOutputs,
                 aSpecial,
