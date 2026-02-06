@@ -22,8 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.google.common.collect.SetMultimap;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -65,15 +63,6 @@ import gregtech.common.covers.CoverPosition;
  */
 @SuppressWarnings("unused") // API class has legitimately unused methods and members
 public class GregTechAPI {
-
-    /**
-     * Fixes the HashMap Mappings for ItemStacks once the Server started <br>
-     * <br>
-     * NOTE: We use wildcards generics for the key because it could be for example {@link ItemStack} or
-     * {@link GTItemStack}
-     */
-    public static final Collection<Map<?, ?>> sItemStackMappings = new ArrayList<>();
-    public static final Collection<SetMultimap<GTItemStack, ?>> itemStackMultiMaps = new ArrayList<>();
 
     /**
      * The MetaTileEntity-ID-List-Length
@@ -204,11 +193,6 @@ public class GregTechAPI {
         mInputRF = false, mRFExplosions = false, mServerStarted = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
-
-    /**
-     * Option to not use MACHINE_METAL mixing into colors
-     */
-    public static boolean sUseMachineMetal = false;
 
     public static boolean mUseOnlyGoodSolderingMaterials = false;
 

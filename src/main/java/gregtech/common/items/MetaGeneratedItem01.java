@@ -163,6 +163,7 @@ import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_MV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_UV;
 import static gregtech.common.items.IDMetaItem01.Cover_SolarPanel_ZPM;
 import static gregtech.common.items.IDMetaItem01.Cover_WirelessController;
+import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_Debug;
 import static gregtech.common.items.IDMetaItem01.Cover_Wireless_Energy_LV;
 import static gregtech.common.items.IDMetaItem01.Duct_Tape;
 import static gregtech.common.items.IDMetaItem01.Electric_Motor_EV;
@@ -516,6 +517,7 @@ import gregtech.common.covers.CoverDoesWork;
 import gregtech.common.covers.CoverDrain;
 import gregtech.common.covers.CoverEUMeter;
 import gregtech.common.covers.CoverEnergyWireless;
+import gregtech.common.covers.CoverEnergyWirelessDebug;
 import gregtech.common.covers.CoverFluidLimiter;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverFluidStorageMonitor;
@@ -2989,6 +2991,12 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                             + ")"),
                     new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
         }
+        ItemList.Cover_Wireless_Energy_Debug.set(
+            addItem(
+                Cover_Wireless_Energy_Debug.ID,
+                "Debug Wireless Energy Cover",
+                "Infinite Power. Ignores Voltage Limitations.",
+                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 9999L)));
 
         ItemList.Cover_Screen.set(
             addItem(
@@ -4138,6 +4146,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 context -> new CoverEnergyWireless(context, (int) GTValues.V[tier]),
                 CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
         }
+
+        CoverRegistry.registerCover(
+            ItemList.Cover_Wireless_Energy_Debug.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[14][0], TextureFactory.of(Textures.BlockIcons.OVERLAY_ENERGY_IN_DEBUG)),
+            CoverEnergyWirelessDebug::new);
 
     }
 

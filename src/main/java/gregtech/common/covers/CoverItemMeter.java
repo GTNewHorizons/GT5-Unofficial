@@ -106,8 +106,9 @@ public class CoverItemMeter extends Cover {
         if (mte instanceof MTEDigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
-        } else if (mte instanceof MTEHatchOutputBusME) {
-            if (((MTEHatchOutputBusME) mte).canAcceptItem()) {
+        } else if (mte instanceof MTEHatchOutputBusME meoutputbus) {
+            // todo for cache mode
+            if (meoutputbus.canAcceptAnyItem()) {
                 max = 64;
                 used = 0;
             }
