@@ -2756,6 +2756,14 @@ GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1=§c2x§r EU Cost
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2=%s2x§r Speed
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercooler§r to utilize Eternity
 
+# Void Miner GUI
+GT5U.gui.text.vm.title=§nOre Voiding Selection
+GT5U.gui.text.vm.searchhint=Search by name
+GT5U.gui.button.vm.whitelist=Whitelist - Unselected ores will be §4voided
+GT5U.gui.button.vm.blacklist=Blacklist - Selected ores will be §4voided
+GT5U.gui.button.vm.select=Select all ores
+GT5U.gui.button.vm.deselect=Deselect all ores
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch

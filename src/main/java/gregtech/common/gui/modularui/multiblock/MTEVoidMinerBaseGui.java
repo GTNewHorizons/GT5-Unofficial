@@ -5,6 +5,7 @@ import bwcrossmod.galacticgreg.VoidMinerUtility;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -46,14 +47,15 @@ import net.minecraft.util.EnumChatFormatting;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 // TODO: improve visual clarity on buttons
-// TODO: add lang keys for everything because if ranzu gets on me about it im gonna be sad
-// TODO: update tooltips as well
 public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> {
 
     String search = "";
@@ -85,16 +87,25 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
 
         GTUtility.ItemId[] ores = sortOres(multiblock.dropMap);
         return new ModularPanel("gt:vm:filter").child(ButtonWidget.panelCloseButton())
-            .child(new Column().child(IKey.str(EnumChatFormatting.UNDERLINE + "Ore Voiding Selection").asWidget())
+            .child(new Column().child(IKey.lang("GT5U.gui.text.vm.title").asWidget())
                 .child(new Row()
                     .child(createOreToggleButtonGrid(syncManager, ores))
                     .child(createRightButtonColumn(listSyncer, ores))
                     .childPadding(3)
                     .crossAxisAlignment(Alignment.CrossAxis.START)
                     .coverChildren())
-                .child(new TextFieldWidget()
+                .child(new TextFieldWidget() {
+                    @Override
+                    public @NotNull Result onKeyPressed(char character, int keyCode) {
+                        Result result = super.onKeyPressed(character, keyCode);
+                        if (this.getValue() instanceof IStringValue<?> value) {
+                            value.setStringValue(getText());
+                        }
+                        return result;
+                    }
+                }
                     .value(new StringSyncValue(() -> search, str -> search = str))
-                    .hintText("Search by name")
+                    .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
                     .alignX(0f)
                     .width(100))
                 .childPadding(3)
@@ -113,7 +124,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                 ItemStack stack = ores[index].getItemStack();
                 if (!(stack.getItem() instanceof GTItemOre ore)) return new EmptyWidget();
                 return new ToggleButton()
-                    .value(new BoolValue.Dynamic(() -> ItemStack.areItemStacksEqual(stack, multiblock.selected.getStackInSlot(index)), bool -> {
+                    .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
                         if (bool) {
                             multiblock.selected.insertItem(index, stack, false);
                         } else multiblock.selected.extractItem(index, 1, false);
@@ -132,22 +143,22 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
         return new Column()
             .child(new ToggleButton()
                 .value(new BooleanSyncValue(() -> multiblock.mBlacklist, bool -> multiblock.mBlacklist = bool))
-                .tooltip(false, t -> t.add("Whitelist - Unselected ores will be voided"))
-                .tooltip(true, t -> t.add("Blacklist - Selected ores will be voided"))
+                .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.button.vm.whitelist")))
+                .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.button.vm.blacklist")))
                 .overlay(false, GTGuiTextures.OVERLAY_BUTTON_WHITELIST.asIcon().size(16))
                 .overlay(true, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST.asIcon().size(16)))
             .child(new ButtonWidget<>()
                 .onMousePressed(button -> {
                     for (int i = 0; i < ores.length; i++) {
-                        multiblock.selected.insertItem(i, ores[i].getItemStack(), false);
+                        multiblock.selected.setStackInSlot(i, ores[i].getItemStack());
                     }
                     syncer.setValue(multiblock.selected.getStacks());
                     return true;
                 })
-                .tooltip(t -> t.add("Select all ores"))
+                .tooltip(t -> t.add(translateToLocal("GT5U.gui.button.vm.select")))
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK.asIcon().size(16)))
             .child(new ButtonWidget<>()
-                .tooltip(t -> t.add("Deselect all ores"))
+                .tooltip(t -> t.add(translateToLocal("GT5U.gui.button.vm.deselect")))
                 .onMousePressed(button -> {
                     multiblock.selected = new ItemStackHandler(ores.length);
                     syncer.setValue(multiblock.selected.getStacks());
