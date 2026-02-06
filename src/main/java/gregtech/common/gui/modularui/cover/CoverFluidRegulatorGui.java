@@ -107,7 +107,9 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
         return Long.toString(
             (long) valiateTickRate(
                 MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
-                    .getResult()));
+                    .getResult()
+                    .getNumberValue()
+                    .doubleValue()));
     }
 
     /**
