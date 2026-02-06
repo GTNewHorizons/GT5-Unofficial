@@ -1,11 +1,10 @@
-package gregtech.client.textures.items;
+package gregtech.client.iconContainers.items;
 
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
@@ -18,12 +17,13 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.client.ResourceUtils;
 import gregtech.common.config.Gregtech;
 
-public class GTCustomItemIconContainer implements IIconContainer, Runnable {
+public class GTCustomItemIconContainer extends AbstractItemIconContainer implements Runnable {
 
     protected IIcon mIcon, mOverlay;
     protected String mIconName, mOverlayName;
     protected ResourceLocation iconResource, overlayResource;
 
+    // TODO: Change to package-private once API no longer extends this implementation
     protected GTCustomItemIconContainer(@NotNull String aIconName) {
         mIconName = aIconName.contains(":") ? aIconName : GregTech.resourceDomain + ":" + aIconName;
         iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
@@ -51,11 +51,6 @@ public class GTCustomItemIconContainer implements IIconContainer, Runnable {
     @Override
     public IIcon getOverlayIcon() {
         return mOverlay;
-    }
-
-    @Override
-    public ResourceLocation getTextureFile() {
-        return TextureMap.locationItemsTexture;
     }
 
     @Override

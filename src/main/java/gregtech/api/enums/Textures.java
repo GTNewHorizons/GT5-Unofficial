@@ -1,7 +1,5 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,18 +11,17 @@ import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.client.ResourceUtils;
-import gregtech.client.textures.blocks.GTCustomAlphaBlockIconContainer;
-import gregtech.client.textures.blocks.GTCustomBlockIconContainer;
-import gregtech.client.textures.blocks.GTCustomOptionalBlockIconContainer;
-import gregtech.client.textures.items.GTCustomItemIconContainer;
-import gregtech.common.config.Gregtech;
+import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTCustomAlphaBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTCustomBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTOptionalBlockIconContainer;
+import gregtech.client.iconContainers.items.GTCustomItemIconContainer;
+import gregtech.client.iconContainers.items.GTItemIconContainer;
 
 public class Textures {
 
@@ -84,7 +81,7 @@ public class Textures {
         }
     }
 
-    public enum BlockIcons implements IIconContainer, Runnable {
+    public enum BlockIcons implements IIconContainer {
 
         /**
          * @deprecated Use {@link GlobalIcons#VOID} instead
@@ -2505,8 +2502,6 @@ public class Textures {
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
-        IIcon mIcon;
-
         /**
          * @implNote The associated resource is mandatory, or it will be the ERROR TEXTURE when missing.
          */
@@ -2514,20 +2509,58 @@ public class Textures {
             this(false);
         }
 
-        final boolean optionalResource;
-        final String mIconName;
-        final ResourceLocation iconResource;
+        private final IIconContainer delegate;
 
         /**
          * @param optionalResource {@code true} if the Resource is optional
          * @implNote The resource may not be available, if it is optional it will use the VOID Icon.
          */
         BlockIcons(boolean optionalResource) {
-            this.optionalResource = optionalResource;
-            mIconName = GregTech.resourceDomain + ":" + ICONSETS + this;
-            iconResource = ResourceUtils.getCompleteBlockTextureResourceLocation(mIconName);
-            GregTechAPI.sGTBlockIconload.add(this);
-            if (Gregtech.debug.logRegisterIcons) GTLog.ico.println((optionalResource ? "O" : "R") + " " + iconResource);
+            delegate = optionalResource ? GTOptionalBlockIconContainer.create(this.toString())
+                : GTBlockIconContainer.create(this.toString());
+        }
+
+        /**
+         * @return The real delegated {@link IIconContainer}
+         */
+        public IIconContainer get() {
+            return delegate;
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @deprecated Use {@link #get()} to get the container, then call this method
+         * @implNote This delegates to the real implementation for syntactic sugar and backward compatibility
+         */
+        @Deprecated
+        @Override
+        public IIcon getIcon() {
+            return delegate.getIcon();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @deprecated Use {@link #get()} to get the container, then call this method
+         * @implNote This delegates to the real implementation for syntactic sugar and backward compatibility
+         */
+        @Deprecated
+        @Override
+        public IIcon getOverlayIcon() {
+            return delegate.getOverlayIcon();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @deprecated Use {@link #get()} to get the container, then call this method
+         * @implNote This delegates to the real implementation for syntactic sugar and backward compatibility
+         */
+        @Deprecated
+        @Override
+        public ResourceLocation getTextureFile() {
+            return delegate.getTextureFile();
         }
 
         public static ITexture getCasingTextureForId(int id) {
@@ -2583,29 +2616,6 @@ public class Textures {
             return GTCustomAlphaBlockIconContainer.create(aIconName);
         }
 
-        @Override
-        public IIcon getIcon() {
-            return mIcon;
-        }
-
-        @Override
-        public IIcon getOverlayIcon() {
-            return null;
-        }
-
-        @Override
-        public ResourceLocation getTextureFile() {
-            return TextureMap.locationBlocksTexture;
-        }
-
-        @Override
-        public void run() {
-            // Icons with a fallback are optional and later replaced with their fallback
-            mIcon = !optionalResource || ResourceUtils.resourceExists(iconResource)
-                ? GregTechAPI.sBlockIcons.registerIcon(mIconName)
-                : InvisibleIcon.INVISIBLE_ICON;
-        }
-
         /**
          * @deprecated Internal implementation detail. Will be removed in a future release.
          *             <p>
@@ -2630,7 +2640,7 @@ public class Textures {
         }
     }
 
-    public enum ItemIcons implements IIconContainer, Runnable {
+    public enum ItemIcons implements IIconContainer {
 
         /**
          * @deprecated Use {@link GlobalIcons#VOID} instead
@@ -2685,21 +2695,53 @@ public class Textures {
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(Textures.GlobalIcons.RENDERING_ERROR) };
 
-        IIcon mIcon, mOverlay;
-        final String mIconName;
-        final ResourceLocation iconResource, overlayResource;
-        final String mOverlayName;
+        private final IIconContainer delegate;
 
         ItemIcons() {
-            mIconName = GregTech.resourceDomain + ":" + ICONSETS + this;
-            iconResource = ResourceUtils.getCompleteItemTextureResourceLocation(mIconName);
-            mOverlayName = mIconName + _OVERLAY;
-            overlayResource = ResourceUtils.getCompleteItemTextureResourceLocation(mOverlayName);
-            GregTechAPI.sGTItemIconload.add(this);
-            if (Gregtech.debug.logRegisterIcons) {
-                GTLog.ico.println("R " + iconResource);
-                GTLog.ico.println("O " + overlayResource);
-            }
+            delegate = GTItemIconContainer.create(this.toString());
+        }
+
+        /**
+         * @return The real delegated {@link IIconContainer}
+         */
+        public IIconContainer get() {
+            return delegate;
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @deprecated Use {@link #get()} to get the container, then call this method
+         * @implNote This delegates to the real implementation for syntactic sugar and backward compatibility
+         */
+        @Deprecated
+        @Override
+        public IIcon getIcon() {
+            return delegate.getIcon();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @deprecated Use {@link #get()} to get the container, then call this method
+         * @implNote This delegates to the real implementation for syntactic sugar and backward compatibility
+         */
+        @Deprecated
+        @Override
+        public IIcon getOverlayIcon() {
+            return delegate.getOverlayIcon();
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @deprecated Use {@link #get()} to get the container, then call this method
+         * @implNote This delegates to the real implementation for syntactic sugar and backward compatibility
+         */
+        @Deprecated
+        @Override
+        public ResourceLocation getTextureFile() {
+            return delegate.getTextureFile();
         }
 
         /**
@@ -2714,35 +2756,6 @@ public class Textures {
          */
         public static @NotNull IIconContainer custom(@NotNull String aIconName) {
             return GTCustomItemIconContainer.create(aIconName);
-        }
-
-        @Override
-        public IIcon getIcon() {
-            return mIcon;
-        }
-
-        @Override
-        public IIcon getOverlayIcon() {
-            return mOverlay;
-        }
-
-        @Override
-        public ResourceLocation getTextureFile() {
-            return TextureMap.locationItemsTexture;
-        }
-
-        @Override
-        public void run() {
-            final boolean iconExists = ResourceUtils.resourceExists(iconResource);
-            final boolean overlayExists = ResourceUtils.resourceExists(overlayResource);
-            if (iconExists || overlayExists) {
-                mIcon = iconExists ? GregTechAPI.sItemIcons.registerIcon(mIconName) : InvisibleIcon.INVISIBLE_ICON;
-                mOverlay = overlayExists ? GregTechAPI.sItemIcons.registerIcon(mOverlayName)
-                    : InvisibleIcon.INVISIBLE_ICON;
-            } else {
-                mIcon = InvisibleIcon.INVISIBLE_ICON;
-                mOverlay = Textures.GlobalIcons.RENDERING_ERROR.getOverlayIcon();
-            }
         }
 
         /**

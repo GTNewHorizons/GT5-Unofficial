@@ -1,4 +1,4 @@
-package gregtech.client.textures.blocks;
+package gregtech.client.iconContainers.blocks;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.IIconContainer;
 
-public class GTCustomAlphaBlockIconContainer extends GTCustomBlockIconContainer {
+public class GTCustomAlphaBlockIconContainer extends GTCustomOptionalBlockIconContainer {
 
     GTCustomAlphaBlockIconContainer(@NotNull String aIconName) {
         super(aIconName);
