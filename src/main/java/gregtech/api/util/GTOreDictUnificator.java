@@ -51,11 +51,6 @@ public class GTOreDictUnificator {
     private static int isRegisteringOre = 0, isAddingOre = 0;
     private static boolean mRunThroughTheList = true;
 
-    static {
-        GregTechAPI.sItemStackMappings.add(sItemStack2DataMap);
-        GregTechAPI.sItemStackMappings.add(sUnificationTable);
-    }
-
     /**
      * The Blacklist just prevents the Item from being unificated into something else. Useful if you have things like
      * the Industrial Diamond, which is better than regular Diamond, but also usable in absolutely all Diamond Recipes.
