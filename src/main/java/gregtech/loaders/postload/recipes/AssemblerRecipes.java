@@ -549,6 +549,7 @@ public class AssemblerRecipes implements Runnable {
                     .eut(TierEU.RECIPE_UMV)
                     .addTo(assemblerRecipes);
             }
+
         }
 
         // If Cleanroom is enabled, add an assembler recipe
