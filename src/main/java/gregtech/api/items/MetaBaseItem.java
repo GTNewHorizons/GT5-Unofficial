@@ -37,6 +37,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -231,11 +232,13 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GTLanguageManager.getTranslation(tKey)
-            .split("/n ");
-        for (String tString : tStrings)
-            if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
+        if (Client.tooltip.showFormula) {
+            String tKey = getUnlocalizedName(aStack) + ".tooltip";
+            String[] tStrings = GTLanguageManager.getTranslation(tKey)
+                .split("/n ");
+            for (String tString : tStrings)
+                if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
+        }
 
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
