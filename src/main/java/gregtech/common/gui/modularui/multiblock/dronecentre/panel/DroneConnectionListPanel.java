@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.multiblock.dronecentre.panel;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
@@ -17,7 +15,6 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext;
@@ -289,7 +286,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                             .size(16)
                             .tooltipBuilder(
                                 var -> DroneCentreGuiUtil.getTooltipFromItemSafely(var, connection.getMachineItem())))
-                        .child(DroneCentreGuiUtil.createHighLightButton(connection, syncManager))
+                        .child(DroneCentreGuiUtil.createHighLightButton(connection, dynamicSyncManager))
                         .child(createTextButton(connection, droneConnectionListSyncHandler, dynamicSyncManager))
                         .child(
                             createPowerControlButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
@@ -324,14 +321,11 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .filter(c -> c.uuid.equals(conn.uuid))
                     .findFirst()
                     .ifPresent(con -> con.setGroup(bool ? centre.getActiveGroup() : 0))));
-        IDrawable shape = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/slice_shape")
-            .asIcon()
-            .size(8);
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
             .background(IDrawable.EMPTY)
-            .overlay(true, shape, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
-            .overlay(false, shape);
+            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
     }
 
     private IWidget createTextButton(DroneConnection conn,
