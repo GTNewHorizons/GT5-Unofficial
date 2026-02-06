@@ -33,18 +33,24 @@ public class BasicBlock extends BlockContainer {
 
     public enum BlockTypes {
 
-        STANDARD("blockBlock", "pickaxe", soundTypeMetal),
-        FRAME("blockFrameGt", "wrench", soundTypeMetal),
-        ORE("blockStone", "pickaxe", soundTypeStone);
+        STANDARD("blockBlock", "pickaxe", soundTypeMetal, "Block of %s"),
+        FRAME("blockFrameGt", "wrench", soundTypeMetal, "%s Frame Box"),
+        ORE("blockStone", "pickaxe", soundTypeStone, "%s Ore [Old]");
 
         private final String TEXTURE_NAME;
         private final String HARVEST_TOOL;
         private final SoundType soundOfBlock;
+        private final String properName;
 
-        BlockTypes(final String textureName, final String harvestTool, final SoundType blockSound) {
+        public String getProperName() {
+            return properName;
+        }
+
+        BlockTypes(final String textureName, final String harvestTool, final SoundType blockSound, String properName) {
             this.TEXTURE_NAME = textureName;
             this.HARVEST_TOOL = harvestTool;
             this.soundOfBlock = blockSound;
+            this.properName = properName;
         }
 
         public String getTexture() {

@@ -21,6 +21,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 
 /**
@@ -238,13 +239,15 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (getDamage(aStack) < 0 || getDamage(aStack) >= 32000) return;
-        Materials material = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
-        if (material == null) return;
-        String flavorText = material.getFlavorText();
-        if (flavorText == null) return;
-        if (!flavorText.isEmpty()) {
-            aList.add("§8§o" + flavorText);
+        if (Client.tooltip.showFlavorText) {
+            if (getDamage(aStack) < 0 || getDamage(aStack) >= 32000) return;
+            Materials material = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
+            if (material == null) return;
+            String flavorText = material.getFlavorText();
+            if (flavorText == null) return;
+            if (!flavorText.isEmpty()) {
+                aList.add("§8§o" + flavorText);
+            }
         }
     }
 }
