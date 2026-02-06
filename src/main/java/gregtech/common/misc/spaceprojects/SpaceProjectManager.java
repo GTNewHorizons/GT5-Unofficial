@@ -236,7 +236,6 @@ public class SpaceProjectManager {
         spaceProjects.put(project.getProjectName(), project);
         RecipeMaps.spaceProjectFakeRecipes.add(
             new FakeSpaceProjectRecipe(
-                false,
                 project.getTotalItemsCost(),
                 project.getTotalFluidsCost(),
                 project.getProjectBuildTime(),

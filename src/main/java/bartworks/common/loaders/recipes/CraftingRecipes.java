@@ -10,7 +10,6 @@ import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UIV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UMV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.BioVat;
 import static gregtech.api.enums.MetaTileEntityIDs.LESU;
 import static gregtech.api.enums.MetaTileEntityIDs.ManualTrafo;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_HV;
@@ -26,7 +25,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.loaders.RecipeLoader;
-import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTELESU;
 import bartworks.common.tileentities.multis.MTEManualTrafo;
 import bartworks.common.tileentities.multis.MTEWindmill;
@@ -382,7 +380,7 @@ public class CraftingRecipes implements Runnable {
                 ItemList.Sensor_LuV.get(1L), 'P', WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 1), });
 
         GTModHandler.addCraftingRecipe(
-            new MTEBioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name")).getStackForm(1L),
+            ItemRegistry.vat.copy(),
             RecipeLoader.BITSD,
             new Object[] { "GCG", "KHK", "GCG", 'G', new ItemStack(ItemRegistry.bw_glasses[0], 1, 1), 'C',
                 "circuit" + Materials.EV, 'K', GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Silver, 1L), 'H',

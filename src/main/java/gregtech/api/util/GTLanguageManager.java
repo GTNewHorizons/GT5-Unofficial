@@ -271,7 +271,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
         // NOTE: the below key is used in HydroEnergy, take care to fix it there when this line is removed
-        addStringLocalization("Interaction_DESCRIPTION_Index_142", "Running perfectly.");
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
         addStringLocalization("Interaction_DESCRIPTION_Index_145", "Step Down, In: ");

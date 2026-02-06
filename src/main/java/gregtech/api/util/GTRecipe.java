@@ -231,40 +231,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
-        if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> stacks = new ArrayList<>(aInputs.length + aOutputs.length);
-            for (final ItemStack s : aInputs) if (s != null) stacks.add(s);
-            for (final ItemStack s : aOutputs) if (s != null) stacks.add(s);
-
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) {
-                if (aDuration / i >= 16) {
-                    boolean temp = true;
-                    // noinspection ForLoopReplaceableByForEach
-                    for (int j = 0, size = stacks.size(); j < size; j++) {
-                        if (stacks.get(j).stackSize % i != 0) {
-                            temp = false;
-                            break;
-                        }
-                    }
-                    if (temp) for (final FluidStack f : aFluidInputs) if (f.amount % i != 0) {
-                        temp = false;
-                        break;
-                    }
-                    if (temp) for (final FluidStack f : aFluidOutputs) if (f.amount % i != 0) {
-                        temp = false;
-                        break;
-                    }
-                    if (temp) {
-                        // noinspection ForLoopReplaceableByForEach
-                        for (int j = 0, size = stacks.size(); j < size; j++) stacks.get(j).stackSize /= i;
-                        for (final FluidStack f : aFluidInputs) f.amount /= i;
-                        for (final FluidStack f : aFluidOutputs) f.amount /= i;
-                        aDuration /= i;
-                    }
-                }
-            }
-        }
-
         mInputs = aInputs;
         mOutputs = aOutputs;
         mSpecialItems = aSpecialItems;
@@ -286,7 +252,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
         int aSpecialValue, int aType) {
         this(
-            true,
             new ItemStack[] { aInput1 },
             new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
             null,
@@ -1359,7 +1324,6 @@ public class GTRecipe implements Comparable<GTRecipe> {
             FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
             ItemStack[][] aAlt) {
             super(
-                aOptimize,
                 aInputs,
                 aOutputs,
                 aSpecialItems,

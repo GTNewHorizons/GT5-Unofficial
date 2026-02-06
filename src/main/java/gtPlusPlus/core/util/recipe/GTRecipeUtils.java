@@ -38,7 +38,6 @@ public class GTRecipeUtils {
                 }
             }
             GTRecipe newRecipe = new GTRecipe(
-                false,
                 itemInputsWithoutProgrammableCircuit.toArray(new ItemStack[0]),
                 recipeInput.mOutputs,
                 recipeInput.mSpecialItems,
@@ -84,7 +83,6 @@ public class GTRecipeUtils {
             }
 
             GTRecipe finalRecipe = new GTRecipe(
-                filteredRecipe.mCanBeBuffered,
                 finalInputs,
                 filteredRecipe.mOutputs,
                 filteredRecipe.mSpecialItems,

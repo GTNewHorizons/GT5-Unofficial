@@ -225,8 +225,17 @@ public class VoidProtectionHelper {
      */
     private int calculateMaxFluidParallels() {
         List<? extends IFluidStore> hatches = machine.getFluidOutputSlots(fluidOutputs);
-        if (hatches.size() < fluidOutputs.length) {
-            return 0;
+        // TODO: Temporary Fix, need to refactor it.
+        int size = hatches.size();
+        if (size < fluidOutputs.length) {
+            boolean hasMe = false;
+            for (IFluidStore hatch : hatches) {
+                if (hatch instanceof MTEHatchOutputME) {
+                    hasMe = true;
+                    break;
+                }
+            }
+            if (!hasMe) return 0;
         }
 
         // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
