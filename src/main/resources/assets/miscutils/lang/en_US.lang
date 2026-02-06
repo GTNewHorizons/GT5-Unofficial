@@ -4035,10 +4035,6 @@ gtpp.tooltip.wireless_charger.3=§aLocal Mode§7: Can supply 2A to each player w
 gtpp.tooltip.wireless_charger.4=§aMixed Mode§7: Can supply 1A up to %,dm away and more 1A within %,dm.
 
 #gtpp info data
-gtpp.infodata.multi_block.total_time=Total Time Since Built: %s Weeks, %s Days,
-gtpp.infodata.multi_block.total_time.0=%s Hours, %s Minutes, %s Seconds.
-gtpp.infodata.multi_block.total_time.in_ticks=Total Time in ticks: %s
-gtpp.infodata.multi_block.recipes_done=Recipes Finished: %s
 gtpp.infodata.tesseract_generator.name=Tesseract Generator
 gtpp.infodata.tesseract_generator.frequency=Frequency: %d
 gtpp.infodata.tesseract_generator.status.active=Active

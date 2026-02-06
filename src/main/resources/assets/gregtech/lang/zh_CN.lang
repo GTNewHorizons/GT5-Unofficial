@@ -219,13 +219,13 @@ GT5U.hatch.infiniteCache.false=ME输出总线离线超过2秒后将停止接收�
 GT5U.hatch.additionalConnection.true=可从任意方向连入ME网络
 GT5U.hatch.additionalConnection.false=仅可从正面连入ME网络
 
-GT5U.multiblock.pollution=污染减少到
-GT5U.multiblock.energy=存储能量
-GT5U.multiblock.Progress=工作时间
-GT5U.multiblock.efficiency=效率
-GT5U.multiblock.problems=问题
-GT5U.multiblock.mei=最大输入
-GT5U.multiblock.usage=大概功率
+GT5U.multiblock.pollution=污染减少到: §a%s§r%%
+GT5U.multiblock.energy=存储能量: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.Progress=工作时间: §a%s §rs / §e%s §rs
+GT5U.multiblock.efficiency=效率: §e%s§r%%
+GT5U.multiblock.problems=问题: §c%s
+GT5U.multiblock.mei=最大输入: §e%s §rEU/t (*2A) Tier: §e%s
+GT5U.multiblock.usage=大概功率: §c%s §rEU/t
 GT5U.multiblock.runningMode=§e运行模式：
 
 # NEI recipe handlers
@@ -1052,15 +1052,6 @@ GTPP.machines.tier=等级
 GTPP.machines.input=输入
 GTPP.machines.output=输出
 
-GTPP.multiblock.pollutionreduced=减少污染至
-GTPP.multiblock.pollution=污染
-GTPP.multiblock.energy=能量存储
-GTPP.multiblock.progress=进程
-GTPP.multiblock.efficiency=效率
-GTPP.multiblock.problems=维护问题
-GTPP.multiblock.mei=最大能量输入
-GTPP.multiblock.usage=NEI功率
-GTPP.multiblock.generation=可能生成
 GTPP.multiblock.specialvalue=特殊值
 GTPP.multiblock.duration=NEI时间
 
@@ -1068,7 +1059,6 @@ GTPP.multiblock.duration=NEI时间
 
 GTPP.CC.machinetier=控制核心等级
 GTPP.CC.discount=EU损耗
-GTPP.CC.parallel=最大并行
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=在Baubles的腰带栏内使用
