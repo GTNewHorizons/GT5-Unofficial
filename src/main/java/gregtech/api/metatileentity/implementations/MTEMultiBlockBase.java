@@ -530,13 +530,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
-            doStructureValidation();
+            onStructureCheckFinished();
         }
         mStructureChanged = false;
         return mMachine;
     }
 
-    protected final void doStructureValidation() {
+    protected void onStructureCheckFinished() {
         structureErrors = EnumSet.noneOf(StructureError.class);
         structureErrorContext = new NBTTagCompound();
 

@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import javax.annotation.Nonnegative;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -178,41 +180,14 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    @Override
-    public NBTTagCompound getDescriptionData() {
-        NBTTagCompound tag = super.getDescriptionData();
-
-        if (tag == null) tag = new NBTTagCompound();
-
-        tag.setFloat("centerX", center.x);
-        tag.setFloat("centerY", center.y);
-        tag.setFloat("centerZ", center.z);
-        tag.setInteger("radius", structureRadius);
-
-        return tag;
-    }
-
-    @Override
-    public void onDescriptionPacket(NBTTagCompound data) {
-        super.onDescriptionPacket(data);
-
-        int oldRadius = structureRadius;
-
-        center.set(data.getFloat("centerX"), data.getFloat("centerY"), data.getFloat("centerZ"));
-        structureRadius = data.getInteger("radius");
-
-        if (oldRadius != structureRadius && getBaseMetaTileEntity().isClientSide()) {
-            restartActivitySound();
-        }
-    }
-
     @Nullable
     public Vector3f getCenter() {
         return center;
     }
 
     /// Gets the approximate radius of this multi in blocks.
-    public final int getApproximateRadius() {
+    @Nonnegative
+    public int getApproximateRadius() {
         return structureRadius;
     }
 
@@ -234,23 +209,24 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     @Override
-    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
-        centerWalker.start();
+    protected void onStructureCheckFinished() {
+        super.onStructureCheckFinished();
 
-        boolean success = super.checkStructure(aForceReset, aBaseMetaTileEntity);
+        StructureSize size = centerWalker.finish();
 
-        StructureSize size = centerWalker.stop();
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (size != null) {
             this.center.set(size.centerX, size.centerY, size.centerZ);
             this.structureRadius = size.radius;
+        } else {
+            this.center.set(igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
+            this.structureRadius = 1;
         }
 
-        if (success) {
-            aBaseMetaTileEntity.issueTileUpdate();
+        if (mMachine) {
+            igte.issueTileUpdate();
         }
-
-        return success;
     }
 
     /**
@@ -510,7 +486,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
     @Override
     public NBTTagCompound getDescriptionData() {
-        NBTTagCompound data = new NBTTagCompound();
+        NBTTagCompound data = super.getDescriptionData();
+
+        if (data == null) data = new NBTTagCompound();
+
+        data.setFloat("centerX", center.x);
+        data.setFloat("centerY", center.y);
+        data.setFloat("centerZ", center.z);
+        data.setInteger("radius", structureRadius);
+
         data.setByte(
             "eRotation",
             (byte) mExtendedFacing.getRotation()
@@ -525,6 +509,15 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     @Override
     @SideOnly(Side.CLIENT)
     public void onDescriptionPacket(NBTTagCompound data) {
+        int oldRadius = structureRadius;
+
+        center.set(data.getFloat("centerX"), data.getFloat("centerY"), data.getFloat("centerZ"));
+        structureRadius = data.getInteger("radius");
+
+        if (oldRadius != structureRadius) {
+            restartActivitySound();
+        }
+
         mExtendedFacing = ExtendedFacing.of(
             getBaseMetaTileEntity().getFrontFacing(),
             Rotation.byIndex(data.getByte("eRotation")),
@@ -544,11 +537,13 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
 
         private StructureSize size;
 
-        public void start() {
-            size = new StructureSize();
-        }
+        public StructureSize finish() {
+            // When `size` is null, for whatever reason the piece method was never called, which never called [#visit].
+            // We'll just fall back to the default behaviour in this case - play the sound at the center with the
+            // default radius.
+            // This usually happens when a multi has its own structure check logic.
+            if (this.size == null) return null;
 
-        public StructureSize stop() {
             size.centerX = (size.minX + size.maxX) * 0.5f;
             size.centerY = (size.minY + size.maxY) * 0.5f;
             size.centerZ = (size.minZ + size.maxZ) * 0.5f;
@@ -561,6 +556,10 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         @Override
         public boolean visit(IStructureElement<MTEEnhancedMultiBlockBase<T>> element, World world, int x, int y, int z,
             int a, int b, int c) {
+            if (size == null) {
+                size = new StructureSize();
+            }
+
             size.minX = Math.min(size.minX, x);
             size.minY = Math.min(size.minY, y);
             size.minZ = Math.min(size.minZ, z);
