@@ -350,7 +350,7 @@ public class ProductionPanel extends ModularPanel {
         return createStatsGrid(
             fluidList,
             4,
-            fluidStack -> new FluidDisplayWidget().fluid(fluidStack)
+            fluidStack -> new FluidDisplayWidget().value(fluidStack)
                 .displayAmount(false)
                 .size(16)
                 .tooltipBuilder(builder -> builder.addFromFluid(fluidStack)));
