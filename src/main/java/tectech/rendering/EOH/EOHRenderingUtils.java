@@ -19,7 +19,20 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public abstract class EOHRenderingUtils {
 
-    public static void renderStar(IItemRenderer.ItemRenderType type, Color color, float partialTicks,
+    private static final Color EOHStarColour = new Color(1.0f, 0.4f, 0.05f, 1.0f);
+
+    public static void renderEOHStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
+        renderStar(type, EOHStarColour, partialTicks, starRadius);
+    }
+
+    // Used for GORGE item renderer only.
+    private static final Color GORGEStarColour = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    public static void renderGORGEStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
+        renderStar(type, GORGEStarColour, partialTicks, starRadius);
+    }
+
+    private static void renderStar(IItemRenderer.ItemRenderType type, Color color, float partialTicks,
         double starRadius) {
         GL11.glPushMatrix();
 
@@ -38,20 +51,7 @@ public abstract class EOHRenderingUtils {
         GL11.glPopMatrix();
     }
 
-    private static final Color EOHStarColour = new Color(1.0f, 0.4f, 0.05f, 1.0f);
-
-    public static void renderEOHStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
-        renderStar(type, EOHStarColour, partialTicks, starRadius);
-    }
-
-    // Used for GORGE item renderer only.
-    private static final Color GORGEStarColour = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-    public static void renderGORGEStar(IItemRenderer.ItemRenderType type, float partialTicks, double starRadius) {
-        renderStar(type, GORGEStarColour, partialTicks, starRadius);
-    }
-
-    public static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
+    private static void renderStarLayer(int layer, ResourceLocation texture, Color color, float alpha,
         float partialTicks, double starRadius) {
 
         if (layer >= 3) throw new IllegalArgumentException("Star rendering only supports three layers.");
@@ -227,6 +227,7 @@ public abstract class EOHRenderingUtils {
         endRenderingBlocksInWorld();
     }
 
+    // This is for rendering the weird effect on the EOH star field shell, where you can only see it from the inside.
     private static void renderTessellatedSphereWithInvertedNormals(int slices, int stacks, double radiusInBlocks) {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
 
@@ -363,42 +364,13 @@ public abstract class EOHRenderingUtils {
         GL11.glColor4f(1, 1, 1, 1);
 
         // Render the sphere object itself dynamically.
-        int radius = 74;
-        int lod = computeSphereLOD(playerDistance, radius);
-        renderTessellatedSphereWithInvertedNormals(lod, lod, radius);
+        renderTessellatedSphereWithInvertedNormals(64, 64, 74);
 
         // Finish animation.
         GL11.glPopMatrix();
 
         // Restore previous OpenGL state.
         GL11.glPopAttrib();
-    }
-
-    private static int computeSphereLOD(double distance, double radius) {
-
-        // Start reducing once player is near the surface
-        final double lodStart = radius * 0.75;
-        final double lodEnd = radius * 10.0;
-
-        double t = (distance - lodStart) / (lodEnd - lodStart);
-        t = Math.max(0.0, Math.min(1.0, t));
-
-        int max = 192;
-        int min = 32;
-
-        double curve = t * t;
-        int raw = (int) (max - (max - min) * curve);
-
-        return quantizeLOD(raw);
-    }
-
-    private static int quantizeLOD(int lod) {
-
-        if (lod >= 160) return 192;
-        if (lod >= 112) return 128;
-        if (lod >= 80) return 96;
-        if (lod >= 48) return 64;
-        return 32;
     }
 
 }
