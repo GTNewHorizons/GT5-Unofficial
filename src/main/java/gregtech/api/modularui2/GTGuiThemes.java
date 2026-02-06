@@ -16,15 +16,12 @@ public final class GTGuiThemes {
         .panel(GTTextureIds.BACKGROUND_STANDARD)
         .itemSlot(GTTextureIds.SLOT_ITEM_STANDARD)
         .fluidSlot(GTTextureIds.SLOT_FLUID_STANDARD)
-        .color(Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.GUI_METAL.toInt())
         .textColor(0x404040)
         .textField(Dyes.dyeWhite.toInt())
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0x404040)
         .button(GTTextureIds.BUTTON_STANDARD)
-        .simpleToggleButton(
-            GTTextureIds.BUTTON_STANDARD,
-            GTTextureIds.BUTTON_STANDARD_PRESSED,
-            Dyes.MACHINE_METAL.toInt())
+        .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, Dyes.GUI_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STANDARD)
         .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_STANDARD)
         .themedOverlayItemSlot(

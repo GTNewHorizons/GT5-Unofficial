@@ -40,7 +40,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.9.6:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.1:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.3.25-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.35-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.20:dev")
     api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-793-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.48-gtnh:dev")
@@ -78,6 +78,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.22-GTNH:dev")
+    compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.9-GTNH:dev") { transitive = false }
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.13-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.3:dev") { transitive = false }

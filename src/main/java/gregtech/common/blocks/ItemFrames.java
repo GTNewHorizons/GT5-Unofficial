@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gregtech.common.config.Client;
 
 public class ItemFrames extends ItemBlock {
 
@@ -50,7 +51,9 @@ public class ItemFrames extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        aList.add(GTLanguageManager.getTranslation("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
+        if (Client.tooltip.showFormula) {
+            aList.add(GTLanguageManager.getTranslation("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
+        }
         aList.add(GTLanguageManager.getTranslation("gt.blockmachines.gt_frame.desc.format"));
     }
 
