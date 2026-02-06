@@ -77,7 +77,7 @@ public class MTEIndustrialCokeOven extends GTPPMultiBlockBase<MTEIndustrialCokeO
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front middle at bottom")
             .addCasingInfoMin("Structural Coke Oven Casings", 8, false)
-            .addCasingInfoMin("Heat Resistant/Proof Coke Oven Casings", 8, false)
+            .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casings", 8, false)
             .addInputBus("Any Structural Coke Oven Casing", 1)
             .addOutputBus("Any Structural Coke Oven Casing", 1)
             .addInputHatch("Any Structural Coke Oven Casing", 1)

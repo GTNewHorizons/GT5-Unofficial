@@ -130,6 +130,16 @@ public class CommonWidgets {
                     return selectedItem.getItemDamage() - 1;
                 }
                 return -1;
+            }, index -> {
+                if (index != -1) {
+                    baseMachine.setInventorySlotContents(
+                        circuitEnabled.getCircuitSlot(),
+                        gregtech.api.util.GTUtility.getAllIntegratedCircuits()
+                            .get(index)
+                            .copy());
+                } else {
+                    baseMachine.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
+                }
             });
             syncManager.syncValue("selector_screen_selected", selectedSyncHandler);
             return new GhostCircuitSlotWidget(baseMachine, syncManager)

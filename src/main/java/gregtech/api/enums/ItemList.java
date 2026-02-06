@@ -779,6 +779,10 @@ public enum ItemList implements IItemContainer {
     Machine_HP_Compressor,
     Machine_HP_AlloySmelter,
 
+    Machine_LV_DrawerFramer,
+    Machine_MV_DrawerFramer,
+    Machine_HV_DrawerFramer,
+
     Hull_Bronze,
     Hull_HP,
     Hull_Bronze_Bricks,

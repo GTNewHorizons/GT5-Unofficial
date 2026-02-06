@@ -275,7 +275,6 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                             ItemStack aPotentialOutput = GTModHandler
                                 .getRecyclerOutput(GTUtility.copyAmount(1, item), 0);
                             GTRecipe recipe = new GTRecipe(
-                                false,
                                 new ItemStack[] { GTUtility.copyAmount(1, item) },
                                 aPotentialOutput == null ? null : new ItemStack[] { aPotentialOutput },
                                 null,
