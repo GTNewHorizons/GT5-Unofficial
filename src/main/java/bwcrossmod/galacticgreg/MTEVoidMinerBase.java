@@ -13,6 +13,7 @@
 
 package bwcrossmod.galacticgreg;
 
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.common.gui.modularui.multiblock.MTEVoidMinerBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import net.minecraft.client.resources.I18n;
@@ -73,7 +75,9 @@ import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtneioreplugin.util.DimensionHelper;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, IDataCopyable {
+
+    public static final String COPIED_DATA_IDENTIFIER = "voidMiner";
 
     private ModDimensionDef dimensionDef;
     private boolean canVoidMine = true;
@@ -164,9 +168,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Miner")
-            .addInfo("Consumes " + GTValues.V[this.getMinTier()] + "EU/t")
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType("Miner, VM")
+            .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
             .addInfo(
                 "Can be supplied with " + EnumChatFormatting.AQUA
                     + "2 L/s"
@@ -180,17 +184,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             .addInfo(createGasString(EnumChatFormatting.BLUE, "Oganesson", 64))
             .addInfo(
                 "Will output " + 2 * this.TIER_MULTIPLIER
-                    + " Ores per Second depending on the Dimension it is build in")
-
-            .addInfo("Put the Ore into the input bus to set the Whitelist/Blacklist")
-            .addInfo("Use a screwdriver to toggle Whitelist/Blacklist")
-            .addInfo("You can enable batch mode with wire cutters." + EnumChatFormatting.BLUE + " 16x Time 16x Output")
+                    + " Ores per Second depending on the Dimension it is built in")
+            .addInfo("Ores selected in the Controller UI or added to an Input Bus are")
+            .addInfo("added to the Whitelist/Blacklist")
+            .addInfo("Use the Controller UI or a screwdriver to toggle Whitelist/Blacklist")
             .addInfo(
-                "Blacklist or non Whitelist Ore will be " + EnumChatFormatting.DARK_RED
-                    + "VOIDED"
-                    + EnumChatFormatting.RESET
-                    + ".")
-            .toolTipFinisher();
+                "Blacklisted or non Whitelisted Ore will be " + EnumChatFormatting.DARK_RED
+                    + "VOIDED")
+            .addInfo("Can copy/paste Ore filter configuration with a " + EnumChatFormatting.GREEN + "Data Stick");
         return tt;
     }
 
@@ -383,17 +384,24 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         player.addChatMessage(new ChatComponentTranslation("GT5U.gui.text.data_stick.saved"));
     }
 
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
+    }
+
+    @Override
     public NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", "voidminer");
+        tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setString("dimension", dimensionDef.getDimIdentifier());
         tag.setTag("selected", selected.serializeNBT());
         tag.setBoolean("blacklist", mBlacklist);
         return tag;
     }
 
+    @Override
     public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null || !(nbt.getString("type").equals("voidminer"))) return false;
+        if (nbt == null || !(nbt.getString("type").equals(COPIED_DATA_IDENTIFIER))) return false;
         if (!nbt.getString("dimension").equals(dimensionDef.getDimIdentifier())) return false;
         this.selected.deserializeNBT(nbt.getCompoundTag("selected"));
         this.mBlacklist = nbt.getBoolean("blacklist");

@@ -170,7 +170,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                     new Rectangle().setColor(Color.rgb(0, 255, 0)).asIcon().size(16),
                     oreDrawable);
             } else {
-                return new DrawableStack(new Rectangle().setColor(Color.argb(128, 128, 128, 128)), oreDrawable);
+                return new DrawableStack(new Rectangle().setColor(Color.argb(128, 128, 128, 0)), oreDrawable);
             }
         });
     }
