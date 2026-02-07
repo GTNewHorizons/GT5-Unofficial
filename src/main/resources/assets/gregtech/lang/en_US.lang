@@ -102,7 +102,6 @@ gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)
 
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
-gt.blackholerenderer.name=Black Hole Renderer
 gt.block.longdistancepipe.name=Long Distance Pipeline Pipe
 gt.blockcasings.cyclotron_coils.name=Solenoid Superconductor Coil
 gt.blockcasings.name=Machine Casing
@@ -137,12 +136,14 @@ gt.blockores.name=Ore
 gt.blockreinforced.name=Reinforced Block
 gt.blockstones.name=Stone
 gt.blocktintedglass.name=Tinted Industrial Glass
+gt.blackholerenderer.name=Black Hole Renderer
+gt.dronerenderer.name=Drone Renderer
+gt.nanoforgerenderer.name=Nano Forge Renderer
 gt.wormholerenderer.name=Wormhole Renderer
 item.gt.comb.name=Comb
 item.gt.drop.name=Drop
 item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
-tile.gt.dronerender.name=Drone Renderer
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Stored Heat: %s
