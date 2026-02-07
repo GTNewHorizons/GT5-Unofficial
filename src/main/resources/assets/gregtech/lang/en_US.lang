@@ -1424,6 +1424,7 @@ GT5U.gui.button.drone_name=Sort by §3name
 GT5U.gui.button.drone_distance=Sort by §3distance
 GT5U.gui.button.drone_status=Sort by §3shutdown status
 GT5U.gui.button.drone_searchoriname=Also search original name
+GT5U.gui.button.drone_select_group=Click here to add/remove machine
 GT5U.gui.button.drone_production=Open production panel
 GT5U.gui.button.drone_editmode=Group edit mode
 GT5U.gui.button.drone_pause.1=Auto update connection list
