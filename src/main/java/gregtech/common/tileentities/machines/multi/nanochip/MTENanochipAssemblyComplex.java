@@ -233,6 +233,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(translateToLocal("GT5U.tooltip.nac.main.machine_type"))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.action", TOOLTIP_CCs))
+            .addInfo(translateToLocal("GT5U.tooltip.nac.main.logo"))
             .addSeparator()
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.1", TOOLTIP_CCs, VC_HATCHES))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.2", TOOLTIP_CCs, TOOLTIP_COLORED))
