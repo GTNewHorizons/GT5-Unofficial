@@ -131,7 +131,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createChartButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler chartPanel = syncManager.panel("chart", (a, b) -> openChartPanel(syncManager, parent), true);
+        IPanelHandler chartPanel = syncManager.syncedPanel("chart", true,(a, b) -> openChartPanel(syncManager, parent));
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!chartPanel.isPanelOpen()) {
                 chartPanel.openPanel();
@@ -234,7 +234,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createHeatMapButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler heatMapPanel = syncManager
-            .panel("heatMap", (a, b) -> openHeatMapPanel(syncManager, parent), true);
+            .syncedPanel("heatMap", true,(a, b) -> openHeatMapPanel(syncManager, parent));
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!heatMapPanel.isPanelOpen()) {
                 heatMapPanel.openPanel();
@@ -315,7 +315,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         boolean isGridCenter = gridX == gridChunkRadius && gridY == gridChunkRadius;
 
         if (ampsAtChunk == null) {
-            return isGridCenter ? new Rectangle().setColor(Color.BLACK.main)
+            return isGridCenter ? new Rectangle().color(Color.BLACK.main)
                 .asIcon()
                 .size(gridSquareSize) : IDrawable.EMPTY;
         }
@@ -337,7 +337,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             color = Color.RED.main;
         }
 
-        return new Rectangle().setColor(color)
+        return new Rectangle().color(color)
             .asIcon()
             .size(gridSquareSize);
     }

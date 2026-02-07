@@ -58,10 +58,9 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager.panel(
-            "statsPanel",
-            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
-            true);
+        IPanelHandler statsPanel = syncManager.syncedPanel(
+            "statsPanel", true,
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
@@ -118,7 +117,7 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
 
     protected IWidget createConfigButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler turbinePanel = syncManager // calls the panel itself.
-            .panel("turbinePanel", (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent), true);
+            .syncedPanel("turbinePanel", true, (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
             .marginTop(4)
             .overlay(GuiTextures.GEAR)
