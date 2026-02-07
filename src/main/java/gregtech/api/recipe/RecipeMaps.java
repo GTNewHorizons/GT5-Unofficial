@@ -856,8 +856,13 @@ public final class RecipeMaps {
 
             int aDustAmount;
             int[] baseChances = new int[] { 10000, 10000, 10000 };
-            if (builder.getChances() != null) {
-                System.arraycopy(builder.getChances(), 0, baseChances, 0, min(2, builder.getChances().length));
+            if (builder.getOutputChances() != null) {
+                System.arraycopy(
+                    builder.getOutputChances(),
+                    0,
+                    baseChances,
+                    0,
+                    min(2, builder.getOutputChances().length));
             }
 
             int[] coalChances = baseChances.clone();
@@ -874,11 +879,11 @@ public final class RecipeMaps {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
                     .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
-                    .setChances(coalChances);
+                    .setOutputChances(coalChances);
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
                     .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
-                    .setChances(coalChances);
+                    .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
             if (Railcraft.isModLoaded()) {
@@ -895,7 +900,7 @@ public final class RecipeMaps {
                     .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCokeAmount))
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
                     .setDuration(aDuration * 2 / 3)
-                    .setChances(cokeChances);
+                    .setOutputChances(cokeChances);
             }
             long aCactusSugarCokeAmount = aCoalAmount * 2L;
             int[] cactusSugarCokeChances = baseChances.clone();
@@ -914,12 +919,12 @@ public final class RecipeMaps {
                 .setInputs(aInput1, aInput2, cactusCoke)
                 .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
                 .setDuration(aDuration * 2 / 3)
-                .setChances(cactusSugarCokeChances);
+                .setOutputChances(cactusSugarCokeChances);
             coll.derive()
                 .setInputs(aInput1, aInput2, sugarCoke)
                 .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
                 .setDuration(aDuration * 2 / 3)
-                .setChances(cactusSugarCokeChances);
+                .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
                 && (aOutput1 == null || aOutput1.stackSize <= 6)
                 && (aOutput2 == null || aOutput2.stackSize <= 6)) {

@@ -47,7 +47,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
                 .sizeRel(1)
                 .padding(borderRadius)
                 .child(createContentHolderRow(panel, syncManager))
-                .childIf(machine.supportsInventoryRow(), createInventoryRow(panel, syncManager)));
+                .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
     }
 
     protected void registerSyncValues(PanelSyncManager syncManager) {
@@ -98,8 +98,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return new ParentWidget<>().sizeRel(1)
-            .childIf(this.supportsLeftCornerFlow(), createLeftCornerFlow(panel, syncManager))
-            .childIf(this.supportsRightCornerFlow(), createRightCornerFlow(panel, syncManager));
+            .childIf(this.supportsLeftCornerFlow(), () -> createLeftCornerFlow(panel, syncManager))
+            .childIf(this.supportsRightCornerFlow(), () -> createRightCornerFlow(panel, syncManager));
     }
 
     protected int getContentRowWidth() {
@@ -136,7 +136,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .align(Alignment.BottomRight)
             .paddingRight(4);
 
-        cornerFlow.childIf(this.doesAddGregTechLogo(), this.createLogo());
+        cornerFlow.childIf(this.doesAddGregTechLogo(), () -> this.createLogo());
 
         return cornerFlow;
     }
@@ -155,7 +155,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .alignX(0)
             .childIf(
                 machine.doesBindPlayerInventory(),
-                SlotGroupWidget.playerInventory(false)
+                () -> SlotGroupWidget.playerInventory(false)
                     .marginLeft(4)
                     .marginRight(2))
             .child(createInventoryCornerColumn(panel, syncManager));
@@ -167,9 +167,9 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .anchorBottom(0)
             .mainAxisAlignment(Alignment.MainAxis.END)
             .reverseLayout(true)
-            .childIf(this.doesAddSpecialSlot(), this.createSpecialSlot())
+            .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
             .child(this.createPowerSwitchButton())
-            .childIf(this.doesAddCircuitSlot(), this.createCircuitSlot(syncManager));
+            .childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
     }
 
     protected boolean doesAddSpecialSlot() {
