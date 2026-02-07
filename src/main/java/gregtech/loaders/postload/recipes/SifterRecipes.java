@@ -11,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -31,7 +32,7 @@ public class SifterRecipes implements Runnable {
                 new ItemStack(Items.flint, 1, 0))
             .outputChances(10000, 9000, 8000, 6000, 3300, 2500)
             .duration(30 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
@@ -45,7 +46,7 @@ public class SifterRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
             .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
             .duration(30 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(sifterRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.ElectronicsLump.get(1))
@@ -55,7 +56,7 @@ public class SifterRecipes implements Runnable {
                 getModItem(EnderIO.ID, "itemPowerConduit", 1L, 0))
             .outputChances(25 * 100, 25 * 100, 25 * 100)
             .duration(30 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(sifterRecipes);
     }
 }

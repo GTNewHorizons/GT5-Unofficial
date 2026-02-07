@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -41,7 +42,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L))
             .duration(10)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -76,7 +77,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(25 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
@@ -94,7 +95,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
 
         OrePrefixes prefix = aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedCentrifuged : OrePrefixes.dust;

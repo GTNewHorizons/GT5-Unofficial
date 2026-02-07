@@ -8,6 +8,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -40,7 +41,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             .itemInputs(GTUtility.copyAmount(1, aStack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
