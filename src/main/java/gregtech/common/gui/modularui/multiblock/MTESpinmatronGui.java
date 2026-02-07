@@ -120,7 +120,6 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
         IPanelHandler turbinePanel = syncManager // calls the panel itself.
             .syncedPanel("turbinePanel", true, (p_syncManager, syncHandler) -> openTurbinePanel(p_syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
-            .marginTop(4)
             .overlay(GuiTextures.GEAR)
             .onMousePressed(d -> {
                 if (!turbinePanel.isPanelOpen()) {

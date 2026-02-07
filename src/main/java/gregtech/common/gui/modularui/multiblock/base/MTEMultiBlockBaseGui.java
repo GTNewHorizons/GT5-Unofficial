@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -640,6 +642,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return Flow.row()
             .mainAxisAlignment(MainAxis.END)
+            .crossAxisAlignment(Alignment.CrossAxis.CENTER)
             .reverseLayout(true)
             .align(Alignment.CenterRight)
             .coverChildrenWidth()
@@ -920,7 +923,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             true,
             (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
-            .marginTop(4)
             .marginLeft(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
@@ -1173,10 +1175,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     protected void registerSyncValues(PanelSyncManager syncManager) {
         syncManager.syncValue(
             "errors",
-            new GenericSyncValue<>(
-                multiblock::getStructureErrors,
-                multiblock::setStructureErrors,
-                new StructureErrorAdapter()));
+            GenericSyncValue.<EnumSet<StructureError>>rawTypeBuilder(EnumSet.class)
+                .getter(multiblock::getStructureErrors)
+                .setter(multiblock::setStructureErrors)
+                .adapter(new StructureErrorAdapter())
+                .build());
         syncManager
             .syncValue("errorID", new IntSyncValue(multiblock::getErrorDisplayID, multiblock::setErrorDisplayID));
         syncManager.syncValue(
@@ -1216,10 +1219,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             () -> (multiblock.getTotalRunTime() - multiblock.getLastWorkingTick()) / 20);
         syncManager.syncValue("shutdownDuration", shutdownDurationSyncer);
 
-        GenericSyncValue<ShutDownReason> shutdownReasonSyncer = new GenericSyncValue<ShutDownReason>(
-            baseMetaTileEntity::getLastShutDownReason,
-            baseMetaTileEntity::setShutDownReason,
-            new ShutdownReasonAdapter());
+        GenericSyncValue<ShutDownReason> shutdownReasonSyncer = GenericSyncValue.builder(ShutDownReason.class)
+            .getter(baseMetaTileEntity::getLastShutDownReason)
+            .setter(baseMetaTileEntity::setShutDownReason)
+            .adapter(new ShutdownReasonAdapter())
+            .build();
         syncManager.syncValue("shutdownReason", shutdownReasonSyncer);
 
         syncManager.syncValue(
@@ -1236,10 +1240,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     .getKey()));
         syncManager.syncValue(
             "checkRecipeResult",
-            new GenericSyncValue<>(
-                multiblock::getCheckRecipeResult,
-                multiblock::setCheckRecipeResult,
-                new CheckRecipeResultAdapter()));
+            GenericSyncValue.builder(CheckRecipeResult.class)
+                .getter(multiblock::getCheckRecipeResult)
+                .setter(multiblock::setCheckRecipeResult)
+                .adapter(new CheckRecipeResultAdapter())
+                .build());
         syncManager.syncValue(
             "fluidOutput",
             new GenericListSyncHandler<FluidStack>(
