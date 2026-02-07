@@ -1,4 +1,4 @@
-package gregtech.common.gui;
+package gregtech.common.gui.modularui.hatch;
 
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
