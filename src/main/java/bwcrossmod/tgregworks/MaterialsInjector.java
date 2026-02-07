@@ -71,7 +71,12 @@ public class MaterialsInjector {
     private static void setConfigProps(Materials m) {
         if (TGregworks.config.get(Config.Category.Enable, m.mName, true)
             .getBoolean(true)) {
+            int matID = TGregworks.registry.getMaterialID(m);
+
             TGregworks.registry.toolMaterials.add(m);
+            TGregworks.registry.matIDs.put(m, matID);
+            TGregworks.registry.materialIDMap.put(matID, m);
+
             Property configProp = TGregworks.config
                 .get(Config.onMaterial(Config.MaterialID), m.mName, 0, null, 0, 100000);
             TGregworks.registry.configProps.put(m, configProp);
