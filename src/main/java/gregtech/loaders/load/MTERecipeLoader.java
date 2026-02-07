@@ -2,7 +2,6 @@ package gregtech.loaders.load;
 
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.Gendustry;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
@@ -3456,24 +3455,6 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { " S ", "CMC", "RRR", 'M', ItemList.Hatch_Maintenance, 'S', ItemList.Sensor_IV, 'R',
                 new ItemStack(GregTechAPI.sBlockReinforced, 1, 9), 'C', ItemList.Conveyor_Module_EV });
-
-        // And Drone Centre
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_Assembler.get(1),
-                ItemList.Cover_SolarPanel_HV.get(4),
-                ItemList.Conveyor_Module_IV.get(2),
-                ItemList.Robot_Arm_IV.get(2),
-                ItemList.Sensor_IV.get(2),
-                ItemList.Energy_LapotronicOrb.get(4),
-                ItemList.Cover_WirelessNeedsMaintainance.get(1),
-                GalacticraftCore.isModLoaded() ? GTModHandler.getModItem(GalacticraftCore.ID, "item.basicItem", 1, 19)
-                    : ItemList.Sensor_EV.get(4))
-            .itemOutputs(ItemList.Machine_Multi_DroneCentre.get(1L))
-            .fluidInputs(Materials.GlueAdvanced.getFluid(8_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
 
         GTModHandler.addCraftingRecipe(
             ItemList.MagLevPython_MV.get(1L),

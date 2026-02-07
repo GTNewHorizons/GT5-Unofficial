@@ -43,6 +43,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.client.render.BlockPosHighlighter;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.net.PacketTeleportPlayer;
 import gregtech.common.covers.CoverPosition;
@@ -336,9 +337,7 @@ public class RedstoneSnifferGui {
                                         new ButtonWidget<>().size(25, 25)
                                             .align(Alignment.Center)
                                             .overlay(
-                                                UITexture
-                                                    .fullImage(GregTech.ID, "gui/overlay_button/redstoneSnifferLocate")
-                                                    .asIcon()
+                                                GTGuiTextures.OVERLAY_BUTTON_REDSTONESNIFFERLOCATE.asIcon()
                                                     .size(19, 19)
                                                     .margin(3))
                                             .tooltip(
