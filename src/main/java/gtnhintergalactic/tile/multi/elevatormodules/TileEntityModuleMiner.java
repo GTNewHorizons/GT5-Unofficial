@@ -204,7 +204,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     /** Asteroid outpost that the player can additionally build */
     protected ProjectAsteroidOutpost asteroidOutpost;
-
     /** Flag if the module has a whitelist to generate ores, else it will use a blacklist */
     public boolean isWhitelisted = false;
     /** List for ore generation. Can either be a white- or blacklist */
@@ -475,7 +474,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
-        int distance = (int) parameterMap.get(DISTANCE_PARAMETER)
+
+        boolean cycling = (boolean) parameterMap.get(CYCLE_PARAMETER).getValue();
+        String distanceKey = cycling ? CYCLE_DISTANCE_PARAMETER : DISTANCE_PARAMETER;
+        int distance = (int) parameterMap.get(distanceKey)
             .getValue();
         int availDroneMask = getAvailDroneMask(inputs);
         currentDroneMask = availDroneMask;
@@ -798,42 +800,27 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
      * Cycle the current distance according to parameters
      */
     protected void cycleDistance() {
-        if ((Boolean) parameterMap.get(CYCLE_PARAMETER)
-            .getValue()) {
+        boolean shouldCycle = (Boolean) parameterMap.get(CYCLE_PARAMETER)
+            .getValue();
+        int distance = (Integer) parameterMap.get(DISTANCE_PARAMETER)
+            .getValue();
+        int cycleDistance = (Integer) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
+            .getValue();
+        int step = (Integer) parameterMap.get(STEP_PARAMETER)
+            .getValue();
+        int range = (Integer) parameterMap.get(RANGE_PARAMETER)
+            .getValue();
+        if (shouldCycle) {
             // cycle distanceDisplay from (distance - range)
             // to (distance + range) in increments of step.
-            if ((Integer) parameterMap.get(CYCLE_DISTANCE_PARAMETER)
-                .getValue()
-                + (Integer) parameterMap.get(STEP_PARAMETER)
-                    .getValue()
-                <= Math.min(
-                    MAX_DISTANCE,
-                    (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                        .getValue()
-                        + (Integer) parameterMap.get(RANGE_PARAMETER)
-                            .getValue())) {
-                ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(
-                    (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                        .getValue()
-                        + (Integer) parameterMap.get(STEP_PARAMETER)
-                            .getValue());
+            if (cycleDistance + step <= Math.min(MAX_DISTANCE, distance + range)) {
+                ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(cycleDistance + step);
             } else {
-                ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(
-                    Math.max(
-                        0,
-                        (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                            .getValue()
-                            - (Integer) parameterMap.get(RANGE_PARAMETER)
-                                .getValue()));
+                ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER)).setValue(Math.max(0, distance - range));
             }
         } else {
-            ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER)).setValue(
-                (int) Math.min(
-                    MAX_DISTANCE,
-                    Math.max(
-                        0,
-                        (Integer) parameterMap.get(DISTANCE_PARAMETER)
-                            .getValue())));
+            ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
+                .setValue((int) Math.min(MAX_DISTANCE, Math.max(0, distance)));
         }
     }
 
