@@ -149,7 +149,7 @@ public class StarCosmeticsPanel {
 
         // Text fields
         miscColumn.child(createMiscTextFieldRow(SyncValues.STAR_ROTATION_SPEED, "spin", 100, hypervisor));
-        miscColumn.child(createMiscTextFieldRow(SyncValues.STAR_SIZE, "size", 40, hypervisor));
+        miscColumn.child(createMiscTextFieldRow(SyncValues.STAR_SIZE, "size", 72, hypervisor));
 
         // Animation toggle
         BooleanSyncValue rendererDisabledSyncer = SyncValues.RENDERER_DISABLED
