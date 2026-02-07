@@ -268,7 +268,7 @@ public class ScannerHelper {
                 if (resultList.isEmpty()) return;
 
                 list.add(addTitle("title_machine_info"));
-                list.addAll(Arrays.asList(info.getInfoData()));
+                list.addAll(resultList);
             }
         } catch (Exception e) {
             list.add(EnumChatFormatting.RED + trans("error_machine_info"));

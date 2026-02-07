@@ -2248,13 +2248,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             info.add(GTUtility.translate("GT5U.multiblock.owned_by", te.getOwnerName()));
 
-            if (getBaseMetaTileEntity().getMetaTileEntity() == null) {
-                info.add(
-                    GTUtility.translate("GT5U.multiblock.meta_tile_entity", te.getMetaTileEntity()) + " "
-                        + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.valid"
-                        : "GT5U.multiblock.invalid")
-                        + " "
-                        + GTUtility.translate("GT5U.multiblock.is_meta_tile_entity"));
+            if (te.getMetaTileEntity() != null) {
+                info.add(GTUtility.translate("GT5U.multiblock.meta_tile_entity", te.getMetaTileID())
+                    + " "
+                    + GTUtility.translate(te.canAccessData() ? "GT5U.multiblock.valid" : "GT5U.multiblock.invalid"));
+            } else {
+                info.add(GTUtility.translate("GT5U.multiblock.is_meta_tile_entity"));
             }
         }
 
