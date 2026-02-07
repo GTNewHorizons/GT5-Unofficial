@@ -38,6 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -77,8 +78,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
 
     private final ArrayList<MTEHatchWirelessComputationOutput> eWirelessComputationOutputs = new ArrayList<>();
 
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenOFF;
+    private static IIconContainer ScreenON;
     // endregion
 
     // region structure
@@ -421,8 +422,8 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/EM_COMPUTER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/EM_COMPUTER_ACTIVE");
         super.registerIcons(aBlockIconRegister);
     }
 
