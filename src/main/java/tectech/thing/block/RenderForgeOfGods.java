@@ -170,18 +170,18 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
      * for setting all that up beforehand. We're doing it this way to batch the state
      * changes and improve performance.
      */
-    public void RenderStarLayer(Vector4f color, ResourceLocation texture, float size, Vector3f rotationAxis,
+    public void RenderStarLayer(Vector4f color, ResourceLocation texture, float userScaleFactor, Vector3f rotationAxis,
         float degrees) {
         starModelMatrix.pushMatrix();
         starModelMatrix.rotate((degrees / 180f * (float) Math.PI), rotationAxis.x, rotationAxis.y, rotationAxis.z);
-        starModelMatrix.scale(size, size, size);
+        starModelMatrix.scale(userScaleFactor, userScaleFactor, userScaleFactor);
 
         this.bindTexture(texture);
 
         matrixBuffer.clear();
         GL20.glUniformMatrix4(u_ModelMatrix, false, starModelMatrix.get(matrixBuffer));
         GL20.glUniform4f(u_Color, color.x, color.y, color.z, color.w);
-        EOHRenderingUtils.renderTessellatedSphere(128, 128, 72);
+        EOHRenderingUtils.renderTessellatedSphere(128, 128, 1);
 
         starModelMatrix.popMatrix();
     }
@@ -197,11 +197,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float cx = (float) x + .5f;
         float cy = (float) y + .5f;
         float cz = (float) z + .5f;
-        float size = modelNormalize;
         starModelMatrix.clear();
         starModelMatrix.translate(cx, cy, cz);
-
-        size *= tile.getStarRadius();
 
         timer *= tile.getRotationSpeed();
 
@@ -212,7 +209,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 1f),
             STAR_LAYER_0,
-            size,
+            tile.getStarRadius(),
             reusableRotationAxis.set(0F, 1F, 1F)
                 .normalize(),
             130 + (timer) % 360000);
@@ -227,14 +224,14 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 0.4f),
             STAR_LAYER_1,
-            size * 1.02f,
+            tile.getStarRadius() * 1.02f,
             reusableRotationAxis.set(1F, 1F, 0F)
                 .normalize(),
             -49 + (timer) % 360000);
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 0.2f),
             STAR_LAYER_2,
-            size * 1.04f,
+            tile.getStarRadius() * 1.04f,
             reusableRotationAxis.set(1F, 0F, 1F)
                 .normalize(),
             67 + (timer) % 360000);
