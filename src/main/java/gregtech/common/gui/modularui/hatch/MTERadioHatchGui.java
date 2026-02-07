@@ -38,7 +38,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
 
     // credit to purebluez
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        IPanelHandler popupPanel = syncManager.panel("popup", (manager, handler) -> createShutterUI(syncManager), true);
+        IPanelHandler popupPanel = syncManager.syncedPanel("popup", true,(manager, handler) -> createShutterUI(syncManager));
         syncManager.registerSlotGroup("item_inv", 1);
 
         IntSyncValue massSyncer = new IntSyncValue(hatch::getMass, value -> hatch.setMass((byte) value));
@@ -92,7 +92,7 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
                             - timeSyncHandler.getLongValue() % decayTimeSyncHandler.getLongValue())
                             / (float) decayTimeSyncHandler.getLongValue()));
 
-                    new com.cleanroommc.modularui.drawable.Rectangle().setColor(
+                    new com.cleanroommc.modularui.drawable.Rectangle().color(
                         com.cleanroommc.modularui.utils.Color
                             .rgb(color1Syncer.getIntValue(), color2Syncer.getIntValue(), color3Syncer.getIntValue()))
                         .draw(context, new Area(0, 48 - drawableHeight, 16, drawableHeight), widgetTheme);
@@ -168,19 +168,16 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
 
     private IWidget createDurationMeterContainer(PanelSyncManager syncManager) {
 
-        IWidget widget = GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
+        return GTGuiTextures.PICTURE_DECAY_TIME_CONTAINER.asWidget()
             .tooltipBuilder(
                 tooltip -> tooltip.add(
                     StatCollector.translateToLocalFormatted(
                         "tooltip.tile.radhatch.10.name",
                         hatch.getTimer() <= 1 ? 0 : (hatch.getDecayTime() - hatch.getTimer()) / 20,
                         hatch.getTimer() <= 1 ? 0 : hatch.getDecayTime() / 20)))
+            .tooltipAutoUpdate(true)
             .pos(120, 14)
             .size(24, 56);
-
-        LongSyncValue timeSyncHandler = (LongSyncValue) syncManager.getSyncHandlerFromMapKey("timer:0");
-        timeSyncHandler.setChangeListener(widget::markTooltipDirty);
-        return widget;
     }
 
 }
