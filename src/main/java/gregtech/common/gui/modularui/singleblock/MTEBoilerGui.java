@@ -80,7 +80,7 @@ public class MTEBoilerGui {
 
         IWidget fuelSlots = Flow.column()
             .coverChildren()
-            .childIf(base.doesAddAshSlot(), base.createAshSlot())
+            .childIf(base.doesAddAshSlot(), ()->base.createAshSlot())
             .child(
                 new GTProgressWidget().value(
                     new DoubleSyncValue(
@@ -89,7 +89,7 @@ public class MTEBoilerGui {
                     .widgetTheme(GTWidgetThemes.PROGRESSBAR_FUEL)
                     .size(14)
                     .margin(2))
-            .childIf(base.doesAddFuelSlot(), base.createFuelSlot());
+            .childIf(base.doesAddFuelSlot(), ()->base.createFuelSlot());
 
         return GTGuis.mteTemplatePanelBuilder(base, data, syncManager, uiSettings)
             .build()
