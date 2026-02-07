@@ -19,7 +19,10 @@ public enum TooltipTier {
     PIPE_CASING("GT5U.MBTT.Tiers.FluidPipe"),
     SOLENOID("GT5U.MBTT.Tiers.Solenoid"),
     TURBINE("GT5U.MBTT.Tiers.Turbine"),
-    GLASS("GT5U.MBTT.Tiers.Glass");
+    GLASS("GT5U.MBTT.Tiers.Glass"),
+    COMPONENT_ASSEMBLY_LINE_CASING("GT5U.MBTT.Tiers.ComponentAssemblyLineCasing"),
+
+    ;
 
     public final String key;
 
