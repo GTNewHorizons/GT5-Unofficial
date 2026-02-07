@@ -1665,6 +1665,7 @@ GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any control room b
 
 GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
 GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
+GT5U.tooltip.nac.main.logo=Click the Logo Icon in the GUI for more information
 GT5U.tooltip.nac.main.flavor.1=Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),
 GT5U.tooltip.nac.main.flavor.2=a pseudo-sentient program overseeing circuit production in the NAC
 GT5U.tooltip.nac.main.flavor.3=It seems to be eager to learn more, maybe you can become friends?
