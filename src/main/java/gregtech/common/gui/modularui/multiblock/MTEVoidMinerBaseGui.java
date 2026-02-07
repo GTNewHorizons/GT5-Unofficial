@@ -175,16 +175,17 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         .asIcon()
                         .size(16),
                     oreDrawable);
-            } else {
-                return oreDrawable;
-            }
+            } else return oreDrawable;
         });
     }
 
     // On game launch the order in the multis drop map randomizes, so we sort it by meta so everything can stay the same
     private GTUtility.ItemId[] sortOres(VoidMinerUtility.DropMap dropMap) {
         return Arrays.stream(dropMap.getOres())
-            .sorted((ore1, ore2) -> ore1.metaData() > ore2.metaData() ? 1 : -1)
+            .sorted((ore1, ore2) -> {
+                if (ore1.metaData() == ore2.metaData()) return 0;
+                return ore1.metaData() > ore2.metaData() ? 1 : -1;
+            })
             .toArray(GTUtility.ItemId[]::new);
     }
 
