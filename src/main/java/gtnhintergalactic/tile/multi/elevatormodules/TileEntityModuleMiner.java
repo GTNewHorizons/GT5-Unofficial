@@ -307,7 +307,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
                 () -> (Integer) parameterMap.get(DISTANCE_PARAMETER)
                     .getValue()
                     + (Integer) parameterMap.get(RANGE_PARAMETER)
-                        .getValue()));
+                        .getValue()).disableGui());
     }
 
     @Override
