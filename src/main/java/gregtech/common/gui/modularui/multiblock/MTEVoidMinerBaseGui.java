@@ -32,7 +32,6 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -45,7 +44,6 @@ import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import bwcrossmod.galacticgreg.VoidMinerUtility;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.GTItemOre;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 // TODO: improve visual clarity on buttons
@@ -60,14 +58,15 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         IPanelHandler filterPopup = syncManager.syncedPanel("filter", true, this::createFilterPopup);
-        return super.createRightPanelGapRow(parent, syncManager).child(new ButtonWidget<>().onMousePressed(button -> {
-            if (filterPopup.isPanelOpen()) {
-                filterPopup.closePanel();
-            } else filterPopup.openPanel();
-            return true;
-        })
-            // TODO: possibly find a better icon for this. but also i love the gear texture
-            .overlay(GuiTextures.GEAR));
+        return super.createRightPanelGapRow(parent, syncManager)
+            .childIf(multiblock.dropMap != null, () -> new ButtonWidget<>().onMousePressed(button -> {
+                if (filterPopup.isPanelOpen()) {
+                    filterPopup.closePanel();
+                } else filterPopup.openPanel();
+                return true;
+            })
+                // TODO: possibly find a better icon for this. but also i love the gear texture
+                .overlay(GuiTextures.GEAR));
     }
 
     public ModularPanel createFilterPopup(PanelSyncManager syncManager, IPanelHandler panelHandler) {
@@ -119,7 +118,6 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             return new Row().children(Math.min(buttonsPerRow, ores.length - (row * buttonsPerRow)), rowIndex -> {
                 int index = (row * buttonsPerRow) + rowIndex;
                 ItemStack stack = ores[index].getItemStack();
-                if (!(stack.getItem() instanceof GTItemOre ore)) return new EmptyWidget();
                 return new ToggleButton()
                     .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
                         if (bool) {

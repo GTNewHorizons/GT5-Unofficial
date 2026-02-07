@@ -259,10 +259,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         calculateDropMap();
+        if (this.dropMap == null) return;
         int size = dropMap.getOres().length;
-        if (selected.getSlots() != size) {
-            selected.setSize(size);
-        }
+        if (selected.getSlots() != size) selected.setSize(size);
     }
 
     /**
