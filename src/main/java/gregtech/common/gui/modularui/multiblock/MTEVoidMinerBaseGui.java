@@ -61,7 +61,6 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                 } else filterPopup.openPanel();
                 return true;
             })
-                // TODO: possibly find a better icon for this. but also i love the gear texture
                 .overlay(GuiTextures.GEAR));
     }
 
