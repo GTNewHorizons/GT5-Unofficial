@@ -162,7 +162,8 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                 .marginBottom(2);
 
             IPanelHandler editParameterPanel = syncManager.syncedPanel(
-                mapKey, true,
+                mapKey,
+                true,
                 (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager, mapKey));
 
             column.child(parameterEditButton.onMousePressed(d -> {

@@ -59,7 +59,8 @@ public class MTESpinmatronGui extends MTEMultiBlockBaseGui<MTESpinmatron> {
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler statsPanel = syncManager.syncedPanel(
-            "statsPanel", true,
+            "statsPanel",
+            true,
             (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))

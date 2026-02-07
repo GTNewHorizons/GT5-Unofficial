@@ -81,7 +81,7 @@ public class GeneralInfoPanel {
             textList.child(moduleToC);
             textList.child(upgradeToC);
             textList.child(milestoneToC);
-            textList.childIf(inversionSyncer.getBoolValue(), ()->inversionToC);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionToC);
 
             textList.child(fuelHeader);
             textList.child(fuelText);
@@ -91,8 +91,8 @@ public class GeneralInfoPanel {
             textList.child(upgradeText);
             textList.child(milestoneHeader);
             textList.child(milestoneText);
-            textList.childIf(inversionSyncer.getBoolValue(), ()->inversionHeader);
-            textList.childIf(inversionSyncer.getBoolValue(), ()->inversionText);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionHeader);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionText);
 
             return textList;
         });

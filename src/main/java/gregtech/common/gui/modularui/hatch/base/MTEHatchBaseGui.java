@@ -87,8 +87,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
 
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return new ParentWidget<>().sizeRel(1)
-            .childIf(this.supportsLeftCornerFlow(), ()->createLeftCornerFlow(panel, syncManager))
-            .childIf(this.supportsRightCornerFlow(),()-> createRightCornerFlow(panel, syncManager));
+            .childIf(this.supportsLeftCornerFlow(), () -> createLeftCornerFlow(panel, syncManager))
+            .childIf(this.supportsRightCornerFlow(), () -> createRightCornerFlow(panel, syncManager));
     }
 
     protected int getContentRowWidth() {
@@ -122,7 +122,7 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
             .paddingBottom(2)
             .paddingRight(3);
         cornerFlow.childIf(this.doesAddGregTechLogo(), this::createLogo)
-            .childIf(this.doesAddCircuitSlot(),()-> createCircuitSlot(syncManager));
+            .childIf(this.doesAddCircuitSlot(), () -> createCircuitSlot(syncManager));
         return cornerFlow;
     }
 
@@ -157,8 +157,8 @@ public class MTEHatchBaseGui<T extends MTEHatch> {
             .height(76)
             .alignX(0)
             .childIf(
-                hatch.doesBindPlayerInventory(),()->
-                SlotGroupWidget.playerInventory(false)
+                hatch.doesBindPlayerInventory(),
+                () -> SlotGroupWidget.playerInventory(false)
                     .align(Alignment.CENTER));
     }
 

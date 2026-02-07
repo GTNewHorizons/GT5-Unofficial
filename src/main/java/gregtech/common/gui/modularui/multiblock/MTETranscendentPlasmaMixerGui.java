@@ -37,7 +37,8 @@ public class MTETranscendentPlasmaMixerGui extends MTEMultiBlockBaseGui<MTETrans
 
     protected IWidget createParallelButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler parallelSelectPanel = syncManager.syncedPanel(
-            "parallelSelectPanel", true,
+            "parallelSelectPanel",
+            true,
             (p_syncManager, syncHandler) -> openParallelSelectPanel(syncManager, parent));
 
         return new ButtonWidget<>().size(18)

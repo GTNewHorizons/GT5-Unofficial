@@ -131,7 +131,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createChartButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler chartPanel = syncManager.syncedPanel("chart", true,(a, b) -> openChartPanel(syncManager, parent));
+        IPanelHandler chartPanel = syncManager
+            .syncedPanel("chart", true, (a, b) -> openChartPanel(syncManager, parent));
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!chartPanel.isPanelOpen()) {
                 chartPanel.openPanel();
@@ -234,7 +235,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createHeatMapButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler heatMapPanel = syncManager
-            .syncedPanel("heatMap", true,(a, b) -> openHeatMapPanel(syncManager, parent));
+            .syncedPanel("heatMap", true, (a, b) -> openHeatMapPanel(syncManager, parent));
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!heatMapPanel.isPanelOpen()) {
                 heatMapPanel.openPanel();

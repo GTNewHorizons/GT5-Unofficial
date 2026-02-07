@@ -50,7 +50,7 @@ public class MTEPlasmaForgeGui extends MTEMultiBlockBaseGui<MTEPlasmaForge> {
 
     protected IWidget createConvergenceButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler catalystSelectPanel = syncManager
-            .syncedPanel("catalystPanel", true,(p_syncManager, syncHandler) -> openCatalystPanel(syncManager, parent));
+            .syncedPanel("catalystPanel", true, (p_syncManager, syncHandler) -> openCatalystPanel(syncManager, parent));
 
         BooleanSyncValue convergenceSyncer = syncManager.findSyncHandler("convergence", BooleanSyncValue.class);
         return new ButtonWidget<>().size(18)

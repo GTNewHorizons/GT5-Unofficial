@@ -155,8 +155,7 @@ public class RedstoneSnifferGui {
                         .sizeRel(1f, 0.1f * scale)
                         .expanded()
                         .background(
-                            bgStripe.get() % 2 == 0 ? new Rectangle().color(stripe1)
-                                : new Rectangle().color(stripe2))
+                            bgStripe.get() % 2 == 0 ? new Rectangle().color(stripe1) : new Rectangle().color(stripe2))
                         .child(
                             new TextWidget<>(entry.freq).widthRel(0.5f)
                                 .color(textColor)
@@ -315,8 +314,7 @@ public class RedstoneSnifferGui {
                             && entry.freq.contains((freqFilter))))
                     .sizeRel(1f, 0.1f * scale)
                     .background(
-                        (bgStripe.get() % 2 == 0) ? new Rectangle().color(stripe1)
-                            : new Rectangle().color(stripe2))
+                        (bgStripe.get() % 2 == 0) ? new Rectangle().color(stripe1) : new Rectangle().color(stripe2))
                     .expanded()
                     .child(
                         new TextWidget<>(entry.owner).widthRel(0.15f)
