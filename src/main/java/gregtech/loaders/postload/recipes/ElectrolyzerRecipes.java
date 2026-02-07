@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static bartworks.system.material.WerkstoffLoader.CalciumChloride;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -349,6 +350,14 @@ public class ElectrolyzerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 4L))
             .duration(27 * SECONDS)
             .eut(TierEU.RECIPE_MV)
+            .addTo(electrolyzerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .fluidInputs(CalciumChloride.getFluidOrGas(3_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1))
+            .fluidOutputs(Materials.Chlorine.getGas(2_000))
+            .duration(2 * SECONDS)
+            .eut(120)
             .addTo(electrolyzerRecipes);
 
     }
