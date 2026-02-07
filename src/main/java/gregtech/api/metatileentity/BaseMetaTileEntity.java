@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
@@ -67,6 +68,7 @@ import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.objects.blockupdate.BlockUpdateHandler;
@@ -77,6 +79,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
+import gregtech.common.items.behaviors.BehaviourSoftMallet;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.render.IMTERenderer;
 import gregtech.mixin.interfaces.accessors.EntityItemAccessor;
@@ -772,9 +775,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
                     : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
             tList.add(
-                "Recorded " + GTUtility.formatNumbers(mMetaTileEntity.mSoundRequests)
+                "Recorded " + formatNumber(mMetaTileEntity.mSoundRequests)
                     + " sound requests in "
-                    + GTUtility.formatNumbers(mTickTimer - mLastCheckTick)
+                    + formatNumber(mTickTimer - mLastCheckTick)
                     + " ticks.");
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
@@ -1211,7 +1214,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    protected boolean hasValidMetaTileEntity() {
+    protected final boolean hasValidMetaTileEntity() {
         return mMetaTileEntity != null && mMetaTileEntity.getBaseMetaTileEntity() == this;
     }
 
@@ -1446,27 +1449,36 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
                     if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSoftMalletList)) {
                         if (GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
-                            if (mWorks) disableWorking();
-                            else {
-                                if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
-                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+
+                            final int mode = MetaGeneratedTool.getToolMode(tCurrentItem);
+                            final boolean shouldEnable = switch (mode) {
+                                case BehaviourSoftMallet.MODE_ACTIVATE -> true;
+                                case BehaviourSoftMallet.MODE_DEACTIVATE -> false;
+                                default -> !mWorks;
+                            };
+
+                            if (shouldEnable) {
+                                if (!mWorks) {
+                                    if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                                        GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                    }
+                                    enableWorking();
                                 }
-                                enableWorking();
+                            } else if (mWorks) {
+                                disableWorking();
                             }
-                            {
-                                if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
-                                    // FIXME: localize it
-                                    GTUtility.sendChatToPlayer(aPlayer, getMetaTileEntity().getAlternativeModeText());
-                                } else {
-                                    GTUtility.sendChatTrans(
-                                        aPlayer,
-                                        isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
-                                            : "GT5U.chat.machine.processing.disable");
-                                }
+                            if (getMetaTileEntity() != null && getMetaTileEntity().hasAlternativeModeText()) {
+                                GTUtility.sendChatTrans(aPlayer, getMetaTileEntity().getAlternativeModeText());
+                            } else {
+                                GTUtility.sendChatTrans(
+                                    aPlayer,
+                                    isAllowedToWork() ? "GT5U.chat.machine.processing.enable"
+                                        : "GT5U.chat.machine.processing.disable");
                             }
                             sendSoundToPlayers(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1);
-                            if (tCurrentItem.stackSize == 0)
+                            if (tCurrentItem.stackSize == 0) {
                                 ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
+                            }
                         }
                         return true;
                     }
@@ -2237,8 +2249,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-
-        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
+        return mMetaTileEntity instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
     }

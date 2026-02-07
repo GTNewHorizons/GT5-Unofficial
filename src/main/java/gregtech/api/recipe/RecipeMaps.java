@@ -425,13 +425,6 @@ public final class RecipeMaps {
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
         .build();
-    public static final RecipeMap<FluidCannerBackend> fluidCannerRecipes = RecipeMapBuilder
-        .of("gt.recipe.fluidcanner", FluidCannerBackend::new)
-        .maxIO(1, 1, 1, 1)
-        .minInputs(1, 0)
-        .slotOverlays((index, isFluid, isOutput, isSpecial) -> !isFluid ? GTUITextures.OVERLAY_SLOT_CANISTER : null)
-        .progressBar(GTUITextures.PROGRESSBAR_CANNER)
-        .build();
     public static final RecipeMap<RecipeMapBackend> brewingRecipes = RecipeMapBuilder.of("gt.recipe.brewer")
         .maxIO(1, 0, 1, 1)
         .minInputs(1, 1)
@@ -671,8 +664,13 @@ public final class RecipeMaps {
 
             int aDustAmount;
             int[] baseChances = new int[] { 10000, 10000, 10000 };
-            if (builder.getChances() != null) {
-                System.arraycopy(builder.getChances(), 0, baseChances, 0, min(2, builder.getChances().length));
+            if (builder.getOutputChances() != null) {
+                System.arraycopy(
+                    builder.getOutputChances(),
+                    0,
+                    baseChances,
+                    0,
+                    min(2, builder.getOutputChances().length));
             }
 
             int[] coalChances = baseChances.clone();
@@ -689,11 +687,11 @@ public final class RecipeMaps {
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getGems(aCoalAmount))
                     .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
-                    .setChances(coalChances);
+                    .setOutputChances(coalChances);
                 coll.derive()
                     .setInputs(aInput1, aInput2, coal.getDust(aCoalAmount))
                     .setOutputs(aOutput1, aOutput2, Materials.AshDark.getDust(aDustAmount))
-                    .setChances(coalChances);
+                    .setOutputChances(coalChances);
             }
             int aDuration = builder.getDuration();
             if (Railcraft.isModLoaded()) {
@@ -710,7 +708,7 @@ public final class RecipeMaps {
                     .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCokeAmount))
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
                     .setDuration(aDuration * 2 / 3)
-                    .setChances(cokeChances);
+                    .setOutputChances(cokeChances);
             }
             long aCactusSugarCokeAmount = aCoalAmount * 2L;
             int[] cactusSugarCokeChances = baseChances.clone();
@@ -729,12 +727,12 @@ public final class RecipeMaps {
                 .setInputs(aInput1, aInput2, cactusCoke)
                 .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
                 .setDuration(aDuration * 2 / 3)
-                .setChances(cactusSugarCokeChances);
+                .setOutputChances(cactusSugarCokeChances);
             coll.derive()
                 .setInputs(aInput1, aInput2, sugarCoke)
                 .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
                 .setDuration(aDuration * 2 / 3)
-                .setChances(cactusSugarCokeChances);
+                .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
                 && (aOutput1 == null || aOutput1.stackSize <= 6)
                 && (aOutput2 == null || aOutput2.stackSize <= 6)) {
@@ -971,8 +969,9 @@ public final class RecipeMaps {
         .progressBar(GTUITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER)
         .unificateOutputNEI(!NEICustomDiagrams.isModLoaded())
         .build();
-    public static final RecipeMap<RecipeMapBackend> cannerRecipes = RecipeMapBuilder.of("gt.recipe.canner")
-        .maxIO(2, 2, 0, 0)
+    public static final RecipeMap<FluidCannerBackend> cannerRecipes = RecipeMapBuilder
+        .of("gt.recipe.canner", FluidCannerBackend::new)
+        .maxIO(2, 2, 1, 1)
         .minInputs(1, 0)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isOutput) {
@@ -985,6 +984,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CANNER)
         .build();
+
     public static final RecipeMap<RecipeMapBackend> latheRecipes = RecipeMapBuilder.of("gt.recipe.lathe")
         .maxIO(1, 2, 0, 0)
         .minInputs(1, 0)
@@ -1316,8 +1316,7 @@ public final class RecipeMaps {
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_ARROW)
-        .neiRecipeBackgroundOffset(7, 0)
-        .neiRecipeBackgroundSize(165, 60)
+        .neiRecipeBackgroundSize(170, 60)
         .logoPos(150, 38)
         .frontend(CauldronFrontend::new)
         .neiHandlerInfo(builder -> {

@@ -68,12 +68,24 @@ public class GTRecipe implements Comparable<GTRecipe> {
      */
     public FluidStack[] mFluidInputs, mFluidOutputs;
     /**
-     * This array describes the % chance of obtention of each output, the values should range from 1 to 10000, 10000
-     * being 100% chance. If the array is null, the chances for all items default to 100%. If you change the amount of
-     * Array-Items inside the Output Array then the length of this Array must be larger or equal to the Output Array.
+     * These arrays define the chance behavior for each respective input or output.
+     * Values range from 1 to 10000 (10000 = 100%).
+     * Logic & Constraints:
+     * 1. If an array is null, all corresponding items/fluids default to 100% chance.
+     * 2. If defined, the length of each 'Chances' array must be >= the length of its
+     * corresponding content array (mInputs, mOutputs, mFluidInputs, or mFluidOutputs).
+     * Mapping:
+     * - mInputChances -> Maps to mInputs
+     * (Input must always be present to start the recipe; chance controls whether it is consumed.)
+     * - mOutputChances -> Maps to mOutputs
+     * (Chance for each output to be produced.)
+     * - mFluidInputChances -> Maps to mFluidInputs
+     * (Chance for each fluid input to be consumed.)
+     * - mFluidOutputChances -> Maps to mFluidOutputs
+     * (Chance for each fluid output to be produced.)
      */
     @Nullable
-    public int[] mChances;
+    public int[] mInputChances, mOutputChances, mFluidInputChances, mFluidOutputChances;
     /**
      * An Item that needs to be inside the Special Slot, like for example the Copy Slot inside the Printer. This is only
      * useful for Fake Recipes in NEI, since findRecipe() and containsInput() don't give a shit about this Field. Lists
@@ -145,7 +157,10 @@ public class GTRecipe implements Comparable<GTRecipe> {
         mInputs = shallow ? aRecipe.mInputs : ArrayExt.copyItemsIfNonEmpty(aRecipe.mInputs);
         mOutputs = shallow ? aRecipe.mOutputs : ArrayExt.copyItemsIfNonEmpty(aRecipe.mOutputs);
         mSpecialItems = aRecipe.mSpecialItems;
-        mChances = aRecipe.mChances;
+        mInputChances = aRecipe.mInputChances;
+        mOutputChances = aRecipe.mOutputChances;
+        mFluidInputChances = aRecipe.mFluidInputChances;
+        mFluidOutputChances = aRecipe.mFluidOutputChances;
         mFluidInputs = shallow ? aRecipe.mFluidInputs : ArrayExt.copyFluidsIfNonEmpty(aRecipe.mFluidInputs);
         mFluidOutputs = shallow ? aRecipe.mFluidOutputs : ArrayExt.copyFluidsIfNonEmpty(aRecipe.mFluidOutputs);
         mDuration = aRecipe.mDuration;
@@ -166,14 +181,19 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * Only for {@link GTRecipeBuilder}.
      */
     GTRecipe(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs, FluidStack[] mFluidOutputs,
-        int[] mChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue, boolean mEnabled,
-        boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput, boolean nbtSensitive,
-        String[] neiDesc, @Nullable IRecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory) {
+        int[] mInputChances, int[] mOutputChances, int[] mFluidInputChances, int[] mFluidOutputChances, int mEUt,
+        int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
+        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
+        @Nullable IRecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory, Object mSpecialItems,
+        int mDuration) {
         this.mInputs = mInputs;
         this.mOutputs = mOutputs;
         this.mFluidInputs = mFluidInputs;
         this.mFluidOutputs = mFluidOutputs;
-        this.mChances = ArrayExt.fixChancesArray(mChances, -1);
+        this.mInputChances = ArrayExt.fixChancesArray(mInputChances, -1);
+        this.mOutputChances = ArrayExt.fixChancesArray(mOutputChances, -1);
+        this.mFluidInputChances = ArrayExt.fixChancesArray(mFluidInputChances, -1);
+        this.mFluidOutputChances = ArrayExt.fixChancesArray(mFluidOutputChances, -1);
         this.mSpecialItems = mSpecialItems;
         this.mDuration = mDuration;
         this.mEUt = mEUt;
@@ -191,7 +211,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
         reloadOwner();
     }
 
-    public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
+    public GTRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
+        int[] aInputChances, int[] aOutputChances, int[] aFluidInputChances, int[] aFluidOutputChances,
         FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         if (aInputs == null) aInputs = GTValues.emptyItemStackArray;
         else aInputs = ArrayExt.removeTrailingNulls(aInputs);
@@ -210,44 +231,13 @@ public class GTRecipe implements Comparable<GTRecipe> {
         for (int i = 0; i < aFluidInputs.length; i++) aFluidInputs[i] = aFluidInputs[i].copy();
         for (int i = 0; i < aFluidOutputs.length; i++) aFluidOutputs[i] = aFluidOutputs[i].copy();
 
-        if (aOptimize && aDuration >= 32) {
-            ArrayList<ItemStack> stacks = new ArrayList<>(aInputs.length + aOutputs.length);
-            for (final ItemStack s : aInputs) if (s != null) stacks.add(s);
-            for (final ItemStack s : aOutputs) if (s != null) stacks.add(s);
-
-            for (byte i = (byte) Math.min(64, aDuration / 16); i > 1; i--) {
-                if (aDuration / i >= 16) {
-                    boolean temp = true;
-                    // noinspection ForLoopReplaceableByForEach
-                    for (int j = 0, size = stacks.size(); j < size; j++) {
-                        if (stacks.get(j).stackSize % i != 0) {
-                            temp = false;
-                            break;
-                        }
-                    }
-                    if (temp) for (final FluidStack f : aFluidInputs) if (f.amount % i != 0) {
-                        temp = false;
-                        break;
-                    }
-                    if (temp) for (final FluidStack f : aFluidOutputs) if (f.amount % i != 0) {
-                        temp = false;
-                        break;
-                    }
-                    if (temp) {
-                        // noinspection ForLoopReplaceableByForEach
-                        for (int j = 0, size = stacks.size(); j < size; j++) stacks.get(j).stackSize /= i;
-                        for (final FluidStack f : aFluidInputs) f.amount /= i;
-                        for (final FluidStack f : aFluidOutputs) f.amount /= i;
-                        aDuration /= i;
-                    }
-                }
-            }
-        }
-
         mInputs = aInputs;
         mOutputs = aOutputs;
         mSpecialItems = aSpecialItems;
-        mChances = ArrayExt.fixChancesArray(aChances, aOutputs.length);
+        mInputChances = ArrayExt.fixChancesArray(aInputChances, aInputs.length);
+        mOutputChances = ArrayExt.fixChancesArray(aOutputChances, aOutputs.length);
+        mFluidInputChances = ArrayExt.fixChancesArray(aFluidInputChances, aFluidInputs.length);
+        mFluidOutputChances = ArrayExt.fixChancesArray(aFluidOutputChances, aFluidOutputs.length);
         mFluidInputs = aFluidInputs;
         mFluidOutputs = aFluidOutputs;
         mDuration = aDuration;
@@ -262,9 +252,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public GTRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
         int aSpecialValue, int aType) {
         this(
-            true,
             new ItemStack[] { aInput1 },
             new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 },
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -304,14 +296,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
     }
 
     // Dummy GTRecipe maker...
-    public GTRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
-        FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+    public GTRecipe(ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aInputChances,
+        int[] aOutputChances, int[] aFluidInputChances, int[] aFluidOutputChances, FluidStack[] aFluidInputs,
+        FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         this(
             true,
             aInputs,
             aOutputs,
             aSpecialItems,
-            aChances,
+            aInputChances,
+            aOutputChances,
+            aFluidInputChances,
+            aFluidOutputChances,
             aFluidInputs,
             aFluidOutputs,
             aDuration,
@@ -341,10 +337,16 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return GTUtility.copyOrNull(mOutputs[aIndex]);
     }
 
+    public int getInputChance(int aIndex) {
+        if (mInputChances == null) return 10000;
+        if (aIndex < 0 || aIndex >= mInputChances.length) return 10000;
+        return mInputChances[aIndex];
+    }
+
     public int getOutputChance(int aIndex) {
-        if (mChances == null) return 10000;
-        if (aIndex < 0 || aIndex >= mChances.length) return 10000;
-        return mChances[aIndex];
+        if (mOutputChances == null) return 10000;
+        if (aIndex < 0 || aIndex >= mOutputChances.length) return 10000;
+        return mOutputChances[aIndex];
     }
 
     public FluidStack getRepresentativeFluidInput(int aIndex) {
@@ -355,6 +357,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
     public FluidStack getFluidOutput(int aIndex) {
         if (aIndex < 0 || aIndex >= mFluidOutputs.length || mFluidOutputs[aIndex] == null) return null;
         return mFluidOutputs[aIndex].copy();
+    }
+
+    public int getFluidInputChance(int aIndex) {
+        if (mFluidInputChances == null) return 10000;
+        if (aIndex < 0 || aIndex >= mFluidInputChances.length) return 10000;
+        return mFluidInputChances[aIndex];
+    }
+
+    public int getFluidOutputChance(int aIndex) {
+        if (mFluidOutputChances == null) return 10000;
+        if (aIndex < 0 || aIndex >= mFluidOutputChances.length) return 10000;
+        return mFluidOutputChances[aIndex];
     }
 
     public void checkCellBalance() {
@@ -435,25 +449,40 @@ public class GTRecipe implements Comparable<GTRecipe> {
             }
 
             final ItemStack[] inputs = mInputs;
+            final int[] chances = mInputChances;
             inputsAtCacheTime = inputs;
             if (inputs == null || inputs.length == 0) {
                 mergedInputCache = EMPTY_INPUT_CACHE;
                 return mergedInputCache;
             }
+
             final ObjectArrayList<@NotNull RecipeItemInput> newCache = ObjectArrayList
                 .wrap(new RecipeItemInput[inputs.length], 0);
-            for (final ItemStack itemStack : inputs) {
+
+            for (int i = 0; i < inputs.length; i++) {
+                final ItemStack itemStack = inputs[i];
                 if (itemStack == null) continue;
+
+                // Get the consumption chance for this specific input slot (default 100%)
+                int chance = (chances != null && i < chances.length) ? chances[i] : 10000;
+
                 final RecipeItemInput existingInput = newCache.stream()
                     .filter(existing -> existing.matchesType(itemStack))
                     .findAny()
                     .orElse(null);
+
                 if (existingInput == null) {
-                    newCache.add(new RecipeItemInput(itemStack, isNBTSensitive));
+                    RecipeItemInput newInput = new RecipeItemInput(itemStack, isNBTSensitive);
+                    // Initialize weighted amount: (actual stack size * chance percentage)
+                    newInput.chanceWeightedAmount = (itemStack.stackSize * (double) chance) / 10000.0;
+                    newCache.add(newInput);
                 } else {
                     existingInput.inputAmount = Math.addExact(existingInput.inputAmount, itemStack.stackSize);
+                    // Accumulate weighted amount: sum of (slot_size * slot_chance)
+                    existingInput.chanceWeightedAmount += (itemStack.stackSize * (double) chance) / 10000.0;
                 }
             }
+
             final RecipeItemInput[] frozenCache = newCache.toArray(new RecipeItemInput[0]);
             if (GregTechAPI.sFullLoadFinished) {
                 mergedInputCache = frozenCache;
@@ -488,9 +517,23 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (amountMultiplier <= 0) return;
 
         if (aFluidInputs != null) {
-            for (FluidStack recipeFluidCost : mFluidInputs) {
+            for (int i = 0; i < mFluidInputs.length; i++) {
+                FluidStack recipeFluidCost = mFluidInputs[i];
                 if (recipeFluidCost != null) {
-                    long remainingCost = (long) recipeFluidCost.amount * amountMultiplier;
+                    // Determine fluid consumption chance
+                    int chance = (mFluidInputChances != null && i < mFluidInputChances.length) ? mFluidInputChances[i]
+                        : 10000;
+
+                    long actualMultiplier = amountMultiplier;
+
+                    // Optimization: Only calculate binomial distribution if chance is not 100%
+                    if (chance < 10000) {
+                        actualMultiplier = ParallelHelper
+                            .calculateIntegralChancedOutputMultiplier(chance, amountMultiplier);
+                        if (actualMultiplier <= 0) continue;
+                    }
+
+                    long remainingCost = (long) recipeFluidCost.amount * actualMultiplier;
 
                     for (FluidStack providedFluid : aFluidInputs) {
                         if (providedFluid != null && providedFluid.isFluidEqual(recipeFluidCost)) {
@@ -518,7 +561,23 @@ public class GTRecipe implements Comparable<GTRecipe> {
         final @NotNull RecipeItemInput @NotNull [] combinedInputs = getCachedCombinedItemInputs();
 
         for (final RecipeItemInput recipeItemCost : combinedInputs) {
-            long remainingCost = recipeItemCost.inputAmount * amountMultiplier;
+            long actualMultiplier = amountMultiplier;
+
+            // Calculate probabilistic multiplier for items
+            // We use the pre-calculated chanceWeightedAmount from the cache to derive an equivalent chance
+            if (mInputChances != null) {
+                // Equivalent chance is (Sum of (count * chance) / Sum of count)
+                int equivalentChance = (int) Math
+                    .round((recipeItemCost.chanceWeightedAmount / recipeItemCost.inputAmount) * 10000);
+
+                if (equivalentChance < 10000) {
+                    actualMultiplier = ParallelHelper
+                        .calculateIntegralChancedOutputMultiplier(equivalentChance, amountMultiplier);
+                    if (actualMultiplier <= 0) continue;
+                }
+            }
+
+            long remainingCost = recipeItemCost.inputAmount * actualMultiplier;
 
             for (int iProvided = 0; iProvided < aInputs.length && remainingCost > 0; iProvided++) {
                 final ItemStack providedItem = aInputs[iProvided];
@@ -794,8 +853,23 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return this;
     }
 
-    public GTRecipe setChances(int... aChances) {
-        this.mChances = ArrayExt.fixChancesArray(aChances, -1);
+    public GTRecipe setInputChances(int... aChances) {
+        this.mInputChances = ArrayExt.fixChancesArray(aChances, -1);
+        return this;
+    }
+
+    public GTRecipe setOutputChances(int... aChances) {
+        this.mOutputChances = ArrayExt.fixChancesArray(aChances, -1);
+        return this;
+    }
+
+    public GTRecipe setFluidInputChances(int... aChances) {
+        this.mFluidInputChances = ArrayExt.fixChancesArray(aChances, -1);
+        return this;
+    }
+
+    public GTRecipe setFluidOutputChances(int... aChances) {
+        this.mFluidOutputChances = ArrayExt.fixChancesArray(aChances, -1);
         return this;
     }
 
@@ -819,9 +893,19 @@ public class GTRecipe implements Comparable<GTRecipe> {
         /** True if the input is NBT-sensitive */
         public final boolean usesNbtMatching;
 
+        /**
+         * * The theoretical average amount consumed per recipe run, considering probability.
+         * sum(stackSize * chance / 10000)
+         */
+        public double chanceWeightedAmount;
+
         public RecipeItemInput(ItemStack stack, boolean recipeIsNBTSensitive) {
             Objects.requireNonNull(stack);
             this.inputAmount = stack.stackSize;
+            // Initialize weighted amount with 100% chance by default.
+            // This will be overwritten or accumulated in getCachedCombinedItemInputs.
+            this.chanceWeightedAmount = stack.stackSize;
+
             final boolean stackNeedsNBT = GTRecipe.shouldCheckNBT(stack);
             this.usesNbtMatching = recipeIsNBTSensitive | stackNeedsNBT;
             if (stackNeedsNBT) {
@@ -1205,19 +1289,20 @@ public class GTRecipe implements Comparable<GTRecipe> {
          * Only for {@link GTRecipeBuilder}.
          */
         GTRecipe_WithAlt(ItemStack[] mInputs, ItemStack[] mOutputs, FluidStack[] mFluidInputs,
-            FluidStack[] mFluidOutputs, int[] mChances, Object mSpecialItems, int mDuration, int mEUt,
-            int mSpecialValue, boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc,
-            @Nullable IRecipeMetadataStorage metadataStorage, RecipeCategory recipeCategory,
-            ItemStack[][] mOreDictAlt) {
+            FluidStack[] mFluidOutputs, int[] mInputChances, int[] mOutputChances, int[] mFluidInputChances,
+            int[] mFluidOutputChances, Object mSpecialItems, int mDuration, int mEUt, int mSpecialValue,
+            boolean mEnabled, boolean mHidden, boolean mFakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
+            boolean nbtSensitive, String[] neiDesc, @Nullable IRecipeMetadataStorage metadataStorage,
+            RecipeCategory recipeCategory, ItemStack[][] mOreDictAlt) {
             super(
                 mInputs,
                 mOutputs,
                 mFluidInputs,
                 mFluidOutputs,
-                mChances,
-                mSpecialItems,
-                mDuration,
+                mInputChances,
+                mOutputChances,
+                mFluidInputChances,
+                mFluidOutputChances,
                 mEUt,
                 mSpecialValue,
                 mEnabled,
@@ -1228,19 +1313,24 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 nbtSensitive,
                 neiDesc,
                 metadataStorage,
-                recipeCategory);
+                recipeCategory,
+                mSpecialItems,
+                mDuration);
             this.mOreDictAlt = mOreDictAlt;
         }
 
         public GTRecipe_WithAlt(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
-            int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt,
-            int aSpecialValue, ItemStack[][] aAlt) {
+            int[] aInputChances, int[] aOutputChances, int[] aFluidInputChances, int[] aFluidOutputChances,
+            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
+            ItemStack[][] aAlt) {
             super(
-                aOptimize,
                 aInputs,
                 aOutputs,
                 aSpecialItems,
-                aChances,
+                aInputChances,
+                aOutputChances,
+                aFluidInputChances,
+                aFluidOutputChances,
                 aFluidInputs,
                 aFluidOutputs,
                 aDuration,

@@ -1,5 +1,6 @@
 package gregtech.api.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.COMPASS_DIRECTIONS;
 import static gregtech.api.enums.GTValues.D1;
@@ -130,10 +131,8 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -187,6 +186,7 @@ import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemIntegratedCircuit;
@@ -222,19 +222,30 @@ public class GTUtility {
      */
     private static final Map<Locale, DecimalFormat> decimalFormatters = new HashMap<>();
 
-    /**
+    /*
      * Forge screwed the Fluid Registry up again, so I make my own, which is also much more efficient than the stupid
      * Stuff over there.
      */
+
+    /**
+     * All catched fluid container data.
+     */
     private static final List<FluidContainerData> sFluidContainerList = new ArrayList<>();
 
-    private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
-    private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
-    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
     /**
-     * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
+     * Associates the filled container item with the fluid container data.
      */
-    private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
+    private static final Map<GTItemStack, FluidContainerData> sFilledContainerToData = new /* Concurrent */ HashMap<>();
+
+    /**
+     * Associates the empty container item with a map mapping fluid names to the associated fluid container data.
+     */
+    private static final Map<GTItemStack, Map<String, FluidContainerData>> sEmptyContainerToFluidToData = new HashMap<>();
+
+    /**
+     * Associates the name of the fluid with all filled container items.
+     */
+    private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -242,23 +253,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    static {
-        GregTechAPI.sItemStackMappings.add(sFilledContainerToData);
-        GregTechAPI.sItemStackMappings.add(sEmptyContainerToFluidToData);
-
-        // 1 is the magic index to get the cobblestone block.
-        // See: GT_Block_Stones.java, GT_Block_Granites.java
-        Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
-            () -> GTOreDictUnificator.getOres(OrePrefixes.stone, m)
-                .get(1))::get;
-        sOreToCobble.put(OrePrefixes.oreBlackgranite, materialToCobble.apply(Materials.GraniteBlack));
-        sOreToCobble.put(OrePrefixes.oreRedgranite, materialToCobble.apply(Materials.GraniteRed));
-        sOreToCobble.put(OrePrefixes.oreMarble, materialToCobble.apply(Materials.Marble));
-        sOreToCobble.put(OrePrefixes.oreBasalt, materialToCobble.apply(Materials.Basalt));
-        sOreToCobble.put(OrePrefixes.oreNetherrack, () -> new ItemStack(Blocks.netherrack));
-        sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
-    }
 
     public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
         return sFilledContainerToData;
@@ -778,7 +772,7 @@ public class GTUtility {
                     inflateStack.stackSize += toTransfer;
                     remaining -= toTransfer;
 
-                    didSomething.setTrue();
+                    didSomething.setValue(true);
 
                     if (toBeExtracted.left().stackSize <= 0) {
                         inv.set(toBeExtracted.rightInt(), null);
@@ -810,7 +804,7 @@ public class GTUtility {
                 if (stack != null) {
                     inv.set(insert, stack);
                     inv.set(extract, null);
-                    didSomething.setTrue();
+                    didSomething.setValue(true);
                 } else {
                     break;
                 }
@@ -819,7 +813,7 @@ public class GTUtility {
             insert++;
         }
 
-        return didSomething.isTrue();
+        return didSomething.getValue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {
@@ -854,6 +848,76 @@ public class GTUtility {
         }
 
         return didSomething;
+    }
+
+    /**
+     * Drops the item to the world.
+     * <p>
+     * NOTE: the stack is directly passed to the entity, so you should not continue using it.
+     *
+     * @param world    the world to spawn the item
+     * @param x        the x coord to spawn the item
+     * @param y        the y coord to spawn the item
+     * @param z        the z coord to spawn the item
+     * @param stack    the stack to spawn
+     * @param noMotion {@code true} to remove the initial motion when spawned to the world
+     */
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack,
+        boolean noMotion) {
+        if (isStackInvalid(stack)) return;
+        EntityItem entity = new EntityItem(world, x, y, z, stack);
+        if (noMotion) {
+            // remove initial motion
+            entity.motionX = 0;
+            entity.motionY = 0;
+            entity.motionZ = 0;
+        }
+        world.spawnEntityInWorld(entity);
+    }
+
+    /**
+     * @see #dropItem(World, double, double, double, ItemStack, boolean)
+     */
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack) {
+        dropItem(world, x, y, z, stack, false);
+    }
+
+    /**
+     * Drops the item to the world at the block pos.
+     * <p>
+     * NOTE: the stack is directly passed to the entity, so you should not continue using it.
+     *
+     * @param world         the world to spawn the item
+     * @param x             the x coord to spawn the item
+     * @param y             the y coord to spawn the item
+     * @param z             the z coord to spawn the item
+     * @param stack         the stack to spawn
+     * @param positionShift {@code true} to add a small random shift to the position
+     * @param noMotion      {@code true} to remove the initial motion when spawned to the world
+     */
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack,
+        boolean positionShift, boolean noMotion) {
+        if (isStackInvalid(stack)) return;
+        double x1, y1, z1;
+        if (positionShift) {
+            // shift the position to drop, but always inside the block pos
+            // equivalent to x = x + (0.1..0.9).random()
+            x1 = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+            y1 = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+            z1 = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+        } else {
+            x1 = x + 0.5;
+            y1 = y + 0.5;
+            z1 = z + 0.5;
+        }
+        dropItem(world, x1, y1, z1, stack, noMotion);
+    }
+
+    /**
+     * @see #dropItemToBlockPos(World, int, int, int, ItemStack, boolean, boolean)
+     */
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack) {
+        dropItemToBlockPos(world, x, y, z, stack, false, false);
     }
 
     public static void dropItemsOrClusters(World world, float x, float y, float z, List<ItemStack> stacks) {
@@ -1046,44 +1110,30 @@ public class GTUtility {
         sFilledContainerToData.clear();
         sEmptyContainerToFluidToData.clear();
         sFluidToContainers.clear();
-        for (FluidContainerData tData : sFluidContainerList) {
-            String fluidName = tData.fluid.getFluid()
+        for (FluidContainerData data : sFluidContainerList) {
+            String fluidName = data.fluid.getFluid()
                 .getName();
-            sFilledContainerToData.put(new GTItemStack(tData.filledContainer), tData);
-            Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
-                .get(new GTItemStack(tData.emptyContainer));
-            List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
-            if (tFluidToContainer == null) {
-                sEmptyContainerToFluidToData
-                    .put(new GTItemStack(tData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-            }
-            tFluidToContainer.put(fluidName, tData);
-            if (tContainers == null) {
-                tContainers = new ArrayList<>();
-                tContainers.add(tData.filledContainer);
-                sFluidToContainers.put(fluidName, tContainers);
-            } else tContainers.add(tData.filledContainer);
+            sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
+            sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
+                .put(fluidName, data);
+            sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+                .add(data.filledContainer);
         }
     }
 
-    public static void addFluidContainerData(FluidContainerData aData) {
-        String fluidName = aData.fluid.getFluid()
+    public static void addFluidContainerData(FluidContainerData data) {
+        String fluidName = data.fluid.getFluid()
             .getName();
-        sFluidContainerList.add(aData);
-        sFilledContainerToData.put(new GTItemStack(aData.filledContainer), aData);
-        Map<String, FluidContainerData> tFluidToContainer = sEmptyContainerToFluidToData
-            .get(new GTItemStack(aData.emptyContainer));
-        List<ItemStack> tContainers = sFluidToContainers.get(fluidName);
-        if (tFluidToContainer == null) {
-            sEmptyContainerToFluidToData
-                .put(new GTItemStack(aData.emptyContainer), tFluidToContainer = new /* Concurrent */ HashMap<>());
-        }
-        tFluidToContainer.put(fluidName, aData);
-        if (tContainers == null) {
-            tContainers = new ArrayList<>();
-            tContainers.add(aData.filledContainer);
-            sFluidToContainers.put(fluidName, tContainers);
-        } else tContainers.add(aData.filledContainer);
+        sFluidContainerList.add(data);
+        sFilledContainerToData.put(new GTItemStack(data.filledContainer), data);
+        sEmptyContainerToFluidToData.computeIfAbsent(new GTItemStack(data.emptyContainer), $ -> new HashMap<>())
+            .put(fluidName, data);
+        sFluidToContainers.computeIfAbsent(fluidName, $ -> new ArrayList<>())
+            .add(data.filledContainer);
+    }
+
+    public static boolean isEmptyFluidContainer(ItemStack itemStack) {
+        return sEmptyContainerToFluidToData.containsKey(new GTItemStack(itemStack));
     }
 
     public static List<ItemStack> getContainersFromFluid(FluidStack tFluidStack) {
@@ -2222,48 +2272,6 @@ public class GTUtility {
         return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
     }
 
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = null;
-        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
-        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
-        // would not be used to rehash if we just create a new HashMap.
-        if (aMap instanceof Cloneable) {
-            try {
-                tMap = (Map<X, Y>) aMap.getClass()
-                    .getMethod("clone")
-                    .invoke(aMap);
-            } catch (Exception e) {
-                GTLog.err.println("Failed to clone Map of type " + aMap.getClass());
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
-        if (tMap == null) {
-            tMap = new HashMap<>(aMap);
-        }
-
-        aMap.clear();
-        aMap.putAll(tMap);
-        return aMap;
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
-        @SuppressWarnings("unchecked")
-        Map.Entry<X, Y>[] entries = aMap.entries()
-            .toArray(new Map.Entry[0]);
-        aMap.clear();
-        for (Map.Entry<X, Y> entry : entries) {
-            aMap.put(entry.getKey(), entry.getValue());
-        }
-        return aMap;
-    }
-
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {
         return map.entrySet()
             .stream()
@@ -2518,15 +2526,15 @@ public class GTUtility {
                 + EnumChatFormatting.RESET
                 + " X: "
                 + EnumChatFormatting.AQUA
-                + formatNumbers(aX)
+                + formatNumber(aX)
                 + EnumChatFormatting.RESET
                 + " Y: "
                 + EnumChatFormatting.AQUA
-                + formatNumbers(aY)
+                + formatNumber(aY)
                 + EnumChatFormatting.RESET
                 + " Z: "
                 + EnumChatFormatting.AQUA
-                + formatNumbers(aZ)
+                + formatNumber(aZ)
                 + EnumChatFormatting.RESET
                 + " D: "
                 + EnumChatFormatting.AQUA
@@ -2573,11 +2581,11 @@ public class GTUtility {
                         GTUtility.trans("167", "Tank ") + i
                             + ": "
                             + EnumChatFormatting.GREEN
-                            + formatNumbers((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount))
+                            + formatNumber((tTanks[i].fluid == null ? 0 : tTanks[i].fluid.amount))
                             + EnumChatFormatting.RESET
                             + " L / "
                             + EnumChatFormatting.YELLOW
-                            + formatNumbers(tTanks[i].capacity)
+                            + formatNumber(tTanks[i].capacity)
                             + EnumChatFormatting.RESET
                             + " L "
                             + EnumChatFormatting.GOLD
@@ -2612,7 +2620,7 @@ public class GTUtility {
         if (Pollution.hasPollution(currentChunk)) {
             tList.add(
                 GTUtility.trans("202", "Pollution in Chunk: ") + EnumChatFormatting.RED
-                    + formatNumbers(Pollution.getPollution(currentChunk))
+                    + formatNumber(Pollution.getPollution(currentChunk))
                     + EnumChatFormatting.RESET
                     + GTUtility.trans("203", " gibbl"));
         } else {
@@ -2630,7 +2638,7 @@ public class GTUtility {
                     + EnumChatFormatting.RESET
                     + ": "
                     + EnumChatFormatting.YELLOW
-                    + formatNumbers(tFluid.amount)
+                    + formatNumber(tFluid.amount)
                     + EnumChatFormatting.RESET
                     + " L");
             else tList.add(
@@ -2744,35 +2752,35 @@ public class GTUtility {
             if (tTileEntity instanceof IBasicEnergyContainer energyContainer && energyContainer.getEUCapacity() > 0) {
                 tList.add(
                     GTUtility.trans("179", "Max IN: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputVoltage())
+                        + formatNumber(energyContainer.getInputVoltage())
                         + " ("
                         + GTValues.VN[getTier(energyContainer.getInputVoltage())]
                         + ") "
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("182", " EU at ")
                         + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getInputAmperage())
+                        + formatNumber(energyContainer.getInputAmperage())
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("183", " A"));
                 tList.add(
                     GTUtility.trans("181", "Max OUT: ") + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputVoltage())
+                        + formatNumber(energyContainer.getOutputVoltage())
                         + " ("
                         + GTValues.VN[getTier(energyContainer.getOutputVoltage())]
                         + ") "
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("182", " EU at ")
                         + EnumChatFormatting.RED
-                        + formatNumbers(energyContainer.getOutputAmperage())
+                        + formatNumber(energyContainer.getOutputAmperage())
                         + EnumChatFormatting.RESET
                         + GTUtility.trans("183", " A"));
                 tList.add(
                     GTUtility.trans("184", "Energy: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(energyContainer.getStoredEU())
+                        + formatNumber(energyContainer.getStoredEU())
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(energyContainer.getEUCapacity())
+                        + formatNumber(energyContainer.getEUCapacity())
                         + EnumChatFormatting.RESET
                         + " EU");
             }
@@ -2816,11 +2824,11 @@ public class GTUtility {
                 int tValue = 0;
                 if (0 < (tValue = progress.getMaxProgress())) tList.add(
                     GTUtility.trans("178", "Progress/Load: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(progress.getProgress())
+                        + formatNumber(progress.getProgress())
                         + EnumChatFormatting.RESET
                         + " / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(tValue)
+                        + formatNumber(tValue)
                         + EnumChatFormatting.RESET);
             }
         } catch (Exception e) {
@@ -2852,11 +2860,11 @@ public class GTUtility {
                 rEUAmount += 200;
                 tList.add(
                     GTUtility.trans("176", "Contained Energy: ") + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getStored())
+                        + formatNumber(storage.getStored())
                         + EnumChatFormatting.RESET
                         + " EU / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(storage.getCapacity())
+                        + formatNumber(storage.getCapacity())
                         + EnumChatFormatting.RESET
                         + " EU");
             }
@@ -2939,11 +2947,11 @@ public class GTUtility {
                 rEUAmount += 500;
                 tList.add(
                     GTUtility.trans("168", "Heat: ") + EnumChatFormatting.GREEN
-                        + formatNumbers(reactor.getHeat())
+                        + formatNumber(reactor.getHeat())
                         + EnumChatFormatting.RESET
                         + " / "
                         + EnumChatFormatting.YELLOW
-                        + formatNumbers(reactor.getMaxHeat())
+                        + formatNumber(reactor.getMaxHeat())
                         + EnumChatFormatting.RESET);
                 tList.add(
                     GTUtility.trans("169", "HEM: ") + EnumChatFormatting.YELLOW
@@ -3054,18 +3062,6 @@ public class GTUtility {
             numberFormat.setDecimalFormatSymbols(decimalFormatSymbols);
             return numberFormat;
         });
-    }
-
-    public static String formatNumbers(BigInteger aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(long aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
-
-    public static String formatNumbers(double aNumber) {
-        return getDecimalFormat().format(aNumber);
     }
 
     public static String scientificFormat(long aNumber) {
@@ -3648,26 +3644,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Do <b>NOT</b> mutate the returned {@code ItemStack}! We return {@code ItemStack} instead of {@code Block} so that
-     * we can include metadata.
-     */
-    public static ItemStack getCobbleForOre(Block ore, short metaData) {
-        // We need to convert small ores to regular ores because small ores don't have associated ItemData.
-        // We take the modulus of the metadata by 16000 because that is the magic number to convert small ores to
-        // regular ores.
-        // See: GT_TileEntity_Ores.java
-        ItemData association = GTOreDictUnificator
-            .getAssociation(new ItemStack(Item.getItemFromBlock(ore), 1, metaData % 16000));
-        if (association != null) {
-            Supplier<ItemStack> supplier = sOreToCobble.get(association.mPrefix);
-            if (supplier != null) {
-                return supplier.get();
-            }
-        }
-        return new ItemStack(Blocks.cobblestone);
-    }
-
     public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
         if (output == null) {
             return Optional.empty();
@@ -3703,9 +3679,11 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -3775,9 +3753,11 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -4605,13 +4585,13 @@ public class GTUtility {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
                 amountText + EnumChatFormatting.GOLD
-                    + formatNumbers(amount)
+                    + formatNumber(amount)
                     + (isLiquid ? "L" : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perTickText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perTick))
+                    + formatNumber(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4624,7 +4604,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perSecond))
+                    + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
                     + (perSecond > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4637,7 +4617,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perMinute))
+                    + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
                     + (perMinute > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4650,7 +4630,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perHour))
+                    + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
                     + (perHour > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
@@ -4663,7 +4643,7 @@ public class GTUtility {
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
-                    + formatNumbers(roundNumber.apply(perDay))
+                    + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
                     + (perDay > 1_000_000
                         ? EnumChatFormatting.WHITE + " ["
