@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -190,6 +192,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
     protected ToggleButton createPowerSwitchButton() {
         return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity)
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .marginTop(this.doesAddSpecialSlot() ? 0 : 4);
     }
 
@@ -204,7 +207,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
     }
 
     protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
-        return CommonWidgets.createCircuitSlot(syncManager, machine);
+        return CommonWidgets.createCircuitSlot(syncManager, machine)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     protected ToggleButton createMufflerButton() {
