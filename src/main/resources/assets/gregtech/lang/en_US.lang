@@ -94,10 +94,9 @@ gt.crop.withereed.name=Withereed
 gt.crop.zomplant.name=Zomplant
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
-gt.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
-gt.tileentity.eup_amount=Amperage: §e%d§7
-gt.tileentity.eup_store=Capacity: §9%d§7 EU
+gt.tileentity.eup_in=Voltage IN:
+gt.tileentity.eup_out=Voltage OUT:
+gt.tileentity.eup_amount=Amperage:
 gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)
@@ -454,7 +453,6 @@ gtpp.material.Lutetium=Lutetium
 gtpp.material.Magic=Magic
 gtpp.material.Magnesium=Magnesium
 gtpp.material.Manganese=Manganese
-gtpp.material.ManureByproduct=Manure Byproduct
 gtpp.material.MaragingSteel250=Maraging Steel 250
 gtpp.material.MaragingSteel300=Maraging Steel 300
 gtpp.material.MaragingSteel350=Maraging Steel 350
@@ -698,15 +696,6 @@ GTPP.algae.green_algae.name=Green Algae
 GTPP.algae.red_algae.name=Red Algae
 GTPP.algae.brown_algae.name=Brown Algae
 GTPP.algae.yellow-green_algae.name=Yellow-Green Algae
-
-GTPP.algae.tooltip.requires_light=Requires Light: %s
-GTPP.algae.tooltip.salt_water=Salt Water: %s
-GTPP.algae.tooltip.fresh_water=Fresh Water: %s
-GTPP.algae.tooltip.temp_tolerance=Temperature Tolerance: %d
-GTPP.algae.tooltip.growth=Growth: %d
-GTPP.algae.tooltip.production=Production: %d
-GTPP.algae.tooltip.lifespan=Lifespan in days: %d
-GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Open Power Goggles Config
@@ -1047,6 +1036,8 @@ gt.recipe.unpackager=Unpackager
 gt.recipe.unpackager.description=Grabs things out of Boxes
 gt.recipe.wiremill=Wiremill
 gt.recipe.wiremill.description=Produces Wires more efficiently
+gt.recipe.drawerframer=Drawer Framer
+gt.recipe.drawerframer.description=Frames drawers exactly like the Framing Table
 
 # RecipeMaps that are not listed on MachineType enum
 gt.recipe.fakeAssemblylineProcess=Assemblyline Process
@@ -1106,6 +1097,14 @@ gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
+GT5U.recipes.recipe_by.original=Original Recipe by: %s
+GT5U.recipes.recipe_by.modified=Modified by: %s
+GT5U.recipes.recipe_by=Original Recipe by: %s
+GT5U.recipes.not_consume=Does not get consumed in the process
+GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
+GT5U.recipes.chance.consume=Consume Chance: %s
+GT5U.recipes.chance.output=Output Chance: %s
+
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset=Work Area set to
@@ -1128,6 +1127,12 @@ GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.muffled=Sound Muffling
 GT5U.machines.muffled.on=Sound Muffling: §aEnabled§r
 GT5U.machines.muffled.off=Sound Muffling: §cDisabled§r
+GT5U.machines.MTETransformerHiAmp.descLn1=Transforms 4A to 16A
+GT5U.machines.MTETransformerHiAmp.descLn2=Toggle 2A/8A half-mode with Screwdriver
+GT5U.machines.MTETransformerHiAmp.descLn3=Accepts up to 6A (3A in half-mode) from energy network
+GT5U.machines.MTETransformerWet.descLn1=Transforms 16A to 64A
+GT5U.machines.MTETransformerWet.descLn2=Toggle 8A/32A half-mode with Screwdriver
+GT5U.machines.MTETransformerWet.descLn3=Accepts up to 20A (10A in half-mode) from energy network
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
@@ -1294,6 +1299,7 @@ GT5U.machines.invert_redstone.tooltip=Invert redstone
 GT5U.machines.buffer_stocking_mode.tooltip=Enable stocking mode
 GT5U.machines.buffer_stocking_mode.tooltip.extended=§7Keeps this many items in destination rather than transfer items in batches of this amount.
 GT5U.machines.buffer_stocking_mode.tooltip.extended.1=§7This mode can be server unfriendly.
+GT5U.machines.target_stack_size.tooltip=Target stack size
 GT5U.machines.sorting_mode.tooltip=Sort stacks
 GT5U.machines.one_stack_limit.tooltip=Limit insertion
 GT5U.machines.one_stack_limit.tooltip.extended=§7Up to 1 stack of each item can be inserted
@@ -1302,6 +1308,7 @@ GT5U.machines.allow_nbt.tooltip=Allow items with NBT
 GT5U.machines.allow_nbt.tooltip.extended=§7By default, all items with NBT are blocked.
 GT5U.machines.ignore_nbt.tooltip=Ignore item NBT
 GT5U.machines.ignore_nbt.tooltip.extended=§7By default, item NBT must match.
+GT5U.machines.item_distributor.distribution.tooltip=Items per side
 GT5U.machines.stocking_bus.cannot_set_slot=§8Cannot set slot while auto-pull mode is enabled
 GT5U.machines.stocking_bus.auto_pull.tooltip.1=Click to toggle automatic item pulling from ME.
 GT5U.machines.stocking_bus.auto_pull.tooltip.2=Right-Click to edit additional parameters.
@@ -1582,7 +1589,8 @@ GT5U.gui.hoverable.error=ERROR! REPORT ME!
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
 GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
-GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
+GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal
+GT5U.gui.config.client.color_modulation.gui_metal=Gui Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
 GT5U.gui.config.client.blockoverlay=GT Tool Block Overlay
@@ -1840,6 +1848,13 @@ GT5U.hatch.fluid.filter.enable=Fluid output filter set to: %s
 GT5U.hatch.item.filter.enable=Item output filter set to: %s
 GT5U.hatch.fluid.filter.disable=Fluid output filtering disabled
 GT5U.hatch.item.filter.disable=Item output filtering disabled
+GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
+GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
+GT5U.hatch.outputme.checkMode.desc=NOTE: Check Mode checks whether there is enough space for the output, resulting in more lag.
+GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
+GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
+GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
+GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
@@ -2216,8 +2231,14 @@ GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
 GT5U.waila.hatch.crafting_input_slave.linked=Linked
 GT5U.waila.hatch.crafting_input_slave.unlinked=Not linked
 GT5U.waila.hatch.crafting_input_slave.bound_to=Bound to %d, %d, %d
-GT5U.waila.hatch.output_bus_me.item_cache_capacity=Item cache capacity: %s%s%s
-GT5U.waila.hatch.output_me.fluid_cache_capacity=Fluid cache capacity: %s%s L%s
+GT5U.waila.hatch.outputme.item_cache_capacity=Item cache capacity: §e%s§r
+GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
+GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
+GT5U.waila.hatch.outputme.item_cache_detail=The bus contains §6%d§r cached stack%s:
+GT5U.waila.hatch.outputme.item_cache_detail.more=§oAnd %d more...
+GT5U.waila.hatch.outputme.fluid_cache_empty=This hatch has no cached fluids
+GT5U.waila.hatch.outputme.fluid_cache_detail=The hatch contains §6%d§r cached fluid%s:
+GT5U.waila.hatch.outputme.fluid_cache_detail.more=§oAnd %d more...
 GT5U.waila.industrial_apiary.current_queen=Current Queen: %s
 GT5U.waila.industrial_apiary.effective_production=Effective Production: %s
 GT5U.waila.industrial_apiary.error=Error: %s
@@ -3215,10 +3236,16 @@ gt.time.tick.plural=ticks
 gt.time.second.singular=second
 gt.time.second.plural=seconds
 
+# Tooltips for GT Tools
+gt.softmallet.tooltip=Activates and Deactivates Machines
+gt.softmallet.tooltip.mode=Mode Cycles Between Toggle/Activate/Deactivate
+
 #Tool modes
 key.gt.tool_mode_switch=Tool Mode Switch
 gt.wrench.mode.1=Line Mode
 gt.wrench.mode.2=Precise Mode
+gt.softmallet.mode.1=Activation Mode
+gt.softmallet.mode.2=Deactivation Mode
 
 # Tooltip for vajra
 gt.vajra.tooltip.flavor=Your friendly instant block breaker

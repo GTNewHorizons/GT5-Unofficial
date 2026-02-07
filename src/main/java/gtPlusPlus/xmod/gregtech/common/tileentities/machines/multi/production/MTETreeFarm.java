@@ -805,6 +805,9 @@ public class MTETreeFarm extends GTPPMultiBlockBase<MTETreeFarm> implements ISur
                 null,
                 null,
                 null,
+                null,
+                null,
+                null,
                 TICKS_PER_OPERATION,
                 0,
                 recipeCount, // special value, also sorts recipes correctly in order of addition.

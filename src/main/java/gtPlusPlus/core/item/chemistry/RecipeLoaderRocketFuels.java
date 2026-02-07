@@ -186,11 +186,13 @@ public class RecipeLoaderRocketFuels {
     private static void addFuelRecipe(Fluid fluid, int fuelValue) {
         GTPPRecipeMaps.rocketFuels.add(
             new GTRecipe(
-                true,
                 GTValues.emptyItemStackArray,
                 GTValues.emptyItemStackArray,
                 null,
-                GTValues.emptyIntArray,
+                null,
+                null,
+                null,
+                null,
                 new FluidStack[] { new FluidStack(fluid, 1000) },
                 GTValues.emptyFluidStackArray,
                 0,
