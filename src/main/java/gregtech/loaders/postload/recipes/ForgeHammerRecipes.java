@@ -16,6 +16,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class ForgeHammerRecipes implements Runnable {
@@ -27,70 +28,70 @@ public class ForgeHammerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.stonebrick, 1, 0))
             .itemOutputs(new ItemStack(Blocks.stonebrick, 1, 2))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.stone, 1, 0))
             .itemOutputs(new ItemStack(Blocks.cobblestone, 1, 0))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cobblestone, 1, 0))
             .itemOutputs(new ItemStack(Blocks.gravel, 1, 0))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.gravel, 1, 0))
             .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.sandstone, 1, 32767))
             .itemOutputs(new ItemStack(Blocks.sand, 1, 0))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.ice, 1, 0))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 1))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.packed_ice, 1, 0))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ice, 2))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.brick_block, 1, 0))
             .itemOutputs(new ItemStack(Items.brick, 3, 0))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.nether_brick, 1, 0))
             .itemOutputs(new ItemStack(Items.netherbrick, 3, 0))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.stained_glass, 1, 32767))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 1))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -104,35 +105,35 @@ public class ForgeHammerRecipes implements Runnable {
             .itemInputs(new ItemStack(Blocks.stained_glass_pane, 1, 32767))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.glass_pane, 1, 32767))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Brick.getIngots(1))
             .itemOutputs(Materials.Brick.getDustSmall(1))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Firebrick.get(1))
             .itemOutputs(Materials.Fireclay.getDust(1))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Firebricks.get(1))
             .itemOutputs(ItemList.Firebrick.get(3))
             .duration(10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         if (HardcoreEnderExpansion.isModLoaded()) {

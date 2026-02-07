@@ -349,7 +349,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Centrifuge1.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -374,7 +374,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CokeOven.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Heat Resistant Coke Oven Casing
@@ -407,7 +407,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Electrolyzer.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Electrolyzer
@@ -434,7 +434,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MaterialPress.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Material Press
@@ -463,7 +463,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MacerationStack.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Maceration Stack
@@ -494,7 +494,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WireFactory.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Wire Factory
@@ -525,7 +525,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.INCONEL_690.getFrameBox(1))
             .itemOutputs(GregtechItemList.Casing_MatterFab.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Matter Generation Coil
@@ -544,7 +544,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MatterGen.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Research on Containment Fields
@@ -606,7 +606,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Sifter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Sieve Grate
@@ -622,7 +622,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_SifterGrate.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -640,7 +640,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_ThermalCentrifuge.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Large Thermal Refinery
@@ -666,7 +666,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WashPlant.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Ore Washing Plant
@@ -692,7 +692,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CuttingFactoryFrame.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Cutting Factory
@@ -717,7 +717,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Extruder.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Extrusion Machine
@@ -772,7 +772,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Adv_BlastFurnace.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Volcanus
@@ -799,7 +799,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -828,7 +828,7 @@ public class RecipesMachinesMulti {
                 ItemList.Conveyor_Module_HV.get(1))
             .itemOutputs(GregtechItemList.Casing_AmazonWarehouse.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Amazon Warehousing Depot
@@ -860,7 +860,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Multi_Use.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 

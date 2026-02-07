@@ -126,7 +126,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2))
             .itemOutputs(ItemList.Distillation_Tower.get(1))
             .duration(10 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
 
         GTValues.RA.stdBuilder()

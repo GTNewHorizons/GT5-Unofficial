@@ -32,7 +32,7 @@ public class AutoclaveRecipes implements Runnable {
             .outputChances(10000)
             .fluidInputs(Materials.EnergeticAlloy.getMolten(2 * INGOTS))
             .duration(30 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
@@ -41,7 +41,7 @@ public class AutoclaveRecipes implements Runnable {
             .outputChances(10000)
             .fluidInputs(Materials.ConductiveIron.getMolten(4 * INGOTS))
             .duration(60 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
 
         final ItemStack certusQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0);

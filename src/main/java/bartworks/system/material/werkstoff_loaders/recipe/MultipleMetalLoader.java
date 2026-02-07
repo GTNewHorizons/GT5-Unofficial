@@ -22,6 +22,7 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
@@ -39,7 +40,7 @@ public class MultipleMetalLoader implements IWerkstoffRunnable {
                 .circuit(2)
                 .itemOutputs(werkstoff.get(plateDouble))
                 .duration(duration)
-                .eut(60)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(benderRecipes);
 
             CoverRegistry.registerDecorativeCover(

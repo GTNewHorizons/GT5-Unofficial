@@ -99,7 +99,7 @@ public class RecipeLoaderRocketFuels {
             .fluidInputs(Materials.Hydrogen.getGas(2_000), new FluidStack(GTPPFluids.Hydrazine, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Monomethylhydrazine, 1_000))
             .duration(48 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
     }
@@ -207,7 +207,7 @@ public class RecipeLoaderRocketFuels {
             .fluidInputs(Materials.LiquidOxygen.getGas(2_000), new FluidStack(GTPPFluids.RP1, 500))
             .fluidOutputs(new FluidStack(GTPPFluids.RP1RocketFuel, 1_500))
             .duration(15 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
 
@@ -217,7 +217,7 @@ public class RecipeLoaderRocketFuels {
             .fluidInputs(new FluidStack(GTPPFluids.Hydrazine, 4_000), Materials.Methanol.getFluid(6_000))
             .fluidOutputs(new FluidStack(GTPPFluids.DenseHydrazineFuelMixture, 10_000))
             .duration(30 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 4)
             .addTo(chemicalPlantRecipes);
 

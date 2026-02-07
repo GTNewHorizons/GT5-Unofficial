@@ -335,7 +335,7 @@ public class CircuitImprintLoader {
             .itemInputs(GTModHandler.getIC2Item("electronicCircuit", 1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_ElectronicCircuit.get(1))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
@@ -351,7 +351,7 @@ public class CircuitImprintLoader {
             .itemInputs(ItemList.Circuit_Basic.get(1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
@@ -375,7 +375,7 @@ public class CircuitImprintLoader {
             .itemInputs(ItemList.Circuit_Processor.get(1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_IntegratedProcessor.get(1))
             .duration(15 * SECONDS)
-            .eut(60)
+            .eut(TierEU.RECIPE_MV / 2)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 

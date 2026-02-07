@@ -8,6 +8,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class PackagerRecipes implements Runnable {
@@ -20,7 +21,7 @@ public class PackagerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1L))
             .itemOutputs(ItemList.Tool_MatchBox_Full.get(1L))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -36,7 +37,7 @@ public class PackagerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Paper, 1))
             .itemOutputs(ItemList.Food_Packaged_Fries.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -45,7 +46,7 @@ public class PackagerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1))
             .itemOutputs(ItemList.Food_Packaged_PotatoChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -54,7 +55,7 @@ public class PackagerRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1))
             .itemOutputs(ItemList.Food_Packaged_ChiliChips.get(1))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(packagerRecipes);
     }
 }

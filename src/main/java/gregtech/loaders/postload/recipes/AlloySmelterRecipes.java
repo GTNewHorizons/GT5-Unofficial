@@ -10,6 +10,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -72,14 +73,14 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(ingot1, dust2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                     if (ingot2 != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
                             .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
+                            .eut(TierEU.RECIPE_LV / 2)
                             .addTo(alloySmelterRecipes);
                     }
                 }
@@ -89,7 +90,7 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(dust1, ingot2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                 }
 
@@ -97,7 +98,7 @@ public class AlloySmelterRecipes implements Runnable {
                     .itemInputs(dust1, dust2)
                     .itemOutputs(outputIngot)
                     .duration((int) materials[2].mAmount * 50)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(alloySmelterRecipes);
 
             }

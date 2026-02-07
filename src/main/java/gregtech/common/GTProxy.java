@@ -2303,7 +2303,7 @@ public class GTProxy implements IFuelHandler {
                 .fluidInputs(new FluidStack(uncrackedFluid, 1000), Materials.Hydrogen.getGas(hydrogenAmount * 800))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1000))
                 .duration((1 + i) * SECONDS)
-                .eut(240)
+                .eut(TierEU.RECIPE_HV / 2)
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
@@ -2365,7 +2365,7 @@ public class GTProxy implements IFuelHandler {
                 .fluidInputs(new FluidStack(uncrackedFluid, 1_000), Materials.Steam.getGas(1_000))
                 .fluidOutputs(new FluidStack(crackedFluids[i], 1_200))
                 .duration((1 + i) * SECONDS)
-                .eut(240)
+                .eut(TierEU.RECIPE_HV / 2)
                 .addTo(crackingRecipes);
 
             GTValues.RA.stdBuilder()
