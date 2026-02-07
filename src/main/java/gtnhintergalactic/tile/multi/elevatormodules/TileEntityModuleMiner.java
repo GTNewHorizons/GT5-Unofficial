@@ -312,12 +312,52 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
 
     @Override
     public void saveParameters(NBTTagCompound nbt) {
-
+        nbt.setInteger(DISTANCE_PARAMETER, (int) parameterMap.get(DISTANCE_PARAMETER).getValue());
+        nbt.setInteger(PARALLEL_PARAMETER, (int) parameterMap.get(PARALLEL_PARAMETER).getValue());
+        nbt.setBoolean(CYCLE_PARAMETER, (boolean) parameterMap.get(CYCLE_PARAMETER).getValue());
+        nbt.setInteger(RANGE_PARAMETER, (int) parameterMap.get(RANGE_PARAMETER).getValue());
+        nbt.setInteger(STEP_PARAMETER, (int) parameterMap.get(STEP_PARAMETER).getValue());
+        nbt.setInteger(CYCLE_DISTANCE_PARAMETER, (int) parameterMap.get(CYCLE_DISTANCE_PARAMETER).getValue());
     }
 
     @Override
     public void loadParameters(NBTTagCompound nbt) {
+        if (!nbt.hasKey(DISTANCE_PARAMETER)) {
+            loadLegacyParameters(nbt);
+            return;
+        }
 
+        ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER))
+            .setValue(nbt.getInteger(DISTANCE_PARAMETER));
+        ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER))
+            .setValue(nbt.getInteger(PARALLEL_PARAMETER));
+        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER))
+            .setValue(nbt.getBoolean(CYCLE_PARAMETER));
+        ((IntegerParameter) parameterMap.get(RANGE_PARAMETER))
+            .setValue(nbt.getInteger(RANGE_PARAMETER));
+        ((IntegerParameter) parameterMap.get(STEP_PARAMETER))
+            .setValue(nbt.getInteger(STEP_PARAMETER));
+        ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
+            .setValue(nbt.getInteger(CYCLE_DISTANCE_PARAMETER));
+    }
+
+    private void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound legacyInput0 = nbt.getCompoundTag("eParamsInD");
+        NBTTagCompound legacyInput1 = nbt.getCompoundTag("eParamsInS");
+        NBTTagCompound legacyOutput1 = nbt.getCompoundTag("eParamsOutS");
+
+        ((IntegerParameter) parameterMap.get(DISTANCE_PARAMETER))
+            .setValue((int) legacyInput0.getDouble(String.valueOf(0)));
+        ((IntegerParameter) parameterMap.get(PARALLEL_PARAMETER))
+            .setValue((int) legacyInput1.getDouble(String.valueOf(0)));
+        ((BooleanParameter) parameterMap.get(CYCLE_PARAMETER))
+            .setValue(legacyInput0.getDouble(String.valueOf(2)) != 0);
+        ((IntegerParameter) parameterMap.get(RANGE_PARAMETER))
+            .setValue((int) legacyInput1.getDouble(String.valueOf(2)));
+        ((IntegerParameter) parameterMap.get(STEP_PARAMETER))
+            .setValue((int) legacyInput0.getDouble(String.valueOf(3)));
+        ((IntegerParameter) parameterMap.get(CYCLE_DISTANCE_PARAMETER))
+            .setValue((int) legacyOutput1.getDouble(String.valueOf(0)));
     }
 
     @Override
