@@ -19,7 +19,6 @@ import gtPlusPlus.core.block.machine.BlockCircuitProgrammer;
 import gtPlusPlus.core.block.machine.BlockDecayablesChest;
 import gtPlusPlus.core.block.machine.BlockFishTrap;
 import gtPlusPlus.core.block.machine.BlockFlaskSetter;
-import gtPlusPlus.core.block.machine.BlockPestKiller;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -71,7 +70,6 @@ public final class ModBlocks {
         GregtechItemList.WitherGuard.set(new ItemStack(new BlockWitherProof()));
         blockCircuitProgrammer = new BlockCircuitProgrammer();
         blockDecayablesChest = new BlockDecayablesChest();
-        GregtechItemList.PestKiller.set(new ItemStack(new BlockPestKiller()));
         blockVolumetricFlaskSetter = new BlockFlaskSetter();
 
         // Compressed Blocks

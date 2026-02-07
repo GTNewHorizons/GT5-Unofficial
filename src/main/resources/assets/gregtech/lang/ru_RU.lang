@@ -621,11 +621,6 @@ GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
 GTPP.tooltip.decayables_chest.2=Place with right-click
 
-# Butterfly Killer
-GTPP.tooltip.butterfly_killer.0=Убивает бабочек, летучих мышей и других вредителей в лесу
-GTPP.tooltip.butterfly_killer.1=Используйте Формальдегид или Синильную кислоту
-GTPP.tooltip.butterfly_killer.2=Будьте терпеливы к своим соседям
-
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Простая конфигурация колбы
 GTPP.tooltip.volumetric_flask_setter.1=Настройте входной слот по умолчанию с помощью отвертки

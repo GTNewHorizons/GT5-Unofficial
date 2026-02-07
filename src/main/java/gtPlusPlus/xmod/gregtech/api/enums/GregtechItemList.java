@@ -878,7 +878,6 @@ public enum GregtechItemList implements IItemContainer {
     AlkalusDisk,
     WitherGuard,
     MagicFeather,
-    PestKiller,
     FishTrap,
 
     // ----------------------------------------------------------------------------

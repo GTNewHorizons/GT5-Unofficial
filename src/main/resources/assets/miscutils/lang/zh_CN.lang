@@ -2925,9 +2925,6 @@ item.GTPP.bauble.fireprotection.0.name=超级披萨手套
 item.itemCellSeleniumDioxide.name=二氧化硒单元
 item.itemCellSeleniousAcid.name=亚硒酸单元
 
-//Added 25/7/19
-container.pestkiller=害虫杀手
-
 //Added 15/8/19
 gtpp.nei.decayables=可衰变箱子(铅封盒)
 entity.batKing.name=蝙蝠之王
