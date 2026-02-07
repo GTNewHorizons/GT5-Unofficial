@@ -76,7 +76,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected ParentWidget<?> createTerminalParentWidget(ModularPanel panel, PanelSyncManager syncManager) {
         // initializes the panel so that it can be called in the gregos text response system.
-        syncManager.panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(panel), true);
+        syncManager
+            .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(panel));
         textList.setEnabledIf(a -> multiblock.isTalkModeActive)
             .childSeparator(
                 IDrawable.EMPTY.asIcon()
@@ -163,7 +164,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler infoPanel = syncManager
-            .panel("infoPanel", (p_syncManager, syncHandler) -> openInfoPanel(parent), true);
+            .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
 
         return new ButtonWidget<>().size(24)
             .marginTop(4)
@@ -641,7 +642,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
             case "help" -> "List of commands: contributors, info, gregos, joke, nac, clear";
             case "info" -> {
                 IPanelHandler infoPanel = syncManager
-                    .panel("infoPanel", (p_syncManager, syncHandler) -> openInfoPanel(parent), true);
+                    .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
                 if (!infoPanel.isPanelOpen()) {
                     infoPanel.openPanel();
                     yield "Opening Info Panel...";
@@ -651,8 +652,10 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                 }
             }
             case "contributors" -> {
-                IPanelHandler contribPanel = syncManager
-                    .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
+                IPanelHandler contribPanel = syncManager.syncedPanel(
+                    "contributorsPanel",
+                    true,
+                    (p_syncManager, syncHandler) -> openContributorsPanel(parent));
                 if (!contribPanel.isPanelOpen()) {
                     contribPanel.openPanel();
                     yield "Opening Contributors Panel...";
