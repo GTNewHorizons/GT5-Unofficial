@@ -12,8 +12,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
-import net.minecraftforge.client.model.IModelCustom;
 
 import org.joml.Matrix4fStack;
 import org.joml.Vector3f;
@@ -27,7 +25,9 @@ import org.lwjgl.opengl.GL20;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 
+import gregtech.common.GTClient;
 import tectech.Reference;
+import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsStructureString;
 import tectech.util.StructureVBO;
@@ -36,8 +36,6 @@ import tectech.util.TextureUpdateRequester;
 public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     private static ShaderProgram starProgram;
-    private static IModelCustom starModel;
-    private static final float modelNormalize = .0067f * 2;
 
     private static boolean initialized = false;
     private static boolean failedInit = false;
@@ -86,8 +84,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             System.out.println(e.getMessage());
             return;
         }
-
-        starModel = AdvancedModelLoader.loadModel(new ResourceLocation(Reference.MODID, "models/Star.obj"));
 
         try {
             beamProgram = new ShaderProgram(
@@ -171,18 +167,18 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
      * for setting all that up beforehand. We're doing it this way to batch the state
      * changes and improve performance.
      */
-    public void RenderStarLayer(Vector4f color, ResourceLocation texture, float size, Vector3f rotationAxis,
+    public void RenderStarLayer(Vector4f color, ResourceLocation texture, float userScaleFactor, Vector3f rotationAxis,
         float degrees) {
         starModelMatrix.pushMatrix();
         starModelMatrix.rotate((degrees / 180f * (float) Math.PI), rotationAxis.x, rotationAxis.y, rotationAxis.z);
-        starModelMatrix.scale(size, size, size);
+        starModelMatrix.scale(userScaleFactor, userScaleFactor, userScaleFactor);
 
         this.bindTexture(texture);
 
         matrixBuffer.clear();
         GL20.glUniformMatrix4(u_ModelMatrix, false, starModelMatrix.get(matrixBuffer));
         GL20.glUniform4f(u_Color, color.x, color.y, color.z, color.w);
-        starModel.renderAll();
+        EOHRenderingUtils.renderTessellatedSphere(128, 128, 1);
 
         starModelMatrix.popMatrix();
     }
@@ -198,11 +194,8 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         float cx = (float) x + .5f;
         float cy = (float) y + .5f;
         float cz = (float) z + .5f;
-        float size = modelNormalize;
         starModelMatrix.clear();
         starModelMatrix.translate(cx, cy, cz);
-
-        size *= tile.getStarRadius();
 
         timer *= tile.getRotationSpeed();
 
@@ -213,7 +206,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 1f),
             STAR_LAYER_0,
-            size,
+            tile.getStarRadius(),
             reusableRotationAxis.set(0F, 1F, 1F)
                 .normalize(),
             130 + (timer) % 360000);
@@ -228,14 +221,14 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 0.4f),
             STAR_LAYER_1,
-            size * 1.02f,
+            tile.getStarRadius() * 1.02f,
             reusableRotationAxis.set(1F, 1F, 0F)
                 .normalize(),
             -49 + (timer) % 360000);
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 0.2f),
             STAR_LAYER_2,
-            size * 1.04f,
+            tile.getStarRadius() * 1.04f,
             reusableRotationAxis.set(1F, 0F, 1F)
                 .normalize(),
             67 + (timer) % 360000);
@@ -388,8 +381,15 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glPopAttrib();
     }
 
-    private void RenderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_COLOR_BUFFER_BIT);
+    private void renderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        // Critical: Rings must participate in depth properly
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -401,9 +401,9 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glRotatef(tile.getRotAngle(), tile.getRotAxisX(), tile.getRotAxisY(), tile.getRotAxisZ());
         GL11.glRotatef(timer / 6 * 7, 1, 0, 0);
         GL11.glTranslated(ringOneNudge.x, ringOneNudge.y, ringOneNudge.z);
-
         ringOne.render();
         GL11.glPopMatrix();
+
         if (tile.getRingCount() > 1) {
             GL11.glPushMatrix();
             GL11.glTranslated(x + .5f, y + .5f, z + .5f);
@@ -423,6 +423,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
                 GL11.glPopMatrix();
             }
         }
+
         ShaderProgram.clear();
         GL11.glPopAttrib();
     }
@@ -433,7 +434,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         if (!(tile instanceof TileEntityForgeOfGods forgeTile)) return;
         if (forgeTile.getRingCount() < 1) return;
 
-        // If something ever fails, just early return and never try again this session
         if (!initialized) {
             init();
             if (!initialized) {
@@ -449,12 +449,6 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             }
         }
 
-        // Based on system time to prevent tps issues from causing stutters
-        // Need to look into different timing system to prevent stutters based on tps issues
-        // But prevent bypassing the pause menu
-        long millis = System.currentTimeMillis() % (1000 * 36000);
-        float timer = millis / (50f); // to ticks
-
         forgeTile.incrementColors();
 
         boolean needsBeamUpdate = false;
@@ -464,24 +458,106 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             this.cachedRingCount = forgeTile.getRingCount();
         }
 
-        RenderEntireStar(forgeTile, x, y, z, timer);
-        RenderRings(forgeTile, x, y, z, timer);
+        float timer = GTClient.getAnimationRenderTicks();
 
+        // Correct order for transparency/depth:
+        // 1) Opaque star writes depth
+        renderStarOpaquePass(forgeTile, x, y, z, timer);
+
+        // 2) Rings render next and write depth
+        renderRings(forgeTile, x, y, z, timer);
+
+        // 3) Transparent star shells render last and blend correctly (no depth write)
+        renderStarTransparentPass(forgeTile, x, y, z, timer);
+
+        // Beam last
         RenderBeamSegment(forgeTile, x, y, z, timer, needsBeamUpdate);
-
     }
 
-    public static void enablePseudoTransparentColorInversion() {
-        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glLogicOp(GL11.GL_OR_INVERTED);
+    private void renderStarOpaquePass(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_BLEND);
+
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+
+        starProgram.use();
+
+        float cx = (float) x + .5f;
+        float cy = (float) y + .5f;
+        float cz = (float) z + .5f;
+
+        starModelMatrix.clear();
+        starModelMatrix.translate(cx, cy, cz);
+
+        timer *= tile.getRotationSpeed();
+
+        float r = tile.getColorR(), g = tile.getColorG(), b = tile.getColorB();
+        GL20.glUniform1f(u_Gamma, tile.getGamma());
+
+        // Render OPAQUE layer (writes to depth)
+        RenderStarLayer(
+            reusableStarColor.set(r, g, b, 1f),
+            STAR_LAYER_0,
+            tile.getStarRadius(),
+            reusableRotationAxis.set(0F, 1F, 1F)
+                .normalize(),
+            130 + (timer) % 360000);
+
+        ShaderProgram.clear();
+        GL11.glPopAttrib();
     }
 
-    public static void enableOpaqueColorInversion() {
-        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glLogicOp(GL11.GL_COPY_INVERTED);
-    }
+    private void renderStarTransparentPass(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
-    public static void disableOpaqueColorInversion() {
-        GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
+        GL11.glDisable(GL11.GL_LIGHTING);
+
+        // Transparent shells should depth-test but not write depth
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(false);
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+
+        starProgram.use();
+
+        float cx = (float) x + .5f;
+        float cy = (float) y + .5f;
+        float cz = (float) z + .5f;
+
+        starModelMatrix.clear();
+        starModelMatrix.translate(cx, cy, cz);
+
+        timer *= tile.getRotationSpeed();
+
+        float r = tile.getColorR(), g = tile.getColorG(), b = tile.getColorB();
+        GL20.glUniform1f(u_Gamma, tile.getGamma());
+
+        // Render TRANSPARENT layers last, so they correctly blend over rings when in front
+        RenderStarLayer(
+            reusableStarColor.set(r, g, b, 0.4f),
+            STAR_LAYER_1,
+            tile.getStarRadius() * 1.02f,
+            reusableRotationAxis.set(1F, 1F, 0F)
+                .normalize(),
+            -49 + (timer) % 360000);
+
+        RenderStarLayer(
+            reusableStarColor.set(r, g, b, 0.2f),
+            STAR_LAYER_2,
+            tile.getStarRadius() * 1.04f,
+            reusableRotationAxis.set(1F, 0F, 1F)
+                .normalize(),
+            67 + (timer) % 360000);
+
+        ShaderProgram.clear();
+        GL11.glPopAttrib();
     }
 }

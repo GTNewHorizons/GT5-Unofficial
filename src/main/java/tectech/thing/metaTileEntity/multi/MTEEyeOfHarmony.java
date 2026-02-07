@@ -1428,11 +1428,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         int recipeSpacetimeTier = (int) currentRecipe.getSpacetimeCasingTierRequired();
 
         // Star is a larger size depending on the spacetime tier of the recipe.
-        rendererTileEntity.setSize((1 + recipeSpacetimeTier));
-
-        // Star rotates faster the higher tier time dilation you use in the multi.
-        // Lower value = faster rotation speed.
-        rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata) / 2.0f);
+        rendererTileEntity.setStarSize(0.4 + recipeSpacetimeTier / 8.0);
     }
 
     private double successChance;
