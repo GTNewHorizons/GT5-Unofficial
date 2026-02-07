@@ -55,7 +55,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler infoPanel = syncManager
-            .panel("infoPanel", (p_syncManager, syncHandler) -> openInfoPanel(parent), true);
+            .syncedPanel("infoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel(parent));
 
         return new ButtonWidget<>().size(24)
             .marginTop(4)
