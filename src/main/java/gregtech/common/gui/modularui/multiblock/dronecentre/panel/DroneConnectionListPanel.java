@@ -324,6 +324,7 @@ public class DroneConnectionListPanel extends ModularPanel {
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
             .background(IDrawable.EMPTY)
+            .tooltipBuilder(var -> var.add(IKey.lang("GT5U.gui.button.drone_select_group")))
             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
             .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
     }
