@@ -58,30 +58,27 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        ParentWidget<?> contentSection = super.createContentSection(panel, syncManager);
-        contentSection.child(createChargerSlot().align(Alignment.BottomCenter));
-        contentSection.child(
-            createItemRecipeArea().alignX(Alignment.CENTER)
-                .alignY(0.2f));
-        return contentSection;
+        return super.createContentSection(panel, syncManager).child(createChargerSlot().align(Alignment.BottomCenter))
+            .child(
+                createItemRecipeArea().alignX(Alignment.CENTER)
+                    .alignY(0.2f));
     }
 
     protected Flow createItemRecipeArea() {
 
-        Flow itemRow = Flow.row()
+        return Flow.row()
             .width(18 * 8 + properties.progressBarWidthMUI2)
-            .coverChildrenHeight();
-
-        ParentWidget<?> inputSection = new ParentWidget<>().size(18 * 3);
-        inputSection.child(createItemInputSlots().align(Alignment.CenterRight)); // margins to position the widgets
-                                                                                 // correctly
-        ParentWidget<?> outputSection = new ParentWidget<>().size(18 * 3);
-        outputSection.child(createItemOutputSlots().align(Alignment.CenterLeft));
-        itemRow.child(inputSection.marginRight(19))
-            .child(createProgressBar().marginRight(15))
-            .child(outputSection);
-
-        return itemRow;
+            .coverChildrenHeight()
+            .child(
+                new ParentWidget<>().size(18 * 3)
+                    .marginRight(19)
+                    .child(createItemInputSlots().align(Alignment.CenterRight)))
+            .child(
+                createProgressBar().tooltipShowUpTimer(TOOLTIP_DELAY)
+                    .marginRight(15))
+            .child(
+                new ParentWidget<>().size(18 * 3)
+                    .child(createItemOutputSlots().align(Alignment.CenterLeft)));
     }
 
     @Override
@@ -89,7 +86,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         Flow cornerFlow = super.createLeftCornerFlow(panel, syncManager);
         if (machine.isSteampowered()) return cornerFlow;
 
-        cornerFlow
+        return cornerFlow
             .child(
                 createAutoOutputButton(
                     "itemAutoOutput",
@@ -99,28 +96,24 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 createAutoOutputButton(
                     "fluidAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
-                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP).marginRight(9));
-
-        cornerFlow.childIf(properties.maxFluidInputs > 0, createFluidInputSlot());
-
-        return cornerFlow;
+                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP).marginRight(9))
+            .childIf(properties.maxFluidInputs > 0, this::createFluidInputSlot);
     }
 
     @Override
     protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager)
-            .childIf(properties.maxFluidOutputs > 0, createFluidOutputSlot());
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return super.createLogo().marginLeft(2 + 18 + 9);
+        return super.createRightCornerFlow(panel, syncManager).childIf(
+            properties.maxFluidOutputs > 0,
+            () -> this.createFluidOutputSlot()
+                .marginRight(18 + 9));
+        // the fluid output slot is positioned under the first item output slot, which is 1.5 slots over in the gui.
     }
 
     protected ToggleButton createAutoOutputButton(String syncKey, UITexture overlay, String tooltipKey) {
         return new ToggleButton().size(18)
             .syncHandler(syncKey)
             .overlay(overlay)
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .tooltip(t -> t.addLine(GTUtility.translate(tooltipKey)));
     }
 
@@ -165,9 +158,9 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
     private void createTooltipForChargerSlot(RichTooltip tooltip) {
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"));
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName));
-        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
+        tooltip.addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip"))
+            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.1", tierName))
+            .addLine(GTUtility.translate("GT5U.machines.battery_slot.tooltip.2", tierName));
     }
 
     protected ProgressWidget createProgressBar() {
@@ -206,6 +199,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected FluidSlot createFluidInputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, false, false))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .syncHandler(machine.getFluidTank());
     }
 
@@ -229,6 +223,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
     protected FluidSlot createFluidOutputSlot() {
         return new FluidSlot().overlay(slotOverlayFunction.apply(0, true, true, false))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .syncHandler(new FluidSlotSyncHandler(machine.getFluidOutputTank()).canFillSlot(false));
     }
 
