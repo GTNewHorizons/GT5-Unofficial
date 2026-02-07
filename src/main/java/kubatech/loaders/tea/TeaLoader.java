@@ -71,6 +71,8 @@ public class TeaLoader {
     public static Tea WHITE_TEA;
     public static Tea YELLOW_TEA;
 
+    public static TeaTablet TABLET;
+
     public static void run() {
         Tea.init();
 
@@ -94,6 +96,9 @@ public class TeaLoader {
             .setCustomCup(WhiteTea.get(1L));
         YELLOW_TEA = Tea.createTea("yellow")
             .setCustomCup(YellowTea.get(1L));
+
+        TABLET = new TeaTablet();
+        GameRegistry.registerItem(TABLET, "tea_tablet");
 
         Tea.finish();
     }
