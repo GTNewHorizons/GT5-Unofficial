@@ -86,7 +86,8 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        IPanelHandler rulesPopup = syncManager.panel("popup", (m, h) -> createRuleManagerPanel(syncManager), true);
+        IPanelHandler rulesPopup = syncManager
+            .syncedPanel("popup", true, (m, h) -> createRuleManagerPanel(syncManager));
         return super.createRightPanelGapRow(parent, syncManager)
             .child(new ButtonWidget<>().onMousePressed(mouseButton -> {
                 if (!rulesPopup.isPanelOpen()) {

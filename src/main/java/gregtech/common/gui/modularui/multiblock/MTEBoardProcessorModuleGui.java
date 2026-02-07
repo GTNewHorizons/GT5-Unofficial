@@ -116,8 +116,10 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                     .collapseDisabledChild())
             .childIf(
                 multiblock.supportsTerminalRightCornerColumn(),
-                createTerminalRightCornerColumn(panel, syncManager))
-            .childIf(multiblock.supportsTerminalLeftCornerColumn(), createTerminalLeftCornerColumn(panel, syncManager))
+                () -> createTerminalRightCornerColumn(panel, syncManager))
+            .childIf(
+                multiblock.supportsTerminalLeftCornerColumn(),
+                () -> createTerminalLeftCornerColumn(panel, syncManager))
             .child(fluidSlot)
             .child(impurityFluidSlot);
     }
@@ -168,7 +170,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
 
     protected IWidget createAutomationButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler automationPanel = syncManager
-            .panel("automationPanel", (p_syncManager, syncHandler) -> openAutoPanel(parent, syncManager), true);
+            .syncedPanel("automationPanel", true, (p_syncManager, syncHandler) -> openAutoPanel(parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
             .onMousePressed(d -> {
