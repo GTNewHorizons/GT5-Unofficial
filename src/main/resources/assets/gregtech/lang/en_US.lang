@@ -1098,6 +1098,14 @@ gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
+GT5U.recipes.recipe_by.original=Original Recipe by: %s
+GT5U.recipes.recipe_by.modified=Modified by: %s
+GT5U.recipes.recipe_by=Original Recipe by: %s
+GT5U.recipes.not_consume=Does not get consumed in the process
+GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
+GT5U.recipes.chance.consume=Consume Chance: %s
+GT5U.recipes.chance.output=Output Chance: %s
+
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset=Work Area set to

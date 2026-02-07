@@ -56,7 +56,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.gui.modularui.multiblock.MTECokeOvenGUI;
+import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
@@ -153,8 +153,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    protected @NotNull MTECokeOvenGUI getGui() {
-        return new MTECokeOvenGUI(this);
+    protected @NotNull MTECokeOvenGui getGui() {
+        return new MTECokeOvenGui(this);
     }
 
     @Override
