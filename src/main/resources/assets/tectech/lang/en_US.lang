@@ -2005,6 +2005,8 @@ tt.infodata.tesla.current_output=Current Output: %s EU / %s EU
 tt.infodata.pipe.active=Active.
 tt.infodata.pipe.inactive=Not active.
 
+## Space Elevator
+tt.spaceelevator.storedEnergy=Stored Energy: %d
 # Space Miner
 tt.spaceminer.distance=Distance
 tt.spaceminer.parallel=Parallels
