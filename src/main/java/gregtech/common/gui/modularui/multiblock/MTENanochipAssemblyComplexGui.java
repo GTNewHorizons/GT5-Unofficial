@@ -699,7 +699,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     default -> "This time not a lie";
                 };
             case "6" -> "7";
-            case "joke" -> switch (MathUtils.randInt(1, 10)) {
+            case "joke" -> switch (MathUtils.randInt(1, 7)) {
                     case 1 -> "No time for jokes.";
                     case 2 -> "A rolling golem gathers no rust.";
                     case 3 -> "He was destroyed!";
@@ -707,7 +707,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     case 5 -> "I miss when waterline was bad";
                     case 6 -> "Waiter! Waiter! More lineslop please!";
                     case 7 -> "Don't even joke, lad.";
-                    default -> "lol what im a robot dawg wtf do i know";
+                    default -> "what if the world was made of pudding";
                 };
             case "why did the chicken cross the road" -> switch (MathUtils.randInt(1, 10)) {
                     case 1 -> "To get to the other side?";
