@@ -38,7 +38,8 @@ public class MTERadioHatchGui extends MTEHatchBaseGui<MTERadioHatch> {
 
     // credit to purebluez
     public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        IPanelHandler popupPanel = syncManager.syncedPanel("popup", true,(manager, handler) -> createShutterUI(syncManager));
+        IPanelHandler popupPanel = syncManager
+            .syncedPanel("popup", true, (manager, handler) -> createShutterUI(syncManager));
         syncManager.registerSlotGroup("item_inv", 1);
 
         IntSyncValue massSyncer = new IntSyncValue(hatch::getMass, value -> hatch.setMass((byte) value));
