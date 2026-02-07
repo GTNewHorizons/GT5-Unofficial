@@ -509,7 +509,8 @@ public class GTClient extends GTProxy {
             heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
 
             // Animation related bits need to cease when game is paused in singleplayer.
-            if (!Minecraft.getMinecraft().isGamePaused()) {
+            if (!Minecraft.getMinecraft()
+                .isGamePaused()) {
                 mAnimationTick++;
 
                 if (mAnimationTick % 50L == 0L) {
