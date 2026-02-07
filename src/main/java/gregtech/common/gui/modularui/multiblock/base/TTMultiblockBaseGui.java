@@ -60,7 +60,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .child(createPowerPassButton())
             .child(createEditParametersButton(panel, syncManager))
             .child(createPowerSwitchButton())
-            .childIf(multiblock.doesBindPlayerInventory(), createControllerSlot());
+            .childIf(multiblock.doesBindPlayerInventory(), this::createControllerSlot);
     }
 
     private IWidget createControllerSlot() {
@@ -106,7 +106,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
 
     protected IWidget createEditParametersButton(ModularPanel panel, PanelSyncManager syncManager) {
         IPanelHandler infoPanel = syncManager
-            .panel("info_panel", (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager), true);
+            .syncedPanel("info_panel", true, (p_syncManager, syncHandler) -> getParameterPanel(panel, p_syncManager));
         return new ButtonWidget<>().overlay(createEditParametersOverlay())
             .tooltipBuilder(t -> t.add("Edit Parameters"))
             .size(18, 18)
@@ -161,10 +161,10 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                 .width(100)
                 .marginBottom(2);
 
-            IPanelHandler editParameterPanel = syncManager.panel(
+            IPanelHandler editParameterPanel = syncManager.syncedPanel(
                 mapKey,
-                (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager, mapKey),
-                true);
+                true,
+                (s, h) -> openParameterEditPanel(parameterEditButton, parameter, syncManager, mapKey));
 
             column.child(parameterEditButton.onMousePressed(d -> {
                 if (!editParameterPanel.isPanelOpen()) {
