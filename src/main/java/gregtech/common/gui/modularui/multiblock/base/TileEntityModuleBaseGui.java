@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ListWidget;
 
+import gregtech.api.util.GTUtility;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTMultiblockBaseGui<T> {
@@ -23,7 +24,9 @@ public class TileEntityModuleBaseGui<T extends TileEntityModuleBase> extends TTM
         LongSyncValue euVarSyncer = new LongSyncValue(multiblock::getEUVar);
         syncManager.syncValue("euVar", euVarSyncer);
         return super.createTerminalTextWidget(syncManager, parent).child(
-            IKey.dynamic(() -> "Stored Energy: " + numberFormat.format(euVarSyncer.getValue()) + " EU")
+            IKey.dynamic(
+                () -> GTUtility
+                    .translate("tt.spaceelevator.storedEnergy", numberFormat.format(euVarSyncer.getValue()) + " EU"))
                 .asWidget()
                 .setEnabledIf(
                     w -> multiblock.getBaseMetaTileEntity()
