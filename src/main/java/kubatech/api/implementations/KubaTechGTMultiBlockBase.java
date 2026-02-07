@@ -327,4 +327,9 @@ public abstract class KubaTechGTMultiBlockBase<T extends MTEExtendedPowerMultiBl
         : GTUITextures.OVERLAY_BUTTON_CHECKMARK;
     protected static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> new IDrawable[] {
         val == 0 ? GTUITextures.BUTTON_STANDARD : GTUITextures.BUTTON_STANDARD_PRESSED };
+
+    @Override
+    public boolean supportsLogo() {
+        return false;
+    }
 }
