@@ -71,7 +71,7 @@ public class CoverWirelessMaintenenceDetectorGui
                     CoverWirelessMaintenanceDetector.MaintenanceMode.FOUR_ISSUES,
                     CoverWirelessMaintenanceDetector.MaintenanceMode.FIVE_ISSUES))
             .childIf(
-                usesTurbines,
+                usesTurbines, ()->
                 makeSyncedBoolRow(
                     maintenanceSync,
                     CoverWirelessMaintenanceDetector.MaintenanceMode.ROTOR_80,
