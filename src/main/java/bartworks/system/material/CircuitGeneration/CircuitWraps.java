@@ -125,8 +125,10 @@ public enum CircuitWraps {
         }
 
         String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
-        String wrapDisplayName = "Wrap of " + itemStack.getDisplayName() + (itemStack.getDisplayName().endsWith("s") ? "" : "s");
-        
+        String wrapDisplayName = "Wrap of " + itemStack.getDisplayName()
+            + (itemStack.getDisplayName()
+                .endsWith("s") ? "" : "s");
+
         // If you aren't using English, you probably already have translations for this item too.
         itemWrap.set(
             BWMetaItems.getCircuitParts()
