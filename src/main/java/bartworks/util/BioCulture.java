@@ -15,25 +15,19 @@ package bartworks.util;
 
 import java.awt.Color;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Objects;
 
+import bartworks.API.enums.BioCultureEnum;
+
+import gregtech.api.enums.VoltageIndex;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.util.GTLanguageManager;
 
 public class BioCulture extends BioData implements IColorModulationContainer {
-
-    public static final ArrayList<BioCulture> BIO_CULTURE_ARRAY_LIST = new ArrayList<>();
-    public static final BioCulture NULLCULTURE = BioCulture
-        .createAndRegisterBioCulture(Color.BLUE, "", BioPlasmid.NULLPLASMID, BioDNA.NULLDNA, false); // fallback
-                                                                                                     // NULL
-                                                                                                     // culture,
-                                                                                                     // also Blue =)
 
     public String getLocalisedName() {
         return GTLanguageManager.getTranslation(this.getName());
@@ -44,92 +38,48 @@ public class BioCulture extends BioData implements IColorModulationContainer {
     }
 
     Color color;
-    BioPlasmid plasmid;
-    BioDNA dDNA;
+    BioData plasmid;
+    BioData dDNA;
     boolean bBreedable;
     Fluid mFluid;
 
-    protected BioCulture(Color color, String name, int ID, BioPlasmid plasmid, BioDNA dDNA, EnumRarity rarity,
+    public BioCulture(BioCultureEnum culture){
+        super(culture.name, culture.id, culture.rarity, 75_00, VoltageIndex.ULV);
+        this.color = culture.color;
+        this.plasmid = culture.plasmid.getBioData();
+        this.dDNA = culture.dna.getBioData();
+        this.bBreedable = culture.breedable;
+    }
+
+    public BioCulture(Color color, String name, int ID, BioData plasmid, BioData dDNA, EnumRarity rarity,
         boolean bBreedable) {
-        super(name, ID, rarity);
+        super(name, ID, rarity, 75_00, VoltageIndex.ULV);
         this.color = color;
         this.plasmid = plasmid;
         this.dDNA = dDNA;
         this.bBreedable = bBreedable;
     }
 
-    protected BioCulture(Color color, String name, int ID, BioPlasmid plasmid, BioDNA dDNA) {
-        super(name, ID, dDNA.getRarity());
-        this.color = color;
-        this.plasmid = plasmid;
-        this.dDNA = dDNA;
-    }
-
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
-        EnumRarity rarity, boolean breedable) {
-        BioCulture ret = new BioCulture(color, name, BIO_CULTURE_ARRAY_LIST.size(), plasmid, dna, rarity, breedable);
-        BIO_CULTURE_ARRAY_LIST.add(ret);
-        return ret;
-    }
-
-    public static BioCulture createAndRegisterBioCulture(Color color, String name, BioPlasmid plasmid, BioDNA dna,
-        boolean breedable) {
-        BioCulture ret = new BioCulture(
-            color,
-            name,
-            BIO_CULTURE_ARRAY_LIST.size(),
-            plasmid,
-            dna,
-            dna.getRarity(),
-            breedable);
-        BIO_CULTURE_ARRAY_LIST.add(ret);
-        return ret;
-    }
-
     public static NBTTagCompound getNBTTagFromCulture(BioCulture bioCulture) {
-        if (bioCulture == null) return new NBTTagCompound();
+        String name = bioCulture != null ? bioCulture.name : BioCultureEnum.NullBioCulture.name;
         NBTTagCompound ret = new NBTTagCompound();
-        ret.setString("Name", bioCulture.name);
-        // ret.setInteger("ID", bioCulture.ID);
-        ret.setIntArray(
-            "Color",
-            new int[] { bioCulture.color.getRed(), bioCulture.color.getGreen(), bioCulture.color.getBlue() });
-        ret.setTag("Plasmid", BioData.getNBTTagFromBioData(BioData.convertBioPlasmidToBioData(bioCulture.plasmid)));
-        ret.setTag("DNA", BioData.getNBTTagFromBioData(BioData.convertBioDNAToBioData(bioCulture.dDNA)));
-        ret.setBoolean("Breedable", bioCulture.bBreedable);
-        ret.setByte("Rarety", BWUtil.getByteFromRarity(bioCulture.rarity));
-        if (bioCulture.bBreedable) ret.setString(
-            "Fluid",
-            bioCulture.getFluid()
-                .getName());
+        ret.setString("Name", name);
         return ret;
     }
 
     public static BioCulture getBioCultureFromNBTTag(NBTTagCompound tag) {
-        if (tag == null || tag.getIntArray("Color").length == 0) return null;
-        BioCulture ret = getBioCulture(tag.getString("Name"));
-
-        if (ret == null) ret = createAndRegisterBioCulture(
-            new Color(tag.getIntArray("Color")[0], tag.getIntArray("Color")[1], tag.getIntArray("Color")[2]),
-            tag.getString("Name"),
-            BioPlasmid.convertDataToPlasmid(getBioDataFromNBTTag(tag.getCompoundTag("Plasmid"))),
-            BioDNA.convertDataToDNA(getBioDataFromNBTTag(tag.getCompoundTag("DNA"))),
-            BWUtil.getRarityFromByte(tag.getByte("Rarety")),
-            tag.getBoolean("Breedable"));
-        if (ret.bBreedable) ret.setFluid(FluidRegistry.getFluid(tag.getString("Fluid")));
-        if (ret.getFluidNotSet()) // should never happen, but better safe than sorry
-            ret.setbBreedable(false);
-        return ret;
+        if (tag == null || !tag.hasKey("Name")) return null;
+        return BioCultureEnum.LOOKUPS_BY_NAME.getOrDefault(tag.getString("Name"), BioCultureEnum.NullBioCulture).bioCulture;
     }
 
     public static BioCulture getBioCulture(String Name) {
         if (Name == null || Name.isEmpty()) return null;
-        for (BioCulture b : BIO_CULTURE_ARRAY_LIST) if (b.name.equals(Name)) return b;
+        for (BioCulture b : BioCultureEnum.BIO_CULTURES) if (b.name.equals(Name)) return b;
         return null;
     }
 
-    public static BioCulture getBioCulture(BioDNA DNA) {
-        for (BioCulture b : BIO_CULTURE_ARRAY_LIST) if (b.getdDNA()
+    public static BioCulture getBioCulture(BioData DNA) {
+        for (BioCulture b : BioCultureEnum.BIO_CULTURES) if (b.getdDNA()
             .equals(DNA)) return b;
         return null;
     }
@@ -169,18 +119,18 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         this.color = color;
     }
 
-    public BioPlasmid getPlasmid() {
+    public BioData getPlasmid() {
         return this.plasmid;
     }
 
-    public BioCulture setPlasmid(BioPlasmid plasmid) {
+    public BioCulture setPlasmid(BioData plasmid) {
         return this.checkForExisting(
             new BioCulture(this.color, this.name, this.ID, plasmid, this.dDNA, this.rarity, this.bBreedable));
     }
 
     private BioCulture checkForExisting(BioCulture culture) {
         if (culture == null) return null;
-        for (BioCulture bc : BioCulture.BIO_CULTURE_ARRAY_LIST) if (culture.getdDNA()
+        for (BioCulture bc : BioCultureEnum.BIO_CULTURES) if (culture.getdDNA()
             .equals(bc.getdDNA())
             && culture.getPlasmid()
                 .equals(bc.getPlasmid()))
@@ -188,23 +138,13 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         return culture;
     }
 
-    public BioCulture setPlasmidUnsafe(BioPlasmid plasmid) {
-        this.plasmid = plasmid;
-        return this;
-    }
-
-    public BioDNA getdDNA() {
+    public BioData getdDNA() {
         return this.dDNA;
     }
 
-    public BioCulture setdDNA(BioDNA dDNA) {
+    public BioCulture setdDNA(BioData dDNA) {
         return this.checkForExisting(
             new BioCulture(this.color, this.name, this.ID, this.plasmid, dDNA, this.rarity, this.bBreedable));
-    }
-
-    public BioCulture setdDNAUnsafe(BioDNA dDNA) {
-        this.dDNA = dDNA;
-        return this;
     }
 
     @Override
@@ -249,5 +189,12 @@ public class BioCulture extends BioData implements IColorModulationContainer {
                 .getBlue(),
             (short) this.getColor()
                 .getAlpha() };
+    }
+
+    @Override
+    public String toString(){
+        return String.format("BioCulture(color=%s, name=%s, id=%d, plasmid=%s, dDNA=%s, rarity=%s, bBreedable=%b)",
+            this.color.toString(), this.name, this.ID, this.plasmid.toString(), this.dDNA.toString(),
+            this.rarity.name(),  this.bBreedable);
     }
 }

@@ -153,10 +153,10 @@ tooltip.labparts.1.name=Пустой колба для ДНК.
 tooltip.labparts.2.name=Пустая плазмидная ячейка.
 tooltip.labparts.3.name=Специальный стиральный порошок для Биоинженерии.
 tooltip.labparts.4.name=Порошок для разделения ДНК методом электрофореза.
-tooltip.labparts.5.name=Чашка Петри содержащая:
+tooltip.labparts.5.name=Чашка Петри содержащая: %s
 tooltip.labparts.6.name=Это слабая культура, ее нельзя разводить в бактериальном чане!
-tooltip.labparts.7.name=Колба с ДНК содержащая:
-tooltip.labparts.8.name=Плазмидная ячейка содержащая:
+tooltip.labparts.7.name=Колба с ДНК содержащая: %s
+tooltip.labparts.8.name=Плазмидная ячейка содержащая: %s
 
 tooltip.tile.waterpump.0.name=Производит
 tooltip.tile.waterpump.1.name=Л/сек воды при заправке топливом. Производит %d загрязнения в секунду.
