@@ -46,7 +46,6 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
-// TODO: improve visual clarity on buttons
 public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> {
 
     String search = "";
@@ -179,10 +178,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     private IDrawable getOreButtonOverlay(ItemStack stack) {
-        // if (!(stack.getItem() instanceof GTItemOre ore)) return IDrawable.EMPTY;
         return new DynamicDrawable(() -> {
-            // ItemStack rawOre = GTOreDictUnificator.get(OrePrefixes.rawOre,
-            // ore.blockOre.getMaterial(stack.getItemDamage()), 1);
             IDrawable oreDrawable = new ItemDrawable(stack).asIcon()
                 .size(16);
             if (matchesSearch(stack)) {
@@ -192,7 +188,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         .size(16),
                     oreDrawable);
             } else {
-                return new DrawableStack(new Rectangle().color(Color.argb(128, 128, 128, 0)), oreDrawable);
+                return oreDrawable;
             }
         });
     }
@@ -200,7 +196,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     // On game launch the order in the multis drop map randomizes, so we sort it by meta so everything can stay the same
     private GTUtility.ItemId[] sortOres(VoidMinerUtility.DropMap dropMap) {
         return Arrays.stream(dropMap.getOres())
-            .sorted((ore1, ore2) -> { return ore1.metaData() > ore2.metaData() ? 1 : -1; })
+            .sorted((ore1, ore2) -> ore1.metaData() > ore2.metaData() ? 1 : -1)
             .toArray(GTUtility.ItemId[]::new);
     }
 
@@ -214,20 +210,14 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
 
         @Override
         public ItemStackHandler deserialize(PacketBuffer buffer) throws IOException {
-            List<ItemStack> list = new ArrayList<>();
-            int size = buffer.readInt();
-            for (int i = 0; i < size; i++) {
-                list.add(buffer.readItemStackFromBuffer());
-            }
-            return new ItemStackHandler(list);
+            ItemStackHandler handler = new ItemStackHandler();
+            handler.deserializeNBT(buffer.readNBTTagCompoundFromBuffer());
+            return handler;
         }
 
         @Override
         public void serialize(PacketBuffer buffer, ItemStackHandler u) throws IOException {
-            buffer.writeInt(u.getSlots());
-            for (ItemStack stack : u.getStacks()) {
-                buffer.writeItemStackToBuffer(stack);
-            }
+            buffer.writeNBTTagCompoundToBuffer(u.serializeNBT());
         }
 
         @Override
