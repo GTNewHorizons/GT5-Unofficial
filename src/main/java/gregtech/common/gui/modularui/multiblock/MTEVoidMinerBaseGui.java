@@ -59,7 +59,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
-        IPanelHandler filterPopup = syncManager.panel("filter", this::createFilterPopup, true);
+        IPanelHandler filterPopup = syncManager.syncedPanel("filter", true, this::createFilterPopup);
         return super.createRightPanelGapRow(parent, syncManager).child(new ButtonWidget<>().onMousePressed(button -> {
             if (filterPopup.isPanelOpen()) {
                 filterPopup.closePanel();
@@ -71,9 +71,10 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     public ModularPanel createFilterPopup(PanelSyncManager syncManager, IPanelHandler panelHandler) {
-        GenericSyncValue<List<ItemStack>> listSyncer = new GenericSyncValue<>(
-            () -> multiblock.selected.getStacks(),
-            list -> { multiblock.selected = new ItemStackHandler(list); },
+        GenericSyncValue<ItemStackHandler> listSyncer = new GenericSyncValue<>(
+            ItemStackHandler.class,
+            () -> multiblock.selected,
+            handler -> multiblock.selected = handler,
             new ItemStackListAdapter());
         syncManager.syncValue("selected", listSyncer);
 
@@ -110,7 +111,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
     }
 
     private ListWidget<IWidget, ?> createOreToggleButtonGrid(PanelSyncManager syncManager, GTUtility.ItemId[] ores) {
-        GenericSyncValue<List<ItemStack>> syncer = (GenericSyncValue<List<ItemStack>>) syncManager
+        GenericSyncValue<ItemStackHandler> syncer = (GenericSyncValue<ItemStackHandler>) syncManager
             .findSyncHandler("selected");
         int buttonsPerRow = 10;
         int rowCount = (int) Math.ceil((double) ores.length / buttonsPerRow);
@@ -124,7 +125,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         if (bool) {
                             multiblock.selected.insertItem(index, stack, false);
                         } else multiblock.selected.extractItem(index, 1, false);
-                        syncer.setValue(multiblock.selected.getStacks());
+                        syncer.setValue(multiblock.selected);
                     }))
                     .overlay(getOreButtonOverlay(stack))
                     .tooltip(t -> t.add(stack.getDisplayName()))
@@ -137,7 +138,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .height(18 * Math.min(rowCount, 8));
     }
 
-    private Flow createRightButtonColumn(GenericSyncValue<List<ItemStack>> syncer, GTUtility.ItemId[] ores) {
+    private Flow createRightButtonColumn(GenericSyncValue<ItemStackHandler> syncer, GTUtility.ItemId[] ores) {
         return new Column()
             .child(
                 new ToggleButton()
@@ -156,7 +157,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                 for (int i = 0; i < ores.length; i++) {
                     multiblock.selected.setStackInSlot(i, ores[i].getItemStack());
                 }
-                syncer.setValue(multiblock.selected.getStacks());
+                syncer.setValue(multiblock.selected);
                 return true;
             })
                 .tooltip(t -> t.add(translateToLocal("GT5U.gui.button.vm.select")))
@@ -167,7 +168,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                 new ButtonWidget<>().tooltip(t -> t.add(translateToLocal("GT5U.gui.button.vm.deselect")))
                     .onMousePressed(button -> {
                         multiblock.selected = new ItemStackHandler(ores.length);
-                        syncer.setValue(multiblock.selected.getStacks());
+                        syncer.setValue(multiblock.selected);
                         return true;
                     })
                     .overlay(
@@ -188,12 +189,12 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                 .size(16);
             if (matchesSearch(stack)) {
                 return new DrawableStack(
-                    new Rectangle().setColor(Color.rgb(0, 255, 0))
+                    new Rectangle().color(Color.rgb(0, 255, 0))
                         .asIcon()
                         .size(16),
                     oreDrawable);
             } else {
-                return new DrawableStack(new Rectangle().setColor(Color.argb(128, 128, 128, 0)), oreDrawable);
+                return new DrawableStack(new Rectangle().color(Color.argb(128, 128, 128, 0)), oreDrawable);
             }
         });
     }
@@ -211,31 +212,31 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             .contains(search.toLowerCase());
     }
 
-    private static class ItemStackListAdapter implements IByteBufAdapter<List<ItemStack>> {
+    private static class ItemStackListAdapter implements IByteBufAdapter<ItemStackHandler> {
 
         @Override
-        public List<ItemStack> deserialize(PacketBuffer buffer) throws IOException {
+        public ItemStackHandler deserialize(PacketBuffer buffer) throws IOException {
             List<ItemStack> list = new ArrayList<>();
             int size = buffer.readInt();
             for (int i = 0; i < size; i++) {
                 list.add(buffer.readItemStackFromBuffer());
             }
-            return list;
+            return new ItemStackHandler(list);
         }
 
         @Override
-        public void serialize(PacketBuffer buffer, List<ItemStack> u) throws IOException {
-            buffer.writeInt(u.size());
-            for (ItemStack stack : u) {
+        public void serialize(PacketBuffer buffer, ItemStackHandler u) throws IOException {
+            buffer.writeInt(u.getSlots());
+            for (ItemStack stack : u.getStacks()) {
                 buffer.writeItemStackToBuffer(stack);
             }
         }
 
         @Override
-        public boolean areEqual(@NotNull List<ItemStack> t1, @NotNull List<ItemStack> t2) {
-            if (t1.size() != t2.size()) return false;
-            for (int i = 0; i < t1.size(); i++) {
-                if (!ItemStack.areItemStacksEqual(t1.get(i), t2.get(i))) return false;
+        public boolean areEqual(@NotNull ItemStackHandler t1, @NotNull ItemStackHandler t2) {
+            if (t1.getSlots() != t2.getSlots()) return false;
+            for (int i = 0; i < t1.getSlots(); i++) {
+                if (!ItemStack.areItemStacksEqual(t1.getStackInSlot(i), t2.getStackInSlot(i))) return false;
             }
             return true;
         }
