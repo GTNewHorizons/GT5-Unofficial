@@ -17,12 +17,21 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static mcp.mobius.waila.api.SpecialChars.GREEN;
+import static mcp.mobius.waila.api.SpecialChars.RED;
+import static mcp.mobius.waila.api.SpecialChars.RESET;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -56,7 +65,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTWaila;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELargeBoilerGui;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeBoiler>
     implements ISurvivalConstructable {
@@ -102,6 +115,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     private int excessWater = 0; // Eliminate rounding errors for water
     private int excessFuel = 0; // Eliminate rounding errors for fuels that burn half items
     private int excessProjectedEU = 0; // Eliminate rounding errors from throttling the boiler
+    private boolean overdrive = false; // Enable or disabled the overclock feature (will produce more steam with faster
+                                       // fuel consumption
     private int mCasingAmount;
     private int mFireboxAmount;
     protected int pollutionPerSecond = 1; // placeholder for the child classes
@@ -144,10 +159,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
                 .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
-        tt.addInfo(
-            String.format(
-                "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                formatNumber(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+        tt.addInfo(String.format("Takes %s seconds to heat up", formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, false)
             .addController("Front bottom")
@@ -189,6 +201,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     public abstract int getEUt();
 
     public abstract int getEfficiencyIncrease();
+
+    public abstract float getOverdriveMult();
 
     public int getIntegratedCircuitConfig() {
         return integratedCircuitConfig;
@@ -255,6 +269,14 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return false;
     }
 
+    public boolean isOverdrive() {
+        return overdrive;
+    }
+
+    public void setOverdrive(boolean value) {
+        overdrive = value;
+    }
+
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
@@ -278,7 +300,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 if (tFluid != null && tRecipe.mSpecialValue > 1) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue / 2));
+                        this.mMaxProgresstime = adjustBurnTimeForConfig(runtimeBoost(tRecipe.mSpecialValue));
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease() * 4;
                         this.mEUt = adjustEUtForConfig(getEUt());
                         if (this.mEfficiencyIncrease > 5000) {
@@ -362,6 +384,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         }
         this.mMaxProgresstime = 0;
         this.mEUt = 0;
+        this.mEfficiencyDecrease = 1;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
@@ -372,14 +395,31 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
 
     abstract int runtimeBoost(int mTime);
 
-    abstract boolean isSuperheated();
+    public abstract boolean isSuperheated();
 
     private final int superToNormalSteam = 3;
+
+    public int getCurrentEfficiency() {
+        return mEfficiency;
+    }
+
+    public boolean isActive() {
+        return this.getBaseMetaTileEntity() != null && this.getBaseMetaTileEntity()
+            .isActive();
+    }
+
+    @Override
+    protected @NotNull MTELargeBoilerGui getGui() {
+        return new MTELargeBoilerGui(this);
+    }
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             int maxEff = getCorrectedMaxEfficiency(mInventory[1]);
+            if (maxEff < mEfficiency) {
+                mEfficiency = maxEff;
+            }
             if (this.mSuperEfficencyIncrease > 0 && mEfficiency < maxEff) {
                 mEfficiency = Math.max(0, Math.min(mEfficiency + mSuperEfficencyIncrease, maxEff));
             }
@@ -425,6 +465,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         aNBT.setInteger("excessFuel", excessFuel);
         aNBT.setInteger("excessWater", excessWater);
         aNBT.setInteger("excessProjectedEU", excessProjectedEU);
+        aNBT.setBoolean("overdrive", overdrive);
     }
 
     @Override
@@ -433,6 +474,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         excessFuel = aNBT.getInteger("excessFuel");
         excessWater = aNBT.getInteger("excessWater");
         excessProjectedEU = aNBT.getInteger("excessProjectedEU");
+        overdrive = aNBT.getBoolean("overdrive");
     }
 
     @Override
@@ -475,8 +517,63 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         return Math.max(adjustedSteamOutput, 25);
     }
 
+    @Override
+    public int getMaxEfficiency(@Nullable ItemStack aStack) {
+        return overdrive ? (int) (getOverdriveMult() * 10_000) : 10_000;
+    }
+
+    private float getCorrectedMaxProgresstimeMult() {
+        return getCurrentEfficiency(null) > 10_000 ? (getCurrentEfficiency(null) / 10_000F) : 1F;
+    }
+
     private int getCorrectedMaxEfficiency(ItemStack itemStack) {
-        return getMaxEfficiency(itemStack) - ((getIdealStatus() - getRepairStatus()) * 1000);
+        return (int) (getMaxEfficiency(itemStack)
+            - ((getIdealStatus() - getRepairStatus()) * 1000) * getOverdriveMult());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.getBoolean("incompleteStructure")) {
+            currentTip.add(RED + translateToLocalFormatted("GT5U.waila.multiblock.status.incomplete") + RESET);
+        }
+        String efficiency = RESET
+            + translateToLocalFormatted("GT5U.waila.multiblock.status.efficiency", tag.getFloat("efficiency"));
+        if (tag.getBoolean("hasProblems")) {
+            currentTip.add(RED + translateToLocal("GT5U.waila.multiblock.status.has_problem") + efficiency);
+        } else if (!tag.getBoolean("incompleteStructure")) {
+            currentTip.add(GREEN + translateToLocal("GT5U.waila.multiblock.status.running_fine") + efficiency);
+        }
+        boolean isActive = tag.getBoolean("isActive");
+        if (isActive) {
+            currentTip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.energy.produce_steam",
+                    formatNumber(-tag.getLong("energyUsage") * 40L / (isSuperheated() ? superToNormalSteam : 1)),
+                    isSuperheated() ? translateToLocal("GT5U.machines.large_boiler.gui.shsteam")
+                        : translateToLocal("GT5U.machines.large_boiler.gui.steam")));
+            long actualEnergyUsage = tag.getLong("energyUsage");
+            currentTip.add(
+                translateToLocalFormatted(
+                    "GT5U.waila.energy.steam_to_eu",
+                    formatNumber(-actualEnergyUsage),
+                    GTUtility.getColoredTierNameFromVoltage(-actualEnergyUsage)));
+        }
+        currentTip.add(
+            GTWaila.getMachineProgressString(
+                isActive,
+                tag.getBoolean("isAllowedToWork"),
+                tag.getInteger("maxProgress"),
+                tag.getInteger("progress")));
+        currentTip.add(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.facing",
+                getFacingNameLocalized(
+                    this.getBaseMetaTileEntity()
+                        .getFrontFacing()
+                        .ordinal())));
+        // super.getWailaBody(itemStack, currentTip, accessor, config);
     }
 
     private int adjustBurnTimeForConfig(int rawBurnTime) {
@@ -490,6 +587,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
         int adjustedBurnTime = (int) (rawBurnTime * (long) getEUt() / adjustedEUt);
         this.excessProjectedEU += getEUt() * rawBurnTime - adjustedEUt * adjustedBurnTime;
         adjustedBurnTime += this.excessProjectedEU / adjustedEUt;
+        adjustedBurnTime = (int) (adjustedBurnTime / getCorrectedMaxProgresstimeMult());
         this.excessProjectedEU %= adjustedEUt;
         return adjustedBurnTime;
     }
@@ -510,5 +608,4 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GTCEU_LOOP_BOILER;
     }
-
 }
