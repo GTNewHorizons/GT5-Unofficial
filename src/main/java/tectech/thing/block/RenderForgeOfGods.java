@@ -7,7 +7,6 @@ import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 
 import java.nio.FloatBuffer;
 
-import gregtech.common.GTClient;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -26,6 +25,7 @@ import org.lwjgl.opengl.GL20;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 
+import gregtech.common.GTClient;
 import tectech.Reference;
 import tectech.rendering.EOH.EOHRenderingUtils;
 import tectech.thing.metaTileEntity.multi.godforge.structure.ForgeOfGodsRingsStructureString;
@@ -36,7 +36,6 @@ import tectech.util.TextureUpdateRequester;
 public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
     private static ShaderProgram starProgram;
-    private static final float modelNormalize = .0067f * 2;
 
     private static boolean initialized = false;
     private static boolean failedInit = false;
@@ -382,7 +381,7 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
         GL11.glPopAttrib();
     }
 
-    private void RenderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+    private void renderRings(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -463,19 +462,19 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
 
         // Correct order for transparency/depth:
         // 1) Opaque star writes depth
-        RenderStarOpaquePass(forgeTile, x, y, z, timer);
+        renderStarOpaquePass(forgeTile, x, y, z, timer);
 
         // 2) Rings render next and write depth
-        RenderRings(forgeTile, x, y, z, timer);
+        renderRings(forgeTile, x, y, z, timer);
 
         // 3) Transparent star shells render last and blend correctly (no depth write)
-        RenderStarTransparentPass(forgeTile, x, y, z, timer);
+        renderStarTransparentPass(forgeTile, x, y, z, timer);
 
         // Beam last
         RenderBeamSegment(forgeTile, x, y, z, timer, needsBeamUpdate);
     }
 
-    private void RenderStarOpaquePass(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+    private void renderStarOpaquePass(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -505,15 +504,15 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             reusableStarColor.set(r, g, b, 1f),
             STAR_LAYER_0,
             tile.getStarRadius(),
-            reusableRotationAxis.set(0F, 1F, 1F).normalize(),
-            130 + (timer) % 360000
-        );
+            reusableRotationAxis.set(0F, 1F, 1F)
+                .normalize(),
+            130 + (timer) % 360000);
 
         ShaderProgram.clear();
         GL11.glPopAttrib();
     }
 
-    private void RenderStarTransparentPass(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
+    private void renderStarTransparentPass(TileEntityForgeOfGods tile, double x, double y, double z, float timer) {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
 
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -546,17 +545,17 @@ public class RenderForgeOfGods extends TileEntitySpecialRenderer {
             reusableStarColor.set(r, g, b, 0.4f),
             STAR_LAYER_1,
             tile.getStarRadius() * 1.02f,
-            reusableRotationAxis.set(1F, 1F, 0F).normalize(),
-            -49 + (timer) % 360000
-        );
+            reusableRotationAxis.set(1F, 1F, 0F)
+                .normalize(),
+            -49 + (timer) % 360000);
 
         RenderStarLayer(
             reusableStarColor.set(r, g, b, 0.2f),
             STAR_LAYER_2,
             tile.getStarRadius() * 1.04f,
-            reusableRotationAxis.set(1F, 0F, 1F).normalize(),
-            67 + (timer) % 360000
-        );
+            reusableRotationAxis.set(1F, 0F, 1F)
+                .normalize(),
+            67 + (timer) % 360000);
 
         ShaderProgram.clear();
         GL11.glPopAttrib();

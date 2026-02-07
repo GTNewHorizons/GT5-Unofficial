@@ -2,9 +2,10 @@ package tectech.rendering.EOH;
 
 import static tectech.rendering.EOH.EOHRenderingUtils.renderEOHStar;
 
-import gregtech.common.GTClient;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
+import gregtech.common.GTClient;
 
 public class ItemRenderEOH implements IItemRenderer {
 

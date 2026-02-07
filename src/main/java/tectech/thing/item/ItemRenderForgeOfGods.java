@@ -2,10 +2,12 @@ package tectech.thing.item;
 
 import static tectech.rendering.EOH.EOHRenderingUtils.renderGORGEStar;
 
-import gregtech.common.GTClient;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import gregtech.common.GTClient;
 
 public class ItemRenderForgeOfGods implements IItemRenderer {
 
