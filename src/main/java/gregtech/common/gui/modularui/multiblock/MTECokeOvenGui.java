@@ -21,9 +21,9 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
 
-public class MTECokeOvenGUI extends MTEMultiBlockBaseGui<MTECokeOven> {
+public class MTECokeOvenGui extends MTEMultiBlockBaseGui<MTECokeOven> {
 
-    public MTECokeOvenGUI(MTECokeOven cokeOven) {
+    public MTECokeOvenGui(MTECokeOven cokeOven) {
         super(cokeOven);
     }
 
@@ -49,7 +49,7 @@ public class MTECokeOvenGUI extends MTEMultiBlockBaseGui<MTECokeOven> {
             .alwaysShowFull(false)
             .size(18, 54)
             .background(GTGuiTextures.BACKGROUND_COKE_OVEN_FLUID_SLOT)
-            .overlayTexture(GTGuiTextures.OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE);
+            .overlay(GTGuiTextures.OVERLAY_COKE_OVEN_FLUID_SLOT_GAUGE);
 
         final ProgressWidget progressArrow = new GTProgressWidget().neiTransferRect(multiblock.getRecipeMap())
             .value(new DoubleSyncValue(() -> (double) multiblock.mProgresstime / multiblock.mMaxProgresstime))
