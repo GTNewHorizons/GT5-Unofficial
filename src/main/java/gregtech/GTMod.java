@@ -765,6 +765,8 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onIDChangingEvent(FMLModIdMappingEvent event) {
+        if (event.remappedIds.isEmpty()) return;
+
         GTUtility.reInit();
         GTRecipe.reInit();
         RemovedMetaRegistry.init();
