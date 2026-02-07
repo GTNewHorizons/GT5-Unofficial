@@ -3,9 +3,7 @@ package gregtech.common.gui.modularui.multiblock;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -15,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.value.IStringValue;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
@@ -88,20 +85,12 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                             .childPadding(3)
                             .crossAxisAlignment(Alignment.CrossAxis.START)
                             .coverChildren())
-                    .child(new TextFieldWidget() {
-
-                        @Override
-                        public @NotNull Result onKeyPressed(char character, int keyCode) {
-                            Result result = super.onKeyPressed(character, keyCode);
-                            if (this.getValue() instanceof IStringValue<?>value) {
-                                value.setStringValue(getText());
-                            }
-                            return result;
-                        }
-                    }.value(new StringSyncValue(() -> search, str -> search = str))
-                        .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
-                        .alignX(0f)
-                        .width(100))
+                    .child(
+                        new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str))
+                            .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
+                            .autoUpdateOnChange(true)
+                            .alignX(0f)
+                            .width(100))
                     .childPadding(3)
                     .margin(8)
                     .coverChildren())
