@@ -10,7 +10,7 @@ import gregtech.api.util.GTRecipe;
 public class ExtremeHeatExchangerRecipe extends GTRecipe {
 
     public ExtremeHeatExchangerRecipe(FluidStack[] input, FluidStack[] output, int special) {
-        super(null, null, null, null, input, output, 0, 0, special);
+        super(false, null, null, null, null, null, null, null, input, output, 0, 0, special);
     }
 
     public int getMaxHotFluidConsume() {
