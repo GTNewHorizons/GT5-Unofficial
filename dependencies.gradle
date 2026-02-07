@@ -45,6 +45,10 @@ dependencies {
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.56-gtnh-pre:dev")
     api("com.github.GTNewHorizons:Postea:1.2.0-pre:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.37-1.7.10:dev")
+    api("com.github.GTNewHorizons:waila:1.19.20:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-819-GTNH:dev")
+    api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.57-gtnh:dev")
+    api("com.github.GTNewHorizons:Postea:1.2.0-pre:dev")
 
     compileOnlyApi('com.github.GTNewHorizons:ThaumicTinkerer:2.12.6:dev')
     compileOnlyApi("com.github.GTNewHorizons:Mobs-Info:0.5.10-GTNH:dev")
@@ -94,8 +98,8 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.16-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
-    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.25-GTNH-pre:dev') {transitive =  false}
-    compileOnly("com.github.GTNewHorizons:BloodMagic:1.8.12:dev") { transitive = false }
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.18-GTNH:dev') {transitive =  false}
+    compileOnly("com.github.GTNewHorizons:BloodMagic:1.8.9:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.4-GTNH:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
