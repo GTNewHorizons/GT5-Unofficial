@@ -391,7 +391,7 @@ public class RecipeLoaderGenericChem {
             .fluidInputs(GTModHandler.getHotWater(3_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Cadaverine, 750), new FluidStack(GTPPFluids.Putrescine, 750))
             .duration(2 * MINUTES)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
     }
@@ -470,7 +470,7 @@ public class RecipeLoaderGenericChem {
             .itemOutputs(GregtechItemList.LithiumHydroperoxide.get(4))
             .fluidInputs(new FluidStack(GTPPFluids.HydrogenPeroxide, 1_000))
             .duration(30 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
     }
@@ -487,7 +487,7 @@ public class RecipeLoaderGenericChem {
                 new FluidStack(GTPPFluids.Ethylanthraquinone, 5_000),
                 new FluidStack(GTPPFluids.HydrogenPeroxide, 5_000))
             .duration(30 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
 
@@ -501,7 +501,7 @@ public class RecipeLoaderGenericChem {
                 new FluidStack(GTPPFluids.Ethylanthraquinone, 5_000),
                 new FluidStack(GTPPFluids.HydrogenPeroxide, 5_000))
             .duration(5 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 1)
             .addTo(chemicalPlantRecipes);
     }
