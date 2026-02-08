@@ -15,6 +15,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
+
 import cpw.mods.fml.client.FMLClientHandler;
 
 public abstract class EOHRenderingUtils {
@@ -227,115 +229,12 @@ public abstract class EOHRenderingUtils {
         endRenderingBlocksInWorld();
     }
 
-    // This is for rendering the weird effect on the EOH star field shell, where you can only see it from the inside.
-    private static void renderTessellatedSphereWithInvertedNormals(int slices, int stacks, double radiusInBlocks) {
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-        boolean wasCull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        int oldCullMode = GL11.glGetInteger(GL11.GL_CULL_FACE_MODE);
-        int oldFrontFace = GL11.glGetInteger(GL11.GL_FRONT_FACE);
-
-        // Make sphere visible only from inside.
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glFrontFace(GL11.GL_CW); // inside is front
-        GL11.glCullFace(GL11.GL_BACK);
-
-        for (int i = 0; i < stacks; i++) {
-            double v0 = (double) i / stacks;
-            double v1 = (double) (i + 1) / stacks;
-
-            double phi1 = Math.PI / 2.0 - i * Math.PI / stacks;
-            double phi2 = Math.PI / 2.0 - (i + 1) * Math.PI / stacks;
-
-            double y1 = Math.sin(phi1);
-            double y2 = Math.sin(phi2);
-
-            double r1 = Math.cos(phi1);
-            double r2 = Math.cos(phi2);
-
-            GL11.glBegin(GL11.GL_QUAD_STRIP);
-            for (int j = 0; j <= slices; j++) {
-                double u = (double) j / slices;
-                double theta = j * 2.0 * Math.PI / slices;
-
-                double x1 = r1 * Math.cos(theta);
-                double z1 = r1 * Math.sin(theta);
-
-                double x2 = r2 * Math.cos(theta);
-                double z2 = r2 * Math.sin(theta);
-
-                // Normals pointing inward
-                GL11.glNormal3d(-x2, -y2, -z2);
-                GL11.glTexCoord2d(1.0 - u, v1); // flip U for inside
-                GL11.glVertex3d(radiusInBlocks * x2, radiusInBlocks * y2, radiusInBlocks * z2);
-
-                GL11.glNormal3d(-x1, -y1, -z1);
-                GL11.glTexCoord2d(1.0 - u, v0);
-                GL11.glVertex3d(radiusInBlocks * x1, radiusInBlocks * y1, radiusInBlocks * z1);
-            }
-            GL11.glEnd();
-        }
-
-        // Restore previous state
-        GL11.glFrontFace(oldFrontFace);
-        GL11.glCullFace(oldCullMode);
-        if (!wasCull) GL11.glDisable(GL11.GL_CULL_FACE);
+    public static void renderTessellatedSphere(int slices, int stacks, double radiusInBlocks) {
+        renderCachedSphereVBO(slices, stacks, radiusInBlocks, false);
     }
 
-    public static void renderTessellatedSphere(int slices, int stacks, double radiusInBlocks) {
-        // Make sure texturing is actually on (binding alone doesn't enable it)
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-
-        // Render inside faces only
-        boolean wasCull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        int oldCullMode = GL11.glGetInteger(GL11.GL_CULL_FACE_MODE);
-
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glCullFace(GL11.GL_FRONT);
-
-        for (int i = 0; i < stacks; i++) {
-            double v0 = (double) i / (double) stacks;
-            double v1 = (double) (i + 1) / (double) stacks;
-
-            double phi1 = Math.PI / 2.0 - i * Math.PI / stacks;
-            double phi2 = Math.PI / 2.0 - (i + 1) * Math.PI / stacks;
-
-            double y1 = Math.sin(phi1);
-            double y2 = Math.sin(phi2);
-
-            double r1 = Math.cos(phi1);
-            double r2 = Math.cos(phi2);
-
-            GL11.glBegin(GL11.GL_QUAD_STRIP);
-            for (int j = 0; j <= slices; j++) {
-                double u = (double) j / (double) slices;
-                // Flip U so the texture isn't mirrored when viewing from inside
-                double uInside = 1.0 - u;
-
-                double theta = j * 2.0 * Math.PI / slices;
-
-                double x1 = r1 * Math.cos(theta);
-                double z1 = r1 * Math.sin(theta);
-
-                double x2 = r2 * Math.cos(theta);
-                double z2 = r2 * Math.sin(theta);
-
-                // vertex on stack i
-                GL11.glNormal3d(-x1, -y1, -z1);
-                GL11.glTexCoord2d(uInside, v0);
-                GL11.glVertex3d(radiusInBlocks * x1, radiusInBlocks * y1, radiusInBlocks * z1);
-
-                // vertex on stack i+1
-                GL11.glNormal3d(-x2, -y2, -z2);
-                GL11.glTexCoord2d(uInside, v1);
-                GL11.glVertex3d(radiusInBlocks * x2, radiusInBlocks * y2, radiusInBlocks * z2);
-            }
-            GL11.glEnd();
-        }
-
-        // restore culling state
-        GL11.glCullFace(oldCullMode);
-        if (!wasCull) GL11.glDisable(GL11.GL_CULL_FACE);
+    private static void renderTessellatedSphereWithInvertedNormals(int slices, int stacks, double radiusInBlocks) {
+        renderCachedSphereVBO(slices, stacks, radiusInBlocks, true);
     }
 
     public static void renderOuterSpaceShell(double playerDistance) {
@@ -371,6 +270,37 @@ public abstract class EOHRenderingUtils {
 
         // Restore previous OpenGL state.
         GL11.glPopAttrib();
+    }
+
+    private static void renderCachedSphereVBO(int slices, int stacks, double radiusInBlocks, boolean invertFrontFace) {
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        boolean wasCull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        int oldCullMode = GL11.glGetInteger(GL11.GL_CULL_FACE_MODE);
+        int oldFrontFace = GL11.glGetInteger(GL11.GL_FRONT_FACE);
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+
+        if (invertFrontFace) {
+            GL11.glFrontFace(GL11.GL_CW);
+            GL11.glCullFace(GL11.GL_BACK);
+        } else {
+            GL11.glFrontFace(oldFrontFace);
+            GL11.glCullFace(GL11.GL_FRONT);
+        }
+
+        VertexBuffer vbo = SphereVBOCache.getOrCreate(slices, stacks);
+
+        GL11.glPushMatrix();
+        GL11.glScaled(radiusInBlocks, radiusInBlocks, radiusInBlocks); // unit sphere -> requested radius
+        GL11.glPushClientAttrib(GL11.GL_CLIENT_VERTEX_ARRAY_BIT);
+        vbo.render();
+        GL11.glPopClientAttrib();
+        GL11.glPopMatrix();
+
+        GL11.glFrontFace(oldFrontFace);
+        GL11.glCullFace(oldCullMode);
+        if (!wasCull) GL11.glDisable(GL11.GL_CULL_FACE);
     }
 
 }
