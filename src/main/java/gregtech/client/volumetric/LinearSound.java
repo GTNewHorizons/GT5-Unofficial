@@ -6,23 +6,31 @@ import org.joml.Vector3f;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-import gregtech.api.enums.GTValues;
+import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.util.GTUtility;
 
-public class LinearSound {
+public class LinearSound implements ISoundPosition {
 
-    private Vec3Impl start, end;
-    private float maxRange = 64f * 64f, distance, weight1 = 1, weight2 = 0, centre = 0;
+    private final MTEEnhancedMultiBlockBase<?> multi;
+    private final Vec3Impl start, end;
+    private final float distance;
+    private float maxRange;
+    private float posWeight = 1;
+    private float centerWeight = 0;
+    private float center = 0;
 
-    public LinearSound setCoords(int x1, int y1, int z1, int x2, int y2, int z2) {
+    public LinearSound(MTEEnhancedMultiBlockBase<?> multi, int x1, int y1, int z1, int x2, int y2, int z2,
+        float range) {
+        this.multi = multi;
+        // Invert the Y components because StructureLib uses positive Y=down for some reason
         start = new Vec3Impl(x1, -y1, z1);
         end = new Vec3Impl(x2, -y2, z2);
-        distance = v(end).sub(v(start))
+        distance = ISoundPosition.toVector(end)
+            .sub(ISoundPosition.toVector(start))
             .length();
-
-        return this;
+        this.maxRange = range * range;
     }
 
     public LinearSound setRange(float range) {
@@ -31,51 +39,56 @@ public class LinearSound {
         return this;
     }
 
-    public LinearSound setCentre(float weight1, float weight2, float centre) {
-        this.weight1 = weight1;
-        this.weight2 = weight2;
-        this.centre = centre;
+    public LinearSound setCentre(float posWeight, float centerWeight, float center) {
+        this.posWeight = posWeight;
+        this.centerWeight = centerWeight;
+        this.center = center;
 
         return this;
     }
 
-    public Vector3f getPosition(MTEEnhancedMultiBlockBase<?> multi) {
-        EntityPlayer p = GTValues.GT.getThePlayer();
+    @Override
+    public Vector3f getPosition() {
+        EntityPlayer player = GTMod.proxy.getThePlayer();
 
         IGregTechTileEntity igte = multi.getBaseMetaTileEntity();
 
-        double dist2 = l2(p.posX - igte.getXCoord(), p.posY - igte.getYCoord(), p.posZ - igte.getZCoord());
+        if (igte == null) return null;
+
+        // spotless:off
+
+        double dist2 = ISoundPosition.lengthSquared(
+            player.posX - igte.getXCoord(),
+            player.posY - igte.getYCoord(),
+            player.posZ - igte.getZCoord());
 
         if (dist2 > maxRange) return null;
 
         Vector3f machine = new Vector3f(igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
 
-        Vector3f start = v(
-            multi.getExtendedFacing()
-                .getWorldOffset(this.start)).add(machine);
-        Vector3f end = v(
-            multi.getExtendedFacing()
-                .getWorldOffset(this.end)).add(machine);
+        Vector3f start = ISoundPosition.toVector(multi.getExtendedFacing().getWorldOffset(this.start)).add(machine);
+        Vector3f end = ISoundPosition.toVector(multi.getExtendedFacing().getWorldOffset(this.end)).add(machine);
 
-        Vector3f player = new Vector3f((float) p.posX, (float) p.posY, (float) p.posZ);
+        Vector3f playerPos = new Vector3f((float) player.posX, (float) player.posY, (float) player.posZ);
 
-        Vector3f dir = new Vector3f(end).sub(start)
-            .normalize();
-        float k = new Vector3f(player).sub(start)
-            .dot(dir);
+        // Calculate the start -> end unit vector
+        Vector3f dir = new Vector3f(end).sub(start).normalize();
 
+        // Project the player position onto the start + unit ray to get the ray scalar
+        // start + ray * k = projected player pos
+        float k = new Vector3f(playerPos).sub(start).dot(dir);
+
+        // Clamp it to (0, distance)
         k = GTUtility.clamp(k, 0, distance);
 
-        k = (k * weight1 + centre * weight2) / (weight1 + weight2);
+        if (centerWeight > 0) {
+            // Shift the position towards the center, if set
+            k = (k * posWeight + center * centerWeight) / (posWeight + centerWeight);
+        }
 
+        // Calculate the position on the start->end vector
         return new Vector3f(start.x + dir.x * k, start.y + dir.y * k, start.z + dir.z * k);
-    }
 
-    private static Vector3f v(Vec3Impl v) {
-        return new Vector3f(v.get0(), v.get1(), v.get2());
-    }
-
-    private static double l2(double dx, double dy, double dz) {
-        return dx * dx + dy * dy + dz * dz;
+        // spotless:on
     }
 }

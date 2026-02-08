@@ -175,6 +175,7 @@ public class ToolVajra extends ItemTool implements IElectricItem {
             if (target.removedByPlayer(world, player, x, y, z, true)) {
                 target.onBlockDestroyedByPlayer(world, x, y, z, metaData);
                 target.harvestBlock(world, player, x, y, z, metaData);
+                world.notifyBlocksOfNeighborChange(x, y, z, target);
             }
         }
         stack.getTagCompound()

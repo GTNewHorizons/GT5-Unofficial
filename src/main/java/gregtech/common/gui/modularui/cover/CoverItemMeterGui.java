@@ -72,6 +72,8 @@ public class CoverItemMeterGui extends CoverBaseGui<CoverItemMeter> {
             .marginBottom(4)
             .child(
                 makeNumberField(50).value(thresholdSyncer)
+                    .setDefaultNumber(0)
+                    .setNumbers(0, Integer.MAX_VALUE)
                     .marginRight(2))
             .child(
                 IKey.lang("gt.interact.desc.itemthreshold")

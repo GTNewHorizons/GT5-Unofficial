@@ -64,7 +64,8 @@ public class RecipeGenRecycling implements Runnable {
             OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12, OrePrefixes.wireFine,
             OrePrefixes.wireGt01, OrePrefixes.wireGt02, OrePrefixes.wireGt04, OrePrefixes.wireGt08,
             OrePrefixes.wireGt12, OrePrefixes.wireGt16, OrePrefixes.foil, OrePrefixes.frameGt, OrePrefixes.pipeHuge,
-            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny, };
+            OrePrefixes.pipeLarge, OrePrefixes.pipeMedium, OrePrefixes.pipeSmall, OrePrefixes.pipeTiny,
+            OrePrefixes.dust, };
 
         int mSlotIndex = 0;
         Pair<OrePrefixes, ItemStack>[] mValidPairs = new Pair[mValidPrefixesAsString.length];
@@ -111,10 +112,11 @@ public class RecipeGenRecycling implements Runnable {
             if (orePrefix == OrePrefixes.ingotHot) continue;
 
             final ItemStack tempStack = validPrefix.getValue();
-            final ItemStack mDust = getDust(material, orePrefix);
+            final boolean isDustInput = orePrefix == OrePrefixes.dust;
+            final ItemStack mDust = isDustInput ? null : getDust(material, orePrefix);
 
             // Maceration
-            if (tempStack != null && mDust != null) {
+            if (!isDustInput && tempStack != null && mDust != null) {
                 RA.stdBuilder()
                     .itemInputs(tempStack)
                     .itemOutputs(mDust)
@@ -132,6 +134,9 @@ public class RecipeGenRecycling implements Runnable {
 
             // Fluid Extractor
             if (tempStack == null) continue;
+            if (isDustInput && material.requiresBlastFurnace()) {
+                continue;
+            }
 
             final long materialAmount = orePrefix.getMaterialAmount();
             final int aFluidAmount = (int) ((materialAmount * INGOTS) / (M * tempStack.stackSize));

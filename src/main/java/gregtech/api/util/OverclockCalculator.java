@@ -483,8 +483,8 @@ public class OverclockCalculator {
         // Compute the speedup of all the overclocks after sub-tick has been reached.
         final int extraHeatOverclocks = Math.max(heatOverclocks - neededHeatOverclocks, 0);
         final int extraRegularOverclocks = Math.max(regularOverclocks - neededRegularOverclocks, 0);
-        final int heatMultiplier = (int) GTUtility.powInt(durationDecreasePerHeatOC, extraHeatOverclocks);
-        final int regularMultiplier = (int) GTUtility.powInt(durationDecreasePerOC, extraRegularOverclocks);
+        final double heatMultiplier = GTUtility.powInt(durationDecreasePerHeatOC, extraHeatOverclocks);
+        final double regularMultiplier = GTUtility.powInt(durationDecreasePerOC, extraRegularOverclocks);
 
         // Compute a fractional multiplier that accounts for the speedup that is lost due to discretization.
         double correctionMultiplier;

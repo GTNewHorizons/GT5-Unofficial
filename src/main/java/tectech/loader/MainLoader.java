@@ -53,7 +53,7 @@ public final class MainLoader {
         LOGGER.info("Damage types addition Done");
 
         progressBarLoad.step("Register Packet Dispatcher");
-        new NetworkDispatcher();
+        NetworkDispatcher.registerPackets();
         LOGGER.info("Packet Dispatcher registered");
 
         progressBarLoad.step("Register GUI Handler");

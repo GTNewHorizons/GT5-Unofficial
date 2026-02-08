@@ -66,7 +66,7 @@ public abstract class MetaGeneratedItemX01 extends MetaGeneratedItem {
                         : getDefaultLocalization(tPrefix, tMaterial, i));
                 GTLanguageManager.addStringLocalization(
                     getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.getMaterialAmount() / M));
+                    tMaterial.getChemicalTooltip(tPrefix.getMaterialAmount() / M));
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.isUnifiable()) {

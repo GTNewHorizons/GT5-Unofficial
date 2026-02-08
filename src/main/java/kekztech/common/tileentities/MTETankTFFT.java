@@ -247,7 +247,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             'c',
             buildHatchAdder(MTETankTFFT.class).atLeast(Energy, Maintenance)
                 .casingIndex(CASING_TEXTURE_ID_1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
         .addElement(
             'C',
@@ -257,14 +257,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     Maintenance,
                     InputHatch.or(TFFTMultiHatch.INSTANCE),
                     OutputHatch.or(TFFTMultiHatch.INSTANCE))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
         .addElement(
             'G',
             buildHatchAdder(MTETankTFFT.class)
                 .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
                 .casingIndex(CASING_TEXTURE_ID_2)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))

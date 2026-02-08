@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -312,20 +313,20 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
                     'I',
                     buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.InputHatch)
                         .casingIndex(1537)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'M',
                     buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.Maintenance)
                         .casingIndex(1537)
-                        .dot(2)
+                        .hint(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'O',
                     buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.OutputHatch)
                         .adder(MTEYottaFluidTank::addOutput)
                         .casingIndex(1537)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .build();
         }
@@ -455,8 +456,8 @@ public class MTEYottaFluidTank extends MTETooltipMultiBlockBaseEM implements ICo
             .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 3")
+            .addInputHatch("Hint Block Number 1")
+            .addOutputHatch("Hint Block Number 3")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

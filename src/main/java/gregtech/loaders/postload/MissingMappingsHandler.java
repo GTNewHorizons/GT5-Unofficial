@@ -34,7 +34,6 @@ public class MissingMappingsHandler {
 
         // Item remappings
         .remapItem("miscutils:Ammonium", GameRegistry.findItem(GTPlusPlus.ID, "itemCellAmmonium"))
-        .remapItem("miscutils:Hydroxide", GameRegistry.findItem(GTPlusPlus.ID, "itemCellHydroxide"))
         .remapItem("miscutils:BerylliumHydroxide", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBerylliumHydroxide"))
         .remapItem("miscutils:Bromine", GameRegistry.findItem(GTPlusPlus.ID, "itemCellBromine"))
         .remapItem("miscutils:Krypton", GameRegistry.findItem(GTPlusPlus.ID, "itemCellKrypton"))
@@ -141,6 +140,15 @@ public class MissingMappingsHandler {
         .ignore("kekztech:kekztech_tfftstoragefieldblock5_block")
 
         .ignore("miscutils:itemPlateMeatRaw")
+        .ignore("miscutils:blockBlockMeatRaw")
+        .ignore("miscutils:itemTerra")
+        .ignore("miscutils:itemIgnis")
+        .ignore("miscutils:itemAer")
+        .ignore("miscutils:itemAqua")
+        .ignore("miscutils:item.BioRecipeSelector")
+        .ignore("miscutils:item.T3RecipeSelector")
+        .ignore("miscutils:Hydroxide")
+        .ignore("miscutils:itemCellHydroxide")
         .ignore("miscutils:AAA_Broken")
         .ignore("miscutils:item.empty");
 

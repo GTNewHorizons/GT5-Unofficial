@@ -43,7 +43,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -51,7 +51,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -135,14 +134,15 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     }
 
     protected void updateHatchTexture() {
-        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureId());
     }
 
-    private int getCasingTextureID() {
+    @Override
+    protected int getCasingTextureId() {
         if (tierGearBoxCasing == 2 || tierPipeCasing == 2 || tierMachineCasing == 2)
             return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
@@ -159,29 +159,13 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
     }
 
     @Override
-    protected ITexture getFrontOverlay() {
-        return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE)
-            .extFacing()
-            .build();
+    protected IIconContainer getInactiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE;
     }
 
     @Override
-    protected ITexture getFrontOverlayActive() {
-        return TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE)
-            .extFacing()
-            .build();
-    }
-
-    @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
-        final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                aActive ? getFrontOverlayActive() : getFrontOverlay() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+    protected IIconContainer getActiveOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE;
     }
 
     @Override
@@ -212,7 +196,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                     'A',
                     ofChain(
                         buildSteamInput(MTESteamMixer.class).casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .build(),
                         buildHatchAdder(MTESteamMixer.class)
@@ -222,7 +206,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                                 OutputHatch,
                                 InputHatch)
                             .casingIndex(10)
-                            .dot(1)
+                            .hint(1)
                             .allowOnly(ForgeDirection.NORTH)
                             .buildAndChain(),
                         ofBlocksTiered(

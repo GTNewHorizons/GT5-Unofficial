@@ -34,7 +34,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BioRecipeLoader {
@@ -128,7 +127,8 @@ public class BioRecipeLoader {
         for (FluidStack fluidStack : easyFluids) {
             if (CropsPlusPlus.isModLoaded()) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(2), new ItemStack(Items.sugar, 64))
+                    .itemInputs(new ItemStack(Items.sugar, 64))
+                    .circuit(2)
                     .special(BioItemList.getPetriDish(BioCultureLoader.CommonYeast))
                     .fluidInputs(new FluidStack(fluidStack, 100))
                     .fluidOutputs(FluidRegistry.getFluidStack("potion.ghp", 1))

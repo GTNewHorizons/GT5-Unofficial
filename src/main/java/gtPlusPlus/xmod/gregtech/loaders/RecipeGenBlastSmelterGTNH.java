@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -14,13 +15,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class RecipeGenBlastSmelterGTNH {
 
@@ -173,7 +174,7 @@ public class RecipeGenBlastSmelterGTNH {
                 FluidStack tempFluid = getFluidFromIngot(R);
                 if (tempFluid != null) {
                     // Logger.MACHINE_INFO("[ABS] Got Fluid from Cache.");
-                    mMoltenStack = FluidUtils.getFluidStack(tempFluid, mMoltenCount * 144);
+                    mMoltenStack = new FluidStack(tempFluid, mMoltenCount * 144);
                 } else {
                     Logger.MACHINE_INFO("[ABS] Failed to get Fluid from Cache.");
                 }
@@ -221,50 +222,38 @@ public class RecipeGenBlastSmelterGTNH {
             }
 
             inputs = aTempList.toArray(new ItemStack[0]);
-            int inputLength = inputs.length;
-            // If no circuit was found, increase array length by 1 to add circuit at newInput[0]
-            if (!circuitFound) {
-                inputLength++;
-            }
-
-            ItemStack[] newInput = new ItemStack[inputLength];
-
-            int l = 0;
-            // If no circuit was found, add a circuit here
-            if (!circuitFound) {
-                l = 1;
-                newInput[0] = GTUtility.getIntegratedCircuit(inputs.length);
-            }
-
-            for (ItemStack y : inputs) {
-                newInput[l++] = y;
-            }
+            int baseItemCount = circuitFound ? inputs.length - 1 : inputs.length;
 
             boolean recipeFound = false;
             for (GTRecipe recipe : recipeCandidates) {
-                if (itemStacksMatch(recipe.mInputs, newInput) && fluidStacksMatch(recipe.mFluidInputs, inputsF)
+                if (itemStacksMatch(recipe.mInputs, inputs) && fluidStacksMatch(recipe.mFluidInputs, inputsF)
                     && GTUtility.areFluidsEqual(recipe.mFluidOutputs[0], mMoltenStack)) {
                     recipeFound = true;
                     break;
                 }
             }
-            // Recipe was already added in RecipeGenBlastSmelter
             if (recipeFound) {
                 Logger.MACHINE_INFO("[ABS] Skipping ABS addition for GTNH due to existing recipe.");
                 continue;
             }
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(newInput)
+            GTRecipeBuilder builder = GTValues.RA.stdBuilder()
+                .itemInputs(inputs)
                 .fluidInputs(inputsF)
                 .fluidOutputs(mMoltenStack)
                 .duration(MathUtils.roundToClosestInt(time * 0.8))
                 .eut(voltage)
                 .recipeCategory(
-                    inputLength <= 2 ? RecipeCategories.absNonAlloyRecipes
-                        : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory())
-                .addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
+                    baseItemCount == 1 ? RecipeCategories.absNonAlloyRecipes
+                        : GTPPRecipeMaps.alloyBlastSmelterRecipes.getDefaultRecipeCategory());
+
+            if (!circuitFound) {
+                builder.circuit(inputs.length);
+            }
+
+            builder.addTo(GTPPRecipeMaps.alloyBlastSmelterRecipes);
             mSuccess++;
+
         }
 
         Logger.INFO("[ABS] Processed " + mSuccess + " recipes.");
@@ -272,12 +261,31 @@ public class RecipeGenBlastSmelterGTNH {
     }
 
     private static boolean itemStacksMatch(final ItemStack[] mStack1, final ItemStack[] mStack2) {
-        if (mStack1 == null || mStack2 == null || mStack1.length != mStack2.length) {
+        if (mStack1 == null || mStack2 == null) {
             return false;
         }
 
-        for (int c = 0; c < mStack1.length; c++) {
-            if (!GTUtility.areStacksEqual(mStack1[c], mStack2[c])) {
+        // Build lists of non-circuit, non-null items for more robust check
+        List<ItemStack> list1 = new ArrayList<>();
+        for (ItemStack part : mStack1) {
+            if (part != null && !(part.getItem() instanceof ItemIntegratedCircuit)) {
+                list1.add(part);
+            }
+        }
+
+        List<ItemStack> list2 = new ArrayList<>();
+        for (ItemStack part : mStack2) {
+            if (part != null && !(part.getItem() instanceof ItemIntegratedCircuit)) {
+                list2.add(part);
+            }
+        }
+
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); i++) {
+            if (!GTUtility.areStacksEqual(list1.get(i), list2.get(i))) {
                 return false;
             }
         }

@@ -165,9 +165,12 @@ public class MaterialsFluorides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
+        "Be(OH)\u2082",
+        0,
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
-        new MaterialStack(MaterialMisc.HYDROXIDE, 2));
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2),
+        new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2));
 
     // (NH4)2BeF4
     public static final Material AMMONIUM_TETRAFLUOROBERYLLATE = new Material(

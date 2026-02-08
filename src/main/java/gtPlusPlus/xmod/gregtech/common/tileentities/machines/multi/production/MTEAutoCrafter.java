@@ -120,7 +120,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
                     buildHatchAdder(MTEAutoCrafter.class)
                         .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
                 .build();
         }

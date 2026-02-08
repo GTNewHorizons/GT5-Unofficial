@@ -16,16 +16,16 @@ import mods.railcraft.common.blocks.machine.beta.TileEngineSteamHobby;
 import mods.railcraft.common.util.steam.SteamBoiler;
 
 // Merged from ModMixins under the MIT License Copyright bartimaeusnek & GTNewHorizons
-@Mixin(SteamBoiler.class)
+@Mixin(value = SteamBoiler.class, remap = false)
 public class MixinRailcraftBoilerPollution {
 
-    @Shadow(remap = false)
+    @Shadow
     private RailcraftTileEntity tile;
 
-    @Shadow(remap = false)
+    @Shadow
     protected boolean isBurning;
 
-    @Inject(method = "tick", at = @At(value = "HEAD"), remap = false)
+    @Inject(method = "tick", at = @At(value = "HEAD"))
     private void gt5u$tick(int x, CallbackInfo ci) {
         if (!this.isBurning || this.tile == null || this.tile.getWorld() == null) return;
         final World world = this.tile.getWorldObj();

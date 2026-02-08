@@ -11,7 +11,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.blocks.BlockBase;
 import gregtech.api.GregTechAPI;
 import tectech.Reference;
 import tectech.TecTech;
@@ -19,7 +18,7 @@ import tectech.TecTech;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public final class BlockQuantumGlass extends BlockBase {
+public final class BlockQuantumGlass extends Block {
 
     public static IIcon stuff;
     public static final int renderID = RenderingRegistry.getNextAvailableRenderId();

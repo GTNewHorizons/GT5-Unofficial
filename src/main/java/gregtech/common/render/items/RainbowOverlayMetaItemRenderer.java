@@ -9,16 +9,17 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.GTMod;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.GTClient;
-import gregtech.common.render.GTRenderUtil;
 
 public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
-    private float baseR = 1;
-    private float baseG = 1;
-    private float baseB = 1;
+    private final float baseR;
+    private final float baseG;
+    private final float baseB;
 
     public RainbowOverlayMetaItemRenderer(short[] rgba) {
         baseR = rgba[0] / 255.0F;
@@ -44,17 +45,14 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
 
     @Override
     public void renderItem(final ItemRenderType type, final ItemStack item, final Object... data) {
-        GL11.glPushMatrix();
-
         if (item.getItem() instanceof MetaGeneratedItem mgItem) {
             IIcon[] icons = mgItem.mIconList[item.getItemDamage() - mgItem.mOffset];
             if (icons != null && icons.length > 0 && icons[0] != null) {
 
                 final GTClient clientProxy = GTMod.clientProxy();
-                long animationTicks = clientProxy.getAnimationTicks();
-                float partialTicks = clientProxy.getPartialRenderTicks();
+                float animationTicks = clientProxy.getAnimationRenderTicks();
 
-                Color color = Color.getHSBColor((animationTicks % 180 + partialTicks) % 90 / 90f, 0.4f, 0.9f);
+                Color color = Color.getHSBColor((animationTicks % 90) / 90f, 0.4f, 0.9f);
 
                 float modR = color.getRed() / 255.0F;
                 float modG = color.getGreen() / 255.0F;
@@ -63,12 +61,10 @@ public class RainbowOverlayMetaItemRenderer implements IItemRenderer {
                 // Multiply base color with modifier
                 GL11.glColor3f(baseR * modR, baseG * modG, baseB * modB);
 
-                GTRenderUtil.renderItem(type, icons[0]);
+                ItemRenderUtil.renderItem(type, icons[0]);
 
             }
         }
-
-        GL11.glPopMatrix();
     }
 
 }

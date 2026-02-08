@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -97,7 +98,7 @@ public class MTEPurificationUnitBaryonicPerfection
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitBaryonicPerfection>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputBus, OutputBus, InputHatch, OutputHatch))
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 onElementPass(t -> t.numCasings++, ofBlock(GregTechAPI.sBlockCasings10, 2))))
@@ -261,7 +262,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()

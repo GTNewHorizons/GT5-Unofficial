@@ -12,15 +12,15 @@ public class ItemStackData {
     protected final @Nullable Item mItem;
     protected final int mDamage;
     protected final int mStackSize;
-    protected final @NotNull NBTTagCompound mNBT;
+    protected final @Nullable NBTTagCompound mNBT;
     protected final @NotNull String mUniqueDataTag;
 
     public ItemStackData(@NotNull ItemStack aStack) {
         mItem = aStack.getItem();
         mDamage = aStack.getItemDamage();
         mStackSize = aStack.stackSize;
-        mNBT = (aStack.getTagCompound() != null ? aStack.getTagCompound() : new NBTTagCompound());
-        mUniqueDataTag = String.valueOf(Item.getIdFromItem(mItem)) + mDamage + mStackSize + mNBT.getId();
+        mNBT = aStack.getTagCompound();
+        mUniqueDataTag = String.valueOf(Item.getIdFromItem(mItem)) + mDamage + mStackSize + 10;
     }
 
     public String getUniqueDataIdentifier() {
@@ -29,7 +29,7 @@ public class ItemStackData {
 
     public @NotNull ItemStack getStack() {
         ItemStack aTemp = new ItemStack(mItem, mStackSize, mDamage);
-        aTemp.setTagCompound(mNBT);
+        if (mNBT != null) aTemp.setTagCompound(mNBT);
         return aTemp;
     }
 }

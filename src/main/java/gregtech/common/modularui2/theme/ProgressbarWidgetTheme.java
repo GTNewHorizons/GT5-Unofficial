@@ -68,4 +68,9 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
     public int getImageSize() {
         return imageSize;
     }
+
+    @Override
+    public WidgetTheme withNoHoverBackground() {
+        return this;
+    }
 }

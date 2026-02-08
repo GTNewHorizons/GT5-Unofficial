@@ -122,12 +122,12 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                             .hatchClass(MTEHatchMillingBalls.class)
                             .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
                             .casingIndex(getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEIsaMill.class)
                             .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, Muffler)
                             .casingIndex(getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('D', ofBlock(getIntakeBlock(), getIntakeMeta()))

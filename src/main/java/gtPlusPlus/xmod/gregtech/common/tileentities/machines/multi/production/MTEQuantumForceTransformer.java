@@ -160,13 +160,13 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.CatalystHousing)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(4)
+                .hint(4)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'T',
             buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(5)
+                .hint(5)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .build();
 
@@ -840,9 +840,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

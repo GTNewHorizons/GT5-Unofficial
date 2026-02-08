@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
@@ -427,6 +428,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         try {
             AENetworkProxy proxy = getProxy();
+
+            // on some setup endRecipeProcessing() somehow runs before onFirstTick();
+            // test world
+            // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
+            if (!proxy.isReady()) proxy.onReady();
+
             sg = proxy.getStorage()
                 .getFluidInventory();
             energy = proxy.getEnergy();
@@ -1140,9 +1147,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
             currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_hatch.min_amount",
-                    GTUtility.formatNumbers(minSize)));
+                StatCollector.translateToLocalFormatted("GT5U.waila.stocking_hatch.min_amount", formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

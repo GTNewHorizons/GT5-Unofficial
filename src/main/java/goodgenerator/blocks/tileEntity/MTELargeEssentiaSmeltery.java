@@ -6,6 +6,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -186,7 +187,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                                 gregtech.api.enums.HatchElement.InputBus,
                                 gregtech.api.enums.HatchElement.InputHatch)
                             .casingIndex(CASING_INDEX)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         ofSpecificTileAdder(
                             MTELargeEssentiaSmeltery::addEssentiaOutputHatchToMachineList,
@@ -214,12 +215,12 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .addPollutionAmount(getPollutionPerSecond(null))
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addInputHatch("Hint block with dot 1")
-            .addEnergyHatch("Hint block with dot 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 2")
+            .addMaintenanceHatch("Hint Block Number 1")
+            .addInputBus("Hint Block Number 1")
+            .addInputHatch("Hint Block Number 1")
+            .addEnergyHatch("Hint Block Number 1")
+            .addOtherStructurePart("Essentia Output Hatch", "Hint Block Number 1")
+            .addMufflerHatch("Hint Block Number 2")
             .toolTipFinisher();
         return tt;
     }
@@ -231,8 +232,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     @Override
     public String[] getInfoData() {
-        String[] info = super.getInfoData();
-        info[8] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
+        String[] origData = super.getInfoData();
+        String[] info = Arrays.copyOf(origData, origData.length + 1);
+        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
             + EnumChatFormatting.YELLOW
             + Math.round(this.mParallel)
             + EnumChatFormatting.RESET

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
 import tconstruct.library.crafting.DryingRackRecipes;
 
@@ -45,7 +44,8 @@ public class TinkersDryingRecipe {
             Logger.INFO("Adding " + recipes.size() + " drying rack recipes to the dehydrator.");
             for (TinkersDryingRecipe r : recipes) {
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(16), r.input)
+                    .itemInputs(r.input)
+                    .circuit(16)
                     .itemOutputs(r.result)
                     .eut(TierEU.RECIPE_LV)
                     .duration(r.time / 10)

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.lang.reflect.Method;
@@ -20,6 +21,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -80,7 +82,6 @@ import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
@@ -275,7 +276,10 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.multi_block.total_time.in_ticks",
                 "" + EnumChatFormatting.DARK_GREEN + this.mTotalRunTime));
-
+        mInfo.add(
+            StatCollector.translateToLocalFormatted(
+                "gtpp.infodata.multi_block.recipes_done",
+                "" + EnumChatFormatting.DARK_GREEN + formatNumber(this.recipesDone)));
         return mInfo.toArray(new String[0]);
     }
 
@@ -507,7 +511,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             if (aTileEntity instanceof MTEHatchInputBus) {
                 resetRecipeMapForHatch((MTEHatch) aTileEntity, getRecipeMap());
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
 
@@ -728,7 +732,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             } else {
                 return false;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             return false;
         }
@@ -973,9 +977,9 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -1556,8 +1560,8 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             MetaGeneratedTool01.INSTANCE
                 .getToolWithStats(IDMetaTool01.SOLDERING_IRON_LV.ID, 1, BAD, Materials.Tungsten, null));
 
-        ItemStack aGlassPane1 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassRed", 1);
-        ItemStack aGlassPane2 = ItemUtils.getItemStackOfAmountFromOreDict("paneGlassLime", 1);
+        ItemStack aGlassPane1 = new ItemStack(Blocks.glass_pane, 1, 14); // Red
+        ItemStack aGlassPane2 = new ItemStack(Blocks.glass_pane, 1, 5); // Lime
         mToolStacks.put("falseGLASS", aGlassPane1);
         mToolStacks.put("trueGLASS", aGlassPane2);
     }

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
 public final class AddGregtechRecipe {
@@ -41,31 +42,30 @@ public final class AddGregtechRecipe {
             }
         }
 
-        ItemStack aInputItem = null;
         if (!hasCircuit || aCircuitNumber < 1) {
             return false;
         }
 
+        ItemStack aInputItem = null;
         for (ItemStack a : aRecipe.mInputs) {
             if (a != null && a.getItem() != aCircuit) {
                 aInputItem = a;
                 break;
             }
         }
-        ItemStack[] inputs;
-        if (aInputItem == null) {
-            inputs = new ItemStack[] { GTUtility.getIntegratedCircuit(aCircuitNumber) };
-        } else {
-            inputs = new ItemStack[] { GTUtility.getIntegratedCircuit(aCircuitNumber), aInputItem };
-        }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(inputs)
+        GTRecipeBuilder builder = GTValues.RA.stdBuilder()
             .itemOutputs(aRecipe.mOutputs)
             .fluidInputs(aRecipe.mFluidInputs)
             .fluidOutputs(aRecipe.mFluidOutputs)
             .eut(aRecipe.mEUt)
-            .duration(aModifiedTime)
+            .duration(aModifiedTime);
+
+        if (aInputItem != null) {
+            builder.itemInputs(aInputItem);
+        }
+
+        builder.circuit(aCircuitNumber)
             .addTo(cokeOvenRecipes);
 
         return true;

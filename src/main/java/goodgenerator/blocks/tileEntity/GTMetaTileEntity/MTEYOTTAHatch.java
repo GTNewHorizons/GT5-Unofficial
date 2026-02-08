@@ -1,8 +1,5 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +8,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -132,22 +130,34 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         } catch (GridAccessException e) {
             // :P
         }
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("yothatch.chat.0", this.priority));
+        GTUtility.sendChatTrans(aPlayer, "yothatch.chat.0", this.priority);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocalFormatted("yothatch.chat.1", this.readMode));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "yothatch.chat.1",
+            new ChatComponentTranslation(getUnlocalizedReadMode(this.readMode)));
         return true;
+    }
+
+    private static String getUnlocalizedReadMode(AccessRestriction readMode) {
+        return switch (readMode) {
+            case NO_ACCESS -> "gg.chat.ae_modes.no_access";
+            case READ -> "gg.chat.ae_modes.read";
+            case WRITE -> "gg.chat.ae_modes.write";
+            case READ_WRITE -> "gg.chat.ae_modes.read_write";
+        };
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
         this.isSticky = !this.isSticky;
-        GTUtility.sendChatToPlayer(aPlayer, translateToLocal(this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3"));
+        GTUtility.sendChatTrans(aPlayer, this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3");
         return true;
     }
 

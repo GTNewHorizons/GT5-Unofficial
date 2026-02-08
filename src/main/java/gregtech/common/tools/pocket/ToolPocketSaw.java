@@ -2,6 +2,7 @@ package gregtech.common.tools.pocket;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -23,7 +24,9 @@ public class ToolPocketSaw extends ToolSaw {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.POCKET_MULTITOOL_SAW : Textures.ItemIcons.VOID;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolSaw]
+            : Textures.ItemIcons.VOID;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -99,11 +100,11 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInfo("Will fill in areas below it with light concrete. This goes through walls")
             .addInfo("Use it to remove any spawning locations beneath your base to reduce lag")
             .addInfo("Will pull back the pipes after it finishes that layer")
-            .addInfo("Radius is " + getRadius() + " blocks")
+            .addInfo("Range is " + getRadius() + "x" + getRadius() + " blocks horizontally")
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
-                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
+                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
+                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")

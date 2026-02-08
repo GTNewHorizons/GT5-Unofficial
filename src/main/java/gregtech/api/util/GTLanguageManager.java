@@ -222,15 +222,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_083", "Open if work disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_084", "Only Output allowed");
         addStringLocalization("Interaction_DESCRIPTION_Index_085", "Only Input allowed");
-        addStringLocalization("Interaction_DESCRIPTION_Index_086", "Auto-Input: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_087", "Disabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_088", "Enabled");
-        addStringLocalization("Interaction_DESCRIPTION_Index_089", "  Auto-Output: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_090", "Machine Processing: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_091", "Redstone Output at Side ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_092", " set to: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_093", "Strong");
-        addStringLocalization("Interaction_DESCRIPTION_Index_094", "Weak");
         addStringLocalization("Interaction_DESCRIPTION_Index_094.1", "Not enough soldering material!");
         addStringLocalization("Interaction_DESCRIPTION_Index_098", "Do not regulate Item Stack Size");
         addStringLocalization("Interaction_DESCRIPTION_Index_099", "Regulate Item Stack Size to: ");
@@ -280,7 +271,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
         // NOTE: the below key is used in HydroEnergy, take care to fix it there when this line is removed
-        addStringLocalization("Interaction_DESCRIPTION_Index_142", "Running perfectly.");
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
         addStringLocalization("Interaction_DESCRIPTION_Index_145", "Step Down, In: ");
@@ -288,7 +278,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_147", "A, Out: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
         addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
-        addStringLocalization("Interaction_DESCRIPTION_Index_150", "Chance: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");
@@ -340,7 +329,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_197", "  Air-Quality: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_198", "Attributes:");
         addStringLocalization("Interaction_DESCRIPTION_Index_199", "Discovered by: ");
-        addStringLocalization("Interaction_DESCRIPTION_Index_200", "Sort mode: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_200.1", "Automatic Item Shuffling: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_201", "Nothing");
         addStringLocalization("Interaction_DESCRIPTION_Index_202", "Pollution in Chunk: ");
@@ -449,8 +437,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_343.1", "Use Inverted Machine Processing State");
         addStringLocalization("Interaction_DESCRIPTION_Index_344", "Input Blocking");
         addStringLocalization("Interaction_DESCRIPTION_Index_344.1", "Output Blocking");
-        addStringLocalization("Interaction_DESCRIPTION_Index_500", "Fitting: Loose - More Flow");
-        addStringLocalization("Interaction_DESCRIPTION_Index_501", "Fitting: Tight - More Efficiency");
         addStringLocalization("Interaction_DESCRIPTION_Index_502", "Mining chunk loading enabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_503", "Mining chunk loading disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_505", "Enable with Signal (Safe)");

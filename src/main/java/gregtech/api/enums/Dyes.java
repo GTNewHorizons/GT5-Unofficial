@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -13,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
 
@@ -20,26 +23,27 @@ public enum Dyes implements IColorModulationContainer {
 
     // spotless:off
     // The valid colors, see `VALUES` array below.
-    dyeBlack(         0,   0x20202000,            "Black", EnumChatFormatting.BLACK),
-    dyeRed(           1,   0xff000000,              "Red", EnumChatFormatting.RED),
-    dyeGreen(         2,   0x00ff0000,            "Green", EnumChatFormatting.DARK_GREEN),
-    dyeBrown(         3,   0x60400000,            "Brown", EnumChatFormatting.GOLD),
-    dyeBlue(          4,   0x0020ff00,             "Blue", EnumChatFormatting.DARK_BLUE),
-    dyePurple(        5,   0x80008000,           "Purple", EnumChatFormatting.DARK_PURPLE),
-    dyeCyan(          6,   0x00ffff00,             "Cyan", EnumChatFormatting.DARK_AQUA),
-    dyeLightGray(     7,   0xc0c0c000,       "Light Gray", EnumChatFormatting.GRAY),
-    dyeGray(          8,   0x80808000,             "Gray", EnumChatFormatting.DARK_GRAY),
-    dyePink(          9,   0xffc0c000,             "Pink", EnumChatFormatting.LIGHT_PURPLE),
-    dyeLime(         10,   0x80ff8000,             "Lime", EnumChatFormatting.GREEN),
-    dyeYellow(       11,   0xffff0000,           "Yellow", EnumChatFormatting.YELLOW),
-    dyeLightBlue(    12,   0x6080ff00,       "Light Blue", EnumChatFormatting.AQUA),
-    dyeMagenta(      13,   0xff00ff00,          "Magenta", EnumChatFormatting.LIGHT_PURPLE),
-    dyeOrange(       14,   0xff800000,           "Orange", EnumChatFormatting.GOLD),
-    dyeWhite(        15,   0xffffff00,            "White", EnumChatFormatting.WHITE),
+    dyeBlack(         0,   0x20202000,            "Black",           EnumChatFormatting.BLACK, () -> GTGuiThemes.STANDARD_BLACK),
+    dyeRed(           1,   0xff000000,              "Red",             EnumChatFormatting.RED, () -> GTGuiThemes.STANDARD_RED),
+    dyeGreen(         2,   0x00ff0000,            "Green",      EnumChatFormatting.DARK_GREEN, () -> GTGuiThemes.STANDARD_GREEN),
+    dyeBrown(         3,   0x60400000,            "Brown",            EnumChatFormatting.GOLD, () -> GTGuiThemes.STANDARD_BROWN),
+    dyeBlue(          4,   0x0020ff00,             "Blue",       EnumChatFormatting.DARK_BLUE, () -> GTGuiThemes.STANDARD_BLUE),
+    dyePurple(        5,   0x80008000,           "Purple",     EnumChatFormatting.DARK_PURPLE, () -> GTGuiThemes.STANDARD_PURPLE),
+    dyeCyan(          6,   0x00ffff00,             "Cyan",       EnumChatFormatting.DARK_AQUA, () -> GTGuiThemes.STANDARD_CYAN),
+    dyeLightGray(     7,   0xc0c0c000,       "Light Gray",            EnumChatFormatting.GRAY, () -> GTGuiThemes.STANDARD_LIGHT_GRAY),
+    dyeGray(          8,   0x80808000,             "Gray",       EnumChatFormatting.DARK_GRAY, () -> GTGuiThemes.STANDARD_GRAY),
+    dyePink(          9,   0xffc0c000,             "Pink",    EnumChatFormatting.LIGHT_PURPLE, () -> GTGuiThemes.STANDARD_PINK),
+    dyeLime(         10,   0x80ff8000,             "Lime",           EnumChatFormatting.GREEN, () -> GTGuiThemes.STANDARD_LIME),
+    dyeYellow(       11,   0xffff0000,           "Yellow",          EnumChatFormatting.YELLOW, () -> GTGuiThemes.STANDARD_YELLOW),
+    dyeLightBlue(    12,   0x6080ff00,       "Light Blue",            EnumChatFormatting.AQUA, () -> GTGuiThemes.STANDARD_LIGHT_BLUE),
+    dyeMagenta(      13,   0xff00ff00,          "Magenta",    EnumChatFormatting.LIGHT_PURPLE, () -> GTGuiThemes.STANDARD_MAGENTA),
+    dyeOrange(       14,   0xff800000,           "Orange",            EnumChatFormatting.GOLD, () -> GTGuiThemes.STANDARD_ORANGE),
+    dyeWhite(        15,   0xffffff00,            "White",           EnumChatFormatting.WHITE, () -> GTGuiThemes.STANDARD_WHITE),
     // Additional Colors only used for direct Color referencing
     _NULL(           -1,   0xffffff00,    "INVALID COLOR"),
     CABLE_INSULATION(-2, cableInsulation(), "Cable Insulation"),
-    MACHINE_METAL(   -3,    machineMetal(),    "Machine Metal");
+    MACHINE_METAL(   -3,    machineMetal(),    "Machine Metal"),
+    GUI_METAL(   -4,    guiMetal(),    "Gui Metal");
     // spotless:on
 
     /** Constructs the configured cable insulation color. */
@@ -60,6 +64,15 @@ public enum Dyes implements IColorModulationContainer {
         return (r << 24) | (g << 16) | (b << 8);
     }
 
+    /** Constructs the configured gui metal color. */
+    private static int guiMetal() {
+        final Client.ColorModulation.GuiMetal metal = Client.colorModulation.guiMetal;
+        final int r = GTUtility.clamp(metal.red, 0, 255);
+        final int g = GTUtility.clamp(metal.green, 0, 255);
+        final int b = GTUtility.clamp(metal.blue, 0, 255);
+        return (r << 24) | (g << 16) | (b << 8);
+    }
+
     /** RGBA color value (0xrrggbbaa). */
     public final int rgba;
     @Deprecated
@@ -72,6 +85,7 @@ public enum Dyes implements IColorModulationContainer {
     public final EnumChatFormatting formatting;
     /** Set of all fluids that can be converted into this specific dye. */
     private final HashSet<Fluid> fluidDyesSet = new HashSet<>();
+    public final Supplier<GTGuiTheme> mui2Theme;
 
     /** Global mapping of fluids to the dye they produce when processed. */
     private static final Map<Fluid, Dyes> fluidDyesMap = new HashMap<>();
@@ -88,10 +102,11 @@ public enum Dyes implements IColorModulationContainer {
     }
 
     Dyes(int index, int rgba, @NotNull String name) {
-        this(index, rgba, name, EnumChatFormatting.GRAY);
+        this(index, rgba, name, EnumChatFormatting.GRAY, () -> GTGuiThemes.STANDARD);
     }
 
-    Dyes(int index, int rgba, @NotNull String name, @NotNull EnumChatFormatting formatting) {
+    Dyes(int index, int rgba, @NotNull String name, @NotNull EnumChatFormatting formatting,
+        Supplier<GTGuiTheme> mui2Theme) {
         this.rgba = rgba;
         final short r = (short) ((rgba >>> 24) & 0xff);
         final short g = (short) ((rgba >>> 16) & 0xff);
@@ -101,6 +116,7 @@ public enum Dyes implements IColorModulationContainer {
         this.mIndex = index;
         this.mName = name;
         this.formatting = formatting;
+        this.mui2Theme = mui2Theme;
     }
 
     public static @NotNull Dyes get(int index) {

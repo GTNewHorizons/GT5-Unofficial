@@ -16,6 +16,8 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -69,7 +71,6 @@ import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
@@ -90,21 +91,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     private int mCasing;
     private static IStructureDefinition<MTEChemicalPlant> STRUCTURE_DEFINITION = null;
 
-    public static final ItemStack[] chemplantCatalysts = new ItemStack[] { GregtechItemList.BlueMetalCatalyst.get(1),
-        GregtechItemList.BrownMetalCatalyst.get(1), GregtechItemList.OrangeMetalCatalyst.get(1),
-        GregtechItemList.PurpleMetalCatalyst.get(1), GregtechItemList.RedMetalCatalyst.get(1),
-        GregtechItemList.YellowMetalCatalyst.get(1), GregtechItemList.PinkMetalCatalyst.get(1),
-        GregtechItemList.FormaldehydeCatalyst.get(1), GregtechItemList.SolidAcidCatalyst.get(1),
-        GregtechItemList.InfiniteMutationCatalyst.get(1), GregtechItemList.GreenMetalCatalyst.get(1),
-        GregtechItemList.PlatinumGroupCatalyst.get(1), GregtechItemList.PlasticPolymerCatalyst.get(1),
-        GregtechItemList.RubberPolymerCatalyst.get(1), GregtechItemList.AdhesionPromoterCatalyst.get(1),
-        GregtechItemList.TitaTungstenIndiumCatalyst.get(1), GregtechItemList.RadioactivityCatalyst.get(1),
-        GregtechItemList.RareEarthGroupCatalyst.get(1), GregtechItemList.SimpleNaquadahCatalyst.get(1),
-        GregtechItemList.HellishForceCatalyst.get(1), GregtechItemList.CrystalColorizationCatalyst.get(1),
-        GregtechItemList.AdvancedNaquadahCatalyst.get(1), GregtechItemList.RawIntelligenceCatalyst.get(1),
-        GregtechItemList.UltimatePlasticCatalyst.get(1), GregtechItemList.BiologicalIntelligenceCatalyst.get(1),
-        GregtechItemList.TemporalHarmonyCatalyst.get(1), GregtechItemList.ParticleAccelerationCatalyst.get(1),
-        GregtechItemList.SynchrotronCapableCatalyst.get(1), GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1), };
+    public static final Set<GTUtility.ItemId> CHEMPLANT_CATALYSTS = new HashSet<>();
 
     private final ArrayList<MTEHatchCatalysts> mCatalystBuses = new ArrayList<>();
 
@@ -162,14 +149,14 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addInfo("Any catalyst must be placed in the catalyst housing")
             .addInfo("Awakened Draconium coils combined with Tungstensteel pipe casing makes catalyst unbreakable")
             .addController("Bottom Center")
-            .addOtherStructurePart("Catalyst Housing", "Bottom Casing")
+            .addOtherStructurePart("Catalyst Housing", "Any Casing")
             .addStructureHint("item.GTPP.catalyst_housing.name", 1)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "metal machine casing (minimum 70)")
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
@@ -214,19 +201,19 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                     mName,
                     transpose(
                         new String[][] {
-                            { "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX", "XXXXXXX" },
-                            { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
-                            { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
-                            { "X     X", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "X     X" },
-                            { "X     X", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "X     X" },
-                            { "X     X", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "X     X" },
+                            { "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC", "CCCCCCC" },
+                            { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
+                            { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
+                            { "C     C", "       ", "  HHH  ", "  HHH  ", "  HHH  ", "       ", "C     C" },
+                            { "C     C", "       ", "  PPP  ", "  PPP  ", "  PPP  ", "       ", "C     C" },
+                            { "C     C", " MMMMM ", " MHHHM ", " MHHHM ", " MHHHM ", " MMMMM ", "C     C" },
                             { "CCC~CCC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CMMMMMC", "CCCCCCC" }, }))
                 .addElement(
                     'C',
                     ofChain(
                         buildHatchAdder(MTEChemicalPlant.class).atLeast(Maintenance)
                             .casingIndex(getCasingTextureID())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
                             .adder(MTEChemicalPlant::addChemicalPlantList)
@@ -235,16 +222,15 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
                                     Integer.MIN_VALUE,
                                     s.stackSize >= 10 ? Integer.MAX_VALUE : s.stackSize))
                             .casingIndex(getCasingTextureID())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTEChemicalPlant.class).hatchClass(MTEHatchCatalysts.class)
                             .shouldReject(t -> !t.mCatalystBuses.isEmpty())
                             .adder(MTEChemicalPlant::addChemicalPlantList)
                             .casingIndex(getCasingTextureID())
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         allCasingsElement))
-                .addElement('X', allCasingsElement)
                 .addElement(
                     'M',
                     GTStructureChannels.TIER_MACHINE_CASING.use(
@@ -579,7 +565,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * this.mPipeCasingTier))) {
                 int damage = getDamage(aStack) + 1;
                 if (damage >= getMaxCatalystDurability()) {
-                    addOutputPartial(CI.getEmptyCatalyst(1));
+                    addOutputPartial(GregtechItemList.EmptyCatalystCarrier.get(1));
                     aStack.stackSize -= 1;
                     return aStack.stackSize == 0;
                 } else {
@@ -659,8 +645,8 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
     public void updateSlots() {
         super.updateSlots();
         for (MTEHatchCatalysts h : mCatalystBuses) {
-            h.updateSlots();
             h.tryFillUsageSlots();
+            h.updateSlots();
         }
     }
 
@@ -697,11 +683,45 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         return tItems;
     }
 
-    public static boolean isCatalyst(ItemStack aStack) {
-        for (ItemStack chemplantCatalyst : chemplantCatalysts) {
-            if (GTUtility.areStacksEqual(aStack, chemplantCatalyst, true)) return true;
-        }
+    public static void registerChemplantCatalyst(ItemStack stack) {
+        if (stack == null) return;
 
-        return false;
+        CHEMPLANT_CATALYSTS.add(GTUtility.ItemId.createWithoutNBT(stack));
+    }
+
+    public static boolean isCatalyst(ItemStack aStack) {
+        return aStack != null && CHEMPLANT_CATALYSTS.contains(GTUtility.ItemId.createWithoutNBT(aStack));
+    }
+
+    static {
+        registerChemplantCatalyst(GregtechItemList.BlueMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.BrownMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.OrangeMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.PurpleMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.RedMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.YellowMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.PinkMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.FormaldehydeCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.SolidAcidCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.InfiniteMutationCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.GreenMetalCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.PlatinumGroupCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.PlasticPolymerCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.RubberPolymerCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.AdhesionPromoterCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.TitaTungstenIndiumCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.RadioactivityCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.RareEarthGroupCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.SimpleNaquadahCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.HellishForceCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.CrystalColorizationCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.AdvancedNaquadahCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.RawIntelligenceCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.UltimatePlasticCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.BiologicalIntelligenceCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.TemporalHarmonyCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.ParticleAccelerationCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.SynchrotronCapableCatalyst.get(1));
+        registerChemplantCatalyst(GregtechItemList.AlgagenicGrowthPromoterCatalyst.get(1));
     }
 }

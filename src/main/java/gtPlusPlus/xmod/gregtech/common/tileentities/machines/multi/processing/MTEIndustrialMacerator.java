@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
@@ -95,7 +96,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
 
     @Override
     public String getMachineType() {
-        return "Macerator, Pulverizer, IMS";
+        return "Macerator, IMS";
     }
 
     @Override
@@ -142,7 +143,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
                             .atLeast(Energy, Maintenance, InputBus, Muffler, OutputBus)
                             .casingIndex(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 2))
                             .allowOnly(ForgeDirection.NORTH)
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(
                             m -> m.mCasing++,
@@ -387,7 +388,7 @@ public class MTEIndustrialMacerator extends GTPPMultiBlockBase<MTEIndustrialMace
             currentTip.add(
                 StatCollector.translateToLocal("GT5U.machines.tier") + ": "
                     + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(tag.getInteger("tier"))
+                    + formatNumber(tag.getInteger("tier"))
                     + EnumChatFormatting.RESET);
         }
     }

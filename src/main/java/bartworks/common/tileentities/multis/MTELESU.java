@@ -13,6 +13,8 @@
 
 package bartworks.common.tileentities.multis;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -176,7 +178,7 @@ public class MTELESU extends MTEMultiBlockBase {
         Collections.addAll(e, dsc);
         e.add(
             StatCollector.translateToLocal("tooltip.tile.lesu.1.name") + " "
-                + GTUtility.formatNumbers(Configuration.multiblocks.energyPerCell)
+                + formatNumber(Configuration.multiblocks.energyPerCell)
                 + "EU");
         dsc = StatCollector.translateToLocal("tooltip.tile.lesu.2.name")
             .split(";");
@@ -390,7 +392,8 @@ public class MTELESU extends MTEMultiBlockBase {
 
         this.mEfficiency = this.getMaxEfficiency(null);
         this.mStorage = (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size()
-            >= Long.MAX_VALUE - 1 || Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0
+            >= Long.MAX_VALUE - 1
+            || (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size() < 0
                 ? Long.MAX_VALUE - 1
                 : (long) Configuration.multiblocks.energyPerCell * this.connectedcells.hashset.size();
         this.mMaxProgresstime = 1;

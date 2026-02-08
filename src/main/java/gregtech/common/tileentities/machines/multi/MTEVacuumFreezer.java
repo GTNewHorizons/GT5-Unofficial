@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -10,32 +12,32 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.List;
-
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTECubicMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
+public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFreezer> {
+
+    private static IStructureDefinition<MTEVacuumFreezer> STRUCTURE_DEFINITION = null;
+    private int mCasing;
 
     public MTEVacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -48,6 +50,37 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEVacuumFreezer(this.mName);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing = 0;
+        return checkPiece(mName, 1, 1, 0) && mCasing >= 16 && mMaintenanceHatches.size() == 1;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+    }
+
+    @Override
+    public IStructureDefinition<MTEVacuumFreezer> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEVacuumFreezer>builder()
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEVacuumFreezer.class)
+                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                        .casingIndex(Casings.FrostProofMachineCasing.textureId)
+                        .hint(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, Casings.FrostProofMachineCasing.asElement())))
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -74,7 +107,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                rTexture = new ITexture[] { Casings.FrostProofMachineCasing.getCasingTexture(), TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
                     .extFacing()
                     .build(),
@@ -84,7 +117,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                rTexture = new ITexture[] { Casings.FrostProofMachineCasing.getCasingTexture(), TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
                     .extFacing()
                     .build(),
@@ -95,7 +128,7 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { casingTexturePages[0][17] };
+            rTexture = new ITexture[] { Casings.FrostProofMachineCasing.getCasingTexture() };
         }
         return rTexture;
     }
@@ -108,26 +141,6 @@ public class MTEVacuumFreezer extends MTECubicMultiBlockBase<MTEVacuumFreezer> {
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().noRecipeCaching();
-    }
-
-    @Override
-    protected IStructureElement<MTECubicMultiBlockBase<?>> getCasingElement() {
-        return StructureUtility.ofBlock(GregTechAPI.sBlockCasings2, 1);
-    }
-
-    @Override
-    protected List<IHatchElement<? super MTECubicMultiBlockBase<?>>> getAllowedHatches() {
-        return ImmutableList.of(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy);
-    }
-
-    @Override
-    protected int getHatchTextureIndex() {
-        return 17;
-    }
-
-    @Override
-    protected int getRequiredCasingCount() {
-        return 16;
     }
 
     @Override

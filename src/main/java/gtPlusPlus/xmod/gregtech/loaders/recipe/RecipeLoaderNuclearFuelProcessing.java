@@ -18,12 +18,10 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeLoaderNuclearFuelProcessing {
@@ -32,46 +30,36 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Create Fuels
 
-        final FluidStack aLithiumFluoride = MaterialsFluorides.LITHIUM_FLUORIDE.getFluidStack(100);
-        final FluidStack aBerylliumFluoride = MaterialsFluorides.BERYLLIUM_FLUORIDE.getFluidStack(100);
-        final FluidStack aThoriumFluoride = MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(100);
-        final FluidStack aZirconiumFluoride = MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(100);
-        final FluidStack aUraniumTetraFluoride = MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(100);
-        final FluidStack aUranium235 = MaterialsElements.getInstance().URANIUM235.getFluidStack(1000);
-        final FluidStack aLiFBeF2ZrF4U235 = MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(100);
-        final FluidStack aLiFBeF2ZrF4UF4 = MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(100);
-        final FluidStack aLiFBeF2ThF4UF4 = MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(100);
-
         // 7LiF - BeF2 - ZrF4 - U235 - 590C
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                FluidUtils.getFluidStack(aLithiumFluoride, 550),
-                FluidUtils.getFluidStack(aBerylliumFluoride, 150),
-                FluidUtils.getFluidStack(aZirconiumFluoride, 60),
-                FluidUtils.getFluidStack(aUranium235, 240))
-            .fluidOutputs(FluidUtils.getFluidStack(aLiFBeF2ZrF4U235, 1000))
+                MaterialsFluorides.LITHIUM_FLUORIDE.getFluidStack(550),
+                MaterialsFluorides.BERYLLIUM_FLUORIDE.getFluidStack(150),
+                MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(60),
+                Materials.Uranium235.getMolten(240))
+            .fluidOutputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(1000))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(fissionFuelProcessingRecipes);
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                FluidUtils.getFluidStack(aLithiumFluoride, 600),
-                FluidUtils.getFluidStack(aBerylliumFluoride, 250),
-                FluidUtils.getFluidStack(aZirconiumFluoride, 80),
-                FluidUtils.getFluidStack(aUraniumTetraFluoride, 70))
-            .fluidOutputs(FluidUtils.getFluidStack(aLiFBeF2ZrF4UF4, 1000))
+                MaterialsFluorides.LITHIUM_FLUORIDE.getFluidStack(600),
+                MaterialsFluorides.BERYLLIUM_FLUORIDE.getFluidStack(250),
+                MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(80),
+                MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(70))
+            .fluidOutputs(MaterialsNuclides.LiFBeF2ZrF4UF4.getFluidStack(1000))
             .duration(40 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
         // 7liF - BeF2 - ThF4 - UF4 - 566C
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                FluidUtils.getFluidStack(aLithiumFluoride, 580),
-                FluidUtils.getFluidStack(aBerylliumFluoride, 270),
-                FluidUtils.getFluidStack(aThoriumFluoride, 80),
-                FluidUtils.getFluidStack(aUraniumTetraFluoride, 70))
-            .fluidOutputs(FluidUtils.getFluidStack(aLiFBeF2ThF4UF4, 1000))
+                MaterialsFluorides.LITHIUM_FLUORIDE.getFluidStack(580),
+                MaterialsFluorides.BERYLLIUM_FLUORIDE.getFluidStack(270),
+                MaterialsFluorides.THORIUM_TETRAFLUORIDE.getFluidStack(80),
+                MaterialsFluorides.URANIUM_TETRAFLUORIDE.getFluidStack(70))
+            .fluidOutputs(MaterialsNuclides.LiFBeF2ThF4UF4.getFluidStack(1000))
             .duration(50 * MINUTES)
             .eut(TierEU.RECIPE_IV)
             .addTo(fissionFuelProcessingRecipes);
@@ -80,7 +68,8 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Blanket step 1 - Fluorination
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(17), MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .circuit(17)
             .itemOutputs(
                 ItemList.Cell_Empty.get(5),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
@@ -97,7 +86,8 @@ public class RecipeLoaderNuclearFuelProcessing {
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(18), MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .circuit(18)
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(1),
@@ -116,7 +106,8 @@ public class RecipeLoaderNuclearFuelProcessing {
             .addTo(reactorProcessingUnitRecipes);
         // Reactor Blanket step 1 - Fluorination
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(7), MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .circuit(7)
             .itemOutputs(
                 ItemList.Cell_Empty.get(4),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
@@ -133,7 +124,8 @@ public class RecipeLoaderNuclearFuelProcessing {
             .eut(TierEU.RECIPE_IV)
             .addTo(reactorProcessingUnitRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(6))
+            .circuit(8)
             .itemOutputs(
                 ItemList.Cell_Empty.get(2),
                 MaterialsFluorides.LITHIUM_FLUORIDE.getCell(2),
@@ -153,7 +145,8 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Blanket step 2 - Sorption + Cold Trap
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), MaterialsFluorides.SODIUM_FLUORIDE.getCell(4))
+            .itemInputs(MaterialsFluorides.SODIUM_FLUORIDE.getCell(4))
+            .circuit(8)
             .itemOutputs(
                 MaterialsElements.getInstance().FLUORINE.getCell(2),
                 MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(2),
@@ -170,7 +163,8 @@ public class RecipeLoaderNuclearFuelProcessing {
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), MaterialsElements.getInstance().FLUORINE.getCell(1))
+            .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(1))
+            .circuit(1)
             .itemOutputs(MaterialsNuclides.UF6F2FP.getCell(1))
             .outputChances(10000)
             .fluidInputs(MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(1000))
@@ -181,7 +175,8 @@ public class RecipeLoaderNuclearFuelProcessing {
         // LiBeF2UF4FP + F2 = LiFBeF2 & UF6F2FP
         // Reactor Core step 1 - Process Burnt Salt
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), MaterialsElements.getInstance().FLUORINE.getCell(3))
+            .itemInputs(MaterialsElements.getInstance().FLUORINE.getCell(3))
+            .circuit(1)
             .itemOutputs(ItemList.Cell_Empty.get(1), MaterialsNuclides.UF6F2FP.getCell(2))
             .fluidInputs(MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(1000))
             .fluidOutputs(new FluidStack(GTPPFluids.ImpureMoltenSaltBase, 2000))
@@ -191,7 +186,8 @@ public class RecipeLoaderNuclearFuelProcessing {
 
         // Reactor Core step 2A - Sorption + Cold Trap
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(8), MaterialsFluorides.SODIUM_FLUORIDE.getCell(3))
+            .itemInputs(MaterialsFluorides.SODIUM_FLUORIDE.getCell(3))
+            .circuit(8)
             .itemOutputs(
                 MaterialsElements.getInstance().FLUORINE.getCell(1),
                 MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(2),
@@ -236,7 +232,7 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialsElements.getInstance().HYDROGEN.getFluidStack(2000))
             .fluidOutputs(
                 MaterialsNuclides.LiFBeF2UF4.getFluidStack(3000),
-                FluidUtils.getFluidStack("hydrofluoricacid", 2000))
+                new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 2000))
             .duration(2 * MINUTES + 30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .metadata(CHEMPLANT_CASING_TIER, 4)

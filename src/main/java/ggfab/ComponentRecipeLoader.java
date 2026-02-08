@@ -14,7 +14,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
@@ -43,8 +42,8 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_IV.get(1L),
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L),
-                GTUtility.getIntegratedCircuit(12))
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L))
+            .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
             .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
             .duration(30 * SECONDS)

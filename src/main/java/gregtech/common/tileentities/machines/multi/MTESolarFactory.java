@@ -146,7 +146,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             'A',
             buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(CASING_T1_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
         // Tungstensteel
         .addElement(
@@ -154,7 +154,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             buildHatchAdder(MTESolarFactory.class)
                 .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(CASING_T2_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
         // Advanced iridium
         .addElement(
@@ -162,7 +162,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             buildHatchAdder(MTESolarFactory.class)
                 .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy, ExoticEnergy)
                 .casingIndex(CASING_T3_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
         .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('F', ofFrame(Materials.Tungsten))

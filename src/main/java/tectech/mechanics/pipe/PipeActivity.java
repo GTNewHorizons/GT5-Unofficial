@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
@@ -16,9 +16,9 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
-import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import it.unimi.dsi.fastutil.ints.IntBooleanPair;
@@ -95,12 +95,11 @@ public class PipeActivity {
         }
     }
 
-    public static class Handler extends AbstractClientMessageHandler<BatchedPipeActivityMessage> {
+    public static class Handler implements IMessageHandler<BatchedPipeActivityMessage, IMessage> {
 
         @Override
-        public IMessage handleClientMessage(EntityPlayer player, BatchedPipeActivityMessage message,
-            MessageContext ctx) {
-            World world = player.worldObj;
+        public IMessage onMessage(BatchedPipeActivityMessage message, MessageContext ctx) {
+            var world = Minecraft.getMinecraft().theWorld;
 
             if (message.worldId != world.provider.dimensionId) return null;
 

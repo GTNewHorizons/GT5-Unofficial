@@ -22,11 +22,9 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     ComponentTypes PlasmaCell = ComponentTypes.PLASMACELL;
     private int tickCounter = 0;
     private final int tickCounterMax = 200;
-    private final short[] fluidColour;
 
     public BaseItemPlasmaCell(final Material material) {
         super(material, ComponentTypes.PLASMACELL);
-        this.fluidColour = material.getRGBA();
     }
 
     @Override
@@ -39,13 +37,12 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
     public void registerIcons(final IIconRegister i) {
         this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent());
         this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent() + "_Overlay");
-        // this.overlay = cellMaterial.getFluid(1_000).getFluid().get
     }
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
         if (renderPass == 0) {
-            return Utils.rgbtoHexValue(230, 230, 230);
+            return Utils.rgbtoHexValue(255, 255, 255);
         }
         return this.componentColour;
     }

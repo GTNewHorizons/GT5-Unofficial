@@ -166,11 +166,11 @@ crops.saltroot=Salty Root
 #Tooltip
 inverter.tooltip.0=Turn DC into AC.
 naquadahMass.tooltip.0=FAR from PURE.
-enrichedNaquadahMass.tooltip.0=An intense to satisfaction in the world.
+enrichedNaquadahMass.tooltip.0=An intense satisfaction in the world.
 naquadriaMass.tooltip.0=What?
 fuelrod.tooltip.0=Durability: %s/%s
 fuelrodheat.tooltip.0=Has the same heat output as uranium
-fuelrodheat.tooltip.1=The heat output is %s times than uranium
+fuelrodheat.tooltip.1=The heat output is %s times greater than uranium
 fuelrodheat.tooltip.2=Has Mox Behaviour
 depletedfuelrod.tooltip.0=Depleted
 YOTTankCell.tooltip.0=Capacity:
@@ -494,6 +494,15 @@ yottank.chat.voidExcessDisabled=Void Excess Disabled
 preciseassembler.chat.0=Precise Mode
 preciseassembler.chat.1=Normal Mode
 essentiaoutputhatch.chat.0=Cleared.
+gg.chat.antimatter_generator.wireless_mode.enable=Wireless network mode enabled.
+gg.chat.antimatter_generator.wireless_mode.disable=Wireless network mode disabled..
+gg.chat.antimatter_generator.wireless_mode.enable.hint=Wireless only works with UMV Superconductor Base or better.
+gg.chat.antimatter_output_hatch.front_face_input.enable=Front face input enabled
+gg.chat.antimatter_output_hatch.front_face_input.disable=Front face input disabled.
+gg.chat.ae_modes.no_access=NO_ACCESS
+gg.chat.ae_modes.read=READ
+gg.chat.ae_modes.write=WRITE
+gg.chat.ae_modes.read_write=READ_WRITE
 
 #Achievement
 achievement.gt.blockmachines.nag=Large Naquadah Reactor
@@ -550,8 +559,8 @@ achievement.item.advancedRadiationProtectionPlate=Advanced Radiation Proof Plate
 achievement.item.advancedRadiationProtectionPlate.desc=Pickup this item to see the recipe in NEI
 
 #Thaumcraft Research Context
-research.ESSENTIA_CELL.page.0=The Novice Cell has such low efficiency that you can't bear it. So you discovered a new way to make some better Cells<BR><BR>The Novice Cell only provides 1 StablePoint, the Adept one provides 2 StablePoint, the Master one provides 5 StablePoint, and the Grandmaster one provides 10 StablePoint!<BR><BR>With higher StablePoint, the generator can create more electricity from pre Essential.<BR><BR>They also allow you to use better hatches.
+research.ESSENTIA_CELL.page.0=The Novice Cell has such low efficiency that you can't bear it. So you discovered a new way to make some better Cells<BR><BR>The Novice Cell only provides 1 StablePoint, the Adept one provides 2 StablePoint, the Master one provides 5 StablePoint, and the Grandmaster one provides 10 StablePoint!<BR><BR>With higher StablePoint, the generator can create more electricity per Essentia.<BR><BR>They also allow you to use better hatches.
 research.ESSENTIA_SMELTERY.page.0=The Advanced Alchemical Furnace is no longer enough to support your Essentia production...<BR><BR>The LES(Large Essentia Smeltery) is an advanced version of the Advanced Alchemical Furnace, which consumes electricity and cent-vis to smelt Essentia.
-research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can run only after it is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up machine work, up to 200% (100cv/5t).
+research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can only run after this requirement is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up the machine's work, up to 200% (100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=The Essentia Diffusion Cell tier and structure size only affect the machine parallel, and the max parallel is 64x.<BR><BR>Items without Essentia will be smelted to 1 point of perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=Someday you will use it...<BR><BR>Be sure to connect to the network. It has no cache!

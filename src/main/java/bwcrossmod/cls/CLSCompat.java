@@ -26,29 +26,21 @@ public class CLSCompat {
     private static final long MINIMAL_UPDATE_INTERVAL = 1000 / 30; // target 30 fps
     private static long lastUpdate = 0;
 
-    public static int[] initCls() {
-        int sizeStep;
-        int sizeStep2 = 1;
+    public static void initCls() {
         MinecraftDisplayer.isRegisteringBartWorks = true;
-        if (Werkstoff.werkstoffHashSet.size() >= 100) sizeStep = Werkstoff.werkstoffHashSet.size() / 100 - 1;
-        else sizeStep = sizeStep2 = Werkstoff.werkstoffHashSet.size();
-        return new int[] { sizeStep, sizeStep2, sizeStep };
     }
 
-    public static int invokeStepSize(Werkstoff werkstoff, int[] steps, int size) {
-        --steps[0];
+    public static void updateDisplay(Werkstoff werkstoff, int pos) {
         long time = System.currentTimeMillis();
         if (time - lastUpdate >= MINIMAL_UPDATE_INTERVAL) {
             try {
-                ProgressDisplayer.displayProgress(werkstoff.getDefaultName(), (float) size / 10000);
+                ProgressDisplayer
+                    .displayProgress(werkstoff.getDefaultName(), (float) pos / Werkstoff.werkstoffHashSet.size());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             lastUpdate = time;
         }
-        if (steps[0] == 0 && Werkstoff.werkstoffHashSet.size() >= 100) steps[0] = steps[2];
-        size += steps[1];
-        return size;
     }
 
     public static void disableCls() {

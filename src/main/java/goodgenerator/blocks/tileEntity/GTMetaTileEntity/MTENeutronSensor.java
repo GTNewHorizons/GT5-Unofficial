@@ -1,7 +1,5 @@
 package goodgenerator.blocks.tileEntity.GTMetaTileEntity;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,16 +12,9 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import crazypants.enderio.Log;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -31,7 +22,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTENeutronSensorGui;
-import gregtech.common.gui.modularui.widget.CoverCycleButtonWidget;
 
 public class MTENeutronSensor extends MTEHatch {
 
@@ -246,38 +236,4 @@ public class MTENeutronSensor extends MTEHatch {
         this.inverted = inverted;
     }
 
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new CoverCycleButtonWidget().setToggle(() -> inverted, (val) -> inverted = val)
-                .setTextureGetter(
-                    (state) -> state == 1 ? GTUITextures.OVERLAY_BUTTON_REDSTONE_ON
-                        : GTUITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                .addTooltip(0, translateToLocal("gt.interact.desc.normal.tooltip"))
-                .addTooltip(1, translateToLocal("gt.interact.desc.inverted.tooltip"))
-                .setPos(10, 8))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> inverted ? translateToLocal("gt.interact.desc.inverted")
-                            : translateToLocal("gt.interact.desc.normal"))
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(28, 12))
-            .widget(
-                new NumericWidget().setBounds(0, 1200000000)
-                    .setGetter(() -> threshold)
-                    .setSetter((value) -> threshold = (int) value)
-                    .setScrollValues(1000, 1, 1_000_000)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 28)
-                    .setSize(77, 12))
-            .widget(
-                new TextWidget(translateToLocal("gui.NeutronSensor.4")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setPos(90, 30));
-    }
 }

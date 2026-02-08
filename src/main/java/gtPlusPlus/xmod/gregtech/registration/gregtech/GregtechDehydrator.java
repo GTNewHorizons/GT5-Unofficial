@@ -13,8 +13,6 @@ import static gregtech.api.metatileentity.implementations.MTEBasicMachineWithRec
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -26,7 +24,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -146,41 +143,36 @@ public class GregtechDehydrator {
     }
 
     private static void registerRecipes() {
-        ItemStack coilT1 = new ItemStack(ModItems.itemDehydratorCoil, 1, 0);
-        ItemStack coilT2 = new ItemStack(ModItems.itemDehydratorCoil, 1, 1);
-        ItemStack coilT3 = new ItemStack(ModItems.itemDehydratorCoil, 1, 2);
-        ItemStack coilT4 = new ItemStack(ModItems.itemDehydratorCoil, 1, 3);
-
         // Make some coils by wrapping wire around a spool.
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemDehydratorCoilWire, 4, 0),
+                GregtechItemList.DehydratorCoilWireEV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1))
-            .itemOutputs(coilT1)
+            .itemOutputs(GregtechItemList.DehydratorCoilEV.get(1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemDehydratorCoilWire, 4, 1),
+                GregtechItemList.DehydratorCoilWireIV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1))
-            .itemOutputs(coilT2)
+            .itemOutputs(GregtechItemList.DehydratorCoilIV.get(1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemDehydratorCoilWire, 4, 2),
+                GregtechItemList.DehydratorCoilWireLuV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1))
-            .itemOutputs(coilT3)
+            .itemOutputs(GregtechItemList.DehydratorCoilLuV.get(1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                new ItemStack(ModItems.itemDehydratorCoilWire, 4, 3),
+                GregtechItemList.DehydratorCoilWireZPM.get(4),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1))
-            .itemOutputs(coilT4)
+            .itemOutputs(GregtechItemList.DehydratorCoilZPM.get(1))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
             .addTo(assemblerRecipes);
@@ -201,26 +193,28 @@ public class GregtechDehydrator {
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_EV.get(1),
-            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT1, 'C', CIRCUIT, 'W',
-                OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TUMBAGA.getGear(1) },
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilEV, 'C',
+                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Aluminium), 'G', MaterialsAlloy.TUMBAGA.getGear(1) },
             4);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_IV.get(1),
-            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT2, 'C', CIRCUIT, 'W',
-                OrePrefixes.cableGt04.get(Materials.Tungsten), 'G', MaterialsAlloy.INCONEL_690.getGear(1) },
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilIV, 'C',
+                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'G',
+                MaterialsAlloy.INCONEL_690.getGear(1) },
             5);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_LuV.get(1),
-            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT3, 'C', CIRCUIT, 'W',
-                OrePrefixes.cableGt04.get(Materials.Naquadah), 'G', MaterialsAlloy.HASTELLOY_N.getGear(1) },
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilLuV, 'C',
+                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Naquadah), 'G',
+                MaterialsAlloy.HASTELLOY_N.getGear(1) },
             6);
 
         GTModHandler.addMachineCraftingRecipe(
             GregtechItemList.GT_Dehydrator_ZPM.get(1),
-            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', coilT4, 'C', CIRCUIT, 'W',
-                OrePrefixes.cableGt04.get(Materials.Osmium), 'G', MaterialsAlloy.ZERON_100.getGear(1) },
+            new Object[] { "ECE", "WMW", "GPG", 'M', HULL, 'P', ROBOT_ARM, 'E', GregtechItemList.DehydratorCoilZPM, 'C',
+                CIRCUIT, 'W', OrePrefixes.cableGt04.get(Materials.Osmium), 'G', MaterialsAlloy.ZERON_100.getGear(1) },
             7);
     }
 }

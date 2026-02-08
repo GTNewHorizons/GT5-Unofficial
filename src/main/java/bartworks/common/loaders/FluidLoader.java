@@ -41,7 +41,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaGeneratedItem98;
 
 public class FluidLoader {
@@ -101,7 +100,7 @@ public class FluidLoader {
                         .asFluid());
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.getIntegratedCircuit(10))
+                    .circuit(10)
                     .fluidInputs(new FluidStack(B.getFluid(), 1000))
                     .fluidOutputs(dnaFluid)
                     .duration(25 * SECONDS)

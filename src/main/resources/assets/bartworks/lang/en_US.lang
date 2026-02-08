@@ -203,8 +203,8 @@ gt.recipe.electricimplosioncompressor=Electric Implosion Compressor
 bw.recipe.htgr=High Temperature Gas-cooled Reactor
 
 nei.biovat.0.name=Needs Glass Tier: %s
-nei.biovat.1.name=Need exactly Sievert: %s Sv
-nei.biovat.2.name=Need minimum Sievert: %s Sv
+nei.biovat.1.name=Needs exactly Sievert: %s Sv
+nei.biovat.2.name=Needs minimum Sievert: %s Sv
 nei.biovat.input.tooltip=Consumed up to 1,001x amount, depending on output rate
 nei.biovat.output.tooltip=Outputs up to 1,001x amount, depending on the amount of fluid stored in the Output Hatch
 
@@ -276,3 +276,9 @@ BW.gui.text.lesu.max=MAX: %s
 BW.gui.text.lesu.max_in=MAX EU/t IN: %s
 BW.gui.text.lesu.eu_out=EU/t OUT: %s
 BW.gui.text.lesu.amp_io=AMP/t IN/OUT: %s
+
+# chat
+BW.chat.thtr.cannot_change_mode=THTR mode cannot be changed while the machine is running.
+BW.chat.thtr.running_in.emptying=THTR is now running in emptying mode.
+BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
+BW.chat.diode.max_amps=Max Amps: %s

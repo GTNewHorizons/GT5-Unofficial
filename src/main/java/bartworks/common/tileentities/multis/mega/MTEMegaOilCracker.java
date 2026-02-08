@@ -35,7 +35,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -105,27 +104,27 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             'l',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
-                .dot(2)
+                .hint(2)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'r',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
-                .dot(3)
+                .hint(3)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'm',
             buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
             buildHatchAdder(MTEMegaOilCracker.class)
                 .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
-                .dot(4)
+                .hint(4)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
@@ -184,6 +183,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
             .addInputHatch("Steam/Hydrogen ONLY, Hint block", 4)
             .addInputBus("Optional, for programmed circuit automation. Hint block", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -448,9 +448,9 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

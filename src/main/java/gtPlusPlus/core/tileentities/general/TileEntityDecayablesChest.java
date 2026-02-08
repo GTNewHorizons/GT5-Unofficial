@@ -64,7 +64,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         // Try do chesty stuff
         try {
             this.updateEntityChest();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
 
@@ -88,7 +88,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 }
                 updateSlots();
             }
-        } catch (final Throwable ignored) {}
+        } catch (final Exception ignored) {}
     }
 
     public void tryUpdateDecayable(final DustDecayable b, ItemStack iStack, final World world) {
@@ -417,8 +417,8 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                         SyncHandlers.itemSlot(contents, index)
                             .slotGroup(SLOT_GROUP)))
                 .build()
-                .flex(
-                    flex -> flex.anchor(Alignment.TopCenter)
+                .resizer(
+                    a -> a.anchor(Alignment.TopCenter)
                         .leftRelAnchor(0.5f, 0.5f)
                         .topRelAnchor(0.125f, 0f)));
 

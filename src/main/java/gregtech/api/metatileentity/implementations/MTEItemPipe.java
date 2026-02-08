@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.ALL_VALID_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 
@@ -7,14 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -29,6 +30,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
@@ -273,13 +275,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
             connectable = true;
         }
 
-        if (tileEntity instanceof IInventory) {
-            if (((IInventory) tileEntity).getSizeInventory() <= 0) return false;
-            connectable = true;
-        }
-        if (tileEntity instanceof ISidedInventory) {
-            final int[] tSlots = ((ISidedInventory) tileEntity).getAccessibleSlotsFromSide(oppositeSide.ordinal());
-            if (tSlots == null || tSlots.length == 0) return false;
+        if (!connectable && ItemUtil.getItemIO(tileEntity, side) != null) {
             connectable = true;
         }
 
@@ -311,34 +307,30 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
                 }
             }
         }
+
         return false;
     }
 
     @Override
     public boolean insertItemStackIntoTileEntity(Object aSender, ForgeDirection side) {
-        if (getBaseMetaTileEntity().getCoverAtSide(side)
-            .letsItemsOut(-1)) {
-            final TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(side);
-            if (tInventory != null && !(tInventory instanceof BaseMetaPipeEntity)) {
-                if ((!(tInventory instanceof TileEntityHopper) && !(tInventory instanceof TileEntityDispenser))
-                    || getBaseMetaTileEntity().getMetaIDAtSide(side) != side.getOpposite()
-                        .ordinal()) {
-                    return GTUtility.moveMultipleItemStacks(
-                        aSender,
-                        tInventory,
-                        ForgeDirection.UNKNOWN,
-                        side.getOpposite(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1,
-                        1) > 0;
-                }
-            }
+        if (!getBaseMetaTileEntity().getCoverAtSide(side)
+            .letsItemsOut(-1)) return false;
+
+        final TileEntity neighbour = getBaseMetaTileEntity().getTileEntityAtSide(side);
+
+        if (neighbour instanceof TileEntityHopper || neighbour instanceof TileEntityDispenser) {
+            if (getBaseMetaTileEntity().getMetaIDAtSide(side) == side.getOpposite()
+                .ordinal()) return false;
         }
-        return false;
+
+        if (neighbour instanceof BaseMetaPipeEntity) return false;
+
+        GTItemTransfer transfer = new GTItemTransfer();
+
+        transfer.source(aSender, ForgeDirection.UNKNOWN);
+        transfer.sink(neighbour, side.getOpposite());
+
+        return transfer.transfer() > 0;
     }
 
     @Override
@@ -368,13 +360,16 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        return isConnectedAtSide(ForgeDirection.getOrientation(ordinalSide))
-            && super.canInsertItem(aIndex, aStack, ordinalSide);
+        ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+        if (side == ForgeDirection.UNKNOWN) return true;
+        if (!isConnectedAtSide(side)) return false;
+        return super.canInsertItem(aIndex, aStack, ordinalSide);
     }
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        return isConnectedAtSide(ForgeDirection.getOrientation(ordinalSide));
+        ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+        return side == ForgeDirection.UNKNOWN || isConnectedAtSide(side);
     }
 
     @Override
@@ -393,12 +388,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return isConnectedAtSide(side);
+        return side == ForgeDirection.UNKNOWN || isConnectedAtSide(side);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
+        if (side == ForgeDirection.UNKNOWN) return true;
         if (!isConnectedAtSide(side)) return false;
         if (isInventoryEmpty()) mLastReceivedFrom = side;
         return mLastReceivedFrom == side && mInventory[aIndex] == null;
@@ -407,13 +403,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public String[] getDescription() {
         if (mTickTime == 20) return new String[] { "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/sec",
-            "Routing Value: %%%" + GTUtility.formatNumbers(mStepSize) };
+            "Routing Value: %%%" + formatNumber(mStepSize) };
         else if (mTickTime % 20 == 0) return new String[] {
             "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + (mTickTime / 20) + "%%% sec",
-            "Routing Value: %%%" + GTUtility.formatNumbers(mStepSize) };
+            "Routing Value: %%%" + formatNumber(mStepSize) };
         else return new String[] {
             "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + mTickTime + "%%% ticks",
-            "Routing Value: %%%" + GTUtility.formatNumbers(mStepSize) };
+            "Routing Value: %%%" + formatNumber(mStepSize) };
     }
 
     private boolean isInventoryEmpty() {

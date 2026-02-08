@@ -8,24 +8,24 @@ gtnhlanth.tt.beaminfo=Use a §bportable scanner §7for info about the input/outp
 gtnhlanth.tt.blueprint=Follow the §9Structure§2Lib §7hologram projector to build the main structure.
 gtnhlanth.tt.pc=§6Partially consumed: §7Takes damage in the process
 
-gtnhlanth.tt.hintdot=Hint block with dot %s
+gtnhlanth.tt.hintNumber=Hint block with number %s
 
 GT5U.gui.text.gtnhlanth.nocoolant=No coolant present in machine!
 GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!
-GT5U.gui.text.gtnhlanth.low_input_eut=Input EU/t too low to produce  photons!
+GT5U.gui.text.gtnhlanth.low_input_eut=Input EU/t too low to produce photons!
 GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
 
 # NEI
 value.disstank=Ratio: %s:1
 
-DissolutionTank.hint.0=Dot 1: Clean Stainless Steel Machine Casing
+DissolutionTank.hint.0=Hint Number 1: Clean Stainless Steel Machine Casing
 DissolutionTank.hint.1=24x Titanium-Reinforced Borosilicate Glass
 DissolutionTank.hint.2=9x Heat Proof Machine Casing
 DissolutionTank.hint.3=Input Bus, Output Bus, Input Hatches, Output Hatch
 DissolutionTank.hint.4=Energy Hatch, Maintenance Hatch
 
-Digester.hint.0=Dot 1: Robust Tungstensteel Machine Casing
+Digester.hint.0=Hint Number 1: Robust Tungstensteel Machine Casing
 Digester.hint.1=9x Clean Stainless Steel Machine Casing
 Digester.hint.2=16x Heat Proof Machine Casing
 Digester.hint.3=16x Coil Block
@@ -35,10 +35,10 @@ Digester.hint.5=Energy Hatch, Maintenance Hatch
 SourceChamber.hint.0=56x Shielded Accelerator Casing
 SourceChamber.hint.1=52x Shielded Accelerator Glass
 SourceChamber.hint.2=16x Electrode Casing
-SourceChamber.hint.3=Dot 1: Input Bus
-SourceChamber.hint.4=Dot 2: Output Bus
-SourceChamber.hint.5=Dot 3: Maintenance Hatch, Energy Hatch
-SourceChamber.hint.6=Dot 4: Beamline Output Hatch
+SourceChamber.hint.3=Hint Number 1: Input Bus
+SourceChamber.hint.4=Hint Number 2: Output Bus
+SourceChamber.hint.5=Hint Number 3: Maintenance Hatch, Energy Hatch
+SourceChamber.hint.6=Hint Number 4: Beamline Output Hatch
 
 LINAC.hint.0=325-1285x Shielded Accelerator Casing
 LINAC.hint.1=148-852x Coolant Delivery Casing
@@ -47,10 +47,10 @@ LINAC.hint.3=56-312x Superconducting Coil Block
 LINAC.hint.4=156-732x Electrode Casing
 LINAC.hint.5=47x Grate Machine Casing
 LINAC.hint.6=48x Any Tiered Glass (LuV+)
-LINAC.hint.7=Dot 1: Energy Hatch, Maintenance Hatch
-LINAC.hint.8=Dot 2: Input Hatch, Output Hatch
-LINAC.hint.9=Dot 3: Beamline Input Hatch
-LINAC.hint.10=Dot 4: Beamline Output Hatch
+LINAC.hint.7=Hint Number 1: Energy Hatch, Maintenance Hatch
+LINAC.hint.8=Hint Number 2: Input Hatch, Output Hatch
+LINAC.hint.9=Hint Number 3: Beamline Input Hatch
+LINAC.hint.10=Hint Number 4: Beamline Output Hatch
 
 Synchrotron.hint.0=676x Shielded Accelerator Casing
 Synchrotron.hint.1=90x Superconducting Coil Block
@@ -58,12 +58,12 @@ Synchrotron.hint.2=64x Niobium Cavity Machine Casing
 Synchrotron.hint.3=28x Coolant Delivery Casing
 Synchrotron.hint.4=16x Any Tiered Glass (LuV+)
 Synchrotron.hint.5=4x Antenna Casing
-Synchrotron.hint.6=Dot 1: Beamline Input Hatch
-Synchrotron.hint.7=Dot 2: Beamline Output Hatch
-Synchrotron.hint.8=Dot 3: Maintenance Hatch
-Synchrotron.hint.9=Dot 4: Input Hatch
-Synchrotron.hint.10=Dot 5: Output Hatch
-Synchrotron.hint.11=Dot 6: Energy Hatch
+Synchrotron.hint.6=Hint Number 1: Beamline Input Hatch
+Synchrotron.hint.7=Hint Number 2: Beamline Output Hatch
+Synchrotron.hint.8=Hint Number 3: Maintenance Hatch
+Synchrotron.hint.9=Hint Number 4: Input Hatch
+Synchrotron.hint.10=Hint Number 5: Output Hatch
+Synchrotron.hint.11=Hint Number 6: Energy Hatch
 
 TargetChamber.hint.0=28x Shielded Accelerator Casing
 TargetChamber.hint.1=34x Shielded Accelerator Glass
@@ -73,11 +73,11 @@ TargetChamber.hint.4=4x Focus Manipulation Casing
 TargetChamber.hint.5=4x Target Receptacle Casing
 TargetChamber.hint.6=1x Focus Holder
 TargetChamber.hint.7=1x Target Holder
-TargetChamber.hint.8=Dot 1: Focus Input Bus
-TargetChamber.hint.9=Dot 2: Energy Hatch, Maintenance Hatch
-TargetChamber.hint.10=Dot 3: Input Bus
-TargetChamber.hint.11=Dot 4: Output Bus
-TargetChamber.hint.12=Dot 5: Beamline Input Hatch
+TargetChamber.hint.8=Hint Number 1: Focus Input Bus
+TargetChamber.hint.9=Hint Number 2: Energy Hatch, Maintenance Hatch
+TargetChamber.hint.10=Hint Number 3: Input Bus
+TargetChamber.hint.11=Hint Number 4: Output Bus
+TargetChamber.hint.12=Hint Number 5: Beamline Input Hatch
 
 
 fluid.Antimony Pentafluoride Solution=Antimony Pentafluoride Solution

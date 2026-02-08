@@ -37,12 +37,12 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Deuterium.getGas(125), Materials.Tritium.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .metadata(FUSION_THRESHOLD, 40_000_000L)
             .addTo(fusionRecipes); // FT1 Cheap - farmable
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium_3.getGas(125))
+            .fluidInputs(Materials.Deuterium.getGas(125), Materials.Helium3.getGas(125))
             .fluidOutputs(Materials.Helium.getPlasma(125))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_EV)
@@ -61,7 +61,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Beryllium.getMolten(1 * NUGGETS), Materials.Deuterium.getGas(375))
             .fluidOutputs(Materials.Nitrogen.getPlasma(125))
             .duration(16 * TICKS)
-            .eut(16384)
+            .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 180_000_000L)
             .addTo(fusionRecipes); // FT1+ Expensive //
 
@@ -206,7 +206,7 @@ public class FusionReactorRecipes implements Runnable {
             .fluidInputs(Materials.Gallium.getMolten(1 * NUGGETS), Materials.Radon.getGas(125))
             .fluidOutputs(Materials.Duranium.getMolten(1 * NUGGETS))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(16384)
+            .eut(TierEU.RECIPE_LuV / 2)
             .metadata(FUSION_THRESHOLD, 140_000_000L)
             .addTo(fusionRecipes);
 
@@ -259,7 +259,7 @@ public class FusionReactorRecipes implements Runnable {
             .addTo(fusionRecipes); // FT2+
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium_3.getGas(375))
+            .fluidInputs(Materials.Silver.getMolten(1 * INGOTS), Materials.Helium3.getGas(375))
             .fluidOutputs(Materials.Tin.getPlasma(2 * INGOTS))
             .duration(16 * TICKS)
             .eut(49152)

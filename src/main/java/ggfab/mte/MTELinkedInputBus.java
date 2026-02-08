@@ -81,6 +81,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     }
 
     @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
+    @Override
     public int getCircuitSlot() {
         return 0;
     }
@@ -138,6 +143,11 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
     @Override
     public int getCircuitSlotX() {
         return 152;
+    }
+
+    @Override
+    public int getCircuitSlotY() {
+        return 62;
     }
 
     @Override
@@ -357,16 +367,25 @@ public class MTELinkedInputBus extends MTEHatchInputBus implements IRecipeProces
                     mRealInventory.disableLimited = true;
                 }
             }
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatComp(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableSort." + mRealInventory.disableSort) + "   "
-                    + StatCollector.translateToLocal("GT5U.hatch.disableLimited." + mRealInventory.disableLimited));
+                new ChatComponentTranslation("GT5U.hatch.disableSort." + mRealInventory.disableSort).appendText("   ")
+                    .appendSibling(
+                        new ChatComponentTranslation("GT5U.hatch.disableLimited." + mRealInventory.disableLimited)));
         } else {
             this.disableFilter = !this.disableFilter;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.disableFilter." + this.disableFilter));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + this.disableFilter);
         }
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 166;
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return 176;
     }
 
     @Override

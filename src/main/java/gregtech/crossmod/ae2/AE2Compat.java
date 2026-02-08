@@ -88,22 +88,7 @@ public final class AE2Compat {
             ItemList.Shape_Extruder_Hoe, ItemList.Shape_Extruder_Hammer, ItemList.Shape_Extruder_File,
             ItemList.Shape_Extruder_Saw, ItemList.Shape_Extruder_Gear, ItemList.Shape_Extruder_Rotor,
             ItemList.Shape_Extruder_Turbine_Blade, ItemList.Shape_Extruder_Small_Gear,
-            ItemList.Shape_Extruder_ToolHeadDrill,
-
-            ItemList.White_Dwarf_Shape_Extruder_Bottle, ItemList.White_Dwarf_Shape_Extruder_Plate,
-            ItemList.White_Dwarf_Shape_Extruder_Cell, ItemList.White_Dwarf_Shape_Extruder_Ring,
-            ItemList.White_Dwarf_Shape_Extruder_Rod, ItemList.White_Dwarf_Shape_Extruder_Bolt,
-            ItemList.White_Dwarf_Shape_Extruder_Ingot, ItemList.White_Dwarf_Shape_Extruder_Wire,
-            ItemList.White_Dwarf_Shape_Extruder_Casing, ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny,
-            ItemList.White_Dwarf_Shape_Extruder_Pipe_Small, ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium,
-            ItemList.White_Dwarf_Shape_Extruder_Pipe_Large, ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge,
-            ItemList.White_Dwarf_Shape_Extruder_Block, ItemList.White_Dwarf_Shape_Extruder_Sword,
-            ItemList.White_Dwarf_Shape_Extruder_Pickaxe, ItemList.White_Dwarf_Shape_Extruder_Shovel,
-            ItemList.White_Dwarf_Shape_Extruder_Axe, ItemList.White_Dwarf_Shape_Extruder_Hoe,
-            ItemList.White_Dwarf_Shape_Extruder_Hammer, ItemList.White_Dwarf_Shape_Extruder_File,
-            ItemList.White_Dwarf_Shape_Extruder_Saw, ItemList.White_Dwarf_Shape_Extruder_Gear,
-            ItemList.White_Dwarf_Shape_Extruder_Rotor, ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade,
-            ItemList.White_Dwarf_Shape_Extruder_Small_Gear, ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill };
+            ItemList.Shape_Extruder_ToolHeadDrill, };
         for (ItemList item : nonConsumables) {
             registry.register(item.get(1));
         }
@@ -112,10 +97,10 @@ public final class AE2Compat {
         // GT lenses are registered by ProcessingLens
         registry.register(WerkstoffLoader.items.get(OrePrefixes.lens));
         if (NewHorizonsCoreMod.isModLoaded()) {
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassLense"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens"));
-            registry.register(getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens"));
+            registry.register(getModItem(NewHorizonsCoreMod.ID, "ChromaticLens"));
         }
     }
 }

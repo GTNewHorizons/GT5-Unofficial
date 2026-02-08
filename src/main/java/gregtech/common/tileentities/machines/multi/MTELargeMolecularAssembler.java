@@ -8,12 +8,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,25 +27,19 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementCheckOnly;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.mojang.authlib.GameProfile;
 
 import appeng.api.AEApi;
@@ -77,7 +69,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -88,6 +79,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 
@@ -122,7 +115,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             ofChain(
                 buildHatchAdder(MTELargeMolecularAssembler.class).atLeast(Energy, InputBus, Maintenance)
                     .casingIndex(CASING_INDEX)
-                    .dot(1)
+                    .hint(1)
                     .build(),
                 onElementPass(it -> it.casing++, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement(
@@ -150,8 +143,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     private List<List<ItemStack>> cachedAeJobs = new ArrayList<>();
     private boolean aeJobsDirty;
 
-    private List<ICraftingPatternDetails> cachedPatternDetails = new ArrayList<>();
-    private Map<ItemStack, Pair<NBTTagCompound, ICraftingPatternDetails>> patternDetailCache = new IdentityHashMap<>();
+    private Map<ItemStack, ICraftingPatternDetails> cachedPatternDetail = new ItemStackMap<>(true);
 
     private BaseActionSource requestSource;
     private IItemList<IAEItemStack> cachedOutputs = AEApi.instance()
@@ -213,6 +205,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             for (List<ItemStack> l : aeJobs.subList(0, Math.min(parallel, aeJobs.size()))) {
                 outputs.addAll(l);
             }
+            // Multiblock base already includes 1 parallel
+            recipesDone += aeJobs.size() - 1;
             if (!outputs.isEmpty()) {
                 aeJobs.subList(0, Math.min(parallel, aeJobs.size()))
                     .clear();
@@ -551,33 +545,38 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
-        List<ICraftingPatternDetails> patterns = inputs.stream()
-            .map(is -> {
-                if (!(is.getItem() instanceof ItemEncodedPattern pattern)) {
-                    return null;
-                }
-                var entry = patternDetailCache.get(is);
-                if (entry == null || !Objects.equals(is.getTagCompound(), entry.getKey())) {
-                    ICraftingPatternDetails detail = pattern.getPatternForItem(is, getBaseMetaTileEntity().getWorld());
-                    patternDetailCache.put(is, Pair.of(is.getTagCompound(), detail));
-                    return detail;
-                }
-                return entry.getValue();
-            })
-            .filter(Objects::nonNull)
-            .filter(it -> ((ICraftingPatternDetails) it).isCraftable())
-            .collect(Collectors.toList());
-        if (patterns.equals(cachedPatternDetails)) return;
-        cachedPatternDetails = patterns;
-        patternDetailCache.keySet()
-            .retainAll(inputs);
+        boolean changed = false;
+        Map<ItemStack, ICraftingPatternDetails> patterns = new ItemStackMap<>(true);
 
-        try {
-            AENetworkProxy proxy = getProxy();
-            if (proxy == null) return;
-            proxy.getGrid()
-                .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
-        } catch (GridAccessException ignored) {}
+        for (ItemStack is : inputs) {
+            if (!(is.getItem() instanceof ItemEncodedPattern pattern)) {
+                continue;
+            }
+
+            var cachedDetail = cachedPatternDetail.get(is);
+            if (cachedDetail != null) {
+                patterns.put(is, cachedDetail);
+            } else {
+                ICraftingPatternDetails detail = pattern.getPatternForItem(is, getBaseMetaTileEntity().getWorld());
+                if (detail != null) {
+                    patterns.put(is, detail);
+                    changed = true;
+                }
+
+            }
+        }
+
+        changed |= patterns.size() != cachedPatternDetail.size();
+        cachedPatternDetail = patterns;
+
+        if (changed) {
+            try {
+                AENetworkProxy proxy = getProxy();
+                if (proxy == null) return;
+                proxy.getGrid()
+                    .postEvent(new MENetworkCraftingPatternChange(this, getProxy().getNode()));
+            } catch (GridAccessException ignored) {}
+        }
     }
 
     private void syncAEProxyActive(IGregTechTileEntity baseMetaTileEntity) {
@@ -654,7 +653,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         AENetworkProxy proxy = getProxy();
         if (proxy == null) return;
         if (proxy.isReady()) {
-            for (ICraftingPatternDetails detail : cachedPatternDetails) {
+            for (ICraftingPatternDetails detail : cachedPatternDetail.values()) {
                 craftingTracker.addCraftingOption(this, detail);
             }
         }
@@ -701,34 +700,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> hiddenCraftingFX = !hiddenCraftingFX)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    if (hiddenCraftingFX) {
-                        ret.add(GTUITextures.BUTTON_STANDARD);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_LMA_ANIMATION_OFF);
-                    } else {
-                        ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
-                        ret.add(GTUITextures.OVERLAY_BUTTON_LMA_ANIMATION_ON);
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> hiddenCraftingFX, val -> hiddenCraftingFX = val),
-                    builder)
-                .addTooltip(StatCollector.translateToLocal("GT5U.gui.text.lma_craftingfx"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(80, 91)
-                .setSize(16, 16));
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTELargeMolecularAssemblerGui(this);
     }
 
     private static class CraftingDisplayPoint {
@@ -745,4 +718,13 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             this.z = z;
         }
     }
+
+    public boolean isHiddenCraftingFX() {
+        return hiddenCraftingFX;
+    }
+
+    public void setHiddenCraftingFX(boolean hiddenCraftingFX) {
+        this.hiddenCraftingFX = hiddenCraftingFX;
+    }
+
 }

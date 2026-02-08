@@ -3,6 +3,7 @@ package tectech.thing.block;
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
@@ -14,13 +15,12 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.blocks.BlockBase;
 import tectech.Reference;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public final class BlockQuantumStuff extends BlockBase {
+public final class BlockQuantumStuff extends Block {
 
     public static IIcon stuff;
     public static int renderID;

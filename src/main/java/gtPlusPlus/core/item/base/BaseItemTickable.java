@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -290,8 +291,10 @@ public class BaseItemTickable extends CoreItem {
     public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list,
         boolean bool) {
         World world = player.getEntityWorld();
-        if (this.descriptionString.length > 0) {
-            list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);
+        if (Client.tooltip.showFormula) {
+            if (this.descriptionString.length > 0) {
+                list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);
+            }
         }
         long maxTicks = getMaxTicks(stack);
         long ticks = 0;

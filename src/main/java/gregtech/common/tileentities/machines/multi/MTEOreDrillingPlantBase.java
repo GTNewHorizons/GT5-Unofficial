@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -152,15 +153,18 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
 
         if (getBaseMetaTileEntity().isActive()) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.machines.workarea_fail"));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workarea_fail");
         } else {
             adjustChunkRadius(!aPlayer.isSneaking());
+            final String sideLength = formatNumber((long) chunkRadiusConfig << 4);
             GTUtility.sendChatToPlayer(
                 aPlayer,
                 StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                    + GTUtility.formatNumbers((long) chunkRadiusConfig << 4)
+                    + sideLength
+                    + "x"
+                    + sideLength
                     + " "
-                    + StatCollector.translateToLocal("GT5U.machines.radius"));
+                    + StatCollector.translateToLocal("GT5U.machines.blocks"));
         }
     }
 
@@ -244,6 +248,11 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         LongIterator iter = oreBlockPositions.iterator();
 
+        if (!tryConsumeDrillingFluid(simulate)) {
+            setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
+            return false;
+        }
+
         while (iter.hasNext()) {
             long pos = iter.nextLong();
 
@@ -265,11 +274,6 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 // it later
                 iter.remove();
                 continue;
-            }
-
-            if (!tryConsumeDrillingFluid(simulate)) {
-                setRuntimeFailureReason(CheckRecipeResultRegistry.NO_DRILLING_FLUID);
-                return false;
             }
 
             List<ItemStack> oreBlockDrops = OreManager
@@ -625,18 +629,19 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         final int baseCycleTime = calculateMaxProgressTime(getMinTier(), true);
+        final String side = formatNumber((long) getRadiusInChunks() << 4);
         tt.addMachineType("Miner, MBM")
-            .addInfo("Use a Screwdriver to configure block radius")
-            .addInfo("Maximum radius is " + GTUtility.formatNumbers((long) getRadiusInChunks() << 4) + " blocks")
+            .addInfo("Use a Screwdriver to configure working area")
+            .addInfo("Maximum area is " + side + "x" + side + " blocks")
             .addInfo("Use Soldering iron to turn off chunk mode")
             .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
             .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
             .addInfo("Gives ~3x as much crushed ore vs normal processing")
-            .addInfo("Fortune bonus of " + GTUtility.formatNumbers(mTier + 3) + ". Only works on small ores")
+            .addInfo("Fortune bonus of " + formatNumber(mTier + 3) + ". Only works on small ores")
             .addInfo("Minimum energy hatch tier: " + GTUtility.getColoredTierNameFromTier((byte) getMinTier()))
             .addInfo(
-                "Base cycle time: " + (baseCycleTime < 20 ? GTUtility.formatNumbers(baseCycleTime) + " ticks"
-                    : GTUtility.formatNumbers(baseCycleTime / 20.0) + " seconds"))
+                "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
+                    : formatNumber(baseCycleTime / 20.0) + " seconds"))
             .beginStructureBlock(3, 7, 3, false)
             .addController("Front bottom")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
@@ -719,7 +724,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                     () -> ImmutableList.of(
                         StatCollector.translateToLocalFormatted(
                             "GT5U.gui.button.ore_drill_radius_1",
-                            GTUtility.formatNumbers((long) chunkRadiusConfig << 4)),
+                            formatNumber((long) chunkRadiusConfig << 4)),
                         StatCollector.translateToLocal("GT5U.gui.button.ore_drill_radius_2")))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setSize(16, 16),
@@ -756,7 +761,7 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     public String[] getInfoData() {
-        final String diameter = GTUtility.formatNumbers(chunkRadiusConfig * 2L);
+        final String diameter = formatNumber(chunkRadiusConfig * 2L);
         return new String[] {
             EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
                 + EnumChatFormatting.RESET,
@@ -777,18 +782,18 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
                 case STATE_AT_BOTTOM -> ImmutableList.of(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_ores_left_chunk",
-                        GTUtility.formatNumbers(oreBlockPositions.size())),
+                        formatNumber(oreBlockPositions.size())),
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_chunks_left",
-                        GTUtility.formatNumbers(getChunkNumber()),
-                        GTUtility.formatNumbers(getTotalChunkCount())),
+                        formatNumber(getChunkNumber()),
+                        formatNumber(getTotalChunkCount())),
                     veinName == null ? ""
                         : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
                 case STATE_DOWNWARD -> ImmutableList.of(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.gui.text.drill_ores_left_layer",
                         getYHead(),
-                        GTUtility.formatNumbers(oreBlockPositions.size())),
+                        formatNumber(oreBlockPositions.size())),
                     veinName == null ? ""
                         : StatCollector.translateToLocalFormatted("GT5U.gui.text.drill_current_vein", veinName));
                 case STATE_UPWARD, STATE_ABORT -> ImmutableList

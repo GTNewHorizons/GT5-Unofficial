@@ -186,7 +186,7 @@ public class CompressorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Compressed_Coal_Chunk.get(1))
-            .itemOutputs(ItemList.IC2_Industrial_Diamond.get(1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);
@@ -325,11 +325,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 64))
-            .itemOutputs(
-                GTOreDictUnificator
-                    .get(OrePrefixes.plateSuperdense, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.MHDCSM, 64))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MHDCSM, 1))
             // Require stabilized black hole
             .metadata(CompressionTierKey.INSTANCE, 2)
             .duration(1 * HOURS + 15 * MINUTES)

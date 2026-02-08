@@ -214,7 +214,7 @@ public class BlockReinforced extends GTGenericBlock {
             case 2 -> Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
             case 3 -> Textures.BlockIcons.BLOCK_TSREIN.getIcon();
             case 4, 6, 7 -> Blocks.coal_block.getIcon(0, 0);
-            case 5 -> Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
+            case 5 -> Textures.BlockIcons.BLOCK_POWDER.getIcon();
             case 8 -> Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
             case 9 -> Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
             case 10 -> Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();

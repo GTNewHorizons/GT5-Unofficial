@@ -110,7 +110,7 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
                     HatchElement.OutputData,
                     WirelessComputationHatchElement.INSTANCE)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 1)))
         .addElement(
             'E',

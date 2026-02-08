@@ -1,6 +1,5 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -19,8 +18,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -122,13 +121,6 @@ public class BaseItemDustUnique extends Item {
     }
 
     private String getCorrectTexture(final String pileSize) {
-        if (!Configuration.visual.useGregtechTextures) {
-            if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
-                this.setTextureName(GTPlusPlus.ID + ":" + "dust");
-            } else {
-                this.setTextureName(GTPlusPlus.ID + ":" + "dust" + pileSize);
-            }
-        }
         if (pileSize.toLowerCase()
             .contains("small")) {
             return GregTech.ID + ":" + "materialicons/SHINY/dustSmall";
@@ -142,11 +134,15 @@ public class BaseItemDustUnique extends Item {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        if (this.sRadiation > 0) {
-            list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+        if (Client.tooltip.showRadioactiveText) {
+            if (this.sRadiation > 0) {
+                list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+            }
         }
-        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
-            list.add(this.chemicalNotation);
+        if (Client.tooltip.showFormula) {
+            if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
+                list.add(this.chemicalNotation);
+            }
         }
         super.addInformation(stack, aPlayer, list, bool);
     }

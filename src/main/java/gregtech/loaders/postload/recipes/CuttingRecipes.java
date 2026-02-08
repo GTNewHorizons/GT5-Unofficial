@@ -329,6 +329,16 @@ public class CuttingRecipes implements Runnable {
                 .eut(eut)
                 .requiresCleanRoom()
                 .addTo(cutterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(inputs)
+                .itemOutputs(outputs)
+                .fluidInputs(
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
+                .duration((int) (duration / 2.5))
+                .eut(eut)
+                .requiresCleanRoom()
+                .addTo(cutterRecipes);
         } else {
             GTValues.RA.stdBuilder()
                 .itemInputs(inputs)
@@ -351,6 +361,15 @@ public class CuttingRecipes implements Runnable {
                 .itemOutputs(outputs)
                 .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
                 .duration(duration)
+                .eut(eut)
+                .addTo(cutterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(inputs)
+                .itemOutputs(outputs)
+                .fluidInputs(
+                    Materials.DimensionallyShiftedSuperfluid.getFluid(Math.max(1, Math.min(10, duration * eut / 4000))))
+                .duration((int) (duration / 2.5))
                 .eut(eut)
                 .addTo(cutterRecipes);
         }

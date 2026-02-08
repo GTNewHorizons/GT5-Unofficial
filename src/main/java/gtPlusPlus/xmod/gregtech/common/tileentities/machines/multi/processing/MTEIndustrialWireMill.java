@@ -92,7 +92,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
                     buildHatchAdder(MTEIndustrialWireMill.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .build();
         }
@@ -168,7 +168,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
         inputSeparation = !inputSeparation;
         aPlayer.addChatMessage(
             new ChatComponentTranslation(
-                inputSeparation ? "interaction.separateBusses.enabled" : "interaction.separateBusses.disabled"));
+                inputSeparation ? "interaction.separateBuses.enabled" : "interaction.separateBuses.disabled"));
     }
 
     @Override

@@ -18,13 +18,28 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public BlockCasings12() {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
-        register(9, ItemList.Chamber_Casing, "Vibration-Safe Casing");
+        register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
+        register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
         register(11, ItemList.CasingVoid, "Alchemically Inert Void Casing");
         register(12, ItemList.CasingIchorium, "Alchemically Immune Ichorium Casing");
         for (int i = 0; i < 3; i++) {
             GTStructureChannels.METAL_MACHINE_CASING.registerAsIndicator(new ItemStack(this, 1, i + 10), i + 1);
         }
+    }
+
+    @Override
+    public String getHarvestTool(int aMeta) {
+        // Coke Oven Bricks can be harvested with a pickaxe.
+        if (aMeta == 0) return "pickaxe";
+        return super.getHarvestTool(aMeta);
+    }
+
+    @Override
+    public int getHarvestLevel(int aMeta) {
+        // Coke Oven Bricks have Harvest Level 0.
+        if (aMeta == 0) return 0;
+        return super.getHarvestLevel(aMeta);
     }
 
     @Override
@@ -36,7 +51,8 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 9 -> Textures.BlockIcons.MACHINE_CASING_CHAMBER_CENTRIFUGE.getIcon();
+            case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
+            case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_ICHORIUM.getIcon();

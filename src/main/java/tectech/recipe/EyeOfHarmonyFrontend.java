@@ -1,7 +1,7 @@
 package tectech.recipe;
 
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.DARK_RED;
@@ -86,9 +86,8 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
         // Draw tooltip on planet item.
         if (stack.isItemEqual(currentRecipe.getRecipeTriggerItem())) {
             currentTip.add(
-                EnumChatFormatting.GRAY + translateToLocalFormatted(
-                    "tt.nei.eoh.total_items",
-                    formatNumbers(currentRecipe.getSumOfItems())));
+                EnumChatFormatting.GRAY
+                    + translateToLocalFormatted("tt.nei.eoh.total_items", formatNumber(currentRecipe.getSumOfItems())));
             return currentTip;
         }
 
@@ -101,7 +100,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             currentTip.add(
                 EnumChatFormatting.GRAY + translateToLocalFormatted(
                     "tt.nei.eoh.item_count",
-                    formatNumbers(
+                    formatNumber(
                         currentRecipe.getItemStackToTrueStackSizeMap()
                             .get(stack))));
         }
@@ -147,11 +146,11 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.Hydrogen.In", "Hydrogen") + ": "
-                    + formatNumbers(recipe.getHydrogenRequirement())
+                    + formatNumber(recipe.getHydrogenRequirement())
                     + " L");
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.Helium.In", "Helium") + ": "
-                    + formatNumbers(recipe.getHydrogenRequirement())
+                    + formatNumber(recipe.getHydrogenRequirement())
                     + " L");
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.SpacetimeTier", "Spacetime Tier") + ": "
@@ -161,7 +160,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
-                        + formatNumbers(recipe.getEUOutput())
+                        + formatNumber(recipe.getEUOutput())
                         + " EU");
                 case Scientific -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.Out", "EU Output") + ": "
@@ -177,7 +176,7 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
             switch (ConfigHandler.visual.EOH_NOTATION) {
                 case Numerical -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
-                        + formatNumbers(recipe.getEUStartCost())
+                        + formatNumber(recipe.getEUStartCost())
                         + " EU");
                 case Scientific -> result.add(
                     GTLanguageManager.addStringLocalization("EOH.Recipe.EU.In", "EU Input") + ": "
@@ -191,12 +190,12 @@ public class EyeOfHarmonyFrontend extends RecipeMapFrontend {
 
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.BaseRecipeChance", "Base Recipe Chance") + ": "
-                    + formatNumbers(100 * recipe.getBaseRecipeSuccessChance())
+                    + formatNumber(100 * recipe.getBaseRecipeSuccessChance())
                     + "%");
             result.add(
                 GTLanguageManager.addStringLocalization("EOH.Recipe.RecipeEnergyEfficiency", "Recipe Energy Efficiency")
                     + ": "
-                    + formatNumbers(100 * recipe.getRecipeEnergyEfficiency())
+                    + formatNumber(100 * recipe.getRecipeEnergyEfficiency())
                     + "%");
 
             if (recipe.getOutputItems()

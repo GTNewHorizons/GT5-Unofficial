@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -132,7 +131,7 @@ public class MTEIndustrialElectromagneticSeparator
                 buildHatchAdder(MTEIndustrialElectromagneticSeparator.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy))
                     .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(
                             MTEIndustrialElectromagneticSeparator::onCasingAdded,
@@ -144,7 +143,7 @@ public class MTEIndustrialElectromagneticSeparator
                 .adder(MTEIndustrialElectromagneticSeparator::addMagHatch)
                 .hatchClass(MTEHatchMagnet.class)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(0))
-                .dot(2)
+                .hint(2)
                 .build())
         .build();
 
@@ -424,9 +423,9 @@ public class MTEIndustrialElectromagneticSeparator
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

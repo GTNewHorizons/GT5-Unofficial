@@ -101,25 +101,25 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             'E',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(Energy, Maintenance)
                 .casingIndex(CASING_INDEX1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'I',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputBus)
                 .casingIndex(CASING_INDEX1)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
         .addElement(
             'W',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(InputHatch, Muffler)
                 .casingIndex(CASING_INDEX2)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'O',
             buildHatchAdder(MTEIntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
                 .casingIndex(CASING_INDEX2)
-                .dot(4)
+                .hint(4)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .build();
 
@@ -215,7 +215,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addController("The third layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
-            .addCasingInfoExactly("Reinforced Glass", 48, false)
+            .addCasingInfoExactly("Any Tiered Glass", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
             .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
@@ -343,6 +343,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         }
 
         int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
+        lastParallel = finalParallel;
 
         // for scanner
         setCurrentParallelism(finalParallel);
@@ -429,8 +430,16 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mProgresstime >= mMaxProgresstime - 1 && mMaxProgresstime > 0) {
+            // Multiblock base already includes 1 parallel
+            this.recipesDone += lastParallel - 1;
+        }
+        super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
     private boolean checkTypes(int aID, IntOpenHashSet... aTables) {

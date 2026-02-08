@@ -13,8 +13,13 @@ import static gregtech.common.items.IDMetaTool01.DRILL_HV;
 import static gregtech.common.items.IDMetaTool01.DRILL_LV;
 import static gregtech.common.items.IDMetaTool01.DRILL_MV;
 import static gregtech.common.items.IDMetaTool01.FILE;
+import static gregtech.common.items.IDMetaTool01.FILE_HV;
+import static gregtech.common.items.IDMetaTool01.FILE_LV;
+import static gregtech.common.items.IDMetaTool01.FILE_MV;
 import static gregtech.common.items.IDMetaTool01.HARDHAMMER;
-import static gregtech.common.items.IDMetaTool01.JACKHAMMER;
+import static gregtech.common.items.IDMetaTool01.JACKHAMMER_HV;
+import static gregtech.common.items.IDMetaTool01.JACKHAMMER_LV;
+import static gregtech.common.items.IDMetaTool01.JACKHAMMER_MV;
 import static gregtech.common.items.IDMetaTool01.KNIFE;
 import static gregtech.common.items.IDMetaTool01.MORTAR;
 import static gregtech.common.items.IDMetaTool01.PLUNGER;
@@ -42,6 +47,9 @@ import static gregtech.common.items.IDMetaTool01.TURBINE_HUGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_LARGE;
 import static gregtech.common.items.IDMetaTool01.TURBINE_SMALL;
 import static gregtech.common.items.IDMetaTool01.WIRECUTTER;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_HV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_LV;
+import static gregtech.common.items.IDMetaTool01.WIRECUTTER_MV;
 import static gregtech.common.items.IDMetaTool01.WRENCH;
 import static gregtech.common.items.IDMetaTool01.WRENCH_HV;
 import static gregtech.common.items.IDMetaTool01.WRENCH_LV;
@@ -62,7 +70,9 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
-import gregtech.common.tools.ToolBuzzSaw;
+import gregtech.common.tools.ToolBuzzSawHV;
+import gregtech.common.tools.ToolBuzzSawLV;
+import gregtech.common.tools.ToolBuzzSawMV;
 import gregtech.common.tools.ToolChainsawHV;
 import gregtech.common.tools.ToolChainsawLV;
 import gregtech.common.tools.ToolChainsawMV;
@@ -71,8 +81,13 @@ import gregtech.common.tools.ToolDrillHV;
 import gregtech.common.tools.ToolDrillLV;
 import gregtech.common.tools.ToolDrillMV;
 import gregtech.common.tools.ToolFile;
+import gregtech.common.tools.ToolFileHV;
+import gregtech.common.tools.ToolFileLV;
+import gregtech.common.tools.ToolFileMV;
 import gregtech.common.tools.ToolHardHammer;
-import gregtech.common.tools.ToolJackHammer;
+import gregtech.common.tools.ToolJackHammerHV;
+import gregtech.common.tools.ToolJackHammerLV;
+import gregtech.common.tools.ToolJackHammerMV;
 import gregtech.common.tools.ToolKnife;
 import gregtech.common.tools.ToolMortar;
 import gregtech.common.tools.ToolPlunger;
@@ -80,7 +95,9 @@ import gregtech.common.tools.ToolRollingPin;
 import gregtech.common.tools.ToolSaw;
 import gregtech.common.tools.ToolScoop;
 import gregtech.common.tools.ToolScrewdriver;
+import gregtech.common.tools.ToolScrewdriverHV;
 import gregtech.common.tools.ToolScrewdriverLV;
+import gregtech.common.tools.ToolScrewdriverMV;
 import gregtech.common.tools.ToolSoftMallet;
 import gregtech.common.tools.ToolSolderingIron;
 import gregtech.common.tools.ToolTrowel;
@@ -90,6 +107,9 @@ import gregtech.common.tools.ToolTurbineNormal;
 import gregtech.common.tools.ToolTurbineSmall;
 import gregtech.common.tools.ToolVajra;
 import gregtech.common.tools.ToolWireCutter;
+import gregtech.common.tools.ToolWireCutterHV;
+import gregtech.common.tools.ToolWireCutterLV;
+import gregtech.common.tools.ToolWireCutterMV;
 import gregtech.common.tools.ToolWrench;
 import gregtech.common.tools.ToolWrenchHV;
 import gregtech.common.tools.ToolWrenchLV;
@@ -340,11 +360,36 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             GregTechAPI.sWrenchList);
         GregTechAPI.registerTool(
             addTool(
-                JACKHAMMER.ID,
+                JACKHAMMER_LV.ID,
+                "JackHammer (LV)",
+                "Breaks Rocks into pieces",
+                new ToolJackHammerLV(),
+                ToolDictNames.craftingToolJackHammer,
+                ToolDictNames.craftingToolHardHammer,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
+            GregTechAPI.sJackhammerList);
+        GregTechAPI.registerTool(
+            addTool(
+                JACKHAMMER_MV.ID,
+                "JackHammer (MV)",
+                "Breaks Rocks into pieces",
+                new ToolJackHammerMV(),
+                ToolDictNames.craftingToolJackHammer,
+                ToolDictNames.craftingToolHardHammer,
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
+            GregTechAPI.sJackhammerList);
+        GregTechAPI.registerTool(
+            addTool(
+                JACKHAMMER_HV.ID,
                 "JackHammer (HV)",
                 "Breaks Rocks into pieces",
-                new ToolJackHammer(),
+                new ToolJackHammerHV(),
                 ToolDictNames.craftingToolJackHammer,
+                ToolDictNames.craftingToolHardHammer,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERFODIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)),
@@ -353,7 +398,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_LV.ID,
             "Buzzsaw (LV)",
             "Not suitable for harvesting Blocks",
-            new ToolBuzzSaw(),
+            new ToolBuzzSawLV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -362,7 +407,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_MV.ID,
             "Buzzsaw (MV)",
             "Not suitable for harvesting Blocks",
-            new ToolBuzzSaw(),
+            new ToolBuzzSawMV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -371,7 +416,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             BUZZSAW_HV.ID,
             "Buzzsaw (HV)",
             "Not suitable for harvesting Blocks",
-            new ToolBuzzSaw(),
+            new ToolBuzzSawHV(),
             ToolDictNames.craftingToolSaw,
             new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
             new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -392,7 +437,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 SCREWDRIVER_MV.ID,
                 "Screwdriver (MV)",
                 "Adjusts Covers and Machines",
-                new ToolScrewdriverLV(),
+                new ToolScrewdriverMV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -403,7 +448,7 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 SCREWDRIVER_HV.ID,
                 "Screwdriver (HV)",
                 "Adjusts Covers and Machines",
-                new ToolScrewdriverLV(),
+                new ToolScrewdriverHV(),
                 ToolDictNames.craftingToolScrewdriver,
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
@@ -442,6 +487,70 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L)),
             GregTechAPI.sSolderingToolList);
+
+        // Register Electric Wirecutters
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER_LV.ID,
+                "Wire Cutter (LV)",
+                "Hand-held electric wire cutter",
+                new ToolWireCutterLV(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER_MV.ID,
+                "Wire Cutter (MV)",
+                "Hand-held electric wire cutter",
+                new ToolWireCutterMV(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+        GregTechAPI.registerTool(
+            addTool(
+                WIRECUTTER_HV.ID,
+                "Wire Cutter (HV)",
+                "Hand-held electric wire cutter",
+                new ToolWireCutterHV(),
+                ToolDictNames.craftingToolWireCutter,
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 6),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 3),
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 3)),
+            GregTechAPI.sWireCutterList);
+
+        // Register Electric Files
+        addTool(
+            FILE_LV.ID,
+            "File (LV)",
+            "Hand-held electric filing device",
+            new ToolFileLV(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+        addTool(
+            FILE_MV.ID,
+            "File (MV)",
+            "Hand-held electric filing device",
+            new ToolFileMV(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
+        addTool(
+            FILE_HV.ID,
+            "File (HV)",
+            "Hand-held electric filing device",
+            new ToolFileHV(),
+            ToolDictNames.craftingToolFile,
+            new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.FABRICO, 2L),
+            new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L));
 
         addTool(TURBINE_SMALL.ID, "Small Turbine", "Turbine Rotors for your power station", new ToolTurbineSmall());
         addTool(TURBINE.ID, "Turbine", "Turbine Rotors for your power station", new ToolTurbineNormal());
@@ -607,10 +716,10 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
             new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.plank.get(Materials.Wood), 'S',
                 OrePrefixes.stick.get(Materials.Wood) });
         GTModHandler.addCraftingRecipe(
-            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Plastic, Materials.Plastic, null),
+            INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Polyethylene, Materials.Polyethylene, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Plastic), 'S',
-                OrePrefixes.stick.get(Materials.Plastic) });
+            new Object[] { "  S", " I ", "S f", 'I', OrePrefixes.ingot.get(Materials.Polyethylene), 'S',
+                OrePrefixes.stick.get(Materials.Polyethylene) });
         GTModHandler.addCraftingRecipe(
             INSTANCE.getToolWithStats(ROLLING_PIN.ID, 1, Materials.Aluminium, Materials.Aluminium, null),
             GTModHandler.RecipeBits.NOT_REMOVABLE,

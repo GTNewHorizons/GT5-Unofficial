@@ -32,14 +32,12 @@ import org.jetbrains.annotations.Unmodifiable;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.SetMultimap;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
 
 /**
  * Responsible for recipe addition / search for recipemap.
@@ -67,10 +65,11 @@ public class RecipeMapBackend {
      */
     private final Map<RecipeCategory, Collection<GTRecipe>> recipesByCategory = new HashMap<>();
 
-    /**
-     * Cached recipes, by commutative hash of all inputs.
-     */
-    private final Int2ObjectLinkedOpenHashMap<GTRecipe> cacheMap = new Int2ObjectLinkedOpenHashMap<>();
+    /** Size of the cache map below. */
+    public static final int CACHE_MAP_SIZE = 256;
+
+    /** Cached recipes, by commutative hash of all inputs. */
+    private final GTRecipe[] cacheMap = new GTRecipe[CACHE_MAP_SIZE];
 
     /**
      * All the properties specific to this backend.
@@ -79,7 +78,6 @@ public class RecipeMapBackend {
 
     public RecipeMapBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         this.properties = propertiesBuilder.build();
-        GregTechAPI.itemStackMultiMaps.add(itemIndex);
     }
 
     void setRecipeMap(RecipeMap<?> recipeMap) {
@@ -402,7 +400,7 @@ public class RecipeMapBackend {
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
                 .filter(Objects::nonNull),
-            GTStreamUtil.ofSupplier(() -> cacheMap.get(hash(items, fluids)))
+            GTStreamUtil.ofSupplier(() -> cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE])
                 .filter(Objects::nonNull)
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
                 .map(recipe -> modifyFoundRecipe(recipe, items, fluids, specialSlot))
@@ -439,8 +437,7 @@ public class RecipeMapBackend {
 
     protected void cache(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids,
         @NotNull GTRecipe recipe) {
-        cacheMap.putAndMoveToFirst(hash(items, fluids), recipe);
-        while (cacheMap.size() > 1024) cacheMap.removeLast();
+        cacheMap[hash(items, fluids) % CACHE_MAP_SIZE] = recipe;
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
@@ -451,14 +448,14 @@ public class RecipeMapBackend {
             if (stack == null) continue;
             Item item = stack.getItem();
             assert item != null;
-            hash += item.hashCode();
+            hash ^= item.hashCode();
             if (item.getHasSubtypes()) hash += Items.feather.getDamage(stack);
         }
         for (int i = 0; i < fluids.length; i++) {
             FluidStack stack = fluids[i];
             if (stack == null) continue;
             Fluid fluid = stack.getFluid();
-            hash += fluid.hashCode();
+            hash ^= fluid.hashCode();
         }
         return hash;
     }

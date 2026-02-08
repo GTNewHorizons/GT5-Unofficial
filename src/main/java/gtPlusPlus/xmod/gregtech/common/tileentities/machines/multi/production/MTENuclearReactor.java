@@ -217,19 +217,19 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                     ofChain(
                         buildHatchAdder(MTENuclearReactor.class).atLeast(Maintenance)
                             .casingIndex(TAE.GTPP_INDEX(12))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTENuclearReactor.class).atLeast(InputHatch, OutputHatch)
                             .adder(MTENuclearReactor::addNuclearReactorEdgeList)
                             .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
                             .casingIndex(TAE.GTPP_INDEX(12))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTENuclearReactor.class).atLeast(Dynamo)
                             .adder(MTENuclearReactor::addNuclearReactorEdgeList)
                             .hatchItemFilterAnd(t -> filterByMTETier(4, 6))
                             .casingIndex(TAE.GTPP_INDEX(12))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
                 .addElement(
@@ -238,7 +238,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                         .adder(MTENuclearReactor::addNuclearReactorTopList)
                         .hatchItemFilterAnd(t -> filterByMTETier(5, Integer.MAX_VALUE))
                         .casingIndex(TAE.GTPP_INDEX(12))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
                 .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 12))
                 .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13))

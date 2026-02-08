@@ -29,6 +29,9 @@ public class BlockCactusCoke extends Block {
         super(Material.rock);
         this.setBlockName("blockCactusCoke");
         this.setStepSound(soundTypeStone);
+        setResistance(20);
+        this.setHardness(5);
+        this.setHarvestLevel("pickaxe", 1);
         GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockCactusCoke");
         for (int i = 0; i < textureArray.length; i++) {
             GTPPCore.burnables.add(Pair.of(8000 * (int) GTUtility.powInt(9, i), new ItemStack(this, 1, i)));
@@ -54,6 +57,11 @@ public class BlockCactusCoke extends Block {
         for (int i = 0; i < textureArray.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
     }
 
 }

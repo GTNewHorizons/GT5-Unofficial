@@ -9,15 +9,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 
 public class StarColorStorage {
 
-    public static final int MAX_STAR_COLORS = 7;
     private static final String NBT_LIST_KEY = "customStarColors";
 
-    private final Map<String, ForgeOfGodsStarColor> nameMapping = new HashMap<>(MAX_STAR_COLORS);
-    private List<ForgeOfGodsStarColor> indexMapping = new ArrayList<>(MAX_STAR_COLORS);
+    private final Map<String, ForgeOfGodsStarColor> nameMapping = new HashMap<>();
+    private final List<ForgeOfGodsStarColor> indexMapping = new ArrayList<>();
 
     public StarColorStorage() {
         initPresets();
@@ -33,10 +32,10 @@ public class StarColorStorage {
 
     public ForgeOfGodsStarColor newTemplateColor() {
         String name = "New Star Color";
-        for (int i = 0; i < MAX_STAR_COLORS; i++) {
-            if (nameMapping.containsKey(name)) {
-                name = "New Star Color " + (i + 1);
-            } else break;
+        int i = 1;
+        while (nameMapping.containsKey(name)) {
+            name = "New Star Color " + i;
+            i++;
         }
         return new ForgeOfGodsStarColor(name);
     }
@@ -44,18 +43,18 @@ public class StarColorStorage {
     /** Store a unique star color. Will append numbers to the name to guarantee a unique name. */
     public void store(ForgeOfGodsStarColor color) {
         indexMapping.add(color);
-        if (!nameMapping.containsKey(color.getName())) {
-            nameMapping.put(color.getName(), color);
-            return;
+        String name = color.getName();
+        int i = 1;
+        while (nameMapping.containsKey(name)) {
+            name = color.getName() + i;
+            i++;
         }
-        for (int i = 0; i < MAX_STAR_COLORS; i++) {
-            String newName = color.getName() + " " + (i + 1);
-            if (!nameMapping.containsKey(newName)) {
-                nameMapping.put(newName, color);
-                color.setName(newName);
-                return;
-            }
+
+        if (!color.getName()
+            .equals(name)) {
+            color.setName(name);
         }
+        nameMapping.put(name, color);
     }
 
     /** Insert a star color at a given position. */
@@ -80,10 +79,6 @@ public class StarColorStorage {
 
     public ForgeOfGodsStarColor getByIndex(int index) {
         return indexMapping.get(index);
-    }
-
-    public boolean isFull() {
-        return indexMapping.size() >= MAX_STAR_COLORS;
     }
 
     public int size() {
@@ -118,13 +113,19 @@ public class StarColorStorage {
         }
     }
 
-    public FakeSyncWidget<?> getSyncer() {
-        return new FakeSyncWidget.ListSyncer<>(() -> indexMapping, val -> {
-            indexMapping = val;
-            nameMapping.clear();
-            for (ForgeOfGodsStarColor color : indexMapping) {
-                nameMapping.put(color.getName(), color);
-            }
-        }, ForgeOfGodsStarColor::writeToBuffer, ForgeOfGodsStarColor::readFromBuffer);
+    public GenericListSyncHandler<ForgeOfGodsStarColor> getSyncer() {
+        return GenericListSyncHandler.<ForgeOfGodsStarColor>builder()
+            .getter(() -> indexMapping)
+            .setter(val -> {
+                indexMapping.clear();
+                nameMapping.clear();
+                for (ForgeOfGodsStarColor color : val) {
+                    indexMapping.add(color);
+                    nameMapping.put(color.getName(), color);
+                }
+            })
+            .serializer(ForgeOfGodsStarColor::writeToBuffer)
+            .deserializer(ForgeOfGodsStarColor::readFromBuffer)
+            .build();
     }
 }

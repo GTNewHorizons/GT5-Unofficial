@@ -13,7 +13,6 @@
 
 package bwcrossmod.galacticgreg;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
@@ -34,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -64,18 +62,6 @@ public class MTEVoidMiners {
                         { "       ", " B   B ", "  DAD  ", "  ACA  ", "  DAD  ", " B   B ", "       " },
                         { "  D D  ", " BA~AB ", " A   A ", " B C B ", " A   A ", " BABAB ", "       " },
                         { "  E E  ", " BBBBB ", "EB   BE", " B C B ", "EB   BE", " BBBBB ", "  E E  " } }))
-            // old structure (to be deprecated on future version)
-            .addShape(
-                STRUCTURE_PIECE_OLD,
-                transpose(
-                    new String[][] {
-                        { "   ", " G ", "   " },
-                        { "   ", " G ", "   " },
-                        { "   ", " G ", "   " },
-                        { " G ", "GFG", " G " },
-                        { " G ", "GFG", " G " },
-                        { " G ", "GFG", " G " },
-                        { "H~H", "HHH", "HHH" } }))
             // spotless:on
             .addElement('A', Casings.MiningOsmiridiumCasing.asElement())
             .addElement('B', ofFrame(Materials.Osmiridium))
@@ -84,26 +70,9 @@ public class MTEVoidMiners {
             .addElement(
                 'E',
                 buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(Casings.MiningOsmiridiumCasing.getTextureId())
                     .buildAndChain(Casings.MiningOsmiridiumCasing.asElement()))
-            // for compatibility with the old structure #TODO remove for 2.9
-            .addElement(
-                'F',
-                ofBlock(
-                    ItemList.Casing_UV.getBlock(),
-                    ItemList.Casing_UV.get(0)
-                        .getItemDamage()))
-            .addElement('G', ofFrame(Materials.Europium))
-            .addElement(
-                'H',
-                buildHatchAdder(VMLUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
-                    .casingIndex(8)
-                    .buildAndChain(
-                        ItemList.Casing_UV.getBlock(),
-                        ItemList.Casing_UV.get(0)
-                            .getItemDamage()))
             .build();
 
         @Override
@@ -114,7 +83,7 @@ public class MTEVoidMiners {
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType("Miner")
+            tt.addMachineType("Miner, VM")
                 .addInfo("Consumes " + numberFormat.format(GTValues.V[this.getMinTier()]) + " EU/t")
                 .addInfo(
                     "Can be supplied with " + EnumChatFormatting.AQUA
@@ -165,9 +134,7 @@ public class MTEVoidMiners {
 
         @Override
         public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-            return (checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 1)
-                // old structure (to be deprecated on future version)
-                || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
+            return (checkPiece(STRUCTURE_PIECE_MAIN, 3, 7, 1)) && checkHatches()
                 && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
                 && mMaintenanceHatches.size() == 1;
         }
@@ -224,18 +191,6 @@ public class MTEVoidMiners {
                         {"   D D   ","  CA~AC  ","  A   A  ","  B E B  ","  A   A  ","  CABAC  ","         ","         "},
                         {"   F F   ","  CABAC  ","FBA   ABF","  B E B  ","FBA   ABF","  CABAC  ","   B B   ","   F F   "},
                         {"   F F   ","  CCCCC  ","F C   C F","  C E C  ","F C   C F","  CCCCC  ","         ","   F F   "}}))
-            // old structure (to be deprecated on future version)
-            .addShape(
-                STRUCTURE_PIECE_OLD,
-                transpose(
-                    new String[][] {
-                        { "   ", " G ", "   " },
-                        { "   ", " G ", "   " },
-                        { "   ", " G ", "   " },
-                        { " G ", "GIG", " G " },
-                        { " G ", "GIG", " G " },
-                        { " G ", "GIG", " G " },
-                        { "H~H", "HHH", "HHH" } }))
             // spotless:on
             .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
             .addElement('B', Casings.MiningBlackPlutoniumCasing.asElement())
@@ -245,26 +200,9 @@ public class MTEVoidMiners {
             .addElement(
                 'F',
                 buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(Casings.MiningBlackPlutoniumCasing.getTextureId())
                     .buildAndChain(Casings.MiningBlackPlutoniumCasing.asElement()))
-            // for compatibility with the old structure #TODO remove for 2.9
-            .addElement(
-                'I',
-                ofBlock(
-                    ItemList.Casing_MiningBlackPlutonium.getBlock(),
-                    ItemList.Casing_MiningBlackPlutonium.get(0)
-                        .getItemDamage()))
-            .addElement('G', ofFrame(Materials.BlackPlutonium))
-            .addElement(
-                'H',
-                buildHatchAdder(VMZPM.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
-                    .casingIndex(179)
-                    .buildAndChain(
-                        ItemList.Casing_MiningBlackPlutonium.getBlock(),
-                        ItemList.Casing_MiningBlackPlutonium.get(0)
-                            .getItemDamage()))
             .build();
 
         @Override
@@ -329,9 +267,7 @@ public class MTEVoidMiners {
 
         @Override
         public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-            return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 10, 1)
-                // old structure (to be deprecated on future version)
-                || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
+            return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 10, 1)) && checkHatches()
                 && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
                 && mMaintenanceHatches.size() == 1;
         }
@@ -360,7 +296,6 @@ public class MTEVoidMiners {
     public static class VMUV extends MTEVoidMinerBase<VMUV> {
 
         private static final String STRUCTURE_PIECE_MAIN = "main";
-        private static final String STRUCTURE_PIECE_OLD = "old";
 
         private static final IStructureDefinition<VMUV> STRUCTURE_DEFINITION = StructureDefinition.<VMUV>builder()
             // spotless:off
@@ -384,18 +319,6 @@ public class MTEVoidMiners {
                         {"   E E   ","   B B   ","  CB~BC  ","EBB   BBE","  B D B  ","EBB   BBE","  CBBBC  ","   B B   ","   E E   "},
                         {"   F F   ","         ","  CBBBC  ","F B   B F","  B D B  ","F B   B F","  CBBBC  ","         ","   F F   "},
                         {"   F F   ","  C   C  "," CCCCCCC ","F C   C F","  C D C  ","F C   C F"," CCCCCCC ","  C   C  ","   F F   "}}))
-            // old structure (to be deprecated on future version) #TODO remove for 2.9
-            .addShape(
-                STRUCTURE_PIECE_OLD,
-                transpose(
-                    new String[][] {
-                        { "   ", " G ", "   " },
-                        { "   ", " G ", "   " },
-                        { "   ", " G ", "   " },
-                        { " G ", "GIG", " G " },
-                        { " G ", "GIG", " G " },
-                        { " G ", "GIG", " G " },
-                        { "H~H", "HHH", "HHH" } }))
             // spotless:on
             .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
             .addElement('B', Casings.MiningNeutroniumCasing.asElement())
@@ -405,26 +328,9 @@ public class MTEVoidMiners {
             .addElement(
                 'F',
                 buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
+                    .hint(1)
                     .casingIndex(Casings.MiningNeutroniumCasing.getTextureId())
                     .buildAndChain(Casings.MiningNeutroniumCasing.asElement()))
-            // for compatibility with the old structure #TODO remove for 2.9
-            .addElement(
-                'I',
-                ofBlock(
-                    ItemList.Casing_MiningNeutronium.getBlock(),
-                    ItemList.Casing_MiningNeutronium.get(0)
-                        .getItemDamage()))
-            .addElement('G', ofFrame(Materials.Neutronium))
-            .addElement(
-                'H',
-                buildHatchAdder(VMUV.class).atLeast(InputHatch, OutputBus, InputBus, Maintenance, Energy)
-                    .dot(1)
-                    .casingIndex(178)
-                    .buildAndChain(
-                        ItemList.Casing_MiningNeutronium.getBlock(),
-                        ItemList.Casing_MiningNeutronium.get(0)
-                            .getItemDamage()))
             .build();
 
         @Override
@@ -487,9 +393,7 @@ public class MTEVoidMiners {
 
         @Override
         public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-            return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 13, 2)
-                // old structure (to be deprecated on future version)
-                || (checkPiece(STRUCTURE_PIECE_OLD, 1, 6, 0))) && checkHatches()
+            return (checkPiece(STRUCTURE_PIECE_MAIN, 4, 13, 2)) && checkHatches()
                 && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
                 && mMaintenanceHatches.size() == 1;
         }

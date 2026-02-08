@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -47,7 +48,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -116,7 +116,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
-                    .dot(2)
+                    .hint(2)
                     .cacheHint(() -> "Lens Housing")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
@@ -127,7 +127,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.LensIndicator)
-                        .dot(3)
+                        .hint(3)
                         .cacheHint(() -> "Lens Indicator")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
@@ -139,7 +139,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
-                        .dot(1)
+                        .hint(1)
                         .cacheHint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
@@ -226,7 +226,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 + EnumChatFormatting.BOLD
                 + "Water Tier: "
                 + EnumChatFormatting.WHITE
-                + GTUtility.formatNumbers(getWaterTier())
+                + formatNumber(getWaterTier())
                 + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()

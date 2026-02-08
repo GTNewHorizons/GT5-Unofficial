@@ -7,10 +7,11 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
-import gregtech.common.render.GTRenderUtil;
 
 public class InfiniteSprayCanRenderer implements IItemRenderer {
 
@@ -60,14 +61,14 @@ public class InfiniteSprayCanRenderer implements IItemRenderer {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        GTRenderUtil.renderItem(type, baseLayer);
+        ItemRenderUtil.renderItem(type, baseLayer);
 
         GL11.glColor4f(modulation[0] / 255.0F, modulation[1] / 255.0F, modulation[2] / 255.0F, 1);
-        GTRenderUtil.renderItem(type, paintRegion);
+        ItemRenderUtil.renderItem(type, paintRegion);
         GL11.glColor4f(1, 1, 1, 1);
 
         if (locked) {
-            GTRenderUtil.renderItem(type, lockLayer);
+            ItemRenderUtil.renderItem(type, lockLayer);
         }
 
         GL11.glDisable(GL11.GL_BLEND);

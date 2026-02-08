@@ -3,43 +3,41 @@ package gregtech.common.gui.modularui.hatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.purification.MTEHatchPHSensor;
 
-public class MTEHatchPHSensorGui {
-
-    private final MTEHatchPHSensor sensor;
+public class MTEHatchPHSensorGui extends MTEHatchBaseGui<MTEHatchPHSensor> {
 
     public MTEHatchPHSensorGui(MTEHatchPHSensor sensor) {
-        this.sensor = sensor;
+        super(sensor);
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return GTGuis.mteTemplatePanelBuilder(sensor, data, syncManager, uiSettings)
-            .build()
-            .child(
-                Flow.column()
-                    .child(createInvertButtonRow())
-                    .child(createThresholdFieldRow())
-                    .coverChildren()
-                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
-                    .childPadding(2)
-                    .pos(8, 6));
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow col = Flow.column()
+            .child(createInvertButtonRow())
+            .child(createThresholdFieldRow())
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childPadding(2)
+            .paddingTop(4)
+            .paddingLeft(4);
+        return super.createContentSection(panel, syncManager).child(col);
     }
 
     public Flow createInvertButtonRow() {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(sensor::isInverted, sensor::setInverted);
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(hatch::isInverted, hatch::setInverted);
         return Flow.row()
             .child(
                 new ToggleButton().value(invertedSyncer)
@@ -60,7 +58,7 @@ public class MTEHatchPHSensorGui {
             .child(
                 new TextFieldWidget().setNumbersDouble(val -> Math.min(14, Math.max(0, val)))
                     .size(77, 12)
-                    .value(new DoubleSyncValue(sensor::getThreshold, sensor::setThreshold))
+                    .value(new DoubleSyncValue(hatch::getThreshold, hatch::setThreshold))
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("GT5U.gui.text.ph_sensor")

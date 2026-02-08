@@ -13,6 +13,11 @@ import gtPlusPlus.core.lib.GTPPCore;
 
 public class MTEHatchSuperBusInput extends MTEHatchInputBus {
 
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
+
     public MTEHatchSuperBusInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier) + 1);
     }

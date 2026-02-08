@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCraftingRecipe {
 
@@ -109,13 +110,12 @@ public class GTShapelessRecipe extends ShapelessOreRecipe implements IGTCrafting
             if (GTModHandler.isElectricItem(rStack)) {
                 GTModHandler.dischargeElectricItem(rStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
                 int tCharge = 0;
-                for (int i = 0; i < aGrid.getSizeInventory(); i++) tCharge += GTModHandler.dischargeElectricItem(
-                    aGrid.getStackInSlot(i),
-                    Integer.MAX_VALUE,
-                    Integer.MAX_VALUE,
-                    true,
-                    true,
-                    true);
+                for (int i = 0; i < aGrid.getSizeInventory(); i++) {
+                    ItemStack component = aGrid.getStackInSlot(i);
+                    int drained = GTModHandler
+                        .dischargeElectricItem(component, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true);
+                    if (drained > 0 && !(component.getItem() instanceof MetaGeneratedTool)) tCharge += drained;
+                }
                 if (tCharge > 0) GTModHandler.chargeElectricItem(rStack, tCharge, Integer.MAX_VALUE, true, false);
             }
 

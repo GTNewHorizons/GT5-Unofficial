@@ -87,7 +87,8 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
                 .eut(8)
                 .addTo(latheRecipes);
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(8, aStack), GTUtility.getIntegratedCircuit(8))
+                .itemInputs(GTUtility.copyAmount(8, aStack))
+                .circuit(8)
                 .itemOutputs(new ItemStack(Blocks.chest, 1))
                 .duration(40 * SECONDS)
                 .eut(4)
@@ -162,6 +163,15 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             .duration(25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemOutputs(GTUtility.copyAmount(tOutput.stackSize / 3, tOutput))
+            .fluidInputs(Materials.DimensionallyShiftedSuperfluid.getFluid(1))
+            .duration(10 * TICKS)
+            .eut(4)
+            .addTo(cutterRecipes);
+
         GTModHandler.addCraftingRecipe(
             GTUtility.copyAmount(tOutput.stackSize / 3, tOutput),
             GTModHandler.RecipeBits.BUFFERED,

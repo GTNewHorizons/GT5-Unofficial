@@ -20,8 +20,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.ModIDs.MOBS_INFO)
 public class EntityDeathHandler implements IMobExtraInfoProvider {
@@ -89,20 +89,20 @@ public class EntityDeathHandler implements IMobExtraInfoProvider {
 
         // always drop some meat.
         int aBigMeatStackSize1 = MathUtils.randInt(4, 8);
-        aPlayer.entityDropItem(new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize1), MathUtils.randInt(0, 1));
+        aPlayer.entityDropItem(GregtechItemList.RawHumanMeat.get(aBigMeatStackSize1), MathUtils.randInt(0, 1));
 
         // additional chances for more meat.
         if (MathUtils.randInt(0, 10) < 7) {
             int aBigMeatStackSize2 = MathUtils.randInt(4, 8);
-            aPlayer.entityDropItem(new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize2), MathUtils.randInt(0, 1));
+            aPlayer.entityDropItem(GregtechItemList.RawHumanMeat.get(aBigMeatStackSize2), MathUtils.randInt(0, 1));
         }
         if (MathUtils.randInt(0, 10) < 4) {
             int aBigMeatStackSize3 = MathUtils.randInt(4, 8);
-            aPlayer.entityDropItem(new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize3), MathUtils.randInt(0, 1));
+            aPlayer.entityDropItem(GregtechItemList.RawHumanMeat.get(aBigMeatStackSize3), MathUtils.randInt(0, 1));
         }
         if (MathUtils.randInt(0, 10) < 2) {
             int aBigMeatStackSize4 = MathUtils.randInt(4, 8);
-            aPlayer.entityDropItem(new ItemStack(ModItems.itemMetaFood, aBigMeatStackSize4), MathUtils.randInt(0, 1));
+            aPlayer.entityDropItem(GregtechItemList.RawHumanMeat.get(aBigMeatStackSize4), MathUtils.randInt(0, 1));
         }
     }
 

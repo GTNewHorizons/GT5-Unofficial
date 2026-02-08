@@ -174,7 +174,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(ItemList.Block_SteelPlate.get(1))
                 .fluidInputs(Materials.Steel.getMolten(2 * INGOTS))
                 .duration(12 * SECONDS + 10 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
@@ -190,7 +190,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(ItemList.Block_TungstenSteelReinforced.get(1))
                 .fluidInputs(Materials.TungstenSteel.getMolten(1 * INGOTS))
                 .duration(17 * SECONDS + 10 * TICKS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
@@ -206,7 +206,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(ItemList.Block_NaquadahPlate.get(1))
                 .fluidInputs(Materials.Osmium.getMolten(1 * INGOTS))
                 .duration(22 * SECONDS + 10 * TICKS)
-                .eut(256)
+                .eut(TierEU.RECIPE_HV / 2)
                 .addTo(chemicalBathRecipes);
 
             GTValues.RA.stdBuilder()
@@ -232,7 +232,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 0))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(chemicalBathRecipes);
         }
 
@@ -242,7 +242,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 1))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(chemicalBathRecipes);
         }
 
@@ -252,7 +252,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 2))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(chemicalBathRecipes);
         }
 
@@ -262,7 +262,7 @@ public class ChemicalBathRecipes implements Runnable {
                 .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 3))
                 .fluidInputs(new FluidStack(dyeFluid, 72))
                 .duration(1 * SECONDS + 12 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(chemicalBathRecipes);
         }
 

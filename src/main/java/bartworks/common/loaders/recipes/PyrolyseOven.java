@@ -10,14 +10,14 @@ import bartworks.common.loaders.FluidLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTUtility;
 
 public class PyrolyseOven implements Runnable {
 
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(10), Materials.Wood.getDust(10))
+            .itemInputs(Materials.Wood.getDust(10))
+            .circuit(10)
             .fluidInputs(new FluidStack(FluidLoader.Kerogen, 1_000))
             .fluidOutputs(Materials.Oil.getFluid(1_000))
             .duration(5 * SECONDS + 5 * TICKS)

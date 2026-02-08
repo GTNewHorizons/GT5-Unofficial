@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
@@ -69,6 +70,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -79,6 +81,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -96,7 +99,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int casingAmount;
     protected int casingTier;
     protected int machineTier;
-    protected int mode;
+    private static final int MACHINEMODE_PRECISE = 0;
+    private static final int MACHINEMODE_ASSEMBLER = 1;
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
     private int glassTier = -1;
@@ -134,7 +138,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 Muffler,
                                 ExoticEnergy.or(Energy))
                             .casingIndex(CASING_INDEX)
-                            .dot(1)
+                            .hint(1)
                             .buildAndChain(
                                 onElementPass(
                                     x -> x.casingAmount++,
@@ -173,7 +177,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public void loadNBTData(NBTTagCompound aNBT) {
         casingTier = aNBT.getInteger("casingTier");
         machineTier = aNBT.getInteger("machineTier");
-        mode = aNBT.getInteger("RunningMode");
+        if (aNBT.hasKey("RunningMode")) {
+            machineMode = aNBT.getInteger("RunningMode");
+        }
         super.loadNBTData(aNBT);
     }
 
@@ -181,7 +187,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", casingTier);
         aNBT.setInteger("machineTier", machineTier);
-        aNBT.setInteger("RunningMode", mode);
         super.saveNBTData(aNBT);
     }
 
@@ -189,8 +194,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
-            this.mode = (this.mode + 1) % 2;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("preciseassembler.chat." + this.mode));
+            this.machineMode = (this.machineMode + 1) % 2;
+            GTUtility.sendChatTrans(aPlayer, "preciseassembler.chat." + this.machineMode);
         }
         super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
@@ -202,7 +207,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (mode == 0) {
+                if (machineMode == 0) {
                     if (recipe.mSpecialValue > (casingTier + 1)) {
                         return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                     }
@@ -213,14 +218,14 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             @Nonnull
             @Override
             protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setDurationModifier(mode == 0 ? 1 : 0.5);
+                return super.createOverclockCalculator(recipe).setDurationModifier(machineMode == 0 ? 1 : 0.5);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return mode == 0 ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
+        return machineMode == 0 ? 1 : (int) GTUtility.powInt(2, 4 + (casingTier + 1));
     }
 
     @Override
@@ -240,7 +245,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        if (this.mode == 0) return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
+        if (this.machineMode == 0) return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
         else return RecipeMaps.assemblerRecipes;
     }
 
@@ -455,15 +460,23 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+            GTGuiTextures.OVERLAY_BUTTON_PRECISE_MODE,
+            GTGuiTextures.OVERLAY_BUTTON_ASSEMBLER_MODE);
+    }
+
+    @Override
+    public int nextMachineMode() {
+        if (machineMode == MACHINEMODE_ASSEMBLER) return MACHINEMODE_PRECISE;
+        return MACHINEMODE_ASSEMBLER;
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-            new CycleButtonWidget().setToggle(() -> mode == 1, val -> mode = val ? 1 : 0)
+            new CycleButtonWidget().setToggle(() -> machineMode == 1, val -> machineMode = val ? 1 : 0)
                 .setTextureGetter(
                     state -> state == 1 ? GGUITextures.OVERLAY_BUTTON_ASSEMBLER_MODE
                         : GGUITextures.OVERLAY_BUTTON_PRECISE_MODE)
@@ -471,13 +484,18 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                 .setPos(80, 91)
                 .setSize(16, 16)
                 .dynamicTooltip(
-                    () -> Collections.singletonList(StatCollector.translateToLocal("preciseassembler.chat." + mode)))
+                    () -> Collections
+                        .singletonList(StatCollector.translateToLocal("preciseassembler.chat." + machineMode)))
                 .setUpdateTooltipEveryTick(true)
                 .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 
     @Override
     public boolean isInputSeparationEnabled() {
+        return true;
+    }
+
+    public boolean supportsMachineModeSwitch() {
         return true;
     }
 
@@ -500,7 +518,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + mode);
+        return StatCollector.translateToLocal("GT5U.GTPP_MULTI_PRECISE_ASSEMBLER.mode." + machineMode);
     }
 
     @SideOnly(Side.CLIENT)
@@ -515,9 +533,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -554,7 +572,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             + "/"
             + EnumChatFormatting.GOLD
             + mk3
-            + EnumChatFormatting.LIGHT_PURPLE
+            + EnumChatFormatting.GRAY
             + "/"
             + EnumChatFormatting.RED
             + mk4

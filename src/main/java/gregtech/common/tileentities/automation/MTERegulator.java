@@ -3,13 +3,12 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_REGULATOR_GLOW;
 
-import java.util.Collections;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackPredicate;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
@@ -24,6 +23,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 
 public class MTERegulator extends MTEBuffer {
@@ -101,21 +101,24 @@ public class MTERegulator extends MTEBuffer {
     }
 
     @Override
-    public void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        for (int i = 0, tCosts; i < 9; i++) {
-            if (this.mInventory[(i + 9)] != null) {
-                tCosts = GTUtility.moveOneItemStackIntoSlot(
-                    getBaseMetaTileEntity(),
-                    getBaseMetaTileEntity().getTileEntityAtSide(getBaseMetaTileEntity().getBackFacing()),
-                    getBaseMetaTileEntity().getBackFacing(),
-                    this.mTargetSlots[i],
-                    Collections.singletonList(this.mInventory[(i + 9)]),
-                    false,
-                    (byte) this.mInventory[(i + 9)].stackSize,
-                    (byte) this.mInventory[(i + 9)].stackSize,
-                    (byte) 64,
-                    (byte) 1) * 3;
-                if (tCosts > 0) {
+    public void moveItems(IGregTechTileEntity igte, long aTimer) {
+        GTItemTransfer transfer = new GTItemTransfer();
+
+        transfer.push(igte, igte.getBackFacing());
+
+        for (int i = 0; i < 9; i++) {
+            if (this.mInventory[i + 9] != null) {
+                transfer.setSourceSlots(i);
+                transfer.setSinkSlots(this.mTargetSlots[i]);
+
+                int size = this.mInventory[i + 9].stackSize;
+
+                transfer.setMaxItemsPerTransfer(size);
+                transfer.setFilter(
+                    ItemStackPredicate.matches(this.mInventory[i + 9])
+                        .and(stack -> stack.getStackSize() >= size));
+
+                if (transfer.transfer() > 0) {
                     this.mSuccess = 50;
                     break;
                 }

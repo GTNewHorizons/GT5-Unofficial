@@ -12,6 +12,9 @@ import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
 import kubatech.api.eig.IEIGBucketFactory;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
+import vazkii.botania.common.block.BlockModFlower;
+import vazkii.botania.common.block.BlockSpecialFlower;
+import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
 public class EIGFlowerBucket extends EIGBucket {
 
@@ -32,6 +35,9 @@ public class EIGFlowerBucket extends EIGBucket {
             Item item = input.getItem();
             Block block = Block.getBlockFromItem(item);
             if (item != Items.reeds && block != Blocks.cactus && !(block instanceof BlockFlower)) return null;
+            // blacklist botania flowers
+            if (item instanceof ItemBlockSpecialFlower || block instanceof BlockModFlower
+                || block instanceof BlockSpecialFlower) return null;
             return new EIGFlowerBucket(input);
         }
 

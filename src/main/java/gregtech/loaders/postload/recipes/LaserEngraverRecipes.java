@@ -14,7 +14,7 @@ public class LaserEngraverRecipes implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1_000))
+            .fluidInputs(Materials.DTCC.getFluid(1_000))
             .fluidOutputs(Materials.ExcitedDTCC.getFluid(1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -22,7 +22,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1_000))
+            .fluidInputs(Materials.DTPC.getFluid(1_000))
             .fluidOutputs(Materials.ExcitedDTPC.getFluid(1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -30,7 +30,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1_000))
+            .fluidInputs(Materials.DTRC.getFluid(1_000))
             .fluidOutputs(Materials.ExcitedDTRC.getFluid(1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -38,7 +38,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1_000))
+            .fluidInputs(Materials.DTEC.getFluid(1_000))
             .fluidOutputs(Materials.ExcitedDTEC.getFluid(1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
@@ -46,7 +46,7 @@ public class LaserEngraverRecipes implements Runnable {
             .addTo(laserEngraverRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.DimensionallyTranscendentStellarCatalyst.getFluid(1_000))
+            .fluidInputs(Materials.DTSC.getFluid(1_000))
             .fluidOutputs(Materials.ExcitedDTSC.getFluid(1_000))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)

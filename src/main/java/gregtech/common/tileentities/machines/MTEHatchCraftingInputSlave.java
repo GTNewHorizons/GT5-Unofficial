@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,6 +37,11 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
+
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
     private MTEHatchCraftingInputME master; // use getMaster() to access
@@ -187,6 +194,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             if (master != null) master.removeProxyHatch(this);
             master = newMaster;
             master.addProxyHatch(this);
+            for (var pl : pendingProcessingLogics) {
+                master.setProcessingLogic(pl);
+            }
         }
         masterX = x;
         masterY = y;
@@ -239,6 +249,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+        var master = getMaster();
         if (master == null) {
             aPlayer.addChatMessage(new ChatComponentText("Can't copy an unlinked proxy!"));
             return;
@@ -286,12 +297,18 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        currenttip.add((tag.getBoolean("linked") ? "Linked" : "Not linked"));
+        currenttip.add(
+            StatCollector.translateToLocal(
+                tag.getBoolean("linked") ? "GT5U.waila.hatch.crafting_input_slave.linked"
+                    : "GT5U.waila.hatch.crafting_input_slave.unlinked"));
 
         if (tag.hasKey("masterX")) {
             currenttip.add(
-                "Bound to " + tag
-                    .getInteger("masterX") + ", " + tag.getInteger("masterY") + ", " + tag.getInteger("masterZ"));
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.crafting_input_slave.bound_to",
+                    tag.getInteger("masterX"),
+                    tag.getInteger("masterY"),
+                    tag.getInteger("masterZ")));
         }
 
         if (tag.hasKey("masterName")) {
@@ -321,8 +338,25 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
     }
 
+    private Set<ProcessingLogic> pendingProcessingLogics = Collections.newSetFromMap(new WeakHashMap<>());
+
     @Override
     public void addProcessingLogic(ProcessingLogic pl) {
-        if (getMaster() != null) getMaster().addProcessingLogic(pl);
+        // store all ProcessingLogics, then set them to the master CRIB when the player bind/rebind one later
+        pendingProcessingLogics.add(pl);
+        if (getMaster() != null) {
+            getMaster().addProcessingLogic(pl);
+        }
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        if (getMaster() != null) getMaster().resetCraftingInputRecipeMap(pl);
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
+        if (getMaster() != null) getMaster().resetCraftingInputRecipeMap();
     }
 }

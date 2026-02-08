@@ -239,7 +239,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
                 }
                 this.tickCount++;
             }
-        } catch (final Throwable t) {}
+        } catch (final Exception t) {}
     }
 
     public boolean anyPlayerInRange() {
@@ -410,7 +410,7 @@ public class TileEntityVolumetricFlaskSetter extends TileEntity implements ISide
             }
             GTUtility.sendChatToPlayer(player, "Slot " + aCurrentMode + " is now default.");
             return true;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return false;
         }
     }

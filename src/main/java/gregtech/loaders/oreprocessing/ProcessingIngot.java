@@ -122,7 +122,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     {
                         if (GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(1))
+                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .circuit(1)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 24))
@@ -131,7 +132,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                         if (GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(2, aStack), GTUtility.getIntegratedCircuit(2))
+                                .itemInputs(GTUtility.copyAmount(2, aStack))
+                                .circuit(2)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -140,7 +142,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                         if (GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(3, aStack), GTUtility.getIntegratedCircuit(3))
+                                .itemInputs(GTUtility.copyAmount(3, aStack))
+                                .circuit(3)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -149,7 +152,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                         if (GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(4, aStack), GTUtility.getIntegratedCircuit(4))
+                                .itemInputs(GTUtility.copyAmount(4, aStack))
+                                .circuit(4)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -158,7 +162,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                         if (GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(5, aStack), GTUtility.getIntegratedCircuit(5))
+                                .itemInputs(GTUtility.copyAmount(5, aStack))
+                                .circuit(5)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -167,7 +172,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                         if (GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(9, aStack), GTUtility.getIntegratedCircuit(9))
+                                .itemInputs(GTUtility.copyAmount(9, aStack))
+                                .circuit(9)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
                                 .duration(Math.max(aMaterialMass * 9L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
@@ -176,7 +182,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                         if (GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 1L) != null) {
                             GTValues.RA.stdBuilder()
-                                .itemInputs(GTUtility.copyAmount(1, aStack), GTUtility.getIntegratedCircuit(10))
+                                .itemInputs(GTUtility.copyAmount(1, aStack))
+                                .circuit(10)
                                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L))
                                 .duration(Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 24))

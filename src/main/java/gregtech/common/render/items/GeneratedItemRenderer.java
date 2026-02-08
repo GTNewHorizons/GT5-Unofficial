@@ -9,7 +9,6 @@ import static gregtech.api.enums.ItemList.Large_Fluid_Cell_StainlessSteel;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Steel;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_Titanium;
 import static gregtech.api.enums.ItemList.Large_Fluid_Cell_TungstenSteel;
-import static gregtech.api.enums.Mods.HodgePodge;
 
 import javax.annotation.Nullable;
 
@@ -22,13 +21,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.GTRenderUtil;
 import gregtech.loaders.ExtraIcons;
 
 public class GeneratedItemRenderer implements IItemRenderer {
@@ -80,8 +78,6 @@ public class GeneratedItemRenderer implements IItemRenderer {
 
         if (tIcon == null) tIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
 
-        markNeedsAnimationUpdate(tIcon);
-
         ItemList largeFluidCell = getLargeFluidCell(aStack);
         if (largeFluidCell != null) {
             renderLargeFluidCellExtraParts(type, largeFluidCell, aStack);
@@ -89,7 +85,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GTRenderUtil.renderItem(type, tIcon);
+        ItemRenderUtil.renderItem(type, tIcon);
         GL11.glDisable(GL11.GL_BLEND);
     }
 
@@ -125,8 +121,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
 
         // Empty inner side
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
-        markNeedsAnimationUpdate(inner);
-        GTRenderUtil.renderItem(type, inner);
+        ItemRenderUtil.renderItem(type, inner);
 
         FluidStack fluidStack = GTUtility.getFluidForFilledItem(stack, true);
 
@@ -140,11 +135,10 @@ public class GeneratedItemRenderer implements IItemRenderer {
                 .getColor(fluidStack);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-            markNeedsAnimationUpdate(fluidIcon);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glDepthFunc(GL11.GL_EQUAL);
             GL11.glColor3ub((byte) (fluidColor >> 16), (byte) (fluidColor >> 8), (byte) fluidColor);
-            GTRenderUtil.renderItem(type, fluidIcon);
+            ItemRenderUtil.renderItem(type, fluidIcon);
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);
             GL11.glDepthFunc(GL11.GL_LEQUAL);
@@ -156,11 +150,5 @@ public class GeneratedItemRenderer implements IItemRenderer {
         if (GTUtility.isStackInvalid(internal)) return false;
 
         return internal.getItem() == stack.getItem() && internal.getItemDamage() == stack.getItemDamage();
-    }
-
-    protected void markNeedsAnimationUpdate(IIcon icon) {
-        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite) {
-            ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
-        }
     }
 }

@@ -1,7 +1,5 @@
 package goodgenerator.blocks.tileEntity;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -93,10 +91,9 @@ public class MTESupercriticalFluidTurbine extends MTELargeTurbineBase {
         ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             looseFit ^= true;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                looseFit ? trans("500", "Fitting: Loose - More Flow")
-                    : trans("501", "Fitting: Tight - More Efficiency"));
+                looseFit ? "GT5U.chat.turbine.fitting.loose" : "GT5U.chat.turbine.fitting.tight");
         }
     }
 

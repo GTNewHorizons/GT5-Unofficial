@@ -88,7 +88,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
                     'C',
                     buildHatchAdder(MTEAmazonPackager.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.getIndexFromPage(2, 9))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
                 .build();
         }

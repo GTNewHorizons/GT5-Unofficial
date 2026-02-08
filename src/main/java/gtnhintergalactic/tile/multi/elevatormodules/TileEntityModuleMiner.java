@@ -449,10 +449,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
 
         int totalChance = 0;
-        if (tRecipe.mChances == null) {
+        if (tRecipe.mOutputChances == null) {
             totalChance = tRecipe.mOutputs.length * 10000;
         } else {
-            for (int mChance : tRecipe.mChances) totalChance += mChance;
+            for (int mChance : tRecipe.mOutputChances) totalChance += mChance;
         }
 
         try {
@@ -464,8 +464,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
                     int currentChance = 0;
-                    for (int j = 0; j < tRecipe.mChances.length; j++) {
-                        currentChance += tRecipe.mChances[j];
+                    for (int j = 0; j < tRecipe.mOutputChances.length; j++) {
+                        currentChance += tRecipe.mOutputChances[j];
                         if (random <= currentChance) {
                             ItemStack generatedOre = tRecipe.mOutputs[j];
                             if (configuredOres == null || configuredOres.isEmpty()
@@ -1098,12 +1098,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOtherStructurePart(
                     GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
                     1)
                 .toolTipFinisher();
             return tt;
@@ -1197,12 +1197,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOtherStructurePart(
                     GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
                     1)
                 .toolTipFinisher();
             return tt;
@@ -1296,12 +1296,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
                 .beginStructureBlock(1, 5, 2, false)
                 .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
                 .addOtherStructurePart(
                     GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
+                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
                     1)
                 .toolTipFinisher();
             return tt;

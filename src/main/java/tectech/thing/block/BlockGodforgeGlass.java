@@ -11,12 +11,11 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import eu.usrv.yamcore.blocks.BlockBase;
 import gregtech.api.GregTechAPI;
 import tectech.Reference;
 import tectech.TecTech;
 
-public class BlockGodforgeGlass extends BlockBase {
+public class BlockGodforgeGlass extends Block {
 
     public static IIcon Icon;
     public static final int renderID = RenderingRegistry.getNextAvailableRenderId();

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
@@ -90,7 +91,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                         t -> buildHatchAdder(MTELargerTurbineBase.class).adder(MTELargerTurbineBase::addTurbineHatch)
                             .hatchClass(MTEHatchTurbine.class)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(1)
+                            .hint(1)
                             .build()))
                 .addElement(
                     'h',
@@ -98,7 +99,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                         t -> buildHatchAdder(MTELargerTurbineBase.class)
                             .atLeast(InputBus, InputHatch, OutputHatch, Dynamo.or(TTDynamo), Maintenance)
                             .casingIndex(t.getCasingTextureIndex())
-                            .dot(4)
+                            .hint(4)
                             .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
                 .addElement(
                     'm',
@@ -163,17 +164,17 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             .addCasingInfoMin("Turbine Shaft", 30, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
-                "Any 1 dot hint",
+                "Hint Block Number 1",
                 1)
-            .addInputBus("Any 4 dot hint (min 1)", 4)
-            .addInputHatch("Any 4 dot hint(min 1)", 4);
+            .addInputBus("Hint Block Number 4 (Min 1)", 4)
+            .addInputHatch("Hint Block Number 4 (Min 1)", 4);
         if (requiresOutputHatch()) {
-            tt.addOutputHatch("Any 4 dot hint(min 1)", 4);
+            tt.addOutputHatch("Hint Block Number 4 (Min 1)", 4);
         }
-        tt.addDynamoHatch("Any 4 dot hint(min 1)", 4)
-            .addMaintenanceHatch("Any 4 dot hint(min 1)", 4);
+        tt.addDynamoHatch("Hint Block Number 4 (Min 1)", 4)
+            .addMaintenanceHatch("Hint Block Number 4 (Min 1)", 4);
         if (requiresMufflers()) {
-            tt.addMufflerHatch("Any 7 dot hint (x4)", 7);
+            tt.addMufflerHatch("Hint Block Number 7 (x4)", 7);
         }
         tt.toolTipFinisher();
         return tt;
@@ -374,7 +375,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected ArrayList<MTEHatchTurbine> getEmptyTurbineAssemblies() {
         ArrayList<MTEHatchTurbine> aEmptyTurbineRotorHatches = new ArrayList<>();
         // log("Checking "+mTurbineRotorHatches.size()+" Assemblies for empties.");
-        for (MTEHatchTurbine aTurbineHatch : this.mTurbineRotorHatches) {
+        for (MTEHatchTurbine aTurbineHatch : validMTEList(this.mTurbineRotorHatches)) {
             if (!aTurbineHatch.hasTurbine()) {
                 aEmptyTurbineRotorHatches.add(aTurbineHatch);
             }
@@ -385,7 +386,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     protected ArrayList<MTEHatchTurbine> getFullTurbineAssemblies() {
         ArrayList<MTEHatchTurbine> aTurbineRotorHatches = new ArrayList<>();
         // log("Checking "+mTurbineRotorHatches.size()+" Assemblies for Turbines.");
-        for (MTEHatchTurbine aTurbineHatch : this.mTurbineRotorHatches) {
+        for (MTEHatchTurbine aTurbineHatch : validMTEList(this.mTurbineRotorHatches)) {
             if (aTurbineHatch.hasTurbine()) {
                 // log("Found Assembly with Turbine.");
                 aTurbineRotorHatches.add(aTurbineHatch);
@@ -501,7 +502,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 enableAllTurbineHatches();
                 return CheckRecipeResultRegistry.GENERATING;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
         }
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -517,7 +518,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
         if (mRuntime++ > 1000) {
             mRuntime = 0;
 
-            if (getBaseMetaTileEntity().getRandomNumber(6000) < getMaintenanceThreshold()) {
+            if (shouldCheckMaintenance() && getBaseMetaTileEntity().getRandomNumber(6000) < getMaintenanceThreshold()) {
                 causeMaintenanceIssue();
             }
             for (MTEHatchTurbine aHatch : getFullTurbineAssemblies()) {
@@ -576,7 +577,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 (long) (100.0f / MetaGeneratedTool.getToolMaxDamage(aTurbine)
                     * (MetaGeneratedTool.getToolDamage(aTurbine)) + 1));
             aTurbineDamage.append(EnumChatFormatting.RED)
-                .append(GTUtility.formatNumbers(tDura))
+                .append(formatNumber(tDura))
                 .append(EnumChatFormatting.RESET)
                 .append("% | ");
         }
@@ -599,27 +600,27 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             // 8 Lines available for information panels
             tRunning + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((lEUt * mEfficiency) / 10000))
+                + formatNumber(((lEUt * mEfficiency) / 10000))
                 + EnumChatFormatting.RESET
                 + " EU/t",
             tMaintenance,
             StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers((mEfficiency / 100F))
+                + formatNumber((mEfficiency / 100F))
                 + EnumChatFormatting.RESET
                 + "%",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.turbine.flow") + ": " + EnumChatFormatting.YELLOW
             // Divides optimal flow by 1000 if it's a dense steam
-                + GTUtility.formatNumbers(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
+                + formatNumber(MathUtils.safeInt((long) realOptFlow) / (isDenseSteam() ? 1000 : 1))
                 + EnumChatFormatting.RESET
                 + " L/"
                 + (getTurbineType().equals("Plasma") ? 's' : 't') // based on turbine type changes flow timing
@@ -630,7 +631,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
                 + ")",
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(storedFluid)
+                + formatNumber(storedFluid)
                 + EnumChatFormatting.RESET
                 + "L",
             StatCollector.translateToLocal("GT5U.turbine.dmg") + ": " + aTurbineDamage,
@@ -664,9 +665,9 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
             looseFit = !looseFit;
             // Clear recipe maps so they don't attempt to filter off of a dummy recipe map
             clearRecipeMapForAllInputHatches();
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                looseFit ? "Fitting: Loose - More Flow" : "Fitting: Tight - More Efficiency");
+                looseFit ? "GT5U.chat.turbine.fitting.loose" : "GT5U.chat.turbine.fitting.tight");
         }
     }
 
@@ -715,7 +716,7 @@ public abstract class MTELargerTurbineBase extends GTPPMultiBlockBase<MTELargerT
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for (MTEHatchTurbine h : this.mTurbineRotorHatches) {
+        for (MTEHatchTurbine h : validMTEList(this.mTurbineRotorHatches)) {
             h.clearController();
         }
         disableAllTurbineHatches();

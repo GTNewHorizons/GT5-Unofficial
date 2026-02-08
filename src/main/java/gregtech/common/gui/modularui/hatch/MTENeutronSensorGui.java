@@ -3,43 +3,41 @@ package gregtech.common.gui.modularui.hatch;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
+import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 
-public class MTENeutronSensorGui {
-
-    private final MTENeutronSensor sensor;
+public class MTENeutronSensorGui extends MTEHatchBaseGui<MTENeutronSensor> {
 
     public MTENeutronSensorGui(MTENeutronSensor sensor) {
-        this.sensor = sensor;
+        super(sensor);
     }
 
-    public ModularPanel build(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return GTGuis.mteTemplatePanelBuilder(sensor, data, syncManager, uiSettings)
-            .build()
-            .child(
-                Flow.column()
-                    .child(createInvertButtonRow())
-                    .child(createThresholdFieldRow())
-                    .coverChildren()
-                    .crossAxisAlignment(com.cleanroommc.modularui.utils.Alignment.CrossAxis.START)
-                    .childPadding(2)
-                    .pos(8, 6));
+    @Override
+    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow col = Flow.column()
+            .child(createInvertButtonRow())
+            .child(createThresholdFieldRow())
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
+            .childPadding(2)
+            .paddingTop(4)
+            .paddingLeft(4);
+        return super.createContentSection(panel, syncManager).child(col);
     }
 
     public Flow createInvertButtonRow() {
-        BooleanSyncValue invertedSyncer = new BooleanSyncValue(sensor::isInverted, sensor::setInverted);
+        BooleanSyncValue invertedSyncer = new BooleanSyncValue(hatch::isInverted, hatch::setInverted);
         return Flow.row()
             .child(
                 new ToggleButton().value(invertedSyncer)
@@ -61,7 +59,7 @@ public class MTENeutronSensorGui {
                 new TextFieldWidget().setFormatAsInteger(true)
                     .setNumbers(0, 1200000000)
                     .size(77, 12)
-                    .value(new IntSyncValue(sensor::getThreshold, sensor::setThreshold))
+                    .value(new IntSyncValue(hatch::getThreshold, hatch::setThreshold))
                     .setFocusOnGuiOpen(true))
             .child(
                 IKey.lang("gui.NeutronSensor.4")

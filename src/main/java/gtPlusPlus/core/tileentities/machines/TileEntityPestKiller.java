@@ -30,10 +30,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.minecraft.BTF_FluidTank;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.inventories.InventoryPestKiller;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class TileEntityPestKiller extends TileEntity implements ISidedInventory, IFluidHandler {
 
@@ -180,7 +180,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         if (this.mTank != null) {
             FluidStack f = mTank.getFluid();
             if (f != null) {
-                if (f.isFluidEqual(FluidUtils.getWildcardFluidStack("formaldehyde", 1))) {
+                if (f.isFluidEqual(new FluidStack(GTPPFluids.Formaldehyde, 1))) {
                     return 1;
                 } else if (f.isFluidEqual(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1))) {
                     return 2;
@@ -454,7 +454,7 @@ public class TileEntityPestKiller extends TileEntity implements ISidedInventory,
         if (this.getStackInSlot(1) == null || this.getStackInSlot(1).stackSize < 64) {
             ArrayList<ItemStack> t1Cells = OreDictionary.getOres("cellFormaldehyde");
             ArrayList<ItemStack> t2Cells = OreDictionary.getOres("cellHydrogenCyanide");
-            didFill = addFluid(t1Cells, aInput, FluidUtils.getWildcardFluidStack("formaldehyde", 1000));
+            didFill = addFluid(t1Cells, aInput, new FluidStack(GTPPFluids.Formaldehyde, 1000));
             if (!didFill) {
                 didFill = addFluid(t2Cells, aInput, MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(1000));
             }

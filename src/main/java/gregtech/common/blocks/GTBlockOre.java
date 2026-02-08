@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +14,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -23,6 +25,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.api.IBlockWithCustomSound;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,7 +52,7 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.nei.NEIGTConfig;
 
-public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
+public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IBlockWithCustomSound {
 
     public final List<StoneType> stoneTypes;
 
@@ -176,10 +180,19 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+        return getDropsForPlayer(world, x, y, z, metadata, fortune, this.harvesters.get());
+    }
+
+    /**
+     * Functions as getDrops(), but the player entity can be specified directly in cases where the action is done by
+     * player, but gets called without harvest method.
+     *
+     * @implNote Requires extra casting to GTBlockOre and mod load checks.
+     */
+    public ArrayList<ItemStack> getDropsForPlayer(World world, int x, int y, int z, int metadata, int fortune,
+        EntityPlayer harvester) {
         try (OreInfo<Materials> info = GTOreAdapter.INSTANCE.getOreInfo(this, metadata)) {
             if (info == null) return new ArrayList<>();
-
-            EntityPlayer harvester = this.harvesters.get();
 
             boolean doFortune = GTUtility.isRealPlayer(harvester);
             boolean doSilktouch = harvester != null && EnchantmentHelper.getSilkTouchModifier(harvester);
@@ -334,6 +347,16 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures {
             return info.stoneType.getStone()
                 .getBlock()
                 .getExplosionResistance(entity);
+        }
+    }
+
+    @Override
+    public Block.SoundType getSound(World world, int x, int y, int z) {
+        try (OreInfo<?> info = GTOreAdapter.INSTANCE.getOreInfo(world, x, y, z)) {
+            if (info == null) return Blocks.stone.stepSound;
+
+            return info.stoneType.getStone()
+                .getBlock().stepSound;
         }
     }
 

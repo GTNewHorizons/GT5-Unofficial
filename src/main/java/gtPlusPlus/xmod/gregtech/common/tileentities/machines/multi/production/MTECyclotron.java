@@ -103,7 +103,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
                     buildHatchAdder(MTECyclotron.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                         .casingIndex(44)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('c', ofBlock(getCyclotronCoil(), getCyclotronCoilMeta()))
                 .build();

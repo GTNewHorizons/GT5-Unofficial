@@ -24,8 +24,8 @@ public class Unpackager implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 1))
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6))
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.ClayCompound, 1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.ClayCompound, 6))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_HV)
                 .addTo(unpackagerRecipes);

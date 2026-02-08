@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -51,7 +52,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -153,7 +153,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
                 // Naquadah Reinforced Water Plant Casing
@@ -164,7 +164,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.PhSensor)
-                        .dot(2)
+                        .hint(2)
                         .cacheHint(() -> "pH Sensor Hatch")
                         .casingIndex(CASING_INDEX_MIDDLE)
                         .build()),
@@ -176,7 +176,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputBus)
-                    .dot(3)
+                    .hint(3)
                     .adder(MTEPurificationUnitPhAdjustment::addAlkalineBusToMachineList)
                     .cacheHint(() -> "Input Bus (" + ALKALINE_MATERIAL.mLocalizedName + ")")
                     .casingIndex(CASING_INDEX_TOWER)
@@ -187,7 +187,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
             lazy(
                 t -> GTStructureUtility.<MTEPurificationUnitPhAdjustment>buildHatchAdder()
                     .atLeast(InputHatch)
-                    .dot(4)
+                    .hint(4)
                     .adder(MTEPurificationUnitPhAdjustment::addAcidHatchToMachineList)
                     .cacheHint(() -> "Input Hatch (" + ACIDIC_MATERIAL.mLocalizedName + ")")
                     .casingIndex(CASING_INDEX_TOWER)
@@ -319,7 +319,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
             .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
