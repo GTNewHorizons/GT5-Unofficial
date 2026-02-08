@@ -195,7 +195,7 @@ public class ProcessingRawOre implements gregtech.api.interfaces.IOreRecipeRegis
                 .itemInputs(aOreStack)
                 .itemOutputs(GTUtility.copy(GTUtility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
                 .duration(10)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             int chanceOre2 = tPrimaryByProduct == null ? 0
