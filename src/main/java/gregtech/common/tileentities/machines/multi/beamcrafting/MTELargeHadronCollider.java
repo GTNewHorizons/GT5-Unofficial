@@ -73,8 +73,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private ArrayList<MTEHatchAdvancedOutputBeamline> mOutputBeamline = new ArrayList<>();
+    private ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
     private float outputEnergy;
     private int outputRate;
     private int outputParticleID;
@@ -2554,7 +2553,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
-            this.mOutputBeamline.add(hatch);
+            this.mAdvancedOutputBeamline.add(hatch);
             return true;
         }
         return false;
@@ -2568,7 +2567,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
-            this.mOutputBeamline.add(hatch);
+            this.mAdvancedOutputBeamline.add(hatch);
             return true;
         }
         return false;
@@ -2582,7 +2581,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
-            this.mOutputBeamline.add(hatch);
+            this.mAdvancedOutputBeamline.add(hatch);
             return true;
         }
         return false;
@@ -2596,7 +2595,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
             hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
-            this.mOutputBeamline.add(hatch);
+            this.mAdvancedOutputBeamline.add(hatch);
             return true;
         }
         return false;
@@ -2899,7 +2898,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
         mInputBeamline.clear();
-        mOutputBeamline.clear();
+        mAdvancedOutputBeamline.clear();
 
         emEnabled = checkPiece(STRUCTURE_PIECE_EM, 5, -1, -113);
         weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 5, -1, -9);
@@ -3165,10 +3164,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     private void outputPacketAfterRecipe() {
-        if (!this.mOutputBeamline.isEmpty()) {
+        if (!this.mAdvancedOutputBeamline.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchAdvancedOutputBeamline o : this.mOutputBeamline) {
+            for (MTEHatchAdvancedOutputBeamline o : this.mAdvancedOutputBeamline) {
                 if (o.acceptedInputMap.getOrDefault(Particle.getParticleFromId(this.outputParticleID), false)
                     == false) {
                     o.dataPacket = null;
