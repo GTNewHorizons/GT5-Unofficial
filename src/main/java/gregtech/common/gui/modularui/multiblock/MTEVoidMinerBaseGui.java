@@ -88,6 +88,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         new TextFieldWidget().value(new StringSyncValue(() -> search, str -> search = str))
                             .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
                             .autoUpdateOnChange(true)
+                            .anchorLeft(0)
                             .alignX(0f)
                             .width(100))
                     .childPadding(3)
