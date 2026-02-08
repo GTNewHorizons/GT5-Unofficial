@@ -618,6 +618,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         tag.setString("type", env.getCopiedDataIdentifier(player));
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setByte("color", env.getColor());
+        tag.setBoolean("cacheMode", getCacheMode());
+        tag.setBoolean("checkMode", getCheckMode());
+        tag.setInteger("myPriority", getPriority());
         return tag;
     }
 
@@ -628,6 +631,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         byte color = nbt.getByte("color");
         env.getBaseMetaTileEntity()
             .setColorization(color);
+        setCacheMode(nbt.getBoolean("cacheMode"));
+        setCheckMode(nbt.getBoolean("checkMode"));
+        setPriority(nbt.getInteger("myPriority"));
         return true;
     }
 
