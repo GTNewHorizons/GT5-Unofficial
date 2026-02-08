@@ -1802,6 +1802,19 @@ GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
 GT5U.item.toolbox.tooltip.deselect_tool=Sneak-%s: Deselect active tool
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 
+
+GT5U.item.toolbox.byline.closed_empty=Can we fix it? No, it's §kABCD§r§7ed!\n §o(Put some tools inside!)
+GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic engineering journey.
+GT5U.item.toolbox.byline.wrench=Wrench victory from the jaws of adversity.
+# Translator note: A horrible English pun. "Wire" -> "Why're" -> "Why are". Don't feel obligated to preserve it ;)
+GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §ooThere's work to do!
+GT5U.item.toolbox.byline.screwdriver=Contains 0% vodka and 0% orange juice.
+GT5U.item.toolbox.byline.soft_mallet=Wait, isn't this just a clown hammer?
+GT5U.item.toolbox.byline.hard_hammer=This performs the Forge Hammer recipe\n §oon anything you mine with it!
+GT5U.item.toolbox.byline.crowbar=You thought I was going to put a Half-Life\n §oreference here, didn't you?
+GT5U.item.toolbox.byline.soldering_iron=Put some fine soldering alloy wire\n §oin the generic slots!
+GT5U.item.toolbox.byline.format=§o"%s"§r -§cQuerns§r
+
 # Note to translators: this translation entry is supposed to be a number indicating how many taunts you define here
 # Game will randomly display one of them
 GT5U.item.programmed_circuit.no_screwdriver.count=3

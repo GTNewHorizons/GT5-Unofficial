@@ -191,4 +191,14 @@ public class ToolboxUtil {
 
         return !tag.getBoolean(TOOLBOX_OPEN_NBT_KEY);
     }
+
+    public static boolean hasAnyItems(final ItemStack toolbox) {
+        if (toolbox == null) {
+            return false;
+        }
+
+        return new ToolboxItemStackHandler(toolbox).getStacks()
+            .stream()
+            .anyMatch(Objects::nonNull);
+    }
 }

@@ -2,7 +2,9 @@ package gregtech.common.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -207,14 +209,14 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
-        final boolean hasCurrentTool = ToolboxUtil.getSelectedToolType(toolbox)
-            .isPresent();
+        final Optional<ToolboxSlot> selectedToolType = ToolboxUtil.getSelectedToolType(toolbox);
 
         // TODO: Add information and author byline
 
         final GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
-        if (!hasCurrentTool) {
+        // noinspection SimplifyOptionalCallChains
+        if (!selectedToolType.isPresent()) {
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.item.toolbox.tooltip.open_toolbox",
@@ -226,7 +228,12 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 "GT5U.item.toolbox.tooltip.select_tool",
                 GameSettings.getKeyDisplayString(settings.keyBindPickBlock.getKeyCode())));
 
-        if (hasCurrentTool) {
+        if (selectedToolType.isPresent()) {
+            // noinspection OptionalGetWithoutIsPresent
+            final ItemStack tool = ToolboxUtil.getSelectedTool(toolbox)
+                .get();
+            final long maxDamage = MetaGeneratedTool.getToolMaxDamage(tool);
+
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.item.toolbox.tooltip.deselect_tool",
@@ -235,6 +242,14 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 StatCollector.translateToLocalFormatted(
                     "gt.behaviour.switch_mode.tooltip",
                     GameSettings.getKeyDisplayString(GTMod.proxy.TOOL_MODE_SWITCH_KEYBIND.getKeyCode())));
+            tooltipList.add(
+                EnumChatFormatting.WHITE
+                    + translateToLocalFormatted(
+                        "gt.item.desc.durability",
+                        EnumChatFormatting.GREEN + formatNumber(maxDamage - MetaGeneratedTool.getToolDamage(tool))
+                            + " ",
+                        " " + formatNumber(maxDamage))
+                    + EnumChatFormatting.GRAY);
         }
 
         ToolboxUtil.withBatteryAndManager(toolbox, (battery, manager) -> {
@@ -248,6 +263,16 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     formatNumber(batteryItem.getMaxCharge(battery)),
                     formatNumber(V[voltageTier])));
         });
+
+        tooltipList.addAll(
+            Arrays.asList(
+                translateToLocalFormatted(
+                    "GT5U.item.toolbox.byline.format",
+                    StatCollector.translateToLocal(
+                        "GT5U.item.toolbox.byline." + selectedToolType.map(
+                            slot -> slot.name()
+                                .toLowerCase())
+                            .orElse(ToolboxUtil.hasAnyItems(toolbox) ? "closed" : "closed_empty"))).split("\\\\n")));
     }
 
     @Override
