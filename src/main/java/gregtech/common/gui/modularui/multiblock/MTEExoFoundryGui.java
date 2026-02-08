@@ -115,10 +115,10 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager.panel(
+        IPanelHandler statsPanel = syncManager.syncedPanel(
             "statsPanel",
-            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .overlay(GTGuiTextures.FOUNDRY_CALCULATOR)
             .onMousePressed(d -> {
@@ -136,7 +136,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler contribPanel = syncManager
-            .panel("contributorsPanel", (p_syncManager, syncHandler) -> openContributorsPanel(parent), true);
+            .syncedPanel("contributorsPanel", true, (p_syncManager, syncHandler) -> openContributorsPanel(parent));
         return new ButtonWidget<>().size(18)
             .marginTop(4)
             .overlay(IDrawable.EMPTY)
@@ -411,15 +411,15 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                             .collapseDisabledChild())
                     .childIf(
                         multiblock.supportsTerminalRightCornerColumn(),
-                        createTerminalRightCornerColumn(panel, syncManager)));
+                        () -> createTerminalRightCornerColumn(panel, syncManager)));
     }
 
     protected IWidget createModuleSelectButton(PanelSyncManager syncManager, ModularPanel parent, int index,
         IIntValue<Integer> moduleSync, IIntValue<Integer> tierSync, boolean isStats) {
-        IPanelHandler selectPanel = syncManager.panel(
+        IPanelHandler selectPanel = syncManager.syncedPanel(
             "moduleSelectPanel" + index + (isStats ? "stats" : ""),
-            (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openModuleConfigPanel(parent, index, moduleSync, isStats));
 
         return new Row().size(30, 16)
             .marginBottom(index != 0 ? 2 : 0)

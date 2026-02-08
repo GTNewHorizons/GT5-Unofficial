@@ -204,7 +204,9 @@ public class MTEExoticModule extends MTEBaseModule {
         }
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -228,7 +230,9 @@ public class MTEExoticModule extends MTEBaseModule {
             Materials.Space.getMolten(spaceAmount * 1000L) };
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -428,7 +432,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
             setPlasmaRecipe(
                 new GTRecipe(
-                    false,
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,

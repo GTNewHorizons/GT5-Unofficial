@@ -62,12 +62,6 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     }
 
     @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
     }
