@@ -166,7 +166,7 @@ public class CustomStarColorPanel {
             ForgeOfGodsStarColor newStarColor = getClickedStarColor(hypervisor);
             if (index < newStarColor.numColors()) {
                 StarColorSetting color = newStarColor.getColor(index);
-                return new Rectangle().setColor(Color.rgb(color.getColorR(), color.getColorG(), color.getColorB()));
+                return new Rectangle().color(Color.rgb(color.getColorR(), color.getColorG(), color.getColorB()));
             }
             return IDrawable.EMPTY;
         }).asWidget()

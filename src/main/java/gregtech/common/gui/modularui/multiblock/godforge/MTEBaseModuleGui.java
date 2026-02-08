@@ -101,7 +101,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected Flow createTerminalLeftCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createTerminalLeftCornerColumn(panel, syncManager)
-            .childIf(usesTerminalLeftButton(), createTerminalLeftButton());
+            .childIf(usesTerminalLeftButton(), this::createTerminalLeftButton);
     }
 
     @Override
@@ -114,7 +114,7 @@ public abstract class MTEBaseModuleGui<T extends MTEBaseModule> extends TTMultib
     @Override
     protected Flow createRightPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createRightPanelGapRow(parent, syncManager).marginRight(2)
-            .childIf(usesExtraButton(), createExtraButton());
+            .childIf(usesExtraButton(), this::createExtraButton);
     }
 
     @Override
