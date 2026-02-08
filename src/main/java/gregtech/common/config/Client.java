@@ -399,6 +399,21 @@ public class Client {
         @Config.Name("Show Flavor Text")
         public boolean showFlavorText;
 
+        @Config.Comment("Enabled show Fluid Amount")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Fluid Amount")
+        public boolean showFluidAmount;
+
+        @Config.Comment("Enabled show Fluid Temperature")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Fluid Temperature")
+        public boolean showFluidTemperature;
+
+        @Config.Comment("Enabled show Fluid State")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Fluid State")
+        public boolean showFluidState;
+
         @Config.Comment("Enabled show GT++ Radioactive Text")
         @Config.DefaultBoolean(true)
         @Config.Name("Show GT++ Radioactive Text")

@@ -32,6 +32,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 
 public class ItemFluidDisplay extends GTGenericItem {
 
@@ -44,39 +45,49 @@ public class ItemFluidDisplay extends GTGenericItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
-            String tChemicalFormula = getChemicalFormula(
-                new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
-            if (!tChemicalFormula.isEmpty())
-                aList.add(EnumChatFormatting.YELLOW + tChemicalFormula + EnumChatFormatting.RESET);
+        if (Client.tooltip.showFormula) {
+            if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
+                String tChemicalFormula = getChemicalFormula(
+                    new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
+                if (!tChemicalFormula.isEmpty())
+                    aList.add(EnumChatFormatting.YELLOW + tChemicalFormula + EnumChatFormatting.RESET);
+            }
         }
-        NBTTagCompound aNBT = aStack.getTagCompound();
+
         if (GTValues.D1 || Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
             Fluid tFluid = FluidRegistry.getFluid(aStack.getItemDamage());
             if (tFluid != null) {
                 aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.fluid.registry", tFluid.getName()));
             }
         }
+
+        NBTTagCompound aNBT = aStack.getTagCompound();
+
         if (aNBT != null) {
-            long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
-            if (tToolTipAmount > 0L) {
-                aList.add(
-                    EnumChatFormatting.BLUE
-                        + StatCollector
-                            .translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatNumber(tToolTipAmount))
-                        + EnumChatFormatting.GRAY);
+            if (Client.tooltip.showFluidAmount) {
+                long tToolTipAmount = aNBT.getLong("mFluidDisplayAmount");
+                if (tToolTipAmount > 0L) {
+                    aList.add(
+                        EnumChatFormatting.BLUE
+                            + StatCollector
+                                .translateToLocalFormatted("GT5U.tooltip.fluid.amount", formatNumber(tToolTipAmount))
+                            + EnumChatFormatting.GRAY);
+                }
             }
-            aList.add(
-                EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
-                    "GT5U.tooltip.fluid.temperature",
-                    formatNumber(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
-            aList.add(
-                EnumChatFormatting.GREEN
-                    + StatCollector.translateToLocalFormatted(
+            if (Client.tooltip.showFluidTemperature) {
+                aList.add(
+                    EnumChatFormatting.RED + StatCollector.translateToLocalFormatted(
+                        "GT5U.tooltip.fluid.temperature",
+                        formatNumber(aNBT.getLong("mFluidDisplayHeat"))) + EnumChatFormatting.GRAY);
+            }
+            if (Client.tooltip.showFluidState) {
+                aList.add(
+                    EnumChatFormatting.GREEN + StatCollector.translateToLocalFormatted(
                         "GT5U.tooltip.fluid.stat",
                         aNBT.getBoolean("mFluidState") ? StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.gas")
                             : StatCollector.translateToLocal("GT5U.tooltip.fluid.stat.liquid"))
-                    + EnumChatFormatting.GRAY);
+                        + EnumChatFormatting.GRAY);
+            }
         }
     }
 
