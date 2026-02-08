@@ -287,7 +287,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(
                 "Recipe Tier limited by " + TooltipHelper.tierText(TooltipTier.GLASS)
                     + " Tier, "
-                    + TooltipHelper.voltageText(VoltageIndex.UMV)
+                    + TooltipHelper.voltageTierText(VoltageIndex.UMV)
                     + " unlocks all")
             .addInfo("Can also use normal ABS coils in their place instead, if you don't like the bonuses :)")
             .addSeparator()
