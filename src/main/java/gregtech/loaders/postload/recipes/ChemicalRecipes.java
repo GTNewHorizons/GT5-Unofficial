@@ -1954,8 +1954,8 @@ public class ChemicalRecipes implements Runnable {
 
         // NaOH + 2 (HCl)(H2O) = 2 H2O + 2 NaCl
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.SodiumHydroxide.getDust(3))
             .circuit(1)
+            .itemInputs(Materials.SodiumHydroxide.getDust(3))
             .itemOutputs(Materials.Salt.getDust(2))
             .fluidInputs(Materials.DilutedHydrochloricAcid.getFluid(2_000))
             .fluidOutputs(Materials.Water.getFluid(2000))
