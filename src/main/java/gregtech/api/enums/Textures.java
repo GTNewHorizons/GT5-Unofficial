@@ -78,7 +78,7 @@ public class Textures {
         }
     }
 
-    public abstract class BlockIcons implements IIconContainer {
+    public final class BlockIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -2494,6 +2494,10 @@ public class Textures {
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
+        private BlockIcons() {
+            throw new AssertionError("No instances allowed");
+        }
+
         public static ITexture getCasingTextureForId(int id) {
             final ITexture[] page = casingTexturePages[(id >> 7) & 0x7f];
             if (page == null) return null;
@@ -2579,11 +2583,11 @@ public class Textures {
         }
     }
 
-    public abstract class ItemIcons implements IIconContainer {
+    public final class ItemIcons {
 
         // spotless:off
         public static final IIconContainer
-            VOID = Textures.GlobalIcons.VOID, // The Empty Texture
+            VOID = GlobalIcons.VOID, // The Empty Texture
             RENDERING_ERROR = GlobalIcons.RENDERING_ERROR,
 
             MORTAR = GTItemIconContainer.create("MORTAR"),
@@ -2628,6 +2632,10 @@ public class Textures {
                 ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, };
 
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(Textures.GlobalIcons.RENDERING_ERROR) };
+
+        private ItemIcons() {
+            throw new AssertionError("No instances allowed");
+        }
 
         /**
          * Registers a Custom Item {@link IIconContainer}
