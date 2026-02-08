@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
