@@ -97,7 +97,6 @@ public abstract class AEInventory
 
     @Override
     public void removeListener(IMEMonitorHandlerReceiver l) {
-        // noinspection unchecked
         listeners.remove(l);
     }
 

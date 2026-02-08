@@ -74,14 +74,11 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
             .child(createSettingsButton(syncManager, panel));
     }
 
-    @Override
-    protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager);
-    }
-
     protected IWidget createSettingsButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler settingsPanel = syncManager
-            .panel("busSettings", (p_syncManager, syncHandler) -> createSettingsPanel(p_syncManager, parent), true);
+        IPanelHandler settingsPanel = syncManager.syncedPanel(
+            "busSettings",
+            true,
+            (p_syncManager, syncHandler) -> createSettingsPanel(p_syncManager, parent));
         return new ButtonWidget<>().size(18, 18)
             .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
             .onMousePressed(d -> {
@@ -143,7 +140,6 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-
         return super.createContentSection(panel, syncManager).child(createSlots(syncManager));
     }
 

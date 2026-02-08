@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
 
-import appeng.api.storage.data.IAEItemStack;
 import fox.spiteful.avaritia.items.ItemMatterCluster;
 import gregtech.api.util.GTUtility;
 import gregtech.common.inventory.AEInventory;
