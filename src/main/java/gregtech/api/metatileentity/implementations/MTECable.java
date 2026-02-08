@@ -3,7 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.util.GTUtility.translate;
-import static gregtech.api.util.GTUtility.translate;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 
 import java.util.ArrayList;
@@ -47,7 +46,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
