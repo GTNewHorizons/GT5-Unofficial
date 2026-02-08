@@ -53,7 +53,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         GTOreDictUnificator.get(OrePrefixes.lens, aMaterial, 3L),
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
                     .duration(2 * MINUTES)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(latheRecipes);
             }
             case "ChromaticGlass" -> {
