@@ -55,7 +55,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
-import gregtech.common.gui.modularui.multiblock.MTECokeOvenGUI;
+import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
 public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
@@ -147,7 +147,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     @Override
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         if (side != ForgeDirection.UNKNOWN) return null;
-        if (fluid.amount <= 0) return null;
+        if (fluid == null || fluid.amount <= 0) return null;
         final int toDrain = Math.min(fluid.amount, maxDrain);
         if (doDrain) fluid.amount -= toDrain;
         return GTUtility.copyAmount(toDrain, fluid);
@@ -159,8 +159,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     }
 
     @Override
-    protected @NotNull MTECokeOvenGUI getGui() {
-        return new MTECokeOvenGUI(this);
+    protected @NotNull MTECokeOvenGui getGui() {
+        return new MTECokeOvenGui(this);
     }
 
     @Override

@@ -60,11 +60,16 @@ public class RecipesMachinesCustom {
 
     private static void xlTurbines() {
         // Turbine Shaft
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Casing_Turbine_Shaft.get(1),
-            new Object[] { "PMP", "LCL", "PMP", 'P', MaterialsAlloy.INCOLOY_DS.getPlateDouble(1), 'M',
-                ItemList.Electric_Motor_HV.get(1), 'L', OrePrefixes.cell.get(Materials.Lubricant), 'C',
-                ItemList.Casing_Gearbox_Titanium.get(1) });
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                MaterialsAlloy.INCOLOY_DS.getPlateDouble(4),
+                ItemList.Electric_Motor_HV.get(2),
+                ItemList.Casing_Gearbox_Titanium.get(1))
+            .itemOutputs(GregtechItemList.Casing_Turbine_Shaft.get(1))
+            .fluidInputs(Materials.Lubricant.getFluid(2_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
 
         // Rotor Assembly
         GTValues.RA.stdBuilder()
@@ -316,7 +321,7 @@ public class RecipesMachinesCustom {
             .circuit(2)
             .itemOutputs(GregtechItemList.Casing_Machine_Custom_2.get(2))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // ExxonMobil Chemical Plant
@@ -385,7 +390,7 @@ public class RecipesMachinesCustom {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_BlastSmelter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Blast Smelter Heat Containment Coil
@@ -402,7 +407,7 @@ public class RecipesMachinesCustom {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Coil_BlastSmelter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -459,7 +464,7 @@ public class RecipesMachinesCustom {
             .itemOutputs(GregtechItemList.Casing_PLACEHOLDER_TreeFarmer.get(1))
             .fluidInputs(GTModHandler.getDistilledWater(2_000))
             .duration(10 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -733,7 +738,7 @@ public class RecipesMachinesCustom {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_FishPond.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Zhuhai - Fishing Port
@@ -1040,7 +1045,7 @@ public class RecipesMachinesCustom {
             .itemOutputs(GregtechItemList.LavaFilter.get(16))
             .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(1 * INGOTS))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(assemblerRecipes);
     }
 }

@@ -123,7 +123,6 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
             this.setInventorySlotContents(moldSlot, phantom);
         } catch (Exception ignored) {}
         markDirty();
-        GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
     }
 
     @Override
@@ -148,7 +147,9 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
                     else if (clickData.mouseButton == 1) newIndex--;
                     newIndex = Math.floorMod(newIndex, solidifierMolds.length);
                     newMold = solidifierMolds[newIndex];
+                    inventoryHandler.setStackInSlot(moldSlot, solidifierMolds[newIndex].copy());
                 }
+
                 setMold(newMold);
             }
 
@@ -190,7 +191,10 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
             player -> new ItemSelectBaseGui(
                 GTUtility.translate("GT5U.machines.select_mold"),
                 getStackForm(0),
-                this::onMoldSelected,
+                (ItemStack selected) -> {
+                    this.onMoldSelected(selected);
+                    GTValues.NW.sendToServer(new GTPacketSetMold(this, selected));
+                },
                 Arrays.asList(solidifierMolds),
                 findMatchingMoldIndex(inv.getStackInSlot(moldSlot))).setAnotherWindow(true, dialogOpened)
                     .setGuiTint(getGUIColorization())

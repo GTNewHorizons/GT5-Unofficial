@@ -519,15 +519,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     blackHoleStatus = 2;
                     createRenderBlock();
                 } else if (ItemList.Black_Hole_Closer.isStackEqual(removed) && blackHoleStatus != 1) {
-                    blackHoleStatus = 1;
-                    blackHoleStability = 100;
-                    catalyzingCostModifier = 1;
-                    catalyzingCounter = 0;
-                    if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
-                    collapseTimer = 40;
-                    for (MTEBlackHoleUtility hatch : utilityHatches) {
-                        hatch.updateRedstoneOutput(false);
-                    }
+                    closeBlackHole();
                 } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
                     createRenderBlock();
@@ -687,19 +679,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         blackHoleStability -= stabilityDecrease;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
-        if (blackHoleStability <= -900) {
-            blackHoleStatus = 1;
-            blackHoleStability = 100;
-            catalyzingCostModifier = 1;
-            rendererTileEntity = null;
-            destroyRenderBlock();
+        if (blackHoleStability <= -900) closeBlackHole();
+    }
 
-            // Update all the utility hatches
-            for (MTEBlackHoleUtility hatch : utilityHatches) {
-                hatch.updateRedstoneOutput(false);
-            }
+    private void closeBlackHole() {
+        blackHoleStatus = 1;
+        blackHoleStability = 100;
+        catalyzingCostModifier = 1;
+        catalyzingCounter = 0;
+        if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+        collapseTimer = 40;
+        for (MTEBlackHoleUtility hatch : utilityHatches) {
+            hatch.updateRedstoneOutput(false);
         }
-
     }
 
     @Override

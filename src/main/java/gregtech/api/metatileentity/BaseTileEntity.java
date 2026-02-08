@@ -909,7 +909,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             player -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                 getStackForm(0),
-                this::onCircuitSelected,
+                (ItemStack selected) -> {
+                    this.onCircuitSelected(selected);
+                    GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
+                },
                 circuits,
                 GTUtility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
                     .setAnotherWindow(true, dialogOpened)
@@ -924,7 +927,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
         // we will not do any validation on client side
         // it doesn't get to actually decide what inventory contains anyway
         inv.setInventorySlotContents(ccs.getCircuitSlot(), selected);

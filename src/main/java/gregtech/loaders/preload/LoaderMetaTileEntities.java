@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
@@ -113,6 +114,7 @@ import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
+import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -10630,6 +10632,20 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
     }
 
+    private static void registerDrawerFramer() {
+
+        // if storage drawers is not loaded, do not load the drawer framer machine
+        if (!StorageDrawers.isModLoaded()) return;
+
+        ItemList.Machine_LV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_LV.ID, "framer.tier.01", "Basic Drawer Framer", 1).getStackForm(1L));
+        ItemList.Machine_MV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_MV.ID, "framer.tier.02", "Advanced Drawer Framer", 2).getStackForm(1L));
+        ItemList.Machine_HV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_HV.ID, "framer.tier.03", "Precise Drawer Framer", 3).getStackForm(1L));
+
+    }
+
     @Override
     public void run() {
         GTLog.out.println("GTMod: Registering MetaTileEntities.");
@@ -10743,6 +10759,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerDrawerFramer();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(

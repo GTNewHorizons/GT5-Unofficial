@@ -135,7 +135,7 @@ public class FuelConfigPanel {
             .size(18)
             .child(
                 new FluidDisplayWidget().background(IDrawable.EMPTY)
-                    .fluid(option.getFluid())
+                    .value(option.getFluid())
                     .displayAmount(false)
                     .align(Alignment.CENTER)
                     .size(16))

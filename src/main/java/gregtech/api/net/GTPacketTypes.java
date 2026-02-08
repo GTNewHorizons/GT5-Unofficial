@@ -28,7 +28,7 @@ public enum GTPacketTypes {
     REQUEST_COVER_DATA(17, new GTPacketRequestCoverData()),
     SET_MOLD(18, new GTPacketSetMold()),
     SEND_OREGEN_PATTERN(19, new GTPacketSendOregenPattern()),
-    SET_SHAPE(20, new GTPacketSetShape()),
+    // ID 20 unused
     MUSIC_SYSTEM_DATA(21, new GTPacketMusicSystemData()),
     INFINITE_SPRAYCAN(22, new GTPacketInfiniteSpraycan()),
     BIO_VAT_RENDERER(23, new PacketBioVatRenderer()),
