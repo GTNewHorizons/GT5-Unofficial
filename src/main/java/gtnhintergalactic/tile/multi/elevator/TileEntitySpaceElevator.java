@@ -109,11 +109,10 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
         // filtering by isActive so computation is spread only among working modules
         long minerModuleAmount = mProjectModuleHatches.stream()
-            .filter(module -> module instanceof TileEntityModuleMiner)
-            .filter(module -> module.getBaseMetaTileEntity() != null)
             .filter(
-                module -> module.getBaseMetaTileEntity()
-                    .isActive())
+                module -> module instanceof TileEntityModuleMiner && module.getBaseMetaTileEntity() != null
+                    && module.getBaseMetaTileEntity()
+                        .isActive())
             .filter(TileEntityModuleBase::isDataInputListEmpty)
             .count();
         if (minerModuleAmount == 0) {
@@ -315,9 +314,9 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
         }
     }
 
-    public boolean ignoreAndAcceptHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+    public boolean ignoreAndAcceptHatch(IGregTechTileEntity mte, int aBaseCasingIndex) {
+        if (mte == null) return false;
+        IMetaTileEntity aMetaTileEntity = mte.getMetaTileEntity();
         if (aMetaTileEntity instanceof MTEHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             return true;
