@@ -121,6 +121,68 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         return machineMode == 0 ? "GT5U.gui.text.LHC.acceleratormode" : "GT5U.gui.text.LHC.collidermode";
     }
 
+    private String formatBeamEnergyText(DoubleSyncValue cachedOutputBeamEnergy, DoubleSyncValue playerTargetBeamEnergyeV){
+        // *1000 because cached is in keV, but formatting expects eV
+        double dCachedOutputBeamEnergy = cachedOutputBeamEnergy.getDoubleValue() * 1000;
+        double dPlayerTargetBeamEnergy = playerTargetBeamEnergyeV.getDoubleValue();
+
+        EnumChatFormatting colour = EnumChatFormatting.RED;
+
+        if (dCachedOutputBeamEnergy > dPlayerTargetBeamEnergy){
+            colour = EnumChatFormatting.GREEN;
+        }
+
+        return EnumChatFormatting.WHITE +
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.LHC.beamenergykeV",
+                colour + format((long) dCachedOutputBeamEnergy)
+            );
+
+    }
+
+    private String formatBeamRateText(IntSyncValue cachedOutputBeamRate) {
+        return EnumChatFormatting.WHITE +
+            StatCollector.translateToLocal("GT5U.gui.text.LHC.beamrate") +
+            ": " + EnumChatFormatting.YELLOW +
+            cachedOutputBeamRate.getIntValue();
+
+    }
+
+    private String formatPowerCostTextKey(DoubleSyncValue cachedOutputBeamEnergy, LongSyncValue EUt){
+
+        String colourText = EnumChatFormatting.GOLD + "0";
+
+        if (cachedOutputBeamEnergy.getDoubleValue() > 0){
+            colourText = EnumChatFormatting.GOLD + standardFormat.format(EUt.getLongValue());
+        }
+
+        return EnumChatFormatting.WHITE +
+            StatCollector.translateToLocalFormatted(
+                "GT5U.gui.text.LHC.powercost", colourText)
+            + EnumChatFormatting.WHITE;
+    }
+
+    private String formatAccelCycleTextKey(IntSyncValue accelerationCycleCounter){
+        return EnumChatFormatting.WHITE
+            + StatCollector.translateToLocal("GT5U.gui.text.LHC.completedcycles")
+            + ": "
+            + EnumChatFormatting.GRAY
+            + accelerationCycleCounter.getIntValue();
+    }
+
+    private String formatStatusTextKey(DoubleSyncValue cachedOutputBeamEnergy, IntSyncValue machineMode){
+        String colourText = EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.LHC.off");
+
+        if (cachedOutputBeamEnergy.getDoubleValue() > 0) {
+            colourText = EnumChatFormatting.AQUA
+                + StatCollector.translateToLocal(getMachineModeText(machineMode.getIntValue()));
+        }
+
+        return EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+            "GT5U.gui.text.LHC.status",colourText);
+    }
+
+
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         DoubleSyncValue playerTargetBeamEnergyeV = syncManager
@@ -133,50 +195,21 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
             .findSyncHandler("accelerationCycleCounter", IntSyncValue.class);
         LongSyncValue EUt = syncManager.findSyncHandler("EUt", LongSyncValue.class);
 
+
+        IKey beamEnergyTextKey = IKey.dynamic(() -> formatBeamEnergyText(cachedOutputBeamEnergy,playerTargetBeamEnergyeV));
+        IKey beamRateTextKey = IKey.dynamic(() -> formatBeamRateText(cachedOutputBeamRate));
+        IKey powerCostTextKey = IKey.dynamic(() -> formatPowerCostTextKey(cachedOutputBeamEnergy,EUt));
+        IKey accelCycleTextKey = IKey.dynamic(() -> formatAccelCycleTextKey(accelerationCycleCounter));
+        IKey statusTextKey = IKey.dynamic(() -> formatStatusTextKey(cachedOutputBeamEnergy,machineMode));
+
+
         return new ListWidget<>().widthRel(1)
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        // *1000 because cached is in keV, but formatting expects eV
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.LHC.beamenergykeV",
-                            (cachedOutputBeamEnergy.getDoubleValue() * 1000
-                                > (playerTargetBeamEnergyeV.getDoubleValue()) ? EnumChatFormatting.GREEN
-                                    : EnumChatFormatting.RED)
-                                + format((long) cachedOutputBeamEnergy.getDoubleValue() * 1000)))).marginBottom(9))
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.LHC.beamrate")
-                            + ": "
-                            + EnumChatFormatting.YELLOW
-                            + cachedOutputBeamRate.getIntValue())).marginBottom(9))
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.LHC.powercost",
-                            ((cachedOutputBeamEnergy.getDoubleValue() > 0)
-                                ? EnumChatFormatting.GOLD + standardFormat.format(EUt.getLongValue())
-                                : EnumChatFormatting.GOLD + "0") + EnumChatFormatting.WHITE))).marginBottom(9))
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE
-                            + StatCollector.translateToLocal("GT5U.gui.text.LHC.completedcycles")
-                            + ": "
-                            + EnumChatFormatting.GRAY
-                            + accelerationCycleCounter.getIntValue())).marginBottom(9))
-            .child(
-                new TextWidget<>(
-                    IKey.dynamic(
-                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                            "GT5U.gui.text.LHC.status",
-                            (cachedOutputBeamEnergy.getDoubleValue() > 0)
-                                ? EnumChatFormatting.AQUA
-                                    + StatCollector.translateToLocal(getMachineModeText(machineMode.getIntValue()))
-                                : EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.gui.text.LHC.off")))));
+            .child(new TextWidget<>(beamEnergyTextKey).marginBottom(9))
+            .child(new TextWidget<>(beamRateTextKey).marginBottom(9))
+            .child(new TextWidget<>(powerCostTextKey).marginBottom(9))
+            .child(new TextWidget<>(accelCycleTextKey).marginBottom(9))
+            .child(new TextWidget<>(statusTextKey));
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
