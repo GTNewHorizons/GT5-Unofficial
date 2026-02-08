@@ -2669,9 +2669,10 @@ public class Textures {
                 super(aIconName);
             }
         }
-    }
 
-    private static @NotNull IIconContainer create(@NotNull String name) {
-        return GTItemIconContainer.create(name);
+        private static @NotNull IIconContainer create(@NotNull String name) {
+            return GTItemIconContainer.create(name);
+        }
+
     }
 }
