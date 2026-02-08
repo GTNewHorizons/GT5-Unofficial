@@ -80,6 +80,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -663,8 +664,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     }
 
     @SideOnly(Side.CLIENT)
-    public void spawnVisualCrops(World world, int x, int y, int z, int age, boolean isOldStructure) {
-        CropRenderer crop = new CropRenderer(world, x, y, z, age, isOldStructure);
+    public void spawnVisualCrops(World world, int x, int y, int z, ExtendedFacing facing, int age,
+        boolean isOldStructure) {
+        CropRenderer crop = new CropRenderer(world, x, y, z, facing, age, isOldStructure);
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
     }
 
@@ -680,7 +682,14 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 xyz[0] += aBaseMetaTileEntity.getXCoord();
                 xyz[1] += aBaseMetaTileEntity.getYCoord();
                 xyz[2] += aBaseMetaTileEntity.getZCoord();
-                spawnVisualCrops(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], 40, isOldStructure);
+                spawnVisualCrops(
+                    aBaseMetaTileEntity.getWorld(),
+                    xyz[0],
+                    xyz[1],
+                    xyz[2],
+                    this.getExtendedFacing(),
+                    40,
+                    isOldStructure);
             }
         } else {
             if (!isOldStructure && isCheckingDirtWater && mMachine && aTick % 20 == 0) {
