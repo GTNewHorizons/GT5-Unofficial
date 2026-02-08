@@ -404,8 +404,6 @@ public class MTEBeamCrafter
 
         if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
 
-        // todo: subticking
-
         tRecipe.consumeInput(1, GTValues.emptyFluidStackArray, inputItems);
         ItemStack[] itemOutputArray = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
         this.mOutputItems = itemOutputArray;
