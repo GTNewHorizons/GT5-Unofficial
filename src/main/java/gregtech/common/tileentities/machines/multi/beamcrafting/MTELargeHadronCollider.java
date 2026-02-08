@@ -66,6 +66,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     private static final int MACHINEMODE_COLLIDER = 1;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_EM = "EM";
+    private static final String STRUCTURE_PIECE_WEAK = "Weak";
+    private static final String STRUCTURE_PIECE_STRONG = "Strong";
+    private static final String STRUCTURE_PIECE_GRAV = "Grav";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
@@ -1873,7 +1877,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="electromagnetism module">
         .addShape(
-            LHCModule.EM.structurePiece,
+            STRUCTURE_PIECE_EM,
             new String[][]{{
                 "             ",
                 "             ",
@@ -2012,7 +2016,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="weak module">
         .addShape(
-            LHCModule.Weak.structurePiece,
+            STRUCTURE_PIECE_WEAK,
             new String[][]{{
                 "             ",
                 "             ",
@@ -2151,7 +2155,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="strong module">
         .addShape(
-            LHCModule.Strong.structurePiece,
+            STRUCTURE_PIECE_STRONG,
             new String[][]{{
                 "  CCCCCCC  ",
                 " CCC   CCC ",
@@ -2314,7 +2318,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
 
         //<editor-fold desc="gravity module">
         .addShape(
-            LHCModule.Grav.structurePiece,
+            STRUCTURE_PIECE_GRAV,
             new String[][]{{
                 "  CCCCCCC  ",
                 " CCC   CCC ",
@@ -2839,15 +2843,15 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 54, 4, 1);
-        buildPiece(LHCModule.EM.structurePiece, stackSize, hintsOnly, 6, -1, -113);
+        buildPiece(STRUCTURE_PIECE_EM, stackSize, hintsOnly, 5, -1, -113);
         if (stackSize.stackSize > 1) {
-            buildPiece(LHCModule.Weak.structurePiece, stackSize, hintsOnly, 6, -1, -9);
+            buildPiece(STRUCTURE_PIECE_WEAK, stackSize, hintsOnly, 5, -1, -9);
         }
         if (stackSize.stackSize > 2) {
-            buildPiece(LHCModule.Strong.structurePiece, stackSize, hintsOnly, 57, -1, -60);
+            buildPiece(STRUCTURE_PIECE_STRONG, stackSize, hintsOnly, 57, -1, -61);
         }
         if (stackSize.stackSize > 3) {
-            buildPiece(LHCModule.Grav.structurePiece, stackSize, hintsOnly, -47, -1, -60);
+            buildPiece(STRUCTURE_PIECE_GRAV, stackSize, hintsOnly, -47, -1, -61);
         }
     }
 
@@ -2858,10 +2862,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
 
         built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, realBudget, env, false, true);
-        built += survivalBuildPiece(LHCModule.EM.structurePiece, stackSize, 5, -1, -113, realBudget, env, false, true);
+        built += survivalBuildPiece(STRUCTURE_PIECE_EM, stackSize, 5, -1, -113, realBudget, env, false, true);
         if (stackSize.stackSize > 1) {
             built += survivalBuildPiece(
-                LHCModule.Weak.structurePiece,
+                STRUCTURE_PIECE_WEAK,
                 stackSize,
                 5,
                 -1,
@@ -2873,7 +2877,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         }
         if (stackSize.stackSize > 2) {
             built += survivalBuildPiece(
-                LHCModule.Strong.structurePiece,
+                STRUCTURE_PIECE_STRONG,
                 stackSize,
                 57,
                 -1,
@@ -2885,7 +2889,7 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         }
         if (stackSize.stackSize > 3) {
             built += survivalBuildPiece(
-                LHCModule.Grav.structurePiece,
+                STRUCTURE_PIECE_GRAV,
                 stackSize,
                 -47,
                 -1,
@@ -2909,10 +2913,10 @@ public class MTELargeHadronCollider extends MTEExtendedPowerMultiBlockBase<MTELa
         mInputBeamline.clear();
         mOutputBeamline.clear();
 
-        emEnabled = checkPiece(LHCModule.EM.structurePiece, 5, -1, -113);
-        weakEnabled = checkPiece(LHCModule.Weak.structurePiece, 5, -1, -9);
-        strongEnabled = checkPiece(LHCModule.Strong.structurePiece, 57, -1, -61);
-        gravEnabled = checkPiece(LHCModule.Grav.structurePiece, -47, -1, -61);
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 5, -1, -113);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 5, -1, -9);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -61);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -61);
 
         return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
             && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));

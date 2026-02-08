@@ -6,7 +6,7 @@ import gtnhlanth.common.beamline.Particle;
 
 public enum LHCModule {
 
-    EM("EM",
+    EM(
         ImmutableList.of(
             Particle.PHOTON,
             Particle.WBOSON,
@@ -15,7 +15,7 @@ public enum LHCModule {
             Particle.TAU,
             Particle.PROTON,
             Particle.OMEGA)),
-    Weak("Weak",
+    Weak(
         ImmutableList.of(
             Particle.ZBOSON,
             Particle.WBOSON,
@@ -33,7 +33,7 @@ public enum LHCModule {
             Particle.ETA,
             Particle.JPSI,
             Particle.UPSILON)),
-    Strong("Strong",
+    Strong(
         ImmutableList.of(
             Particle.PROTON,
             Particle.NEUTRON,
@@ -42,8 +42,8 @@ public enum LHCModule {
             Particle.ETA,
             Particle.JPSI,
             Particle.UPSILON)),
-    Grav("Grav", ImmutableList.of(Particle.HIGGS, Particle.GRAVITON)),
-    AllParticles("AllParticles",
+    Grav(ImmutableList.of(Particle.HIGGS, Particle.GRAVITON)),
+    AllParticles(
         ImmutableList.of(
             Particle.PHOTON,
             Particle.WBOSON,
@@ -64,11 +64,9 @@ public enum LHCModule {
             Particle.UPSILON,
             Particle.GRAVITON));
 
-    public final String structurePiece;
     public final ImmutableList<Particle> acceptedParticles;
 
-    private LHCModule(String structurePiece, ImmutableList<Particle> acceptedParticles) {
-        this.structurePiece = structurePiece;
+    LHCModule(ImmutableList<Particle> acceptedParticles) {
         this.acceptedParticles = acceptedParticles;
     }
 }
