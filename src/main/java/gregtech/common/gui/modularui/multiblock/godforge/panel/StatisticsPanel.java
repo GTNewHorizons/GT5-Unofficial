@@ -118,14 +118,14 @@ public class StatisticsPanel {
         // i love pos i love pos i love pos i love pos i love pos
         for (int i = 0; i < 4; i++) {
             panel.child(
-                new IDrawable.DrawableWidget(new Rectangle().setColor(Color.rgb(190, 200, 0))).size(1, 227)
+                new IDrawable.DrawableWidget(new Rectangle().color(Color.rgb(190, 200, 0))).size(1, 227)
                     .pos(81 + WIDTH_MAJOR * i, 38));
         }
 
         // Horizontal grid lines
         for (int i = 0; i < 8; i++) {
             panel.child(
-                new IDrawable.DrawableWidget(new Rectangle().setColor(Color.rgb(0, 170, 170))).size(276, 1)
+                new IDrawable.DrawableWidget(new Rectangle().color(Color.rgb(0, 170, 170))).size(276, 1)
                     .pos(12, 55 + HEIGHT_MAJOR * i));
         }
 
