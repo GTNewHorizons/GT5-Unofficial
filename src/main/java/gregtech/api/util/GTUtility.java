@@ -62,7 +62,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import gregtech.common.items.toolbox.ToolboxUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -192,6 +191,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
 import ic2.api.crops.ICropTile;

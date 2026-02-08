@@ -1,5 +1,7 @@
 package gregtech.common.items.toolbox;
 
+import static gregtech.common.items.ItemGTToolbox.TOOLBOX_OPEN_NBT_KEY;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -7,7 +9,6 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.items.MetaGeneratedTool;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import gregtech.api.enums.ToolboxSlot;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.ItemGTToolbox;
 import ic2.api.item.IElectricItemManager;
 
@@ -87,6 +89,20 @@ public class ToolboxUtil {
     public static void saveToolbox(final ItemStack toolbox, final ItemStackHandler handler,
         @Nullable Consumer<NBTTagCompound> additionalAction) {
         final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
+        final int selectedTool = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
+            ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
+            : ItemGTToolbox.NO_TOOL_SELECTED;
+
+        for (int i = 0; i < handler.getSlots(); i++) {
+            final ItemStack stack = handler.getStackInSlot(i);
+            if (stack != null && stack.stackSize == 0) {
+                handler.setStackInSlot(i, null);
+                if (i == selectedTool) {
+                    tag.removeTag(ItemGTToolbox.CURRENT_TOOL_NBT_KEY);
+                }
+            }
+        }
+
         tag.setTag(ItemGTToolbox.CONTENTS_NBT_KEY, handler.serializeNBT());
 
         if (additionalAction != null) {
@@ -162,5 +178,17 @@ public class ToolboxUtil {
             });
         }
 
+    }
+
+    /**
+     * Check if the toolbox is allowed to charge or discharge.
+     *
+     * @param toolbox The ItemStack of the toolbox
+     * @return true if the toolbox can be charged
+     */
+    public static boolean canCharge(final ItemStack toolbox) {
+        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
+
+        return !tag.getBoolean(TOOLBOX_OPEN_NBT_KEY);
     }
 }

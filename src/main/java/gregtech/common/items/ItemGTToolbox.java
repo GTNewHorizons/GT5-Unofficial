@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.interfaces.IToolStats;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
 
 import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiFactories;
@@ -39,6 +37,7 @@ import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.api.tool.ITool;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -46,6 +45,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IMiddleClickItem;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -63,11 +63,9 @@ import ic2.api.item.IElectricItemManager;
 import ic2.api.item.ISpecialElectricItem;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mrtjp.projectred.api.IScrewdriver;
-import net.minecraftforge.event.world.BlockEvent;
 
 @InterfaceList(
-    value = { @Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = Mods.ModIDs.FORESTRY),
-        @Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
+    value = { @Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = Mods.ModIDs.RAILCRAFT),
         @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = Mods.ModIDs.BUILD_CRAFT_CORE),
         @Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.ModIDs.ENDER_I_O),
         @Interface(iface = "mrtjp.projectred.api.IScrewdriver", modid = Mods.ModIDs.PROJECT_RED_CORE), })
@@ -79,6 +77,11 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public static final String CURRENT_TOOL_NBT_KEY = "gt5u.toolbox:SelectedSlot";
     public static final int NO_TOOL_SELECTED = -1;
 
+    /**
+     * The charging mechanic of the toolbox happens every one in CHARGE_TICK ticks. All numbers are multiplied by this
+     * factor, so this value can be freely changed without having to do anything else. All tier limits imposed by the
+     * battery and items being charged will be respected.
+     */
     private static final int CHARGE_TICK = 20;
 
     public ItemGTToolbox(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
@@ -92,13 +95,14 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             return;
         }
 
-        if (isInHand && entity instanceof final EntityPlayer player) {
+        if (isInHand && entity instanceof final EntityPlayerMP player) {
             final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(stack);
             boolean shouldUpdate = false;
 
-            if (player.ticksExisted % CHARGE_TICK == 0 && stack.hasTagCompound() && !stack.getTagCompound().getBoolean(TOOLBOX_OPEN_NBT_KEY)) {
-                // If the toolbox is open, don't charge items to prevent syncing issues.
-
+            // If the tool being used has a very bad mining speed, it's possible for it to not be able to finish mining
+            // a block because the equipped stack changes. We can, after a fashion, check to see if the tool is
+            // currently being used by checking the arm swing animation.
+            if (player.ticksExisted % CHARGE_TICK == 0 && ToolboxUtil.canCharge(stack) && !player.isSwingInProgress) {
                 final ItemStack battery = handler.extractItem(ToolboxSlot.BATTERY.getSlotID(), 1, true);
                 if (battery != null && battery.getItem() instanceof final IElectricItem batteryItem) {
                     shouldUpdate = getElectricManager(battery).map(batteryManager -> {
@@ -159,7 +163,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @Override
     public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer player) {
-        if (!world.isRemote && !ToolboxUtil.getSelectedToolType(itemStack).isPresent()) {
+        if (!world.isRemote && !ToolboxUtil.getSelectedToolType(itemStack)
+            .isPresent()) {
             if (itemStack == Backhand.getOffhandItem(player)) {
                 GuiFactories.playerInventory()
                     .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
@@ -202,7 +207,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     @Override
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
-        final boolean hasCurrentTool = ToolboxUtil.getSelectedToolType(toolbox).isPresent();
+        final boolean hasCurrentTool = ToolboxUtil.getSelectedToolType(toolbox)
+            .isPresent();
 
         // TODO: Add information and author byline
 
@@ -224,8 +230,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.item.toolbox.tooltip.deselect_tool",
-                    GameSettings.getKeyDisplayString(settings.keyBindPickBlock.getKeyCode()))
-                );
+                    GameSettings.getKeyDisplayString(settings.keyBindPickBlock.getKeyCode())));
             tooltipList.add(
                 StatCollector.translateToLocalFormatted(
                     "gt.behaviour.switch_mode.tooltip",
@@ -304,7 +309,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                 final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
 
                 if (tool.doDamageToItem(toolStack, vanillaDamage)) {
-                    handler.setCurrentTool(toolStack.stackSize == 0 ? null : toolStack);
+                    handler.setCurrentTool(toolStack);
                     ToolboxUtil.saveToolbox(toolbox, handler);
 
                     return true;
@@ -314,16 +319,18 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         }).orElse(false);
     }
 
-    //region Event Handlers
+    // region Event Handlers
     @Override
     public boolean onMiddleClick(final ItemStack toolbox, final EntityPlayer player) {
         // TODO: Switch tool if you pick block a machine?
 
-        if (player.isSneaking() && ToolboxUtil.getSelectedToolType(toolbox).isPresent()) {
+        if (player.isSneaking() && ToolboxUtil.getSelectedToolType(toolbox)
+            .isPresent()) {
             GTValues.NW.sendToServer(
                 new GTPacketToolboxEvent(
                     GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL,
-                    player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem : Backhand.getOffhandSlot(player),
+                    player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem
+                        : Backhand.getOffhandSlot(player),
                     NO_TOOL_SELECTED));
             return true;
         }
@@ -346,18 +353,19 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     120,
                     true,
                     true);
+                break;
             case 1:
                 GTValues.NW.sendToServer(
                     new GTPacketToolboxEvent(
                         GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL,
-                        player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem : Backhand.getOffhandSlot(player),
-                        ToolboxUtil.getSelectedToolType(toolbox).isPresent() ? lastSlot : NO_TOOL_SELECTED));
+                        player.inventory.getCurrentItem() == toolbox ? player.inventory.currentItem
+                            : Backhand.getOffhandSlot(player),
+                        ToolboxUtil.getSelectedToolType(toolbox)
+                            .isPresent() ? lastSlot : NO_TOOL_SELECTED));
                 return true;
             default:
-                if (player instanceof final EntityClientPlayerMP playerMP) {
-                    ToolboxSelectGuiFactory.INSTANCE.open(playerMP);
-                    return true;
-                }
+                ToolboxSelectGuiFactory.INSTANCE.open(player);
+                return true;
         }
 
         return false;
@@ -401,25 +409,26 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
-        getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool).ifPresent(tool -> {
-            if ((tool.getItem() instanceof MetaGeneratedTool toolItem)) {
-                toolItem.onHarvestBlockEvent(
-                    aEvent.drops,
-                    tool,
-                    aEvent.harvester,
-                    aEvent.block,
-                    aEvent.x,
-                    aEvent.y,
-                    aEvent.z,
-                    aEvent.blockMetadata,
-                    aEvent.fortuneLevel,
-                    aEvent.isSilkTouching,
-                    aEvent);
-            }
-        });
+        getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool)
+            .ifPresent(tool -> {
+                if ((tool.getItem() instanceof MetaGeneratedTool toolItem)) {
+                    toolItem.onHarvestBlockEvent(
+                        aEvent.drops,
+                        tool,
+                        aEvent.harvester,
+                        aEvent.block,
+                        aEvent.x,
+                        aEvent.y,
+                        aEvent.z,
+                        aEvent.blockMetadata,
+                        aEvent.fortuneLevel,
+                        aEvent.isSilkTouching,
+                        aEvent);
+                }
+            });
     }
 
-    //endregion
+    // endregion
 
     /**
      * Gets the currently equipped toolbox if the player is holding it in their main hand or offhand.
@@ -429,7 +438,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
      */
     private static Optional<ItemStack> getToolboxIfEquipped(EntityPlayer player) {
         if (player != null) {
-            for (ItemStack stack : new ItemStack[] { player.inventory.getCurrentItem(), Backhand.getOffhandItem(player) }) {
+            for (ItemStack stack : new ItemStack[] { player.inventory.getCurrentItem(),
+                Backhand.getOffhandItem(player) }) {
                 if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
                     return Optional.of(stack);
                 }
@@ -439,7 +449,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         return Optional.empty();
     }
 
-    //region Vanilla Tool Harvesting Methods
+    // region Vanilla Tool Harvesting Methods
     @Override
     public boolean canHarvestBlock(final Block block, final ItemStack toolbox) {
         return ToolboxUtil.getSelectedTool(toolbox).map(
@@ -449,7 +459,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @Override
     public float getDigSpeed(final ItemStack toolbox, final Block block, final int metadata) {
-        return ToolboxUtil.getSelectedTool(toolbox).filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
+        return ToolboxUtil.getSelectedTool(toolbox)
+            .filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
             .map(
                 tool -> tool.getItem()
                     .getDigSpeed(tool, block, metadata))
@@ -458,7 +469,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @Override
     public EnumAction getItemUseAction(final ItemStack toolbox) {
-        return ToolboxUtil.getSelectedTool(toolbox).filter(tool -> tool.getItem() != null)
+        return ToolboxUtil.getSelectedTool(toolbox)
+            .filter(tool -> tool.getItem() != null)
             .map(
                 tool -> tool.getItem()
                     .getItemUseAction(tool))
@@ -469,18 +481,20 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public boolean onBlockDestroyed(final ItemStack toolbox, final World worldIn, final Block blockIn, final int x,
         final int y, final int z, final EntityLivingBase entity) {
 
-        return ToolboxUtil.getSelectedToolType(toolbox).map(
-            toolboxSlot -> ToolboxUtil.getSelectedTool(toolbox).filter(tool -> tool.getItem() != null)
-                .map(tool -> {
-                    final boolean result = tool.getItem()
-                        .onBlockDestroyed(tool, worldIn, blockIn, x, y, z, entity);
-                    if (result) {
-                        ToolboxUtil.saveItemInside(toolbox, tool, toolboxSlot);
-                    }
+        return ToolboxUtil.getSelectedToolType(toolbox)
+            .map(
+                toolboxSlot -> ToolboxUtil.getSelectedTool(toolbox)
+                    .filter(tool -> tool.getItem() != null)
+                    .map(tool -> {
+                        final boolean result = tool.getItem()
+                            .onBlockDestroyed(tool, worldIn, blockIn, x, y, z, entity);
+                        if (result) {
+                            ToolboxUtil.saveItemInside(toolbox, tool, toolboxSlot);
+                        }
 
-                    return result;
-                })
-                .orElse(false))
+                        return result;
+                    })
+                    .orElse(false))
             .orElse(false);
 
     }
@@ -489,7 +503,8 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public boolean onBlockStartBreak(final ItemStack toolbox, final int x, final int y, final int z,
         final EntityPlayer player) {
 
-        return ToolboxUtil.getSelectedTool(toolbox).filter(tool -> tool.getItem() != null)
+        return ToolboxUtil.getSelectedTool(toolbox)
+            .filter(tool -> tool.getItem() != null)
             .map(
                 tool -> tool.getItem()
                     .onBlockStartBreak(tool, x, y, z, player))
@@ -498,10 +513,14 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     @Override
     public int getHarvestLevel(final ItemStack toolbox, final String toolClass) {
-        return ToolboxUtil.getSelectedTool(toolbox).filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
-            .map(tool -> tool.getItem().getHarvestLevel(tool, toolClass)).orElse(-1);
+        return ToolboxUtil.getSelectedTool(toolbox)
+            .filter(tool -> tool.getItem() instanceof MetaGeneratedTool)
+            .map(
+                tool -> tool.getItem()
+                    .getHarvestLevel(tool, toolClass))
+            .orElse(-1);
     }
-    //endregion
+    // endregion
 
     // region Electric Item Functions
 

@@ -36,8 +36,7 @@ public class ToolboxElectricManager implements IElectricItemManager {
         final boolean ignoreTransferLimit, final boolean simulate) {
 
         // To prevent syncing issues, don't allow the toolbox to do any charging while open.
-        if (toolbox.hasTagCompound() && toolbox.getTagCompound()
-            .getBoolean(ItemGTToolbox.TOOLBOX_OPEN_NBT_KEY)) {
+        if (!ToolboxUtil.canCharge(toolbox)) {
             return 0;
         }
 
@@ -56,8 +55,7 @@ public class ToolboxElectricManager implements IElectricItemManager {
         final boolean ignoreTransferLimit, final boolean batteryAlike, final boolean simulate) {
 
         // To prevent syncing issues, don't allow the toolbox to do any discharging while open.
-        if (toolbox.hasTagCompound() && toolbox.getTagCompound()
-            .getBoolean(ItemGTToolbox.TOOLBOX_OPEN_NBT_KEY)) {
+        if (!ToolboxUtil.canCharge(toolbox)) {
             return 0;
         }
 

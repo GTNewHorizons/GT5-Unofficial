@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.items.toolbox.ToolboxUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,6 +60,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.tools.ToolTurbine;
 import mods.railcraft.api.core.items.IToolCrowbar;
 import mrtjp.projectred.api.IScrewdriver;

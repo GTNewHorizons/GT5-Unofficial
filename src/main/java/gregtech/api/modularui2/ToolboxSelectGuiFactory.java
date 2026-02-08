@@ -3,7 +3,6 @@ package gregtech.api.modularui2;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -48,8 +47,10 @@ public class ToolboxSelectGuiFactory extends AbstractUIFactory<GuiData> {
         super("gregtech:toolbox_select");
     }
 
-    public void open(EntityClientPlayerMP player) {
-        GuiManager.openFromClient(this, new GuiData(player));
+    public void open(EntityPlayer player) {
+        if (player.getEntityWorld().isRemote) {
+            GuiManager.openFromClient(this, new GuiData(player));
+        }
     }
 
     @Override

@@ -590,6 +590,7 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
 
         final long storedEU = this.getEUVar();
         final long maxChargeableEU = Math.min(storedEU, this.maxEUInput() * amp * WirelessChargerManager.CHARGE_TICK);
+        final ItemStack wieldedItem = player.getCurrentEquippedItem();
 
         long chargedEU = 0;
         for (ItemStack[] stacks : inventories) {
@@ -598,6 +599,11 @@ public class MTEWirelessCharger extends MTETieredMachineBlock implements IWirele
             for (ItemStack stack : stacks) {
                 if (chargedEU >= maxChargeableEU) break;
                 if (stack == null) continue;
+
+                // Don't charge the currently held item if the player is actively using it
+                if (wieldedItem != null && ItemStack.areItemStacksEqual(wieldedItem, stack) && player.isSwingInProgress) {
+                    continue;
+                }
 
                 final int chargeableEU = (int) Math.min(
                     Integer.MAX_VALUE,

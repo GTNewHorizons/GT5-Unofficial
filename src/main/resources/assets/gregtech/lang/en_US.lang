@@ -1793,7 +1793,7 @@ GT5U.gui.text.toolbox.tooltip.generic=Holds whatever you want
 GT5U.gui.text.toolbox.tooltip.no_charge_while_open=§l§cNOTE: §rCharging disabled while open
 
 GT5U.gui.text.toolbox.radial.title=Select Active Tool
-GT5U.gui.text.toolbox.radial.unselect=Unselect Tool
+GT5U.gui.text.toolbox.radial.unselect=Deselect Tool
 GT5U.gui.text.toolbox.radial.missing=%s (missing)
 
 GT5U.gui.text.toolbox.error.no_tools=§eToolbox has no tools! Right click to open and add tools.

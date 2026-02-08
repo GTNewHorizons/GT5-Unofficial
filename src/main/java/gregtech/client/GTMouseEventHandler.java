@@ -2,6 +2,7 @@ package gregtech.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
@@ -53,9 +54,8 @@ public final class GTMouseEventHandler {
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
     public void onPickBlockEvent(PickBlockEvent event) {
-        final EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+        final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
         if (player == null || player.isDead) {
             return;

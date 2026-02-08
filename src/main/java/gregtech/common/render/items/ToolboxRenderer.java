@@ -1,10 +1,10 @@
 package gregtech.common.render.items;
 
-import gregtech.common.items.toolbox.ToolboxUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 
 /**
