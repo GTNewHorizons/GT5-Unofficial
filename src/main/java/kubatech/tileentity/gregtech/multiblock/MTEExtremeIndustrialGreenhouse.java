@@ -113,11 +113,10 @@ import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -135,7 +134,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gtPlusPlus.core.block.ModBlocks;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
@@ -232,10 +230,13 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     // region structure stuff
 
     private int mCasing = 0;
-    private static final int CASING_INDEX_OLD = 49;
-    private static final int CASING_INDEX = TAE.getIndexFromPage(1, 15);
-    private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
+    private static final Casings CASING = Casings.SterileFarmCasing;
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final int OFFSET_H = 3;
+    private static final int OFFSET_V = 6;
+    private static final int OFFSET_D = 0;
+    private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
+    private static final Casings CASING_OLD = Casings.CleanStainlessSteelCasing;
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
         .addShape(
@@ -266,9 +267,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             'a',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
-                .casingIndex(CASING_INDEX)
+                .casingIndex(CASING.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(ModBlocks.blockCasings2Misc, 15))))
+                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.SterileFarmCasing.asElement())))
         .addElement('f', ofBlock(GregTechAPI.sBlockFrames, 316))
         .addElement(
             'l',
@@ -284,10 +285,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             'c',
             buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
-                .casingIndex(CASING_INDEX_OLD)
+                .casingIndex(CASING_OLD.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)))
+                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement())))
+        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement()))
         .build();
 
     @Override
@@ -303,7 +304,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         if (debug) glassTier = 8;
 
         if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0)) return false;
-        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
+        if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D)) return false;
 
         if (this.glassTier < 8 && !this.mEnergyHatches.isEmpty())
             for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) if (this.glassTier < hatchEnergy.mTier) return false;
@@ -321,14 +322,22 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         if (isOldStructure) buildPiece(STRUCTURE_PIECE_MAIN_OLD, itemStack, b, 2, 5, 0);
-        else buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 3, 6, 0);
+        else buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, OFFSET_H, OFFSET_V, OFFSET_D);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (isOldStructure)
             return survivalBuildPiece(STRUCTURE_PIECE_MAIN_OLD, stackSize, 2, 5, 0, elementBudget, env, true);
-        else return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, true);
+        else return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            OFFSET_H,
+            OFFSET_V,
+            OFFSET_D,
+            elementBudget,
+            env,
+            true);
     }
 
     @Override
@@ -1440,19 +1449,18 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        final int casingIndex = isOldStructure ? CASING_INDEX_OLD : CASING_INDEX;
+        final ITexture casingTexture = isOldStructure ? CASING_OLD.getCasingTexture() : CASING.getCasingTexture();
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(casingIndex),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { casingTexture, TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(casingIndex), TextureFactory.builder()
+            return new ITexture[] { casingTexture, TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                 .extFacing()
                 .build(),
@@ -1462,7 +1470,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(casingIndex) };
+        return new ITexture[] { casingTexture };
     }
 
     @Override
