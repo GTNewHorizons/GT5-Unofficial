@@ -292,7 +292,8 @@ public abstract class EOHRenderingUtils {
         VertexBuffer vbo = SphereVBOCache.getOrCreate(slices, stacks);
 
         GL11.glPushMatrix();
-        GL11.glScaled(radiusInBlocks, radiusInBlocks, radiusInBlocks); // unit sphere -> requested radius
+        int inversionMultiplier = invertFrontFace ? -1 : 1;
+            GL11.glScaled(inversionMultiplier * radiusInBlocks, radiusInBlocks, radiusInBlocks); // unit sphere -> requested radius
         GL11.glPushClientAttrib(GL11.GL_CLIENT_VERTEX_ARRAY_BIT);
         vbo.render();
         GL11.glPopClientAttrib();
