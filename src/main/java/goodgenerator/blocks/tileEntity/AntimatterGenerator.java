@@ -84,7 +84,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
                     'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterGenerator>builder()
-                            .anyOf(HatchElement.ExoticEnergy)
+                            .anyOf(HatchElement.ExoticDynamo)
                             .adder(AntimatterGenerator::addLaserSource)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
