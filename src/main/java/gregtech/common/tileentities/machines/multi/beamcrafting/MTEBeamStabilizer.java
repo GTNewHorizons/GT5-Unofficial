@@ -42,14 +42,12 @@ import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
-public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamStabilizer>
+public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final IStructureDefinition<MTEBeamStabilizer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamStabilizer>builder()
@@ -168,32 +166,6 @@ public class MTEBeamStabilizer extends MTEExtendedPowerMultiBlockBase<MTEBeamSta
                 .adder(MTEBeamStabilizer::addBeamLineOutputHatch)
                 .build()) // beamline input hatch
         .build();
-
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
-
-    private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
-        }
-
-        return false;
-    }
 
     public MTEBeamStabilizer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

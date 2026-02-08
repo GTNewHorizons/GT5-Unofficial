@@ -52,13 +52,12 @@ import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class MTEBeamCrafter
-    extends MTEExtendedPowerMultiBlockBase<MTEBeamCrafter>
+    extends MTEBeamMultiBase<MTEBeamCrafter>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
 
     private static final IStructureDefinition<MTEBeamCrafter> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter>builder()
         .addShape(
@@ -148,19 +147,6 @@ public class MTEBeamCrafter
                 .adder(MTEBeamCrafter::addBeamLineInputHatch)
                 .build()) // beamline input hatch
         .build();
-
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
 
     public MTEBeamCrafter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -41,12 +41,11 @@ import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
-public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplitter> implements ISurvivalConstructable {
+public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     private final ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
 
     private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
@@ -114,19 +113,6 @@ public class MTEBeamSplitter extends MTEExtendedPowerMultiBlockBase<MTEBeamSplit
                 .adder(MTEBeamSplitter::addAdvancedBeamLineOutputHatch)
                 .build()) // beamline input hatch
         .build();
-
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
 
     private boolean addAdvancedBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
         if (te == null) return false;

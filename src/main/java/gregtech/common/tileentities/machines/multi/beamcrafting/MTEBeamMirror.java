@@ -38,14 +38,12 @@ import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
 public class MTEBeamMirror
-    extends MTEExtendedPowerMultiBlockBase<MTEBeamMirror>
+    extends MTEBeamMultiBase<MTEBeamMirror>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
 
     private static final IStructureDefinition<MTEBeamMirror> STRUCTURE_DEFINITION = StructureDefinition.<gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror>builder()
         .addShape(
@@ -103,31 +101,6 @@ public class MTEBeamMirror
                 .build()) // beamline output hatch
         .build();
 
-    private boolean addBeamLineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
-
-    private boolean addBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
-        }
-
-        return false;
-    }
 
     public MTEBeamMirror(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
