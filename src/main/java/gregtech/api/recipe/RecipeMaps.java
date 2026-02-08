@@ -1010,7 +1010,7 @@ public final class RecipeMaps {
                         .orElse(Collections.emptyList());
             }
             Optional<GTRecipe> t = b.duration(20)
-                .eut(30)
+                .eut(TierEU.RECIPE_LV)
                 .validateInputCount(1, 1)
                 .validateOutputCount(1, 2)
                 .build();
