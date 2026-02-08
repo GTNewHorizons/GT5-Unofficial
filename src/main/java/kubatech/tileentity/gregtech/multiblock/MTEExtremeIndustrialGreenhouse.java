@@ -39,7 +39,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
@@ -133,6 +132,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gtPlusPlus.core.block.ModBlocks;
 import kubatech.api.EIGDynamicInventory;
@@ -281,12 +281,11 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         .addElement('w', ofChain(isAir(), ofAnyWater(true)))
         .addElement(
             'c',
-            ofChain(
-                onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addEnergyInputToMachineList, CASING_INDEX_OLD, 1),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addMaintenanceToMachineList, CASING_INDEX_OLD, 1),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addInputToMachineList, CASING_INDEX_OLD, 1),
-                ofHatchAdder(MTEExtremeIndustrialGreenhouse::addOutputToMachineList, CASING_INDEX_OLD, 1)))
+            buildHatchAdder(MTEExtremeIndustrialGreenhouse.class)
+                .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
+                .casingIndex(CASING_INDEX_OLD)
+                .hint(1)
+                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('C', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1)))
         .build();
 
@@ -357,6 +356,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     + " seeds")
             .addInfo("Otherwise, around 1% of seeds will be voided each operation")
             .addInfo("You can insert fertilizer each operation to get more drops (max + " + fertilizerBoostMax + ")")
+            .addGlassEnergyLimitInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Setup Mode:")
             .addInfo("Does not take power")
@@ -365,19 +365,20 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo("[IC2] You need to also input block that is required under the crop")
             .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(5, 6, 5, false)
+        tt.beginStructureBlock(7, 7, 9, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casings", 70, false)
-            .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
+            .addCasingInfoMin("Sterile Farm Casing", 70, false)
+            .addStructureInfo("Tiered glass")
             .addStructureInfo("The glass tier limits the Energy Input tier")
             .addStructureInfo("The dirt is from RandomThings, must be tilled")
             .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
             .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
-            .addMaintenanceHatch("Any casing (Except inner bottom ones)", 1)
-            .addInputBus("Any casing (Except inner bottom ones)", 1)
-            .addOutputBus("Any casing (Except inner bottom ones)", 1)
-            .addInputHatch("Any casing (Except inner bottom ones)", 1)
-            .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addMaintenanceHatch("Any casing", 1)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .addInputHatch("Any casing", 1)
+            .addEnergyHatch("Any casing", 1)
             .toolTipFinisher(GTValues.AuthorKuba);
         return tt;
     }
@@ -699,6 +700,13 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                         Block block = world.getBlock(xyz[0], xyz[1], xyz[2]);
                         if (block == DIRT_BLOCK) {
                             world.setBlock(xyz[0], xyz[1], xyz[2], TILLED_DIRT_BLOCK, 0, 3);
+                            world.playSoundEffect(
+                                xyz[0] + 0.5f,
+                                xyz[1] + 0.5f,
+                                xyz[2] + 0.5f,
+                                Blocks.farmland.stepSound.getStepResourcePath(),
+                                (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F,
+                                Blocks.farmland.stepSound.getPitch() * 0.8F);
                             didPlace++;
                         }
                     }
@@ -717,8 +725,16 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                         boolean isCOFHCore = Mods.COFHCore.isModLoaded()
                             && (block instanceof BlockWater || block instanceof BlockTickingWater);
                         boolean isWater = (block == Blocks.water) || isCOFHCore;
-                        if (!isWater) {
+                        boolean isAir = block == Blocks.flowing_water || block == Blocks.air;
+                        if (!isWater && isAir) {
                             world.setBlock(xyz[0], xyz[1], xyz[2], Blocks.water, 0, 3);
+                            world.playSoundEffect(
+                                xyz[0] + 0.5f,
+                                xyz[1] + 0.5f,
+                                xyz[2] + 0.5f,
+                                "random.splash",
+                                0.5F,
+                                1.0F);
                             didPlace++;
                         }
                     }
