@@ -89,7 +89,6 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                             .hintText(translateToLocal("GT5U.gui.text.vm.searchhint"))
                             .autoUpdateOnChange(true)
                             .anchorLeft(0)
-                            .alignX(0f)
                             .width(100))
                     .childPadding(3)
                     .margin(8)
@@ -128,7 +127,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
         return new Column()
             .child(
                 new ToggleButton()
-                    .value(new BooleanSyncValue(() -> multiblock.mBlacklist, bool -> multiblock.mBlacklist = bool))
+                    .value(new BooleanSyncValue(() -> multiblock.blacklist, bool -> multiblock.blacklist = bool))
                     .tooltip(false, t -> t.add(translateToLocal("GT5U.gui.button.vm.whitelist")))
                     .tooltip(true, t -> t.add(translateToLocal("GT5U.gui.button.vm.blacklist")))
                     .overlay(

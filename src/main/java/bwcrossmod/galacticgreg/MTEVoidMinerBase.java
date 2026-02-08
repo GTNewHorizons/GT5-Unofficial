@@ -83,7 +83,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     protected final byte TIER_MULTIPLIER;
 
     public ItemStackHandler selected = new ItemStackHandler();
-    public boolean mBlacklist = false;
+    public boolean blacklist = false;
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -94,14 +94,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mBlacklist", this.mBlacklist);
+        aNBT.setBoolean("mBlacklist", this.blacklist);
         aNBT.setTag("selected", selected.serializeNBT());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.mBlacklist = aNBT.getBoolean("mBlacklist");
+        this.blacklist = aNBT.getBoolean("mBlacklist");
         this.selected.deserializeNBT(aNBT.getCompoundTag("selected"));
     }
 
@@ -305,7 +305,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
             boolean matchesFilter = contains(selected.getStacks(), output) || contains(inputOres, output);
 
-            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.mBlacklist ? !matchesFilter : matchesFilter)) {
+            if ((isSelectedEmpty() && inputOres.isEmpty()) || (this.blacklist ? !matchesFilter : matchesFilter)) {
                 this.addOutputPartial(output);
             }
         }
@@ -331,10 +331,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        this.mBlacklist = !this.mBlacklist;
+        this.blacklist = !this.blacklist;
         GTUtility.sendChatTrans(
             aPlayer,
-            this.mBlacklist ? "GT5U.chat.void_miner.mode.black_list" : "GT5U.chat.void_miner.mode.white_list");
+            this.blacklist ? "GT5U.chat.void_miner.mode.black_list" : "GT5U.chat.void_miner.mode.white_list");
     }
 
     @Override
@@ -385,7 +385,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setString("dimension", dimensionDef.getDimIdentifier());
         tag.setTag("selected", selected.serializeNBT());
-        tag.setBoolean("blacklist", mBlacklist);
+        tag.setBoolean("blacklist", blacklist);
         return tag;
     }
 
@@ -396,7 +396,7 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         if (!nbt.getString("dimension")
             .equals(dimensionDef.getDimIdentifier())) return false;
         this.selected.deserializeNBT(nbt.getCompoundTag("selected"));
-        this.mBlacklist = nbt.getBoolean("blacklist");
+        this.blacklist = nbt.getBoolean("blacklist");
         return true;
     }
 
