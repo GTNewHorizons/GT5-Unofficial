@@ -50,7 +50,6 @@ import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
 import bartworks.common.configs.Configuration;
 import bartworks.common.loaders.ItemRegistry;
-import bartworks.util.BWTooltipReference;
 import bartworks.util.ConnectedBlocksChecker;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -184,7 +183,7 @@ public class MTELESU extends MTEMultiBlockBase {
             .split(";");
         Collections.addAll(e, dsc);
         e.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.tile.lesu.3.name"));
-        e.add(BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+        e.add(StatCollector.translateToLocal("tooltip.bw.author_bart_via_bw.name"));
         return e.toArray(new String[0]);
     }
 

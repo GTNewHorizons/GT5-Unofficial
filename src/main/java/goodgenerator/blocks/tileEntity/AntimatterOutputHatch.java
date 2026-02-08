@@ -20,10 +20,7 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);
-        this.mDescriptionArray[1] = "Stores Antimatter";
-        this.mDescriptionArray[2] = "Antimatter can be inserted from any side";
-        this.mDescriptionArray[3] = "Front face input can be toggled with a screwdriver";
-        this.mDescriptionArray[4] = "Capacity: 16,384,000L";
+        this.mDescriptionArray[0] = "gt.te.output_hatch_antimatter.desc";
     }
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {

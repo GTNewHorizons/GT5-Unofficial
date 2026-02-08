@@ -47,6 +47,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -57,6 +58,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -200,31 +202,31 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Processor, IOF")
-            .addInfo("Does all ore processing in one step")
+        tt.addMachineType("machtype.ore_factory")
+            .addInfo("gt.ore_factory.tips.1")
             .addStaticParallelInfo(1024)
-            .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water")
-            .addInfo("Recipes that need extra input require their extra inputs on top of the normal costs")
-            .addInfo("Processing time is dependent on mode")
-            .addInfo("Use a screwdriver to switch mode")
-            .addInfo("Sneak click with screwdriver to void the stone dust")
+            .addInfo("gt.ore_factory.tips.2")
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
-            .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
+            .addInfo("gt.ore_factory.tips.3")
             .beginStructureBlock(6, 12, 11, false)
-            .addController("The third layer")
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
-            .addCasingInfoExactly("Any Tiered Glass", 48, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 30, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 16, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 16, false)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
-            .addInputBus("Input ore/crushed ore", 2)
-            .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
-            .addMufflerHatch("Output Pollution", 3)
-            .addOutputBus("Output products", 4)
+            .addController("gt.ore_factory.info.1")
+            .addCasingInfoExactly("gt.blockcasings8.7.name", 128, false)
+            .addCasingInfoExactly("gt.blockcasings4.1.name", 105, false)
+            .addCasingInfoExactly("GT5U.MBTT.AnyGlass", 48, true)
+            .addCasingInfoExactly("gt.blockcasings2.15.name", 30, false)
+            .addCasingInfoExactly(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1)
+                    .getDisplayName(),
+                16,
+                false)
+            .addCasingInfoExactly("gt.blockcasings2.3.name", 16, false)
+            .addEnergyHatch("<bottom casing>", 1)
+            .addMaintenanceHatch("<bottom casing>", 1)
+            .addInputBus("gt.ore_factory.info.2", 2)
+            .addInputHatch("gt.ore_factory.info.3", 3)
+            .addMufflerHatch("gt.ore_factory.info.4", 3)
+            .addOutputBus("gt.ore_factory.info.5", 4)
             .toolTipFinisher();
         return tt;
     }

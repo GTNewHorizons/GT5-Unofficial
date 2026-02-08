@@ -36,13 +36,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -67,27 +67,24 @@ public class MTEIndustrialRockBreaker extends GTPPMultiBlockBase<MTEIndustrialRo
 
     @Override
     public String getMachineType() {
-        return "Rock Breaker";
+        return "gt.recipe.rockbreaker";
     }
 
-    private static final String casingBaseName = GTLanguageManager.getTranslation("gtplusplus.blockcasings.2.0.name");
-    private static final String casingMiddleName = GTLanguageManager
-        .getTranslation("gtplusplus.blockcasings.2.11.name");
-    private static final String anyBaseCasing = "Any " + casingBaseName;
+    private static final String casingBaseName = GregtechItemList.Casing_ThermalCentrifuge.get(0)
+        .getDisplayName();
+    private static final String casingMiddleName = GregtechItemList.Casing_ThermalContainment.get(0)
+        .getDisplayName();
+    private static final String anyBaseCasing = GTUtility.nestParams("GT5U.MBTT.HatchInfo", casingBaseName);
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(8, 3f, 0.75f)
-            .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
-            .addInfo("Needs Water and Lava in input hatch")
-            .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
-            .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
+            .addInfo("gt.boldarnator.tips")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 4, 3, true)
-            .addController("Bottom Front")
+            .addController("front_bottom_middle")
             .addCasingInfoMin(casingBaseName, 9, false)
             .addCasingInfoExactly(casingMiddleName, 16, false)
             .addInputBus(anyBaseCasing, 1)

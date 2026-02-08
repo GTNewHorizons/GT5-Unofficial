@@ -225,18 +225,15 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Charcoal Pile Igniter, CPI")
-            .addInfo("Converts Logs into Brittle Charcoal blocks")
-            .addInfo("Automatically starts when formed")
+            .addInfo("gt.charcoal_pit.tips.1")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
-            .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
-            .addOtherStructurePart("Controller", "Top layer, directly touching a wood log")
-            .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
-            .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
-            .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
-            .addStructureInfo("No air between logs allowed.")
-            .addStructureInfo(
-                "All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
+            .addStructureInfo("gt.charcoal_pit.info.1")
+            .addController("gt.charcoal_pit.info.2")
+            .addStructurePart("gt.charcoal_pit.info.3", "gt.charcoal_pit.info.4")
+            .addStructurePart("tile.brick.name", "gt.charcoal_pit.info.5")
+            .addStructurePart("gt.charcoal_pit.info.6", "gt.charcoal_pit.info.7")
+            .addStructureInfo("gt.charcoal_pit.info.8")
             .toolTipFinisher();
         return tt;
     }

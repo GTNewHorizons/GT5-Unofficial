@@ -17,7 +17,6 @@ import net.minecraft.util.StatCollector;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import bartworks.util.BWTooltipReference;
 import gregtech.api.enums.MachineType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,7 +43,7 @@ public class MTECreativeScanner extends MTEScanner {
         return ArrayUtils.addAll(
             MachineType.SCANNER.tooltipDescription(),
             StatCollector.translateToLocal("gt.blockmachines.creativeScanner.desc.1"),
-            BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get());
+            StatCollector.translateToLocal("tooltip.bw.author_bart_via_bw.name"));
     }
 
     @Override

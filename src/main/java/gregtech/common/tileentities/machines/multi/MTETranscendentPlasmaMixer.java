@@ -40,6 +40,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -52,6 +53,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
@@ -59,6 +61,11 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETranscendentPlasmaMixer>
     implements ISurvivalConstructable {
+
+    private static final String anyCasing = GTUtility.nestParams(
+        "GT5U.MBTT.HatchInfo",
+        ItemList.Casing_Dim_Injector.get(1)
+            .getDisplayName());
 
     private static final String[][] structure = new String[][] {
         { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
@@ -105,25 +112,29 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Transcendent Mixer, TPM")
-            .addInfo("Assisting in all your DTPF needs!")
-            .addInfo("This multiblock will run in parallel according to the amount set in the parallel menu")
-            .addInfo("All inputs will scale, except time...")
-            .addInfo("All EU is deducted from wireless EU networks only")
+        tt.addMachineType("machtype.tpm")
+            .addInfo("gt.tpm.tips")
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front Center")
-            .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
-            .addCasingInfoExactly("Dimensional Bridge", 16, false)
-            .addCasingInfoRangeColored(
-                "Dimensional Injection Casing",
-                EnumChatFormatting.GRAY,
+            .addController("front_center")
+            .addCasingInfoExactly(
+                ItemList.Casing_Dim_Trans.get(1)
+                    .getDisplayName(),
+                48,
+                false)
+            .addCasingInfoExactly(
+                ItemList.Casing_Dim_Bridge.get(1)
+                    .getDisplayName(),
+                16,
+                false)
+            .addCasingInfoRange(
+                ItemList.Casing_Dim_Injector.get(1)
+                    .getDisplayName(),
                 0,
                 33,
-                EnumChatFormatting.GOLD,
                 false)
-            .addInputBus("Any Dimensional Injection Casing", 1)
-            .addInputHatch("Any Dimensional Injection Casing", 1)
-            .addOutputHatch("Any Dimensional Injection Casing", 1)
+            .addInputBus(anyCasing, 1)
+            .addInputHatch(anyCasing, 1)
+            .addOutputHatch(anyCasing, 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }

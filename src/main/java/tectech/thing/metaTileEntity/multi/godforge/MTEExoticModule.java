@@ -500,7 +500,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("This is a module of the Godforge")
             .addInfo("Must be part of a Godforge to function")
             .addInfo("Used for ultra high temperature matter degeneration")
-            .addSeparator(EnumChatFormatting.AQUA, 75)
+            .addSeparator(EnumChatFormatting.AQUA)
             .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
             .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
             .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
@@ -522,7 +522,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
             .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 75);
+            .toolTipFinisher(EnumChatFormatting.AQUA);
         return tt;
     }
 
