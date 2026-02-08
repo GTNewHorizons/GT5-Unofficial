@@ -15,7 +15,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -289,11 +289,11 @@ public abstract class EOHRenderingUtils {
             GL11.glCullFace(GL11.GL_FRONT);
         }
 
-        VertexBuffer vbo = SphereVBOCache.getOrCreate(slices, stacks);
+        IVertexArrayObject vbo = SphereVBOCache.getOrCreate(slices, stacks);
 
         GL11.glPushMatrix();
         int inversionMultiplier = invertFrontFace ? -1 : 1;
-            GL11.glScaled(inversionMultiplier * radiusInBlocks, radiusInBlocks, radiusInBlocks); // unit sphere -> requested radius
+        GL11.glScaled(inversionMultiplier * radiusInBlocks, radiusInBlocks, radiusInBlocks);
         GL11.glPushClientAttrib(GL11.GL_CLIENT_VERTEX_ARRAY_BIT);
         vbo.render();
         GL11.glPopClientAttrib();
