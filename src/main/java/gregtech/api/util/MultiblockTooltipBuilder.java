@@ -2,7 +2,9 @@ package gregtech.api.util;
 
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -97,6 +99,7 @@ public class MultiblockTooltipBuilder {
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
+    private static final String TT_StructureAuthor = StatCollector.translateToLocal("GT5U.MBTT.StructureBy");
 
     private List<String> iLines;
     private List<String> sLines;
@@ -1121,6 +1124,21 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Call at the very end.<br>
+     * Adds a line jump.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param contributors List of contributors to this multiblock (look at {@link ContributorList} to see how to use) -
+     *                     if any
+     */
+    public MultiblockTooltipBuilder toolTipFinisher(@Nullable ContributorList contributors) {
+        return toolTipFinisher(EnumChatFormatting.GRAY, 41, contributors);
+    }
+
+    /**
+     * Call at the very end.<br>
      * Adds a line jump with configurable color and length.<br>
      * Adds information on how to display the structure guidelines.<br>
      * Adds credit for creators of this multi, if any.<br>
@@ -1131,9 +1149,31 @@ public class MultiblockTooltipBuilder {
      * @param separatorLength Length of the separator line
      * @param authors         Formatted names of the creators of this multiblock machine - if any
      */
-
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
+        return toolTipFinisher(
+            separatorColor,
+            separatorLength,
+            ContributorList.newList()
+                .addAuthors(authors));
+    }
+
+    /**
+     * Call at the very end.<br>
+     * Adds a line jump with configurable color and length.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param separatorColor  Color of the separator line
+     * @param separatorLength Length of the separator line
+     * @param contributors    List of contributors to this multiblock (look at {@link ContributorList} to see how to
+     *                        use) - if any
+     */
+
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
+        @Nullable ContributorList contributors) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
@@ -1152,28 +1192,47 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " "
                 + TT_todisplay);
-        if (authors != null && authors.length > 0) {
-            final String authorTag = "Author: ";
+        if (contributors != null) {
             final StringBuilder sb = new StringBuilder();
-            sb.append(TT_addedBy);
-            sb.append(COLON);
-            for (int i = 0; i < authors.length; i++) {
-                String author = authors[i];
-                if (author.startsWith(authorTag)) {
-                    // to support all the values in GTValues
-                    // that already have Author at the start
-                    sb.append(author.substring(authorTag.length()));
-                } else {
-                    sb.append(author);
+            if (!contributors.authors.isEmpty()) {
+                final String authorTag = "Author: ";
+                sb.append(TT_addedBy);
+                sb.append(COLON);
+                for (int i = 0; i < contributors.authors.size(); i++) {
+                    String author = contributors.authors.get(i);
+                    if (author.startsWith(authorTag)) {
+                        // to support all the values in GTValues
+                        // that already have Author at the start
+                        sb.append(author.substring(authorTag.length()));
+                    } else {
+                        sb.append(author);
+                    }
+                    if (i != contributors.authors.size() - 1) {
+                        sb.append(EnumChatFormatting.RESET);
+                        sb.append(EnumChatFormatting.GRAY);
+                        sb.append(" & ");
+                        sb.append(EnumChatFormatting.GREEN);
+                    }
                 }
-                if (i != authors.length - 1) {
-                    sb.append(EnumChatFormatting.RESET);
-                    sb.append(EnumChatFormatting.GRAY);
-                    sb.append(" & ");
-                    sb.append(EnumChatFormatting.GREEN);
+                if (!contributors.structureAuthors.isEmpty()) sb.append(EnumChatFormatting.RESET)
+                    .append(EnumChatFormatting.GRAY)
+                    .append(", ");
+            }
+            if (!contributors.structureAuthors.isEmpty()) {
+                sb.append(TT_StructureAuthor);
+                sb.append(COLON);
+                for (int i = 0; i < contributors.structureAuthors.size(); i++) {
+                    String builder = contributors.structureAuthors.get(i);
+                    sb.append(builder);
+                    if (i != contributors.structureAuthors.size() - 1) {
+                        sb.append(EnumChatFormatting.RESET);
+                        sb.append(EnumChatFormatting.GRAY);
+                        sb.append(" & ");
+                        sb.append(EnumChatFormatting.GREEN);
+                    }
                 }
             }
-            iLines.add(sb.toString());
+            if (sb.length() > 0) iLines.add(sb.toString());
         }
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
@@ -1216,4 +1275,52 @@ public class MultiblockTooltipBuilder {
     public String[] getStructureHint() {
         return hArray;
     }
+
+    /**
+     * Helper class to build a list of contributors for the tooltip finisher. This is needed to separate structure
+     * authors from other contributors. You can use the
+     * {@link #toolTipFinisher(ContributorList)} method to add the contributors to the tooltip
+     * finisher.
+     */
+    public static class ContributorList {
+
+        /**
+         * List of authors of the multiblocks
+         */
+        ArrayList<String> authors = new ArrayList<>();
+        /**
+         * List of structure authors of the multiblocks. These are the authors that contributed to the structure of the
+         * multiblock, but not necessarily to the logic or other aspects of the multiblock. They will be listed
+         * separately in the tooltip finisher.
+         */
+        ArrayList<String> structureAuthors = new ArrayList<>();
+
+        /**
+         * Create a new empty ContributorList. Use the {@link #addAuthors(String...)} and
+         * {@link #addStructureAuthors(String...)} methods to add contributors to the list.
+         */
+        public static ContributorList newList() {
+            return new ContributorList();
+        }
+
+        /**
+         * Add authors to the contributor list. These will be listed as "Added by: " in the tooltip finisher.
+         */
+        public ContributorList addAuthors(String... author) {
+            Collections.addAll(authors, author);
+            return this;
+        }
+
+        /**
+         * Add structure authors to the contributor list. These will be listed as "Structure by: " in the tooltip
+         * finisher.
+         */
+        public ContributorList addStructureAuthors(String... author) {
+            Collections.addAll(structureAuthors, author);
+            return this;
+        }
+
+        private ContributorList() {}
+    }
+
 }
