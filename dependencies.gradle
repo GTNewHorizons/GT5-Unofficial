@@ -36,8 +36,8 @@
 dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.28:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
-    api("com.github.GTNewHorizons:NotEnoughItems:2.8.60-GTNH:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.9.10:dev")
+    api("com.github.GTNewHorizons:NotEnoughItems:2.8.63-GTNH:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.9.13:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.1:dev")
     api("com.github.GTNewHorizons:ModularUI2:2.3.39-1.7.10:dev")
@@ -58,13 +58,13 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.85:dev")
 
-    compileOnlyApi('com.github.GTNewHorizons:Angelica:2.0.0-alpha16:dev') { transitive = false }
+    compileOnlyApi('com.github.GTNewHorizons:Angelica:2.0.0-alpha20:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.9:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.55:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.18:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.17-GTNH:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.21-GTNH:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.24-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.17:dev") { transitive = false }
 
     // Required to use Blast Furnace and Smoker Recipe maps from EFR.
@@ -102,7 +102,7 @@ dependencies {
     compileOnly rfg.deobf("curse.maven:biomes-o-plenty-220318:2499612")
 
     compileOnly('com.github.GTNewHorizons:SC2:2.3.12:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Binnie:2.6.9:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Binnie:2.6.12:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
     devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.5:dev'){transitive=false}
 
@@ -113,7 +113,7 @@ dependencies {
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:ForestryMC:4.11.4:dev")
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:neiaddons:1.17.0:dev')
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:MagicBees:2.10.4-GTNH:dev')
-    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.9:dev')
+    // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Binnie:2.6.12:dev')
 
     // For testing Galacticraft integration (GTNH intergalactic, Ross, etc)
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Galacticraft:3.4.17-GTNH:dev") {
@@ -135,7 +135,7 @@ dependencies {
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.18:dev')
 
     // For testing
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.9:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.11:dev')
 
     // For testing ctm
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha20:dev') { transitive = false }
