@@ -728,6 +728,10 @@ public class GTUtility {
         }
     }
 
+    public static boolean compactInventory(List<ItemStack> inv, int start, int end) {
+        return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
+    }
+
     public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
         int len = inv.size();
 
