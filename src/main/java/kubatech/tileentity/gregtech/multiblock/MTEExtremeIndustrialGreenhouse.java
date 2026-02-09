@@ -119,7 +119,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;

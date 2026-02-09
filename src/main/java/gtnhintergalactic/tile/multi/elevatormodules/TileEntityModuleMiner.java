@@ -449,10 +449,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         Map<GTUtility.ItemId, Long> outputs = new HashMap<>();
 
         int totalChance = 0;
-        if (tRecipe.mChances == null) {
+        if (tRecipe.mOutputChances == null) {
             totalChance = tRecipe.mOutputs.length * 10000;
         } else {
-            for (int mChance : tRecipe.mChances) totalChance += mChance;
+            for (int mChance : tRecipe.mOutputChances) totalChance += mChance;
         }
 
         try {
@@ -464,8 +464,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
                 if (i < data.minSize * parallels || bonusStackChance > XSTR.XSTR_INSTANCE.nextInt(10000)) {
                     int random = XSTR.XSTR_INSTANCE.nextInt(totalChance);
                     int currentChance = 0;
-                    for (int j = 0; j < tRecipe.mChances.length; j++) {
-                        currentChance += tRecipe.mChances[j];
+                    for (int j = 0; j < tRecipe.mOutputChances.length; j++) {
+                        currentChance += tRecipe.mOutputChances[j];
                         if (random <= currentChance) {
                             ItemStack generatedOre = tRecipe.mOutputs[j];
                             if (configuredOres == null || configuredOres.isEmpty()
