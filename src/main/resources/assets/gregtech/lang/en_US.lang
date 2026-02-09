@@ -642,11 +642,6 @@ GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
 GTPP.tooltip.decayables_chest.2=Place with right-click
 
-# Butterfly Killer
-GTPP.tooltip.butterfly_killer.0=Kills Forestry Butterflies, Bats and other pests
-GTPP.tooltip.butterfly_killer.1=Use either Formaldehyde or Hydrogen cyanide
-GTPP.tooltip.butterfly_killer.2=Be wary of your neighbours
-
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
 GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
@@ -798,6 +793,7 @@ GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, 
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+GT5U.MBTT.StructureBy=Structure by
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
@@ -3500,6 +3496,9 @@ GT5U.infodata.hatch.crafting_input_me.bus.online=The bus is §aonline§r
 GT5U.infodata.hatch.crafting_input_me.bus.offline=The bus is §coffline%s§r
 GT5U.infodata.hatch.crafting_input_me.show_pattern.enable=§aShow on Interface Terminal
 GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled=§cHide on Interface Terminal
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern=Pattern Optimization
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable=§7Allowed
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled=§7Disabled
 GT5U.infodata.hatch.internal_inventory=Internal Inventory:
 GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
 GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
