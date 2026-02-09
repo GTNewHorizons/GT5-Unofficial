@@ -110,6 +110,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
     /** Usage of plutonium 241 plasma per mining operation */
     protected static int PLASMA_PLUTONIUM241_USAGE = 150;
 
+    @Override
+    protected long getAvailableData_EM() {
+        if (eInputData.isEmpty()) return this.parent.getAvailableDataForModules();
+        return super.getAvailableData_EM();
+    }
+
     /* Size of the whitelist in stacks **/
     protected static int WHITELIST_SIZE = 64;
     /** ID of the whitelist config window */
@@ -280,7 +286,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
         mPollution = 0;
         mOutputItems = null;
         mOutputFluids = null;
-        List<FluidStack> inputFluids = getStoredFluids();
+        List<FluidStack> inputFluids = new ArrayList<>();
+        inputFluids.addAll(parent.getStoredFluids());
+        inputFluids.addAll(this.getStoredFluids());
         if (inputFluids.isEmpty()) {
             return SimpleCheckRecipeResult.ofFailure("no_plasma");
         }
@@ -318,6 +326,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
             validatedInputs.add(controllerSlot);
         }
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
+
         for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
             IGregTechTileEntity tileEntity = inputBus.getBaseMetaTileEntity();
             boolean isMEBus = inputBus instanceof MTEHatchInputBusME;
@@ -502,8 +511,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase impleme
 
         lEUt = (long) -tRecipe.mEUt * parallels;
         eAmpereFlow = 1;
-        // TODO: Implement way to get computation from master controller. Or maybe keep it this way so
-        // people can route computation to their liking?
         eRequiredData = (int) Math.ceil(data.computation * parallels * compModifier);
         mMaxProgresstime = getRecipeTime(tRecipe.mDuration, availablePlasmaTier);
         mEfficiencyIncrease = 10000;
