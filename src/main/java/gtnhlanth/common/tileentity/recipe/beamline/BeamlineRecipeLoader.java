@@ -182,7 +182,7 @@ public class BeamlineRecipeLoader {
                                     .minFocus(mask.getMinFocus())
                                     .build())
                             .duration(1)
-                            .eut(1920)
+                            .eut(TierEU.RECIPE_EV)
                             .addTo(targetChamberRecipes);
                     }
                 }

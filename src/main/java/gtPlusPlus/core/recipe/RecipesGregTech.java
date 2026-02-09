@@ -171,7 +171,7 @@ public class RecipesGregTech {
                 MaterialsFluorides.FLUORITE.getOre(4))
             .fluidInputs(Materials.NitricAcid.getFluid(4_000), Materials.Air.getGas(8_000))
             .duration(10 * SECONDS)
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
 
@@ -189,7 +189,7 @@ public class RecipesGregTech {
                 MaterialsFluorides.FLUORITE.getOre(2))
             .fluidInputs(Materials.NitricAcid.getFluid(5_000), Materials.Air.getGas(12_000))
             .duration(10 * SECONDS)
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 5)
             .addTo(chemicalPlantRecipes);
 
@@ -236,7 +236,7 @@ public class RecipesGregTech {
             .itemOutputs(new ItemStack(BOPBlockRegistrator.sapling_Pine, 16))
             .fluidInputs(new FluidStack(GTPPFluids.GeneticMutagen, 2_000), GTModHandler.getDistilledWater(8_000))
             .duration(120 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .metadata(CHEMPLANT_CASING_TIER, 2)
             .addTo(chemicalPlantRecipes);
 
@@ -1588,7 +1588,7 @@ public class RecipesGregTech {
             .itemInputs(GregtechItemList.AlgaeBiomass.get(32))
             .itemOutputs(GregtechItemList.GreenAlgaeBiomass.get(4))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
     }
 
@@ -1718,7 +1718,7 @@ public class RecipesGregTech {
                 .itemInputs(ItemList.FR_Fertilizer.get(1))
                 .fluidOutputs(new FluidStack(GTPPFluids.BasicFertilizer, 36))
                 .duration(5 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(fluidExtractionRecipes);
         }
     }
