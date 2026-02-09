@@ -208,10 +208,10 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager.panel(
+        IPanelHandler statsPanel = syncManager.syncedPanel(
             "statsPanel",
-            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
