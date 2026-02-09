@@ -3,9 +3,11 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<T>>
@@ -46,6 +48,19 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         }
 
         return false;
+    }
+
+    @Nullable
+    public BeamInformation getNthInputParticle(int n) {
+        int i = 0;
+        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+            if (i == n) {
+                if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
+                return in.dataPacket.getContent();
+            }
+            i += 1;
+        }
+        return null;
     }
 
 }

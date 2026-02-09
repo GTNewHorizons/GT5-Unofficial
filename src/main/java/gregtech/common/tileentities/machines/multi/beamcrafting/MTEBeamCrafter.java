@@ -250,19 +250,6 @@ public class MTEBeamCrafter
         return checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6);
     }
 
-    @Nullable
-    private BeamInformation getNthInputParticle(int n) {
-        int i = 0;
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (i == n) {
-                if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-                return in.dataPacket.getContent();
-            }
-            i += 1;
-        }
-        return null;
-    }
-
     private boolean isInputParticleInRecipe(BeamInformation inputParticle_A, BeamInformation inputParticle_B,
                                             BeamCrafterMetadata metadata) {
 

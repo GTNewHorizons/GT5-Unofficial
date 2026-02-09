@@ -120,7 +120,7 @@ public class MTEBeamMirror
     @NotNull
     @Override
     public CheckRecipeResult checkProcessing() {
-        BeamInformation inputInfo = this.getInputParticle();
+        BeamInformation inputInfo = this.getNthInputParticle(0);
 
         if (inputInfo == null || inputInfo.getRate() == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
@@ -206,14 +206,4 @@ public class MTEBeamMirror
         mOutputBeamline.clear();
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0);
     }
-
-    @Nullable
-    private BeamInformation getInputParticle() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
-            if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
-            return in.dataPacket.getContent();
-        }
-        return null;
-    }
-
 }
