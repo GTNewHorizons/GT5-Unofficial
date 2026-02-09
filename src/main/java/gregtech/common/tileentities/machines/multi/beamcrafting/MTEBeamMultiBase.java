@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
@@ -19,6 +20,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
 
     public final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
     public final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
+    public ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
 
     public MTEBeamMultiBase(String aName) {
         super(aName);
@@ -47,6 +49,34 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
             return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
         }
 
+        return false;
+    }
+
+    public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, int fundamentalForce){
+        // 0 = EM; 1 = Weak; 2 = Strong; 3 = Gravity; 4 = All
+        // might be nice to add combinations of output sets from various forces. currently not needed
+        if (te == null) return false;
+        IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
+            if (fundamentalForce == 0) {
+                hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
+            }
+            if (fundamentalForce == 1) {
+                hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
+            }
+            if (fundamentalForce == 2) {
+                hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
+            }
+            if (fundamentalForce == 3) {
+                hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
+            }
+            if (fundamentalForce == 4) {
+                hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
+            }
+            this.mAdvancedOutputBeamline.add(hatch);
+            return true;
+        }
         return false;
     }
 

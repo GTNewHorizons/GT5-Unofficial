@@ -74,7 +74,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
 
-    private ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
     private float outputEnergy;
     private int outputRate;
     private int outputParticleID;
@@ -2508,28 +2507,28 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchEM)
+                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,0))
                 .build()) // EM beam output hatch
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(4)
-                .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchWeak)
+                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,1))
                 .build()) // Weak beam output hatch
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(5)
-                .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchStrong)
+                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,2))
                 .build()) // Strong beam output hatch
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(6)
-                .adder(MTELargeHadronCollider::addAdvancedBeamlineOutputHatchGrav)
+                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,3))
                 .build()) // Grav beam output hatch
 
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings13, 11)) // CMS Casing (EM)
@@ -2544,63 +2543,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
 
     public MTELargeHadronCollider(String aName) {
         super(aName);
-    }
-
-
-    private boolean addAdvancedBeamlineOutputHatchEM(IGregTechTileEntity te, int casingIndex) {
-
-        if (te == null) return false;
-        IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModule.EM.acceptedParticles);
-            this.mAdvancedOutputBeamline.add(hatch);
-            return true;
-        }
-        return false;
-
-    }
-
-    private boolean addAdvancedBeamlineOutputHatchWeak(IGregTechTileEntity te, int casingIndex) {
-
-        if (te == null) return false;
-        IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModule.Weak.acceptedParticles);
-            this.mAdvancedOutputBeamline.add(hatch);
-            return true;
-        }
-        return false;
-
-    }
-
-    private boolean addAdvancedBeamlineOutputHatchStrong(IGregTechTileEntity te, int casingIndex) {
-
-        if (te == null) return false;
-        IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModule.Strong.acceptedParticles);
-            this.mAdvancedOutputBeamline.add(hatch);
-            return true;
-        }
-        return false;
-
-    }
-
-    private boolean addAdvancedBeamlineOutputHatchGrav(IGregTechTileEntity te, int casingIndex) {
-
-        if (te == null) return false;
-        IMetaTileEntity aMetaTileEntity = te.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHatchAdvancedOutputBeamline hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModule.Grav.acceptedParticles);
-            this.mAdvancedOutputBeamline.add(hatch);
-            return true;
-        }
-        return false;
-
     }
 
     @Override

@@ -48,7 +48,6 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int CASING_INDEX_CENTRE = 1662; // Shielded Acc.
-    private final ArrayList<MTEHatchAdvancedOutputBeamline> mAdvancedOutputBeamline = new ArrayList<>();
 
     private static final IStructureDefinition<MTEBeamSplitter> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEBeamSplitter>builder()
@@ -112,25 +111,10 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder(MTEBeamSplitter::addAdvancedBeamLineOutputHatch)
+                .adder((splitter,te,casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te,casingIndex,4))
                 .build()) // beamline input hatch
         .build();
 
-    private boolean addAdvancedBeamLineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchAdvancedOutputBeamline hatch) {
-            ((MTEHatch) mte).updateTexture(casingIndex);
-            hatch.setInitialParticleList(LHCModule.AllParticles.acceptedParticles);
-            this.mAdvancedOutputBeamline.add(hatch);
-            return true;
-        }
-        return false;
-
-    }
 
     public MTEBeamSplitter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
