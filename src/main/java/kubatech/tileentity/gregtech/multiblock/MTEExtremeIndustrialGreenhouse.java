@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -132,8 +133,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
 import kubatech.api.eig.EIGDropTable;
