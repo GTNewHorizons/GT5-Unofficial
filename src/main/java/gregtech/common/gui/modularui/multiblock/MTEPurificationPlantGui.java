@@ -125,12 +125,13 @@ public class MTEPurificationPlantGui extends MTEMultiBlockBaseGui<MTEPurificatio
                         .background(IDrawable.EMPTY)
                         .overlay(getOverlayIcon(unit))
                         .item(mte.getStackForm(1))
-                        .tooltip(tooltip -> {
+                        .tooltipDynamic(tooltip -> {
                             tooltip.addLine(
                                 StatCollector.translateToLocalFormatted("GT5U.gui.purification.tier", finalTier));
                             tooltip.addLine(moduleName);
                             tooltip.addLine(unit.getStatusString());
-                        }));
+                        })
+                        .tooltipAutoUpdate(true));
             }
         }
 
