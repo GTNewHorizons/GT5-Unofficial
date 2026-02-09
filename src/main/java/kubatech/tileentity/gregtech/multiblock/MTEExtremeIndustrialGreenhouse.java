@@ -42,6 +42,7 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -58,7 +59,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import gregtech.common.misc.GTStructureChannels;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -133,6 +133,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import kubatech.api.EIGDynamicInventory;
 import kubatech.api.eig.EIGBucket;
@@ -389,7 +390,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing", 1)
             .addInputHatch("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
-            .toolTipFinisher(GTValues.AuthorKuba);
+            .toolTipFinisher(
+                newList().addAuthors(GTValues.AuthorKuba)
+                    .addStructureAuthors("HydroCN"));
         return tt;
     }
 
