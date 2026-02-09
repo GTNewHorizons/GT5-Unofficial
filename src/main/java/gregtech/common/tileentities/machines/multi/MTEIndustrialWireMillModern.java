@@ -189,11 +189,6 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
-        return SoundResource.GTCEU_LOOP_MOTOR;
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
@@ -217,13 +212,7 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         itemPipeTier = -1;
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 14
-            && mMaintenanceHatches.size() == 1;
-    }
-
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.wiremillRecipes;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 14;
     }
 
     @Override
@@ -234,6 +223,16 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialWireMill;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GTCEU_LOOP_MOTOR;
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.wiremillRecipes;
     }
 
     @Override
