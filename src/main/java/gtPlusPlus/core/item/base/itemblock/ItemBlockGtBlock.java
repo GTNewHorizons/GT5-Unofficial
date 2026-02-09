@@ -52,7 +52,7 @@ public class ItemBlockGtBlock extends ItemBlock {
         }
         if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
-            this.thisBlockType = g.thisBlock;
+            this.thisBlockType = g.blockType;
         } else {
             this.mMaterial = null;
             this.thisBlockType = BlockTypes.STANDARD;

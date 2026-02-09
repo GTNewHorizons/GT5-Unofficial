@@ -35,7 +35,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.Creosote.getFluid(25))
             .fluidOutputs(Materials.Lubricant.getFluid(8))
             .duration(3 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -43,7 +43,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.SeedOil.getFluid(8))
             .fluidOutputs(Materials.Lubricant.getFluid(2))
             .duration(1 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -51,7 +51,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.FishOil.getFluid(8))
             .fluidOutputs(Materials.Lubricant.getFluid(2))
             .duration(1 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -59,7 +59,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.Oil.getFluid(12))
             .fluidOutputs(Materials.Lubricant.getFluid(6))
             .duration(16 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -67,7 +67,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.OilLight.getFluid(12))
             .fluidOutputs(Materials.Lubricant.getFluid(3))
             .duration(16 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -75,7 +75,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.OilMedium.getFluid(12))
             .fluidOutputs(Materials.Lubricant.getFluid(6))
             .duration(16 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -83,7 +83,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.OilHeavy.getFluid(12))
             .fluidOutputs(Materials.Lubricant.getFluid(9))
             .duration(16 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -106,7 +106,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(getFluidStack("potion.potatojuice", 2))
             .fluidOutputs(getFluidStack("potion.vodka", 1))
             .duration(16 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -114,7 +114,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(getFluidStack("potion.lemonade", 2))
             .fluidOutputs(getFluidStack("potion.alcopops", 1))
             .duration(16 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -123,7 +123,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.SluiceJuice.getFluid(1_000))
             .fluidOutputs(Materials.Water.getFluid(500))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -131,7 +131,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.WoodTar.getFluid(200))
             .fluidOutputs(Materials.IIIDimethylbenzene.getFluid(30))
             .duration(16 * TICKS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -139,7 +139,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.CharcoalByproducts.getGas(200))
             .fluidOutputs(Materials.IIIDimethylbenzene.getFluid(20))
             .duration(5 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -147,7 +147,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.WoodTar.getFluid(200))
             .fluidOutputs(Materials.IVDimethylbenzene.getFluid(30))
             .duration(16 * TICKS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -155,7 +155,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.CharcoalByproducts.getGas(200))
             .fluidOutputs(Materials.IVDimethylbenzene.getFluid(20))
             .duration(5 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         // (NaCl·H2O) = NaCl + H2O
@@ -166,7 +166,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(Materials.SaltWater.getFluid(1_000))
             .fluidOutputs(GTModHandler.getDistilledWater(1_000))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -303,7 +303,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 20))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32))
             .duration(2 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -311,7 +311,7 @@ public class DistilleryRecipes implements Runnable {
             .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
             .fluidOutputs(Materials.Water.getFluid(2))
             .duration(4 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -427,7 +427,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.WoodGas.getGas(250),
                 Materials.IIIDimethylbenzene.getFluid(100))
             .duration(2 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -440,7 +440,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.Toluene.getFluid(100),
                 Materials.IIIDimethylbenzene.getFluid(150))
             .duration(2 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -453,7 +453,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.Toluene.getFluid(100),
                 Materials.IVDimethylbenzene.getFluid(150))
             .duration(2 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -466,7 +466,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.WoodGas.getGas(250),
                 Materials.IVDimethylbenzene.getFluid(100))
             .duration(2 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -481,7 +481,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.IIIDimethylbenzene.getFluid(60),
                 Materials.IVDimethylbenzene.getFluid(20))
             .duration(2 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -496,7 +496,7 @@ public class DistilleryRecipes implements Runnable {
                 Materials.IIIDimethylbenzene.getFluid(90),
                 Materials.IVDimethylbenzene.getFluid(30))
             .duration(2 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
 
         GTValues.RA.stdBuilder()
