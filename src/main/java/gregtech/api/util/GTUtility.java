@@ -131,10 +131,8 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -248,10 +246,6 @@ public class GTUtility {
      * Associates the name of the fluid with all filled container items.
      */
     private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
-    /**
-     * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
-     */
-    private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -259,23 +253,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    static {
-        GregTechAPI.sItemStackMappings.add(sFilledContainerToData);
-        GregTechAPI.sItemStackMappings.add(sEmptyContainerToFluidToData);
-
-        // 1 is the magic index to get the cobblestone block.
-        // See: GT_Block_Stones.java, GT_Block_Granites.java
-        Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
-            () -> GTOreDictUnificator.getOres(OrePrefixes.stone, m)
-                .get(1))::get;
-        sOreToCobble.put(OrePrefixes.oreBlackgranite, materialToCobble.apply(Materials.GraniteBlack));
-        sOreToCobble.put(OrePrefixes.oreRedgranite, materialToCobble.apply(Materials.GraniteRed));
-        sOreToCobble.put(OrePrefixes.oreMarble, materialToCobble.apply(Materials.Marble));
-        sOreToCobble.put(OrePrefixes.oreBasalt, materialToCobble.apply(Materials.Basalt));
-        sOreToCobble.put(OrePrefixes.oreNetherrack, () -> new ItemStack(Blocks.netherrack));
-        sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
-    }
 
     public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
         return sFilledContainerToData;
@@ -2295,48 +2272,6 @@ public class GTUtility {
         return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
     }
 
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = null;
-        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
-        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
-        // would not be used to rehash if we just create a new HashMap.
-        if (aMap instanceof Cloneable) {
-            try {
-                tMap = (Map<X, Y>) aMap.getClass()
-                    .getMethod("clone")
-                    .invoke(aMap);
-            } catch (Exception e) {
-                GTLog.err.println("Failed to clone Map of type " + aMap.getClass());
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
-        if (tMap == null) {
-            tMap = new HashMap<>(aMap);
-        }
-
-        aMap.clear();
-        aMap.putAll(tMap);
-        return aMap;
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
-        @SuppressWarnings("unchecked")
-        Map.Entry<X, Y>[] entries = aMap.entries()
-            .toArray(new Map.Entry[0]);
-        aMap.clear();
-        for (Map.Entry<X, Y> entry : entries) {
-            aMap.put(entry.getKey(), entry.getValue());
-        }
-        return aMap;
-    }
-
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {
         return map.entrySet()
             .stream()
@@ -3709,26 +3644,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Do <b>NOT</b> mutate the returned {@code ItemStack}! We return {@code ItemStack} instead of {@code Block} so that
-     * we can include metadata.
-     */
-    public static ItemStack getCobbleForOre(Block ore, short metaData) {
-        // We need to convert small ores to regular ores because small ores don't have associated ItemData.
-        // We take the modulus of the metadata by 16000 because that is the magic number to convert small ores to
-        // regular ores.
-        // See: GT_TileEntity_Ores.java
-        ItemData association = GTOreDictUnificator
-            .getAssociation(new ItemStack(Item.getItemFromBlock(ore), 1, metaData % 16000));
-        if (association != null) {
-            Supplier<ItemStack> supplier = sOreToCobble.get(association.mPrefix);
-            if (supplier != null) {
-                return supplier.get();
-            }
-        }
-        return new ItemStack(Blocks.cobblestone);
-    }
-
     public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
         if (output == null) {
             return Optional.empty();
@@ -3766,6 +3681,9 @@ public class GTUtility {
             new GTRecipe(
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -3837,6 +3755,9 @@ public class GTUtility {
             new GTRecipe(
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
