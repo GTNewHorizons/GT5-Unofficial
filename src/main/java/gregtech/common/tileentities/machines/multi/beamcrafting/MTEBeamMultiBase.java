@@ -1,5 +1,9 @@
 package gregtech.common.tileentities.machines.multi.beamcrafting;
 
+import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -7,9 +11,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 
 public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<T>>
     extends MTEExtendedPowerMultiBlockBase<T> {
@@ -52,7 +53,7 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
-    public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, int fundamentalForce){
+    public boolean addAdvancedBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex, int fundamentalForce) {
         // 0 = EM; 1 = Weak; 2 = Strong; 3 = Gravity; 4 = All
         // might be nice to add combinations of output sets from various forces. currently not needed
         if (te == null) return false;

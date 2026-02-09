@@ -2,22 +2,21 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 public class LHCStructureString {
 
-    public static final String[][] MAIN_STRUCTURE = {{
+    public static final String[][] MAIN_STRUCTURE = { {
         "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                           CCCCCCCCCCCCCCC                                   ",
-            "                                                           CCCEEECEEECEEEC                                   ",
-            "                                                           CCCCCCCCCCCCCCC                                   ",
-            "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                                                                             ",
-            "                                                                                                             "
-    },{
         "                                                                                                             ",
+        "                                                                                                             ",
+        "                                                           CCCCCCCCCCCCCCC                                   ",
+        "                                                           CCCEEECEEECEEEC                                   ",
+        "                                                           CCCCCCCCCCCCCCC                                   ",
+        "                                                                                                             ",
+        "                                                                                                             ",
+        "                                                                                                             ",
+        "                                                                                                             ",
+        "                                                                                                             ",
+        "                                                                                                             ",
+        "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                           CCCCCCCCCCCCCCC                                   ",
             "                                                  CCCCCCCCCCCCCCCCCCCCCCA                                    ",
@@ -29,9 +28,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                            CCCCCCCCCCCCCC                                   ",
             "                                                  CCCCCCCCCC            A                                    ",
             "                                              CCCC         CCCC         D                                    ",
@@ -43,9 +41,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                             CCCCCCCCCCCCC                                   ",
+            "                                                                                                             " },
+        { "                                                             CCCCCCCCCCCCC                                   ",
             "                                                           CCCCCCCCCCCCCA                                    ",
             "                                              CCCCCCCCCCCCCCCCC         D                                    ",
             "                                            CC                 CC       D                                    ",
@@ -57,9 +54,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                             CEEECEEECEEEC                                   ",
+            "                                                                                                             " },
+        { "                                                             CEEECEEECEEEC                                   ",
             "                                                           CCCCCCCCCCCCCA                                    ",
             "                                            CCCCCC       CCCCCCCC       D                                    ",
             "                                          CC      CCCCCCCCC      CC     D                                    ",
@@ -71,9 +67,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                             CCCCCCCCCCCCC                                   ",
+            "                                                                                                             " },
+        { "                                                             CCCCCCCCCCCCC                                   ",
             "                                                           CCCCCCCCCCCCCA                                    ",
             "                                          CCCCC           CC  CCCCC     D                                    ",
             "                                         C     CCC      CC CCC     C    D                                    ",
@@ -85,9 +80,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                            CCCCCCCCCCCCCC                                   ",
             "                                         CCCC              C    CCCC    A                                    ",
             "                                       CC    CC           CC  CC    CCC D                                    ",
@@ -99,9 +93,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                       CCCC                 CCCCCCCCCCCCCC                                   ",
             "                                      C    CC               CCCCCC    CCA                                    ",
@@ -113,9 +106,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                      CCCC                         CCCC                                      ",
             "                                     C    C                       C    CCC                                   ",
@@ -127,9 +119,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                     CCCC                           CCCC                                     ",
             "                                    C    C                         C    C                                    ",
@@ -141,9 +132,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                     CCC                             CCC                                     ",
             "                                   CC   C                           C   C                                    ",
@@ -155,9 +145,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                    CCC                               CCC                                    ",
             "                                  CC   C                             C   C                                   ",
@@ -169,9 +158,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                   CCC                                 CCC                                   ",
             "                                 CC   C                               C   C                                  ",
@@ -183,9 +171,8 @@ public class LHCStructureString {
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                   CC                                   CC                                   ",
             "                                 CC  C                                 C  C                                  ",
@@ -197,9 +184,8 @@ public class LHCStructureString {
             "                                               CCCCCCCCCCCCCCC                                               ",
             "                                               CCCCCCCCCCCCCCC                                               ",
             "                                               CCCCCCCCCCCCCCC                                               ",
-            "                                                                                                             "
-    },{
-        "                                                                                                             ",
+            "                                                                                                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                  CCC                                   CCC                                  ",
             "                                CC   C                                 C   C                                 ",
@@ -211,9 +197,8 @@ public class LHCStructureString {
             "                                          CCCCC               CCCCC                                          ",
             "                                          CCCCC               CCCCC                                          ",
             "                                          CCCCC               CCCCC                                          ",
-            "                                               CCCCCCCCCCCCCCC                                               "
-    },{
-        "                                                                                                             ",
+            "                                               CCCCCCCCCCCCCCC                                               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CCC                                     CC                                  ",
             "                                C   C                                   C  C                                 ",
@@ -225,9 +210,8 @@ public class LHCStructureString {
             "                                      CCCC                         CCCC                                      ",
             "                                      CCCC                         CCCC                                      ",
             "                                      CCCC                         CCCC                                      ",
-            "                                          CCCCCCCCCCCCCCCCCCCCCCCCC                                          "
-    },{
-        "                                                                                                             ",
+            "                                          CCCCCCCCCCCCCCCCCCCCCCCCC                                          " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CCC                                     CCC                                 ",
             "                                C   C                                   C   C                                ",
@@ -239,9 +223,8 @@ public class LHCStructureString {
             "                              CCCC CCC                                 CCC                                   ",
             "                                   CCC                                 CCC                                   ",
             "                                   CCC                                 CCC                                   ",
-            "                                      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      "
-    },{
-        "                                                                                                             ",
+            "                                      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CC                                       CC                                 ",
             "                               CC  C                                     C  C                                ",
@@ -253,9 +236,8 @@ public class LHCStructureString {
             "                            CCCCCCC            CCCCCCCCCCCCCCC            CC                                 ",
             "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
             "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
-            "                                   CCCCCCCCCCCC               CCCCCCCCCCCC                                   "
-    },{
-        "                                                                                                             ",
+            "                                   CCCCCCCCCCCC               CCCCCCCCCCCC                                   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CCC                                       CC                                 ",
             "                               C   C                                     C  C                                ",
@@ -267,9 +249,8 @@ public class LHCStructureString {
             "                           C    C         CCCCC               CCCCC         CC                               ",
             "                            CCCCC         CCCCC               CCCCC         CC                               ",
             "                               CC         CCCCC               CCCCC         CC                               ",
-            "                                 CCCCCCCCC                         CCCCCCCCC                                 "
-    },{
-        "                                                                                                             ",
+            "                                 CCCCCCCCC                         CCCCCCCCC                                 " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CCC                                       CC                                 ",
             "                               C   C                                     C  C                                ",
@@ -281,9 +262,8 @@ public class LHCStructureString {
             "                          C            CCC                         CCC        CC                             ",
             "                           CC          CCC                         CCC        CC                             ",
             "                             CC        CCC                         CCC        CC                             ",
-            "                               CCCCCCCC                               CCCCCCCC                               "
-    },{
-        "                                                                                                             ",
+            "                               CCCCCCCC                               CCCCCCCC                               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -295,9 +275,8 @@ public class LHCStructureString {
             "                         C          CCC                               CCC       CC                           ",
             "                          C         CCC                               CCC       CC                           ",
             "                           CC       CCC                               CCC       CC                           ",
-            "                             CCCCCCC                                     CCCCCCC                             "
-    },{
-        "                                                                                                             ",
+            "                             CCCCCCC                                     CCCCCCC                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -309,9 +288,8 @@ public class LHCStructureString {
             "                        CC        CC                                     CC       CC                         ",
             "                        CC        CC                                     CC       CC                         ",
             "                        CCC       CC                                     CC       CC                         ",
-            "                           CCCCCCC                                         CCCCCCC                           "
-    },{
-        "                                                                                                             ",
+            "                           CCCCCCC                                         CCCCCCC                           " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -323,9 +301,8 @@ public class LHCStructureString {
             "                       CC       CC                                         CC       C                        ",
             "                       CC       CC                                         CC       C                        ",
             "                       CC       CC                                         CC       C                        ",
-            "                         CCCCCCC                                             CCCCCCC                         "
-    },{
-        "                                                                                                             ",
+            "                         CCCCCCC                                             CCCCCCC                         " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -337,9 +314,8 @@ public class LHCStructureString {
             "                      CC      CC                                             CC      CC                      ",
             "                      CC      CC                                             CC      CC                      ",
             "                      CC      CC                                             CC      CC                      ",
-            "                        CCCCCC                                                 CCCCCC                        "
-    },{
-        "                                                                                                             ",
+            "                        CCCCCC                                                 CCCCCC                        " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -351,9 +327,8 @@ public class LHCStructureString {
             "                     C      CC                                                 CC      C                     ",
             "                     C      CC                                                 CC      C                     ",
             "                     C      CC                                                 CC      C                     ",
-            "                      CCCCCC                                                     CCCCCC                      "
-    },{
-        "                                                                                                             ",
+            "                      CCCCCC                                                     CCCCCC                      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -365,9 +340,8 @@ public class LHCStructureString {
             "                    C     CC                                                     CC     C                    ",
             "                    C     CC                                                     CC     C                    ",
             "                    C     CC                                                     CC     C                    ",
-            "                     CCCCC                                                         CCCCC                     "
-    },{
-        "                                                                                                             ",
+            "                     CCCCC                                                         CCCCC                     " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -379,9 +353,8 @@ public class LHCStructureString {
             "                   C     C                                                         C     C                   ",
             "                   C     C                                                         C     C                   ",
             "                   C     C                                                         C     C                   ",
-            "                    CCCCC                                                           CCCCC                    "
-    },{
-        "                                                                                                             ",
+            "                    CCCCC                                                           CCCCC                    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -393,9 +366,8 @@ public class LHCStructureString {
             "                 CC     C                                                          C      CC                 ",
             "                 CC     C                                                           C     CC                 ",
             "                 CC     C                                                           C     CC                 ",
-            "                   CCCCC                                                             CCCCC                   "
-    },{
-        "                                                                                                             ",
+            "                   CCCCC                                                             CCCCC                   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                CC                                         CC                                ",
             "                               C  C                                       C  C                               ",
@@ -407,9 +379,8 @@ public class LHCStructureString {
             "                C     CC                                                           CC       C                ",
             "                C     CC                                                             C      C                ",
             "                C     CC                                                             CC     C                ",
-            "                 CCCCC                                                                 CCCCC                 "
-    },{
-        "                                                                                                             ",
+            "                 CCCCC                                                                 CCCCC                 " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CC                                       CCCC                               ",
             "                                C  C                                     C    CC                             ",
@@ -421,9 +392,8 @@ public class LHCStructureString {
             "               C     C                                                             CC  C     C               ",
             "               C     C                                                               CCC     C               ",
             "               C     C                                                                 C     C               ",
-            "                CCCCC                                                                   CCCCC                "
-    },{
-        "                                                                                                             ",
+            "                CCCCC                                                                   CCCCC                " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CC                                       CCCC                               ",
             "                                C  C                                     C    CC                             ",
@@ -435,9 +405,8 @@ public class LHCStructureString {
             "              C     C                                                                CCCC     C              ",
             "              C     C                                                                   C     C              ",
             "              C     C                                                                   C     C              ",
-            "               CCCCC                                                                     CCCCC               "
-    },{
-        "                                                                                                             ",
+            "               CCCCC                                                                     CCCCC               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CC                                       CCCC                               ",
             "                                C  C                                     C    C                              ",
@@ -449,9 +418,8 @@ public class LHCStructureString {
             "              C    C                                                                     C    C              ",
             "              C    C                                                                     C    C              ",
             "              C    C                                                                     C    C              ",
-            "               CCCC                                                                       CCCC               "
-    },{
-        "                                                                                                             ",
+            "               CCCC                                                                       CCCC               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                 CCC                                     CCCC                                ",
             "                                C   C                                   C   CC                               ",
@@ -463,9 +431,8 @@ public class LHCStructureString {
             "             C    C                                                                       C    C             ",
             "             C    C                                                                       C    C             ",
             "             C    C                                                                       C    C             ",
-            "              CCCC                                                                         CCCC              "
-    },{
-        "                                                                                                             ",
+            "              CCCC                                                                         CCCC              " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                  CC                                     CC                                  ",
             "                                 C  C                                   C  CC                                ",
@@ -477,9 +444,8 @@ public class LHCStructureString {
             "            C    C                                                                        CC    C            ",
             "            C    C                                                                        CC    C            ",
             "            C    C                                                                        CC    C            ",
-            "             CCCC                                                                           CCCC             "
-    },{
-        "                                                                                                             ",
+            "             CCCC                                                                           CCCC             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                  CCC                                   CCC                                  ",
             "                                 C   C                                 C   C                                 ",
@@ -491,9 +457,8 @@ public class LHCStructureString {
             "           C    C                                                                           C    C           ",
             "           C    C                                                                           C    C           ",
             "           C    C                                                                           C    C           ",
-            "            CCCC                                                                             CCCC            "
-    },{
-        "                                                                                                             ",
+            "            CCCC                                                                             CCCC            " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                   CC                                   CC                                   ",
             "                                  C  C                                 C  C                                  ",
@@ -505,9 +470,8 @@ public class LHCStructureString {
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
-            "           CCCC                                                                               CCCC           "
-    },{
-        "                                                                                                             ",
+            "           CCCC                                                                               CCCC           " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                   CCC                                 CCC                                   ",
             "                                  C   C                               C   C                                  ",
@@ -519,9 +483,8 @@ public class LHCStructureString {
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
-            "           CCCC                                                                               CCCC           "
-    },{
-        "                                                                                                             ",
+            "           CCCC                                                                               CCCC           " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                    CCC                               CCC                                    ",
             "                                   C   C                             C   C                                   ",
@@ -533,9 +496,8 @@ public class LHCStructureString {
             "         C    C                                                                               C    C         ",
             "         C    C                                                                               C    C         ",
             "         C    C                                                                               C    C         ",
-            "          CCCC                                                                                 CCCC          "
-    },{
-        "                                                                                                             ",
+            "          CCCC                                                                                 CCCC          " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                     CCC                             CCC                                     ",
             "                                    C   C                           C   C                                    ",
@@ -547,9 +509,8 @@ public class LHCStructureString {
             "        C    C                                                                                 C    C        ",
             "        C    C                                                                                 C    C        ",
             "        C    C                                                                                 C    C        ",
-            "         CCCC                                                                                   CCCC         "
-    },{
-        "                                                                                                             ",
+            "         CCCC                                                                                   CCCC         " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                     CCCC                           CCCC                                     ",
             "                                    C    C                         C    C                                    ",
@@ -561,9 +522,8 @@ public class LHCStructureString {
             "        C   C                                                                                   C   C        ",
             "        C   C                                                                                   C   C        ",
             "        C   C                                                                                   C   C        ",
-            "         CCC                                                                                     CCC         "
-    },{
-        "                                                                                                             ",
+            "         CCC                                                                                     CCC         " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                      CCCC                         CCCC                                      ",
             "                                     C    C                       C    C                                     ",
@@ -575,9 +535,8 @@ public class LHCStructureString {
             "       C    C                                                                                   C    C       ",
             "       C    C                                                                                   C    C       ",
             "       C    C                                                                                   C    C       ",
-            "        CCCC                                                                                     CCCC        "
-    },{
-        "                                                                                                             ",
+            "        CCCC                                                                                     CCCC        " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                       CCCC                       CCCC                                       ",
             "                                      C    CC                   CC    C                                      ",
@@ -589,9 +548,8 @@ public class LHCStructureString {
             "       C   C                                                                                     C   C       ",
             "       C   C                                                                                     C   C       ",
             "       C   C                                                                                     C   C       ",
-            "        CCC                                                                                       CCC        "
-    },{
-        "                                                                                                             ",
+            "        CCC                                                                                       CCC        " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                         CCCC                   CCCC                                         ",
             "                                       CC    CC               CC    CC                                       ",
@@ -603,9 +561,8 @@ public class LHCStructureString {
             "      C    C                                                                                     C    C      ",
             "      C    C                                                                                     C    C      ",
             "      C    C                                                                                     C    C      ",
-            "       CCCC                                                                                       CCCC       "
-    },{
-        "                                                                                                             ",
+            "       CCCC                                                                                       CCCC       " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                          CCCCC               CCCCC                                          ",
             "                                         C     CCC         CCC     C                                         ",
@@ -617,9 +574,8 @@ public class LHCStructureString {
             "      C   C                                                                                       C   C      ",
             "      C   C                                                                                       C   C      ",
             "      C   C                                                                                       C   C      ",
-            "       CCC                                                                                         CCC       "
-    },{
-        "                                                                                                             ",
+            "       CCC                                                                                         CCC       " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                            CCCCCC         CCCCCC                                            ",
             "                                          CC      CCCCCCCCC      CC                                          ",
@@ -631,9 +587,8 @@ public class LHCStructureString {
             "     C    C                                                                                       C    C     ",
             "     C    C                                                                                       C    C     ",
             "     C    C                                                                                       C    C     ",
-            "      CCCC                                                                                         CCCC      "
-    },{
-        "                                                                                                             ",
+            "      CCCC                                                                                         CCCC      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                              CCCCCCCCCCCCCCCCC                                              ",
             "                                            CC                 CC                                            ",
@@ -645,9 +600,8 @@ public class LHCStructureString {
             "     C   C                                                                                         C   C     ",
             "     C   C                                                                                         C   C     ",
             "     C   C                                                                                         C   C     ",
-            "      CCC                                                                                           CCC      "
-    },{
-        "                                                                                                             ",
+            "      CCC                                                                                           CCC      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                  CCCCCCCCC                                                  ",
             "                                              CCCC         CCCC                                              ",
@@ -659,9 +613,8 @@ public class LHCStructureString {
             "    C    C                                                                                         C    C    ",
             "    C    C                                                                                         C    C    ",
             "    C    C                                                                                         C    C    ",
-            "     CCCC                                                                                           CCCC     "
-    },{
-        "                                                                                                             ",
+            "     CCCC                                                                                           CCCC     " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                  CCCCCCCCC                                                  ",
@@ -673,9 +626,8 @@ public class LHCStructureString {
             "    C   C                                                                                           C   C    ",
             "    C   C                                                                                           C   C    ",
             "    C   C                                                                                           C   C    ",
-            "     CCC                                                                                             CCC     "
-    },{
-        "                                                                                                             ",
+            "     CCC                                                                                             CCC     " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -687,9 +639,8 @@ public class LHCStructureString {
             "   C    C                                                                                           C    C   ",
             "   C    C                                                                                           C    C   ",
             "   C    C                                                                                           C    C   ",
-            "    CCCC                                                                                             CCCC    "
-    },{
-        "                                                                                                             ",
+            "    CCCC                                                                                             CCCC    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -701,9 +652,8 @@ public class LHCStructureString {
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
-            "    CCC                                                                                               CCC    "
-    },{
-        "                                                                                                             ",
+            "    CCC                                                                                               CCC    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -715,9 +665,8 @@ public class LHCStructureString {
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
-            "    CCC                                                                                               CCC    "
-    },{
-        "                                                                                                             ",
+            "    CCC                                                                                               CCC    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -729,9 +678,8 @@ public class LHCStructureString {
             "  C    C                                                                                             C    C  ",
             "  C    C                                                                                             C    C  ",
             "  C    C                                                                                             C    C  ",
-            "   CCCC                                                                                               CCCC   "
-    },{
-        "                                                                                                             ",
+            "   CCCC                                                                                               CCCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -743,9 +691,8 @@ public class LHCStructureString {
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
-            "   CCC                                                                                                 CCC   "
-    },{
-        "                                                                                                             ",
+            "   CCC                                                                                                 CCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -757,9 +704,8 @@ public class LHCStructureString {
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
-            "   CCC                                                                                                 CCC   "
-    },{
-        "                                                                                                             ",
+            "   CCC                                                                                                 CCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -771,9 +717,8 @@ public class LHCStructureString {
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
-            "   CCC                                                                                                 CCC   "
-    },{
-        "                                                                                                             ",
+            "   CCC                                                                                                 CCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -785,9 +730,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -799,9 +743,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -813,9 +756,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -827,9 +769,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -841,9 +782,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -855,9 +795,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -869,9 +808,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -883,9 +821,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -897,9 +834,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -911,9 +847,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -925,9 +860,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -939,9 +873,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -953,9 +886,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -967,9 +899,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -981,9 +912,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -995,9 +925,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1009,9 +938,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1023,9 +951,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1037,9 +964,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1051,9 +977,8 @@ public class LHCStructureString {
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
             "C   C                                                                                                   C   C",
-            " CCC                                                                                                     CCC "
-    },{
-        "                                                                                                             ",
+            " CCC                                                                                                     CCC " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1065,9 +990,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1079,9 +1003,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1093,9 +1016,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1107,9 +1029,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1121,9 +1042,8 @@ public class LHCStructureString {
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
             " C   C                                                                                                 C   C ",
-            "  CCC                                                                                                   CCC  "
-    },{
-        "                                                                                                             ",
+            "  CCC                                                                                                   CCC  " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1135,9 +1055,8 @@ public class LHCStructureString {
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
-            "   CCC                                                                                                 CCC   "
-    },{
-        "                                                                                                             ",
+            "   CCC                                                                                                 CCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1149,9 +1068,8 @@ public class LHCStructureString {
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
-            "   CCC                                                                                                 CCC   "
-    },{
-        "                                                                                                             ",
+            "   CCC                                                                                                 CCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1163,9 +1081,8 @@ public class LHCStructureString {
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
             "  C   C                                                                                               C   C  ",
-            "   CCC                                                                                                 CCC   "
-    },{
-        "                                                                                                             ",
+            "   CCC                                                                                                 CCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1177,9 +1094,8 @@ public class LHCStructureString {
             "  C    C                                                                                             C    C  ",
             "  C    C                                                                                             C    C  ",
             "  C    C                                                                                             C    C  ",
-            "   CCCC                                                                                               CCCC   "
-    },{
-        "                                                                                                             ",
+            "   CCCC                                                                                               CCCC   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1191,9 +1107,8 @@ public class LHCStructureString {
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
-            "    CCC                                                                                               CCC    "
-    },{
-        "                                                                                                             ",
+            "    CCC                                                                                               CCC    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1205,9 +1120,8 @@ public class LHCStructureString {
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
             "   C   C                                                                                             C   C   ",
-            "    CCC                                                                                               CCC    "
-    },{
-        "                                                                                                             ",
+            "    CCC                                                                                               CCC    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1219,9 +1133,8 @@ public class LHCStructureString {
             "   C    C                                                                                           C    C   ",
             "   C    C                                                                                           C    C   ",
             "   C    C                                                                                           C    C   ",
-            "    CCCC                                                                                             CCCC    "
-    },{
-        "                                                                                                             ",
+            "    CCCC                                                                                             CCCC    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1233,9 +1146,8 @@ public class LHCStructureString {
             "    C   C                                                                                           C   C    ",
             "    C   C                                                                                           C   C    ",
             "    C   C                                                                                           C   C    ",
-            "     CCC                                                                                             CCC     "
-    },{
-        "                                                                                                             ",
+            "     CCC                                                                                             CCC     " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1247,9 +1159,8 @@ public class LHCStructureString {
             "    C    C                                                                                         C    C    ",
             "    C    C                                                                                         C    C    ",
             "    C    C                                                                                         C    C    ",
-            "     CCCC                                                                                           CCCC     "
-    },{
-        "                                                                                                             ",
+            "     CCCC                                                                                           CCCC     " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1261,9 +1172,8 @@ public class LHCStructureString {
             "     C   C                                                                                         C   C     ",
             "     C   C                                                                                         C   C     ",
             "     C   C                                                                                         C   C     ",
-            "      CCC                                                                                           CCC      "
-    },{
-        "                                                                                                             ",
+            "      CCC                                                                                           CCC      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1275,9 +1185,8 @@ public class LHCStructureString {
             "     C    C                                                                                       C    C     ",
             "     C    C                                                                                       C    C     ",
             "     C    C                                                                                       C    C     ",
-            "      CCCC                                                                                         CCCC      "
-    },{
-        "                                                                                                             ",
+            "      CCCC                                                                                         CCCC      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1289,9 +1198,8 @@ public class LHCStructureString {
             "      C   C                                                                                       C   C      ",
             "      C   C                                                                                       C   C      ",
             "      C   C                                                                                       C   C      ",
-            "       CCC                                                                                         CCC       "
-    },{
-        "                                                                                                             ",
+            "       CCC                                                                                         CCC       " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1303,9 +1211,8 @@ public class LHCStructureString {
             "      C    C                                                                                     C    C      ",
             "      C    C                                                                                     C    C      ",
             "      C    C                                                                                     C    C      ",
-            "       CCCC                                                                                       CCCC       "
-    },{
-        "                                                                                                             ",
+            "       CCCC                                                                                       CCCC       " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1317,9 +1224,8 @@ public class LHCStructureString {
             "       C   C                                                                                     C   C       ",
             "       C   C                                                                                     C   C       ",
             "       C   C                                                                                     C   C       ",
-            "        CCC                                                                                       CCC        "
-    },{
-        "                                                                                                             ",
+            "        CCC                                                                                       CCC        " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1331,9 +1237,8 @@ public class LHCStructureString {
             "       C    C                                                                                   C    C       ",
             "       C    C                                                                                   C    C       ",
             "       C    C                                                                                   C    C       ",
-            "        CCCC                                                                                     CCCC        "
-    },{
-        "                                                                                                             ",
+            "        CCCC                                                                                     CCCC        " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1345,9 +1250,8 @@ public class LHCStructureString {
             "        C   C                                                                                   C   C        ",
             "        C   C                                                                                   C   C        ",
             "        C   C                                                                                   C   C        ",
-            "         CCC                                                                                     CCC         "
-    },{
-        "                                                                                                             ",
+            "         CCC                                                                                     CCC         " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1359,9 +1263,8 @@ public class LHCStructureString {
             "        C    C                                                                                 C    C        ",
             "        C    C                                                                                 C    C        ",
             "        C    C                                                                                 C    C        ",
-            "         CCCC                                                                                   CCCC         "
-    },{
-        "                                                                                                             ",
+            "         CCCC                                                                                   CCCC         " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1373,9 +1276,8 @@ public class LHCStructureString {
             "         C    C                                                                               C    C         ",
             "         C    C                                                                               C    C         ",
             "         C    C                                                                               C    C         ",
-            "          CCCC                                                                                 CCCC          "
-    },{
-        "                                                                                                             ",
+            "          CCCC                                                                                 CCCC          " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1387,9 +1289,8 @@ public class LHCStructureString {
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
-            "           CCCC                                                                               CCCC           "
-    },{
-        "                                                                                                             ",
+            "           CCCC                                                                               CCCC           " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1401,9 +1302,8 @@ public class LHCStructureString {
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
             "          C    C                                                                             C    C          ",
-            "           CCCC                                                                               CCCC           "
-    },{
-        "                                                                                                             ",
+            "           CCCC                                                                               CCCC           " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1415,9 +1315,8 @@ public class LHCStructureString {
             "           C    C                                                                           C    C           ",
             "           C    C                                                                           C    C           ",
             "           C    C                                                                           C    C           ",
-            "            CCCC                                                                             CCCC            "
-    },{
-        "                                                                                                             ",
+            "            CCCC                                                                             CCCC            " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1429,9 +1328,8 @@ public class LHCStructureString {
             "            C    C                                                                         C    C            ",
             "            C    C                                                                         C    C            ",
             "            C    C                                                                         C    C            ",
-            "             CCCC                                                                           CCCC             "
-    },{
-        "                                                                                                             ",
+            "             CCCC                                                                           CCCC             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1443,9 +1341,8 @@ public class LHCStructureString {
             "             C    C                                                                       C    C             ",
             "             C    C                                                                       C    C             ",
             "             C    C                                                                       C    C             ",
-            "              CCCC                                                                         CCCC              "
-    },{
-        "                                                                                                             ",
+            "              CCCC                                                                         CCCC              " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1457,9 +1354,8 @@ public class LHCStructureString {
             "              C    C                                                                     C    C              ",
             "              C    C                                                                     C    C              ",
             "              C    C                                                                     C    C              ",
-            "               CCCC                                                                       CCCC               "
-    },{
-        "                                                                                                             ",
+            "               CCCC                                                                       CCCC               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1471,9 +1367,8 @@ public class LHCStructureString {
             "              C     C                                                                   C     C              ",
             "              C     C                                                                   C     C              ",
             "              C     C                                                                   C     C              ",
-            "               CCCCC                                                                     CCCCC               "
-    },{
-        "                                                                                                             ",
+            "               CCCCC                                                                     CCCCC               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1485,9 +1380,8 @@ public class LHCStructureString {
             "               C     C                                                                 C     C               ",
             "               C     C                                                                 C     C               ",
             "               C     C                                                                 C     C               ",
-            "                CCCCC                                                                   CCCCC                "
-    },{
-        "                                                                                                             ",
+            "                CCCCC                                                                   CCCCC                " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1499,9 +1393,8 @@ public class LHCStructureString {
             "                C     CC                                                             CC     C                ",
             "                C     CC                                                             CC     C                ",
             "                C     CC                                                             CC     C                ",
-            "                 CCCCC                                                                 CCCCC                 "
-    },{
-        "                                                                                                             ",
+            "                 CCCCC                                                                 CCCCC                 " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1513,9 +1406,8 @@ public class LHCStructureString {
             "                 CC     C                                                           C     CC                 ",
             "                 CC     C                                                           C     CC                 ",
             "                 CC     C                                                           C     CC                 ",
-            "                   CCCCC                                                             CCCCC                   "
-    },{
-        "                                                                                                             ",
+            "                   CCCCC                                                             CCCCC                   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1527,9 +1419,8 @@ public class LHCStructureString {
             "                   C     C                                                         C     C                   ",
             "                   C     C                                                         C     C                   ",
             "                   C     C                                                         C     C                   ",
-            "                    CCCCC                                                           CCCCC                    "
-    },{
-        "                                                                                                             ",
+            "                    CCCCC                                                           CCCCC                    " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1541,9 +1432,8 @@ public class LHCStructureString {
             "                    C     CC                                                     CC     C                    ",
             "                    C     CC                                                     CC     C                    ",
             "                    C     CC                                                     CC     C                    ",
-            "                     CCCCC                                                         CCCCC                     "
-    },{
-        "                                                                                                             ",
+            "                     CCCCC                                                         CCCCC                     " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1555,9 +1445,8 @@ public class LHCStructureString {
             "                     C      CC                                                 CC      C                     ",
             "                     C      CC                                                 CC      C                     ",
             "                     C      CC                                                 CC      C                     ",
-            "                      CCCCCC                                                     CCCCCC                      "
-    },{
-        "                                                                                                             ",
+            "                      CCCCCC                                                     CCCCCC                      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1569,9 +1458,8 @@ public class LHCStructureString {
             "                      CC      CC                                             CC      CC                      ",
             "                      CC      CC                                             CC      CC                      ",
             "                      CC      CC                                             CC      CC                      ",
-            "                        CCCCCC                                                 CCCCCC                        "
-    },{
-        "                                                                                                             ",
+            "                        CCCCCC                                                 CCCCCC                        " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1583,9 +1471,8 @@ public class LHCStructureString {
             "                        C       CC                                         CC       C                        ",
             "                        C       CC                                         CC       C                        ",
             "                        C       CC                                         CC       C                        ",
-            "                         CCCCCCC                                             CCCCCCC                         "
-    },{
-        "                                                                                                             ",
+            "                         CCCCCCC                                             CCCCCCC                         " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1597,9 +1484,8 @@ public class LHCStructureString {
             "                         CC       CC                                     CC       CC                         ",
             "                         CC       CC                                     CC       CC                         ",
             "                         CC       CC                                     CC       CC                         ",
-            "                           CCCCCCC                                         CCCCCCC                           "
-    },{
-        "                                                                                                             ",
+            "                           CCCCCCC                                         CCCCCCC                           " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1611,9 +1497,8 @@ public class LHCStructureString {
             "                           CC       CCC                               CCC       CC                           ",
             "                           CC       CCC                               CCC       CC                           ",
             "                           CC       CCC                               CCC       CC                           ",
-            "                             CCCCCCC                                     CCCCCCC                             "
-    },{
-        "                                                                                                             ",
+            "                             CCCCCCC                                     CCCCCCC                             " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1625,9 +1510,8 @@ public class LHCStructureString {
             "                             CC        CCC                         CCC        CC                             ",
             "                             CC        CCC                         CCC        CC                             ",
             "                             CC        CCC                         CCC        CC                             ",
-            "                               CCCCCCCC                               CCCCCCCC                               "
-    },{
-        "                                                                                                             ",
+            "                               CCCCCCCC                               CCCCCCCC                               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1639,9 +1523,8 @@ public class LHCStructureString {
             "                               CC         CCCCC               CCCCC         CC                               ",
             "                               CC         CCCCC               CCCCC         CC                               ",
             "                               CC         CCCCC               CCCCC         CC                               ",
-            "                                 CCCCCCCCC                         CCCCCCCCC                                 "
-    },{
-        "                                                                                                             ",
+            "                                 CCCCCCCCC                         CCCCCCCCC                                 " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1653,9 +1536,8 @@ public class LHCStructureString {
             "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
             "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
             "                                 CC            CCCCCCCCCCCCCCC            CC                                 ",
-            "                                   CCCCCCCCCCCC               CCCCCCCCCCCC                                   "
-    },{
-        "                                                                                                             ",
+            "                                   CCCCCCCCCCCC               CCCCCCCCCCCC                                   " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1667,9 +1549,8 @@ public class LHCStructureString {
             "                                   CCC                                 CCC                                   ",
             "                                   CCC                                 CCC                                   ",
             "                                   CCC                                 CCC                                   ",
-            "                                      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      "
-    },{
-        "                                                                                                             ",
+            "                                      CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC                                      " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1681,9 +1562,8 @@ public class LHCStructureString {
             "                                      CCCC                         CCCC                                      ",
             "                                      CCCC                         CCCC                                      ",
             "                                      CCCC                         CCCC                                      ",
-            "                                          CCCCCCCCCCCCCCCCCCCCCCCCC                                          "
-    },{
-        "                                                                                                             ",
+            "                                          CCCCCCCCCCCCCCCCCCCCCCCCC                                          " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1695,9 +1575,8 @@ public class LHCStructureString {
             "                                          CCCCC               CCCCC                                          ",
             "                                          CCCCC               CCCCC                                          ",
             "                                          CCCCC               CCCCC                                          ",
-            "                                               CCCCCCCCCCCCCCC                                               "
-    },{
-        "                                                                                                             ",
+            "                                               CCCCCCCCCCCCCCC                                               " },
+        { "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
             "                                                                                                             ",
@@ -1709,593 +1588,110 @@ public class LHCStructureString {
             "                                               CCCCCCCCCCCCCCC                                               ",
             "                                               CCCCCCCCCCCCCCC                                               ",
             "                                               CCCCCCCCCCCCCCC                                               ",
-            "                                                                                                             "
-    }};
+            "                                                                                                             " } };
 
+    public static final String[][] EM_MODULE = {
+        { "             ", "             ", "CCCCCCCCCCCCC", "CCCDDDCDDDCCC", "CCBCCCCCCCBCC", "C1BCCCCCCCB1C",
+            "CCBCCCCCCCBCC", "CCCDDDCDDDCCC", "CCCCCCCCCCCCC", "             ", "             " },
+        { "             ", "CCCBBBBBBBCCC", "CCDB  B  BDCC", "CCCCCCCCCCCCC", "  DB  B  BD  ", "  DB  B  BD  ",
+            "  DB  B  BD  ", "CCCCCCCCCCCCC", "CCDB  B  BDCC", "CCCBBBBBBBCCC", "             " },
+        { "CCCCCCCCCCCCC", "CCDB  B  BDCC", "  DB  B  BD  ", "  D       D  ", "  D       D  ", "  DB  B  BD  ",
+            "  D       D  ", "  D       D  ", "  DB  B  BD  ", "CCDB  B  BDCC", "CCCCCCCCCCCCC" },
+        { "CCBBCEEECBBCC", "CCCCCCCCCCCCC", "  D       D  ", "  DB  B  BD  ", "CCCCCCCCCCCCC", "CCCCCCCCCCCCC",
+            "CCCCCCCCCCCCC", "  DB  B  BD  ", "  D       D  ", "CCCCCCCCCCCCC", "             " },
+        { "CCBCCECCCCBCC", "  DB  B  BD  ", "  D       D  ", "CCCCCCCCCCCCC", "             ", "             ",
+            "             ", "CCCCCCCCCCCCC", "  D       D  ", "  DB  B  BD  ", "CCCCCCCCCCCCC" },
+        { "CCBCCEEECCBCC", "  DB  B  BD  ", "  DB  B  BD  ", "CCCCCCCCCCCCC", "             ", "             ",
+            "             ", "CCCCCCCCCCCCC", "  DB  B  BD  ", "  DB  B  BD  ", "CCCCCCCCCCCCC" },
+        { "CCBCCECCCCBCC", "  DB  B  BD  ", "  D       D  ", "CCCCCCCCCCCCC", "             ", "             ",
+            "             ", "CCCCCCCCCCCCC", "  D       D  ", "  DB  B  BD  ", "CCCCCCCCCCCCC" },
+        { "CCBBCEEECBBCC", "CCCCCCCCCCCCC", "  D       D  ", "  DB  B  BD  ", "CCCCCCCCCCCCC", "CCCCCCCCCCCCC",
+            "CCCCCCCCCCCCC", "  DB  B  BD  ", "  D       D  ", "CCCCCCCCCCCCC", "             " },
+        { "CCCCCCCCCCCCC", "CCDB  B  BDCC", "  DB  B  BD  ", "  D       D  ", "  D       D  ", "  DB  B  BD  ",
+            "  D       D  ", "  D       D  ", "  DB  B  BD  ", "CCDB  B  BDCC", "CCCCCCCCCCCCC" },
+        { "             ", "CCBBBBBBBBBCC", "CCDB  B  BDCC", "CCCCCCCCCCCCC", "  DB  B  BD  ", "  DB  B  BD  ",
+            "  DB  B  BD  ", "CCCCCCCCCCCCC", "CCDB  B  BDCC", "CCBBBBBBBBBCC", "             " },
+        { "             ", "             ", "CCCCCCCCCCCCC", "CCDDDDDDDDDCC", "CCCCCCCCCCCCC", "CCCCCCCCCCCCC",
+            "CCCCCCCCCCCCC", "CCDDDDDDDDDCC", "CCCCCCCCCCCCC", "             ", "             " } };
 
-    public static final String[][] EM_MODULE = {{
-        "             ",
-        "             ",
-        "CCCCCCCCCCCCC",
-        "CCCDDDCDDDCCC",
-        "CCBCCCCCCCBCC",
-        "C1BCCCCCCCB1C",
-        "CCBCCCCCCCBCC",
-        "CCCDDDCDDDCCC",
-        "CCCCCCCCCCCCC",
-        "             ",
-        "             "
-    }, {
-        "             ",
-        "CCCBBBBBBBCCC",
-        "CCDB  B  BDCC",
-        "CCCCCCCCCCCCC",
-        "  DB  B  BD  ",
-        "  DB  B  BD  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC",
-        "CCDB  B  BDCC",
-        "CCCBBBBBBBCCC",
-        "             "
-    }, {
-        "CCCCCCCCCCCCC",
-        "CCDB  B  BDCC",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "CCDB  B  BDCC",
-        "CCCCCCCCCCCCC"
-    }, {
-        "CCBBCEEECBBCC",
-        "CCCCCCCCCCCCC",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC",
-        "CCCCCCCCCCCCC",
-        "CCCCCCCCCCCCC",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "CCCCCCCCCCCCC",
-        "             "
-    }, {
-        "CCBCCECCCCBCC",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "CCCCCCCCCCCCC",
-        "             ",
-        "             ",
-        "             ",
-        "CCCCCCCCCCCCC",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC"
-    }, {
-        "CCBCCEEECCBCC",
-        "  DB  B  BD  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC",
-        "             ",
-        "             ",
-        "             ",
-        "CCCCCCCCCCCCC",
-        "  DB  B  BD  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC"
-    }, {
-        "CCBCCECCCCBCC",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "CCCCCCCCCCCCC",
-        "             ",
-        "             ",
-        "             ",
-        "CCCCCCCCCCCCC",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC"
-    }, {
-        "CCBBCEEECBBCC",
-        "CCCCCCCCCCCCC",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC",
-        "CCCCCCCCCCCCC",
-        "CCCCCCCCCCCCC",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "CCCCCCCCCCCCC",
-        "             "
-    }, {
-        "CCCCCCCCCCCCC",
-        "CCDB  B  BDCC",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "  D       D  ",
-        "  D       D  ",
-        "  DB  B  BD  ",
-        "CCDB  B  BDCC",
-        "CCCCCCCCCCCCC"
-    }, {
-        "             ",
-        "CCBBBBBBBBBCC",
-        "CCDB  B  BDCC",
-        "CCCCCCCCCCCCC",
-        "  DB  B  BD  ",
-        "  DB  B  BD  ",
-        "  DB  B  BD  ",
-        "CCCCCCCCCCCCC",
-        "CCDB  B  BDCC",
-        "CCBBBBBBBBBCC",
-        "             "
-    }, {
-        "             ",
-        "             ",
-        "CCCCCCCCCCCCC",
-        "CCDDDDDDDDDCC",
-        "CCCCCCCCCCCCC",
-        "CCCCCCCCCCCCC",
-        "CCCCCCCCCCCCC",
-        "CCDDDDDDDDDCC",
-        "CCCCCCCCCCCCC",
-        "             ",
-        "             "
-    }};
+    public static final String[][] WEAK_MODULE = {
+        { "             ", "             ", "CCCCCCCCCCCCC", "CCDDDDDDDDDCC", "CCCCCCCCCCCCC", "CCCCCCCCCCCCC",
+            "CCCCCCCCCCCCC", "CCDDDDDDDDDCC", "CCCCCCCCCCCCC", "             ", "             " },
+        { "             ", "CCKKKKKKKKKCC", "CCD       DCC", "CCCCCCCCCCCCC", "  D       D  ", "  D       D  ",
+            "  D       D  ", "CCCCCCCCCCCCC", "CCD       DCC", "CCKKKKKKKKKCC", "             " },
+        { "CCCCCCCCCCCCC", "CCD       DCC", "  D       D  ", "  D       D  ", "  DKKKKKKKD  ", "  DKKKKKKKD  ",
+            "  DKKKKKKKD  ", "  D       D  ", "  D       D  ", "CCD       DCC", "CCCCCCCCCCCCC" },
+        { "CCKCECCCECKCC", "CCCC     CCCC", "  D       D  ", "  DKKKKKKKD  ", "CCCCCCCCCCCCC", "CCCCCCCCCCCCC",
+            "CCCCCCCCCCCCC", "  DKKKKKKKD  ", "  D       D  ", "CCCCCCCCCCCCC", "             " },
+        { "CCKCECECECKCC", "  D       D  ", "  DKKKKKKKD  ", "CCCCCCCCCCCCC", "             ", "             ",
+            "             ", "CCCCCCCCCCCCC", "  DKKKKKKKD  ", "  D       D  ", "CCCCCCCCCCCCC" },
+        { "CCKCECECECKCC", "  D       D  ", "  DKKKKKKKD  ", "CCCCCCCCCCCCC", "             ", "             ",
+            "             ", "CCCCCCCCCCCCC", "  DKKKKKKKD  ", "  D       D  ", "CCCCCCCCCCCCC" },
+        { "CCKCECECECKCC", "  D       D  ", "  DKKKKKKKD  ", "CCCCCCCCCCCCC", "             ", "             ",
+            "             ", "CCCCCCCCCCCCC", "  DKKKKKKKD  ", "  D       D  ", "CCCCCCCCCCCCC" },
+        { "CCKCCECECCKCC", "CCCC     CCCC", "  D       D  ", "  DKKKKKKKD  ", "CCCCCCCCCCCCC", "CCCCCCCCCCCCC",
+            "CCCCCCCCCCCCC", "  DKKKKKKKD  ", "  D       D  ", "CCCCCCCCCCCCC", "             " },
+        { "CCCCCCCCCCCCC", "CCD       DCC", "  D       D  ", "  D       D  ", "  DKKKKKKKD  ", "  DKKKKKKKD  ",
+            "  DKKKKKKKD  ", "  D       D  ", "  D       D  ", "CCD       DCC", "CCCCCCCCCCCCC" },
+        { "             ", "CCCKKKKKKKCCC", "CCD       DCC", "CCCCCCCCCCCCC", "  D       D  ", "  D       D  ",
+            "  D       D  ", "CCCCCCCCCCCCC", "CCD       DCC", "CCCKKKKKKKCCC", "             " },
+        { "             ", "             ", "CCCCCCCCCCCCC", "CCCDDDCDDDCCC", "CCKCCCCCCCKCC", "C2KCCCCCCCK2C",
+            "CCKCCCCCCCKCC", "CCCDDDCDDDCCC", "CCCCCCCCCCCCC", "             ", "             " } };
 
+    public static final String[][] STRONG_MODULE = {
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " },
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "C  C   C  3", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " },
+        { "  CIIIIIC  ", " IDCDDDCDC ", "CDDDDDDDDDC", "DCDDCCCDDCC", "CDDC   CDDI", "CDDC   CDDI", "CDDC   CDDI",
+            "DCDDCCCDDCC", "CDDDDDDDDDC", " IDCDDDCDC ", "  C CCC C  " },
+        { "  CCCCCCC  ", " IICIIICID ", "CIIIIIIIIIC", "DCIICCCIICD", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICD", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CCCCCCC  ", " IIIIIIIID ", "CIIIIIIIIIC", "DCIICCCIICD", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICD", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CEEECEC  ", " IIIIIIIID ", "CIIIIIIIIIC", "DCIICCCIICD", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICD", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CECECEC  ", " IIIIIIIID ", "CIIIIIIIIIC", "DCIICCCIICC", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICC", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CECEEEC  ", " IIIIIIIID ", "CIIIIIIIIIC", "DCIICCCIICD", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICD", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CCCCCCC  ", " IIIIIIIID ", "CIIIIIIIIIC", "DCIICCCIICD", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICD", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CCCCCCC  ", " IICIIICID ", "CIIIIIIIIIC", "DCIICCCIICD", "CIIC   CIIC", "CIIC   CIIC", "CIIC   CIIC",
+            "DCIICCCIICD", "CIIIIIIIIIC", " IICIIICID ", "  C CCC C  " },
+        { "  CIIIIIC  ", " IDCDDDCDC ", "CDDDDDDDDDC", "DCDDCCCDDCC", "CDDC   CDDI", "CDDC   CDDI", "CDDC   CDDI",
+            "DCDDCCCDDCC", "CDDDDDDDDDC", " IDCDDDCDC ", "  C CCC C  " },
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "C  C   C  3", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " },
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " } };
 
-            public static final String[][] WEAK_MODULE = {{
-        "             ",
-            "             ",
-            "CCCCCCCCCCCCC",
-            "CCDDDDDDDDDCC",
-            "CCCCCCCCCCCCC",
-            "CCCCCCCCCCCCC",
-            "CCCCCCCCCCCCC",
-            "CCDDDDDDDDDCC",
-            "CCCCCCCCCCCCC",
-            "             ",
-            "             "
-    }, {
-        "             ",
-            "CCKKKKKKKKKCC",
-            "CCD       DCC",
-            "CCCCCCCCCCCCC",
-            "  D       D  ",
-            "  D       D  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC",
-            "CCD       DCC",
-            "CCKKKKKKKKKCC",
-            "             "
-    }, {
-        "CCCCCCCCCCCCC",
-            "CCD       DCC",
-            "  D       D  ",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "  DKKKKKKKD  ",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "  D       D  ",
-            "CCD       DCC",
-            "CCCCCCCCCCCCC"
-    }, {
-        "CCKCECCCECKCC",
-            "CCCC     CCCC",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "CCCCCCCCCCCCC",
-            "CCCCCCCCCCCCC",
-            "CCCCCCCCCCCCC",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC",
-            "             "
-    }, {
-        "CCKCECECECKCC",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "CCCCCCCCCCCCC",
-            "             ",
-            "             ",
-            "             ",
-            "CCCCCCCCCCCCC",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC"
-    }, {
-        "CCKCECECECKCC",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "CCCCCCCCCCCCC",
-            "             ",
-            "             ",
-            "             ",
-            "CCCCCCCCCCCCC",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC"
-    }, {
-        "CCKCECECECKCC",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "CCCCCCCCCCCCC",
-            "             ",
-            "             ",
-            "             ",
-            "CCCCCCCCCCCCC",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC"
-    }, {
-        "CCKCCECECCKCC",
-            "CCCC     CCCC",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "CCCCCCCCCCCCC",
-            "CCCCCCCCCCCCC",
-            "CCCCCCCCCCCCC",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC",
-            "             "
-    }, {
-        "CCCCCCCCCCCCC",
-            "CCD       DCC",
-            "  D       D  ",
-            "  D       D  ",
-            "  DKKKKKKKD  ",
-            "  DKKKKKKKD  ",
-            "  DKKKKKKKD  ",
-            "  D       D  ",
-            "  D       D  ",
-            "CCD       DCC",
-            "CCCCCCCCCCCCC"
-    }, {
-        "             ",
-            "CCCKKKKKKKCCC",
-            "CCD       DCC",
-            "CCCCCCCCCCCCC",
-            "  D       D  ",
-            "  D       D  ",
-            "  D       D  ",
-            "CCCCCCCCCCCCC",
-            "CCD       DCC",
-            "CCCKKKKKKKCCC",
-            "             "
-    }, {
-        "             ",
-            "             ",
-            "CCCCCCCCCCCCC",
-            "CCCDDDCDDDCCC",
-            "CCKCCCCCCCKCC",
-            "C2KCCCCCCCK2C",
-            "CCKCCCCCCCKCC",
-            "CCCDDDCDDDCCC",
-            "CCCCCCCCCCCCC",
-            "             ",
-            "             "
-    }};
-
-    public static final String[][] STRONG_MODULE = {{
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    },{
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "C  C   C  3",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    }, {
-        "  CIIIIIC  ",
-            " IDCDDDCDC ",
-            "CDDDDDDDDDC",
-            "DCDDCCCDDCC",
-            "CDDC   CDDI",
-            "CDDC   CDDI",
-            "CDDC   CDDI",
-            "DCDDCCCDDCC",
-            "CDDDDDDDDDC",
-            " IDCDDDCDC ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " IICIIICID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICD",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICD",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " IIIIIIIID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICD",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICD",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CEEECEC  ",
-            " IIIIIIIID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICD",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICD",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CECECEC  ",
-            " IIIIIIIID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICC",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CECEEEC  ",
-            " IIIIIIIID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICD",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICD",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " IIIIIIIID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICD",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICD",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " IICIIICID ",
-            "CIIIIIIIIIC",
-            "DCIICCCIICD",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "CIIC   CIIC",
-            "DCIICCCIICD",
-            "CIIIIIIIIIC",
-            " IICIIICID ",
-            "  C CCC C  "
-    }, {
-        "  CIIIIIC  ",
-            " IDCDDDCDC ",
-            "CDDDDDDDDDC",
-            "DCDDCCCDDCC",
-            "CDDC   CDDI",
-            "CDDC   CDDI",
-            "CDDC   CDDI",
-            "DCDDCCCDDCC",
-            "CDDDDDDDDDC",
-            " IDCDDDCDC ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "C  C   C  3",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    }};
-
-    public static final String[][] GRAV_MODULE = {{
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    },{
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "4  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    }, {
-        "  COOOOOC  ",
-            " CDCDDDCDO ",
-            "CDDDDDDDDDC",
-            "CCDDCCCDDCD",
-            "ODDC   CDDC",
-            "ODDC   CDDC",
-            "ODDC   CDDC",
-            "CCDDCCCDDCD",
-            "CDDDDDDDDDC",
-            " CDCDDDCDO ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " OOCOOOCOO ",
-            "COOOOOOOOOC",
-            "DCOOCCCOOCD",
-            "COOC   COOC",
-            "COOC   COOC",
-            "COOC   COOC",
-            "DCOOCCCOOCD",
-            "COOOOOOOOOC",
-            " OOCOOOCOO ",
-            "  C CCC C  "
-    }, {
-        "  CEEECEC  ",
-            " O       O ",
-            "C         C",
-            "DC  CCC  CD",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "DC  CCC  CD",
-            "C         C",
-            " O C   C O ",
-            "  C CCC C  "
-    }, {
-        "  CECECEC  ",
-            " O       O ",
-            "C         C",
-            "DC  CCC  CD",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "DC  CCC  CD",
-            "C         C",
-            " O C   C O ",
-            "  C CCC C  "
-    }, {
-        "  CECECEC  ",
-            " O       O ",
-            "C         C",
-            "CC  CCC  CD",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CD",
-            "C         C",
-            " O C   C O ",
-            "  C CCC C  "
-    }, {
-        "  CECCCEC  ",
-            " O       O ",
-            "C         C",
-            "DC  CCC  CD",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "DC  CCC  CD",
-            "C         C",
-            " O C   C O ",
-            "  C CCC C  "
-    }, {
-        "  CEEEEEC  ",
-            " O       O ",
-            "C         C",
-            "DC  CCC  CD",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "DC  CCC  CD",
-            "C         C",
-            " O C   C O ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " OOCOOOCOO ",
-            "COOOOOOOOOC",
-            "DCOOCCCOOCD",
-            "COOC   COOC",
-            "COOC   COOC",
-            "COOC   COOC",
-            "DCOOCCCOOCD",
-            "COOOOOOOOOC",
-            " OOCOOOCOO ",
-            "  C CCC C  "
-    }, {
-        "  COOOOOC  ",
-            " CDCDDDCDO ",
-            "CDDDDDDDDDC",
-            "CCDDCCCDDCD",
-            "ODDC   CDDC",
-            "ODDC   CDDC",
-            "ODDC   CDDC",
-            "CCDDCCCDDCD",
-            "CDDDDDDDDDC",
-            " CDCDDDCDO ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "4  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    }, {
-        "  CCCCCCC  ",
-            " CCC   CCC ",
-            "CC       CC",
-            "CC  CCC  CC",
-            "C  C   C  C",
-            "C  C   C  C",
-            "C  C   C  C",
-            "CC  CCC  CC",
-            "CC       CC",
-            " CCC   CCC ",
-            "  C CCC C  "
-    }};
+    public static final String[][] GRAV_MODULE = {
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " },
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "4  C   C  C", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " },
+        { "  COOOOOC  ", " CDCDDDCDO ", "CDDDDDDDDDC", "CCDDCCCDDCD", "ODDC   CDDC", "ODDC   CDDC", "ODDC   CDDC",
+            "CCDDCCCDDCD", "CDDDDDDDDDC", " CDCDDDCDO ", "  C CCC C  " },
+        { "  CCCCCCC  ", " OOCOOOCOO ", "COOOOOOOOOC", "DCOOCCCOOCD", "COOC   COOC", "COOC   COOC", "COOC   COOC",
+            "DCOOCCCOOCD", "COOOOOOOOOC", " OOCOOOCOO ", "  C CCC C  " },
+        { "  CEEECEC  ", " O       O ", "C         C", "DC  CCC  CD", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "DC  CCC  CD", "C         C", " O C   C O ", "  C CCC C  " },
+        { "  CECECEC  ", " O       O ", "C         C", "DC  CCC  CD", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "DC  CCC  CD", "C         C", " O C   C O ", "  C CCC C  " },
+        { "  CECECEC  ", " O       O ", "C         C", "CC  CCC  CD", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "CC  CCC  CD", "C         C", " O C   C O ", "  C CCC C  " },
+        { "  CECCCEC  ", " O       O ", "C         C", "DC  CCC  CD", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "DC  CCC  CD", "C         C", " O C   C O ", "  C CCC C  " },
+        { "  CEEEEEC  ", " O       O ", "C         C", "DC  CCC  CD", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "DC  CCC  CD", "C         C", " O C   C O ", "  C CCC C  " },
+        { "  CCCCCCC  ", " OOCOOOCOO ", "COOOOOOOOOC", "DCOOCCCOOCD", "COOC   COOC", "COOC   COOC", "COOC   COOC",
+            "DCOOCCCOOCD", "COOOOOOOOOC", " OOCOOOCOO ", "  C CCC C  " },
+        { "  COOOOOC  ", " CDCDDDCDO ", "CDDDDDDDDDC", "CCDDCCCDDCD", "ODDC   CDDC", "ODDC   CDDC", "ODDC   CDDC",
+            "CCDDCCCDDCD", "CDDDDDDDDDC", " CDCDDDCDO ", "  C CCC C  " },
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "4  C   C  C", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " },
+        { "  CCCCCCC  ", " CCC   CCC ", "CC       CC", "CC  CCC  CC", "C  C   C  C", "C  C   C  C", "C  C   C  C",
+            "CC  CCC  CC", "CC       CC", " CCC   CCC ", "  C CCC C  " } };
 
 }

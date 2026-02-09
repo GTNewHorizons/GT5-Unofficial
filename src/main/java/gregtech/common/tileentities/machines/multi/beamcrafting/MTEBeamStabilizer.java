@@ -7,13 +7,9 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_STABILIZ
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -25,12 +21,12 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -44,8 +40,7 @@ import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
 
-public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer>
-    implements ISurvivalConstructable {
+public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -230,24 +225,55 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4"))
+        tt.addMachineType(
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4"))
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7"))
             .beginStructureBlock(7, 7, 11, false)
-            .addController(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"), 109, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"), 9, true)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"), 1, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"), 1, false)
-            .addEnergyHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addController(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                109,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
+                9,
+                true)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                1,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"),
+                1,
+                false)
+            .addEnergyHatch(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
+                1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorHamCorp,GTValues.Authorzub);
+            .toolTipFinisher(GTValues.AuthorHamCorp, GTValues.Authorzub);
         return tt;
     }
 

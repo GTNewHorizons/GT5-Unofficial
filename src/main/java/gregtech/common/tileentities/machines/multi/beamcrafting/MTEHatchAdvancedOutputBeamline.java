@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -18,7 +19,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.gui.modularui.hatch.MTEHatchAdvancedOutputBeamlineGui;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
-import net.minecraft.util.StatCollector;
 
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
@@ -135,8 +135,11 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     @Override
     public String[] getDescription() {
-        return new String[] { StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1"),
-            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2") };
+        return new String[] {
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1"),
+            StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2") };
     }
 
 }

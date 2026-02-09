@@ -15,9 +15,6 @@ import static java.lang.Math.max;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.ArrayList;
-
-import gregtech.api.enums.GTValues;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -36,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -43,14 +41,12 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.gui.modularui.multiblock.MTELargeHadronColliderGui;
@@ -60,8 +56,7 @@ import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 import gtnhlanth.common.register.LanthItemList;
 
-public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider>
-    implements ISurvivalConstructable {
+public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronCollider> implements ISurvivalConstructable {
 
     private static final int MACHINEMODE_ACCELERATOR = 0;
     private static final int MACHINEMODE_COLLIDER = 1;
@@ -192,28 +187,28 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,0))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 0))
                 .build()) // EM beam output hatch
         .addElement(
             '2',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(4)
-                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,1))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 1))
                 .build()) // Weak beam output hatch
         .addElement(
             '3',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(5)
-                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,2))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 2))
                 .build()) // Strong beam output hatch
         .addElement(
             '4',
             buildHatchAdder(MTELargeHadronCollider.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(6)
-                .adder((collider,te,casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te,casingIndex,3))
+                .adder((collider, te, casingIndex) -> collider.addAdvancedBeamlineOutputHatch(te, casingIndex, 3))
                 .build()) // Grav beam output hatch
 
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings13, 11)) // CMS Casing (EM)
@@ -290,7 +285,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype"))
+        tt.addMachineType(
+            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.machinetype"))
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1"))
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2"))
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3"))
@@ -301,38 +297,78 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7"))
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8"))
             .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13"))
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25"))
             .addSeparator()
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30"))
             .addSeparator()
             .beginStructureBlock(109, 13, 122, false)
-            .addController(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"), 6034, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttehatch"), 1, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"), 16, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"), 20, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"), 1, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"), 73, false)
+            .addController(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                6034,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttehatch"),
+                1,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
+                16,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                20,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                1,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                73,
+                false)
             .addTecTechHatchInfo()
             .toolTipFinisher(GTValues.AuthorHamCorp);
         return tt;
@@ -362,40 +398,13 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, realBudget, env, false, true);
         built += survivalBuildPiece(STRUCTURE_PIECE_EM, stackSize, 5, -1, -113, realBudget, env, false, true);
         if (stackSize.stackSize > 1) {
-            built += survivalBuildPiece(
-                STRUCTURE_PIECE_WEAK,
-                stackSize,
-                5,
-                -1,
-                -9,
-                realBudget,
-                env,
-                false,
-                true);
+            built += survivalBuildPiece(STRUCTURE_PIECE_WEAK, stackSize, 5, -1, -9, realBudget, env, false, true);
         }
         if (stackSize.stackSize > 2) {
-            built += survivalBuildPiece(
-                STRUCTURE_PIECE_STRONG,
-                stackSize,
-                57,
-                -1,
-                -60,
-                realBudget,
-                env,
-                false,
-                true);
+            built += survivalBuildPiece(STRUCTURE_PIECE_STRONG, stackSize, 57, -1, -60, realBudget, env, false, true);
         }
         if (stackSize.stackSize > 3) {
-            built += survivalBuildPiece(
-                STRUCTURE_PIECE_GRAV,
-                stackSize,
-                -47,
-                -1,
-                -60,
-                realBudget,
-                env,
-                false,
-                true);
+            built += survivalBuildPiece(STRUCTURE_PIECE_GRAV, stackSize, -47, -1, -60, realBudget, env, false, true);
         }
         return built;
     }
@@ -467,7 +476,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         int outRate = inputRate;
 
         long machineVoltage = getAverageInputVoltage();
-        // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV did this so player can type '2G eV' instead of '2M keV'
+        // inputEnergy is in keV, playerTargetBeamEnergyeV is in eV did this so player can type '2G eV' instead of '2M
+        // keV'
         if (inputEnergy <= playerTargetBeamEnergyeV / 1000) {
             outEnergy += (float) (Math.pow(accelerationCycleCounter + 1, 2) * this.mMaxProgresstime
                 * machineVoltage
@@ -492,7 +502,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         // counter starts at 0, so +1
         return (long) -(machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
 
-
     }
 
     @Override
@@ -507,10 +516,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public void onValueUpdate(byte aValue) {
         int oldMachineMode = machineMode;
-        if (aValue == 0){
+        if (aValue == 0) {
             machineMode = 0;
-        }
-        else{
+        } else {
             machineMode = 1;
         }
         if (oldMachineMode != machineMode) getBaseMetaTileEntity().issueTextureUpdate();

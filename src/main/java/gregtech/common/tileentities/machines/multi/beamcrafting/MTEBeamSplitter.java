@@ -7,11 +7,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nullable;
 
-import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,13 +21,12 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -111,10 +107,9 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
                 .casingIndex(CASING_INDEX_CENTRE)
                 .hint(3)
-                .adder((splitter,te,casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te,casingIndex,4))
+                .adder((splitter, te, casingIndex) -> splitter.addAdvancedBeamlineOutputHatch(te, casingIndex, 4))
                 .build()) // beamline input hatch
         .build();
-
 
     public MTEBeamSplitter(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -178,21 +173,43 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         int randomInt = (int) (Math.random() * 101);
-        String beanOrBeamSplitter = StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype");
+        String beanOrBeamSplitter = StatCollector
+            .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype");
         if (randomInt == 69) {
-            beanOrBeamSplitter = StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake");
+            beanOrBeamSplitter = StatCollector
+                .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake");
         }
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(beanOrBeamSplitter)
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1"))
-            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1"))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
             .beginStructureBlock(9, 3, 9, false)
-            .addController(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"), 68, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"), 9, true)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"), 1, false)
-            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"), 4, false)
-            .addEnergyHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addController(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                68,
+                false)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
+                9,
+                true)
+            .addCasingInfoExactly(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
+                1,
+                false)
+            .addCasingInfoExactly(
+                StatCollector
+                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
+                4,
+                false)
+            .addEnergyHatch(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
+                1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
             .toolTipFinisher(GTValues.AuthorHamCorp);
