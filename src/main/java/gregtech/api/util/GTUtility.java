@@ -3712,6 +3712,9 @@ public class GTUtility {
                 null,
                 null,
                 null,
+                null,
+                null,
+                null,
                 300,
                 30,
                 0));
@@ -3779,6 +3782,9 @@ public class GTUtility {
             new GTRecipe(
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
