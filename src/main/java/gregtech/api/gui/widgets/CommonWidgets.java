@@ -123,7 +123,8 @@ public class CommonWidgets {
         IMetaTileEntity baseMachine) {
         if (baseMachine instanceof IConfigurationCircuitSupport circuitEnabled && circuitEnabled.allowSelectCircuit()) {
             IntSyncValue selectedSyncHandler = new IntSyncValue(() -> {
-                ItemStack selectedItem = baseMachine.getStackInSlot(circuitEnabled.getCircuitSlot());
+                ItemStack selectedItem = baseMachine.getInventoryHandler()
+                    .getStackInSlot(circuitEnabled.getCircuitSlot());
                 if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
                     // selected index 0 == config 1
                     return selectedItem.getItemDamage() - 1;

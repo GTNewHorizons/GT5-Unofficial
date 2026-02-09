@@ -2802,6 +2802,23 @@ public enum ItemList implements IItemContainer {
 
     HighEnergyFlowCircuit,
 
+    CompressedOutputBusLuV,
+    CompressedOutputBusZPM,
+    CompressedOutputBusUV,
+    CompressedOutputBusUHV,
+    CompressedOutputBusUEV,
+    CompressedOutputBusUIV,
+    CompressedOutputBusUMV,
+    CompressedOutputBusUXV,
+
+    CompressedInputBusLuV,
+    CompressedInputBusZPM,
+    CompressedInputBusUV,
+    CompressedInputBusUHV,
+    CompressedInputBusUEV,
+    CompressedInputBusUIV,
+    CompressedInputBusUMV,
+    CompressedInputBusUXV,
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,
     CircuitImprint_NanoAssembly,
