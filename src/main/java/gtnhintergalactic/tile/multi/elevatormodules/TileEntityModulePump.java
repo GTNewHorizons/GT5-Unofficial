@@ -30,7 +30,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtnhintergalactic.recipe.SpacePumpingRecipes;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
