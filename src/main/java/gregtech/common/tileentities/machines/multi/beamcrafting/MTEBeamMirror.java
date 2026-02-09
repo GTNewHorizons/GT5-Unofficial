@@ -9,8 +9,10 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -173,18 +175,17 @@ public class MTEBeamMirror
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Beam Mirror")
-            .addInfo("Takes in particle beams and sends them back out")
-            .addInfo(EnumChatFormatting.GOLD + "That's literally it.")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2"))
             .beginStructureBlock(3, 5, 5, false)
-            .addController("Front Center")
-            .addCasingInfoExactly("Collider Casing", 40, false)
-            .addCasingInfoExactly("Any Glass", 5, true)
-            .addCasingInfoExactly("Beamline Input Hatch", 1, false)
-            .addCasingInfoExactly("Beamline Output Hatch", 1, false)
+            .addController(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"), 40, false)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"), 5, true)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"), 1, false)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"), 1, false)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            // .addTecTechHatchInfo()
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.AuthorHamCorp);
         return tt;
     }
 

@@ -18,6 +18,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.gui.modularui.hatch.MTEHatchAdvancedOutputBeamlineGui;
 import gtnhlanth.common.beamline.Particle;
 import gtnhlanth.common.hatch.MTEHatchOutputBeamline;
+import net.minecraft.util.StatCollector;
 
 public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
@@ -134,8 +135,8 @@ public class MTEHatchAdvancedOutputBeamline extends MTEHatchOutputBeamline {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Allows blacklisting of specific particle types in the Large Hadron Collider",
-            "Right click to open the GUI and change selections" };
+        return new String[] { StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1"),
+            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2") };
     }
 
 }

@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.enums.GTValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -150,7 +152,7 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer>
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(10))
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings13, 10))
-        .addElement('A', chainAllGlasses()) // new glass type todo: (?)
+        .addElement('A', chainAllGlasses())
         .addElement(
             'C',
             buildHatchAdder(MTEBeamStabilizer.class).hatchClass(MTEHatchInputBeamline.class)
@@ -228,43 +230,24 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Beam Stabilizer")
-            .addInfo(
-                "Accepts and stores up to 100000 " + EnumChatFormatting.GREEN
-                    + "Particles "
-                    + EnumChatFormatting.GRAY
-                    + "from ")
-            .addInfo(
-                "potentially intermittent high " + EnumChatFormatting.RED
-                    + "Rate "
-                    + EnumChatFormatting.GRAY
-                    + "particle beam packets")
-            .addInfo("and re-releases those particles as a stable beam at a ")
-            .addInfo(EnumChatFormatting.RED + "Rate " + EnumChatFormatting.GRAY + "of your choosing")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4"))
             .addSeparator()
-            .addInfo(
-                "If a particle beam with a different " + EnumChatFormatting.GREEN
-                    + "Particle"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.GOLD
-                    + "Energy "
-                    + EnumChatFormatting.GRAY
-                    + "or ")
-            .addInfo(
-                EnumChatFormatting.AQUA + "Focus "
-                    + EnumChatFormatting.GRAY
-                    + "is sent to the machine during operation, it is")
-            .addInfo("ignored UNLESS there are no currently stored " + EnumChatFormatting.GREEN + "Particles ")
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7"))
             .beginStructureBlock(7, 7, 11, false)
-            .addController("Front Center")
-            .addCasingInfoExactly("Collider Casing", 109, false)
-            .addCasingInfoExactly("Any Glass", 9, true)
-            .addCasingInfoExactly("Beamline Input Hatch", 1, false)
-            .addCasingInfoExactly("Beamline Output Hatch", 1, false)
-            .addEnergyHatch("Any Collider Casing", 1)
+            .addController(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"), 109, false)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"), 9, true)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"), 1, false)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch"), 1, false)
+            .addEnergyHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.AuthorHamCorp,GTValues.Authorzub);
         return tt;
     }
 

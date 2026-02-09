@@ -1755,6 +1755,8 @@ GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 GT5U.gui.text.BeamlineHatch.blacklist=Blacklist Selection
 GT5U.gui.text.BeamlineHatch.emptylist=No list to choose from
 
+# LHC and beamcrafting
+
 GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
 GT5U.gui.text.LHC.beamrate=Current Beam Rate
 GT5U.gui.text.LHC.powercost=Current Power Draw %s EU/t
@@ -1763,6 +1765,99 @@ GT5U.gui.text.LHC.off=Off
 GT5U.gui.text.LHC.acceleratormode=Accelerating beam...
 GT5U.gui.text.LHC.collidermode=Colliding beam...
 GT5U.gui.text.LHC.completedcycles=Completed Cycles
+
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype=Beam Crafter, Beam Assembler
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1=Collides two beams of particles into target materials to modify
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2=their subatomic structure
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3=The Input Beams can be supplied to either Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4=Recipes will not start unless both beams have sufficiently high
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5=§eBeam Energies§7
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6=Processing speed is determined purely by the Input §cBeam Rates§7
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7=Each particle §cAmount§7 provided corresponds to one tick of progress
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8=Once the required §cAmount§7 of a specific §bPart§6icle§7 have been input,
+gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9=excess particles of that type are voided
+
+gt.blockmachines.multimachine.beamcrafting.beammirror.machinetype=Beam Mirror
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip1=Takes in particle beams and sends them back out
+gt.blockmachines.multimachine.beamcrafting.beammirror.tooltip2=§6That's literally it.
+
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetype=Beam Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.machinetypefake=Bean Splitter
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip1=Select which particles to blacklist in the output hatches
+gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2=Input particles will be split evenly among all valid output hatches
+
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.machinetype=Beam Stabilizer
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip1=Accepts and stores up to 100000 §aParticles§7 from
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip2=potentially intermittent high §cRate§7 particle beam packets
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip3=and re-releases those particles as a stable beam at a
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip4=§cRate§7 of your choosing
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip5=If a particle beam with a different §aParticle§7, §6Energy§7 or
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip6=§bFocus§7 is sent to the machine during operation, it is
+gt.blockmachines.multimachine.beamcrafting.beamstabilizer.tooltip7=ignored UNLESS there are no currently stored §aParticles
+
+gt.blockmachines.multimachine.beamcrafting.LHC.machinetype=Particle Accelerator, Particle Collider, LHC
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip1=Accelerates particles to high energies and then collides them to generate new particles
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip2=Electrically neutral particles are unaffected
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip3=Set the §etarget beam energy§7 (up to 2TeV) and the §9maximum number of cycles§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip4=Cycles every second
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip5=§f§nAccelerator mode§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in the smaller LHC ring
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §6Beam Energy§7 by §f10eV§7 for every EU consumed, until the
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=§eTarget Beam Energy§7 is reached, or the §9maximum number of cycles§7 is reached
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §eTarget Beam Energy§7 is reached, multiply the current §cBeam Rate§7 by §f1.1§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=§aPower§7 cost starts at §f1A§7 of §bEnergy Hatch Voltage§7 per §cBeam Rate§7 and increases quadratically
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=with the §dnumber of completed cycles§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §bV§7 * §cR§7 * §dN§7^2
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=Automatically switches to Collider mode when the §9maximum number of cycles§7 is reached
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14=§f§nCollider mode§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15=Splits the beam into §ftwo§7 beams that go in opposite directions in the larger LHC ring, which
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16=then collide to generate new particles
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip17=The §3Collision Energy§7 is two times the §6Beam Energy§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip18=If the §3Collision Energy§7 exceeds the rest mass of a particle, that particle will start
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip19=appearing in the outputs
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip20=A particle output can only appear in the modules that correspond to the forces that
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip21=interact with that particle
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip22=For example, Neutrinos cannot appear in the Strong force module, §fALICE§7, since they do
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip23=not interact via the strong force
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24=§fFiltered Beamline Output Hatches§7 will allow you to see the list of possible outputs, and
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25=filter them
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26=There are four LHC modules, marked by the letter on top of the module:
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27=§bE - Electromagnetism§7 - Charged Matter Sensor (§bCMS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28=§2W - Weak Interaction§7 - Advanced Total Lepton Assimilation Snare (§2ATLAS§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29=§fS - Strong Force§7 - Absolute Lattice Integrated Chromodynamic Encapsulator (§fALICE§7)
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30=§5G - Gravity§7 - Localized Horizon Curvature Binder (§5LHCb§7)
+
+gt.blockmachines.multimachine.beamcrafting.ttcontroller=Front Center
+gt.blockmachines.multimachine.beamcrafting.ttehatch=Energy Hatch
+gt.blockmachines.multimachine.beamcrafting.ttcasing=Collider Casing
+gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing=Shielded Accelerator Casing
+gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass=Shielded Accelerator Glass
+gt.blockmachines.multimachine.beamcrafting.ttanyglass=Any Tiered Glass
+gt.blockmachines.multimachine.beamcrafting.ttanycasing=Any Collider Casing
+gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (Any, optional)
+gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beamline Input Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beamline Output Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beamline Output Hatch
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description1=Allows blacklisting of specific particle types in the Large Hadron Collider
+gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered.description2=Right click to open the GUI and change selections
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # chats
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist

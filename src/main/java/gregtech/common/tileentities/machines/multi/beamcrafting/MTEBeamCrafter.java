@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -203,56 +204,33 @@ public class MTEBeamCrafter
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Beam Crafter, Beam Assembler")
-            .addInfo("Collides two beams of particles into target materials to modify ")
-            .addInfo("their subatomic structure")
+        tt.addMachineType(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.machinetype"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip1"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip2"))
             .addSeparator()
-            .addInfo("The Input Beams can be supplied to either Beamline Input Hatch")
-            .addInfo(
-                "The particle shown on the left in NEI is " + EnumChatFormatting.AQUA
-                    + "Particle 1"
-                    + EnumChatFormatting.GRAY
-                    + ", and the one ")
-            .addInfo("on the right is " + EnumChatFormatting.GOLD + "Particle 2" + EnumChatFormatting.GRAY)
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip3"))
             .addSeparator()
-            .addInfo("Recipes will not start unless both beams have sufficiently high")
-            .addInfo(EnumChatFormatting.YELLOW + "Beam Energies")
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip4"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip5"))
             .addSeparator()
-            .addInfo(
-                "Processing speed is determined purely by the Input " + EnumChatFormatting.RED
-                    + "Beam Rates"
-                    + EnumChatFormatting.GRAY)
-            .addInfo(
-                "Each particle " + EnumChatFormatting.RED
-                    + "Amount "
-                    + EnumChatFormatting.GRAY
-                    + "provided corresponds to one tick of progress")
-            .addInfo(
-                "Once the required " + EnumChatFormatting.RED
-                    + "Amount "
-                    + EnumChatFormatting.GRAY
-                    + "of a specific "
-                    + EnumChatFormatting.AQUA
-                    + "Part"
-                    + EnumChatFormatting.GOLD
-                    + "icle "
-                    + EnumChatFormatting.GRAY
-                    + "have been input,")
-            .addInfo("excess particles of that type are voided")
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip6"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip7"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip9"))
             .addSeparator()
             .beginStructureBlock(17, 5, 11, false)
-            .addController("Front Center")
-            .addCasingInfoMin("Collider Casing", 224, false)
-            .addCasingInfoExactly("Any Tiered Glass", 26, false)
-            .addInputBus("Any Collider Casing", 1)
-            .addOutputBus("Any Collider Casing", 1)
-            .addInputHatch("Any Collider Casing", 1)
-            .addOutputHatch("Any Collider Casing", 1)
-            .addEnergyHatch("Any Collider Casing", 1)
-            .addMaintenanceHatch("Any Collider Casing", 1)
+            .addController(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
+            .addCasingInfoMin(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"), 224, false)
+            .addCasingInfoExactly(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"), 26, false)
+            .addInputBus(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addOutputBus(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addInputHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addOutputHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
+            .addMaintenanceHatch(StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addTecTechHatchInfo()
-            .toolTipFinisher();
+            .toolTipFinisher(GTValues.AuthorHamCorp);
         return tt;
     }
 
