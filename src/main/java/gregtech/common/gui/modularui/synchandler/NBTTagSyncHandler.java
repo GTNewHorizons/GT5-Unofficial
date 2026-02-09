@@ -30,6 +30,11 @@ public class NBTTagSyncHandler extends ValueSyncHandler<NBTTagCompound> {
     }
 
     @Override
+    public Class<NBTTagCompound> getValueType() {
+        return NBTTagCompound.class;
+    }
+
+    @Override
     public void setValue(NBTTagCompound value, boolean setSource, boolean sync) {
         this.cache = value;
         if (setSource && this.setter != null) {
