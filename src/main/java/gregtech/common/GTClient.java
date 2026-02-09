@@ -734,6 +734,7 @@ public class GTClient extends GTProxy {
     }
 
     @Override
+    @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);
