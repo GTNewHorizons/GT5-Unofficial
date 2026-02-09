@@ -20,7 +20,7 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public MTENanochipAssemblyModuleBase<?> deserialize(PacketBuffer buffer) throws IOException {
-        if (!buffer.readBoolean()) { // MTE or GTE are null, module is not formed
+        if (!buffer.readBoolean()) { // MTE, GTE or World are null, module is not formed
             return null;
         }
         int x = buffer.readInt();
@@ -40,7 +40,9 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public void serialize(PacketBuffer buffer, MTENanochipAssemblyModuleBase module) throws IOException {
-        if (module != null && module.getBaseMetaTileEntity() != null) {
+        if (module != null && module.getBaseMetaTileEntity() != null
+            && module.getBaseMetaTileEntity()
+                .getWorld() != null) {
             buffer.writeBoolean(true);
             IGregTechTileEntity gte = module.getBaseMetaTileEntity();
             buffer.writeInt(gte.getXCoord());
