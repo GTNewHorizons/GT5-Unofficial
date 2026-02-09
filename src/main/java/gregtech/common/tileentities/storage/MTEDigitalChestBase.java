@@ -637,7 +637,7 @@ public abstract class MTEDigitalChestBase extends MTETieredMachineBlock
                     meInventoryHandler.notifyListeners(insertable, getItemStack());
 
                     MTEDigitalChestBase.this.markDirty();
-                }
+                
                 remaining -= insertable;
 
                 return remaining;
