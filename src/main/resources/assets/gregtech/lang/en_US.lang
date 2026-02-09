@@ -1759,7 +1759,7 @@ GT5U.gui.text.BeamlineHatch.emptylist=No list to choose from
 
 GT5U.gui.text.LHC.beamenergykeV=Current Beam Energy %seV
 GT5U.gui.text.LHC.beamrate=Current Beam Rate
-GT5U.gui.text.LHC.powercost=Current Power Draw %s EU/t
+GT5U.gui.text.LHC.powercost=Current Power Draw: %s EU/t
 GT5U.gui.text.LHC.status=Status: %s
 GT5U.gui.text.LHC.off=Off
 GT5U.gui.text.LHC.acceleratormode=Accelerating beam...

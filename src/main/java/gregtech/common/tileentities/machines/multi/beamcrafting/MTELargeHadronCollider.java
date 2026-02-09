@@ -2863,7 +2863,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
         long machineVoltage = getAverageInputVoltage();
         // counter starts at 0, so +1
-        return (long) (machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
+        return (long) -(machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
 
 
     }
@@ -2929,12 +2929,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 } else {
 
                     lEUt = calculateEnergyCostAccelerator(cachedOutputParticle);
-                    // todo fix waila
-                    if (!drainEnergyInput(20 * lEUt)) { // *20 because CheckRecipeResult is every second
-                        stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-                        endRecipeProcessing();
-                        return CheckRecipeResultRegistry.insufficientPower(lEUt);
-                    }
 
                     if (accelerationCycleCounter < playerTargetAccelerationCycles) {
                         cachedOutputParticle = accelerateParticle(cachedOutputParticle);
@@ -2984,12 +2978,6 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             }
 
             outputPacketAfterRecipe();
-            // todo fix waila
-            if (!drainEnergyInput(20 * lEUt)) { // *20 because CheckRecipeResult is every second
-                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-                endRecipeProcessing();
-                return CheckRecipeResultRegistry.insufficientPower(lEUt);
-            }
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }

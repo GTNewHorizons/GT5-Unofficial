@@ -153,7 +153,7 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
         String colourText = EnumChatFormatting.GOLD + "0";
 
         if (cachedOutputBeamEnergy.getDoubleValue() > 0){
-            colourText = EnumChatFormatting.GOLD + standardFormat.format(EUt.getLongValue());
+            colourText = EnumChatFormatting.GOLD + standardFormat.format(-EUt.getLongValue());
         }
 
         return EnumChatFormatting.WHITE +
