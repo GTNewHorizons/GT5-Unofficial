@@ -2764,6 +2764,9 @@ public enum ItemList implements IItemContainer {
 
     HighEnergyFlowCircuit,
 
+    RawImprintBoard,
+    ImprintBoard,
+
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,
     CircuitImprint_NanoAssembly,

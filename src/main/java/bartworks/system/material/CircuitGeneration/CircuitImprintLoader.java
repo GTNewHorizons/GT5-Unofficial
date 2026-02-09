@@ -28,8 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import com.google.common.collect.ArrayListMultimap;
-
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -38,13 +36,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 public class CircuitImprintLoader {
-
-    // Todo: fix recipeTagMap to add the items back to the creative tab.
-    public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
 
     public static void makeCuttingRecipes() {
         GTValues.RA.stdBuilder()
@@ -468,7 +462,7 @@ public class CircuitImprintLoader {
             slicedCircuits.add(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1));
         }
 
-        ItemStack imprintSupportingBoard = BWMetaItems.getCircuitParts()
+        ItemStack imprintSupportingBoard = CircuitPartsItem.getCircuitParts()
             .getStack(3);
         ItemStack exquisitePrasiolite = WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite, 1);
         long bitmask = GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.KEEPNBT
@@ -483,12 +477,14 @@ public class CircuitImprintLoader {
         }
     }
 
+    @Deprecated
     public static NBTTagCompound getTagFromStack(ItemStack stack) {
         if (GTUtility.isStackValid(stack)) return BWUtil.setStackSize(stack.copy(), 1)
             .writeToNBT(new NBTTagCompound());
         return new NBTTagCompound();
     }
 
+    @Deprecated
     public static ItemStack getStackFromTag(NBTTagCompound tagCompound) {
         return ItemStack.loadItemStackFromNBT(tagCompound);
     }

@@ -1,6 +1,6 @@
 package bartworks.API.enums;
 
-import static bartworks.system.material.CircuitGeneration.CircuitImprintLoader.getTagFromStack;
+import static bartworks.system.material.CircuitGeneration.CircuitPartsItem.getCircuitParts;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,89 +8,90 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 
 public enum CircuitImprint {
 
-    NANDChipArray(1, ItemList.NandChip, ItemList.SlicedCircuit_NANDChipArray, ItemList.CircuitImprint_NANDChipArray,
+    // ID 0-3 RESERVED
+
+    NANDChipArray(4, ItemList.NandChip, ItemList.SlicedCircuit_NANDChipArray, ItemList.CircuitImprint_NANDChipArray,
         Mods.GregTech),
-    Microprocessor(2, ItemList.Circuit_Microprocessor, ItemList.SlicedCircuit_Microprocessor,
+    Microprocessor(5, ItemList.Circuit_Microprocessor, ItemList.SlicedCircuit_Microprocessor,
         ItemList.CircuitImprint_Microprocessor, Mods.GregTech),
-    ElectronicCircuit(3, ItemList.Circuit_Basic, ItemList.SlicedCircuit_ElectronicCircuit,
+    ElectronicCircuit(6, ItemList.Circuit_Basic, ItemList.SlicedCircuit_ElectronicCircuit,
         ItemList.CircuitImprint_ElectronicCircuit, Mods.IndustrialCraft2),
-    GoodElectronicCircuit(4, ItemList.Circuit_Good, ItemList.SlicedCircuit_GoodElectronicCircuit,
+    GoodElectronicCircuit(7, ItemList.Circuit_Good, ItemList.SlicedCircuit_GoodElectronicCircuit,
         ItemList.CircuitImprint_GoodElectronicCircuit, Mods.GregTech),
-    IntegratedLogicCircuit(5, ItemList.Circuit_Chip_ILC, ItemList.SlicedCircuit_IntegratedLogicCircuit,
+    IntegratedLogicCircuit(8, ItemList.Circuit_Chip_ILC, ItemList.SlicedCircuit_IntegratedLogicCircuit,
         ItemList.CircuitImprint_IntegratedLogicCircuit, Mods.GregTech),
-    GoodIntegratedCircuit(6, ItemList.Circuit_Integrated_Good, ItemList.SlicedCircuit_GoodIntegratedCircuit,
+    GoodIntegratedCircuit(9, ItemList.Circuit_Integrated_Good, ItemList.SlicedCircuit_GoodIntegratedCircuit,
         ItemList.CircuitImprint_GoodIntegratedCircuit, Mods.GregTech),
-    AdvancedCircuit(7, ItemList.Circuit_Advanced, ItemList.SlicedCircuit_AdvancedCircuit,
+    AdvancedCircuit(10, ItemList.Circuit_Advanced, ItemList.SlicedCircuit_AdvancedCircuit,
         ItemList.CircuitImprint_AdvancedCircuit, Mods.IndustrialCraft2),
-    IntegratedProcessor(8, ItemList.Circuit_Processor, ItemList.SlicedCircuit_IntegratedProcessor,
+    IntegratedProcessor(11, ItemList.Circuit_Processor, ItemList.SlicedCircuit_IntegratedProcessor,
         ItemList.CircuitImprint_IntegratedProcessor, Mods.GregTech),
-    ProcessorAssembly(9, ItemList.Circuit_Advanced, ItemList.SlicedCircuit_ProcessorAssembly,
+    ProcessorAssembly(12, ItemList.Circuit_Advanced, ItemList.SlicedCircuit_ProcessorAssembly,
         ItemList.CircuitImprint_ProcessorAssembly, Mods.GregTech),
-    Workstation(10, ItemList.Circuit_Data, ItemList.SlicedCircuit_Workstation, ItemList.CircuitImprint_Workstation,
+    Workstation(13, ItemList.Circuit_Data, ItemList.SlicedCircuit_Workstation, ItemList.CircuitImprint_Workstation,
         Mods.GregTech),
-    Mainframe(11, ItemList.Circuit_Elite, ItemList.SlicedCircuit_Mainframe, ItemList.CircuitImprint_Mainframe,
+    Mainframe(14, ItemList.Circuit_Elite, ItemList.SlicedCircuit_Mainframe, ItemList.CircuitImprint_Mainframe,
         Mods.GregTech),
-    NanoProcessor(12, ItemList.Circuit_Nanoprocessor, ItemList.SlicedCircuit_NanoProcessor,
+    NanoProcessor(15, ItemList.Circuit_Nanoprocessor, ItemList.SlicedCircuit_NanoProcessor,
         ItemList.CircuitImprint_NanoProcessor, Mods.GregTech),
-    NanoAssembly(13, ItemList.Circuit_Nanocomputer, ItemList.SlicedCircuit_NanoAssembly,
+    NanoAssembly(16, ItemList.Circuit_Nanocomputer, ItemList.SlicedCircuit_NanoAssembly,
         ItemList.CircuitImprint_NanoAssembly, Mods.GregTech),
-    NanoSupercomputer(14, ItemList.Circuit_Elitenanocomputer, ItemList.SlicedCircuit_NanoSupercomputer,
+    NanoSupercomputer(17, ItemList.Circuit_Elitenanocomputer, ItemList.SlicedCircuit_NanoSupercomputer,
         ItemList.CircuitImprint_NanoSupercomputer, Mods.GregTech),
-    NanoMainframe(15, ItemList.Circuit_Master, ItemList.SlicedCircuit_NanoMainframe,
+    NanoMainframe(18, ItemList.Circuit_Master, ItemList.SlicedCircuit_NanoMainframe,
         ItemList.CircuitImprint_NanoMainframe, Mods.GregTech),
-    QuantumProcessor(16, ItemList.Circuit_Quantumprocessor, ItemList.SlicedCircuit_QuantumProcessor,
+    QuantumProcessor(19, ItemList.Circuit_Quantumprocessor, ItemList.SlicedCircuit_QuantumProcessor,
         ItemList.CircuitImprint_QuantumProcessor, Mods.GregTech),
-    QuantumAssembly(17, ItemList.Circuit_Quantumcomputer, ItemList.SlicedCircuit_QuantumAssembly,
+    QuantumAssembly(20, ItemList.Circuit_Quantumcomputer, ItemList.SlicedCircuit_QuantumAssembly,
         ItemList.CircuitImprint_QuantumAssembly, Mods.GregTech),
-    QuantumSupercomputer(18, ItemList.Circuit_Masterquantumcomputer, ItemList.SlicedCircuit_QuantumSupercomputer,
+    QuantumSupercomputer(21, ItemList.Circuit_Masterquantumcomputer, ItemList.SlicedCircuit_QuantumSupercomputer,
         ItemList.CircuitImprint_QuantumSupercomputer, Mods.GregTech),
-    QuantumMainframe(19, ItemList.Circuit_Quantummainframe, ItemList.SlicedCircuit_QuantumMainframe,
+    QuantumMainframe(22, ItemList.Circuit_Quantummainframe, ItemList.SlicedCircuit_QuantumMainframe,
         ItemList.CircuitImprint_QuantumMainframe, Mods.GregTech),
-    CrystalProcessor(20, ItemList.Circuit_Crystalprocessor, ItemList.SlicedCircuit_CrystalProcessor,
+    CrystalProcessor(23, ItemList.Circuit_Crystalprocessor, ItemList.SlicedCircuit_CrystalProcessor,
         ItemList.CircuitImprint_CrystalProcessor, Mods.GregTech),
-    CrystalAssembly(21, ItemList.Circuit_Crystalcomputer, ItemList.SlicedCircuit_CrystalAssembly,
+    CrystalAssembly(24, ItemList.Circuit_Crystalcomputer, ItemList.SlicedCircuit_CrystalAssembly,
         ItemList.CircuitImprint_CrystalAssembly, Mods.GregTech),
-    CrystalSupercomputer(22, ItemList.Circuit_Ultimatecrystalcomputer, ItemList.SlicedCircuit_CrystalSupercomputer,
+    CrystalSupercomputer(25, ItemList.Circuit_Ultimatecrystalcomputer, ItemList.SlicedCircuit_CrystalSupercomputer,
         ItemList.CircuitImprint_CrystalSupercomputer, Mods.GregTech),
-    CrystalMainframe(23, ItemList.Circuit_Crystalmainframe, ItemList.SlicedCircuit_CrystalMainframe,
+    CrystalMainframe(26, ItemList.Circuit_Crystalmainframe, ItemList.SlicedCircuit_CrystalMainframe,
         ItemList.CircuitImprint_CrystalMainframe, Mods.GregTech),
-    WetwareProcessor(24, ItemList.Circuit_Neuroprocessor, ItemList.SlicedCircuit_WetwareProcessor,
+    WetwareProcessor(27, ItemList.Circuit_Neuroprocessor, ItemList.SlicedCircuit_WetwareProcessor,
         ItemList.CircuitImprint_WetwareProcessor, Mods.GregTech),
-    WetwareAssembly(25, ItemList.Circuit_Wetwarecomputer, ItemList.SlicedCircuit_WetwareAssembly,
+    WetwareAssembly(28, ItemList.Circuit_Wetwarecomputer, ItemList.SlicedCircuit_WetwareAssembly,
         ItemList.CircuitImprint_WetwareAssembly, Mods.GregTech),
-    WetwareSupercomputer(26, ItemList.Circuit_Wetwaresupercomputer, ItemList.SlicedCircuit_WetwareSupercomputer,
+    WetwareSupercomputer(29, ItemList.Circuit_Wetwaresupercomputer, ItemList.SlicedCircuit_WetwareSupercomputer,
         ItemList.CircuitImprint_WetwareSupercomputer, Mods.GregTech),
-    BiowareProcessor(27, ItemList.Circuit_Bioprocessor, ItemList.SlicedCircuit_BiowareProcessor,
+    BiowareProcessor(30, ItemList.Circuit_Bioprocessor, ItemList.SlicedCircuit_BiowareProcessor,
         ItemList.CircuitImprint_BiowareProcessor, Mods.GregTech),
-    BiowareAssembly(28, ItemList.Circuit_Biowarecomputer, ItemList.SlicedCircuit_BiowareAssembly,
+    BiowareAssembly(31, ItemList.Circuit_Biowarecomputer, ItemList.SlicedCircuit_BiowareAssembly,
         ItemList.CircuitImprint_BiowareAssembly, Mods.GregTech),
-    OpticalProcessor(29, ItemList.Circuit_OpticalProcessor, ItemList.SlicedCircuit_OpticalProcessor,
+    OpticalProcessor(32, ItemList.Circuit_OpticalProcessor, ItemList.SlicedCircuit_OpticalProcessor,
         ItemList.CircuitImprint_OpticalProcessor, Mods.GregTech),
 
-    BasicCircuitBoard(30, ItemList.BasicCircuitBoard, ItemList.SlicedCircuit_BasicCircuitBoard,
+    BasicCircuitBoard(33, ItemList.BasicCircuitBoard, ItemList.SlicedCircuit_BasicCircuitBoard,
         ItemList.CircuitImprint_BasicCircuitBoard, Mods.Forestry),
-    EnhancedCircuitBoard(31, ItemList.EnhancedCircuitBoard, ItemList.SlicedCircuit_EnhancedCircuitBoard,
+    EnhancedCircuitBoard(34, ItemList.EnhancedCircuitBoard, ItemList.SlicedCircuit_EnhancedCircuitBoard,
         ItemList.CircuitImprint_EnhancedCircuitBoard, Mods.Forestry),
-    RefinedCircuitBoard(32, ItemList.RefinedCircuitBoard, ItemList.SlicedCircuit_RefinedCircuitBoard,
+    RefinedCircuitBoard(35, ItemList.RefinedCircuitBoard, ItemList.SlicedCircuit_RefinedCircuitBoard,
         ItemList.CircuitImprint_RefinedCircuitBoard, Mods.Forestry),
-    IntricateCircuitBoard(33, ItemList.IntricateCircuitBoard, ItemList.SlicedCircuit_IntricateCircuitBoard,
+    IntricateCircuitBoard(36, ItemList.IntricateCircuitBoard, ItemList.SlicedCircuit_IntricateCircuitBoard,
         ItemList.CircuitImprint_IntricateCircuitBoard, Mods.Forestry),
 
-    ControllerCircuit(34, ItemList.ControllerCircuit, ItemList.SlicedCircuit_ControllerCircuit,
+    ControllerCircuit(37, ItemList.ControllerCircuit, ItemList.SlicedCircuit_ControllerCircuit,
         ItemList.CircuitImprint_ControllerCircuit, Mods.Railcraft),
-    ReceiverCircuit(35, ItemList.ReceiverCircuit, ItemList.SlicedCircuit_ReceiverCircuit,
+    ReceiverCircuit(38, ItemList.ReceiverCircuit, ItemList.SlicedCircuit_ReceiverCircuit,
         ItemList.CircuitImprint_ReceiverCircuit, Mods.Railcraft),
-    SignalCircuit(36, ItemList.SignalCircuit, ItemList.SlicedCircuit_SignalCircuit,
+    SignalCircuit(39, ItemList.SignalCircuit, ItemList.SlicedCircuit_SignalCircuit,
         ItemList.CircuitImprint_SignalCircuit, Mods.Railcraft),
 
-    HighEnergyFlowCircuit(37, ItemList.HighEnergyFlowCircuit, ItemList.SlicedCircuit_HighEnergyFlowCircuit,
+    HighEnergyFlowCircuit(40, ItemList.HighEnergyFlowCircuit, ItemList.SlicedCircuit_HighEnergyFlowCircuit,
         ItemList.CircuitImprint_HighEnergyFlowCircuit, Mods.NewHorizonsCoreMod);
 
     public final ItemList circuit;
@@ -99,6 +100,7 @@ public enum CircuitImprint {
     public final Mods sourceMod;
     public final int id;
 
+    @Deprecated
     public static final Map<String, CircuitImprint> IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES = new HashMap<>();
     public static final Map<Integer, CircuitImprint> IMPRINT_LOOKUPS_BY_IDS = new HashMap<>();
 
@@ -113,12 +115,8 @@ public enum CircuitImprint {
     public static void registerSlicedCircuitsAndImprints() {
         for (CircuitImprint entry : CircuitImprint.values()) {
             if (!entry.sourceMod.isModLoaded()) continue;
-            entry.slicedCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(entry.circuit.get(1)), 1, 1));
-            entry.imprint.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(entry.circuit.get(1)), 0, 1));
+            entry.slicedCircuit.set(getCircuitParts().getSlicedStack(entry.id));
+            entry.imprint.set(getCircuitParts().getImprintStack(entry.id));
         }
     }
 
@@ -153,8 +151,6 @@ public enum CircuitImprint {
 
     public static CircuitImprint findCircuitImprintByImprintStack(ItemStack imprint) {
         if (!MTECircuitAssemblyLine.isValidImprint(imprint)) return null;
-        String circuitName = ItemStack.loadItemStackFromNBT(imprint.getTagCompound())
-            .getUnlocalizedName();
-        return CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES.get(circuitName);
+        return CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(imprint.getItemDamage());
     }
 }

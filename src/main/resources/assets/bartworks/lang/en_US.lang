@@ -140,11 +140,11 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
-tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
-tooltip.bw.item.circuit.imprint=An imprint for a Circuit
-tooltip.bw.item.circuit.sliced=A sliced Circuit
+
+tooltip.item.CircuitParts.RawImprintBoard=A Raw Board needed for Circuit Imprints
+tooltip.item.CircuitParts.ImprintBoard=A Board needed for Circuit Imprints
 
 tooltip.teslastaff.0.name=No warranty!
 tooltip.labmodule.0.name=A Module used to change the BioLab's working Mode
@@ -227,6 +227,12 @@ item.TRISOPelletCompound.name=TRISO pebble compound
 item.BISOPelletCompound.name=BISO pebble compound
 item.BurnedOutTRISOPelletBall.name=Burned Out TRISO pebble ball
 item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
+
+item.CircuitParts.Imprint.name=Circuit Imprint
+item.CircuitParts.Sliced.name=Sliced Circuit
+item.CircuitParts.RawImprintBoard.name=Raw Imprint supporting Board
+item.CircuitParts.ImprintBoard.name=Imprint supporting Board
+item.CircuitParts.Wrap.name=Wrap of %s
 
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 

@@ -13,6 +13,7 @@
 
 package bartworks.common.tileentities.multis;
 
+import static bartworks.system.material.CircuitGeneration.CircuitPartsItem.getCircuitParts;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -270,27 +271,22 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     }
 
     public static boolean isValidImprint(ItemStack stack) {
-        return GTUtility.isStackValid(stack)
-            && GTUtility.areStacksEqual(stack, CircuitImprint.NANDChipArray.imprint.get(1), true)
-            && stack.getTagCompound() != null;
+        return GTUtility.isStackValid(stack) && stack.getItem() == getCircuitParts()
+            && getCircuitParts().isImprint(stack.getItemDamage());
     }
 
     private boolean imprintMachine(ItemStack itemStack) {
         if (isImprinted()) return true;
         if (isValidImprint(itemStack)) {
-            ItemStack imprintedCircuit = ItemStack.loadItemStackFromNBT(itemStack.getTagCompound());
-            if (imprintedCircuit != null) {
-                this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_UNLOCALISED_NAMES
-                    .get(imprintedCircuit.getUnlocalizedName());
+            this.circuitImprint = CircuitImprint.IMPRINT_LOOKUPS_BY_IDS.get(itemStack.getItemDamage());
 
-                itemStack.stackSize -= 1;
-                if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
-                    mInventory[getControllerSlotIndex()] = null;
-                }
-                this.getBaseMetaTileEntity()
-                    .issueBlockUpdate();
-                return true;
+            itemStack.stackSize -= 1;
+            if (itemStack == getControllerSlot() && itemStack.stackSize <= 0) {
+                mInventory[getControllerSlotIndex()] = null;
             }
+            this.getBaseMetaTileEntity()
+                .issueBlockUpdate();
+            return true;
         }
         return false;
     }
@@ -415,7 +411,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
     @Override
     protected void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
-        logic.setSpecialSlotItem(this.circuitImprint.imprint.get(1));
+        if (mode == Mode.CircuitAssemblyLine) logic.setSpecialSlotItem(this.circuitImprint.imprint.get(1));
     }
 
     @Override
