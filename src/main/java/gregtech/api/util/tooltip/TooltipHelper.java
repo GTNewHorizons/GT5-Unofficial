@@ -151,7 +151,7 @@ public class TooltipHelper {
      * @return A formatted string representing the voltage tier.
      */
     public static String voltageTierText(int voltageIndex, boolean withTierSuffix) {
-        if (voltageIndex < VoltageIndex.ULV || voltageIndex >= VoltageIndex.MAX) return "Invalid Voltage Tier";
+        if (voltageIndex < VoltageIndex.ULV || voltageIndex > VoltageIndex.MAX) return "Invalid Voltage Tier";
         return GTValues.TIER_COLORS[voltageIndex] + GTValues.VN[voltageIndex]
             + EnumChatFormatting.GRAY
             + (withTierSuffix ? "-tier" : "");
