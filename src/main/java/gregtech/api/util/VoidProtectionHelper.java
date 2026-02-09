@@ -15,6 +15,8 @@ import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 /**
  * Helper class to calculate how many parallels of items / fluids can fit in the output buses / hatches.
@@ -60,9 +62,10 @@ public class VoidProtectionHelper {
     /**
      * Multiplier that is applied on the output chances
      */
-    private double chanceMultiplier = 1;
+    private double outputChanceMultiplier = 1;
 
-    private Int2IntFunction chanceGetter = i -> 10000;
+    private Int2IntFunction outputChanceGetter = i -> 10000;
+    private Int2IntFunction fluidOutputChanceGetter = i -> 10000;
 
     public VoidProtectionHelper() {}
 
@@ -101,13 +104,18 @@ public class VoidProtectionHelper {
         return this;
     }
 
-    public VoidProtectionHelper setChanceMultiplier(double chanceMultiplier) {
-        this.chanceMultiplier = chanceMultiplier;
+    public VoidProtectionHelper setOutputChanceMultiplier(double chanceMultiplier) {
+        this.outputChanceMultiplier = chanceMultiplier;
         return this;
     }
 
-    public VoidProtectionHelper setChanceGetter(Int2IntFunction getter) {
-        this.chanceGetter = getter;
+    public VoidProtectionHelper setOutputChanceGetter(Int2IntFunction getter) {
+        this.outputChanceGetter = getter;
+        return this;
+    }
+
+    public VoidProtectionHelper setFluidOutputChanceGetter(Int2IntFunction getter) {
+        this.fluidOutputChanceGetter = getter;
         return this;
     }
 
@@ -184,7 +192,7 @@ public class VoidProtectionHelper {
                     // We can't know how many items per parallel will be eventually ejected, so we just check the
                     // worst-case scenario
                     int stackSize = (int) (stack.stackSize
-                        * Math.ceil(chanceMultiplier * chanceGetter.apply(i) / 10000d));
+                        * Math.ceil(outputChanceMultiplier * outputChanceGetter.apply(i) / 10000d));
 
                     maxItemOutputs.add(GTUtility.copyAmount(stackSize, stack));
                 }
@@ -232,7 +240,7 @@ public class VoidProtectionHelper {
 
         // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
         // the recipe outputs.
-        Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
+        Object2IntMap<FluidStack> tFluidOutputMap = new Object2IntOpenHashMap<>();
 
         // Map that keeps track of the number of parallel crafts we can accommodate for each fluid output.
         // In the pair, we keep track of number of full crafts plus mb of fluid in a partial craft, to avoid
@@ -240,11 +248,18 @@ public class VoidProtectionHelper {
         Map<FluidStack, FluidParallelData> tParallels = new HashMap<>();
 
         // Iterate over the outputs, calculating require stack spacing they will require.
-        for (FluidStack aY : fluidOutputs) {
+        for (int i = 0; i < fluidOutputs.length; i++) {
+            FluidStack aY = fluidOutputs[i];
             if (aY == null || aY.amount <= 0) {
                 continue;
             }
-            tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
+
+            // Find the max possible output for this fluid (note the .ceil)
+            // We assume the worst-case scenario where any fluid with >0% chance might be produced
+            // to ensure void protection is never violated.
+            int estimatedAmount = (int) (aY.amount * Math.ceil(fluidOutputChanceGetter.apply(i) / 10000d));
+
+            tFluidOutputMap.merge(aY, estimatedAmount, Integer::sum);
             tParallels.put(aY, new FluidParallelData(0, 0));
         }
 
@@ -274,7 +289,7 @@ public class VoidProtectionHelper {
                 if (!tHatch.canStoreFluid(tFluidOutput)) continue;
                 // this fluid is not prevented by restrictions on output hatch
                 FluidParallelData tParallel = entry.getValue();
-                Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
+                int tCraftSize = tFluidOutputMap.getInt(tFluidOutput);
                 tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
                 tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
             }
@@ -294,7 +309,7 @@ public class VoidProtectionHelper {
 
             ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
             assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-            Integer tCraftSize = tFluidOutputMap.get(tParallel.stack);
+            int tCraftSize = tFluidOutputMap.getInt(tParallel.stack);
 
             int tSpaceLeft;
             if (tHatch instanceof MTEHatchOutputME tMEHatch) {

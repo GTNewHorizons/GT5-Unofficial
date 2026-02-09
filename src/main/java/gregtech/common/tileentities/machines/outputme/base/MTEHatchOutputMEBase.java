@@ -50,6 +50,7 @@ import appeng.api.storage.ISaveProvider;
 import appeng.api.storage.MEMonitorHandler;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IAEStackType;
 import appeng.api.util.AEColor;
 import appeng.core.localization.GuiText;
 import appeng.items.AEBaseCell;
@@ -271,7 +272,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
             return null;
         }
 
-        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(h, h.getChannel());
+        final MEInventoryHandler<StackType> ih = new MEInventoryHandler<>(
+            h,
+            (IAEStackType<StackType>) h.getStackType());
         ih.setPriority(this.myPriority);
         ih.setBaseAccess(myAccess);
 
