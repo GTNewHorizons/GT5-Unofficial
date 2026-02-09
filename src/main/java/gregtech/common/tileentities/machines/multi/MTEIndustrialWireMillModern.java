@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -9,22 +8,18 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
@@ -34,10 +29,11 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.misc.GTStructureChannels;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -50,6 +46,10 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
+
+    private static final int PARALLEL_PER_TIER = 4;
+    private static final float SPEED_INCREASE_TIER = 0.5f;
+    private static final float EU_EFFICIENCY = 0.75f;
 
     public MTEIndustrialWireMillModern(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -88,21 +88,10 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
                 .addElement('B', chainAllGlasses())
                 .addElement(
                     'A',
-                    GTStructureChannels.ITEM_PIPE_CASING.use(
-                        ofBlocksTiered(
-                            MTEIndustrialWireMillModern::getItemPipeTierFromMeta,
-                            ImmutableList.of(
-                                Pair.of(GregTechAPI.sBlockCasings11, 0),
-                                Pair.of(GregTechAPI.sBlockCasings11, 1),
-                                Pair.of(GregTechAPI.sBlockCasings11, 2),
-                                Pair.of(GregTechAPI.sBlockCasings11, 3),
-                                Pair.of(GregTechAPI.sBlockCasings11, 4),
-                                Pair.of(GregTechAPI.sBlockCasings11, 5),
-                                Pair.of(GregTechAPI.sBlockCasings11, 6),
-                                Pair.of(GregTechAPI.sBlockCasings11, 7)),
-                            -1,
-                            MTEIndustrialWireMillModern::setItemPipeTier,
-                            MTEIndustrialWireMillModern::getItemPipeTier)))
+                    chainItemPipeCasings(
+                        -1,
+                        MTEIndustrialWireMillModern::setItemPipeTier,
+                        MTEIndustrialWireMillModern::getItemPipeTier))
                 .addElement(
                     'C',
                     buildHatchAdder(MTEIndustrialWireMillModern.class)
@@ -148,9 +137,11 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Wiremill, IWF")
-            .addBulkMachineInfo(4, 3f, 0.75f)
+            .addVoltageParallelInfo(PARALLEL_PER_TIER)
+            .addDynamicSpeedBonusInfo(SPEED_INCREASE_TIER, TooltipTier.ITEM_PIPE_CASING)
+            .addStaticEuEffInfo(EU_EFFICIENCY)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 5, true)
+            .beginStructureBlock(7, 3, 3, false)
             .addController("Front Center")
             .addCasingInfoMin("Wire Factory Casings", 14, false)
             .addInputBus("Any Casing", 1)
@@ -162,6 +153,25 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
         return tt;
     }
 
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                setEuModifier(EU_EFFICIENCY);
+                setSpeedBonus(1F / (SPEED_INCREASE_TIER * itemPipeTier));
+                return super.process();
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
+    }
+
     private int mCasingAmount;
 
     private void onCasingAdded() {
@@ -169,13 +179,6 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     }
 
     private int itemPipeTier = -1;
-
-    @Nullable
-    private static Integer getItemPipeTierFromMeta(Block block, Integer metaID) {
-        if (block != GregTechAPI.sBlockCasings11) return null;
-        if (metaID < 0 || metaID > 7) return null;
-        return metaID + 1;
-    }
 
     private void setItemPipeTier(int tier) {
         itemPipeTier = tier;
@@ -212,6 +215,7 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        itemPipeTier = -1;
         mCasingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 14
             && mMaintenanceHatches.size() == 1;
@@ -225,18 +229,6 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     @Override
     public int getRecipeCatalystPriority() {
         return -1;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 3F)
-            .setEuModifier(0.75F)
-            .setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return (4 * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
     @Override
