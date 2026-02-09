@@ -257,7 +257,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
 
     public List<MTEHatchInput> getAllFluidInputHatches() {
         List<MTEHatchInput> allInputHatches = new ArrayList<>();
-        for (MTEHatchInput obj : validMTEList(mInputHatches)) allInputHatches.add(obj);
+        allInputHatches.addAll(validMTEList(mInputHatches));
 
         if (parent != null) {
             allInputHatches.addAll(parent.getElevatorInputHatches());
