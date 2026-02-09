@@ -54,26 +54,25 @@ public class BacterialVatFrontend extends RecipeMapFrontend {
 
     @Override
     protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
+        super.drawNEIOverlayForInput(stack);
         drawFluidOverlay(stack);
     }
 
     @Override
     protected void drawNEIOverlayForOutput(GTNEIDefaultHandler.FixedPositionedStack stack) {
+        super.drawNEIOverlayForOutput(stack);
         drawFluidOverlay(stack);
     }
 
     private void drawFluidOverlay(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (stack.isFluid()) {
-            drawNEIOverlayText(
-                "+",
-                stack,
-                colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
-                0.5f,
-                true,
-                Alignment.TopRight);
-            return;
-        }
-        super.drawNEIOverlayForOutput(stack);
+        if (!stack.isFluid()) return;
+        drawNEIOverlayText(
+            "+",
+            stack,
+            colorOverride.getTextColorOrDefault("nei_overlay_yellow", 0xFDD835),
+            0.5f,
+            true,
+            Alignment.TopRight);
     }
 
     @Override
