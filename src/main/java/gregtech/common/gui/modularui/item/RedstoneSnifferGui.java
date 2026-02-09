@@ -115,7 +115,7 @@ public class RedstoneSnifferGui {
         });
         guiSyncManager.syncValue("player_is_op", playerIsOpSyncer);
         ModularPanel panel = ModularPanel.defaultPanel("redstone_sniffer");
-        panel.flex()
+        panel.resizer()
             .sizeRel(0.5f, 0.75f)
             .align(Alignment.Center);
 
