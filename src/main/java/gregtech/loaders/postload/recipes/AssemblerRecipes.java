@@ -6742,6 +6742,7 @@ public class AssemblerRecipes implements Runnable {
             .duration(2 * MINUTES)
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
+
     }
 
     public void withIC2NuclearControl() {
