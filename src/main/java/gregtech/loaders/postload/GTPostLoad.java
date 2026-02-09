@@ -262,7 +262,7 @@ public class GTPostLoad {
                 // else try to add a recipe for the cell.
                 if (builder == null) {
                     ItemStack cellItem = GTOreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L);
-                    if (cellItem != null) return;
+                    if (cellItem == null) return;
                     // create builder
                     builder = GTValues.RA.stdBuilder()
                         .itemInputs(cellItem);
