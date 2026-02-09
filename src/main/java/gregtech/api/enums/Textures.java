@@ -630,6 +630,10 @@ public class Textures {
         ITEM_VOID_SIGN,
         OVERLAY_MUFFLER,
 
+        OVERLAY_ESSENTIA,
+        ESSENTIA_IN_SIGN,
+        ESSENTIA_OUT_SIGN,
+
         OVERLAY_PIPE_COLOR_NONE,
         OVERLAY_PIPE_COLOR_BLACK,
         OVERLAY_PIPE_COLOR_GRAY,

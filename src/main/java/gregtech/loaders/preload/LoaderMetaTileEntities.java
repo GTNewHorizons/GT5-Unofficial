@@ -46,6 +46,8 @@ import static gregtech.api.recipe.RecipeMaps.wiremillRecipes;
 
 import net.minecraft.util.EnumChatFormatting;
 
+import goodgenerator.blocks.tileEntity.MTEHatchEssentiaInput;
+import goodgenerator.blocks.tileEntity.MTEHatchEssentiaOutput;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
@@ -9122,6 +9124,15 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchMagnet(MAG_HATCH.ID, "hatch.mag_hatch", "Electromagnet Housing").getStackForm(1L));
     }
 
+    private static void registerEssentiaHatches() {
+        ItemList.HatchInputEssentia.set(
+            new MTEHatchEssentiaInput(INPUT_HATCH_ESSENTIA.ID, "hatch.input_essentia", "Essentia Input Hatch")
+                .getStackForm(1L));
+        ItemList.HatchOutputEssentia.set(
+            new MTEHatchEssentiaOutput(OUTPUT_HATCH_ESSENTIA.ID, "hatch.output_essentia", "Essentia Output Hatch")
+                .getStackForm(1L));
+    }
+
     private static void registerInputBus() {
         ItemList.Hatch_Input_Bus_ULV.set(
             new MTEHatchInputBus(INPUT_BUS_ULV.ID, "hatch.input_bus.tier.00", "Input Bus (ULV)", 0).getStackForm(1L));
@@ -10669,6 +10680,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerVoidBus();
         registerCokeOvenHatch();
         registerMufflerHatch();
+        registerEssentiaHatches();
         registerBoiler();
         registerBatteryBuffer1x1();
         registerBatteryBuffer2x2();

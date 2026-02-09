@@ -1,16 +1,27 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.HatchElement.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.EssentiaInput;
+import static gregtech.api.enums.HatchElement.ExoticEnergy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -60,6 +71,8 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.EssentiaInputHatch;
+import gregtech.api.interfaces.EssentiaMultiblock;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -84,9 +97,10 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import thaumcraft.api.aspects.Aspect;
 
 public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreciseAssembler>
-    implements IConstructable, ISurvivalConstructable {
+    implements IConstructable, ISurvivalConstructable, EssentiaMultiblock {
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
@@ -104,6 +118,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     protected int energyHatchTier;
     private static final int CASING_INDEX = 1541;
     private int glassTier = -1;
+    private final List<EssentiaInputHatch> essentiaInputs = new ArrayList<>();
 
     public MTEPreciseAssembler(String name) {
         super(name);
@@ -136,7 +151,8 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                                 OutputBus,
                                 Maintenance,
                                 Muffler,
-                                ExoticEnergy.or(Energy))
+                                ExoticEnergy.or(Energy),
+                                EssentiaInput)
                             .casingIndex(CASING_INDEX)
                             .hint(1)
                             .buildAndChain(
@@ -247,6 +263,45 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     public RecipeMap<?> getRecipeMap() {
         if (this.machineMode == 0) return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
         else return RecipeMaps.assemblerRecipes;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+
+        essentiaInputs.clear();
+    }
+
+    @Override
+    public boolean addEssentiaInputHatch(EssentiaInputHatch hatch) {
+        essentiaInputs.add(hatch);
+        return true;
+    }
+
+    @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        CheckRecipeResult result = super.checkProcessing();
+
+        if (result.wasSuccessful()) {
+            int available = 0;
+
+            for (EssentiaInputHatch hatch : essentiaInputs) {
+                available += hatch.containerContains(Aspect.CRAFT);
+            }
+
+            int optimal = mMaxProgresstime / 20;
+
+            int target = Math.min(available, optimal);
+            int actual = 0;
+
+            for (EssentiaInputHatch hatch : essentiaInputs) {
+                actual += hatch.takeEssentia(Aspect.CRAFT, target - actual);
+            }
+
+            mMaxProgresstime -= actual * 4;
+        }
+
+        return result;
     }
 
     @Nonnull
@@ -414,6 +469,9 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             hatch.updateTexture(texture);
         }
         for (MTEHatch hatch : validMTEList(mExoticEnergyHatches)) {
+            hatch.updateTexture(texture);
+        }
+        for (EssentiaInputHatch hatch : essentiaInputs) {
             hatch.updateTexture(texture);
         }
     }

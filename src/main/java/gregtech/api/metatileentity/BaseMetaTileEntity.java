@@ -52,6 +52,8 @@ import appeng.api.util.DimensionalCoord;
 import appeng.helpers.ICustomNameObject;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.InterfaceList;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -87,15 +89,21 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteam
 import ic2.api.Direction;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.IAspectContainer;
+import thaumcraft.api.aspects.IEssentiaTransport;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
  * This is the main TileEntity for EVERYTHING.
  */
+@InterfaceList({ @Interface(iface = "thaumcraft.api.aspects.IAspectContainer", modid = "Thaumcraft", striprefs = true),
+    @Interface(iface = "thaumcraft.api.aspects.IEssentiaTransport", modid = "Thaumcraft", striprefs = true), })
 public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     implements IGregTechTileEntity, IActionHost, IGridProxyable, IAlignmentProvider, IConstructableProvider,
-    IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject {
+    IDebugableTileEntity, IGregtechWailaProvider, ICustomNameObject, IAspectContainer, IEssentiaTransport {
 
     private final boolean[] mActiveEUInputs = new boolean[] { false, false, false, false, false, false };
     private final boolean[] mActiveEUOutputs = new boolean[] { false, false, false, false, false, false };
@@ -2252,5 +2260,113 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         return mMetaTileEntity instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
+    }
+
+    @Override
+    public AspectList getAspects() {
+        return mMetaTileEntity instanceof IAspectContainer container ? container.getAspects() : new AspectList();
+    }
+
+    @Override
+    public void setAspects(AspectList var1) {
+        if (mMetaTileEntity instanceof IAspectContainer container) container.setAspects(var1);
+    }
+
+    @Override
+    public boolean doesContainerAccept(Aspect var1) {
+        return mMetaTileEntity instanceof IAspectContainer container && container.doesContainerAccept(var1);
+    }
+
+    @Override
+    public int addToContainer(Aspect var1, int var2) {
+        return mMetaTileEntity instanceof IAspectContainer container ? container.addToContainer(var1, var2) : 0;
+    }
+
+    @Override
+    public boolean takeFromContainer(Aspect var1, int var2) {
+        return mMetaTileEntity instanceof IAspectContainer container && container.takeFromContainer(var1, var2);
+    }
+
+    @Override
+    public boolean takeFromContainer(AspectList var1) {
+        // noinspection deprecation
+        return mMetaTileEntity instanceof IAspectContainer container && container.takeFromContainer(var1);
+    }
+
+    @Override
+    public boolean doesContainerContainAmount(Aspect var1, int var2) {
+        return mMetaTileEntity instanceof IAspectContainer container
+            && container.doesContainerContainAmount(var1, var2);
+    }
+
+    @Override
+    public boolean doesContainerContain(AspectList var1) {
+        // noinspection deprecation
+        return mMetaTileEntity instanceof IAspectContainer container && container.doesContainerContain(var1);
+    }
+
+    @Override
+    public int containerContains(Aspect var1) {
+        return mMetaTileEntity instanceof IAspectContainer container ? container.containerContains(var1) : 0;
+    }
+
+    @Override
+    public boolean isConnectable(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport && transport.isConnectable(var1);
+    }
+
+    @Override
+    public boolean canInputFrom(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport && transport.canInputFrom(var1);
+    }
+
+    @Override
+    public boolean canOutputTo(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport && transport.canOutputTo(var1);
+    }
+
+    @Override
+    public void setSuction(Aspect var1, int var2) {
+        if (mMetaTileEntity instanceof IEssentiaTransport transport) transport.setSuction(var1, var2);
+    }
+
+    @Override
+    public Aspect getSuctionType(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.getSuctionType(var1) : null;
+    }
+
+    @Override
+    public int getSuctionAmount(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.getSuctionAmount(var1) : 0;
+    }
+
+    @Override
+    public int takeEssentia(Aspect var1, int var2, ForgeDirection var3) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.takeEssentia(var1, var2, var3) : 0;
+    }
+
+    @Override
+    public int addEssentia(Aspect var1, int var2, ForgeDirection var3) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.addEssentia(var1, var2, var3) : var2;
+    }
+
+    @Override
+    public Aspect getEssentiaType(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.getEssentiaType(var1) : null;
+    }
+
+    @Override
+    public int getEssentiaAmount(ForgeDirection var1) {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.getEssentiaAmount(var1) : 0;
+    }
+
+    @Override
+    public int getMinimumSuction() {
+        return mMetaTileEntity instanceof IEssentiaTransport transport ? transport.getMinimumSuction() : 0;
+    }
+
+    @Override
+    public boolean renderExtendedTube() {
+        return mMetaTileEntity instanceof IEssentiaTransport transport && transport.renderExtendedTube();
     }
 }

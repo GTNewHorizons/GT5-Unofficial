@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
+import gregtech.api.interfaces.EssentiaInputHatch;
+import gregtech.api.interfaces.EssentiaMultiblock;
+import gregtech.api.interfaces.EssentiaOutputHatch;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -121,7 +124,23 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
             return t.getExoticDynamoHatches()
                 .size();
         }
-    };
+    },
+    EssentiaInput("GT5U.MBTT.EssentiaInput", EssentiaMultiblock::addEssentiaInput, EssentiaInputHatch.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return ((EssentiaMultiblock) t).getEssentiaInputHatchCount();
+        }
+    },
+    EssentiaOutput("GT5U.MBTT.EssentiaOutput", EssentiaMultiblock::addEssentiaOutput, EssentiaOutputHatch.class) {
+
+        @Override
+        public long count(MTEMultiBlockBase t) {
+            return ((EssentiaMultiblock) t).getEssentiaOutputHatchCount();
+        }
+    },
+    //
+    ;
 
     private final String name;
     private final List<Class<? extends IMetaTileEntity>> mteClasses;
