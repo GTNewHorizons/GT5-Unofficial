@@ -7,8 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
 import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
 import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
-
-import gregtech.api.implementation.items.SimpleItemIO;
+import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
 
 public class AEInventoryItemIO extends SimpleItemIO {
 
