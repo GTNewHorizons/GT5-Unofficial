@@ -32,7 +32,7 @@ public class RecipesSeleniumProcessing {
             .fluidInputs(Materials.Steam.getGas(500))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(1_000))
             .duration(24 * SECONDS)
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .addTo(cokeOvenRecipes);
 
         // Produce Selenious Acid
@@ -67,7 +67,7 @@ public class RecipesSeleniumProcessing {
             .outputChances(100_00, 3_00)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(20))
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -80,7 +80,7 @@ public class RecipesSeleniumProcessing {
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -93,7 +93,7 @@ public class RecipesSeleniumProcessing {
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -106,7 +106,7 @@ public class RecipesSeleniumProcessing {
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
             .fluidOutputs(MaterialMisc.SELENIUM_DIOXIDE.getFluidStack(10))
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .duration(40 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
     }
