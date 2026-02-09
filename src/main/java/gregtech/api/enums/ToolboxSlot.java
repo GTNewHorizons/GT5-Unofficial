@@ -1,9 +1,13 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.google.common.collect.ImmutableList;
@@ -66,6 +70,9 @@ public enum ToolboxSlot {
     private final boolean isGeneric;
     private final UITexture overlay;
 
+    /** Used to register the overlay textures as icons for rendering during the "tool recently broken" animation. */
+    private IIcon icon = null;
+
     ToolboxSlot(final int slot) {
         this(slot, x -> true, true, null);
     }
@@ -102,6 +109,14 @@ public enum ToolboxSlot {
 
     public Optional<UITexture> getOverlay() {
         return Optional.ofNullable(overlay);
+    }
+
+    public void registerIcon(final IIconRegister iconRegister) {
+        icon = iconRegister.registerIcon(GregTech.getID() + ":" + overlay.location.getResourcePath());
+    }
+
+    public Optional<IIcon> getIcon() {
+        return Optional.ofNullable(icon);
     }
 
     public int getRow() {

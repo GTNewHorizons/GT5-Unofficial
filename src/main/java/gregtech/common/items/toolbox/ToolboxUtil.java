@@ -1,7 +1,5 @@
 package gregtech.common.items.toolbox;
 
-import static gregtech.common.items.ItemGTToolbox.TOOLBOX_OPEN_NBT_KEY;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -89,8 +87,8 @@ public class ToolboxUtil {
     public static void saveToolbox(final ItemStack toolbox, final ItemStackHandler handler,
         @Nullable Consumer<NBTTagCompound> additionalAction) {
         final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
-        final int selectedTool = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
-            ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
+        final int selectedTool = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)
+            ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY)
             : ItemGTToolbox.NO_TOOL_SELECTED;
 
         for (int i = 0; i < handler.getSlots(); i++) {
@@ -98,12 +96,13 @@ public class ToolboxUtil {
             if (stack != null && stack.stackSize == 0) {
                 handler.setStackInSlot(i, null);
                 if (i == selectedTool) {
-                    tag.removeTag(ItemGTToolbox.CURRENT_TOOL_NBT_KEY);
+                    tag.removeTag(ItemGTToolbox.CURRENT_TOOL_KEY);
+                    tag.setInteger(ItemGTToolbox.RECENTLY_BROKEN_SLOT_KEY, selectedTool);
                 }
             }
         }
 
-        tag.setTag(ItemGTToolbox.CONTENTS_NBT_KEY, handler.serializeNBT());
+        tag.setTag(ItemGTToolbox.CONTENTS_KEY, handler.serializeNBT());
 
         if (additionalAction != null) {
             additionalAction.accept(tag);
@@ -139,13 +138,13 @@ public class ToolboxUtil {
     public static Optional<ToolboxSlot> getSelectedToolType(ItemStack toolbox) {
         if (toolbox == null || !toolbox.hasTagCompound()
             || !toolbox.getTagCompound()
-                .hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)) {
+                .hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
             return Optional.empty();
         }
 
         return ToolboxSlot.getBySlot(
             toolbox.getTagCompound()
-                .getInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY));
+                .getInteger(ItemGTToolbox.CURRENT_TOOL_KEY));
     }
 
     public static boolean isToolOfType(final ItemStack toolbox, final ToolboxSlot desiredType) {
@@ -189,7 +188,8 @@ public class ToolboxUtil {
     public static boolean canCharge(final ItemStack toolbox) {
         final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
 
-        return !tag.getBoolean(TOOLBOX_OPEN_NBT_KEY);
+        return !tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)
+            && !tag.hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY);
     }
 
     public static boolean hasAnyItems(final ItemStack toolbox) {

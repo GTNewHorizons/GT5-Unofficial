@@ -92,7 +92,7 @@ public class GTPacketToolboxEvent extends GTPacket {
             void execute(final EntityPlayerMP player, final ItemStack itemStack, int toolboxSlot, final int unused) {
                 final NBTTagCompound tag = itemStack.hasTagCompound() ? itemStack.getTagCompound()
                     : new NBTTagCompound();
-                tag.setBoolean(ItemGTToolbox.TOOLBOX_OPEN_NBT_KEY, true);
+                tag.setBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY, true);
                 itemStack.setTagCompound(tag);
 
                 player.inventory.setInventorySlotContents(toolboxSlot, itemStack);
@@ -116,15 +116,15 @@ public class GTPacketToolboxEvent extends GTPacket {
                     : new NBTTagCompound();
                 boolean dirty = false;
 
-                if (selectedTool == ItemGTToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)) {
-                    tag.removeTag(ItemGTToolbox.CURRENT_TOOL_NBT_KEY);
+                if (selectedTool == ItemGTToolbox.NO_TOOL_SELECTED && tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
+                    tag.removeTag(ItemGTToolbox.CURRENT_TOOL_KEY);
                     dirty = true;
                 } else if (selectedTool != ItemGTToolbox.NO_TOOL_SELECTED && ToolboxSlot.slotIsTool(selectedTool)) {
-                    final int oldToolSelection = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
-                        ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)
+                    final int oldToolSelection = tag.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)
+                        ? tag.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY)
                         : ItemGTToolbox.NO_TOOL_SELECTED;
                     if (oldToolSelection != selectedTool) {
-                        tag.setInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY, selectedTool);
+                        tag.setInteger(ItemGTToolbox.CURRENT_TOOL_KEY, selectedTool);
                         dirty = true;
                     }
                 }

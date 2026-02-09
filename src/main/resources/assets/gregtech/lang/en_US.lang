@@ -1807,7 +1807,7 @@ GT5U.item.toolbox.byline.closed_empty=Can we fix it? No, it's §kABCD§r§7ed!\n
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic engineering journey.
 GT5U.item.toolbox.byline.wrench=Wrench victory from the jaws of adversity.
 # Translator note: A horrible English pun. "Wire" -> "Why're" -> "Why are". Don't feel obligated to preserve it ;)
-GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §ooThere's work to do!
+GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §oThere's work to do!
 GT5U.item.toolbox.byline.screwdriver=Contains 0% vodka and 0% orange juice.
 GT5U.item.toolbox.byline.soft_mallet=Wait, isn't this just a clown hammer?
 GT5U.item.toolbox.byline.hard_hammer=This performs the Forge Hammer recipe\n §oon anything you mine with it!

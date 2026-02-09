@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -40,6 +42,8 @@ import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
@@ -74,9 +78,11 @@ import mrtjp.projectred.api.IScrewdriver;
 public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInventoryGuiData>, ISpecialElectricItem,
     IMiddleClickItem, IDamagableItem, IToolCrowbar, IToolWrench, ITool, IScrewdriver, IAEWrench {
 
-    public static final String CONTENTS_NBT_KEY = "gt5u.toolbox:Contents";
-    public static final String TOOLBOX_OPEN_NBT_KEY = "gt5u.toolbox:ToolboxOpen";
-    public static final String CURRENT_TOOL_NBT_KEY = "gt5u.toolbox:SelectedSlot";
+    public static final String CONTENTS_KEY = "gt5u.toolbox:Contents";
+    public static final String TOOLBOX_OPEN_KEY = "gt5u.toolbox:ToolboxOpen";
+    public static final String CURRENT_TOOL_KEY = "gt5u.toolbox:SelectedSlot";
+    public static final String RECENTLY_BROKEN_SLOT_KEY = "gt5u.toolbox:RecentlyBroken";
+    public static final String BROKEN_TOOL_ANIMATION_END_KEY = "gt5u.toolbox:BrokenToolAnimationEnd";
     public static final int NO_TOOL_SELECTED = -1;
 
     /**
@@ -85,26 +91,38 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
      * battery and items being charged will be respected.
      */
     private static final int CHARGE_TICK = 20;
+    private static final long BROKEN_TOOL_ANIMATION_LENGTH = 60;
+    private static final long GUI_OPEN_DELAY = 5;
 
     public ItemGTToolbox(final String aUnlocalized, final String aEnglish, final String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
         setMaxStackSize(1);
+        setNoRepair();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(final IIconRegister iconRegister) {
+        super.registerIcons(iconRegister);
+        for (ToolboxSlot slot : ToolboxSlot.TOOL_SLOTS) {
+            slot.registerIcon(iconRegister);
+        }
     }
 
     @Override
-    public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int timer, final boolean isInHand) {
+    public void onUpdate(final ItemStack toolbox, final World world, final Entity entity, final int timer, final boolean isInHand) {
         if (world.isRemote) {
             return;
         }
 
-        if (isInHand && entity instanceof final EntityPlayerMP player) {
-            final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(stack);
+        if (entity instanceof final EntityPlayerMP player) {
+            final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
             boolean shouldUpdate = false;
 
             // If the tool being used has a very bad mining speed, it's possible for it to not be able to finish mining
             // a block because the equipped stack changes. We can, after a fashion, check to see if the tool is
             // currently being used by checking the arm swing animation.
-            if (player.ticksExisted % CHARGE_TICK == 0 && ToolboxUtil.canCharge(stack) && !player.isSwingInProgress) {
+            if (isInHand && player.ticksExisted % CHARGE_TICK == 0 && ToolboxUtil.canCharge(toolbox) && !player.isSwingInProgress) {
                 final ItemStack battery = handler.extractItem(ToolboxSlot.BATTERY.getSlotID(), 1, true);
                 if (battery != null && battery.getItem() instanceof final IElectricItem batteryItem) {
                     shouldUpdate = getElectricManager(battery).map(batteryManager -> {
@@ -158,16 +176,33 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             }
 
             if (shouldUpdate) {
-                ToolboxUtil.saveToolbox(stack, handler);
+                ToolboxUtil.saveToolbox(toolbox, handler);
+            }
+
+            if (!toolbox.hasTagCompound()) {
+                toolbox.setTagCompound(new NBTTagCompound());
+            }
+            final NBTTagCompound tag = toolbox.getTagCompound();
+
+            // Handle broken tool animation
+            if (tag.hasKey(RECENTLY_BROKEN_SLOT_KEY)) {
+                if (tag.getBoolean(TOOLBOX_OPEN_KEY) || (tag.hasKey(CURRENT_TOOL_KEY) && tag.getInteger(CURRENT_TOOL_KEY) != NO_TOOL_SELECTED)) {
+                    tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
+                    tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
+                } else if (!tag.hasKey(BROKEN_TOOL_ANIMATION_END_KEY)) {
+                    tag.setLong(BROKEN_TOOL_ANIMATION_END_KEY, player.getEntityWorld().getTotalWorldTime() + BROKEN_TOOL_ANIMATION_LENGTH);
+                } else if (tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) < world.getTotalWorldTime()) {
+                    tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
+                    tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
+                }
             }
         }
     }
 
     @Override
-    public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer player) {
-        if (!world.isRemote && !ToolboxUtil.getSelectedToolType(itemStack)
-            .isPresent()) {
-            if (itemStack == Backhand.getOffhandItem(player)) {
+    public ItemStack onItemRightClick(final ItemStack toolbox, final World world, final EntityPlayer player) {
+        if (canOpenInventoryGui(toolbox, world)) {
+            if (toolbox == Backhand.getOffhandItem(player)) {
                 GuiFactories.playerInventory()
                     .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
             } else {
@@ -176,7 +211,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             }
         }
 
-        return super.onItemRightClick(itemStack, world, player);
+        return super.onItemRightClick(toolbox, world, player);
     }
 
     @Override
@@ -210,8 +245,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     public void addInformation(final ItemStack toolbox, final EntityPlayer player, final List<String> tooltipList,
         final boolean f3mode) {
         final Optional<ToolboxSlot> selectedToolType = ToolboxUtil.getSelectedToolType(toolbox);
-
-        // TODO: Add information and author byline
 
         final GameSettings settings = Minecraft.getMinecraft().gameSettings;
 
@@ -295,14 +328,16 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                         final ItemStack toolbox = player.inventory.getStackInSlot(slot);
 
                         ToolboxUtil.saveToolbox(toolbox, stackHandler, tag -> {
-                            tag.setBoolean(TOOLBOX_OPEN_NBT_KEY, false);
+                            tag.setBoolean(TOOLBOX_OPEN_KEY, false);
+                            tag.removeTag(BROKEN_TOOL_ANIMATION_END_KEY);
+                            tag.removeTag(RECENTLY_BROKEN_SLOT_KEY);
 
                             // Unselect the active tool if it was removed from the toolbox.
-                            if (tag.hasKey(CURRENT_TOOL_NBT_KEY)) {
-                                final int selectedToolSlot = tag.getInteger(CURRENT_TOOL_NBT_KEY);
+                            if (tag.hasKey(CURRENT_TOOL_KEY)) {
+                                final int selectedToolSlot = tag.getInteger(CURRENT_TOOL_KEY);
                                 if (selectedToolSlot >= 0 && selectedToolSlot < stackHandler.getSlots()
                                     && stackHandler.getStackInSlot(selectedToolSlot) == null) {
-                                    tag.removeTag(CURRENT_TOOL_NBT_KEY);
+                                    tag.removeTag(CURRENT_TOOL_KEY);
                                 }
                             }
                         });
@@ -342,6 +377,29 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             }
             return false;
         }).orElse(false);
+    }
+
+    /**
+     * Imposes a small delay between breaking a tool inside and opening the GUI. If a user breaks a tool via methods
+     * other than breaking a block (e.g.: connecting pipes with a wrench), it can open the GUI immediately after the
+     * tool breaks because the user has the use item bind depressed.
+     *
+     * @param toolbox The item stack of the toolbox
+     * @param world   The world where the GUI is opening
+     * @return true if it isn't a few ticks immediately after breaking a tool
+     */
+    private static boolean canOpenInventoryGui(final ItemStack toolbox, final World world) {
+        final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
+        final boolean recentlyBrokenTool = tag.hasKey(RECENTLY_BROKEN_SLOT_KEY);
+
+        if (recentlyBrokenTool && (!tag.hasKey(BROKEN_TOOL_ANIMATION_END_KEY)
+            || tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) - world.getTotalWorldTime() <= GUI_OPEN_DELAY)) {
+            return false;
+        }
+
+        // noinspection SimplifyOptionalCallChains
+        return !world.isRemote && !ToolboxUtil.getSelectedToolType(toolbox)
+            .isPresent();
     }
 
     // region Event Handlers

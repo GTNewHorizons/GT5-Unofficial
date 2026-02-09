@@ -32,12 +32,12 @@ public class ToolboxItemStackHandler extends ItemStackHandler {
 
         NBTTagCompound itemData = toolbox.getTagCompound();
         if (itemData != null) {
-            if (itemData.hasKey(ItemGTToolbox.CONTENTS_NBT_KEY)) {
-                deserializeNBT(itemData.getCompoundTag(ItemGTToolbox.CONTENTS_NBT_KEY));
+            if (itemData.hasKey(ItemGTToolbox.CONTENTS_KEY)) {
+                deserializeNBT(itemData.getCompoundTag(ItemGTToolbox.CONTENTS_KEY));
             }
 
-            if (itemData.hasKey(ItemGTToolbox.CURRENT_TOOL_NBT_KEY)) {
-                currentTool = itemData.getInteger(ItemGTToolbox.CURRENT_TOOL_NBT_KEY);
+            if (itemData.hasKey(ItemGTToolbox.CURRENT_TOOL_KEY)) {
+                currentTool = itemData.getInteger(ItemGTToolbox.CURRENT_TOOL_KEY);
             }
         }
 
