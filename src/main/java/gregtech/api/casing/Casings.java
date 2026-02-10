@@ -114,6 +114,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 2, 14)),
     TungstensteelFireboxCasing
         (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 2, 15)),
+    CleanStainlessSteelCasing
+        (() -> GregTechAPI.sBlockCasings4, 1, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1)),
     MiningOsmiridiumCasing
         (() -> GregTechAPI.sBlockCasings4, 14, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14)),
     BoltedOsmiridiumCasing
