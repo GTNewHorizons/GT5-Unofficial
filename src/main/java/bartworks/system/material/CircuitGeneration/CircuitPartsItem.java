@@ -192,8 +192,6 @@ public class CircuitPartsItem extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
-        aList.add(getStack(0));
-        aList.add(getStack(1));
         aList.add(getStack(2));
         aList.add(getStack(3));
         for (CircuitImprint imprint : CircuitImprint.values()) {
