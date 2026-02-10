@@ -143,6 +143,29 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Add a deprecation line to the tooltip
+     * The line is prefixed with a dark red {@code "DEPRECATED - "} label
+     * followed by the provided additional information.
+     *
+     * @param info additional explanation shown after the {@code DEPRECATED} label
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDeprecatedLine(String info) {
+        iLines.add(EnumChatFormatting.DARK_RED + "DEPRECATED - " + info);
+        return this;
+    }
+
+    /**
+     * Add a line with red color and word DEPRECATED
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDeprecatedLine() {
+        iLines.add(EnumChatFormatting.DARK_RED + "DEPRECATED");
+        return this;
+    }
+
+    /**
      * Add a line for static parallel count Processes up to {parallels} recipes at once
      *
      * @param parallels Maximum parallels
