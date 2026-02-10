@@ -138,6 +138,9 @@ public enum Casings implements ICasing {
     FrostProofMachineCasing
         (() -> GregTechAPI.sBlockCasings2, 1, 17),
 
+    WireFactoryCasing
+        (() -> ModBlocks.blockCasingsMisc, 6, gtpp(0, 6)),
+
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 4, 0)),
     BrassItemPipeCasing
