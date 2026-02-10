@@ -12,16 +12,19 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 
-/** Enum representing the necessary data to add new CAL imprints.
- *  The id field corresponds to the meta ID of the item representing the imprints.
- *  <ul>
- *  <li>0 and 1 are taken respectively for the old imprinted and sliced circuits.</li>
- *  <li>2 and 3 are taken respectively for the raw imprinting supporting board and the imprinting supporting board.</li>
- *  </ul>
- *  Sliced circuits use imprints ID with an offset of 1000, and the hardcoded limit of IDs reserved for circuit imprinting
- *  is 10000, which leaves ~5000 IDs possible for imprinted circuits. But if possible, please use contiguous IDs.
+/**
+ * Enum representing the necessary data to add new CAL imprints.
+ * The id field corresponds to the meta ID of the item representing the imprints.
+ * <ul>
+ * <li>0 and 1 are taken respectively for the old imprinted and sliced circuits.</li>
+ * <li>2 and 3 are taken respectively for the raw imprinting supporting board and the imprinting supporting board.</li>
+ * </ul>
+ * Sliced circuits use imprints ID with an offset of 1000, and the hardcoded limit of IDs reserved for circuit
+ * imprinting
+ * is 10000, which leaves ~5000 IDs possible for imprinted circuits. But if possible, please use contiguous IDs.
  */
 public enum CircuitImprint {
+
     NANDChipArray(4, ItemList.NandChip, ItemList.SlicedCircuit_NANDChipArray, ItemList.CircuitImprint_NANDChipArray,
         Mods.GregTech),
     Microprocessor(5, ItemList.Circuit_Microprocessor, ItemList.SlicedCircuit_Microprocessor,
