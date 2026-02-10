@@ -116,6 +116,10 @@ public class CircuitPartsItem extends Item {
         return getStack(id);
     }
 
+    public final ItemStack getWrapStack(int id) {
+        return getStack(id);
+    }
+
     public final ItemStack getSlicedStack(int id) {
         return getStack(id + CIRCUIT_SLICED_OFFSET);
     }

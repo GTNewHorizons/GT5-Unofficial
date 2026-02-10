@@ -1,5 +1,6 @@
 package bartworks.system.material.CircuitGeneration;
 
+import static bartworks.system.material.CircuitGeneration.CircuitPartsItem.getCircuitParts;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -122,15 +123,16 @@ public enum CircuitWraps {
             MainMod.LOGGER.error("Source item for wrap with ID: {} has an invalid stack, this is a bug.", id);
             return;
         }
+
+        itemWrap.set(getCircuitParts().getWrapStack(id));
+
         ID_MAP.put(id, this);
     }
 
     public void registerWrapRecipe() {
         GTValues.RA.stdBuilder()
             .itemInputs(itemSingle.get(16), GTUtility.getIntegratedCircuit(16))
-            .itemOutputs(
-                CircuitPartsItem.getCircuitParts()
-                    .getStack(id))
+            .itemOutputs(getCircuitParts().getStack(id))
             .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
