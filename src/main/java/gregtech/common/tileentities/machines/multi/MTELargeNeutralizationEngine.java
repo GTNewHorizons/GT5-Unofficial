@@ -21,6 +21,10 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.metatileentity.GregTechTileClientEvents;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,7 +42,6 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -157,7 +160,21 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         structureTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (mCasing < 30 || structureTier < 1) return false;
-        return mMaintenanceHatches.size() == 1;
+        if (mMaintenanceHatches.size() != 1) return false;
+        if (getBaseMetaTileEntity() == null) return false;
+        getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
+        updateHatchTexture();
+        return true;
+    }
+
+    public void updateHatchTexture() {
+        for (IDualInputHatch h : mDualInputHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mEnergyHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatch h : mExoticDynamoHatches) h.updateTexture(getCasingTextureId());
+        for (MTEHatchDynamo h : mDynamoHatches) h.updateTexture(getCasingTextureId());
     }
 
     /*
