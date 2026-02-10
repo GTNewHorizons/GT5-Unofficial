@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
@@ -18,19 +19,22 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LNE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTUtility.validMTEList;
+
+import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.metatileentity.GregTechTileClientEvents;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.common.tileentities.machines.IDualInputHatch;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -45,11 +49,18 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
     implements ISurvivalConstructable {
@@ -62,6 +73,9 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private static final int HORIZONTAL_OFF_SET = 5;
     private static final int VERTICAL_OFF_SET = 1;
     private static final int DEPTH_OFF_SET = 0;
+
+    private int fuelValue = 0;
+    private int fuelConsumption = 0;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -252,12 +266,14 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("structureTier", (byte) structureTier);
+        aNBT.setInteger("fuelConsumption", fuelConsumption);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         structureTier = aNBT.getByte("structureTier");
+        fuelConsumption = aNBT.getInteger("fuelConsumption");
     }
 
     @Override
@@ -273,5 +289,110 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             env,
             false,
             true);
+    }
+
+    public long getMaximumEUOutput() {
+        long aTotal = 0;
+        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            aTotal = aDynamo.maxAmperesOut() * aVoltage;
+        }
+        for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            aTotal = aDynamo.maxAmperesOut() * aVoltage;
+        }
+        return aTotal;
+    }
+
+    private int getEUOutput(int fluidAmount) {
+        return Math.toIntExact(Math.min(getMaximumEUOutput(), (long) this.fuelValue * fluidAmount));
+    }
+
+    @Override
+    @NotNull
+    public CheckRecipeResult checkProcessing() {
+        ArrayList<FluidStack> storedFluids = getStoredFluids();
+        if (storedFluids.isEmpty()) {
+            this.mEUt = 0;
+            this.mEfficiency = 0;
+            return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+        }
+        for (FluidStack storedFluid : storedFluids) {
+            GTRecipe recipe = getRecipeMap().getBackend()
+                .findFuel(storedFluid);
+            if (recipe == null) continue;
+            this.fuelValue = recipe.mSpecialValue;
+            FluidStack storedFluidConsume = storedFluid.copy();
+            this.fuelConsumption = storedFluidConsume.amount;
+            if (!depleteInput(storedFluidConsume)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+            this.mEUt = mEfficiency < 2000 ? 0 : getEUOutput(fuelConsumption);
+            this.mEfficiencyIncrease = 20;
+            this.mProgresstime = 1;
+            this.mMaxProgresstime = 1;
+            return CheckRecipeResultRegistry.GENERATING;
+        }
+        this.mEUt = 0;
+        this.mEfficiency = 0;
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (MTEHatchDynamo tHatch : validMTEList(mDynamoHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
+        }
+        for (MTEHatch tHatch : validMTEList(mExoticDynamoHatches)) {
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                .getEUCapacity();
+        }
+
+        return new String[] {
+            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.large_neutralization_engine")
+                + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            getIdealStatus() == getRepairStatus()
+                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
+                    + EnumChatFormatting.RESET
+                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
+                    + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.engine.output") + ": "
+                + EnumChatFormatting.RED
+                + formatNumber(((long) mEUt * mEfficiency / 10000))
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(fuelConsumption)
+                + EnumChatFormatting.RESET
+                + " L/t",
+            StatCollector.translateToLocal("GT5U.engine.value") + ": "
+                + EnumChatFormatting.YELLOW
+                + formatNumber(fuelValue)
+                + EnumChatFormatting.RESET
+                + " EU/L",
+            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
+                + EnumChatFormatting.YELLOW
+                + (mEfficiency / 100F)
+                + EnumChatFormatting.YELLOW
+                + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 }
