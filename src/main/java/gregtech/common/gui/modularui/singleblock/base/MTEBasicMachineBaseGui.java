@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Row;
 
@@ -83,7 +82,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
     }
 
     protected int getBasePanelWidth() {
-        return 198;
+        return 178;
     }
 
     protected int getBasePanelHeight() {
@@ -138,7 +137,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .align(Alignment.BottomRight)
             .paddingRight(4);
 
-        cornerFlow.childIf(this.doesAddGregTechLogo(), () -> this.createLogo());
+        cornerFlow.childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
 
         return cornerFlow;
     }
@@ -158,20 +157,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .childIf(
                 machine.doesBindPlayerInventory(),
                 () -> SlotGroupWidget.playerInventory(false)
-                    .marginLeft(4)
-                    .marginRight(2))
-            .child(createInventoryCornerColumn(panel, syncManager));
-    }
-
-    protected Flow createInventoryCornerColumn(ModularPanel panel, PanelSyncManager syncManager) {
-        return new Column().width(18)
-            .coverChildrenHeight()
-            .anchorBottom(0)
-            .mainAxisAlignment(Alignment.MainAxis.END)
-            .reverseLayout(true)
-            .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
-            .child(this.createPowerSwitchButton())
-            .childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
+                    .marginLeft(4));
     }
 
     protected boolean doesAddSpecialSlot() {

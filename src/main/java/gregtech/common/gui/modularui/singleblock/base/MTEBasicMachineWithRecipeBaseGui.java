@@ -68,14 +68,15 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
 
         return Flow.row()
             .width(18 * 8 + properties.progressBarWidthMUI2)
+            .paddingLeft(10)
             .coverChildrenHeight()
             .child(
                 new ParentWidget<>().size(18 * 3)
-                    .marginRight(19)
+                    .marginRight(9)
                     .child(createItemInputSlots().align(Alignment.CenterRight)))
             .child(
                 createProgressBar().tooltipShowUpTimer(TOOLTIP_DELAY)
-                    .marginRight(15))
+                    .marginRight(7))
             .child(
                 new ParentWidget<>().size(18 * 3)
                     .child(createItemOutputSlots().align(Alignment.CenterLeft)));
@@ -89,23 +90,23 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
         return cornerFlow
             .child(
                 createAutoOutputButton(
-                    "itemAutoOutput",
-                    GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
-                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP))
-            .child(
-                createAutoOutputButton(
                     "fluidAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
-                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP).marginRight(9))
+                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP))
+            .child(
+                createAutoOutputButton(
+                    "itemAutoOutput",
+                    GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
+                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP).marginRight(9))
+
             .childIf(properties.maxFluidInputs > 0, this::createFluidInputSlot);
     }
 
     @Override
     protected Flow createRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightCornerFlow(panel, syncManager).childIf(
-            properties.maxFluidOutputs > 0,
-            () -> this.createFluidOutputSlot()
-                .marginRight(18 + 9));
+        return super.createRightCornerFlow(panel, syncManager)
+            .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
+            .childIf(properties.maxFluidOutputs > 0, this::createFluidOutputSlot);
         // the fluid output slot is positioned under the first item output slot, which is 1.5 slots over in the gui.
     }
 
@@ -136,7 +137,7 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
             tooltipKeys[0] = "GT5U.machines.unused_slot.tooltip";
             tooltipKeys[1] = "GT5U.machines.unused_slot.tooltip.1";
         }
-        return new ItemSlot().marginTop(4)
+        return new ItemSlot().marginRight(9)
             .slot(new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).slotGroup("item_inv"))
             .background(
                 GTGuiTextures.SLOT_ITEM_STANDARD,
