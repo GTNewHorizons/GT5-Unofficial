@@ -460,6 +460,17 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_button/muffle_off")
         .build();
 
+    public static final UITexture OVERLAY_BUTTON_SMALL_POWER_SWITCH_ON = UITexture.builder()
+        .fullImage()
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/overlay_button/small_power_switch_on")
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SMALL_POWER_SWITCH_OFF = UITexture.builder()
+        .fullImage()
+        .canApplyTheme()
+        .location(GregTech.ID, "gui/overlay_button/small_power_switch_off")
+        .build();
+
     public static final UITexture OVERLAY_EXPORT = fullImage(GregTech.ID, "gui/overlay_button/export");
     public static final UITexture OVERLAY_IMPORT = fullImage(GregTech.ID, "gui/overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.builder()

@@ -44,7 +44,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
 
         return panel.child(
             Flow.column()
-                .child(createMufflerButton())
+                .child(createTopRightCornerColumn())
                 .sizeRel(1)
                 .padding(borderRadius)
                 .child(createContentHolderRow(panel, syncManager))
@@ -176,12 +176,6 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
         return false;
     }
 
-    protected ToggleButton createPowerSwitchButton() {
-        return CommonWidgets.createPowerSwitchButton("powerSwitch", isPowerSwitchDisabled(), baseMetaTileEntity)
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .marginTop(this.doesAddSpecialSlot() ? 0 : 4);
-    }
-
     protected IDrawable.DrawableWidget createLogo() {
         return new IDrawable.DrawableWidget(getLogoTexture()).size(18)
             .marginLeft(2);
@@ -197,10 +191,24 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> {
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
+    protected Flow createTopRightCornerColumn() {
+        return Flow.column()
+            .coverChildren()
+            .align(Alignment.TopRight)
+            .child(createMufflerButton())
+            .child(createPowerSwitchButton());
+    }
+
     protected ToggleButton createMufflerButton() {
         return CommonWidgets.createMuffleButton("mufflerSyncer")
-            .align(Alignment.TopRight)
             .background(IDrawable.EMPTY)
+            .selectedBackground(IDrawable.EMPTY);
+    }
+
+    protected ToggleButton createPowerSwitchButton() {
+        return CommonWidgets.createSmallPowerSwitchButton("powerSwitch", machine.getBaseMetaTileEntity())
+            .background(IDrawable.EMPTY)
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .selectedBackground(IDrawable.EMPTY);
     }
 
