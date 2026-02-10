@@ -733,12 +733,23 @@ public class GTUtility {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
 
+    /**
+     * Compacts an inventory like this:
+     * Empty_0, Iron_32, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
+     * into this:
+     * Iron_64, Iron_64, Gold_48
+     * while preserving the exact order of items by their first appearance in the inventory
+     */
     public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
         boolean didSomething = false;
+
+        // ItemStack => (List<ItemStack>, (int)amount), where amount is a sum of all .stackSize in List<ItemStack>
+        // This map is linked, which means it preserves the order in which elements were added
         Object2ObjectLinkedOpenCustomHashMap<ItemStack, ObjectIntMutablePair<ObjectList<ItemStack>>> stackToPair = new Object2ObjectLinkedOpenCustomHashMap<>(
             inv.size(),
             GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
 
+        // 1. Build a map which will contain all unique ItemStacks mapped to their List<ItemStack> and amount
         for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.get(i);
             if (stack == null) continue;
@@ -749,19 +760,21 @@ public class GTUtility {
                 stackList.add(stack);
                 stackToPair.put(stack, ObjectIntMutablePair.of(stackList, stack.stackSize));
             } else {
-                // Iron, Iron, Iron, Gold, Iron <- we encountered a stack out of its group
-                if (!didSomething && stackToPair.lastKey() != pair.left()
-                    .get(0)) didSomething = true;
+                ObjectList<ItemStack> stackList = pair.left();
+                int amount = pair.rightInt();
 
-                pair.left()
-                    .add(stack);
-                pair.right(pair.rightInt() + stack.stackSize);
+                // Iron, Iron, Iron, Gold, Iron <- we encountered an Iron stack out of its group, we'll need to move it
+                if (!didSomething && stackToPair.lastKey() != stackList.get(0)) didSomething = true;
+
+                stackList.add(stack);
+                pair.right(amount + stack.stackSize);
             }
             inv.set(i, null);
         }
 
         int slot = 0;
 
+        // 2. Refill the inventory from scratch by placing all stacks of the same type at once at a time
         for (Object2ObjectMap.Entry<ItemStack, ObjectIntMutablePair<ObjectList<ItemStack>>> entry : stackToPair
             .object2ObjectEntrySet()) {
 
@@ -772,7 +785,8 @@ public class GTUtility {
 
             int oldStackIndex = 0;
             while (amount > 0) {
-                // Reuse an old stack of the same Item to avoid ItemStack.copy() allocation
+                // We gathered all old stacks with only one purpose - to reuse them as new stacks with different size
+                // so we can avoid allocating new ItemStack() and copying their NBT
                 ItemStack oldStack = oldStacks.get(oldStackIndex++);
                 int stackSize = Math.min(amount, stackSizes.getSlotStackLimit(slot, stack));
 
