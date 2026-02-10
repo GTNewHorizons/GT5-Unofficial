@@ -37,22 +37,23 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireMill> implements ISurvivalConstructable {
+public class MTEIndustrialWireMillLegacy extends GTPPMultiBlockBase<MTEIndustrialWireMillLegacy>
+    implements ISurvivalConstructable {
 
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialWireMill> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialWireMillLegacy> STRUCTURE_DEFINITION = null;
 
-    public MTEIndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialWireMillLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialWireMill(final String aName) {
+    public MTEIndustrialWireMillLegacy(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialWireMill(this.mName);
+        return new MTEIndustrialWireMillLegacy(this.mName);
     }
 
     @Override
@@ -64,6 +65,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addInfo("DEPRECATED - CHECK NEI TO FIND NEW CONTROLLER")
             .addBulkMachineInfo(4, 3f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 5, true)
@@ -79,9 +81,9 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialWireMill> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialWireMillLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMill>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMillLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
@@ -89,7 +91,7 @@ public class MTEIndustrialWireMill extends GTPPMultiBlockBase<MTEIndustrialWireM
                             { "CCC", "CCC", "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialWireMill.class)
+                    buildHatchAdder(MTEIndustrialWireMillLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
