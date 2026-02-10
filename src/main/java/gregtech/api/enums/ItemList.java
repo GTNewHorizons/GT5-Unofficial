@@ -2755,6 +2755,19 @@ public enum ItemList implements IItemContainer {
 
     // new controllers
     IndustrialWireFactory,
+    BasicCircuitBoard,
+    EnhancedCircuitBoard,
+    RefinedCircuitBoard,
+    IntricateCircuitBoard,
+
+    ControllerCircuit,
+    ReceiverCircuit,
+    SignalCircuit,
+
+    HighEnergyFlowCircuit,
+
+    RawImprintBoard,
+    ImprintBoard,
 
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,

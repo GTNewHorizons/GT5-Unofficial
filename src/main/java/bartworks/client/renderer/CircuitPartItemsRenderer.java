@@ -27,20 +27,16 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
-import bartworks.system.material.CircuitGeneration.CircuitWraps;
-import bartworks.util.BWUtil;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 
 @SideOnly(Side.CLIENT)
-public class BWItemRenderer implements IItemRenderer {
+public class CircuitPartItemsRenderer implements IItemRenderer {
 
-    public BWItemRenderer() {
-        for (BWMetaItems.BW_GT_MetaGen_Item_Hook tItem : BWMetaItems.BW_GT_MetaGen_Item_Hook.sInstances) {
-            MinecraftForgeClient.registerItemRenderer(tItem, this);
-        }
+    public CircuitPartItemsRenderer() {
+        MinecraftForgeClient.registerItemRenderer(CircuitPartsItem.getCircuitParts(), this);
     }
 
     @Override
@@ -65,7 +61,7 @@ public class BWItemRenderer implements IItemRenderer {
         if (!GTUtility.isStackInvalid(aStack)) {
             short aMetaData = (short) aStack.getItemDamage();
             if (aMetaData >= 0) {
-                BWMetaItems.BW_GT_MetaGen_Item_Hook aItem = (BWMetaItems.BW_GT_MetaGen_Item_Hook) aStack.getItem();
+                CircuitPartsItem aItem = (CircuitPartsItem) aStack.getItem();
                 GL11.glEnable(3042);
                 if (type == IItemRenderer.ItemRenderType.ENTITY) {
                     if (RenderItem.renderInFrame) {
@@ -76,13 +72,13 @@ public class BWItemRenderer implements IItemRenderer {
                 }
 
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
-                IIcon tIcon = (IIcon) BWUtil.get2DCoordFrom1DArray(aMetaData, 0, 2, aItem.mIconList);
+                IIcon tIcon = aItem.getIconFromDamage(aMetaData);
 
                 Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
                 GL11.glBlendFunc(770, 771);
                 final Tessellator tess = Tessellator.instance;
                 if (IItemRenderer.ItemRenderType.INVENTORY.equals(type)) {
-                    if (aMetaData < CircuitWraps.getMinimalID())
+                    if (!aItem.isWrap(aMetaData))
                         ItemRenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
                     else {
                         for (int i = 0; i < 4; i++) {
@@ -98,7 +94,7 @@ public class BWItemRenderer implements IItemRenderer {
                                 -1.0F);
                         }
                     }
-                } else if (aMetaData < CircuitWraps.getMinimalID()) {
+                } else if (!aItem.isWrap(aMetaData)) {
                     ItemRenderer.renderItemIn2D(
                         tess,
                         tIcon.getMaxU(),
@@ -110,7 +106,7 @@ public class BWItemRenderer implements IItemRenderer {
                         0.0625F);
                 }
 
-                IIcon tOverlay = (IIcon) BWUtil.get2DCoordFrom1DArray(aMetaData, 1, 2, aItem.mIconList);
+                IIcon tOverlay = aItem.getOverlayIcon(aMetaData);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 if (tOverlay != null) {
                     Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
