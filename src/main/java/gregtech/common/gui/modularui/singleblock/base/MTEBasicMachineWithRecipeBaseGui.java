@@ -192,9 +192,15 @@ public class MTEBasicMachineWithRecipeBaseGui extends MTEBasicMachineBaseGui<MTE
                 'c',
                 i -> new ItemSlot()
                     .background(GTGuiTextures.SLOT_ITEM_STANDARD, slotOverlayFunction.apply(i, false, false, false))
-                    .slot(
-                        new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i)
-                            .singletonSlotGroup(50 + i)))
+                    .slot(new ModularSlot(machine.inventoryHandler, machine.getInputSlot() + i) {
+
+                        @Override
+                        public void onSlotChanged() {
+                            super.onSlotChanged();
+                            machine.getBaseMetaTileEntity()
+                                .markInventoryBeenModified();
+                        }
+                    }.singletonSlotGroup(50 + i)))
             .build();
     }
 
