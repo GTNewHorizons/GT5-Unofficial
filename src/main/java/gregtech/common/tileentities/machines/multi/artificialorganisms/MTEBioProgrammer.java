@@ -54,13 +54,13 @@ public class MTEBioProgrammer extends MTEAOUnitBase<MTEBioProgrammer> implements
                     .hatchClass(MTEHatchAOInput.class)
                     .shouldReject(t -> !(t.bioHatch == null))
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                    .dot(2)
+                    .hint(2)
                     .buildAndChain(
                         onElementPass(MTEBioProgrammer::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))),
                 buildHatchAdder(MTEBioProgrammer.class)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy, InputHatch, OutputHatch)
                     .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(MTEBioProgrammer::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
         .addElement('A', chainAllGlasses())

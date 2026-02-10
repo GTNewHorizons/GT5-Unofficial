@@ -114,17 +114,17 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
             ofChain(
                 buildHatchAdder(MTEEvolutionChamber.class)
                     .atLeast(InputBus, Maintenance, Energy, InputHatch, SpecialHatchElement.BioOutput)
-                    .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(1))
-                    .dot(1)
+                    .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(61))
+                    .hint(1)
                     .build(),
                 onElementPass(
                     MTEEvolutionChamber::onCasingAdded,
                     StructureUtility.ofBlocksTiered(
                         MTEEvolutionChamber::getTierFromMeta,
                         ImmutableList.of(
-                            Pair.of(GregTechAPI.sBlockCasings12, 1),
-                            Pair.of(GregTechAPI.sBlockCasings12, 2),
-                            Pair.of(GregTechAPI.sBlockCasings12, 3)),
+                            Pair.of(GregTechAPI.sBlockCasings12, 6),
+                            Pair.of(GregTechAPI.sBlockCasings12, 7),
+                            Pair.of(GregTechAPI.sBlockCasings12, 8)),
                         -1,
                         MTEEvolutionChamber::setCasingTier,
                         MTEEvolutionChamber::getCasingTier))))
@@ -192,7 +192,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
 
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings12) return null;
-        if (metaID < 1 || metaID > 3) return null;
+        if (metaID < 6 || metaID > 8) return null;
         return metaID;
     }
 
@@ -239,7 +239,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         // stupid fix because casing tier was 117 if machine was not formed ???
-        int casingMeta = mMachine ? Math.max(1, getCasingTier()) : 1;
+        int casingMeta = mMachine ? Math.max(6, getCasingTier()) : 1;
         if (side == aFacing) {
             if (currentSpecies != null && currentSpecies.getFinalized()) {
                 rTexture = new ITexture[] {
@@ -300,7 +300,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private void updateTextures() {
         getBaseMetaTileEntity().issueTextureUpdate();
 
-        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, Math.max(1, casingTier));
+        int textureID = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, Math.max(6, casingTier));
         for (MTEHatch h : mInputBusses) h.updateTexture(textureID);
         for (MTEHatch h : mInputHatches) h.updateTexture(textureID);
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(textureID);

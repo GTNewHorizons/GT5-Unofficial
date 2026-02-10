@@ -23,9 +23,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
         register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
-        register(1, ItemList.Casing_Vat_T1, "Hazard-Shielded Casing");
-        register(2, ItemList.Casing_Vat_T2, "Dynamic Bio-Regulation Casing");
-        register(3, ItemList.Casing_Vat_T3, "Symbiotic Vat Casing");
+        register(6, ItemList.Casing_Vat_T1, "Hazard-Shielded Casing");
+        register(7, ItemList.Casing_Vat_T2, "Dynamic Bio-Regulation Casing");
+        register(8, ItemList.Casing_Vat_T3, "Symbiotic Vat Casing");
 
         register(9, ItemList.Spinmatron_Casing, "Vibration-Safe Casing");
         register(10, ItemList.CasingThaumium, "Alchemically Resistant Thaumium Casing");
@@ -60,9 +60,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
-            case 1 -> Textures.BlockIcons.STERILE_VAT_CASING_T1.getIcon();
-            case 2 -> Textures.BlockIcons.STERILE_VAT_CASING_T2.getIcon();
-            case 3 -> Textures.BlockIcons.STERILE_VAT_CASING_T3.getIcon();
+            case 6 -> Textures.BlockIcons.STERILE_VAT_CASING_T1.getIcon();
+            case 7 -> Textures.BlockIcons.STERILE_VAT_CASING_T2.getIcon();
+            case 8 -> Textures.BlockIcons.STERILE_VAT_CASING_T3.getIcon();
             case 9 -> Textures.BlockIcons.SPINMATRON_CASING.getIcon();
             case 10 -> Textures.BlockIcons.MACHINE_CASING_THAUMIUM.getIcon();
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VOID.getIcon();
@@ -76,9 +76,9 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         super.addInformation(stack, player, tooltip, advancedTooltips);
 
         switch (stack.getItemDamage()) {
-            case 0 -> tooltip.add(StatCollector.translateToLocal("gt.casing.hazard-shielded"));
-            case 1 -> tooltip.add(StatCollector.translateToLocal("gt.casing.dynamic-bio-regulation"));
-            case 2 -> tooltip.add(StatCollector.translateToLocal("gt.casing.symbiotic-vat"));
+            case 6 -> tooltip.add(StatCollector.translateToLocal("gt.casing.hazard-shielded"));
+            case 7 -> tooltip.add(StatCollector.translateToLocal("gt.casing.dynamic-bio-regulation"));
+            case 8 -> tooltip.add(StatCollector.translateToLocal("gt.casing.symbiotic-vat"));
         }
     }
 }
