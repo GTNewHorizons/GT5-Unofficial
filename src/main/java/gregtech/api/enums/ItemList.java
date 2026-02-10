@@ -2819,6 +2819,9 @@ public enum ItemList implements IItemContainer {
     CompressedInputBusUIV,
     CompressedInputBusUMV,
     CompressedInputBusUXV,
+    RawImprintBoard,
+    ImprintBoard,
+
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,
     CircuitImprint_NanoAssembly,
