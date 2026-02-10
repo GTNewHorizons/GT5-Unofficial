@@ -2753,6 +2753,8 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    // new controllers
+    IndustrialWireFactory,
     BasicCircuitBoard,
     EnhancedCircuitBoard,
     RefinedCircuitBoard,
