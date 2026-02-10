@@ -43,7 +43,6 @@ public class GTCapesLoader implements Runnable {
     public void run() {
         GTLog.out.println("GTMod: Downloading Cape List");
         downloadGTNHUUIDCapes();
-        downloadGTNHNameCapes();
         downloadGregoriusCapes();
         if (Mods.GalacticraftCore.isModLoaded()) {
             downloadGalacticraftCapes();
@@ -95,7 +94,7 @@ public class GTCapesLoader implements Runnable {
     private static void downloadGTNHUUIDCapes() {
         // spotless:off
         //                                       |---------------------------------------UUID--------------------------------------|:capeName(optional)
-        Pattern pattern = Pattern.compile("^([0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12})(?:$|\\:(cape\\w+).*$)/gm");
+        Pattern pattern = Pattern.compile("^([0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12})(?:$|\\:(cape\\w+).*$)");
         // spotless:on
         String url = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capesUUID.txt";
         try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
@@ -107,23 +106,6 @@ public class GTCapesLoader implements Runnable {
                     } else {
                         putUUID(matcher.group(1));
                     }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
-        }
-    }
-
-    private static void downloadGTNHNameCapes() {
-        String url = "https://raw.githubusercontent.com/GTNewHorizons/CustomGTCapeHook-Cape-List/master/capes.txt";
-        try (final Scanner scanner = new Scanner(new URL(url).openStream())) {
-            while (scanner.hasNextLine()) {
-                String[] parts = scanner.nextLine()
-                    .split(":");
-                if (parts.length == 1) {
-                    putName(parts[0]);
-                } else {
-                    putName(parts[0], parts[1]);
                 }
             }
         } catch (Exception e) {

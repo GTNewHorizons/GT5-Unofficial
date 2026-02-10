@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -895,19 +896,18 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         return new String[] {
             translateToLocalFormatted(
                 "GT5U.infodata.progress",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers((mProgresstime / 20)) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
             translateToLocalFormatted(
                 "GT5U.infodata.energy",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getBaseMetaTileEntity().getStoredEU())
+                EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(getBaseMetaTileEntity().getEUCapacity())
+                EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
             translateToLocalFormatted(
                 "GT5U.infodata.currently_uses",
-                EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt == 0 ? 0 : mAmperage)
-                    + EnumChatFormatting.RESET) };
+                EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
     }
 
     @Override
@@ -921,7 +921,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
-                GTUtility.sendChatToPlayer(aPlayer, translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
                 GTUtility.sendChatToPlayer(
@@ -938,8 +938,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (!entityPlayer.isSneaking() || wrenchingSide != mMainFacing)
             return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
         mDisableMultiStack = !mDisableMultiStack;
-        GTUtility
-            .sendChatToPlayer(entityPlayer, translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+        GTUtility.sendChatTrans(entityPlayer, "GT5U.hatch.disableMultiStack." + mDisableMultiStack);
         return true;
     }
 
@@ -1113,7 +1112,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mOutputItems[i] = null;
                 }
         }
-        mOutputFluid = tRecipe.getFluidOutput(0);
+        if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getFluidOutputChance(0))
+            mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
             calculateCustomOverclock(tRecipe);
             // In case recipe is too OP for that machine
@@ -1195,14 +1195,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.use_with_amperage",
-                                GTUtility.formatNumbers(mEUt),
+                                formatNumber(mEUt),
                                 GTUtility.getAmperageForTier(mEUt, (byte) getInputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
                     } else if (mEUt < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GT5U.waila.energy.produce_with_amperage",
-                                GTUtility.formatNumbers(-mEUt),
+                                formatNumber(-mEUt),
                                 GTUtility.getAmperageForTier(-mEUt, (byte) getOutputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
                     }
@@ -1211,13 +1211,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(mEUt * 40L),
+                                formatNumber(mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(mEUt)));
                     } else if (mEUt < 0) {
                         currenttip.add(
                             translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(-mEUt * 40L),
+                                formatNumber(-mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(-mEUt)));
                     }
                 }
@@ -1501,8 +1501,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     () -> Collections.singletonList(
                         translateToLocalFormatted(
                             STEAM_AMOUNT_LANGKEY,
-                            numberFormat.format(getSteamVar),
-                            numberFormat.format(maxSteamStore()))))
+                            numberFormat.format(getSteamVar * 2), // internal steam storage is done at a 2:1 ratio
+                            numberFormat.format(maxSteamStore() * 2))))// internal steam storage is done at a 2:1 ratio
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setUpdateTooltipEveryTick(true)
                 .setSize(48, 42)

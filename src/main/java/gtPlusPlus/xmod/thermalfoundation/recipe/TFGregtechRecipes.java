@@ -16,7 +16,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class TFGregtechRecipes {
@@ -85,9 +84,5 @@ public class TFGregtechRecipes {
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_MV)
             .addTo(mixerRecipes);
-    }
-
-    private static FluidStack getFluidStack(final String fluidName, final int amount) {
-        return FluidUtils.getFluidStack(fluidName, amount);
     }
 }

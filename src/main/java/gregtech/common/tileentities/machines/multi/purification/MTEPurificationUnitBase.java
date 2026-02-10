@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -38,7 +40,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -366,7 +367,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
         ItemStack[] itemOutputs = new ItemStack[recipeOutputs.length];
-        int[] mChances = this.currentRecipe.mChances;
+        int[] mChances = this.currentRecipe.mOutputChances;
 
         // If this recipe has random item outputs, roll on it and add to outputs
         if (mChances != null) {
@@ -604,6 +605,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 
+        if (aBaseMetaTileEntity.getWorld().isRemote) {
+            return true;
+        }
         // Right-clicking could be a data stick linking action, so try this first.
         if (tryLinkDataStick(aPlayer)) {
             return true;
@@ -656,7 +660,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 ret.add(
                     StatCollector.translateToLocalFormatted(
                         "GT5U.infodata.purification_unit_base.success_chance",
-                        EnumChatFormatting.YELLOW + GTUtility.formatNumbers(this.calculateFinalSuccessChance())
+                        EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
@@ -677,16 +681,13 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Display linked controller in Waila.
         if (tag.getBoolean("linked")) {
             currenttip.add(
-                EnumChatFormatting.AQUA + "Linked to Purification Plant at "
-                    + EnumChatFormatting.WHITE
-                    + tag.getInteger("controllerX")
-                    + ", "
-                    + tag.getInteger("controllerY")
-                    + ", "
-                    + tag.getInteger("controllerZ")
-                    + EnumChatFormatting.RESET);
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.purification_unit_base.linked_to",
+                    tag.getInteger("controllerX"),
+                    tag.getInteger("controllerY"),
+                    tag.getInteger("controllerZ")));
         } else {
-            currenttip.add(EnumChatFormatting.AQUA + "Unlinked");
+            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.base.unlinked"));
         }
 
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -724,8 +725,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             .addChild(new FakeSyncWidget.BooleanSyncer(() -> this.mMachine, machine -> this.mMachine = machine))
             .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, _work -> {}));
     }
-
-    private static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {

@@ -89,7 +89,7 @@ public class GTRecipeBuilder {
     protected ItemStack[][] alts;
     protected FluidStack[] fluidInputs = GTValues.emptyFluidStackArray;
     protected FluidStack[] fluidOutputs = GTValues.emptyFluidStackArray;
-    protected int[] chances;
+    protected int[] inputChances, outputChances, fluidInputChances, fluidOutputChances;
     protected Object special;
     protected int duration = -1;
     protected int eut = -1;
@@ -105,6 +105,8 @@ public class GTRecipeBuilder {
     @Nullable
     protected IRecipeMetadataStorage metadataStorage;
     protected boolean checkForCollision = true;
+    @Nullable
+    protected ItemStack pendingIntegratedCircuit;
     /**
      * If recipe addition should be skipped.
      */
@@ -114,9 +116,10 @@ public class GTRecipeBuilder {
     GTRecipeBuilder() {}
 
     private GTRecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
-        FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
-        int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-        boolean mNeedsEmptyOutput, boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
+        FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] inputChances, int[] outputChances,
+        int[] fluidInputChances, int[] fluidOutputChances, Object special, int duration, int eut, int specialValue,
+        boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered, boolean mNeedsEmptyOutput,
+        boolean nbtSensitive, String[] neiDesc, RecipeCategory recipeCategory,
         @Nullable IRecipeMetadataStorage metadataStorage, boolean checkForCollision, boolean skip, boolean valid) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
@@ -124,7 +127,10 @@ public class GTRecipeBuilder {
         this.alts = alts;
         this.fluidInputs = fluidInputs;
         this.fluidOutputs = fluidOutputs;
-        this.chances = chances;
+        this.inputChances = inputChances;
+        this.outputChances = outputChances;
+        this.fluidInputChances = fluidInputChances;
+        this.fluidOutputChances = fluidOutputChances;
         this.special = special;
         this.duration = duration;
         this.eut = eut;
@@ -245,15 +251,62 @@ public class GTRecipeBuilder {
     // region setter
 
     /**
+     * circuit method helper. Adds appropriate integrated circuit into item inputs.
+     */
+    private ItemStack[] applyPendingCircuit(ItemStack[] baseInputs) {
+        if (pendingIntegratedCircuit == null) {
+            return baseInputs;
+        }
+        // Append pending circuit & clear it
+        ItemStack[] newInputs = new ItemStack[baseInputs.length + 1];
+        System.arraycopy(baseInputs, 0, newInputs, 0, baseInputs.length);
+        newInputs[baseInputs.length] = pendingIntegratedCircuit;
+        pendingIntegratedCircuit = null;
+        return newInputs;
+    }
+
+    /**
+     * Specialized item input method for adding integrated circuits into a recipe.
+     */
+    public GTRecipeBuilder circuit(int integratedCircuitNumber) {
+        ItemStack circuit = GTUtility.getIntegratedCircuit(integratedCircuitNumber);
+
+        if (inputsBasic != null && inputsBasic.length > 0) {
+            // Input condition
+            pendingIntegratedCircuit = circuit;
+            inputsBasic = applyPendingCircuit(inputsBasic);
+        } else {
+            // No inputs condition
+            inputsBasic = new ItemStack[] { circuit };
+            pendingIntegratedCircuit = circuit;
+        }
+
+        return this;
+    }
+
+    /**
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GTRecipeBuilder itemInputsUnified(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
-        inputsBasic = ArrayExt.removeTrailingNulls(inputs);
+
+        ItemStack[] itemInputs = ArrayExt.removeTrailingNulls(inputs);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
+        checkLength(inputChances, inputsBasic, "Item input");
         return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
+     */
+    public GTRecipeBuilder itemInputsUnified(ItemStack[] inputs, int[] chances) {
+        if (skip) return this;
+        this.inputChances = chances;
+        return itemInputsUnified(inputs);
     }
 
     /**
@@ -262,10 +315,23 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputs(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fixItemArray(inputs, false);
+
+        ItemStack[] itemInputs = fixItemArray(inputs, false);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
+        checkLength(inputChances, inputsBasic, "Item input");
         return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
+     */
+    public GTRecipeBuilder itemInputs(ItemStack[] inputs, int[] chances) {
+        if (skip) return this;
+        this.inputChances = chances;
+        return itemInputs(inputs);
     }
 
     /**
@@ -274,10 +340,23 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder itemInputsUnsafe(ItemStack... inputs) {
         if (skip) return this;
         if (debugNull() && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
-        inputsBasic = fixItemArray(inputs, true);
+
+        ItemStack[] itemInputs = fixItemArray(inputs, true);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
         inputsOreDict = null;
         alts = null;
+        checkLength(inputChances, inputsBasic, "Item input");
         return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
+     */
+    public GTRecipeBuilder itemInputsUnsafe(ItemStack[] inputs, int[] chances) {
+        if (skip) return this;
+        this.inputChances = chances;
+        return itemInputsUnsafe(inputs);
     }
 
     /**
@@ -314,17 +393,27 @@ public class GTRecipeBuilder {
         }
         ArrayList<ItemStack> list = new ArrayList<>(alts.length);
         for (final ItemStack[] ss : alts) list.add(ss.length > 0 ? ss[0] : null);
-        inputsBasic = list.isEmpty() ? GTValues.emptyItemStackArray : list.toArray(new ItemStack[0]);
+        ItemStack[] itemInputs = list.isEmpty() ? GTValues.emptyItemStackArray : list.toArray(new ItemStack[0]);
+        inputsBasic = applyPendingCircuit(itemInputs);
+
+        checkLength(inputChances, inputs, "Item input");
         return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
+     */
+    public GTRecipeBuilder itemInputs(Object[] inputs, int[] chances) {
+        if (skip) return this;
+        this.inputChances = chances;
+        return itemInputs(inputs);
     }
 
     public GTRecipeBuilder itemOutputs(ItemStack... outputs) {
         if (skip) return this;
         if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
-        if (chances != null && chances.length != outputs.length) {
-            throw new IllegalArgumentException("Output chances array and items array length differs");
-        }
+        checkLength(outputChances, this.outputs, "Item output");
         return this;
     }
 
@@ -333,35 +422,70 @@ public class GTRecipeBuilder {
      */
     public GTRecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
         if (skip) return this;
-        if (debugNull() && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
-        this.outputs = ArrayExt.isArrayEmpty(outputs) ? GTValues.emptyItemStackArray : outputs;
-        this.chances = chances;
-        if (chances != null && chances.length != outputs.length) {
-            throw new IllegalArgumentException("Output chances array and items array length differs");
-        }
-        return this;
+        this.outputChances = chances;
+        return itemOutputs(outputs);
     }
 
     public GTRecipeBuilder fluidInputs(FluidStack... fluidInputs) {
         if (skip) return this;
         if (debugNull() && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = ArrayExt.removeNullFluids(fluidInputs);
+        checkLength(fluidInputChances, this.fluidInputs, "Fluid input");
         return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
+     */
+    public GTRecipeBuilder fluidInputs(FluidStack[] fluidInputs, int[] chances) {
+        if (skip) return this;
+        this.fluidInputChances = chances;
+        return fluidInputs(fluidInputs);
     }
 
     public GTRecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
         if (skip) return this;
         if (debugNull() && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = ArrayExt.removeNullFluids(fluidOutputs);
+        checkLength(fluidOutputChances, this.fluidOutputs, "Fluid output");
+        return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors. Intended for recipe rewrite middlewares.
+     */
+    public GTRecipeBuilder fluidOutputs(FluidStack[] fluidOutputs, int[] chances) {
+        if (skip) return this;
+        this.fluidOutputChances = chances;
+        return fluidOutputs(fluidOutputs);
+    }
+
+    public GTRecipeBuilder inputChances(int... chances) {
+        if (skip) return this;
+        this.inputChances = chances;
+        Object[] current = (inputsOreDict != null) ? inputsOreDict : inputsBasic;
+        checkLength(chances, current, "Item input");
         return this;
     }
 
     public GTRecipeBuilder outputChances(int... chances) {
         if (skip) return this;
-        if (outputs != null && chances.length != outputs.length) {
-            throw new IllegalArgumentException("Output chances array and items array length differs");
-        }
-        this.chances = chances;
+        checkLength(chances, outputs, "Item output");
+        this.outputChances = chances;
+        return this;
+    }
+
+    public GTRecipeBuilder fluidInputChances(int... chances) {
+        if (skip) return this;
+        checkLength(chances, fluidInputs, "Fluid input");
+        this.fluidInputChances = chances;
+        return this;
+    }
+
+    public GTRecipeBuilder fluidOutputChances(int... chances) {
+        if (skip) return this;
+        checkLength(chances, fluidOutputs, "Fluid output");
+        this.fluidOutputChances = chances;
         return this;
     }
 
@@ -546,7 +670,10 @@ public class GTRecipeBuilder {
             copy(alts),
             ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
             ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
-            copy(chances),
+            copy(inputChances),
+            copy(outputChances),
+            copy(fluidInputChances),
+            copy(fluidOutputChances),
             special,
             duration,
             eut,
@@ -576,7 +703,10 @@ public class GTRecipeBuilder {
             copy(alts),
             ArrayExt.copyFluidsIfNonEmpty(fluidInputs),
             ArrayExt.copyFluidsIfNonEmpty(fluidOutputs),
-            copy(chances),
+            copy(inputChances),
+            copy(outputChances),
+            copy(fluidInputChances),
+            copy(fluidOutputChances),
             special,
             duration,
             eut,
@@ -641,8 +771,20 @@ public class GTRecipeBuilder {
         return duration;
     }
 
-    public int[] getChances() {
-        return chances;
+    public int[] getInputChances() {
+        return inputChances;
+    }
+
+    public int[] getOutputChances() {
+        return outputChances;
+    }
+
+    public int[] getFluidInputChances() {
+        return fluidInputChances;
+    }
+
+    public int[] getFluidOutputChances() {
+        return fluidOutputChances;
     }
 
     public int getEUt() {
@@ -673,6 +815,12 @@ public class GTRecipeBuilder {
 
     public boolean isValid() {
         return valid;
+    }
+
+    private void checkLength(int[] chances, Object[] contents, String type) {
+        if (chances != null && contents != null && chances.length != contents.length) {
+            throw new IllegalArgumentException(type + " chances array and contents array length differs");
+        }
     }
 
     private static boolean isArrayValid(@Nonnull Object[] arr, int min, int max) {
@@ -805,9 +953,10 @@ public class GTRecipeBuilder {
                     outputs,
                     fluidInputs,
                     fluidOutputs,
-                    chances,
-                    special,
-                    duration,
+                    inputChances,
+                    outputChances,
+                    fluidInputChances,
+                    fluidOutputChances,
                     eut,
                     specialValue,
                     enabled,
@@ -818,7 +967,9 @@ public class GTRecipeBuilder {
                     nbtSensitive,
                     neiDesc,
                     metadataStorage,
-                    recipeCategory)));
+                    recipeCategory,
+                    special,
+                    duration)));
     }
 
     public GTRecipeBuilder forceOreDictInput() {
@@ -845,7 +996,10 @@ public class GTRecipeBuilder {
                     outputs,
                     fluidInputs,
                     fluidOutputs,
-                    chances,
+                    inputChances,
+                    outputChances,
+                    fluidInputChances,
+                    fluidOutputChances,
                     special,
                     duration,
                     eut,
@@ -905,7 +1059,10 @@ public class GTRecipeBuilder {
     public GTRecipeBuilder reset() {
         metadataStorage = null;
         alts = null;
-        chances = null;
+        inputChances = null;
+        outputChances = null;
+        fluidInputChances = null;
+        fluidOutputChances = null;
         duration = -1;
         enabled = true;
         eut = -1;
@@ -925,6 +1082,7 @@ public class GTRecipeBuilder {
         specialValue = 0;
         skip = false;
         valid = true;
+        pendingIntegratedCircuit = null;
         return this;
     }
 }

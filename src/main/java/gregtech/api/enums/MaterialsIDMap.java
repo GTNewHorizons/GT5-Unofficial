@@ -388,9 +388,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(597, Materials.Diaminobenzidin);
         r(598, Materials.Diphenylisophthalate);
         r(599, Materials.Polybenzimidazole);
-        r(600, Materials.SodiumBromide);
-        r(601, Materials.PotassiumIodide);
-        r(602, Materials.ReinforcedGlass);
+        r(600, Materials.SoulInfusedMedium);
+               r(602, Materials.ReinforcedGlass);
         r(603, Materials.BioMediumRaw);
         r(604, Materials.BioMediumSterilized);
         r(605, Materials.Chlorobenzene);
@@ -730,6 +729,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(949, Materials.GlauconiteSand);
         r(951, Materials.Vyroxeres);
         r(952, Materials.Ceruclase);
+        r(953, Materials.SodiumBromide);
+        r(954, Materials.PotassiumIodide);
         r(956, Materials.Tartarite);
         r(966, Materials.Orichalcum);
         r(967, Materials.SiliconTetrafluoride);

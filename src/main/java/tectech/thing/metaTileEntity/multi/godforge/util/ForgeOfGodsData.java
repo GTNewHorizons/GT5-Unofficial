@@ -1,13 +1,17 @@
 package tectech.thing.metaTileEntity.multi.godforge.util;
 
-import java.math.BigInteger;
-import java.util.Collection;
+import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.END;
 
+import java.math.BigInteger;
+
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.math.LongMath;
 
+import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -22,7 +26,7 @@ public class ForgeOfGodsData {
     public static final int DEFAULT_ROTATION_SPEED = 5;
     public static final int DEFAULT_STAR_SIZE = 20;
     public static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
-    public static final MilestoneFormatter DEFAULT_FORMATTING_MODE = MilestoneFormatter.COMMA;
+    public static final Formatters DEFAULT_FORMATTER = Formatters.COMMA;
     public static final BigInteger DEFAULT_TOTAL_POWER = BigInteger.ZERO;
 
     public static final long POWER_MILESTONE_CONSTANT = LongMath.pow(10, 15);
@@ -49,6 +53,7 @@ public class ForgeOfGodsData {
     private long totalRecipesProcessed;
     private long totalFuelConsumed;
     private float totalExtensionsBuilt;
+
     private float powerMilestonePercentage;
     private float recipeMilestonePercentage;
     private float fuelMilestonePercentage;
@@ -57,31 +62,27 @@ public class ForgeOfGodsData {
     private float invertedRecipeMilestonePercentage;
     private float invertedFuelMilestonePercentage;
     private float invertedStructureMilestonePercentage;
+
+    private final int[] milestoneProgress = new int[4];
+
     private BigInteger totalPowerConsumed = DEFAULT_TOTAL_POWER;
     private boolean batteryCharging;
     private boolean inversion;
     private boolean gravitonShardEjection;
-    private MilestoneFormatter formattingMode = DEFAULT_FORMATTING_MODE;
+    private Formatters formatter = DEFAULT_FORMATTER;
     private boolean isRenderActive;
     private boolean secretUpgrade;
     private boolean isRendererDisabled;
 
     private final UpgradeStorage upgrades = new UpgradeStorage();
-    private ForgeOfGodsUpgrade currentUpgradeWindow;
+    private final ItemStack[] storedUpgradeWindowItems = new ItemStack[16];
+    private final ItemStackHandler upgradeWindowHandler = new ItemStackHandler(storedUpgradeWindowItems);
 
     // Star cosmetics fields
-    // actual star cosmetics
     private final StarColorStorage starColors = new StarColorStorage();
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int rotationSpeed = DEFAULT_ROTATION_SPEED;
     private int starSize = DEFAULT_STAR_SIZE;
-    // editing star color
-    private ForgeOfGodsStarColor newStarColor = starColors.newTemplateColor();
-    private int starColorR, starColorG, starColorB;
-    private float starGamma;
-    private int editingStarIndex; // editing a full color preset
-    private int editingColorIndex; // editing a single color in a preset
-    private ForgeOfGodsStarColor importedStarColor;
 
     public int getFuelConsumptionFactor() {
         return fuelConsumptionFactor;
@@ -251,6 +252,18 @@ public class ForgeOfGodsData {
         this.invertedStructureMilestonePercentage = invertedStructureMilestonePercentage;
     }
 
+    public int getMilestoneProgress(int index) {
+        return milestoneProgress[index];
+    }
+
+    public void setMilestoneProgress(int index, int progress) {
+        milestoneProgress[index] = progress;
+    }
+
+    public int[] getAllMilestoneProgress() {
+        return milestoneProgress;
+    }
+
     public BigInteger getTotalPowerConsumed() {
         return totalPowerConsumed;
     }
@@ -265,10 +278,6 @@ public class ForgeOfGodsData {
 
     public void setBatteryCharging(boolean batteryCharging) {
         this.batteryCharging = batteryCharging;
-    }
-
-    public void toggleBatteryCharging() {
-        this.batteryCharging = !this.batteryCharging;
     }
 
     public boolean isInversion() {
@@ -287,24 +296,12 @@ public class ForgeOfGodsData {
         this.gravitonShardEjection = gravitonShardEjection;
     }
 
-    public void toggleGravitonShardEjection() {
-        this.gravitonShardEjection = !this.gravitonShardEjection;
+    public Formatters getFormatter() {
+        return formatter;
     }
 
-    public MilestoneFormatter getFormattingMode() {
-        return formattingMode;
-    }
-
-    public void setFormattingMode(MilestoneFormatter formattingMode) {
-        this.formattingMode = formattingMode;
-    }
-
-    public void cycleFormattingMode() {
-        this.formattingMode = this.formattingMode.cycle();
-    }
-
-    public String format(Number number) {
-        return this.formattingMode.format(number);
+    public void setFormatter(Formatters formatter) {
+        this.formatter = formatter;
     }
 
     public boolean isRenderActive() {
@@ -323,10 +320,6 @@ public class ForgeOfGodsData {
         this.secretUpgrade = secretUpgrade;
     }
 
-    public void toggleSecretUpgrade() {
-        this.secretUpgrade = !this.secretUpgrade;
-    }
-
     public boolean isRendererDisabled() {
         return isRendererDisabled;
     }
@@ -339,10 +332,6 @@ public class ForgeOfGodsData {
         return upgrades;
     }
 
-    public Collection<ForgeOfGodsUpgrade> getAllUpgrades() {
-        return upgrades.getAllUpgrades();
-    }
-
     public void resetAllUpgrades() {
         upgrades.resetAll();
     }
@@ -352,19 +341,39 @@ public class ForgeOfGodsData {
     }
 
     public void unlockUpgrade(ForgeOfGodsUpgrade upgrade) {
+        if (isUpgradeActive(upgrade)) return;
+        if (!upgrades.checkPrerequisites(upgrade)) return;
+        if (!upgrades.checkSplit(upgrade, ringAmount)) return;
+        if (!upgrades.checkCost(upgrade, gravitonShardsAvailable)) return;
+
         upgrades.unlockUpgrade(upgrade);
+        gravitonShardsAvailable -= upgrade.getShardCost();
+        gravitonShardsSpent += upgrade.getShardCost();
+    }
+
+    public void respecUpgrade(ForgeOfGodsUpgrade upgrade) {
+        if (!isUpgradeActive(upgrade)) return;
+        if (!upgrades.checkDependents(upgrade)) return;
+
+        upgrades.respecUpgrade(upgrade);
+        gravitonShardsAvailable += upgrade.getShardCost();
+        gravitonShardsSpent -= upgrade.getShardCost();
+
+        if (upgrade == END) {
+            gravitonShardEjection = false;
+        }
     }
 
     public boolean isUpgradeActive(ForgeOfGodsUpgrade upgrade) {
         return upgrades.isUpgradeActive(upgrade);
     }
 
-    public ForgeOfGodsUpgrade getCurrentUpgradeWindow() {
-        return currentUpgradeWindow;
+    public ItemStack[] getStoredUpgradeWindowItems() {
+        return storedUpgradeWindowItems;
     }
 
-    public void setCurrentUpgradeWindow(ForgeOfGodsUpgrade currentUpgradeWindow) {
-        this.currentUpgradeWindow = currentUpgradeWindow;
+    public ItemStackHandler getUpgradeWindowHandler() {
+        return upgradeWindowHandler;
     }
 
     public StarColorStorage getStarColors() {
@@ -395,70 +404,6 @@ public class ForgeOfGodsData {
         this.starSize = starSize;
     }
 
-    public ForgeOfGodsStarColor getNewStarColor() {
-        return newStarColor;
-    }
-
-    public void setNewStarColor(ForgeOfGodsStarColor newStarColor) {
-        this.newStarColor = newStarColor;
-    }
-
-    public int getStarColorR() {
-        return starColorR;
-    }
-
-    public void setStarColorR(int starColorR) {
-        this.starColorR = starColorR;
-    }
-
-    public int getStarColorG() {
-        return starColorG;
-    }
-
-    public void setStarColorG(int starColorG) {
-        this.starColorG = starColorG;
-    }
-
-    public int getStarColorB() {
-        return starColorB;
-    }
-
-    public void setStarColorB(int starColorB) {
-        this.starColorB = starColorB;
-    }
-
-    public float getStarGamma() {
-        return starGamma;
-    }
-
-    public void setStarGamma(float starGamma) {
-        this.starGamma = starGamma;
-    }
-
-    public int getEditingStarIndex() {
-        return editingStarIndex;
-    }
-
-    public void setEditingStarIndex(int editingStarIndex) {
-        this.editingStarIndex = editingStarIndex;
-    }
-
-    public int getEditingColorIndex() {
-        return editingColorIndex;
-    }
-
-    public void setEditingColorIndex(int editingColorIndex) {
-        this.editingColorIndex = editingColorIndex;
-    }
-
-    public ForgeOfGodsStarColor getImportedStarColor() {
-        return importedStarColor;
-    }
-
-    public void setImportedStarColor(ForgeOfGodsStarColor importedStarColor) {
-        this.importedStarColor = importedStarColor;
-    }
-
     public void serializeNBT(NBTTagCompound NBT, boolean force) {
         if (force || selectedFuelType != 0) NBT.setInteger("selectedFuelType", selectedFuelType);
         if (force || internalBattery != 0) NBT.setInteger("internalBattery", internalBattery);
@@ -473,17 +418,32 @@ public class ForgeOfGodsData {
         if (force || inversion) NBT.setBoolean("inversion", inversion);
 
         // Fields with non-zero defaults
-        if (force || fuelConsumptionFactor != ForgeOfGodsData.DEFAULT_FUEL_CONSUMPTION_FACTOR) {
+        if (force || fuelConsumptionFactor != DEFAULT_FUEL_CONSUMPTION_FACTOR) {
             NBT.setInteger("fuelConsumptionFactor", fuelConsumptionFactor);
         }
-        if (force || maxBatteryCharge != ForgeOfGodsData.DEFAULT_MAX_BATTERY_CHARGE) {
+        if (force || maxBatteryCharge != DEFAULT_MAX_BATTERY_CHARGE) {
             NBT.setInteger("batterySize", maxBatteryCharge);
         }
-        if (force || !ForgeOfGodsData.DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
+        if (force || !DEFAULT_TOTAL_POWER.equals(totalPowerConsumed)) {
             NBT.setByteArray("totalPowerConsumed", totalPowerConsumed.toByteArray());
         }
-        if (force || formattingMode != ForgeOfGodsData.DEFAULT_FORMATTING_MODE) {
-            NBT.setInteger("formattingMode", formattingMode.ordinal());
+        if (force || formatter != DEFAULT_FORMATTER) {
+            NBT.setInteger("formatter", formatter.ordinal());
+        }
+
+        // Upgrade window stored items
+        if (force) {
+            NBTTagCompound upgradeWindowStorageNBTTag = new NBTTagCompound();
+            int storageIndex = 0;
+            for (ItemStack itemStack : storedUpgradeWindowItems) {
+                if (itemStack != null) {
+                    upgradeWindowStorageNBTTag
+                        .setInteger(storageIndex + "stacksizeOfStoredUpgradeItems", itemStack.stackSize);
+                    NBT.setTag(storageIndex + "storedUpgradeItem", itemStack.writeToNBT(new NBTTagCompound()));
+                }
+                storageIndex++;
+            }
+            NBT.setTag("upgradeWindowStorage", upgradeWindowStorageNBTTag);
         }
 
         upgrades.serializeToNBT(NBT, force);
@@ -522,9 +482,26 @@ public class ForgeOfGodsData {
         if (NBT.hasKey("totalPowerConsumed")) {
             totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
         }
+        // Legacy NBT handling of the old formatting mode
         if (NBT.hasKey("formattingMode")) {
-            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, MilestoneFormatter.VALUES.length);
-            formattingMode = MilestoneFormatter.VALUES[index];
+            int index = MathHelper.clamp_int(NBT.getInteger("formattingMode"), 0, Formatters.VALUES.length);
+            formatter = Formatters.VALUES[index];
+        }
+        if (NBT.hasKey("formatter")) {
+            int index = MathHelper.clamp_int(NBT.getInteger("formatter"), 0, Formatters.VALUES.length);
+            formatter = Formatters.VALUES[index];
+        }
+
+        // Stored items
+        NBTTagCompound tempItemTag = NBT.getCompoundTag("upgradeWindowStorage");
+        if (tempItemTag != null) {
+            for (int index = 0; index < 16; index++) {
+                int stackSize = tempItemTag.getInteger(index + "stacksizeOfStoredUpgradeItems");
+                ItemStack itemStack = ItemStack.loadItemStackFromNBT(NBT.getCompoundTag(index + "storedUpgradeItem"));
+                if (itemStack != null) {
+                    storedUpgradeWindowItems[index] = itemStack.splitStack(stackSize);
+                }
+            }
         }
 
         // Renderer information

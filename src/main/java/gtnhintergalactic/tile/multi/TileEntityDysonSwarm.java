@@ -1,5 +1,6 @@
 package gtnhintergalactic.tile.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -24,6 +25,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,6 +39,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -43,7 +47,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -154,7 +157,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             'e',
             buildHatchAdder(TileEntityDysonSwarm.class).atLeast(Dynamo, DynamoMulti)
                 .casingIndex(IGTextures.CASING_INDEX_RECEIVER)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 0))) // Receiver Base Casing
         .addElement('f', ofFrame(Materials.HSSS))
         .addElement('g', ofFrame(Materials.Titanium))
@@ -164,7 +167,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputBus, InputHatch)
                 .casingIndex(IGTextures.CASING_INDEX_LAUNCH)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 2))) // Deployment Unit Base Casing
         .addElement('j', ofBlock(GregTechAPI.sBlockCasingsDyson, 3)) // Deployment Unit Core
         .addElement('k', ofFrame(Materials.SuperconductorUHVBase))
@@ -174,7 +177,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputData)
                 .casingIndex(IGTextures.CASING_INDEX_COMMAND)
-                .dot(4)
+                .hint(4)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 5))) // Command Center Base Casing
         .addElement('p', ofBlock(GregTechAPI.sBlockCasingsDyson, 6)) // Command Center Primary Windings
         .addElement('s', ofBlock(GregTechAPI.sBlockCasingsDyson, 7)) // Command Center Secondary Windings
@@ -394,15 +397,24 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive)
-                return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                    TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE), TextureFactory.builder()
-                        .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
+            if (aActive) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER), TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.CASING_INDEX_RECEIVER),
-                TextureFactory.of(IGTextures.DYSON_OVERLAY_FRONT), TextureFactory.builder()
+                TextureFactory.builder()
+                    .addIcon(IGTextures.DYSON_OVERLAY_FRONT)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
                     .addIcon(IGTextures.DYSON_OVERLAY_FRONT_GLOW)
+                    .extFacing()
                     .glow()
                     .build() };
         }
@@ -465,17 +477,18 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + GTUtility.formatNumbers(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN)
-                + GTUtility.formatNumbers(powerFactor * 100.0)
-                + "%"
-                + RESET,
+            "Modules: " + YELLOW + formatNumber(moduleCount) + RESET,
+            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET,
             "Theoretical Output: " + YELLOW
-                + GTUtility.formatNumbers((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
+                + formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
                 + RESET
                 + " EU/t",
-            "Current Output: " + YELLOW + GTUtility.formatNumbers(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + GTUtility.formatNumbers(eRequiredData) + RESET + "/t",
+            "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
+            "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET,
             "---------------------------------------------" };
     }
 
@@ -485,6 +498,10 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     public double getPowerFactor() {
         WorldProvider provider = this.getBaseMetaTileEntity()
             .getWorld().provider;
+
+        if (!Mods.GalacticraftCore.isModLoaded()) {
+            return 1.0D;
+        }
 
         if (provider instanceof IOrbitDimension orbitDimension) {
             return IGConfig.dysonSwarm.getPowerFactor(orbitDimension.getPlanetToOrbit());

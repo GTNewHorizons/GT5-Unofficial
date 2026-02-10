@@ -10,6 +10,7 @@ import net.minecraft.util.WeightedRandomFishable;
 import net.minecraftforge.common.FishingHooks;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.mixin.interfaces.accessors.WeightedRandomFishableAccessor;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -62,10 +63,10 @@ public class FishPondRecipes {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(circuitType))
+            .circuit(circuitType)
             .itemOutputs(outputs, chances)
             .duration(10 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .ignoreCollision()
             .addTo(GTPPRecipeMaps.fishPondRecipes);
     }

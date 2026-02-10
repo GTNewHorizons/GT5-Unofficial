@@ -20,7 +20,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
@@ -33,7 +32,7 @@ public class AutoclaveRecipes implements Runnable {
             .outputChances(10000)
             .fluidInputs(Materials.EnergeticAlloy.getMolten(2 * INGOTS))
             .duration(30 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
@@ -42,7 +41,7 @@ public class AutoclaveRecipes implements Runnable {
             .outputChances(10000)
             .fluidInputs(Materials.ConductiveIron.getMolten(4 * INGOTS))
             .duration(60 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(autoclaveRecipes);
 
         final ItemStack certusQuartzSeed = getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0);
@@ -232,9 +231,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(7500)
             .fluidInputs(Materials.Water.getFluid(1_000))
@@ -243,9 +241,8 @@ public class AutoclaveRecipes implements Runnable {
             .addTo(autoclaveRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GTUtility.getIntegratedCircuit(1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1))
+            .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3))
             .outputChances(9000)
             .fluidInputs(GTModHandler.getDistilledWater(1_000))

@@ -2,7 +2,9 @@ package gregtech.api.modularui2;
 
 import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.GuiTextures;
+import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.theme.SlotTheme;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.theme.WidgetThemeKey;
@@ -89,7 +91,7 @@ public final class GTWidgetThemes {
         .widgetThemeKeyBuilder("steamGaugeNeedle", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, null, Color.BROWN.main, 0xFF404040, false, 0))
         .defaultHoverTheme(null)
-        .parser(createSteamGaugeNeedleParser())
+        .parser(noInheritanceParser())
         .register();
 
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_ENABLED = registerThemedButton("buttonCoverTabEnabled");
@@ -104,6 +106,38 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
     public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
+
+    public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART = themeApi
+        .widgetThemeKeyBuilder("teslaTowerChart", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                Color.rgb(55, 255, 55),
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser())
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART_SPECIAL = themeApi
+        .widgetThemeKeyBuilder("teslaTowerChartSpecial", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new DrawableStack(
+                    new Rectangle().setColor(Color.rgb(100, 30, 80)),
+                    GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART),
+                Color.rgb(55, 255, 55),
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser())
+        .register();
 
     private static WidgetThemeKey<WidgetTheme> registerThemedTexture(String textureThemeId) {
         return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)
@@ -134,7 +168,7 @@ public final class GTWidgetThemes {
     }
 
     // Needed because by default it will inherit the global color
-    private static WidgetThemeParser<WidgetTheme> createSteamGaugeNeedleParser() {
+    private static WidgetThemeParser<WidgetTheme> noInheritanceParser() {
         return (parent, json, fallback) -> {
             int defaultWidth = JsonHelper.getInt(json, parent.getDefaultWidth(), "w", "width");
             int defaultHeight = JsonHelper.getInt(json, parent.getDefaultHeight(), "h", "height");

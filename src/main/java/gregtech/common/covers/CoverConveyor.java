@@ -17,13 +17,15 @@ import gregtech.common.gui.mui1.cover.ConveyorUIFactory;
 
 public class CoverConveyor extends CoverIOBase {
 
-    public final int mTickRate;
-    private final int mMaxStacks;
+    public final int tickRate;
+    private final int stacksPerTransfer;
+    private final int itemsPerStack;
 
-    public CoverConveyor(CoverContext context, int aTickRate, int maxStacks, ITexture coverTexture) {
+    public CoverConveyor(CoverContext context, int aTickRate, int maxStacks, int itemsPerStack, ITexture coverTexture) {
         super(context, coverTexture);
-        this.mTickRate = aTickRate;
-        this.mMaxStacks = maxStacks;
+        this.tickRate = aTickRate;
+        this.stacksPerTransfer = maxStacks;
+        this.itemsPerStack = itemsPerStack;
     }
 
     @Override
@@ -44,7 +46,8 @@ public class CoverConveyor extends CoverIOBase {
             }
         }
 
-        transfer.setStacksToTransfer(mMaxStacks);
+        transfer.setStacksToTransfer(stacksPerTransfer);
+        transfer.setMaxItemsPerTransfer(itemsPerStack);
         transfer.dropItems(coverable, coverSide);
 
         transfer.transfer();
@@ -97,7 +100,7 @@ public class CoverConveyor extends CoverIOBase {
 
     @Override
     public int getMinimumTickRate() {
-        return this.mTickRate;
+        return this.tickRate;
     }
 
     // GUI stuff

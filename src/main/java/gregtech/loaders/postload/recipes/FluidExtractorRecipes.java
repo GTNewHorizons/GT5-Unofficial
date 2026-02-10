@@ -135,7 +135,7 @@ public class FluidExtractorRecipes implements Runnable {
             .outputChances(1000)
             .fluidOutputs(Materials.WoodTar.getFluid(100L))
             .duration(1 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -167,7 +167,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Monazite, 1L))
             .fluidOutputs(Materials.Helium.getGas(200L))
             .duration(3 * SECONDS + 4 * TICKS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
@@ -178,14 +178,14 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 1L, 0))
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassPlate", 1L, 0))
             .fluidOutputs(Materials.ReinforcedGlass.getMolten(1 * HALF_INGOTS))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassLense", 1L, 0))
+            .itemInputs(getModItem(NewHorizonsCoreMod.ID, "ReinforcedGlassLense", 1L, 0))
             .fluidOutputs(Materials.ReinforcedGlass.getMolten(54))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)

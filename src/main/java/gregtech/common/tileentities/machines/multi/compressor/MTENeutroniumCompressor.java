@@ -75,7 +75,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             'B',
             buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(6))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTENeutroniumCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 6))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 8))

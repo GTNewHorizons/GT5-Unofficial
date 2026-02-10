@@ -14,7 +14,6 @@
 package bartworks;
 
 import static bartworks.common.loaders.BioRecipeLoader.runOnServerStarted;
-import static bartworks.system.material.WerkstoffLoader.removeIC2Recipes;
 import static gregtech.api.enums.Mods.BartWorks;
 
 import java.io.IOException;
@@ -30,6 +29,7 @@ import bartworks.API.BioVatLogicAdder;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
+import bartworks.client.renderer.BWItemRenderer;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
@@ -43,7 +43,7 @@ import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
-import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
@@ -67,6 +67,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.CasingTier;
 import gregtech.api.util.GlassTier;
 import tectech.loader.recipe.Godforge;
 
@@ -103,7 +104,15 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
-
+        GregTechAPI.sAfterGTPostload.add(() -> {
+            CircuitImprintLoader.registerItemstacks();
+            for (CircuitWraps wrap : CircuitWraps.values()) {
+                wrap.registerWrap();
+                wrap.registerWrapRecipe();
+            }
+            CircuitImprintLoader.makeCuttingRecipes();
+            CircuitImprintLoader.makeCraftingRecipes();
+        });
     }
 
     @Mod.EventHandler
@@ -124,7 +133,11 @@ public final class MainMod {
         BioCultureLoader.run();
 
         Werkstoff.init();
-        GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
+            GregTechAPI.sAfterGTPostload.add(() -> new BWItemRenderer());
+        }
         if (event.getSide()
             .isClient()) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
@@ -151,6 +164,7 @@ public final class MainMod {
 
         ItemRegistry.run();
         GlassTier.RegisterGlassTiers.run();
+        CasingTier.RegisterCasingTiers.run();
     }
 
     @Mod.EventHandler
@@ -182,7 +196,6 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void onModLoadingComplete(FMLLoadCompleteEvent event) {
-        removeIC2Recipes();
         StaticRecipeChangeLoaders.addElectricImplosionCompressorRecipes();
         PlatinumSludgeOverHaul.replacePureElements();
 
@@ -195,7 +208,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-        CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers

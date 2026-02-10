@@ -72,7 +72,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
                 buildHatchAdder(MTESpargeTower.class).atLeast(Energy, InputHatch, InputBus, Maintenance)
                     .disallowOnly(ForgeDirection.UP)
                     .casingIndex(getCasingIndex())
-                    .dot(1)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(MTESpargeTower::onCasingFound, ofBlock(ModBlocks.blockCasings5Misc, 4))))
             .addElement(
@@ -81,7 +81,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
                     buildHatchAdder(MTESpargeTower.class).atLeast(layeredOutputHatch)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .casingIndex(getCasingIndex())
-                        .dot(2)
+                        .hint(2)
                         .build(),
                     ofHatchAdder(MTESpargeTower::addEnergyInputToMachineList, getCasingIndex(), 2),
                     ofHatchAdder(MTESpargeTower::addMaintenanceToMachineList, getCasingIndex(), 2),

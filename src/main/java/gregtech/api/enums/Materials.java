@@ -212,6 +212,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Amber;
     public static Materials Ammonium;
     public static Materials Amordrine;
+    public static Materials AncientDebris;
     public static Materials Andesite;
     public static Materials Ardite;
     public static Materials Aredrite;
@@ -913,6 +914,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
+    public static Materials SoulInfusedMedium;
 
     // Botania Materials
     public static Materials Manasteel;
@@ -1949,6 +1951,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
+    public @Nullable Materials getGTMaterial() {
+        return this;
+    }
+
+    @Override
     public List<IStoneType> getValidStones() {
         if (contains(SubTag.ICE_ORE)) {
             return StoneType.ICES;
@@ -1974,6 +1981,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
             aFormat.replace("%s", "%temp")
                 .replace("%material", "%s"),
             this.mLocalizedName).replace("%temp", "%s");
+    }
+
+    @Override
+    public boolean generatesPrefix(OrePrefixes prefix) {
+        return prefix.doGenerateItem(this);
     }
 
     public boolean hasDustItems() {

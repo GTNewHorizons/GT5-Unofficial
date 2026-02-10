@@ -16,37 +16,33 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
-
-import net.minecraft.item.ItemStack;
+import static gregtech.api.recipe.RecipeMaps.benderRecipes;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.covers.CoverRegistry;
-import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 
 public class MultipleMetalLoader implements IWerkstoffRunnable {
 
     @Override
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(plateDense)) {
-            RecipeMaps.benderRecipes.add(
-                new GTRecipe(
-                    true,
-                    new ItemStack[] { werkstoff.get(ingot, 2), GTUtility.getIntegratedCircuit(2) },
-                    new ItemStack[] { werkstoff.get(plateDouble) },
-                    null,
-                    null,
-                    null,
-                    null,
-                    (int) Math.max(
-                        werkstoff.getStats()
-                            .getMass() * 2,
-                        1L),
-                    60,
-                    0));
+            int duration = (int) Math.max(
+                werkstoff.getStats()
+                    .getMass() * 2,
+                1L);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(werkstoff.get(ingot, 2))
+                .circuit(2)
+                .itemOutputs(werkstoff.get(plateDouble))
+                .duration(duration)
+                .eut(TierEU.RECIPE_MV / 2)
+                .addTo(benderRecipes);
+
             CoverRegistry.registerDecorativeCover(
                 werkstoff.get(plateDouble),
                 TextureFactory.of(werkstoff.getTexSet().mTextures[72], werkstoff.getRGBA(), false));
