@@ -1952,6 +1952,17 @@ public class ChemicalRecipes implements Runnable {
             .eut(8)
             .addTo(UniversalChemical);
 
+        // NaOH + 2 (HCl)(H2O) = 2 H2O + 2 NaCl
+        GTValues.RA.stdBuilder()
+            .circuit(1)
+            .itemInputs(Materials.SodiumHydroxide.getDust(3))
+            .itemOutputs(Materials.Salt.getDust(2))
+            .fluidInputs(Materials.DilutedHydrochloricAcid.getFluid(2_000))
+            .fluidOutputs(Materials.Water.getFluid(2000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV / 2)
+            .addTo(UniversalChemical);
+
         // C3H6 + 2Cl = HCl + C3H5Cl
 
         GTValues.RA.stdBuilder()
@@ -5175,6 +5186,63 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(Materials.IVDimethylbenzene.getFluid(1_000), Materials.Hydrogen.getGas(4_000))
             .duration(3 * MINUTES + 20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        // Diluted Sulfuric acid undilution. 3000 Diluted is 2000 sulfuric 1000 water per DT recipe
+        GTValues.RA.stdBuilder()
+            .circuit(23)
+            .fluidInputs(
+                Materials.Oxygen.getGas(1_000),
+                Materials.SulfurDioxide.getGas(1_000),
+                Materials.DilutedSulfuricAcid.getFluid(3_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(3_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(23)
+            .fluidInputs(Materials.SulfurTrioxide.getGas(1_000), Materials.DilutedSulfuricAcid.getFluid(3_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(3_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(23)
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1))
+            .fluidInputs(Materials.Oxygen.getGas(3_000), Materials.DilutedSulfuricAcid.getFluid(3_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(3_000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(22)
+            .fluidInputs(
+                Materials.Oxygen.getGas(9_000),
+                Materials.SulfurDioxide.getGas(9_000),
+                Materials.DilutedSulfuricAcid.getFluid(27_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
+            .duration(22 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(22)
+            .fluidInputs(Materials.SulfurTrioxide.getGas(9_000), Materials.DilutedSulfuricAcid.getFluid(27_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
+            .duration(22 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(22)
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 9))
+            .fluidInputs(Materials.Oxygen.getGas(27_000), Materials.DilutedSulfuricAcid.getFluid(27_000))
+            .fluidOutputs(Materials.SulfuricAcid.getFluid(27_000))
+            .duration(22 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()

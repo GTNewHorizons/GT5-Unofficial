@@ -61,7 +61,6 @@ public class RecipesMachinesMulti {
         multiWiremill();
         multiSifter();
         multiThermalCentrifuge();
-        multiWiremill();
         multiWasher();
         multiCutter();
         multiExtruder();
@@ -330,10 +329,14 @@ public class RecipesMachinesMulti {
     public static void multiCentrifuge() {
         // Industrial Centrifuge
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Centrifuge.get(1),
+            ItemList.IndustrialCentrifuge.get(1),
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
                 OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
                 ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
+
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCentrifuge.get(1),
+            new Object[] { GregtechItemList.Industrial_Centrifuge });
 
         // Centrifuge Casing
         GTModHandler.addCraftingRecipe(
@@ -499,9 +502,13 @@ public class RecipesMachinesMulti {
 
         // Industrial Wire Factory
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_WireFactory.get(1),
+            ItemList.IndustrialWireFactory.get(1),
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
+
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialWireFactory.get(1),
+            new Object[] { GregtechItemList.Industrial_WireFactory });
     }
 
     private static void multiMassFabricator() {
