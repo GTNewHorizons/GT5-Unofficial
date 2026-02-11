@@ -11,12 +11,14 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.chainItemPipeCasings;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -241,8 +243,8 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("mPackageMode")) {
-            machineMode = aNBT.getInteger("mPackageMode");
+        if (aNBT.hasKey("packageMode")) {
+            machineMode = aNBT.getInteger("packageMode");
         }
         super.loadNBTData(aNBT);
     }
@@ -273,6 +275,14 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipeMaps.packagerRecipes, RecipeMaps.unpackagerRecipes);
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatToPlayer(aPlayer, translateToLocalFormatted("GT5U.MULTI_MACHINE_CHANGE", getMachineModeName()));
     }
 
     @Override
