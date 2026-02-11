@@ -171,6 +171,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
+import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -622,6 +623,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialWireMill.ID,
                 "industrialwiremill.controller.tier.single",
                 "Industrial Wire Factory").getStackForm(1));
+
+        ItemList.MegaChemicalReactor.set(
+            new MTEMegaChemicalReactor(
+                MegaChemicalReactor.ID,
+                "multimachine.mega-chemical-reactor",
+                "Mega Chemical Reactor").getStackForm(1));
     }
 
     private static void registerSteamMachines() {

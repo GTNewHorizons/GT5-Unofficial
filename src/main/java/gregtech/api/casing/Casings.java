@@ -29,6 +29,7 @@ import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
@@ -133,6 +134,11 @@ public enum Casings implements ICasing {
     ReboltedIridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
 
+    FusionCoilBlock  (() -> GregTechAPI.sBlockCasings4, 7, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(7)),
+    EternalCoilBlock  (() -> GregTechAPI.sBlockCasings5, 13, ((BlockCasings5) GregTechAPI.sBlockCasings5).getTextureIndex(13)),
+
+    ChemicallyInertCasing  (() -> GregTechAPI.sBlockCasings8, 0, ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0)),
+    PTFEPipeCasing  (() -> GregTechAPI.sBlockCasings8, 1, ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(1)),
     SolidSteelMachineCasing
         (() -> GregTechAPI.sBlockCasings2, 0, 16),
     FrostProofMachineCasing

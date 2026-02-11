@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 
 import com.jaquadro.minecraft.storagedrawers.StorageDrawers;
 
+import bartworks.common.loaders.ItemRegistry;
 import codechicken.nei.api.API;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -89,6 +90,7 @@ public class MTERecipeLoader implements Runnable {
         registerPolarizer();
         registerPrinter();
         registerRecycler();
+        registerReworkMigrationRecipes();
         registerSifter();
         registerThermalCentrifuge();
         registerUnpackager();
@@ -1589,6 +1591,14 @@ public class MTERecipeLoader implements Runnable {
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
             5);
 
+    }
+
+    private static void registerReworkMigrationRecipes() {
+
+        // Mega Chemical Reactor
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.MegaChemicalReactor.get(1),
+            new Object[] { ItemRegistry.megaMachines[3] });
     }
 
     private static void registerSifter() {
