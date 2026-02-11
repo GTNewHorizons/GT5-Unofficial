@@ -819,7 +819,7 @@ public class Godforge implements Runnable {
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.EE.getExtraCostNoNulls())
-            .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS))
+            .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.EE.getShortNameKey()))
@@ -828,7 +828,6 @@ public class Godforge implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.END.getExtraCostNoNulls())
             .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1), Materials.GravitonShard.getGems(1))
-            .fluidOutputs(Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.END.getShortNameKey()))

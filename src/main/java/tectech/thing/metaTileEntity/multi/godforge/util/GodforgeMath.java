@@ -262,7 +262,7 @@ public class GodforgeMath {
         int plasmaTier = 0;
         double overclockTimeFactor = 2;
 
-        if (data.isUpgradeActive(END)) {
+        if (data.isUpgradeActive(EE)) {
             plasmaTier = 2;
         } else if (data.isUpgradeActive(SEDS)) {
             plasmaTier = 1;
