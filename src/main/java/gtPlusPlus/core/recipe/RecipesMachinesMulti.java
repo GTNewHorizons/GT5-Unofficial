@@ -61,7 +61,6 @@ public class RecipesMachinesMulti {
         multiWiremill();
         multiSifter();
         multiThermalCentrifuge();
-        multiWiremill();
         multiWasher();
         multiCutter();
         multiExtruder();
@@ -499,9 +498,13 @@ public class RecipesMachinesMulti {
 
         // Industrial Wire Factory
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_WireFactory.get(1),
+            ItemList.IndustrialWireFactory.get(1),
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
+
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialWireFactory.get(1),
+            new Object[] { GregtechItemList.Industrial_WireFactory });
     }
 
     private static void multiMassFabricator() {
