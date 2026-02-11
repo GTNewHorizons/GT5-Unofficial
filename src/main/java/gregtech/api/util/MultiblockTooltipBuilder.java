@@ -1177,7 +1177,7 @@ public class MultiblockTooltipBuilder {
         return toolTipFinisher(
             separatorColor,
             separatorLength,
-            ContributorList.newList()
+            ContributorList.newContributorList()
                 .addAuthors(authors));
     }
 
@@ -1322,7 +1322,7 @@ public class MultiblockTooltipBuilder {
          * Create a new empty ContributorList. Use the {@link #addAuthors(String...)} and
          * {@link #addStructureAuthors(String...)} methods to add contributors to the list.
          */
-        public static ContributorList newList() {
+        public static ContributorList newContributorList() {
             return new ContributorList();
         }
 

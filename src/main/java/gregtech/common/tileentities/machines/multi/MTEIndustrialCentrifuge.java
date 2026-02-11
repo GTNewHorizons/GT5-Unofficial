@@ -1,7 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -15,12 +13,12 @@ import static gregtech.api.enums.Textures.BlockIcons.LARGETURBINE_NEW_ACTIVE5;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newList;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newContributorList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -114,15 +112,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
                         " AAA "
                     }})
                 //spotless:on
-                .addElement(
-                    'A',
-                    lazy(
-                        t -> ofBlock(
-                            Block.getBlockFromItem(
-                                MaterialsAlloy.EGLIN_STEEL.getFrameBox(1)
-                                    .getItem()),
-                            MaterialsAlloy.EGLIN_STEEL.getFrameBox(1)
-                                .getItemDamage())))
+                .addElement('A', ofFrame(MaterialsAlloy.EGLIN_STEEL))
                 .addElement('B', Casings.LargeSieveGrate.asElement())
                 .addElement(
                     'C',
@@ -165,6 +155,8 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front Center")
             .addCasingInfoMin("Centrifuge Casings", 6, false)
+            .addCasingInfoExactly("Large Sieve Grate", 18, false)
+            .addCasingInfoExactly("Eglin Steel Frame Box", 24, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -172,7 +164,7 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(newList().addStructureAuthors(EnumChatFormatting.GOLD + "Ducked"));
+            .toolTipFinisher(newContributorList().addStructureAuthors(EnumChatFormatting.GOLD + "Ducked"));
         return tt;
     }
 
