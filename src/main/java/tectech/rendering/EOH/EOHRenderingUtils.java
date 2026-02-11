@@ -294,9 +294,7 @@ public abstract class EOHRenderingUtils {
         GL11.glPushMatrix();
         int inversionMultiplier = invertFrontFace ? -1 : 1;
         GL11.glScaled(inversionMultiplier * radiusInBlocks, radiusInBlocks, radiusInBlocks);
-        GL11.glPushClientAttrib(GL11.GL_CLIENT_VERTEX_ARRAY_BIT);
         vbo.render();
-        GL11.glPopClientAttrib();
         GL11.glPopMatrix();
 
         GL11.glFrontFace(oldFrontFace);
