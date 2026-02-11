@@ -3421,7 +3421,7 @@ GT5U.tooltip.structure.lens_housing=Lens Housing
 GT5U.tooltip.structure.lens_indicator=Lens Indicator
 
 GT5U.tooltip.fluid.registry=Registry: %s
-GT5U.tooltip.fluid.amount=Amount: %s L
+GT5U.tooltip.fluid.amount=Amount: %s
 GT5U.tooltip.fluid.temperature=Temperature: %s K
 GT5U.tooltip.fluid.stat=State: %s
 GT5U.tooltip.fluid.stat.gas=Gas
