@@ -59,9 +59,9 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             1,
             new String[] { "Digging ore instead of you", "Use Screwdriver to regulate work area",
                 "Use Soft Mallet to disable and retract the pipe",
-                String.format("%d EU/t, %d sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
-                String.format("Maximum work area %dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Small ore fortune bonus of %d", aTier) },
+                String.format("§e%d§7 EU/t, §f%d§7 sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
+                String.format("Maximum work area §f%dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
+                String.format("Small ore fortune bonus of §f%d", aTier) },
             2,
             2,
             TextureFactory.of(
