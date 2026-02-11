@@ -735,18 +735,25 @@ public class Godforge implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 16),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Universium, 2),
                 CustomItemList.EOH_Infinite_Energy_Casing.get(64),
-                CustomItemList.StabilisationFieldGeneratorTier5.get(16),
-                ItemList.ZPM6.get(6),
-                ItemList.Field_Generator_UMV.get(64));
-
-            ForgeOfGodsUpgrade.END.addExtraCost(
+                CustomItemList.StabilisationFieldGeneratorTier6.get(48),
+                ItemList.ZPM6.get(16),
+                ItemList.Transdimensional_Alignment_Matrix.get(8),
                 CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(32),
                 CustomItemList.Godforge_StellarEnergySiphonCasing.get(64),
-                CustomItemList.StabilisationFieldGeneratorTier6.get(48),
-                ItemList.Transdimensional_Alignment_Matrix.get(8),
-                ItemList.ZPM6.get(16),
-                ItemList.Robot_Arm_UMV.get(64),
-                ItemList.Conveyor_Module_UMV.get(64));
+                ItemList.Field_Generator_UMV.get(64),
+                ItemList.Robot_Arm_UMV.get(64));
+
+            ForgeOfGodsUpgrade.END.addExtraCost(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Eternity, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MagMatter, 64),
+                CustomItemList.StabilisationFieldGeneratorTier8.get(64),
+                CustomItemList.Machine_Multi_QuarkGluonPlasmaModule.get(64),
+                CustomItemList.astralArrayFabricator.get(4),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 4),
+                ItemList.ZPM6.get(32),
+                ItemList.Field_Generator_UXV.get(64),
+                ItemList.Robot_Arm_UXV.get(64));
         }
 
     }
@@ -812,7 +819,7 @@ public class Godforge implements Runnable {
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.EE.getExtraCostNoNulls())
-            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1))
+            .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.EE.getShortNameKey()))
@@ -820,8 +827,8 @@ public class Godforge implements Runnable {
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.END.getExtraCostNoNulls())
-            .itemOutputs(Materials.GravitonShard.getGems(1))
-            .fluidOutputs(Materials.MagMatter.getMolten(4 * INGOTS), Materials.Neutronium.getPlasma(1_000))
+            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1), Materials.GravitonShard.getGems(1))
+            .fluidOutputs(Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
             .metadata(FOG_UPGRADE_NAME_SHORT, translateToLocal(ForgeOfGodsUpgrade.END.getShortNameKey()))
