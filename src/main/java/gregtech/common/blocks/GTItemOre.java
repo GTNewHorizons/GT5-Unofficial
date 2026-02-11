@@ -13,7 +13,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTDataUtils;
-import gregtech.common.config.Client;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -62,15 +61,12 @@ public class GTItemOre extends ItemBlock implements IItemFirestoneBurning {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-    if (!Client.tooltip.showFormula) {
-        return;
-    }
         Materials mat = GTDataUtils
             .getIndexSafe(GregTechAPI.sGeneratedMaterials, blockOre.getMaterialIndex(stack.getItemDamage()));
 
-            if (mat == null) mat = Materials._NULL;
+        if (mat == null) mat = Materials._NULL;
 
-        mat.addTooltips(desc); check
+        mat.addTooltips(desc);
     }
 
     @Override

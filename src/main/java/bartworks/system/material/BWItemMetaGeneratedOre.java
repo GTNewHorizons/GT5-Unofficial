@@ -61,12 +61,12 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
         if (!Client.tooltip.showFormula) {
             return;
         }
-            int meta = stack.getItemDamage();
+        int meta = stack.getItemDamage();
 
-            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
+        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff != null) {
             werkstoff.addTooltips(desc);
         }
-        }
+    }
 }

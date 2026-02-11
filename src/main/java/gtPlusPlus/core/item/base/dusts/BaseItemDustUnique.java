@@ -122,14 +122,14 @@ public class BaseItemDustUnique extends Item {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        if (Client.tooltip.showRadioactiveText) {
-            if (this.sRadiation > 0) {
-                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
-            }
-        }
         if (Client.tooltip.showFormula) {
             if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
                 list.add(this.chemicalNotation);
+            }
+        }
+        if (Client.tooltip.showRadioactiveText) {
+            if (this.sRadiation > 0) {
+                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
             }
         }
         super.addInformation(stack, aPlayer, list, bool);

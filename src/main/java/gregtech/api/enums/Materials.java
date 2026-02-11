@@ -38,6 +38,7 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
@@ -1797,10 +1798,14 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public void addTooltips(List<String> list, long aMultiplier) {
-        final String chemicalTooltip = getChemicalTooltip(aMultiplier);
-        final String flavorTooltip = getFlavorText() != null ? "§8§o" + getFlavorText() : null;
-        if (GTUtility.isStringValid(chemicalTooltip)) list.add(chemicalTooltip);
-        if (flavorTooltip != null) list.add(flavorTooltip);
+        if (Client.tooltip.showFormula) {
+            final String chemicalTooltip = getChemicalTooltip(aMultiplier);
+            if (GTUtility.isStringValid(chemicalTooltip)) list.add(chemicalTooltip);
+        }
+        if (Client.tooltip.showFlavorText) {
+            final String flavorTooltip = getFlavorText() != null ? "§8§o" + getFlavorText() : null;
+            if (flavorTooltip != null) list.add(flavorTooltip);
+        }
     }
 
     @Override

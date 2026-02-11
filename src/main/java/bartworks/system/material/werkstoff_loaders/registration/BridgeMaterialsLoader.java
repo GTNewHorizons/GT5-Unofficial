@@ -67,13 +67,12 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
         }
         werkstoffBridgeMaterial.mName = werkstoff.getVarName();
         werkstoffBridgeMaterial.mDefaultLocalName = werkstoff.getDefaultName();
-        werkstoffBridgeMaterial
-            .setChemicalFormula(werkstoff.getFormulaTooltip(), werkstoff.isFormulaNeededLocalized());
-        if ("null".equals(werkstoffBridgeMaterial.mLocalizedName))
-            // only reload from lang file if not localized already
-            werkstoffBridgeMaterial.mLocalizedName = GTLanguageManager.addStringLocalization(
-                "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
+        werkstoffBridgeMaterial.setChemicalFormula(werkstoff.getFormulaTooltip(), werkstoff.isFormulaNeededLocalized());
+        if (!StatCollector.canTranslate(werkstoffBridgeMaterial.getLocalizedNameKey())) {
+            GTLanguageManager.addStringLocalization(
+                werkstoffBridgeMaterial.getLocalizedNameKey(),
                 werkstoffBridgeMaterial.mDefaultLocalName);
+        }
         if (Thaumcraft.isModLoaded()) {
             werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
         }

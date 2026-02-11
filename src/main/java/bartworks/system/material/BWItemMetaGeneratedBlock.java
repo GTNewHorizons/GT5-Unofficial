@@ -26,7 +26,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Client;
 
 public class BWItemMetaGeneratedBlock extends BWItemBlocks {
 
@@ -49,7 +48,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        if (!Client.tooltip.showFormula || !GTUtility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
+        if (!GTUtility.isStackValid(aStack) || aPlayer == null || aStack.getItemDamage() <= 0) {
             return;
         }
         if (aList == null) {

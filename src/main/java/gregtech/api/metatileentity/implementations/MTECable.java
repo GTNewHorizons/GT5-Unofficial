@@ -47,7 +47,6 @@ import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -523,7 +522,6 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
                 + EnumChatFormatting.GRAY,
             EnumChatFormatting.YELLOW + formatNumber(mAmperage) + EnumChatFormatting.GRAY,
             EnumChatFormatting.RED + formatNumber(mCableLossPerMeter) + EnumChatFormatting.GRAY);
-        check the TooltipHelper.voltageText
     }
 
     @Override

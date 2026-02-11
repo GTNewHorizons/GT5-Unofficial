@@ -34,6 +34,7 @@ import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
@@ -1821,13 +1822,14 @@ public class Material implements IOreMaterial {
 
     @Override
     public void addTooltips(List<String> list) {
-        if (this.vChemicalFormula.contains("?")) {
-            list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.vChemicalFormula));
-        } else {
-            list.add(StringUtils.sanitizeStringKeepBrackets(this.vChemicalFormula));
+        if (Client.tooltip.showFormula) {
+            if (this.vChemicalFormula.contains("?")) {
+                list.add(StringUtils.sanitizeStringKeepBracketsQuestion(this.vChemicalFormula));
+            } else {
+                list.add(StringUtils.sanitizeStringKeepBrackets(this.vChemicalFormula));
+            }
         }
-
-        if (this.isRadioactive) {
+        if (Client.tooltip.showRadioactiveText && this.isRadioactive) {
             list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.vRadiationLevel));
         }
     }

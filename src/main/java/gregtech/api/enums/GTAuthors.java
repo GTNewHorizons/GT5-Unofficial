@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 import static gregtech.api.util.CustomGlyphs.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -334,6 +335,10 @@ public class GTAuthors {
             Arrays.stream(authors)
                 .map(author -> EnumChatFormatting.GREEN + author + EnumChatFormatting.RESET + EnumChatFormatting.GRAY)
                 .toArray(String[]::new));
+    }
+
+    public static String formatAuthors(List<String> authors) {
+        return formatAuthors(authors.toArray(new String[0]));
     }
 
     public static String buildAuthorsWithFormat(String... authors) {

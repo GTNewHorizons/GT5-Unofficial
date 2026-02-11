@@ -64,6 +64,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
@@ -548,6 +549,9 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
 
     @Override
     public void addTooltips(List<String> list) {
+        if (!Client.tooltip.showFormula) {
+            return;
+        }
         final String formula = getLocalizedFormulaTooltip();
         if (GTUtility.isStringValid(formula)) list.add(formula);
     }

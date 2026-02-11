@@ -112,23 +112,11 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (Client.tooltip.showFormula) {
-                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                        list.add(
-                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                    } else {
-                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                    }
-                }
-                if (Client.tooltip.showRadioactiveText) {
-                    if (this.componentMaterial.isRadioactive) {
-                        list.add(
-                            GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: "
-                                + this.componentMaterial.vRadiationLevel);
-                    }
-                }
-                componentMaterial.addTooltips(list) dosome;
+                componentMaterial.addTooltips(list);
             } else {
+                if (!Client.tooltip.showFormula) {
+                    return;
+                }
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                 if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
                     list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));

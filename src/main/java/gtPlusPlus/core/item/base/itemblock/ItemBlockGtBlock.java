@@ -80,7 +80,6 @@ public class ItemBlockGtBlock extends ItemBlock {
             if (this.mMaterial != null) this.mMaterial.addTooltips(list);
         }
 
-
         if (this.isOre) {
             if (Client.tooltip.showCtrlText) {
                 if (KeyboardUtils.isCtrlKeyDown()) {

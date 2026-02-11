@@ -30,9 +30,8 @@ public class BlockBaseModular extends BasicBlock {
     protected Material material;
 
     protected int blockColour;
-    public BlockTypes thisBlock;
-    protected String thisBlockMaterial;
-    protected final String thisBlockType;
+    public BlockTypes blockType;
+    protected String materialName;
 
     private static final HashMap<String, Block> BLOCK_CACHE = new HashMap<>();
 
@@ -55,9 +54,6 @@ public class BlockBaseModular extends BasicBlock {
         this.material = material;
         registerComponent();
         BLOCK_CACHE.put(material.getUnlocalizedName() + "." + blockType.name(), this);
-        GTLanguageManager
-            .addStringLocalization("gtplusplus." + getUnlocalizedName() + ".name", this.blockType.getProperName());
-        sBlockCache.put(material.getUnlocalizedName() + "." + blockType.name(), this);
     }
 
     protected BlockBaseModular(final String unlocalizedName, final String blockMaterialString,
@@ -140,33 +136,10 @@ public class BlockBaseModular extends BasicBlock {
         return 0;
     }
 
-    public String getProperName() {
-        switch (this.thisBlock) {
-            case STANDARD -> {
-                return "Block of %s";
-            }
-            case FRAME -> {
-                return "%s Frame Box";
-            }
-            case ORE -> {
-                return "%s Ore [Old]";
-            }
-        }
-        return null;
-    }
-
-    public String getUnlocalizedProperName() {
-        return String.format(getProperName(), this.thisBlockMaterial);
-    }
-
     @Override
     public String getLocalizedName() {
-        return OrePrefixes.getLocalizedNameForItem(getProperName(), "%s", this.blockMaterial.getLocalizedName());
-        return String.format(
-            GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name"),
-            this.material.getTranslatedName());
+        return OrePrefixes.getLocalizedNameForItem(blockType.getProperName(), "%s", material.getLocalizedName());
     }
-    dosome
 
     @Override
     public String getUnlocalizedName() {

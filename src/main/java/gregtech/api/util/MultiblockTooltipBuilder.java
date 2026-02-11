@@ -1201,46 +1201,20 @@ public class MultiblockTooltipBuilder {
 
         final StringBuilder sb = new StringBuilder();
         if (!authors.isEmpty()) {
-            final String authorTag = "Author: ";
             sb.append(TT_addedBy);
             sb.append(COLON);
-            for (int i = 0; i < authors.size(); i++) {
-                String author = authors.get(i);
-                if (author.startsWith(authorTag)) {
-                    // to support all the values in GTValues
-                    // that already have Author at the start
-                    sb.append(author.substring(authorTag.length()));
-                } else {
-                    sb.append(author);
-                }
-                if (i != authors.size() - 1) {
-                    sb.append(EnumChatFormatting.RESET);
-                    sb.append(EnumChatFormatting.GRAY);
-                    sb.append(" & ");
-                    sb.append(EnumChatFormatting.GREEN);
-                }
+            sb.append(GTAuthors.formatAuthors(authors));
+
+            if (!structureAuthors.isEmpty()) {
+                sb.append(EnumChatFormatting.RESET);
+                sb.append(EnumChatFormatting.GRAY);
+                sb.append("; ");
             }
-            if (!structureAuthors.isEmpty()) sb.append(EnumChatFormatting.RESET)
-                .append(EnumChatFormatting.GRAY)
-                .append(", ");
-        if (authors != null && authors.length > 0) {
-            String sb = TT_addedBy + COLON + GTAuthors.formatAuthors(authors);
-            iLines.add(sb);
-            do some
         }
         if (!structureAuthors.isEmpty()) {
             sb.append(TT_StructureAuthor);
             sb.append(COLON);
-            for (int i = 0; i < structureAuthors.size(); i++) {
-                String builder = structureAuthors.get(i);
-                sb.append(builder);
-                if (i != structureAuthors.size() - 1) {
-                    sb.append(EnumChatFormatting.RESET);
-                    sb.append(EnumChatFormatting.GRAY);
-                    sb.append(" & ");
-                    sb.append(EnumChatFormatting.GREEN);
-                }
-            }
+            sb.append(GTAuthors.formatAuthors(structureAuthors));
         }
         if (sb.length() > 0) iLines.add(sb.toString());
 

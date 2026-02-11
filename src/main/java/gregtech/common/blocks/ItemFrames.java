@@ -10,8 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.common.config.Client;
+import gregtech.api.metatileentity.implementations.MTEFrame;
 
 public class ItemFrames extends ItemBlock {
 
