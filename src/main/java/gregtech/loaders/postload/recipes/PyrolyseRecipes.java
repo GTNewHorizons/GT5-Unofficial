@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -30,7 +31,7 @@ public class PyrolyseRecipes implements Runnable {
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
                 .fluidOutputs(Materials.Creosote.getFluid(8_000))
                 .duration(32 * SECONDS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(pyrolyseRecipes);
 
             GTValues.RA.stdBuilder()
@@ -49,7 +50,7 @@ public class PyrolyseRecipes implements Runnable {
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
                 .fluidOutputs(Materials.Creosote.getFluid(32_000))
                 .duration(2 * MINUTES + 8 * SECONDS)
-                .eut(64)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(pyrolyseRecipes);
 
             GTValues.RA.stdBuilder()
@@ -123,7 +124,7 @@ public class PyrolyseRecipes implements Runnable {
             .itemOutputs(Materials.Charcoal.getDust(12))
             .fluidOutputs(Materials.Water.getFluid(1_500))
             .duration(16 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(pyrolyseRecipes);
 
         GTValues.RA.stdBuilder()

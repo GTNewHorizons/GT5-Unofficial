@@ -197,6 +197,9 @@ public class DustLoader implements IWerkstoffRunnable {
                             stOutputs.toArray(new ItemStack[0]),
                             null,
                             null,
+                            null,
+                            null,
+                            null,
                             new FluidStack[] { null },
                             new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
                             (int) Math.max(
@@ -219,6 +222,9 @@ public class DustLoader implements IWerkstoffRunnable {
                             new GTRecipe(
                                 new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
                                 stOutputs.toArray(new ItemStack[0]),
+                                null,
+                                null,
+                                null,
                                 null,
                                 null,
                                 new FluidStack[] { null },
@@ -270,6 +276,9 @@ public class DustLoader implements IWerkstoffRunnable {
                             new GTRecipe(
                                 stOutputs.toArray(new ItemStack[0]),
                                 new ItemStack[] { input },
+                                null,
+                                null,
+                                null,
                                 null,
                                 null,
                                 new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },

@@ -6,13 +6,22 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
+
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectIterators;
@@ -193,5 +202,46 @@ public class GTDataUtils {
         });
 
         return out.toIntArray();
+    }
+
+    public static <K, V, P extends Pair<K, V>> Collector<? super P, ?, Multimap<K, V>> toMultiMap(
+        MultimapBuilder<K, V> map) {
+        return toMultiMap(map::build);
+    }
+
+    public static <K, V, P extends Pair<K, V>, M extends Multimap<K, V>> Collector<? super P, ?, M> toMultiMap(
+        Supplier<M> map) {
+        return new Collector<P, M, M>() {
+
+            @Override
+            public Supplier<M> supplier() {
+                return map;
+            }
+
+            @Override
+            public BiConsumer<M, P> accumulator() {
+                return (map, pair) -> { map.put(pair.left(), pair.right()); };
+            }
+
+            @Override
+            public BinaryOperator<M> combiner() {
+                return (map1, map2) -> {
+                    map1.putAll(map2);
+
+                    return map1;
+                };
+            }
+
+            @Override
+            public Function<M, M> finisher() {
+                return Function.identity();
+            }
+
+            @Override
+            public Set<Characteristics> characteristics() {
+                return new HashSet<>(Arrays.asList(Characteristics.IDENTITY_FINISH, Characteristics.UNORDERED));
+            }
+        };
+
     }
 }

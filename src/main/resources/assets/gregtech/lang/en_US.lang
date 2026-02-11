@@ -642,11 +642,6 @@ GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
 GTPP.tooltip.decayables_chest.2=Place with right-click
 
-# Butterfly Killer
-GTPP.tooltip.butterfly_killer.0=Kills Forestry Butterflies, Bats and other pests
-GTPP.tooltip.butterfly_killer.1=Use either Formaldehyde or Hydrogen cyanide
-GTPP.tooltip.butterfly_killer.2=Be wary of your neighbours
-
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
 GTPP.tooltip.volumetric_flask_setter.1=Configure default input slot with a screwdriver
@@ -798,6 +793,7 @@ GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, 
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+GT5U.MBTT.StructureBy=Structure by
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
@@ -1096,6 +1092,14 @@ gt.recipe.category.alloy_smelter_molding=Alloy Smelter Molding
 gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
+
+GT5U.recipes.recipe_by.original=Original Recipe by: %s
+GT5U.recipes.recipe_by.modified=Modified by: %s
+GT5U.recipes.recipe_by=Original Recipe by: %s
+GT5U.recipes.not_consume=Does not get consumed in the process
+GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
+GT5U.recipes.chance.consume=Consume Chance: %s
+GT5U.recipes.chance.output=Output Chance: %s
 
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
@@ -2816,6 +2820,14 @@ GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1=§c2x§r EU Cost
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2=%s2x§r Speed
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercooler§r to utilize Eternity
 
+# Void Miner GUI
+GT5U.gui.text.vm.title=§nOre Voiding Selection
+GT5U.gui.text.vm.searchhint=Search by name
+GT5U.gui.button.vm.whitelist=Whitelist - Unselected ores will be §4voided
+GT5U.gui.button.vm.blacklist=Blacklist - Selected ores will be §4voided
+GT5U.gui.button.vm.select=Select all ores
+GT5U.gui.button.vm.deselect=Deselect all ores
+
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.wireless.receiver.tier.01=LV Wireless Energy Hatch
@@ -3539,6 +3551,9 @@ GT5U.infodata.hatch.crafting_input_me.bus.online=The bus is §aonline§r
 GT5U.infodata.hatch.crafting_input_me.bus.offline=The bus is §coffline%s§r
 GT5U.infodata.hatch.crafting_input_me.show_pattern.enable=§aShow on Interface Terminal
 GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled=§cHide on Interface Terminal
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern=Pattern Optimization
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable=§7Allowed
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled=§7Disabled
 GT5U.infodata.hatch.internal_inventory=Internal Inventory:
 GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
 GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
