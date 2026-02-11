@@ -14,7 +14,6 @@ import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newContributorList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,14 +163,14 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .toolTipFinisher(newContributorList().addStructureAuthors(EnumChatFormatting.GOLD + "Ducked"));
+            .addStructureAuthors(EnumChatFormatting.GOLD + "Ducked")
+            .toolTipFinisher();
         return tt;
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().noRecipeCaching()
-            .setEuModifier(EU_EFFICIENCY)
+        return new ProcessingLogic().setEuModifier(EU_EFFICIENCY)
             .setSpeedBonus(1F / SPEED)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -181,10 +180,10 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
         return (PARALLEL_PER_TIER * GTUtility.getTier(this.getMaxInputVoltage()));
     }
 
-    private int mCasingAmount;
+    private int casingAmount;
 
     private void onCasingAdded() {
-        mCasingAmount++;
+        casingAmount++;
     }
 
     @Override
@@ -209,8 +208,8 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && mCasingAmount >= 6;
+        casingAmount = 0;
+        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 6;
     }
 
     private void updateTurbineOverlay() {
@@ -268,6 +267,11 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
 
     @Override
     public boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }
