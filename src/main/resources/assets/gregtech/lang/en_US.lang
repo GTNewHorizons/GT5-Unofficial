@@ -638,7 +638,7 @@ GT5U.tooltip.miner.0=Digging ore instead of you
 GT5U.tooltip.miner.1=Use Screwdriver to regulate work area
 GT5U.tooltip.miner.2=Use Soft Mallet to disable and retract the pipe
 GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
-GT5U.tooltip.miner.4=Maximum work area §f%dx%d
+GT5U.tooltip.miner.4=Maximum work area: §f%dx%d
 GT5U.tooltip.miner.5=Small ore fortune bonus of §f%d
 
 # Fish trap
