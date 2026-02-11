@@ -792,6 +792,10 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     }
 
     private IToolStats getToolStatsInternal(ItemStack aStack) {
+        if (aStack.getItem() instanceof ItemGTToolbox) {
+            aStack = ToolboxUtil.getSelectedTool(aStack)
+                .orElse(null);
+        }
         return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
     }
 

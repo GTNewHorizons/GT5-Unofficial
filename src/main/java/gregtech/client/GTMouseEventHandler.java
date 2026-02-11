@@ -12,7 +12,7 @@ import com.gtnewhorizon.gtnhlib.event.PickBlockEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.item.IMiddleClickItem;
+import gregtech.api.interfaces.item.IPickBlockHandler;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.crossmod.backhand.Backhand;
 
@@ -66,8 +66,8 @@ public final class GTMouseEventHandler {
                 final Item item = stack.getItem();
                 boolean found = false;
 
-                if (item instanceof final IMiddleClickItem mcItem) {
-                    found = mcItem.onMiddleClick(stack, player);
+                if (item instanceof final IPickBlockHandler mcItem) {
+                    found = mcItem.onPickBlock(stack, player);
                 } else if (item instanceof final MetaBaseItem mbItem) {
                     found = mbItem.onMiddleClick(stack, player);
                 }
@@ -82,6 +82,6 @@ public final class GTMouseEventHandler {
 
     private static boolean isInvalid(final ItemStack heldItem) {
         return heldItem == null
-            || !(heldItem.getItem() instanceof MetaBaseItem || heldItem.getItem() instanceof IMiddleClickItem);
+            || !(heldItem.getItem() instanceof MetaBaseItem || heldItem.getItem() instanceof IPickBlockHandler);
     }
 }

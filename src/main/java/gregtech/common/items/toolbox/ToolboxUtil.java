@@ -135,6 +135,12 @@ public class ToolboxUtil {
         saveItemInside(toolbox, battery, ToolboxSlot.BATTERY);
     }
 
+    /**
+     * Convenience method for getting the {@link ToolboxSlot} for the currently selected tool.
+     *
+     * @param toolbox The item stack containing the toolbox
+     * @return The {@link ToolboxSlot} of the current tool, or empty if no tool is selected
+     */
     public static Optional<ToolboxSlot> getSelectedToolType(ItemStack toolbox) {
         if (toolbox == null || !toolbox.hasTagCompound()
             || !toolbox.getTagCompound()
@@ -147,6 +153,13 @@ public class ToolboxUtil {
                 .getInteger(ItemGTToolbox.CURRENT_TOOL_KEY));
     }
 
+    /**
+     * Convenience method for testing if the current tool is of a specific type.
+     *
+     * @param toolbox     The item stack containing the toolbox
+     * @param desiredType The toolbox slot to test against
+     * @return true if the current tool is the desired type
+     */
     public static boolean isToolOfType(final ItemStack toolbox, final ToolboxSlot desiredType) {
         return getSelectedToolType(toolbox).filter(currentType -> currentType == desiredType)
             .isPresent();
@@ -167,6 +180,11 @@ public class ToolboxUtil {
         return handler.getCurrentTool();
     }
 
+    /**
+     * Damages the current tool. Does nothing if no tool is equipped. <b>NOTE</b>: Does not save the toolbox. Call
+     * {@link #saveToolbox(ItemStack, ItemStackHandler)} do that.
+     * @param toolbox The item stack containing the toolbox
+     */
     public static void damageSelectedTool(final ItemStack toolbox) {
         if (toolbox != null && toolbox.getItem() instanceof ItemGTToolbox) {
             final ToolboxItemStackHandler handler = new ToolboxItemStackHandler(toolbox);
@@ -190,15 +208,5 @@ public class ToolboxUtil {
 
         return !tag.getBoolean(ItemGTToolbox.TOOLBOX_OPEN_KEY)
             && !tag.hasKey(ItemGTToolbox.BROKEN_TOOL_ANIMATION_END_KEY);
-    }
-
-    public static boolean hasAnyItems(final ItemStack toolbox) {
-        if (toolbox == null) {
-            return false;
-        }
-
-        return new ToolboxItemStackHandler(toolbox).getStacks()
-            .stream()
-            .anyMatch(Objects::nonNull);
     }
 }

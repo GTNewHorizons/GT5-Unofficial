@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.Mods.GregTech;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -12,6 +13,7 @@ import net.minecraft.util.IIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.items.MetaGeneratedTool;
@@ -26,6 +28,8 @@ import gregtech.common.items.ItemGTToolbox;
  */
 public enum ToolboxSlot {
 
+    // These enum names are used to drive i18n, so you'll need to change the relevant keys in the language files if you
+    // add or rename any enums here. Example key: GT5U.gui.text.toolbox.slot_title.wrench
     WRENCH(0, isItemInToolSet(GregTechAPI.sWrenchList), GTGuiTextures.OVERLAY_TOOLBOX_WRENCH),
     WIRE_CUTTER(1, isItemInToolSet(GregTechAPI.sWireCutterList), GTGuiTextures.OVERLAY_TOOLBOX_WIRE_CUTTER),
     SCREWDRIVER(2, isItemInToolSet(GregTechAPI.sScrewdriverList), GTGuiTextures.OVERLAY_TOOLBOX_SCREWDRIVER),
@@ -54,16 +58,8 @@ public enum ToolboxSlot {
         .of(WRENCH, WIRE_CUTTER, SCREWDRIVER, SOFT_MALLET, HARD_HAMMER, CROWBAR, SOLDERING_IRON);
     public static final int ROW_WIDTH = 7;
 
-    private static final ImmutableMap<Integer, ToolboxSlot> LOOKUP;
-
-    static {
-        final ImmutableMap.Builder<Integer, ToolboxSlot> builder = new ImmutableMap.Builder<>();
-        for (final ToolboxSlot toolboxSlot : ToolboxSlot.values()) {
-            builder.put(toolboxSlot.getSlotID(), toolboxSlot);
-        }
-
-        LOOKUP = builder.build();
-    }
+    private static final ImmutableMap<Integer, ToolboxSlot> LOOKUP = Maps
+        .uniqueIndex(Arrays.asList(values()), ToolboxSlot::getSlotID);
 
     private final Predicate<ItemStack> itemStackTest;
     private final int slot;

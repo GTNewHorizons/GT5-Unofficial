@@ -35,7 +35,7 @@ import gregtech.crossmod.backhand.Backhand;
  * GUI for selecting the active tool.
  * <p>
  * <b>NOTE:</b> This GUI may not always open depending on the situation that the toolbox finds itself in (e.g. only one
- * tool inside.) See {@link ItemGTToolbox#onMiddleClick(ItemStack, EntityPlayer)} for more information.
+ * tool inside.) See {@link ItemGTToolbox#onPickBlock(ItemStack, EntityPlayer)} for more information.
  *
  * @see gregtech.common.gui.modularui.item.ToolboxInventoryGui
  */

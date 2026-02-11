@@ -137,7 +137,9 @@ public class ToolboxInventoryGui {
     }
 
     private static String getTooltip(final ToolboxSlot slot) {
-        final String key = slot.isGeneric() ? "generic" : String.valueOf(slot.getSlotID());
+        final String key = slot.isGeneric() ? "generic"
+            : slot.name()
+                .toLowerCase();
 
         return StatCollector
             .translateToLocalFormatted(
