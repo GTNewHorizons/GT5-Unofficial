@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 
@@ -139,11 +139,8 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                     .setPos(14, 74)
                     .setSize(147, 5))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> formatNumbers(clientEU) + "/"
-                            + formatNumbers(getBaseMetaTileEntity().getEUCapacity())
-                            + " EU")
+                new TextWidget().setStringSupplier(
+                    () -> formatNumber(clientEU) + "/" + formatNumber(getBaseMetaTileEntity().getEUCapacity()) + " EU")
                     .setTextAlignment(Alignment.Center)
                     .setPos(14, 66)
                     .setSize(147, 5))
@@ -240,11 +237,11 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                 ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.waila.generating.on")
                 : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.generating.off"));
         if (tag.hasKey("storedeu") && tag.hasKey("maxeu")) currenttip.add(
-            EnumChatFormatting.GREEN + formatNumbers(tag.getLong("storedeu"))
+            EnumChatFormatting.GREEN + formatNumber(tag.getLong("storedeu"))
                 + EnumChatFormatting.GRAY
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + formatNumbers(tag.getLong("maxeu"))
+                + formatNumber(tag.getLong("maxeu"))
                 + EnumChatFormatting.GRAY
                 + " EU");
         super.getWailaBody(itemStack, currenttip, accessor, config);

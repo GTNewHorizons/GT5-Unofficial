@@ -92,7 +92,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.obsidian, 1, 0))
             .fluidInputs(Materials.Lava.getFluid(1_000))
             .duration(51 * SECONDS + 4 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -148,7 +148,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.anvil, 1, 0))
             .fluidInputs(Materials.Iron.getMolten(4464L))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -156,7 +156,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.anvil, 1, 0))
             .fluidInputs(Materials.WroughtIron.getMolten(4464L))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -164,7 +164,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(Materials.Boron.getDust(1))
             .fluidInputs(Materials.Boron.getMolten(1 * INGOTS))
             .duration(1 * SECONDS + 10 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -172,7 +172,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_PetriDish.get(1))
             .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * QUARTER_INGOTS))
             .duration(8 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -180,7 +180,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_PetriDish.get(1))
             .fluidInputs(Materials.Polystyrene.getMolten(1 * QUARTER_INGOTS))
             .duration(8 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -188,7 +188,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.Circuit_Parts_PetriDish.get(1))
             .fluidInputs(Materials.BorosilicateGlass.getMolten(1 * HALF_INGOTS))
             .duration(8 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -228,7 +228,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(ItemList.GelledToluene.get(1))
             .fluidInputs(new FluidStack(ItemList.sToluene, 100))
             .duration(5 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         GTValues.RA.stdBuilder()
@@ -292,7 +292,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(getModItem(Railcraft.ID, "anvil", 1L, 0))
             .fluidInputs(Materials.Steel.getMolten(4464L))
             .duration(6 * SECONDS + 8 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
@@ -300,7 +300,7 @@ public class FluidSolidifierRecipes implements Runnable {
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .fluidInputs(Materials.Glass.getMolten(288L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(fluidSolidifierRecipes);
 
         // Red Granite Block
@@ -320,226 +320,5 @@ public class FluidSolidifierRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
 
-        final int whiteDwarfShapeSolidifierTime = 10 * SECONDS;
-        final int fluidPerShapeSolidifierRecipe = 4 * INGOTS;
-        {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Bottle.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Bottle.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Plate.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Plate.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Cell.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Cell.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Ring.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Ring.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Rod.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Rod.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Bolt.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Bolt.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Ingot.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Ingot.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Casing.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Casing.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Pipe_Tiny.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Tiny.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Pipe_Small.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Small.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Pipe_Medium.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Medium.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Pipe_Large.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Large.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Pipe_Huge.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pipe_Huge.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Block.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Block.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Sword.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Sword.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Pickaxe.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Pickaxe.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Shovel.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Shovel.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Axe.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Axe.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Hoe.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Hoe.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Hammer.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Hammer.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_File.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_File.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Saw.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Saw.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Gear.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Gear.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Rotor.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Rotor.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Turbine_Blade.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Turbine_Blade.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_Small_Gear.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_Small_Gear.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Extruder_ToolHeadDrill.get(1))
-                .itemOutputs(ItemList.White_Dwarf_Shape_Extruder_ToolHeadDrill.get(1))
-                .fluidInputs(Materials.WhiteDwarfMatter.getMolten(fluidPerShapeSolidifierRecipe))
-                .duration(whiteDwarfShapeSolidifierTime)
-                .eut(TierEU.RECIPE_UMV)
-                .addTo(fluidSolidifierRecipes);
-
-        }
     }
 }

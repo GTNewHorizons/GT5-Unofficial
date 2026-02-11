@@ -497,16 +497,21 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 + tag.getInteger("parallels"));
         if (tag.getByte("blackHoleStatus") != 1) {
             if (tag.getFloat("blackHoleStability") > 0) {
-                currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Active");
                 currentTip.add(
-                    EnumChatFormatting.DARK_PURPLE + "Stability: "
-                        + EnumChatFormatting.BOLD
-                        + Math.round(tag.getFloat("blackHoleStability"))
-                        + "%");
+                    EnumChatFormatting.DARK_PURPLE
+                        + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.active"));
+                currentTip.add(
+                    EnumChatFormatting.DARK_PURPLE + StatCollector.translateToLocalFormatted(
+                        "GT5U.waila.black_hole_compressor.stability",
+                        "" + EnumChatFormatting.BOLD + Math.round(tag.getFloat("blackHoleStability"))));
             } else {
-                currentTip.add(EnumChatFormatting.RED + "BLACK HOLE UNSTABLE");
+                currentTip.add(
+                    EnumChatFormatting.RED
+                        + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.unstable"));
             }
-        } else currentTip.add(EnumChatFormatting.DARK_PURPLE + "Black Hole Offline");
+        } else currentTip.add(
+            EnumChatFormatting.DARK_PURPLE
+                + StatCollector.translateToLocal("GT5U.waila.black_hole_compressor.offline"));
     }
 
     private int getModeFromCircuit(ItemStack[] t) {
@@ -549,15 +554,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     blackHoleStatus = 2;
                     createRenderBlock();
                 } else if (ItemList.Black_Hole_Closer.isStackEqual(removed) && blackHoleStatus != 1) {
-                    blackHoleStatus = 1;
-                    blackHoleStability = 100;
-                    catalyzingCostModifier = 1;
-                    catalyzingCounter = 0;
-                    if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
-                    collapseTimer = 40;
-                    for (MTEBlackHoleUtility hatch : utilityHatches) {
-                        hatch.updateRedstoneOutput(false);
-                    }
+                    closeBlackHole();
                 } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
                     createRenderBlock();
@@ -717,19 +714,19 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         blackHoleStability -= stabilityDecrease;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
-        if (blackHoleStability <= -900) {
-            blackHoleStatus = 1;
-            blackHoleStability = 100;
-            catalyzingCostModifier = 1;
-            rendererTileEntity = null;
-            destroyRenderBlock();
+        if (blackHoleStability <= -900) closeBlackHole();
+    }
 
-            // Update all the utility hatches
-            for (MTEBlackHoleUtility hatch : utilityHatches) {
-                hatch.updateRedstoneOutput(false);
-            }
+    private void closeBlackHole() {
+        blackHoleStatus = 1;
+        blackHoleStability = 100;
+        catalyzingCostModifier = 1;
+        catalyzingCounter = 0;
+        if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+        collapseTimer = 40;
+        for (MTEBlackHoleUtility hatch : utilityHatches) {
+            hatch.updateRedstoneOutput(false);
         }
-
     }
 
     @Override

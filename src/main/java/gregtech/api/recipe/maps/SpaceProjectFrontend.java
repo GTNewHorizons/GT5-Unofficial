@@ -1,8 +1,8 @@
 package gregtech.api.recipe.maps;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -76,7 +76,10 @@ public class SpaceProjectFrontend extends RecipeMapFrontend {
         GTNEIDefaultHandler.FixedPositionedStack pStack) {
         super.handleNEIItemOutputTooltip(currentTip, pStack);
         if (pStack.isFluid()) return currentTip;
-        currentTip.add(GRAY + translateToLocal("Item Count: ") + formatNumbers(pStack.realStackSize));
+        currentTip.add(
+            GRAY + translateToLocalFormatted(
+                "GT5U.tooltip.space_project_frontend.item_count",
+                formatNumber(pStack.realStackSize)));
         return currentTip;
     }
 

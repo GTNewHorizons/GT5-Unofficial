@@ -173,9 +173,17 @@ public final class GTGuiTextures {
         .fullImage(GregTech.ID, "gui/icons/structureIncomplete");
     public static final UITexture OVERLAY_MANUAL_SHUTDOWN = UITexture
         .fullImage(GregTech.ID, "gui/icons/manualShutdown");
+    public static final UITexture OVERLAY_COMPUTATION_LOSS = UITexture
+        .fullImage(GregTech.ID, "gui/icons/stalled_computation");
     public static final UITexture OVERLAY_UNPOWERED = UITexture.fullImage(GregTech.ID, "gui/icons/unpowered");
 
-    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture.fullImage(GregTech.ID, "gui/icons/noMaint");
+    public static final UITexture OVERLAY_NO_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_none");
+    public static final UITexture OVERLAY_SOME_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_some");
+    public static final UITexture OVERLAY_ALL_MAINTENANCE_ISSUES = UITexture
+        .fullImage(GregTech.ID, "gui/icons/maintenance_all");
+
     // endregion overlay
     // region slot
 
@@ -684,6 +692,10 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_GATE_OR = fullImageGT("overlay_button/gate_or");
     public static final UITexture OVERLAY_BUTTON_GATE_NOR = fullImageGT("overlay_button/gate_nor");
     public static final UITexture OVERLAY_BUTTON_ANALOG = fullImageGT("overlay_button/analog");
+    public static final UITexture OVERLAY_BUTTON_PLUS_SMALL = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/plus_small");
+    public static final UITexture OVERLAY_BUTTON_PLUS_LARGE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/plus_large");
 
     public static final UITexture OVERLAY_BUTTON_WIRELESS_ON = fullImage(
         KekzCore.MODID,
@@ -784,6 +796,14 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/pattern_me")
+        .nonOpaque()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_PATTERN_OPTIMIZE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_button/pattern_optimize");
+    public static final UITexture OVERLAY_BUTTON_X2 = UITexture.fullImage(GregTech.ID, "gui/overlay_button/x2");
 
     // endregion button overlay
 
@@ -1139,6 +1159,36 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_FORMING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_forming");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_MASS_FABRICATING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_mass_fabrication");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_distilling");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_DISTILLATION_TOWER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_tower");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SCANNER = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_scanner");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_ARC = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_arc");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_PLASMA_ARC = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_plasma_arc");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RESEARCH = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_research");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_RECYCLING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_recycling");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_SLICING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_slicing");
+    public static final UITexture OVERLAY_BUTTON_MACHINEMODE_CUTTING = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/machine_mode_cutting");
     public static final UITexture OVERLAY_BUTTON_MACHINEMODE_COMPRESSING = fullImage(
         GregTech.ID,
         "gui/overlay_button/machine_mode_compressing");

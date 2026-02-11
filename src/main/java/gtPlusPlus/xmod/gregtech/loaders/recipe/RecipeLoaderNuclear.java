@@ -117,7 +117,7 @@ public class RecipeLoaderNuclear {
             .outputChances(90_00, 30_00, 10_00)
             .fluidInputs(Materials.Chlorine.getGas(4_000))
             .duration(30 * SECONDS)
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .addTo(chemicalBathRecipes);
 
         GTValues.RA.stdBuilder()
@@ -296,7 +296,7 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .itemOutputs(GregtechItemList.LithiumHydroxideDust.get(1))
             .fluidInputs(new FluidStack(GTPPFluids.LithiumHydroxide, 1 * INGOTS))
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .duration(1 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 
@@ -331,7 +331,7 @@ public class RecipeLoaderNuclear {
             .itemOutputs(Materials.Water.getCells(2))
             .fluidInputs(MaterialsFluorides.AMMONIUM_BIFLUORIDE.getFluidStack(8 * INGOTS))
             .fluidOutputs(MaterialsFluorides.AMMONIUM_TETRAFLUOROBERYLLATE.getFluidStack(1_000))
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .duration(6 * SECONDS)
             .addTo(chemicalDehydratorRecipes);
 

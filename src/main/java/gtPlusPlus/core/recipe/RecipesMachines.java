@@ -71,7 +71,7 @@ public class RecipesMachines {
                 .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
                 .fluidInputs(Materials.Lead.getMolten(16 * INGOTS))
                 .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(60)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(assemblerRecipes);
         }
 
@@ -88,34 +88,6 @@ public class RecipesMachines {
             .fluidInputs(MaterialsAlloy.NIOBIUM_CARBIDE.getFluidStack(16 * INGOTS))
             .duration(10 * MINUTES)
             .eut(TierEU.RECIPE_IV)
-            .addTo(assemblerRecipes);
-
-        // Agricultural Sewer
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_MV.get(1),
-                ItemList.FluidRegulator_MV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 2),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                MaterialsAlloy.POTIN.getScrew(6))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector))
-            .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(4 * INGOTS))
-            .duration(60 * SECONDS)
-            .eut(TierEU.RECIPE_LV)
-            .addTo(assemblerRecipes);
-
-        // Biocomposite Collector
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                new ItemStack(ModBlocks.blockPooCollector),
-                ItemList.FluidRegulator_IV.get(2),
-                GTOreDictUnificator.get("pipeHugeStaballoy", 4),
-                MaterialsAlloy.ZERON_100.getScrew(16))
-            .itemOutputs(new ItemStack(ModBlocks.blockPooCollector, 1, 8))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(9 * INGOTS))
-            .duration(5 * MINUTES)
-            .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
         // Flask Configurator
@@ -173,21 +145,6 @@ public class RecipesMachines {
             new Object[] { "PCP", "EME", "GWG", 'M', ItemList.Hull_EV, 'P', ItemList.Electric_Piston_EV, 'E',
                 ItemList.Electric_Pump_EV, 'C', OrePrefixes.circuit.get(Materials.EV), 'W',
                 OrePrefixes.cableGt08.get(Materials.Electrum), 'G', MaterialsAlloy.INCONEL_792.getGear(1) });
-
-        // Project Table
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Multi_Use.get(1),
-                ItemList.Emitter_EV.get(2),
-                ItemList.Robot_Arm_EV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 8),
-                MaterialsAlloy.TANTALUM_CARBIDE.getScrew(8),
-                MaterialsAlloy.INCONEL_625.getPlate(4))
-            .itemOutputs(new ItemStack(ModBlocks.blockProjectTable))
-            .fluidInputs(MaterialsAlloy.ARCANITE.getFluidStack(4 * INGOTS))
-            .duration(1 * MINUTES + 30 * SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(assemblerRecipes);
 
         // Reservoir Hatch
         if (RemoteIO.isModLoaded()) {

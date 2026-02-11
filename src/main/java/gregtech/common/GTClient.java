@@ -640,11 +640,17 @@ public class GTClient extends GTProxy {
         return (short) tmp;
     }
 
-    public long getAnimationTicks() {
+    // For smoother animations, use getAnimationRenderTicks
+    @Deprecated
+    public final long getAnimationTicks() {
         return mAnimationTick;
     }
 
-    public float getPartialRenderTicks() {
+    public final float getAnimationRenderTicks() {
+        return mAnimationTick + renderTickTime;
+    }
+
+    public final float getPartialRenderTicks() {
         return renderTickTime;
     }
 
@@ -728,6 +734,7 @@ public class GTClient extends GTProxy {
     }
 
     @Override
+    @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);

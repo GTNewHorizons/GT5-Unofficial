@@ -43,6 +43,7 @@ import gregtech.api.metatileentity.implementations.MTEItemPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import gregtech.common.tileentities.storage.MTESuperChest;
 import gregtech.common.tileentities.storage.MTESuperTank;
@@ -90,31 +91,20 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
-                        final byte inputTier = GTUtility.getTier(tTileEntity.getInputVoltage());
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_in",
-                                GTUtility.formatNumbers(tTileEntity.getInputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(inputTier)));
+                            translateToLocal("gt.tileentity.eup_in") + " "
+                                + TooltipHelper.voltageText(tTileEntity.getInputVoltage()));
                     }
                     if (tTileEntity.getOutputVoltage() > 0L) {
-                        final byte outputTier = GTUtility.getTier(tTileEntity.getOutputVoltage());
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_out",
-                                GTUtility.formatNumbers(tTileEntity.getOutputVoltage()),
-                                GTUtility.getColoredTierNameFromTier(outputTier)));
+                            translateToLocal("gt.tileentity.eup_out") + " "
+                                + TooltipHelper.voltageText(tTileEntity.getOutputVoltage()));
                     }
                     if (tTileEntity.getOutputAmperage() > 1L) {
                         aList.add(
-                            translateToLocalFormatted(
-                                "gt.tileentity.eup_amount",
-                                GTUtility.formatNumbers(tTileEntity.getOutputAmperage())));
+                            translateToLocal("gt.tileentity.eup_amount") + " "
+                                + TooltipHelper.ampText(tTileEntity.getOutputAmperage()));
                     }
-                    aList.add(
-                        translateToLocalFormatted(
-                            "gt.tileentity.eup_store",
-                            GTUtility.formatNumbers(tTileEntity.getEUCapacity())));
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
