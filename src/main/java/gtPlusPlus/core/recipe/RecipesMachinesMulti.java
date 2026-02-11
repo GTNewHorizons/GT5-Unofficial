@@ -329,10 +329,14 @@ public class RecipesMachinesMulti {
     public static void multiCentrifuge() {
         // Industrial Centrifuge
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Centrifuge.get(1),
+            ItemList.IndustrialCentrifuge.get(1),
             new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
                 OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
                 ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
+
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCentrifuge.get(1),
+            new Object[] { GregtechItemList.Industrial_Centrifuge });
 
         // Centrifuge Casing
         GTModHandler.addCraftingRecipe(
