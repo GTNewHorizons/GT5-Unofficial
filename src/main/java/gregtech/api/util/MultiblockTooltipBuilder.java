@@ -1237,7 +1237,7 @@ public class MultiblockTooltipBuilder {
                 }
             }
         }
-        if (!sb.isEmpty()) iLines.add(sb.toString());
+        if (sb.length() > 0) iLines.add(sb.toString());
 
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
