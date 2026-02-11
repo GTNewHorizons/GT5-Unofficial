@@ -827,7 +827,7 @@ public class Godforge implements Runnable {
             .addTo(TecTechRecipeMaps.godforgeFakeUpgradeCostRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(ForgeOfGodsUpgrade.END.getExtraCostNoNulls())
-            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1), Materials.GravitonShard.getGems(1))
+            .itemOutputs(CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1), Materials.GravitonShard.getGems(1))
             .fluidOutputs(Materials.Neutronium.getPlasma(1_000))
             .duration(1)
             .eut(1)
