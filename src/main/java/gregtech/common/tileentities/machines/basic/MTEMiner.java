@@ -50,6 +50,16 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
 
     private final int mSpeed;
 
+    private static String[] MTEMinerTooltip(int aTier) {
+        return new String[] { StatCollector.translateToLocal(("GT5U.tooltip.miner.0")),
+            StatCollector.translateToLocal("GT5U.tooltip.miner.1"),
+            StatCollector.translateToLocal("GT5U.tooltip.miner.2"),
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.miner.3", ENERGY[aTier], SPEED[aTier] / 20),
+            StatCollector
+                .translateToLocalFormatted("GT5U.tooltip.miner.4", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
+            StatCollector.translateToLocalFormatted("GT5U.tooltip.miner.5", aTier) };
+    }
+
     public MTEMiner(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -57,11 +67,7 @@ public class MTEMiner extends MTEBasicMachine implements IDrillingLogicDelegateO
             aNameRegional,
             aTier,
             1,
-            new String[] { "Digging ore instead of you", "Use Screwdriver to regulate work area",
-                "Use Soft Mallet to disable and retract the pipe",
-                String.format("§e%d§7 EU/t, §f%d§7 sec per block, no stuttering", ENERGY[aTier], SPEED[aTier] / 20),
-                String.format("Maximum work area §f%dx%d", (RADIUS[aTier] * 2 + 1), (RADIUS[aTier] * 2 + 1)),
-                String.format("Small ore fortune bonus of §f%d", aTier) },
+            MTEMinerTooltip(aTier),
             2,
             2,
             TextureFactory.of(
