@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -49,25 +50,26 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> implements ISurvivalConstructable {
+public class MTEAmazonPackagerLegacy extends GTPPMultiBlockBase<MTEAmazonPackagerLegacy>
+    implements ISurvivalConstructable {
 
     private int mCasing;
 
     private static final int MACHINEMODE_PACKAGER = 0;
     private static final int MACHINEMODE_UNPACKAGER = 1;
 
-    private static IStructureDefinition<MTEAmazonPackager> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEAmazonPackagerLegacy> STRUCTURE_DEFINITION = null;
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEAmazonPackager(mName);
+        return new MTEAmazonPackagerLegacy(mName);
     }
 
-    public MTEAmazonPackager(int aID, String aName, String aNameRegional) {
+    public MTEAmazonPackagerLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEAmazonPackager(String aName) {
+    public MTEAmazonPackagerLegacy(String aName) {
         super(aName);
     }
 
@@ -77,16 +79,17 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     }
 
     @Override
-    public IStructureDefinition<MTEAmazonPackager> getStructureDefinition() {
+    public IStructureDefinition<MTEAmazonPackagerLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEAmazonPackager>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEAmazonPackagerLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEAmazonPackager.class).atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                    buildHatchAdder(MTEAmazonPackagerLegacy.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.getIndexFromPage(2, 9))
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 9))))
@@ -99,6 +102,7 @@ public class MTEAmazonPackager extends GTPPMultiBlockBase<MTEAmazonPackager> imp
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addInfo(EnumChatFormatting.DARK_RED + "DEPRECATED - CHECK NEI TO FIND NEW CONTROLLER")
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
             .addBulkMachineInfo(16, 6f, 0.75f)
             .addInfo("Can be configured with a screwdriver to work as an Unpackager")

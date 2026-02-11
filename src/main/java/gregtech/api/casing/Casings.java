@@ -140,6 +140,8 @@ public enum Casings implements ICasing {
 
     WireFactoryCasing
         (() -> ModBlocks.blockCasingsMisc, 6, gtpp(0, 6)),
+    SupplyDepotCasing
+        (() -> ModBlocks.blockCasings3Misc, 9, gtpp(2, 9)),
 
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 4, 0)),
