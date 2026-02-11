@@ -1803,7 +1803,7 @@ GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 
 GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic engineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
-GT5U.item.toolbox.byline.wrench=Wrench victory from the jaws of adversity.
+GT5U.item.toolbox.byline.wrench=The solution? Use a machine. And if\n §othat don't work? Use more machine.
 # Translator note: A horrible English pun. "Wire" -> "Why are". Don't feel obligated to preserve it ;)
 GT5U.item.toolbox.byline.wire_cutter=WIRE you reading this? Cut it out.\n §oThere's work to do!
 GT5U.item.toolbox.byline.screwdriver=Contains 0% vodka and 0% orange juice.
