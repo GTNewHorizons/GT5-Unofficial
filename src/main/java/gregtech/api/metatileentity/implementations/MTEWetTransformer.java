@@ -5,6 +5,8 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
@@ -91,9 +93,9 @@ public class MTEWetTransformer extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (mHalfMode) {
-            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
+            return getBaseMetaTileEntity().isAllowedToWork() ? 10 : 40;
         }
-        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
+        return getBaseMetaTileEntity().isAllowedToWork() ? 20 : 80;
     }
 
     @Override

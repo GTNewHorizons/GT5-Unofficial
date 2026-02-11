@@ -1,6 +1,6 @@
 package gregtech.common.fluid;
 
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -134,7 +134,7 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
                     .fluidOutputs(fluidStack)
                     .duration(fluidStack.amount / 62)
                     .eut(1)
-                    .addTo(fluidCannerRecipes);
+                    .addTo(cannerRecipes);
             }
         }
         return this;

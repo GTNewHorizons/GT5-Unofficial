@@ -22,6 +22,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.render.items.GeneratedMaterialRenderer;
 
 /**

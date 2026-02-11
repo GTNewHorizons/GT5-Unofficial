@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TierEU;
 import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
@@ -75,7 +76,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getRod(2))
                 .itemOutputs(material.getLongRod(1))
                 .duration((int) Math.max(material.getMass(), 1L))
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             Logger.WARNING("Hammer Long Rod Recipe: " + material.getDefaultLocalName() + " - Success");

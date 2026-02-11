@@ -270,7 +270,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_137", "That doesn't belong there. (Crowbar)");
         addStringLocalization("Interaction_DESCRIPTION_Index_138", "Incomplete Structure.");
         // NOTE: the below key is used in HydroEnergy, take care to fix it there when this line is removed
-        addStringLocalization("Interaction_DESCRIPTION_Index_142", "Running perfectly.");
         addStringLocalization("Interaction_DESCRIPTION_Index_143", "Missing Mining Pipe");
         addStringLocalization("Interaction_DESCRIPTION_Index_144", "Missing Turbine Rotor");
         addStringLocalization("Interaction_DESCRIPTION_Index_145", "Step Down, In: ");
@@ -278,7 +277,6 @@ public class GTLanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_147", "A, Out: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_148", "V ");
         addStringLocalization("Interaction_DESCRIPTION_Index_149", "A");
-        addStringLocalization("Interaction_DESCRIPTION_Index_150", "Chance: ");
         addStringLocalization("Interaction_DESCRIPTION_Index_151", "Does not get consumed in the process");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.1", "Outputs items and 1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_151.2", "Outputs 1 specific Fluid");

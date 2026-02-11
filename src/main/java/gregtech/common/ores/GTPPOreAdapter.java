@@ -8,6 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 
@@ -65,7 +67,7 @@ public final class GTPPOreAdapter implements IOreAdapter<Material> {
     }
 
     @Override
-    public ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
+    public @NotNull ArrayList<ItemStack> getOreDrops(Random random, OreInfo<?> info2, boolean silktouch, int fortune) {
         if (!supports(info2)) return new ArrayList<>();
 
         @SuppressWarnings("unchecked")

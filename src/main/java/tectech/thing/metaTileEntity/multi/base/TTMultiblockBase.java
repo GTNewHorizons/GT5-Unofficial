@@ -36,9 +36,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -865,7 +863,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     @Override
     public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return checkMachine_EM(iGregTechTileEntity, itemStack);
+        mMachine = checkMachine_EM(iGregTechTileEntity, itemStack);
+
+        onStructureCheckFinished();
+
+        return mMachine;
     }
 
     /**
@@ -937,9 +939,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
-        if (getBaseMetaTileEntity().isClientSide()) {
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
-        }
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 
@@ -995,9 +994,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
 
-                mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
-
-                doStructureValidation();
+                checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]

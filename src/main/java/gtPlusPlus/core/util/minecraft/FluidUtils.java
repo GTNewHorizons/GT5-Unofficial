@@ -1,6 +1,6 @@
 package gtPlusPlus.core.util.minecraft;
 
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
@@ -15,6 +15,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
@@ -305,7 +307,7 @@ public class FluidUtils {
                 .fluidInputs(new FluidStack(rFluid, aFluidAmount))
                 .duration(4)
                 .eut(1)
-                .addTo(fluidCannerRecipes);
+                .addTo(cannerRecipes);
         }
         return rFluid;
     }
@@ -364,7 +366,7 @@ public class FluidUtils {
                     .itemInputs(dustStack)
                     .fluidOutputs(new FluidStack(gtFluid, amountPerItem))
                     .duration(1 * SECONDS)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(fluidExtractionRecipes);
             }
             if (dustStack2 != null) {
@@ -372,7 +374,7 @@ public class FluidUtils {
                     .itemInputs(dustStack2)
                     .fluidOutputs(new FluidStack(gtFluid, amountPerItem))
                     .duration(1 * SECONDS)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(fluidExtractionRecipes);
             }
 

@@ -207,6 +207,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Amber;
     public static Materials Ammonium;
     public static Materials Amordrine;
+    public static Materials AncientDebris;
     public static Materials Andesite;
     public static Materials Ardite;
     public static Materials Aredrite;

@@ -524,7 +524,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
 
         // Update to the new pipe
         aBaseMetaTileEntity.setMetaTileID((short) handItem.getItemDamage());
-        aBaseMetaTileEntity.setMetaTileEntity(newPipe);
+        newPipe.setBaseMetaTileEntity(aBaseMetaTileEntity);
 
         // Construct a change message if needed
         StringBuilder message = new StringBuilder();

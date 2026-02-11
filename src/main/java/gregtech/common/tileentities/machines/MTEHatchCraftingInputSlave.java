@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -187,6 +189,9 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
             if (master != null) master.removeProxyHatch(this);
             master = newMaster;
             master.addProxyHatch(this);
+            for (var pl : pendingProcessingLogics) {
+                master.setProcessingLogic(pl);
+            }
         }
         masterX = x;
         masterY = y;
@@ -239,6 +244,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
+        var master = getMaster();
         if (master == null) {
             aPlayer.addChatMessage(new ChatComponentText("Can't copy an unlinked proxy!"));
             return;
@@ -327,9 +333,26 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         return getMaster() != null ? getMaster().getItemsForHoloGlasses() : null;
     }
 
+    private Set<ProcessingLogic> pendingProcessingLogics = Collections.newSetFromMap(new WeakHashMap<>());
+
     @Override
     public void setProcessingLogic(ProcessingLogic pl) {
-        if (getMaster() != null) getMaster().setProcessingLogic(pl);
+        // store all ProcessingLogics, then set them to the master CRIB when the player bind/rebind one later
+        pendingProcessingLogics.add(pl);
+        if (getMaster() != null) {
+            getMaster().setProcessingLogic(pl);
+        }
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        if (getMaster() != null) getMaster().resetCraftingInputRecipeMap(pl);
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
+        if (getMaster() != null) getMaster().resetCraftingInputRecipeMap();
     }
 
     @Override

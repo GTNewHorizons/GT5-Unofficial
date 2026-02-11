@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.common.WorldgenGTOreLayer;
+import gregtech.common.config.Client;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -73,47 +74,52 @@ public class ItemBlockOre extends ItemBlock {
             mInitOres_Everglades = true;
         }
 
-        if (this.mThisMaterial != null) {
-            mThisMaterial.addTooltips(list);
-            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
-            if (mThisMaterial.getComposites()
-                .isEmpty()) {
-                list.add("- " + mThisMaterial.getLocalizedName());
-            } else {
-                for (MaterialStack m : mThisMaterial.getComposites()) {
-                    list.add(
-                        "- " + m.getStackMaterial()
-                            .getLocalizedName() + " x" + m.getPartsPerOneHundred());
+        mThisMaterial.addTooltips(list);
+
+        if (Client.tooltip.showOreContainsText) {
+            if (this.mThisMaterial != null) {
+                list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.contains"));
+                if (mThisMaterial.getComposites()
+                    .isEmpty()) {
+                    list.add("- " + mThisMaterial.getLocalizedName());
+                } else {
+                    for (MaterialStack m : mThisMaterial.getComposites()) {
+                        list.add(
+                            "- " + m.getStackMaterial()
+                                .getLocalizedName() + " x" + m.getPartsPerOneHundred());
+                    }
                 }
             }
         }
 
-        if (KeyboardUtils.isCtrlKeyDown()) {
+        if (Client.tooltip.showCtrlText) {
+            if (KeyboardUtils.isCtrlKeyDown()) {
 
-            Block b = Block.getBlockFromItem(stack.getItem());
-            if (b != null) {
-                int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
-                if (aMiningLevel1 != 0) {
-                    list.add(
-                        StatCollector.translateToLocalFormatted(
-                            "GTPP.tooltip.ore.mining_level",
-                            Math.min(Math.max(aMiningLevel1, 0), 5)));
+                Block b = Block.getBlockFromItem(stack.getItem());
+                if (b != null) {
+                    int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
+                    if (aMiningLevel1 != 0) {
+                        list.add(
+                            StatCollector.translateToLocalFormatted(
+                                "GTPP.tooltip.ore.mining_level",
+                                Math.min(Math.max(aMiningLevel1, 0), 5)));
+                    }
                 }
-            }
 
-            Set<String> dims = mMapOreBlockItemToDimName.get(this.mThisMaterial);
+                Set<String> dims = mMapOreBlockItemToDimName.get(this.mThisMaterial);
 
-            list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.found"));
-            if (dims != null && !dims.isEmpty()) {
-                for (String m : dims) {
-                    list.add("- " + DimensionHelper.getDimLocalizedName(m));
+                list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.found"));
+                if (dims != null && !dims.isEmpty()) {
+                    for (String m : dims) {
+                        list.add("- " + DimensionHelper.getDimLocalizedName(m));
+                    }
+                } else {
+                    list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.unknown"));
                 }
+
             } else {
-                list.add(StatCollector.translateToLocal("GTPP.tooltip.ore.unknown"));
+                list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
             }
-
-        } else {
-            list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
         }
 
         super.addInformation(stack, aPlayer, list, bool);

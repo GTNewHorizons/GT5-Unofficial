@@ -112,6 +112,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 2, 14)),
     TungstensteelFireboxCasing
         (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 2, 15)),
+    CleanStainlessSteelCasing
+        (() -> GregTechAPI.sBlockCasings4, 1, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1)),
     MiningOsmiridiumCasing
         (() -> GregTechAPI.sBlockCasings4, 14, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14)),
     BoltedOsmiridiumCasing
@@ -131,6 +133,13 @@ public enum Casings implements ICasing {
     ReboltedIridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
 
+    SolidSteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings2, 0, 16),
+    FrostProofMachineCasing
+        (() -> GregTechAPI.sBlockCasings2, 1, 17),
+
+    WireFactoryCasing
+        (() -> ModBlocks.blockCasingsMisc, 6, gtpp(0, 6)),
 
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 4, 0)),

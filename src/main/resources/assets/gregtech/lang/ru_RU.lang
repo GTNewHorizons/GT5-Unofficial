@@ -93,10 +93,9 @@ gt.crop.withereed.name=Угольный тростник
 gt.crop.zomplant.name=Zomplant
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Входной вольтаж: §a%d (%s§a)§7
-gt.tileentity.eup_out=Выходной вольтаж: §a%d (%s§a)§7
-gt.tileentity.eup_amount=Ампераж: §e%d§7
-gt.tileentity.eup_store=Ёмкость: §9%d§7 EU
+gt.tileentity.eup_in=Входной вольтаж:
+gt.tileentity.eup_out=Выходной вольтаж:
+gt.tileentity.eup_amount=Ампераж:
 gt.tileentity.has_muffler=есть улучшение глушитель
 gt.tileentity.has_steam_upgrade=есть улучшение пар
 gt.tileentity.colored=Colored (%s%s§7)
@@ -433,7 +432,6 @@ gtpp.material.Lutetium=Лютеций
 gtpp.material.Magic=Магический металл
 gtpp.material.Magnesium=Магний
 gtpp.material.Manganese=Марганец
-gtpp.material.ManureByproduct=Побочный продукт навоза
 gtpp.material.MaragingSteel250=Мартенситностареющая сталь 250
 gtpp.material.MaragingSteel300=Мартенситностареющая сталь 300
 gtpp.material.MaragingSteel350=Мартенситностареющая сталь 350
@@ -623,11 +621,6 @@ GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
 GTPP.tooltip.decayables_chest.2=Place with right-click
 
-# Butterfly Killer
-GTPP.tooltip.butterfly_killer.0=Убивает бабочек, летучих мышей и других вредителей в лесу
-GTPP.tooltip.butterfly_killer.1=Используйте Формальдегид или Синильную кислоту
-GTPP.tooltip.butterfly_killer.2=Будьте терпеливы к своим соседям
-
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Простая конфигурация колбы
 GTPP.tooltip.volumetric_flask_setter.1=Настройте входной слот по умолчанию с помощью отвертки
@@ -677,15 +670,6 @@ GTPP.algae.green_algae.name=Зелёные водоросли
 GTPP.algae.red_algae.name=Красные водоросли
 GTPP.algae.brown_algae.name=Бурые водоросли
 GTPP.algae.yellow-green_algae.name=Желто-зелёные водоросли
-
-GTPP.algae.tooltip.requires_light=Требуется свет: %s
-GTPP.algae.tooltip.salt_water=Солёная вода: %s
-GTPP.algae.tooltip.fresh_water=Свежая вода: %s
-GTPP.algae.tooltip.temp_tolerance=Температура: %d
-GTPP.algae.tooltip.growth=Рост: %d
-GTPP.algae.tooltip.production=Производство: %d
-GTPP.algae.tooltip.lifespan=Модификатор срока жизни: %d
-GTPP.algae.tooltip.generation=Generation: %d
 
 # Power Goggles
 GT5U.power_goggles.open_config_gui=Открыть конфигурацию очков
@@ -1476,7 +1460,8 @@ GT5U.gui.text.beta-plus=β+ распад
 GT5U.gui.config.client=Клиент
 GT5U.gui.config.client.color_modulation=Модуляция цвета
 GT5U.gui.config.client.color_modulation.cable_insulation=Изоляция кабеля
-GT5U.gui.config.client.color_modulation.machine_metal=Металл механизма (Цвет GUI по умолчанию)
+GT5U.gui.config.client.color_modulation.machine_metal=Металл механизма
+GT5U.gui.config.client.color_modulation.gui_metal=Металл GUI (Цвет GUI по умолчанию)
 GT5U.gui.config.client.interface=Интерфейс
 GT5U.gui.config.client.preference=Preference
 GT5U.gui.config.client.render=Render

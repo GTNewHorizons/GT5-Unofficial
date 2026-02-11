@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GTValues;
@@ -43,9 +44,9 @@ public class MTETransformerHiAmp extends MTETransformer {
     @Override
     public long maxAmperesIn() {
         if (this.mHalfMode) {
-            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 2L : 8L);
+            return ((getBaseMetaTileEntity().isAllowedToWork()) ? 3L : 12L);
         }
-        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 4L : 16L);
+        return ((getBaseMetaTileEntity().isAllowedToWork()) ? 6L : 24L);
     }
 
     @Override

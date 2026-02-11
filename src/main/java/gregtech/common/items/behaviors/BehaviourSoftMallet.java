@@ -17,6 +17,8 @@ import gregtech.api.util.GTUtility;
 
 public class BehaviourSoftMallet extends BehaviourNone {
 
+    public static final int MODE_ACTIVATE = 1;
+    public static final int MODE_DEACTIVATE = 2;
     private final int mCosts;
 
     public BehaviourSoftMallet(int aCosts) {
@@ -108,7 +110,8 @@ public class BehaviourSoftMallet extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(StatCollector.translateToLocal("gt.behaviour.softmallet"));
+        aList.add(StatCollector.translateToLocal("gt.softmallet.tooltip"));
+        aList.add(StatCollector.translateToLocal("gt.softmallet.tooltip.mode"));
         return aList;
     }
 }

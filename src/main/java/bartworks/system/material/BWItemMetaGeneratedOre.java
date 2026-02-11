@@ -10,6 +10,7 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.common.config.Client;
 
 public class BWItemMetaGeneratedOre extends ItemBlock {
 
@@ -57,12 +58,15 @@ public class BWItemMetaGeneratedOre extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> desc, boolean advancedTooltips) {
-        int meta = stack.getItemDamage();
+        if (!Client.tooltip.showFormula) {
+            return;
+        }
+            int meta = stack.getItemDamage();
 
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
+            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) meta);
 
         if (werkstoff != null) {
             werkstoff.addTooltips(desc);
         }
-    }
+        }
 }

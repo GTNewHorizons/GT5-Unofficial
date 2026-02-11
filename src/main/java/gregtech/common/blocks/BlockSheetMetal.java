@@ -93,9 +93,19 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
         return GTRendererBlock.RENDER_ID;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @implNote Can render in both opaque (pass 0) and alpha-blended (pass 1) rendering passes.
+     */
     @Override
-    public boolean renderAsNormalBlock() {
-        return false;
+    public boolean canRenderInPass(int pass) {
+        return pass == 0 || pass == 1;
+    }
+
+    @Override
+    public int getRenderBlockPass() {
+        return 1;
     }
 
     private final Int2ObjectLinkedOpenHashMap<ITexture[][]> textureCache = new Int2ObjectLinkedOpenHashMap<>();

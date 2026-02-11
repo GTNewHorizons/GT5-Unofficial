@@ -144,11 +144,11 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
-tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
-tooltip.bw.item.circuit.imprint=An imprint for a Circuit
-tooltip.bw.item.circuit.sliced=A sliced Circuit
+
+tooltip.item.CircuitParts.RawImprintBoard=A Raw Board needed for Circuit Imprints
+tooltip.item.CircuitParts.ImprintBoard=A Board needed for Circuit Imprints
 
 tooltip.teslastaff.0.name=No warranty!
 tooltip.labmodule.0.name=A Module used to change the BioLab's working Mode
@@ -207,8 +207,8 @@ gt.recipe.electricimplosioncompressor=Electric Implosion Compressor
 bw.recipe.htgr=High Temperature Gas-cooled Reactor
 
 nei.biovat.0.name=Needs Glass Tier: %s
-nei.biovat.1.name=Need exactly Sievert: %s Sv
-nei.biovat.2.name=Need minimum Sievert: %s Sv
+nei.biovat.1.name=Needs exactly Sievert: %s Sv
+nei.biovat.2.name=Needs minimum Sievert: %s Sv
 nei.biovat.input.tooltip=Consumed up to 1,001x amount, depending on output rate
 nei.biovat.output.tooltip=Outputs up to 1,001x amount, depending on the amount of fluid stored in the Output Hatch
 
@@ -231,6 +231,12 @@ item.TRISOPelletCompound.name=TRISO pebble compound
 item.BISOPelletCompound.name=BISO pebble compound
 item.BurnedOutTRISOPelletBall.name=Burned Out TRISO pebble ball
 item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
+
+item.CircuitParts.Imprint.name=Circuit Imprint
+item.CircuitParts.Sliced.name=Sliced Circuit
+item.CircuitParts.RawImprintBoard.name=Raw Imprint supporting Board
+item.CircuitParts.ImprintBoard.name=Imprint supporting Board
+item.CircuitParts.Wrap.name=Wrap of %s
 
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 
@@ -266,7 +272,7 @@ BW.NEI.display.radhatch.2=Time: %s s
 misc.BatchModeTextOn=Batch recipes
 misc.BatchModeTextOff=Don't batch recipes
 
-tooltip.cal.imprintedWith=Imprinted with:
+tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
 #Liquids

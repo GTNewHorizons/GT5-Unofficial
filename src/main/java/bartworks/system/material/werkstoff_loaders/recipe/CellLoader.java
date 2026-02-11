@@ -171,9 +171,11 @@ public class CellLoader implements IWerkstoffRunnable {
                     .isElektrolysis())
                     RecipeMaps.electrolyzerRecipes.add(
                         new GTRecipe(
-                            true,
                             new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
                             stOutputs.toArray(new ItemStack[0]),
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             new FluidStack[] { null },
@@ -197,9 +199,11 @@ public class CellLoader implements IWerkstoffRunnable {
                     .isCentrifuge())
                     RecipeMaps.centrifugeRecipes.add(
                         new GTRecipe(
-                            true,
                             new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
                             stOutputs.toArray(new ItemStack[0]),
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             new FluidStack[] { null },

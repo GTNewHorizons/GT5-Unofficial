@@ -45,6 +45,7 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.config.Client;
 import ic2.core.IC2Potion;
 
 public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMaterial {
@@ -123,9 +124,11 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
             && aStack.getItemDamage() == WerkstoffLoader.Tiberium.getmID())
             aList.add(translateToLocal("GT5U.tooltip.nqgen"));
 
-        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
-        if (werkstoff != null) {
-            werkstoff.addTooltips(aList);
+        if (Client.tooltip.showFormula) {
+            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
+            if (werkstoff != null) {
+                werkstoff.addTooltips(aList);
+            }
         }
     }
 
