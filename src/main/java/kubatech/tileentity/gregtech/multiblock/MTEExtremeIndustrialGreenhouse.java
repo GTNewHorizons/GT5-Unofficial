@@ -42,7 +42,6 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newContributorList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -390,9 +389,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing", 1)
             .addInputHatch("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
-            .toolTipFinisher(
-                newContributorList().addAuthors(GTValues.AuthorKuba)
-                    .addStructureAuthors("HydroCN"));
+            .addAuthors(GTValues.AuthorKuba)
+            .addStructureAuthors("HydroCN")
+            .toolTipFinisher();
         return tt;
     }
 
