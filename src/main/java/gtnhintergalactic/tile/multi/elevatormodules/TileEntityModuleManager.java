@@ -176,6 +176,9 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                 null,
                 null,
                 null,
+                null,
+                null,
+                null,
                 upgrade.getFluidsCostPerStage(),
                 null,
                 upgrade.getUpgradeBuildTime(),
@@ -184,6 +187,9 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         } else if (!projectWorkingOn.isFinished()) {
             recipe = new GTRecipe(
                 projectWorkingOn.getItemsCostPerStage(),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

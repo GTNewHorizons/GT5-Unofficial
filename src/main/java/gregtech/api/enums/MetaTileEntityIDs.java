@@ -1682,6 +1682,7 @@ public enum MetaTileEntityIDs {
     UXV262144AWirelessEnergyHatch(15505),
     UXV1048576AWirelessEnergyHatch(15506),
     UncertaintyResolution(15510),
+    IndustrialWireMill(15511),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
@@ -1876,7 +1877,10 @@ public enum MetaTileEntityIDs {
     NeutronAcceleratorUEV(32762),
     NeutronAcceleratorUIV(32763),
     NeutronAcceleratorUMV(32764),
-    Hatch_Air_Intake_Atmospheric(32765);
+    Hatch_Air_Intake_Atmospheric(32765),
+    GT_Framer_LV(32050),
+    GT_Framer_MV(32051),
+    GT_Framer_HV(32052);
 
     public final int ID;
 
