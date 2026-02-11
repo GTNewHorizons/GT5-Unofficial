@@ -286,7 +286,7 @@ public class GodforgeMath {
         module.setUpgrade83(data.isUpgradeActive(IMKG));
         module.setMultiStepPlasma(data.isUpgradeActive(TPTP));
         module.setPlasmaTier(plasmaTier);
-        module.setMagmatterCapable(data.isUpgradeActive(END));
+        module.setMagmatterCapable(data.isUpgradeActive(EE));
         module.setVoltageConfig(data.isUpgradeActive(TBF));
         module.setOverclockTimeFactor(overclockTimeFactor);
     }
@@ -305,7 +305,7 @@ public class GodforgeMath {
             if (data.isUpgradeActive(QGPIU) && !exoticizer.isMagmatterModeOn()) {
                 return true;
             }
-            if (data.isUpgradeActive(END) && exoticizer.isMagmatterModeOn()) {
+            if (data.isUpgradeActive(EE) && exoticizer.isMagmatterModeOn()) {
                 return true;
             }
         }
