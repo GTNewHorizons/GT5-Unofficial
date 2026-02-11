@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -97,10 +98,13 @@ public class MultiblockTooltipBuilder {
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
+    private static final String TT_StructureAuthor = StatCollector.translateToLocal("GT5U.MBTT.StructureBy");
 
     private List<String> iLines;
     private List<String> sLines;
     private List<String> hLines;
+    private List<String> authors;
+    private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
 
     private String[] iArray;
@@ -111,6 +115,8 @@ public class MultiblockTooltipBuilder {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
         hLines = new LinkedList<>();
+        authors = new LinkedList<>();
+        structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
     }
@@ -1106,6 +1112,29 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Adds the given list of authors to the contributor list's author list, to be displayed at the end of the tooltip
+     *
+     * @param authors list of authors to add to tooltip
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addAuthors(String... authors) {
+        Collections.addAll(this.authors, authors);
+        return this;
+    }
+
+    /**
+     * Adds the given list of structure authors to the contributor list's structure author list,
+     * to be displayed at the end of the tooltip
+     *
+     * @param structureAuthors list of structure authors to add to tooltip
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureAuthors(String... structureAuthors) {
+        Collections.addAll(this.structureAuthors, structureAuthors);
+        return this;
+    }
+
+    /**
      * Call at the very end.<br>
      * Adds a line jump.<br>
      * Adds information on how to display the structure guidelines.<br>
@@ -1131,9 +1160,25 @@ public class MultiblockTooltipBuilder {
      * @param separatorLength Length of the separator line
      * @param authors         Formatted names of the creators of this multiblock machine - if any
      */
-
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
+        this.addAuthors(authors);
+        return toolTipFinisher(separatorColor, separatorLength);
+    }
+
+    /**
+     * Call at the very end.<br>
+     * Adds a line jump with configurable color and length.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param separatorColor  Color of the separator line
+     * @param separatorLength Length of the separator line
+     */
+
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
@@ -1152,13 +1197,14 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " "
                 + TT_todisplay);
-        if (authors != null && authors.length > 0) {
+
+        final StringBuilder sb = new StringBuilder();
+        if (!authors.isEmpty()) {
             final String authorTag = "Author: ";
-            final StringBuilder sb = new StringBuilder();
             sb.append(TT_addedBy);
             sb.append(COLON);
-            for (int i = 0; i < authors.length; i++) {
-                String author = authors[i];
+            for (int i = 0; i < authors.size(); i++) {
+                String author = authors.get(i);
                 if (author.startsWith(authorTag)) {
                     // to support all the values in GTValues
                     // that already have Author at the start
@@ -1166,15 +1212,33 @@ public class MultiblockTooltipBuilder {
                 } else {
                     sb.append(author);
                 }
-                if (i != authors.length - 1) {
+                if (i != authors.size() - 1) {
                     sb.append(EnumChatFormatting.RESET);
                     sb.append(EnumChatFormatting.GRAY);
                     sb.append(" & ");
                     sb.append(EnumChatFormatting.GREEN);
                 }
             }
-            iLines.add(sb.toString());
+            if (!structureAuthors.isEmpty()) sb.append(EnumChatFormatting.RESET)
+                .append(EnumChatFormatting.GRAY)
+                .append(", ");
         }
+        if (!structureAuthors.isEmpty()) {
+            sb.append(TT_StructureAuthor);
+            sb.append(COLON);
+            for (int i = 0; i < structureAuthors.size(); i++) {
+                String builder = structureAuthors.get(i);
+                sb.append(builder);
+                if (i != structureAuthors.size() - 1) {
+                    sb.append(EnumChatFormatting.RESET);
+                    sb.append(EnumChatFormatting.GRAY);
+                    sb.append(" & ");
+                    sb.append(EnumChatFormatting.GREEN);
+                }
+            }
+        }
+        if (sb.length() > 0) iLines.add(sb.toString());
+
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         sLines.add(
@@ -1201,6 +1265,8 @@ public class MultiblockTooltipBuilder {
         iLines = null;
         sLines = null;
         hLines = null;
+        authors = null;
+        structureAuthors = null;
         hBlocks = null;
         return this;
     }
@@ -1216,4 +1282,5 @@ public class MultiblockTooltipBuilder {
     public String[] getStructureHint() {
         return hArray;
     }
+
 }
