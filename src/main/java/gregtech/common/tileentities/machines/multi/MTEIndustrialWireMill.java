@@ -37,10 +37,10 @@ import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<MTEIndustrialWireMillModern>
+public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEIndustrialWireMill>
     implements ISurvivalConstructable {
 
-    private static IStructureDefinition<MTEIndustrialWireMillModern> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialWireMill> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
     private static final int OFFSET_X = 3;
@@ -51,23 +51,23 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
     private static final float SPEED_INCREASE_TIER = 0.5f;
     private static final float EU_EFFICIENCY = 0.75f;
 
-    public MTEIndustrialWireMillModern(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialWireMill(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEIndustrialWireMillModern(final String aName) {
+    public MTEIndustrialWireMill(final String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialWireMillModern(this.mName);
+        return new MTEIndustrialWireMill(this.mName);
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialWireMillModern> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialWireMill> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMillModern>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialWireMill>builder()
                 .addShape(
                     STRUCTURE_PIECE_MAIN,
                     // spotless:off
@@ -90,18 +90,16 @@ public class MTEIndustrialWireMillModern extends MTEExtendedPowerMultiBlockBase<
                     'A',
                     chainItemPipeCasings(
                         -1,
-                        MTEIndustrialWireMillModern::setItemPipeTier,
-                        MTEIndustrialWireMillModern::getItemPipeTier))
+                        MTEIndustrialWireMill::setItemPipeTier,
+                        MTEIndustrialWireMill::getItemPipeTier))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialWireMillModern.class)
+                    buildHatchAdder(MTEIndustrialWireMill.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(Casings.WireFactoryCasing.textureId)
                         .hint(1)
                         .buildAndChain(
-                            onElementPass(
-                                MTEIndustrialWireMillModern::onCasingAdded,
-                                Casings.WireFactoryCasing.asElement())))
+                            onElementPass(MTEIndustrialWireMill::onCasingAdded, Casings.WireFactoryCasing.asElement())))
                 .build();
         }
         return STRUCTURE_DEFINITION;
