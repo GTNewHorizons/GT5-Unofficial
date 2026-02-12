@@ -459,6 +459,11 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
             ItemStack millingBall;
 
+            public CheckRecipeResult process() {
+                if (getAvailableMillingBalls().length == 0) return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                return super.process();
+            }
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
