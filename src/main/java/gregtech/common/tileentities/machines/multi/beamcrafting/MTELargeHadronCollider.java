@@ -498,9 +498,9 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     }
 
     public long calculateEnergyCostAccelerator(BeamInformation particle) {
-        long machineVoltage = getAverageInputVoltage();
         // counter starts at 0, so +1
-        return (long) -(machineVoltage * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
+        // start at 1A UV power cost
+        return (long) -(GTValues.V[8] * Math.pow(accelerationCycleCounter + 1, 2) * particle.getRate());
 
     }
 
