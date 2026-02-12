@@ -70,6 +70,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor, MCR")
+            .addStructureDeprecatedLine()
             .addInfo(
                 TooltipHelper.coloredText(
                     TooltipHelper.italicText("\"What molecule do you want to synthesize?\""),
