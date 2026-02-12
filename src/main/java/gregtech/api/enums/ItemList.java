@@ -2757,6 +2757,7 @@ public enum ItemList implements IItemContainer {
     IndustrialWireFactory,
     IndustrialPackager,
     IndustrialCentrifuge,
+    IndustrialElectrolyzer,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,

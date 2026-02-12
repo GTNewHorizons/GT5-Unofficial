@@ -1685,6 +1685,7 @@ public enum MetaTileEntityIDs {
     IndustrialWireMill(15511),
     IndustrialCentrifuge(15512),
     IndustrialPackager(15513),
+    IndustrialElectrolyzer(15514),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
     LATEX(15752),
