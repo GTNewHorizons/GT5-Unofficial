@@ -840,9 +840,13 @@ public class RecipesMachinesMulti {
 
         // Amazon Warehousing Depot
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Amazon_Warehouse_Controller.get(1),
+            ItemList.IndustrialPackager.get(1),
             new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
                 ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
+
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPackager.get(1),
+            new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
     }
 
     private static void multiMixer() {
