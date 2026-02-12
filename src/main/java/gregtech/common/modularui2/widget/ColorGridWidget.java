@@ -171,7 +171,7 @@ public class ColorGridWidget extends Column {
 
     public IDrawable drawButtonBorder(boolean active) {
         return (context, x, y, w, h, widgetTheme) -> {
-            new Rectangle().setColor(active ? Color.RED.main : Color.BLACK.main)
+            new Rectangle().color(active ? Color.RED.main : Color.BLACK.main)
                 .draw(context, new Area(x, y, buttonSize, buttonSize), widgetTheme);
         };
     }
@@ -179,7 +179,7 @@ public class ColorGridWidget extends Column {
     public IDrawable drawButton(boolean active, int color) {
         int insideSize = buttonSize - (borderSize * 2);
         return IDrawable.of(drawButtonBorder(active), (context, x, y, w, h, widgetTheme) -> {
-            new Rectangle().setColor(color)
+            new Rectangle().color(color)
                 .draw(context, new Area(x + borderSize, y + borderSize, insideSize, insideSize), widgetTheme);
         });
     }
@@ -250,6 +250,7 @@ public class ColorGridWidget extends Column {
         @Override
         public void setState(int state, boolean setSource) {
             super.setState(state, setSource);
+            if (!setSource) return;
             if (state == 0) {
                 selected.remove((Byte) ((byte) index));
             } else {
