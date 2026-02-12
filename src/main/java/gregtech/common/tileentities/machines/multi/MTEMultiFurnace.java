@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.VP;
@@ -73,8 +71,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
         .addElement(
             'c',
-            buildHatchAdder(MTEMultiFurnace.class)
-                .atLeast(Maintenance)
+            buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance)
                 .casingIndex(CASING_INDEX)
                 .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
@@ -85,8 +82,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 .use(activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))))
         .addElement(
             'b',
-            buildHatchAdder(MTEMultiFurnace.class)
-                .atLeast(Maintenance, InputBus, OutputBus, Energy)
+            buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
