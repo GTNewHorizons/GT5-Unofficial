@@ -68,9 +68,10 @@ public class Assembler implements Runnable {
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
+        // todo: tweak this recipe
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Machine_Multi_LargeChemicalReactor.get(64))
-            .itemOutputs(ItemRegistry.megaMachines[3])
+            .itemOutputs(ItemList.MegaChemicalReactor.get(1))
             .fluidInputs(Materials.SolderingAlloy.getMolten(1 * STACKS))
             .duration(1 * HOURS)
             .eut(TierEU.RECIPE_HV)
