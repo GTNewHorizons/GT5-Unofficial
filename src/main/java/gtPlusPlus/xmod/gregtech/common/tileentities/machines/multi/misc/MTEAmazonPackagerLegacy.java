@@ -22,7 +22,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -102,7 +101,7 @@ public class MTEAmazonPackagerLegacy extends GTPPMultiBlockBase<MTEAmazonPackage
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo(EnumChatFormatting.DARK_RED + "DEPRECATED - CHECK NEI TO FIND NEW CONTROLLER")
+            .addStructureDeprecatedLine()
             .addInfo("This Multiblock is used for EXTREME packaging requirements")
             .addBulkMachineInfo(16, 6f, 0.75f)
             .addInfo("Can be configured with a screwdriver to work as an Unpackager")

@@ -61,6 +61,7 @@ public class MTEIndustrialPackager extends MTEExtendedPowerMultiBlockBase<MTEInd
     private static IStructureDefinition<MTEIndustrialPackager> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int MACHINEMODE_PACKAGER = 0;
+    private static final int MACHINEMODE_UNPACKAGER = 1;
 
     private static final int OFFSET_X = 4;
     private static final int OFFSET_Y = 1;
