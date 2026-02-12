@@ -328,7 +328,6 @@ public class RecipesMachinesMulti {
 
     public static void multiCentrifuge() {
 
-
         // Centrifuge Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Centrifuge1.get(1),
@@ -490,7 +489,6 @@ public class RecipesMachinesMulti {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
-
 
     }
 
@@ -820,7 +818,6 @@ public class RecipesMachinesMulti {
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
-
 
     }
 

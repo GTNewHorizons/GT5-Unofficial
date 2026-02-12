@@ -16,8 +16,6 @@ import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -40,6 +38,8 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
@@ -1594,6 +1594,7 @@ public class MTERecipeLoader implements Runnable {
             5);
 
     }
+
     // This method is for all the structure rework multi recipes
     // Maybe after some point in time, it can be moved to coremod as well.
     private static void registerReworkMTERecipes() {
@@ -1616,8 +1617,6 @@ public class MTERecipeLoader implements Runnable {
             ItemList.IndustrialWireFactory.get(1),
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
-
-
 
     }
 
