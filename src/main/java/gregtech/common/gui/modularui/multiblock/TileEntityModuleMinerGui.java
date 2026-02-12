@@ -262,7 +262,7 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
                     return GTGuiTextures.TT_OVERLAY_BUTTON_BLACKLIST;
                 }
             }))
-            .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.togglefilter")))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.toggleFilter")))
             .onMousePressed(mouseData -> {
                 isWhiteListedSyncer.setValue(!isWhiteListedSyncer.getBoolValue());
                 return true;
@@ -272,7 +272,9 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private IWidget createClearFilterButton() {
         return new ButtonWidget<>().size(18, 18)
             .marginBottom(4)
-            .overlay(IKey.str("C"))
+            .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN.asIcon().size(16))
+            .hoverOverlay(GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN_HOVER.asIcon().size(16))
+            .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.clearFilter")))
             .onMousePressed(mouseData -> {
                 for (int i = 0; i < 64; i++) {
                     multiblock.filterModularSlots[i].putStack(null);
