@@ -98,7 +98,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         tt.addMachineType("Chemical Reactor, MCR")
             .addInfo(
                 TooltipHelper
-                    .coloredText(TooltipHelper.italicText("Power Overwhelming!"), EnumChatFormatting.DARK_GRAY))
+                    .coloredText(TooltipHelper.italicText("Infinite Potential!"), EnumChatFormatting.DARK_GRAY))
             .addStaticParallelInfo(PARALLELS)
             .addPerfectOCInfo()
             .addSeparator()
