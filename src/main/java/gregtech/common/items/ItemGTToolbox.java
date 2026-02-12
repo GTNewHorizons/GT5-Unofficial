@@ -2,6 +2,7 @@ package gregtech.common.items;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Mods.GregTech;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.GuiFactories;
 import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.gtnhlib.GTNHLib;
@@ -381,6 +383,11 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     }
 
     @Override
+    public ModularScreen createScreen(final PlayerInventoryGuiData data, final ModularPanel mainPanel) {
+        return new ModularScreen(GregTech.ID, mainPanel);
+    }
+
+    @Override
     public boolean doDamageToItem(final ItemStack toolbox, final int vanillaDamage) {
         if (toolbox == null || !(toolbox.getItem() instanceof ItemGTToolbox)) {
             return false;
@@ -423,14 +430,39 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         final NBTTagCompound tag = toolbox.hasTagCompound() ? toolbox.getTagCompound() : new NBTTagCompound();
         final boolean recentlyBrokenTool = tag.hasKey(RECENTLY_BROKEN_SLOT_KEY);
 
-        if (recentlyBrokenTool && (!tag.hasKey(BROKEN_TOOL_ANIMATION_END_KEY)
-            || tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) - world.getTotalWorldTime() <= GUI_OPEN_DELAY)) {
+        if (recentlyBrokenTool && (tag.hasKey(BROKEN_TOOL_ANIMATION_END_KEY)
+            ? tag.getLong(BROKEN_TOOL_ANIMATION_END_KEY) - world.getTotalWorldTime()
+            : BROKEN_TOOL_ANIMATION_LENGTH) > BROKEN_TOOL_ANIMATION_LENGTH - GUI_OPEN_DELAY) {
             return false;
         }
 
         // noinspection SimplifyOptionalCallChains
         return !world.isRemote && !ToolboxUtil.getSelectedToolType(toolbox)
             .isPresent();
+    }
+
+    /**
+     * Gets the currently equipped toolbox if the player is holding it in their main hand or offhand.
+     *
+     * @param player The player to interrogate
+     * @return An optional with the toolbox's item stack, or empty if the user is not wielding a toolbox
+     */
+    private static Optional<ItemStack> getToolboxIfEquipped(EntityPlayer player) {
+        if (player != null) {
+            for (ItemStack stack : new ItemStack[] { player.inventory.getCurrentItem(),
+                Backhand.getOffhandItem(player) }) {
+                if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
+                    return Optional.of(stack);
+                }
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private static void sendChangeToolPacket(int inventorySlot, int newToolType) {
+        GTValues.NW.sendToServer(
+            new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL, inventorySlot, newToolType));
     }
 
     // region Event Handlers
@@ -478,11 +510,7 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
                     true);
                 break;
             case 1:
-                GTValues.NW.sendToServer(
-                    new GTPacketToolboxEvent(
-                        GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL,
-                        inventorySlot,
-                        selectedToolType.isPresent() ? lastSlot : NO_TOOL_SELECTED));
+                sendChangeToolPacket(inventorySlot, selectedToolType.isPresent() ? lastSlot : NO_TOOL_SELECTED);
                 return true;
             default:
                 ToolboxSelectGuiFactory.INSTANCE.open(player);
@@ -550,30 +578,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
     }
 
     // endregion
-
-    /**
-     * Gets the currently equipped toolbox if the player is holding it in their main hand or offhand.
-     *
-     * @param player The player to interrogate
-     * @return An optional with the toolbox's item stack, or empty if the user is not wielding a toolbox
-     */
-    private static Optional<ItemStack> getToolboxIfEquipped(EntityPlayer player) {
-        if (player != null) {
-            for (ItemStack stack : new ItemStack[] { player.inventory.getCurrentItem(),
-                Backhand.getOffhandItem(player) }) {
-                if (stack != null && stack.getItem() instanceof ItemGTToolbox) {
-                    return Optional.of(stack);
-                }
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    private static void sendChangeToolPacket(int inventorySlot, int newToolType) {
-        GTValues.NW.sendToServer(
-            new GTPacketToolboxEvent(GTPacketToolboxEvent.Action.CHANGE_ACTIVE_TOOL, inventorySlot, newToolType));
-    }
 
     // region Vanilla Tool Harvesting Methods
     @Override
