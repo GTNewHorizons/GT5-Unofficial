@@ -29,8 +29,6 @@ import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.blocks.BlockCasings12;
-import gregtech.common.blocks.BlockCasings4;
-import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
