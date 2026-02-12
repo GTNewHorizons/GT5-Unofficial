@@ -2774,6 +2774,9 @@ public enum ItemList implements IItemContainer {
 
     // new controllers
     IndustrialWireFactory,
+    IndustrialPackager,
+    IndustrialCentrifuge,
+
     BasicCircuitBoard,
     EnhancedCircuitBoard,
     RefinedCircuitBoard,
