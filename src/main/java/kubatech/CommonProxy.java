@@ -40,6 +40,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import gregtech.api.enums.Mods;
 import kubatech.commands.CommandHandler;
 import kubatech.config.Config;
+import kubatech.loaders.ArcFurnaceLoader;
 import kubatech.loaders.EIGBucketLoader;
 import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.MTLoader;
@@ -77,6 +78,7 @@ public class CommonProxy {
         RecipeLoader.addRecipes();
         EIGBucketLoader.LoadEIGBuckets();
         HTGRLoader.load();
+        ArcFurnaceLoader.load();
         if (Thaumcraft.isModLoaded()) TCLoader.init();
     }
 

@@ -538,9 +538,7 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "0";
 
-    public static final String AuthorPxx500 = "Author: " + EnumChatFormatting.DARK_BLUE
-        + EnumChatFormatting.BOLD
-        + "Pxx500";
+    public static final String AuthorPxx500 = "Author: " + EnumChatFormatting.BLUE + EnumChatFormatting.BOLD + "Pxx500";
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
         + EnumChatFormatting.BOLD
