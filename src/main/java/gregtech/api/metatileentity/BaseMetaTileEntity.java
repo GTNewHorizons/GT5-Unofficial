@@ -648,7 +648,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         }
     }
 
-    private void sendClientData() {
+    @Override
+    protected void sendClientData() {
         if (mSendClientData) {
             oldTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
                 | (mRedstone ? 16 : 0)
@@ -907,12 +908,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     }
 
     @Override
-    public void onChunkUnload() {
+    public void onUnload() {
         if (canAccessData()) {
             onCoverUnload();
             mMetaTileEntity.onUnload();
         }
-        super.onChunkUnload();
+        super.onUnload();
         onChunkUnloadAE();
     }
 

@@ -165,6 +165,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
+                if (!autoPullAvailable) {
+                    aBaseMetaTileEntity.disableTicking();
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);

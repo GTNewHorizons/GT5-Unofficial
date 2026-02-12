@@ -84,8 +84,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
-        if (aTimer % 100 == 0 && masterSet && getMaster() == null) {
-            trySetMasterFromCoord(masterX, masterY, masterZ);
+        if (aTimer % 100 == 0 && masterSet) {
+            if (getMaster() != null) {
+                getBaseMetaTileEntity().disableTicking();
+            } else if (trySetMasterFromCoord(masterX, masterY, masterZ) != null) {
+                getBaseMetaTileEntity().disableTicking();
+            }
         }
     }
 

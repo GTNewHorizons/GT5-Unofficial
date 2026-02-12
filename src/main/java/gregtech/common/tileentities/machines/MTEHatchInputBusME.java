@@ -155,6 +155,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
+                if (!autoPullAvailable) {
+                    aBaseMetaTileEntity.disableTicking();
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
