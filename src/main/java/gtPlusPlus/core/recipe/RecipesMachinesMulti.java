@@ -327,16 +327,7 @@ public class RecipesMachinesMulti {
     }
 
     public static void multiCentrifuge() {
-        // Industrial Centrifuge
-        GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialCentrifuge.get(1),
-            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
-                OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
-                ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
 
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialCentrifuge.get(1),
-            new Object[] { GregtechItemList.Industrial_Centrifuge });
 
         // Centrifuge Casing
         GTModHandler.addCraftingRecipe(
@@ -500,15 +491,7 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Industrial Wire Factory
-        GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialWireFactory.get(1),
-            new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
-                ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
 
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialWireFactory.get(1),
-            new Object[] { GregtechItemList.Industrial_WireFactory });
     }
 
     private static void multiMassFabricator() {
@@ -838,15 +821,7 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Amazon Warehousing Depot
-        GTModHandler.addCraftingRecipe(
-            ItemList.IndustrialPackager.get(1),
-            new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
-                ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
 
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.IndustrialPackager.get(1),
-            new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
     }
 
     private static void multiMixer() {

@@ -16,6 +16,8 @@ import static gregtech.api.util.GTModHandler.RecipeBits.REVERSIBLE;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -89,6 +91,8 @@ public class MTERecipeLoader implements Runnable {
         registerPolarizer();
         registerPrinter();
         registerRecycler();
+        registerReworkMigrationRecipes();
+        registerReworkMTERecipes();
         registerSifter();
         registerThermalCentrifuge();
         registerUnpackager();
@@ -1589,6 +1593,54 @@ public class MTERecipeLoader implements Runnable {
                 MTEBasicMachineWithRecipe.X.WIRE, 'G', OrePrefixes.dust.get(Materials.Glowstone) },
             5);
 
+    }
+    // This method is for all the structure rework multi recipes
+    // Maybe after some point in time, it can be moved to coremod as well.
+    private static void registerReworkMTERecipes() {
+
+        // Industrial Centrifuge
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialCentrifuge.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
+                OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
+                ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
+
+        // Amazon Warehousing Depot
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialPackager.get(1),
+            new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
+                ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
+
+        // Industrial Wire Factory
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialWireFactory.get(1),
+            new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
+                ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
+
+
+
+    }
+
+    // This method is for all the structure rework shapeless crafing migration recipes
+    // for the 2.9 -> next major version cycle
+    // Maybe after some point in time, it can be moved to coremod as well.
+    // TODO delete after the next major version after 2.9
+    private static void registerReworkMigrationRecipes() {
+
+        // Industrial Wire Factory Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialWireFactory.get(1),
+            new Object[] { GregtechItemList.Industrial_WireFactory });
+
+        // Amazon Packager Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialPackager.get(1),
+            new Object[] { GregtechItemList.Amazon_Warehouse_Controller });
+
+        // Industrial Centrifuge Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialCentrifuge.get(1),
+            new Object[] { GregtechItemList.Industrial_Centrifuge });
     }
 
     private static void registerSifter() {
