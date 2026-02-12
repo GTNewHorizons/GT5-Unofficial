@@ -1683,6 +1683,7 @@ public enum MetaTileEntityIDs {
     UXV1048576AWirelessEnergyHatch(15506),
     UncertaintyResolution(15510),
     IndustrialWireMill(15511),
+    IndustrialCentrifuge(15512),
     MegaChemicalReactor(15515),
     ENTROPIC_PROCESSOR(15750),
     DECAY_WAREHOUSE(15751),
