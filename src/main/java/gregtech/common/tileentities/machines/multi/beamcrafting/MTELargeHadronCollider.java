@@ -377,15 +377,15 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 54, 4, 1);
-        buildPiece(STRUCTURE_PIECE_EM, stackSize, hintsOnly, 5, -1, -113);
+        buildPiece(STRUCTURE_PIECE_EM, stackSize, hintsOnly, 7, -1, -113);
         if (stackSize.stackSize > 1) {
-            buildPiece(STRUCTURE_PIECE_WEAK, stackSize, hintsOnly, 5, -1, -9);
+            buildPiece(STRUCTURE_PIECE_WEAK, stackSize, hintsOnly, 7, -1, -9);
         }
         if (stackSize.stackSize > 2) {
-            buildPiece(STRUCTURE_PIECE_STRONG, stackSize, hintsOnly, 57, -1, -60);
+            buildPiece(STRUCTURE_PIECE_STRONG, stackSize, hintsOnly, 57, -1, -59);
         }
         if (stackSize.stackSize > 3) {
-            buildPiece(STRUCTURE_PIECE_GRAV, stackSize, hintsOnly, -47, -1, -60);
+            buildPiece(STRUCTURE_PIECE_GRAV, stackSize, hintsOnly, -47, -1, -59);
         }
     }
 
@@ -396,15 +396,15 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         int realBudget = elementBudget >= 200 ? elementBudget : Math.min(200, elementBudget * 5);
 
         built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 54, 4, 1, realBudget, env, false, true);
-        built += survivalBuildPiece(STRUCTURE_PIECE_EM, stackSize, 5, -1, -113, realBudget, env, false, true);
+        built += survivalBuildPiece(STRUCTURE_PIECE_EM, stackSize, 7, -1, -113, realBudget, env, false, true);
         if (stackSize.stackSize > 1) {
-            built += survivalBuildPiece(STRUCTURE_PIECE_WEAK, stackSize, 5, -1, -9, realBudget, env, false, true);
+            built += survivalBuildPiece(STRUCTURE_PIECE_WEAK, stackSize, 7, -1, -9, realBudget, env, false, true);
         }
         if (stackSize.stackSize > 2) {
-            built += survivalBuildPiece(STRUCTURE_PIECE_STRONG, stackSize, 57, -1, -60, realBudget, env, false, true);
+            built += survivalBuildPiece(STRUCTURE_PIECE_STRONG, stackSize, 57, -1, -59, realBudget, env, false, true);
         }
         if (stackSize.stackSize > 3) {
-            built += survivalBuildPiece(STRUCTURE_PIECE_GRAV, stackSize, -47, -1, -60, realBudget, env, false, true);
+            built += survivalBuildPiece(STRUCTURE_PIECE_GRAV, stackSize, -47, -1, -59, realBudget, env, false, true);
         }
         return built;
     }
@@ -420,10 +420,10 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         mInputBeamline.clear();
         mAdvancedOutputBeamline.clear();
 
-        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 5, -1, -113);
-        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 5, -1, -9);
-        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -60);
-        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -60);
+        emEnabled = checkPiece(STRUCTURE_PIECE_EM, 7, -1, -113);
+        weakEnabled = checkPiece(STRUCTURE_PIECE_WEAK, 7, -1, -9);
+        strongEnabled = checkPiece(STRUCTURE_PIECE_STRONG, 57, -1, -59);
+        gravEnabled = checkPiece(STRUCTURE_PIECE_GRAV, -47, -1, -59);
 
         return checkPiece(STRUCTURE_PIECE_MAIN, 54, 4, 1)
             && ((mExoticEnergyHatches.size() == 1) ^ (mEnergyHatches.size() == 1));
