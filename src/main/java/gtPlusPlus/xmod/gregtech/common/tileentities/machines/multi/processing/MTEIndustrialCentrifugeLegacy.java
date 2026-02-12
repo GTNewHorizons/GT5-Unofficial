@@ -50,12 +50,12 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
-public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCentrifuge>
+public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustrialCentrifugeLegacy>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     private boolean mIsAnimated;
     private int mCasing;
-    private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MTEIndustrialCentrifugeLegacy> STRUCTURE_DEFINITION = null;
     // public static double recipesComplete = 0;
     // client side stuff
     // mMachine got overwritten by StructureLib extended facing query response
@@ -63,19 +63,19 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
     protected boolean mFormed;
 
-    public MTEIndustrialCentrifuge(final int aID, final String aName, final String aNameRegional) {
+    public MTEIndustrialCentrifugeLegacy(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
         mIsAnimated = true;
     }
 
-    public MTEIndustrialCentrifuge(final String aName) {
+    public MTEIndustrialCentrifugeLegacy(final String aName) {
         super(aName);
         mIsAnimated = true;
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-        return new MTEIndustrialCentrifuge(this.mName);
+        return new MTEIndustrialCentrifugeLegacy(this.mName);
     }
 
     @Override
@@ -87,6 +87,7 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(6, 2.25F, 0.9F)
             .addInfo("Disable animations with a screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))
@@ -105,16 +106,16 @@ public class MTEIndustrialCentrifuge extends GTPPMultiBlockBase<MTEIndustrialCen
     }
 
     @Override
-    public IStructureDefinition<MTEIndustrialCentrifuge> getStructureDefinition() {
+    public IStructureDefinition<MTEIndustrialCentrifugeLegacy> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCentrifuge>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEIndustrialCentrifugeLegacy>builder()
                 .addShape(
                     mName,
                     transpose(
                         new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
                 .addElement(
                     'C',
-                    buildHatchAdder(MTEIndustrialCentrifuge.class)
+                    buildHatchAdder(MTEIndustrialCentrifugeLegacy.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler, InputHatch, OutputHatch)
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
