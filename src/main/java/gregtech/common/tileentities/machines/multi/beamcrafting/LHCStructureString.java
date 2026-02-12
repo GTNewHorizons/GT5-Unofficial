@@ -1591,6 +1591,7 @@ public class LHCStructureString {
             "                                                                                                             " } };
 
     public static final String[][] EM_MODULE = {
+        // spotless:off
         { "               ",
           "               ",
           "CCCCCCCCCCCCCCC",
@@ -1711,9 +1712,12 @@ public class LHCStructureString {
           "CCCDDDDDDDDDCCC",
           "CCCCCCCCCCCCCCC",
           "               ",
-          "               " } };
+          "               " }
+        // spotless:on
+    };
 
     public static final String[][] WEAK_MODULE = {
+        // spotless:off
         { "               ",
           "               ",
           "CCCCCCCCCCCCCCC",
@@ -1834,9 +1838,12 @@ public class LHCStructureString {
           "CCCCDDDCDDDCCCC",
           "CCCCCCCCCCCCCCC",
           "               ",
-          "               " } };
+          "               " }
+        // spotless:on
+    };
 
     public static final String[][] STRONG_MODULE = {
+        // spotless:off
         { "  CCCCCCC  ",
           " CCC   CCC ",
           "CC       CC",
@@ -2001,9 +2008,12 @@ public class LHCStructureString {
           "CC  CCC  CC",
           "CC       CC",
           " CCC   CCC ",
-          "  C CCC C  " } };
+          "  C CCC C  " }
+        // spotless:on
+    };
 
     public static final String[][] GRAV_MODULE = {
+        // spotless:off
         { "  CCCCCCC  ",
           " CCC   CCC ",
           "CC       CC",
@@ -2168,6 +2178,8 @@ public class LHCStructureString {
           "CC  CCC  CC",
           "CC       CC",
           " CCC   CCC ",
-          "  C CCC C  " } };
+          "  C CCC C  " }
+        // spotless:on
+    };
 
 }
