@@ -1,7 +1,13 @@
 package gregtech.common.blocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -9,13 +15,22 @@ import gregtech.GTMod;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
+import gregtech.api.interfaces.IBlockWithClientMeta;
+import gregtech.api.interfaces.IBlockWithTextures;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRenderingWorld;
+import gregtech.common.data.GTCoilTracker;
+import gregtech.common.render.GTRendererBlock;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
  */
-public class BlockCasings4 extends BlockCasingsAbstract {
+public class BlockCasings4 extends BlockCasingsAbstract
+    implements IBlockWithActiveOffset, IBlockWithClientMeta, IBlockWithTextures {
 
     /**
      * This mapping is used to look up which texture should be used to render the connected texture for fusion casings.
@@ -111,7 +126,7 @@ public class BlockCasings4 extends BlockCasingsAbstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
         aWorld = GTRenderingWorld.getInstance(aWorld);
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord) % ACTIVE_OFFSET;
         if (tMeta != 6 && tMeta != 8 || !mConnectedMachineTextures) {
             return getIcon(ordinalSide, tMeta);
         }
@@ -128,5 +143,70 @@ public class BlockCasings4 extends BlockCasingsAbstract {
 
     private boolean isSameBlock(IBlockAccess aWorld, int aX, int aY, int aZ, int aMeta) {
         return aWorld.getBlock(aX, aY, aZ) == this && aWorld.getBlockMetadata(aX, aY, aZ) == aMeta;
+    }
+
+    @Override
+    public int getClientMeta(World world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if (meta == 7 && GTCoilTracker.isCoilActive(world, x, y, z)) meta += ACTIVE_OFFSET;
+        return meta;
+    }
+
+    @Override
+    public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
+        return super.getDamageValue(aWorld, aX, aY, aZ) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return super.damageDropped(metadata) % ACTIVE_OFFSET;
+    }
+
+    @Override
+    public int getRenderType() {
+        return GTRendererBlock.RENDER_ID;
+    }
+
+    @Override
+    public @Nullable ITexture[][] getTextures(int metadata) {
+        List<ITexture> textures = new ArrayList<>();
+        List<ITexture> topFaceTextures = new ArrayList<>();
+        IIconContainer texture = switch (metadata % ACTIVE_OFFSET) {
+            case 0 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL;
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL;
+            case 2, 3 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM;
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW;
+            case 5 -> Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
+            case 6 -> Textures.BlockIcons.MACHINE_CASING_FUSION;
+            case 7 -> Textures.BlockIcons.MACHINE_CASING_FUSION_COIL;
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_FUSION_2;
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STEEL;
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_STAINLESSSTEEL;
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TITANIUM;
+            case 12 -> Textures.BlockIcons.MACHINE_CASING_TURBINE_TUNGSTENSTEEL;
+            case 13 -> Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE;
+            case 14 -> Textures.BlockIcons.MACHINE_CASING_MINING_OSMIRIDIUM;
+            case 15 -> Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS;
+            default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL_BACKGROUND;
+        };
+        textures.add(TextureFactory.of(texture));
+        IIconContainer topTexture = (metadata % ACTIVE_OFFSET == 3)
+            ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM
+            : texture;
+
+        if (metadata >= ACTIVE_OFFSET) {
+            if (metadata % ACTIVE_OFFSET == 7) {
+                textures.add(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.EXOFOUNDRY_CENTRAL_CASING_ACTIVE)
+                        .glow()
+                        .build());
+            }
+        }
+        topFaceTextures.add(TextureFactory.of(topTexture));
+        ITexture[] standardLayers = textures.toArray(new ITexture[0]);
+        ITexture[] topLayers = topFaceTextures.toArray(new ITexture[0]);
+        return new ITexture[][] { topLayers, topLayers, standardLayers, standardLayers, standardLayers,
+            standardLayers };
     }
 }
