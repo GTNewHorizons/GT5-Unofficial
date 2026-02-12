@@ -38,6 +38,8 @@ import gregtech.common.render.GTRendererCasing;
 
 /**
  * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public abstract class BlockCasingsAbstract extends GTGenericBlock
     implements gregtech.api.interfaces.IHasIndexedTexture {

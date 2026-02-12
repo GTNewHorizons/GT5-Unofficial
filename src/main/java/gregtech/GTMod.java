@@ -96,6 +96,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.commands.SPCommand;
 import gregtech.common.misc.spaceprojects.commands.SPMCommand;
 import gregtech.common.misc.spaceprojects.commands.SpaceProjectCommand;
+import gregtech.common.ores.UnificationOreAdapter;
 import gregtech.common.powergoggles.handlers.PowerGogglesConfigHandler;
 import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.holoinventory.HoloInventory;
@@ -241,6 +242,8 @@ public class GTMod {
         Textures.BlockIcons.VOID.name();
         // noinspection ResultOfMethodCallIgnored// Suspicious likely pointless
         Textures.ItemIcons.VOID.name();
+
+        UnificationOreAdapter.load();
     }
 
     public static GTClient clientProxy() {
@@ -760,6 +763,8 @@ public class GTMod {
 
     @Mod.EventHandler
     public void onIDChangingEvent(FMLModIdMappingEvent event) {
+        if (event.remappedIds.isEmpty()) return;
+
         GTUtility.reInit();
         GTRecipe.reInit();
         RemovedMetaRegistry.init();
