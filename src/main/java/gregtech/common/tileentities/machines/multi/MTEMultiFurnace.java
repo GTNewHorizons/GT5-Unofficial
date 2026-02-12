@@ -71,7 +71,13 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
-        .addElement('c', ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX))
+        .addElement(
+            'c',
+            buildHatchAdder(MTEMultiFurnace.class)
+                .atLeast(Maintenance)
+                .casingIndex(CASING_INDEX)
+                .hint(3)
+                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .addElement('m', Muffler.newAny(CASING_INDEX, 2))
         .addElement(
             'C',
@@ -79,12 +85,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 .use(activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))))
         .addElement(
             'b',
-            ofChain(
-                buildHatchAdder(MTEMultiFurnace.class).atLeast(Maintenance, InputBus, OutputBus, Energy)
-                    .casingIndex(CASING_INDEX)
-                    .hint(1)
-                    .build(),
-                ofBlock(GregTechAPI.sBlockCasings1, CASING_INDEX)))
+            buildHatchAdder(MTEMultiFurnace.class)
+                .atLeast(Maintenance, InputBus, OutputBus, Energy)
+                .casingIndex(CASING_INDEX)
+                .hint(1)
+                .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .build();
 
     public MTEMultiFurnace(int aID, String aName, String aNameRegional) {
@@ -112,7 +117,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
             .addOtherStructurePart("Heating Coils", "Middle layer")
             .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addMaintenanceHatch("Any Heat Proof Machine Casing", 1)
             .addMufflerHatch("Top Middle", 2)
             .addInputBus("Any bottom casing", 1)
             .addOutputBus("Any bottom casing", 1)
