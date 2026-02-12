@@ -91,8 +91,6 @@ public class MTERecipeLoader implements Runnable {
         registerPolarizer();
         registerPrinter();
         registerRecycler();
-        registerReworkMigrationRecipes();
-        registerReworkMTERecipes();
         registerSifter();
         registerThermalCentrifuge();
         registerUnpackager();
@@ -4153,5 +4151,7 @@ public class MTERecipeLoader implements Runnable {
         registerMachineTypes();
         PCBFactoryMaterialLoader.load();
         run4();
+        registerReworkMigrationRecipes();
+        registerReworkMTERecipes();
     }
 }
