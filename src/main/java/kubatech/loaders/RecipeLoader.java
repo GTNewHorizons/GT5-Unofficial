@@ -22,6 +22,7 @@ package kubatech.loaders;
 
 import static gregtech.api.enums.ItemList.FluidExtractorUHV;
 import static gregtech.api.enums.MetaTileEntityIDs.DraconicEvolutionFusionCrafterController;
+import static gregtech.api.enums.MetaTileEntityIDs.ELECTRODE_HATCH;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeEntityCrusherController;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeIndustrialApiaryController;
 import static gregtech.api.enums.MetaTileEntityIDs.ExtremeIndustrialGreenhouseController;
@@ -53,6 +54,7 @@ import static kubatech.api.enums.ItemList.BlackTeaLeaf;
 import static kubatech.api.enums.ItemList.BruisedTeaLeaf;
 import static kubatech.api.enums.ItemList.DraconicEvolutionFusionCrafter;
 import static kubatech.api.enums.ItemList.EarlGrayTea;
+import static kubatech.api.enums.ItemList.ElectrodeHatch;
 import static kubatech.api.enums.ItemList.ExtremeEntityCrusher;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialApiary;
 import static kubatech.api.enums.ItemList.ExtremeIndustrialGreenhouse;
@@ -94,6 +96,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import kubatech.api.enums.ItemList;
+import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 import kubatech.tileentity.gregtech.multiblock.MTEDEFusionCrafter;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse;
@@ -142,6 +145,8 @@ public class RecipeLoader {
                 HighTemperatureGasCooledReactorController.ID,
                 "HTGR",
                 "High Temperature Gas-cooled Reactor").getStackForm(1L));
+        ElectrodeHatch
+            .set(new MTEElectrodeHatch(ELECTRODE_HATCH.ID, "electrodehatch", "Electrode Hatch").getStackForm(1L));
     }
 
     public static void addRecipes() {

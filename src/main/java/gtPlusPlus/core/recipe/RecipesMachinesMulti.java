@@ -850,20 +850,6 @@ public class RecipesMachinesMulti {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
-        // High Current Industrial Arc Furnace
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GregtechItemList.Casing_Industrial_Arc_Furnace.get(1),
-                ItemList.Field_Generator_EV.get(2),
-                ItemList.Robot_Arm_IV.get(4),
-                GregtechItemList.Energy_Core_EV.get(2),
-                MaterialsAlloy.ZERON_100.getPlate(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
-            .itemOutputs(GregtechItemList.Industrial_Arc_Furnace.get(1))
-            .fluidInputs(MaterialsAlloy.LAFIUM.getFluidStack(20 * INGOTS))
-            .duration(8 * MINUTES)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(assemblerRecipes);
     }
 
     private static void multiDehydrator() {
