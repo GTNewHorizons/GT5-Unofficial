@@ -10,6 +10,8 @@ import gregtech.api.enums.Textures;
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings6 extends BlockCasingsAbstract {
 
