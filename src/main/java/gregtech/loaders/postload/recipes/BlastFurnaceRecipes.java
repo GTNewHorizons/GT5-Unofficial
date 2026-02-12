@@ -620,18 +620,6 @@ public class BlastFurnaceRecipes implements Runnable {
             .metadata(COIL_HEAT, 11701)
             .addTo(blastFurnaceRecipes);
 
-        // Rh + 3Cl = RhCl3
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(WerkstoffLoader.items.get(OrePrefixes.dust), 1, 78))
-            .circuit(2)
-            .itemOutputs(Materials.RhodiumChloride.getDust(4))
-            .fluidInputs(Materials.Chlorine.getGas(3_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .metadata(COIL_HEAT, 573)
-            .addTo(blastFurnaceRecipes);
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Phononic_Seed_Crystal.get(1),

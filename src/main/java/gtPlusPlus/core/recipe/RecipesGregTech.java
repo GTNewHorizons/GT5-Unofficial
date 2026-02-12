@@ -51,6 +51,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.thermalBoilerRecipes;
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.loaders.postload.chains.KevlarRecipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -124,6 +125,7 @@ public class RecipesGregTech {
         RecipesSeleniumProcessing.init();
         RecipesRareEarthProcessing.init();
         NetheriteRecipes.run();
+        KevlarRecipes.run();
 
         addFuels();
 

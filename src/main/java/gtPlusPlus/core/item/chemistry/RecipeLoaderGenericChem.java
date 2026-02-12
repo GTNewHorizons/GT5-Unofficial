@@ -12,6 +12,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.core.fluids.GTPPFluids.Nitrobenzene;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -50,7 +51,6 @@ public class RecipeLoaderGenericChem {
         recipeGrindingBallSoapstone();
 
         recipeNitroBenzene();
-        recipeAniline();
         recipeCadaverineAndPutrescine();
         recipeCyclohexane();
         recipeCyclohexanone();
@@ -183,7 +183,7 @@ public class RecipeLoaderGenericChem {
             .itemInputs(WerkstoffLoader.Alumina.get(OrePrefixes.dust, 64))
             .circuit(10)
             .itemOutputs(GregtechItemList.Milling_Ball_Alumina.get(8))
-            .fluidInputs(new FluidStack(GTPPFluids.Aniline, 4_000))
+            .fluidInputs(new FluidStack(Nitrobenzene, 4_000))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
@@ -396,19 +396,6 @@ public class RecipeLoaderGenericChem {
             .addTo(chemicalPlantRecipes);
     }
 
-    private static void recipeAniline() {
-        // C6H5NO2 + 6H = C6H7N + 2H2O
-        GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.BlueMetalCatalyst.get(0))
-            .circuit(12)
-            .fluidInputs(new FluidStack(GTPPFluids.Nitrobenzene, 1_000), Materials.Hydrogen.getGas(6_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.Aniline, 1_000))
-            .duration(30 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .metadata(CHEMPLANT_CASING_TIER, 3)
-            .addTo(chemicalPlantRecipes);
-    }
-
     private static void recipeNitroBenzene() {
         // C6H6 + HNO3 =H2SO4= C6H5NO2 +H2O
         GTValues.RA.stdBuilder()
@@ -418,7 +405,7 @@ public class RecipeLoaderGenericChem {
                 Materials.SulfuricAcid.getFluid(1_000),
                 Materials.NitricAcid.getFluid(5_000),
                 GTModHandler.getDistilledWater(10_000))
-            .fluidOutputs(new FluidStack(GTPPFluids.Nitrobenzene, 5_000))
+            .fluidOutputs(new FluidStack(Nitrobenzene, 5_000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .metadata(CHEMPLANT_CASING_TIER, 4)
