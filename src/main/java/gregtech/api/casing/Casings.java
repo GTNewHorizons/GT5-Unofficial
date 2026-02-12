@@ -28,7 +28,6 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
@@ -80,6 +79,76 @@ public enum Casings implements ICasing {
 
     TurbineShaft
         (() -> ModBlocks.blockSpecialMultiCasings,0,gtpp(2,1)),
+
+    // ------------------ Gregtech Casings -----------------
+
+    //Block Casings 1
+    ULVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 0, gt(0, 0, 0)),
+    LVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 1, gt(0, 0, 1)),
+    MVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 2, gt(0, 0, 2)),
+    HVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 3, gt(0, 0, 3)),
+    EVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 4, gt(0, 0, 4)),
+    IVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 5, gt(0, 0, 5)),
+    LuVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 6, gt(0, 0, 6)),
+    ZPMMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 7, gt(0, 0, 7)),
+    UVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 8, gt(0, 0, 8)),
+    UHVMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 9, gt(0, 0, 9)),
+    BronzePlatedBricks
+        (() -> GregTechAPI.sBlockCasings1, 10, gt(0, 0, 10)),
+    HeatProofMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 11, gt(0, 0, 11)),
+    DimensionallyTranscendentCasing
+        (() -> GregTechAPI.sBlockCasings1, 12, gt(0, 0, 12)),
+    DimensionalInjectionCasing
+        (() -> GregTechAPI.sBlockCasings1, 13, gt(0, 0, 13)),
+    DimensionalBridge
+        (() -> GregTechAPI.sBlockCasings1, 14, gt(0, 0, 14)),
+    SuperconductingCoilBlock
+        (() -> GregTechAPI.sBlockCasings1, 15, gt(0, 0, 15)),
+    // Block Casings 2
+    SolidSteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 0, gt(0, 1, 0)),
+    FrostProofMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 1, gt(0, 1, 1)),
+    BronzeGearBoxCasing
+        (() -> GregTechAPI.sBlockCasings1, 2, gt(0, 1, 2)),
+    SteelGearBoxCasing
+        (() -> GregTechAPI.sBlockCasings1, 3, gt(0, 1, 3)),
+    TitaniumGearBoxCasing
+        (() -> GregTechAPI.sBlockCasings1, 4, gt(0, 1, 4)),
+    AssemblyLineCasing
+        (() -> GregTechAPI.sBlockCasings1, 5, gt(0, 1, 5)),
+    ProcessorMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 6, gt(0, 1, 6)),
+    DataDriveMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 7, gt(0, 1, 7)),
+    ContainmentFieldMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 8, gt(0, 1, 8)),
+    AssemblerMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 9, gt(0, 1, 9)),
+    PumpMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 10, gt(0, 1, 10)),
+    MotorMachineCasing
+        (() -> GregTechAPI.sBlockCasings1, 11, gt(0, 1, 11)),
+    BronzePipeCasing
+        (() -> GregTechAPI.sBlockCasings1, 12, gt(0, 1, 12)),
+    SteelPipeCasing
+        (() -> GregTechAPI.sBlockCasings1, 13, gt(0, 1, 13)),
+    TitaniumPipeCasing
+        (() -> GregTechAPI.sBlockCasings1, 14, gt(0, 1, 14)),
+    TungstensteelPipeCasing
+        (() -> GregTechAPI.sBlockCasings1, 15, gt(0, 1, 15  )),
+    // Block Casings 3
     YellowStripesBlockA
         (() -> GregTechAPI.sBlockCasings3, 0, gt(0, 2, 0)),
     YellowStripesBlockB
@@ -112,10 +181,63 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 2, 14)),
     TungstensteelFireboxCasing
         (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 2, 15)),
-    CleanStainlessSteelCasing
-        (() -> GregTechAPI.sBlockCasings4, 1, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1)),
+    // Block Casings 4
+    RobustTungstenSteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings3, 0, gt(0, 3, 0)),
+    CleanStainlessSteelMachineCasing
+        (() -> GregTechAPI.sBlockCasings4, 1, gt(0,3,1)),
+    StableTitaniumMachineCasing
+        (() -> GregTechAPI.sBlockCasings3, 2, gt(0, 3, 2)),
+    TitaniumFireboxCasing
+        (() -> GregTechAPI.sBlockCasings3, 3, gt(0, 3, 3)),
+    FusionMachineCasing
+        (() -> GregTechAPI.sBlockCasings3, 6, gt(0, 3, 6)),
+    FusionCoilBlock
+        (() -> GregTechAPI.sBlockCasings3, 7, gt(0, 3, 7)),
+    FusionMachineCasingMKII
+        (() -> GregTechAPI.sBlockCasings3, 8, gt(0, 3, 8)),
+    TurbineCasing
+        (() -> GregTechAPI.sBlockCasings3, 9, gt(0, 3, 9)),
+    StainlessSteelTurbineCasing
+        (() -> GregTechAPI.sBlockCasings3, 10, gt(0, 3, 10)),
+    TitaniumTurbineCasing
+        (() -> GregTechAPI.sBlockCasings3, 11, gt(0, 3, 11)),
+    TungstensteelTurbineCasing
+        (() -> GregTechAPI.sBlockCasings3, 12, gt(0, 3, 12)),
+    EngineIntakeCasing
+        (() -> GregTechAPI.sBlockCasings3, 13, gt(0, 3, 13)),
     MiningOsmiridiumCasing
-        (() -> GregTechAPI.sBlockCasings4, 14, ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(14)),
+        (() -> GregTechAPI.sBlockCasings4, 14, gt(0, 3, 14)),
+    Firebricks
+        (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 3, 15)),
+
+    // Block Casings 5
+
+    // Block Casings 6
+
+    // Block Casings 7
+
+    // Block Casings 8
+
+    // Block Casings 9
+
+    // Block Casings 10
+
+    // Block Casings 11
+
+    // Block Casings 12
+
+    // Block Casings 13
+
+    // Block Casings Abstract
+
+    // Block Casings Foundry
+
+    // Block Casings NH
+
+    // Block Cyclotron Coils (Solenoids)
+
+
     BoltedOsmiridiumCasing
         (() -> WerkstoffLoader.BWBlockCasings, 32083,32083),
     ReboltedOsmiridiumCasing
@@ -132,11 +254,6 @@ public enum Casings implements ICasing {
         (() -> WerkstoffLoader.BWBlockCasings, 31850,31850),
     ReboltedIridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
-
-    SolidSteelMachineCasing
-        (() -> GregTechAPI.sBlockCasings2, 0, 16),
-    FrostProofMachineCasing
-        (() -> GregTechAPI.sBlockCasings2, 1, 17),
 
     WireFactoryCasing
         (() -> ModBlocks.blockCasingsMisc, 6, gtpp(0, 6)),
