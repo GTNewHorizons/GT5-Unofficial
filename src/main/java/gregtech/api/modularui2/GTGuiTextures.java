@@ -1722,7 +1722,7 @@ public final class GTGuiTextures {
         "items/particle/electron");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_ELECTRONNEUTRINO = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/electronneutrino");
+        "items/particle/electron_neutrino");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_ETA = fullImage(GTNHLanthanides.ID, "items/particle/eta");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_GRAVITON = fullImage(
         GTNHLanthanides.ID,
@@ -1735,7 +1735,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PARTICLE_MUON = fullImage(GTNHLanthanides.ID, "items/particle/muon");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_MUONNEUTRINO = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/muonneutrino");
+        "items/particle/muon_neutrino");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_NEUTRON = fullImage(
         GTNHLanthanides.ID,
         "items/particle/neutron");
@@ -1749,7 +1749,7 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_PARTICLE_TAU = fullImage(GTNHLanthanides.ID, "items/particle/tau");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_TAUNEUTRINO = fullImage(
         GTNHLanthanides.ID,
-        "items/particle/tauneutrino");
+        "items/particle/tau_neutrino");
     public static final UITexture OVERLAY_BUTTON_PARTICLE_UPSILON = fullImage(
         GTNHLanthanides.ID,
         "items/particle/upsilon");
