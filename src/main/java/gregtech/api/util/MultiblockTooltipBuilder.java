@@ -1,6 +1,8 @@
 package gregtech.api.util;
 
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,17 +157,19 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addDeprecatedLine(String info) {
-        iLines.add(EnumChatFormatting.DARK_RED + "DEPRECATED - " + info);
+        iLines.add(translateToLocalFormatted("GT5U.MBTT.Deprecated", info));
         return this;
     }
 
     /**
-     * Add a line with red color and word DEPRECATED
+     * Add a line that states this multi will be deprecated in next major version.
+     * Specifically for use with structure deprecation.
      *
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addDeprecatedLine() {
-        iLines.add(EnumChatFormatting.DARK_RED + "DEPRECATED");
+    public MultiblockTooltipBuilder addStructureDeprecatedLine() {
+        this.addDeprecatedLine(translateToLocal("GT5U.MBTT.Deprecated.Removal"));
+        iLines.add(translateToLocal("GT5U.MBTT.Deprecated.NEI"));
         return this;
     }
 
@@ -871,7 +875,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMaxTierSkips(int n) {
-        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
+        iLines.add(translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
         return this;
     }
 
@@ -1069,7 +1073,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
         return this;
     }
 
@@ -1082,7 +1086,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
         return this;
     }
 
@@ -1094,9 +1098,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
-        sLines.add(
-            TAB + StatCollector
-                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
+        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
