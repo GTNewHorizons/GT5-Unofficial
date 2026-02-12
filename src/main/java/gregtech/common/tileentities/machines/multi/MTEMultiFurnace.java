@@ -1,80 +1,79 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_GLOW;
+import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
+public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectricBlastFurnace>
+    implements ISurvivalConstructable {
 
-    private int mLevel = 0;
+    private int mHeatingCapacity = 0;
 
-    private static final long RECIPE_EUT = 4;
-    private static final int RECIPE_DURATION = 128;
-    private static final int CASING_INDEX = 11;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEMultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMultiFurnace>builder()
+    protected static final int CASING_INDEX = 11;
+    protected static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final IStructureDefinition<MTEElectricBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEElectricBlastFurnace>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
-            transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
+            transpose(
+                new String[][] { { "fff", "fmf", "fff" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
+                    { "b~b", "bbb", "bbb" } }))
         .addElement(
-            'c',
-            buildHatchAdder(MTEMultiFurnace.class)
-                .atLeast(Maintenance)
+            'f',
+            buildHatchAdder(MTEElectricBlastFurnace.class).atLeast(OutputHatch)
                 .casingIndex(CASING_INDEX)
                 .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
@@ -82,223 +81,154 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         .addElement(
             'C',
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEMultiFurnace::setCoilLevel, MTEMultiFurnace::getCoilLevel))))
+                .use(activeCoils(ofCoil(MTEElectricBlastFurnace::setCoilLevel, MTEElectricBlastFurnace::getCoilLevel))))
         .addElement(
             'b',
-            buildHatchAdder(MTEMultiFurnace.class)
-                .atLeast(Maintenance, InputBus, OutputBus, Energy)
+            buildHatchAdder(MTEElectricBlastFurnace.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, CASING_INDEX))
         .build();
 
-    public MTEMultiFurnace(int aID, String aName, String aNameRegional) {
+    public MTEElectricBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMultiFurnace(String aName) {
+    public MTEElectricBlastFurnace(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMultiFurnace(this.mName);
+        return new MTEElectricBlastFurnace(this.mName);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Furnace")
-            .addStaticParallelInfo(4)
-            .addDynamicMultiplicativeParallelInfo(2, TooltipTier.COIL)
+        tt.addMachineType("Blast Furnace, EBF")
+            .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
+            .addInfo(
+                "Increases Heat by " + EnumChatFormatting.RED
+                    + "100K"
+                    + EnumChatFormatting.GRAY
+                    + " for every "
+                    + TooltipHelper.tierText("Voltage")
+                    + " tier past "
+                    + EnumChatFormatting.AQUA
+                    + "MV")
+            .addInfo(
+                "Reduces " + TooltipHelper.effText("EU Usage")
+                    + " by "
+                    + EnumChatFormatting.WHITE
+                    + "5%"
+                    + EnumChatFormatting.GRAY
+                    + " every "
+                    + EnumChatFormatting.RED
+                    + "900K"
+                    + EnumChatFormatting.GRAY
+                    + " above the recipe requirement")
+            .addInfo(
+                "Every " + EnumChatFormatting.RED
+                    + "1800K"
+                    + EnumChatFormatting.GRAY
+                    + " over the recipe requirement grants 1 "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "Perfect Overclock")
+            .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
+            .beginStructureBlock(3, 4, 3, true)
             .addController("Front bottom")
-            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-            .addOtherStructurePart("Heating Coils", "Middle layer")
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any Heat Proof Machine Casing", 1)
-            .addMufflerHatch("Top Middle", 2)
-            .addInputBus("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
+            .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
+            .addCasingInfoExactly("Heating Coils", 16, true)
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addMufflerHatch("Top middle", 2)
+            .addInputBus("Any bottom layer casing", 1)
+            .addInputHatch("Any bottom layer casing", 1)
+            .addOutputBus("Any bottom layer casing", 1)
+            .addOutputHatch("Any Heat Proof Machine Casing", 3)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection != facingDirection) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-        if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) {
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
                 .extFacing()
-                .glow()
-                .build() };
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_MULTI_SMELTER)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW)
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
                 .extFacing()
-                .glow()
-                .build() };
-    }
-
-    /*
-     * NOTE: If you are wondering why your machine is not showing up in the NEIHandler for furnaces...
-     * it is handled in the NEI fork's catalysts.csv . so that multiple mods can show up in the same handler.
-     */
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.furnaceRecipes;
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.proxy.mPollutionMultiSmelterPerSecond;
-    }
-
-    // Not GPL
-    @Override
-    public boolean supportsPowerPanel() {
-        return false;
+        return GTMod.proxy.mPollutionEBFPerSecond;
     }
 
     @Override
-    @NotNull
-    public CheckRecipeResult checkProcessing() {
-        List<ItemStack> tInput = getAllStoredInputs();
-        long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
-        if (availableEUt < RECIPE_EUT) {
-            return CheckRecipeResultRegistry.insufficientPower(RECIPE_EUT);
-        }
-        if (tInput.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-        int maxParallel = this.mLevel;
-        int originalMaxParallel = this.mLevel;
-
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(availableEUt)
-            .setRecipeEUt(RECIPE_EUT)
-            .setDuration(RECIPE_DURATION)
-            .setParallel(originalMaxParallel);
-
-        maxParallel = GTUtility.longToInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()));
-
-        int maxParallelBeforeBatchMode = maxParallel;
-        if (isBatchModeEnabled()) {
-            maxParallel = GTUtility.longToInt((long) maxParallel * getMaxBatchSize());
-        }
-
-        maxParallel = Math.min(maxParallel, GTUtility.longToInt(availableEUt / RECIPE_EUT));
-
-        int currentParallel = 0;
-        for (ItemStack item : tInput) {
-            ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-
-            if (smeltedOutput == null) continue;
-
-            int parallelsLeft = maxParallel - currentParallel;
-            if (parallelsLeft <= 0) break;
-
-            currentParallel += Math.min(item.stackSize, parallelsLeft);
-        }
-
-        if (currentParallel <= 0) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        int currentParallelBeforeBatchMode = Math.min(currentParallel, maxParallelBeforeBatchMode);
-        calculator.setCurrentParallel(currentParallelBeforeBatchMode)
-            .calculate();
-
-        double batchMultiplierMax = 1;
-        // In case batch mode enabled
-        if (currentParallel > maxParallelBeforeBatchMode && calculator.getDuration() < getMaxBatchSize()) {
-            batchMultiplierMax = (double) getMaxBatchSize() / calculator.getDuration();
-            batchMultiplierMax = Math.min(batchMultiplierMax, (double) currentParallel / maxParallelBeforeBatchMode);
-        }
-
-        int finalParallel = (int) (batchMultiplierMax * currentParallelBeforeBatchMode);
-
-        ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
-
-        // Consume items and generate outputs
-        HashMap<GTUtility.ItemId, ItemStack> smeltedOutputs = new HashMap<>();
-        int toSmelt = finalParallel;
-
-        for (ItemStack item : tInput) {
-            ItemStack smeltedOutput = GTModHandler.getSmeltingOutput(item, false, null);
-
-            if (smeltedOutput == null) continue;
-
-            int remainingToSmelt = Math.min(toSmelt, item.stackSize);
-
-            int smeltable = ejectionHelper
-                .ejectItems(Collections.singletonList(smeltedOutput.copy()), remainingToSmelt);
-
-            if (smeltable == 0) continue;
-
-            ItemStack outputStack = smeltedOutputs
-                .computeIfAbsent(GTUtility.ItemId.create(smeltedOutput), x -> GTUtility.copyAmount(0, smeltedOutput));
-            outputStack.stackSize += smeltedOutput.stackSize * smeltable;
-
-            item.stackSize -= smeltable;
-            toSmelt -= smeltable;
-            if (toSmelt <= 0) break;
-        }
-
-        if (smeltedOutputs.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        this.mOutputItems = smeltedOutputs.values()
-            .toArray(new ItemStack[0]);
-
-        this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
-        this.mEfficiencyIncrease = 10000;
-        this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
-        this.lEUt = Math.min(VP[GTUtility.getTier(getAverageInputVoltage())], calculator.getConsumption());
-        if (this.lEUt > 0) {
-            this.lEUt = -this.lEUt;
-        }
-        this.updateSlots();
-        if (this.recipesDone == 0) this.recipesDone++;
-        // Multiblock base already includes 1 parallel
-        this.recipesDone += finalParallel - 1;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.blastFurnaceRecipes;
     }
 
     @Override
-    public boolean supportsVoidProtection() {
-        return true;
-    }
-
-    @Override
-    public IStructureDefinition<MTEMultiFurnace> getStructureDefinition() {
+    public IStructureDefinition<MTEElectricBlastFurnace> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
     @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
+
+            @Nonnull
+            @Override
+            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(mHeatingCapacity)
+                    .setHeatOC(true)
+                    .setHeatDiscount(true);
+            }
+
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+            }
+        };
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mLevel = 0;
+        this.mHeatingCapacity = 0;
 
         setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0)) return false;
 
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
         if (mMaintenanceHatches.size() != 1) return false;
 
-        this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
-
+        this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
         return true;
     }
 
@@ -306,7 +236,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
-        for (final MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
                 .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
@@ -358,10 +288,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 + mEfficiency / 100.0F
                 + EnumChatFormatting.RESET
                 + " %",
-            StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
+            StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
                 + EnumChatFormatting.GREEN
-                + mLevel
-                + EnumChatFormatting.RESET,
+                + formatNumber(mHeatingCapacity)
+                + EnumChatFormatting.RESET
+                + " K",
             StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
@@ -375,13 +306,41 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 3, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        inputSeparation = !inputSeparation;
+        GTUtility.sendChatTrans(
+            aPlayer,
+            inputSeparation ? "GT5U.machines.separatebus.true" : "GT5U.machines.separatebus.false");
+    }
+
+    @Override
+    public void loadNBTData(final NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        if (aNBT.hasKey("isBussesSeparate")) {
+            // backward compatibility
+            inputSeparation = aNBT.getBoolean("isBussesSeparate");
+        }
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
     }
 
     @Override
@@ -389,18 +348,9 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GT_MACHINES_EBF_LOOP;
     }
 }
