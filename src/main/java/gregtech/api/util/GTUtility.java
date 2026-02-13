@@ -794,7 +794,7 @@ public class GTUtility {
             insert++;
         }
 
-        return didSomething.getValue();
+        return didSomething.booleanValue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {

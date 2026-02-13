@@ -19,6 +19,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
@@ -72,6 +73,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.Material;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -238,6 +240,18 @@ public class GTStructureUtility {
                     env.getChatter());
             }
         };
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Supplier<ItemStack> frameSupplier) {
+        return lazy(t -> {
+            ItemStack stack = frameSupplier.get();
+            Block block = Block.getBlockFromItem(stack.getItem());
+            return ofBlock(block, stack.getItemDamage());
+        });
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Material material) {
+        return ofFrame(() -> material.getFrameBox(1));
     }
 
     public static <T> HatchElementBuilder<T> buildHatchAdder() {
