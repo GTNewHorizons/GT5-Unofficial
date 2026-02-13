@@ -104,6 +104,39 @@ public class CommonWidgets {
     }
 
     /**
+     * Returns a small, 12x12 power toggle button with the syncKey
+     *
+     * @param syncValue          - unsynced BooleanSyncValue
+     * @param baseMetaTileEntity - base MTE of machine
+     * @return synced power button
+     */
+    public static ToggleButton createSmallPowerSwitchButton(BooleanSyncValue syncValue,
+        IGregTechTileEntity baseMetaTileEntity) {
+        return new ToggleButton().value(syncValue)
+            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.gui.button.power_switch")))
+            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_ON)
+            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_OFF)
+            .size(12, 12)
+            .excludeAreaInRecipeViewer(true);
+    }
+
+    /**
+     * Returns a small, 12x12 power toggle button with the syncKey
+     *
+     * @param syncKey            - key of synced value
+     * @param baseMetaTileEntity - base MTE of machine
+     * @return synced power button
+     */
+    public static ToggleButton createSmallPowerSwitchButton(String syncKey, IGregTechTileEntity baseMetaTileEntity) {
+        return new ToggleButton().syncHandler(syncKey)
+            .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.gui.button.power_switch")))
+            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_ON)
+            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_SMALL_POWER_SWITCH_OFF)
+            .size(12, 12)
+            .excludeAreaInRecipeViewer(true);
+    }
+
+    /**
      *
      * @return a button that when clicked, closes the panel its on
      */
