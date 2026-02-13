@@ -231,6 +231,35 @@ public final class GTGuiTextures {
         .name(GTTextureIds.SLOT_ITEM_FOUNDRY)
         .build();
 
+    public static final UITexture SLOT_ITEM_GOLD = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_gold")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_GOLD)
+        .build();
+    public static final UITexture SLOT_ITEM_GREEN = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_green")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_GREEN)
+        .build();
+    public static final UITexture SLOT_ITEM_PURPLE = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_purple")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_PURPLE)
+        .build();
+    public static final UITexture SLOT_ITEM_PRISMATIC = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_prismatic")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_PRISMATIC)
+        .build();
+
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/slot/fluid_standard")
         .imageSize(18, 18)
@@ -287,6 +316,9 @@ public final class GTGuiTextures {
         .name(GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE, GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL, null)
         .build();
     public static final UITexture OVERLAY_SLOT_DATA_ORB = fullImage(GregTech.ID, "gui/overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_ARMOR = fullImageColorableGT("overlay_slot/armor");
+    public static final UITexture OVERLAY_SLOT_ARMOR_CORE = fullImageColorableGT("overlay_slot/armor_core");
+    public static final UITexture OVERLAY_SLOT_ARMOR_FRAME = fullImageColorableGT("overlay_slot/armor_frame");
     public static final UITexture OVERLAY_SLOT_DUST_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/dust")
         .fullImage()

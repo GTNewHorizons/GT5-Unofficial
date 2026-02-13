@@ -99,6 +99,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 import gregtech.common.tileentities.render.TileEntityDrone;
@@ -176,6 +177,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        MechArmorLoader.run();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused

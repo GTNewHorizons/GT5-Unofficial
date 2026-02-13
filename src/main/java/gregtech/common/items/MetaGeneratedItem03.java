@@ -25,6 +25,9 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Armor_Frame_T1_Base;
+import static gregtech.common.items.IDMetaItem03.Armor_Frame_T2_Base;
+import static gregtech.common.items.IDMetaItem03.Armor_Frame_T3_Base;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -241,6 +244,7 @@ import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
@@ -1279,6 +1283,21 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
 
+        ItemList.Armor_Frame_T1_Base.set(
+            addItem(
+                Armor_Frame_T1_Base.ID,
+                "Primitive Armor Frame Base",
+                "Capable of housing " + EnumChatFormatting.BLUE + "3" + EnumChatFormatting.GRAY + " augments"));
+        ItemList.Armor_Frame_T2_Base.set(
+            addItem(
+                Armor_Frame_T2_Base.ID,
+                "Advanced Armor Frame Base",
+                "Capable of housing " + EnumChatFormatting.DARK_AQUA + "5" + EnumChatFormatting.GRAY + " augments"));
+        ItemList.Armor_Frame_T3_Base.set(
+            addItem(
+                Armor_Frame_T3_Base.ID,
+                "Exotic Armor Frame Base",
+                "Capable of housing " + EnumChatFormatting.AQUA + "7" + EnumChatFormatting.GRAY + " augments"));
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
