@@ -86,6 +86,7 @@ import gregtech.common.gui.modularui.multiblock.MTELargeMolecularAssemblerGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
 public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
@@ -581,7 +582,12 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         cachedInputBusCount = inputs.size();
 
         if (changed) {
-            inventoryProxy.setInputs(inputs);
+            final var patternInputs = inputs.stream()
+                .filter(mte -> mte instanceof MTEHatchPatternProvider)
+                .map(mte -> (MTEHatchPatternProvider) mte)
+                .collect(Collectors.toList());
+
+            inventoryProxy.setInputs(patternInputs);
             try {
                 AENetworkProxy proxy = getProxy();
                 if (proxy == null) return;

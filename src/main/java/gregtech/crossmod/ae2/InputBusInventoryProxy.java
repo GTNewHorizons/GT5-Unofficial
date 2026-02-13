@@ -12,12 +12,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 
 public class InputBusInventoryProxy implements IInventory {
 
     @NotNull
-    private List<MTEHatchInputBus> inputs;
+    private List<MTEHatchPatternProvider> inputs;
 
     // map from slot number to index into this.inputs
     // this can't be a true map because it's a map of *ranges*
@@ -34,26 +34,25 @@ public class InputBusInventoryProxy implements IInventory {
         this.updateInventoryCache();
     }
 
-    public InputBusInventoryProxy(@NotNull List<MTEHatchInputBus> inputs) {
+    public InputBusInventoryProxy(@NotNull List<MTEHatchPatternProvider> inputs) {
         this.inputs = inputs;
         this.slotIndexCache = new ArrayList<>(inputs.size());
         this.updateInventoryCache();
     }
 
-    public void setInputs(@NotNull List<MTEHatchInputBus> inputs) {
+    public void setInputs(@NotNull List<MTEHatchPatternProvider> inputs) {
         this.inputs = inputs;
         this.updateInventoryCache();
     }
 
     private void updateInventoryCache() {
-        int totalSlotNum = 0;
+        var totalSlotNum = 0;
         slotIndexCache.clear();
         for (int i = 0; i < inputs.size(); i++) {
-            final int startSlot = totalSlotNum;
+            final var startSlot = totalSlotNum;
 
-            final MTEHatchInputBus input = inputs.get(i);
-            // -1 to account for the ghost circuit slot, which is the last slot in each inventory
-            totalSlotNum += input.getSizeInventory() - 1;
+            final var input = inputs.get(i);
+            totalSlotNum += input.getSizeInventory();
 
             slotIndexCache.add(new SlotMapEntry(startSlot, totalSlotNum - 1));
             System.out.printf("inventory cache (%d-%d)->%d\n", startSlot, totalSlotNum - 1, i);
@@ -64,7 +63,7 @@ public class InputBusInventoryProxy implements IInventory {
 
     @Nullable
     private Pair<Integer, Integer> getIndexAndRelativeSlot(int slot) {
-        final int idx = Collections.binarySearch(slotIndexCache, new SlotMapEntry(slot, slot));
+        final var idx = Collections.binarySearch(slotIndexCache, new SlotMapEntry(slot, slot));
         if (idx >= 0) {
             // System.out.printf("found slot %d at idx %d offset %d\n", slot, entry.index, slot - entry.startSlot);
             return Pair.of(idx, slot - slotIndexCache.get(idx).startSlot);
@@ -87,7 +86,7 @@ public class InputBusInventoryProxy implements IInventory {
             return null;
         }
 
-        MTEHatchInputBus input = inputs.get(idxSlot.getLeft());
+        final var input = inputs.get(idxSlot.getLeft());
         return input.getStackInSlot(idxSlot.getRight());
     }
 
@@ -99,7 +98,7 @@ public class InputBusInventoryProxy implements IInventory {
             return null;
         }
 
-        MTEHatchInputBus input = inputs.get(idxSlot.getLeft());
+        final var input = inputs.get(idxSlot.getLeft());
         return input.decrStackSize(idxSlot.getRight(), count);
     }
 
@@ -111,7 +110,7 @@ public class InputBusInventoryProxy implements IInventory {
             return;
         }
 
-        MTEHatchInputBus input = inputs.get(idxSlot.getLeft());
+        final var input = inputs.get(idxSlot.getLeft());
         input.setInventorySlotContents(idxSlot.getRight(), stack);
     }
 
@@ -123,7 +122,7 @@ public class InputBusInventoryProxy implements IInventory {
             return false;
         }
 
-        MTEHatchInputBus input = inputs.get(idxSlot.getLeft());
+        final var input = inputs.get(idxSlot.getLeft());
         return input.isItemValidForSlot(idxSlot.getRight(), stack);
     }
 
