@@ -80,6 +80,7 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     @Override
     public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
         setMaintenanceSound(SoundResource.GT_MAINTENANCE_CREATIVE_HATCH, 1.0F, 1.0F);
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
         super.onMaintenancePerformed(aMaintenanceTarget);
     }
 
