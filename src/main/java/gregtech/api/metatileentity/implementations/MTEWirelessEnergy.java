@@ -10,6 +10,7 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import gregtech.common.misc.WirelessEnergyHatchManager;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.Textures;
@@ -38,6 +39,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     public String[] getDescription() {
         return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
             EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+            EnumChatFormatting.GRAY + "Does not explode in rain!",
             AuthorColen };
     }
 
@@ -103,11 +105,15 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
                 tryFetchingEnergy();
+                if (aTick > 100) {
+                    aBaseMetaTileEntity.disableTicking();
+                    WirelessEnergyHatchManager.addHatch(this);
+                }
             }
         }
     }
 
-    private void tryFetchingEnergy() {
+    public void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
