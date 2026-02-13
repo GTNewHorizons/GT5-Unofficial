@@ -2159,6 +2159,8 @@ public enum ItemList implements IItemContainer {
     TierdDrone0,
     TierdDrone1,
     TierdDrone2,
+    TierdDrone3,
+    DroneRemoteInterface,
     Hatch_DroneDownLink,
     ElectronicsLump,
     WormholeGenerator,
@@ -2798,6 +2800,23 @@ public enum ItemList implements IItemContainer {
     Augment_ForceField,
     Augment_WaterBreathing,
 
+    CompressedOutputBusLuV,
+    CompressedOutputBusZPM,
+    CompressedOutputBusUV,
+    CompressedOutputBusUHV,
+    CompressedOutputBusUEV,
+    CompressedOutputBusUIV,
+    CompressedOutputBusUMV,
+    CompressedOutputBusUXV,
+
+    CompressedInputBusLuV,
+    CompressedInputBusZPM,
+    CompressedInputBusUV,
+    CompressedInputBusUHV,
+    CompressedInputBusUEV,
+    CompressedInputBusUIV,
+    CompressedInputBusUMV,
+    CompressedInputBusUXV,
     // new controllers
     IndustrialWireFactory,
     IndustrialPackager,
@@ -2957,7 +2976,7 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticalCPUContainmentHousings,
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
-    Wrap_LivingBioChips
+    Wrap_LivingBioChips,
 
     // semicolon after the comment to reduce merge conflicts
     ;
