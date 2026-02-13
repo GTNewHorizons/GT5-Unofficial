@@ -1,5 +1,6 @@
 package gregtech.api.items.armor;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
 import static gregtech.common.items.armor.MechArmorBase.MECH_CORE_KEY;
 import static gregtech.common.items.armor.MechArmorBase.MECH_FRAME_KEY;
@@ -116,9 +117,9 @@ public class ArmorState {
         if (core != null) {
             boolean infinite = this.hasBehavior(BehaviorName.InfiniteEnergy);
 
-            String stored = infinite ? "∞" : GTUtility.formatNumbers(Math.round(this.charge));
-            String capacity = infinite ? "∞" : GTUtility.formatNumbers(core.getChargeMax());
-            String voltage = GTUtility.formatNumbers(GTValues.V[core.getChargeTier()]);
+            String stored = infinite ? "∞" : formatNumber(Math.round(this.charge));
+            String capacity = infinite ? "∞" : formatNumber(core.getChargeMax());
+            String voltage = formatNumber(GTValues.V[core.getChargeTier()]);
 
             tooltip.add(AQUA + GTUtility.translate("item.itemBaseEuItem.tooltip.3", stored, capacity, voltage));
         }

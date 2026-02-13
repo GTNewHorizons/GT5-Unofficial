@@ -1,5 +1,6 @@
 package gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
@@ -56,9 +57,9 @@ public class ItemAugmentCore extends ItemAugmentAbstract implements ISpecialElec
         if (tag == null) tag = new NBTTagCompound();
 
         boolean infinite = this.core == Cores.Singularity;
-        String stored = infinite ? "∞" : GTUtility.formatNumbers(Math.round(tag.getDouble("charge")));
-        String capacity = infinite ? "∞" : GTUtility.formatNumbers(core.getChargeMax());
-        String voltage = GTUtility.formatNumbers(GTValues.V[core.getChargeTier()]);
+        String stored = infinite ? "∞" : formatNumber(Math.round(tag.getDouble("charge")));
+        String capacity = infinite ? "∞" : formatNumber(core.getChargeMax());
+        String voltage = formatNumber(GTValues.V[core.getChargeTier()]);
 
         addSeparatorIfNeeded(desc);
 
