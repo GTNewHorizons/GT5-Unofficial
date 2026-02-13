@@ -779,6 +779,10 @@ public enum ItemList implements IItemContainer {
     Machine_HP_Compressor,
     Machine_HP_AlloySmelter,
 
+    Machine_LV_DrawerFramer,
+    Machine_MV_DrawerFramer,
+    Machine_HV_DrawerFramer,
+
     Hull_Bronze,
     Hull_HP,
     Hull_Bronze_Bricks,
@@ -1022,6 +1026,7 @@ public enum ItemList implements IItemContainer {
     Cover_Wireless_Energy_UMV,
     Cover_Wireless_Energy_UXV,
     Cover_Wireless_Energy_MAX,
+    Cover_Wireless_Energy_Debug,
 
     Hatch_Input_ULV,
     Hatch_Input_LV,
@@ -2747,6 +2752,25 @@ public enum ItemList implements IItemContainer {
     CokeOvenController,
     CokeOvenCasing,
     CokeOvenHatch,
+
+    // new controllers
+    IndustrialWireFactory,
+    IndustrialPackager,
+    IndustrialCentrifuge,
+
+    BasicCircuitBoard,
+    EnhancedCircuitBoard,
+    RefinedCircuitBoard,
+    IntricateCircuitBoard,
+
+    ControllerCircuit,
+    ReceiverCircuit,
+    SignalCircuit,
+
+    HighEnergyFlowCircuit,
+
+    RawImprintBoard,
+    ImprintBoard,
 
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,

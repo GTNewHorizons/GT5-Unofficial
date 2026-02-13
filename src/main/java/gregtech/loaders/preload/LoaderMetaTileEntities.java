@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
@@ -114,6 +115,7 @@ import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
+import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -154,9 +156,12 @@ import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
@@ -218,6 +223,8 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamCompressorBronze;
@@ -613,6 +620,24 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 new MTEResearchCompleter(ResearchCompleter.ID, "Research Completer", "Research Completer")
                     .getStackForm(1));
         }
+
+        ItemList.IndustrialWireFactory.set(
+            new MTEIndustrialWireMill(
+                IndustrialWireMill.ID,
+                "industrialwiremill.controller.tier.single",
+                "Industrial Wire Factory").getStackForm(1));
+
+        ItemList.IndustrialPackager.set(
+            new MTEIndustrialPackager(
+                IndustrialPackager.ID,
+                "amazonprime.controller.tier.single",
+                "Amazon Warehousing Depot").getStackForm(1L));
+
+        ItemList.IndustrialCentrifuge.set(
+            new MTEIndustrialCentrifuge(
+                IndustrialCentrifuge.ID,
+                "industrialcentrifuge.controller.tier.single",
+                "Industrial Centrifuge").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -8598,7 +8623,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8613,7 +8638,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8628,7 +8653,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8643,7 +8668,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8658,7 +8683,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8673,7 +8698,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8688,7 +8713,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8703,7 +8728,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8718,7 +8743,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8733,7 +8758,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8748,7 +8773,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8763,7 +8788,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -10630,6 +10655,20 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
     }
 
+    private static void registerDrawerFramer() {
+
+        // if storage drawers is not loaded, do not load the drawer framer machine
+        if (!StorageDrawers.isModLoaded()) return;
+
+        ItemList.Machine_LV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_LV.ID, "framer.tier.01", "Basic Drawer Framer", 1).getStackForm(1L));
+        ItemList.Machine_MV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_MV.ID, "framer.tier.02", "Advanced Drawer Framer", 2).getStackForm(1L));
+        ItemList.Machine_HV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_HV.ID, "framer.tier.03", "Precise Drawer Framer", 3).getStackForm(1L));
+
+    }
+
     @Override
     public void run() {
         GTLog.out.println("GTMod: Registering MetaTileEntities.");
@@ -10743,6 +10782,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerDrawerFramer();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(

@@ -131,10 +131,8 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
@@ -188,6 +186,7 @@ import gregtech.api.net.GTPacketSound;
 import gregtech.api.objects.CollectorUtils;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
+import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
 import gregtech.common.items.ItemIntegratedCircuit;
@@ -247,10 +246,6 @@ public class GTUtility {
      * Associates the name of the fluid with all filled container items.
      */
     private static final Map<String, List<ItemStack>> sFluidToContainers = new HashMap<>();
-    /**
-     * Must use {@code Supplier} here because the ore prefixes have not yet been registered at class load time.
-     */
-    private static final Map<OrePrefixes, Supplier<ItemStack>> sOreToCobble = new HashMap<>();
 
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
@@ -258,23 +253,6 @@ public class GTUtility {
     private static int sBookCount = 0;
     public static UUID defaultUuid = null; // maybe default non-null?
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
-
-    static {
-        GregTechAPI.sItemStackMappings.add(sFilledContainerToData);
-        GregTechAPI.sItemStackMappings.add(sEmptyContainerToFluidToData);
-
-        // 1 is the magic index to get the cobblestone block.
-        // See: GT_Block_Stones.java, GT_Block_Granites.java
-        Function<Materials, Supplier<ItemStack>> materialToCobble = m -> Suppliers.memoize(
-            () -> GTOreDictUnificator.getOres(OrePrefixes.stone, m)
-                .get(1))::get;
-        sOreToCobble.put(OrePrefixes.oreBlackgranite, materialToCobble.apply(Materials.GraniteBlack));
-        sOreToCobble.put(OrePrefixes.oreRedgranite, materialToCobble.apply(Materials.GraniteRed));
-        sOreToCobble.put(OrePrefixes.oreMarble, materialToCobble.apply(Materials.Marble));
-        sOreToCobble.put(OrePrefixes.oreBasalt, materialToCobble.apply(Materials.Basalt));
-        sOreToCobble.put(OrePrefixes.oreNetherrack, () -> new ItemStack(Blocks.netherrack));
-        sOreToCobble.put(OrePrefixes.oreEndstone, () -> new ItemStack(Blocks.end_stone));
-    }
 
     public static Map<GTItemStack, FluidContainerData> getFilledContainerToData() {
         return sFilledContainerToData;
@@ -794,7 +772,7 @@ public class GTUtility {
                     inflateStack.stackSize += toTransfer;
                     remaining -= toTransfer;
 
-                    didSomething.setTrue();
+                    didSomething.setValue(true);
 
                     if (toBeExtracted.left().stackSize <= 0) {
                         inv.set(toBeExtracted.rightInt(), null);
@@ -826,7 +804,7 @@ public class GTUtility {
                 if (stack != null) {
                     inv.set(insert, stack);
                     inv.set(extract, null);
-                    didSomething.setTrue();
+                    didSomething.setValue(true);
                 } else {
                     break;
                 }
@@ -835,7 +813,7 @@ public class GTUtility {
             insert++;
         }
 
-        return didSomething.isTrue();
+        return didSomething.getValue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {
@@ -870,6 +848,76 @@ public class GTUtility {
         }
 
         return didSomething;
+    }
+
+    /**
+     * Drops the item to the world.
+     * <p>
+     * NOTE: the stack is directly passed to the entity, so you should not continue using it.
+     *
+     * @param world    the world to spawn the item
+     * @param x        the x coord to spawn the item
+     * @param y        the y coord to spawn the item
+     * @param z        the z coord to spawn the item
+     * @param stack    the stack to spawn
+     * @param noMotion {@code true} to remove the initial motion when spawned to the world
+     */
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack,
+        boolean noMotion) {
+        if (isStackInvalid(stack)) return;
+        EntityItem entity = new EntityItem(world, x, y, z, stack);
+        if (noMotion) {
+            // remove initial motion
+            entity.motionX = 0;
+            entity.motionY = 0;
+            entity.motionZ = 0;
+        }
+        world.spawnEntityInWorld(entity);
+    }
+
+    /**
+     * @see #dropItem(World, double, double, double, ItemStack, boolean)
+     */
+    public static void dropItem(World world, double x, double y, double z, @Nullable ItemStack stack) {
+        dropItem(world, x, y, z, stack, false);
+    }
+
+    /**
+     * Drops the item to the world at the block pos.
+     * <p>
+     * NOTE: the stack is directly passed to the entity, so you should not continue using it.
+     *
+     * @param world         the world to spawn the item
+     * @param x             the x coord to spawn the item
+     * @param y             the y coord to spawn the item
+     * @param z             the z coord to spawn the item
+     * @param stack         the stack to spawn
+     * @param positionShift {@code true} to add a small random shift to the position
+     * @param noMotion      {@code true} to remove the initial motion when spawned to the world
+     */
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack,
+        boolean positionShift, boolean noMotion) {
+        if (isStackInvalid(stack)) return;
+        double x1, y1, z1;
+        if (positionShift) {
+            // shift the position to drop, but always inside the block pos
+            // equivalent to x = x + (0.1..0.9).random()
+            x1 = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+            y1 = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+            z1 = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
+        } else {
+            x1 = x + 0.5;
+            y1 = y + 0.5;
+            z1 = z + 0.5;
+        }
+        dropItem(world, x1, y1, z1, stack, noMotion);
+    }
+
+    /**
+     * @see #dropItemToBlockPos(World, int, int, int, ItemStack, boolean, boolean)
+     */
+    public static void dropItemToBlockPos(World world, int x, int y, int z, @Nullable ItemStack stack) {
+        dropItemToBlockPos(world, x, y, z, stack, false, false);
     }
 
     public static void dropItemsOrClusters(World world, float x, float y, float z, List<ItemStack> stacks) {
@@ -2222,48 +2270,6 @@ public class GTUtility {
 
     public static boolean isStackInList(@Nonnull GTItemStack aStack, @Nonnull Collection<GTItemStack> aList) {
         return aList.contains(aStack) || aList.contains(new GTItemStack(aStack.mItem, aStack.mStackSize, WILDCARD));
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> Map<X, Y> reMap(Map<X, Y> aMap) {
-        Map<X, Y> tMap = null;
-        // We try to clone the Map first (most Maps are Cloneable) in order to retain as much state of the Map as
-        // possible when rehashing. For example, "Custom" HashMaps from fastutil may have a custom hash function which
-        // would not be used to rehash if we just create a new HashMap.
-        if (aMap instanceof Cloneable) {
-            try {
-                tMap = (Map<X, Y>) aMap.getClass()
-                    .getMethod("clone")
-                    .invoke(aMap);
-            } catch (Exception e) {
-                GTLog.err.println("Failed to clone Map of type " + aMap.getClass());
-                e.printStackTrace(GTLog.err);
-            }
-        }
-
-        if (tMap == null) {
-            tMap = new HashMap<>(aMap);
-        }
-
-        aMap.clear();
-        aMap.putAll(tMap);
-        return aMap;
-    }
-
-    /**
-     * re-maps all Keys of a Map after the Keys were weakened.
-     */
-    public static <X, Y> SetMultimap<X, Y> reMap(SetMultimap<X, Y> aMap) {
-        @SuppressWarnings("unchecked")
-        Map.Entry<X, Y>[] entries = aMap.entries()
-            .toArray(new Map.Entry[0]);
-        aMap.clear();
-        for (Map.Entry<X, Y> entry : entries) {
-            aMap.put(entry.getKey(), entry.getValue());
-        }
-        return aMap;
     }
 
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {
@@ -3638,26 +3644,6 @@ public class GTUtility {
         return false;
     }
 
-    /**
-     * Do <b>NOT</b> mutate the returned {@code ItemStack}! We return {@code ItemStack} instead of {@code Block} so that
-     * we can include metadata.
-     */
-    public static ItemStack getCobbleForOre(Block ore, short metaData) {
-        // We need to convert small ores to regular ores because small ores don't have associated ItemData.
-        // We take the modulus of the metadata by 16000 because that is the magic number to convert small ores to
-        // regular ores.
-        // See: GT_TileEntity_Ores.java
-        ItemData association = GTOreDictUnificator
-            .getAssociation(new ItemStack(Item.getItemFromBlock(ore), 1, metaData % 16000));
-        if (association != null) {
-            Supplier<ItemStack> supplier = sOreToCobble.get(association.mPrefix);
-            if (supplier != null) {
-                return supplier.get();
-            }
-        }
-        return new ItemStack(Blocks.cobblestone);
-    }
-
     public static Optional<GTRecipe> reverseShapelessRecipe(ItemStack output, Object... aRecipe) {
         if (output == null) {
             return Optional.empty();
@@ -3693,9 +3679,11 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -3765,9 +3753,11 @@ public class GTUtility {
 
         return Optional.of(
             new GTRecipe(
-                false,
                 new ItemStack[] { output },
                 inputs.toArray(new ItemStack[0]),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

@@ -76,8 +76,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -1428,11 +1428,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements IConstructable,
         int recipeSpacetimeTier = (int) currentRecipe.getSpacetimeCasingTierRequired();
 
         // Star is a larger size depending on the spacetime tier of the recipe.
-        rendererTileEntity.setSize((1 + recipeSpacetimeTier));
-
-        // Star rotates faster the higher tier time dilation you use in the multi.
-        // Lower value = faster rotation speed.
-        rendererTileEntity.setRotationSpeed((1 + timeAccelerationFieldMetadata) / 2.0f);
+        rendererTileEntity.setStarSize(0.4 + recipeSpacetimeTier / 8.0);
     }
 
     private double successChance;
