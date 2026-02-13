@@ -454,11 +454,7 @@ public enum Casings implements ICasing {
         public <T> ITexture getCasingTexture(T t, CasingElementContext<T> context) {
             int tier = GTUtility.clamp(context.getInstance(t).getCasingTier(context.getGroup(), 0), 0, 1);
 
-            if (tier == 0) {
-                return TextureFactory.builder().setFromBlock(this.getBlock(), 9).build();
-            } else {
-                return TextureFactory.builder().setFromBlock(this.getBlock(), 3).build();
-            }
+            return TextureFactory.of(this.getBlock(), tier == 0 ? 9 : 3);
         }
 
         @Override
