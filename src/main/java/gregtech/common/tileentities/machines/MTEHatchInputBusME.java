@@ -19,6 +19,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
@@ -284,6 +286,20 @@ public class MTEHatchInputBusME extends MTEHatchInputBus
             }
         }
         return this.gridProxy;
+    }
+
+    @Override
+    public void powerChangeME(MENetworkPowerStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
+    }
+
+    @Override
+    public void bootChangeME(MENetworkBootingStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
     }
 
     @Override

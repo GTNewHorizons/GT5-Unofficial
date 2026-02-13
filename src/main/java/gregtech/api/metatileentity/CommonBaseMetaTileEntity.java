@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -66,6 +67,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void enableTicking() {
+        getWorld().func_147448_a(Collections.singleton(this));
+        mTickDisabled = false;
     }
 
     @Override

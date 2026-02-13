@@ -16,6 +16,9 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.item.EntityItem;
@@ -814,6 +817,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public void setFrontFacing(ForgeDirection aFacing) {
         if (isValidFacing(aFacing)) {
             mFacing = aFacing;
+            issueClientUpdate();
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
@@ -961,6 +965,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
+        issueClientUpdate();
         setShutdownStatus(false);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
@@ -970,6 +975,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public void disableWorking() {
         mWorks = false;
+        issueClientUpdate();
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onDisableWorking();
         }
@@ -1443,6 +1449,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
+                                issueClientUpdate();
                                 GTUtility.sendChatTrans(
                                     aPlayer,
                                     mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
@@ -1580,6 +1587,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                     if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
                         if (isUpgradable() && !mLockUpgrade) {
                             mLockUpgrade = true;
+                            issueClientUpdate();
                             setOwnerName(aPlayer.getDisplayName());
                             setOwnerUuid(aPlayer.getUniqueID());
                             sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
@@ -1702,13 +1710,18 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
 
     @Override
     public boolean addMufflerUpgrade() {
-        if (isMufflerUpgradable()) return mMuffler = true;
+        if (isMufflerUpgradable()) {
+            mMuffler = true;
+            issueClientUpdate();
+            return true;
+        }
         return false;
     }
 
     @Override
     public void setMuffler(boolean value) {
         mMuffler = value;
+        issueClientUpdate();
     }
 
     @Override
@@ -2033,6 +2046,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
         mColor = (byte) (aColor + 1);
+        issueClientUpdate();
         if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
         return mColor;
     }
@@ -2168,6 +2182,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
     @Override
     public AENetworkProxy getProxy() {
         return mMetaTileEntity == null ? null : mMetaTileEntity.getProxy();
+    }
+
+    @MENetworkEventSubscribe
+    public final void powerChangeME(final MENetworkPowerStatusChange c) {
+        if (mMetaTileEntity != null) {
+            mMetaTileEntity.powerChangeME(c);
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public final void bootChangeME(final MENetworkBootingStatusChange c) {
+        if (mMetaTileEntity != null) {
+            mMetaTileEntity.bootChangeME(c);
+        }
     }
 
     @Override

@@ -3,6 +3,8 @@ package gregtech.api.metatileentity;
 import java.util.List;
 import java.util.function.Supplier;
 
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -783,6 +785,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         }
         return "";
     }
+
+    public void powerChangeME(MENetworkPowerStatusChange c) {}
+
+    public void bootChangeME(MENetworkBootingStatusChange c) {}
 
     @Override
     public GUITextureSet getGUITextureSet() {
