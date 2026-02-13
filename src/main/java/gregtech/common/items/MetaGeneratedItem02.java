@@ -2412,6 +2412,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Item_Redstone_Sniffer
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.DroneRemoteInterface.set(
+            new ItemDroneRemoteInterface(
+                "Item_Drone_Remote_Interface",
+                "Drone Remote Interface",
+                "Built-in super powerful navigation beacon!!"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
         ItemList.ChaosLocator
