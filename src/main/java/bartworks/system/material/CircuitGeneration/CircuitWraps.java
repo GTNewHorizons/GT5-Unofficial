@@ -1,15 +1,15 @@
 package bartworks.system.material.CircuitGeneration;
 
+import static bartworks.system.material.CircuitGeneration.CircuitPartsItem.getCircuitParts;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
 
 import bartworks.MainMod;
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -17,6 +17,8 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTUtility;
 
 public enum CircuitWraps {
+
+    // ID 0-10000 RESERVED FOR IMPRINTS
 
     EngravedCrystalChips(32763, ItemList.Circuit_Parts_Crystal_Chip_Elite, ItemList.Wrap_EngravedCrystalChips),
     EngravedLapotrionChips(32762, ItemList.Circuit_Parts_Crystal_Chip_Master, ItemList.Wrap_EngravedLapotrionChips),
@@ -92,11 +94,17 @@ public enum CircuitWraps {
 
     ;
 
+    private static final HashMap<Integer, CircuitWraps> ID_MAP = new HashMap<>();
+
     public final int id;
     public final ItemList itemSingle;
     public final ItemList itemWrap;
 
     CircuitWraps(int id, ItemList itemSingle, ItemList itemWrap) {
+        if (id < 10000) {
+            throw new IllegalArgumentException(
+                "ID for CircuitWraps must be abovce 10000, as IDs below that are reserved for imprints.");
+        }
         this.id = id;
         this.itemSingle = itemSingle;
         this.itemWrap = itemWrap;
@@ -116,31 +124,15 @@ public enum CircuitWraps {
             return;
         }
 
-        ArrayList<String> toolTip = new ArrayList<>();
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isClient()) {
-            itemSingle.getItem()
-                .addInformation(itemSingle.get(1), null, toolTip, true);
-        }
+        itemWrap.set(getCircuitParts().getWrapStack(id));
 
-        String tt = !toolTip.isEmpty() ? toolTip.get(0) : "";
-        String wrapDisplayName = "Wrap of " + itemStack.getDisplayName()
-            + (itemStack.getDisplayName()
-                .endsWith("s") ? "" : "s");
-
-        // If you aren't using English, you probably already have translations for this item too.
-        itemWrap.set(
-            BWMetaItems.getCircuitParts()
-                .addItem(id, wrapDisplayName, tt));
+        ID_MAP.put(id, this);
     }
 
     public void registerWrapRecipe() {
         GTValues.RA.stdBuilder()
             .itemInputs(itemSingle.get(16), GTUtility.getIntegratedCircuit(16))
-            .itemOutputs(
-                BWMetaItems.getCircuitParts()
-                    .getStack(id))
+            .itemOutputs(getCircuitParts().getStack(id))
             .fluidInputs(Materials.Polyethylene.getMolten(1 * HALF_INGOTS))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -154,5 +146,9 @@ public enum CircuitWraps {
             min = Math.min(min, wrap.id);
         }
         return min;
+    }
+
+    public static CircuitWraps getByID(int id) {
+        return ID_MAP.get(id);
     }
 }
