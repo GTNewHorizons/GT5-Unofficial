@@ -30,10 +30,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RecipeLoaderGlueLine {
@@ -58,9 +57,7 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.BlueMetalCatalyst.get(0))
             .circuit(17)
-            .fluidInputs(
-                FluidUtils.getFluidStack("carbonmonoxide", 1_000),
-                FluidUtils.getFluidStack("methylacetate", 1_000))
+            .fluidInputs(Materials.CarbonMonoxide.getGas(1_000), Materials.MethylAcetate.getFluid(1_000))
             .fluidOutputs(MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_HV)
@@ -69,8 +66,8 @@ public class RecipeLoaderGlueLine {
         GTValues.RA.stdBuilder()
             .circuit(18)
             .fluidInputs(
-                FluidUtils.getFluidStack("aceticacid", 1_000),
-                FluidUtils.getFluidStack("chlorine", 1_000),
+                Materials.AceticAcid.getFluid(1_000),
+                Materials.Chlorine.getGas(1_000),
                 MaterialMisc.ACETIC_ANHYDRIDE.getFluidStack(1_000))
             .fluidOutputs(
                 MaterialMisc.CHLOROACETIC_MIXTURE.getFluidStack(1_000),
@@ -86,7 +83,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(MaterialMisc.CYANOACETIC_ACID.getDust(9), Materials.Salt.getDust(6))
             .fluidInputs(
                 MaterialMisc.CHLOROACETIC_ACID.getFluidStack(1_000),
-                FluidUtils.getFluidStack("hydrochloricacid_gt5u", 2_000))
+                Materials.HydrochloricAcid.getFluid(2_000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(1_000), Materials.Water.getFluid(1_000))
             .duration(20 * SECONDS)
             .eut(1000)
@@ -134,7 +131,7 @@ public class RecipeLoaderGlueLine {
             .circuit(23)
             .fluidInputs(
                 Materials.Methane.getGas(2_000),
-                FluidUtils.getFluidStack("ammonia", 2_000),
+                Materials.Ammonia.getGas(2_000),
                 Materials.Oxygen.getGas(6_000))
             .fluidOutputs(MaterialMisc.HYDROGEN_CYANIDE.getFluidStack(2_000), Materials.Water.getFluid(6_000))
             .duration(10 * SECONDS)
@@ -181,22 +178,22 @@ public class RecipeLoaderGlueLine {
         // Cu + 2H2SO4 = CuSO4 + SO2 + 2H2O
         // SO2 + 2H2O -> diluted sulfuric acid
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1))
+            .itemInputs(Materials.Copper.getDust(1))
             .circuit(19)
             .itemOutputs(MaterialMisc.COPPER_SULFATE.getDust(6))
             .fluidInputs(Materials.SulfuricAcid.getFluid(2_000))
-            .fluidOutputs(FluidUtils.getFluidStack("dilutedsulfuricacid", 1_000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
 
         // #UniversalChemical won't generate LCR recipe if config >= 10
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 1))
+            .itemInputs(Materials.Copper.getDust(1))
             .circuit(19)
             .itemOutputs(MaterialMisc.COPPER_SULFATE.getDust(6))
             .fluidInputs(Materials.SulfuricAcid.getFluid(2_000))
-            .fluidOutputs(FluidUtils.getFluidStack("dilutedsulfuricacid", 1_000))
+            .fluidOutputs(Materials.DilutedSulfuricAcid.getFluid(1_000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockChemicalReactorRecipes);
@@ -247,7 +244,7 @@ public class RecipeLoaderGlueLine {
             .eut(100)
             .addTo(mixerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getItemStackOfAmountFromOreDict("cellSulfurTrioxide", 1))
+            .itemInputs(Materials.SulfurTrioxide.getCells(1))
             .circuit(2)
             .itemOutputs(ItemList.Cell_Empty.get(1))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1_000))
@@ -302,7 +299,7 @@ public class RecipeLoaderGlueLine {
                 Materials.Graphite.getDust(64),
                 ItemList.Circuit_Silicon_Wafer4.get(1L))
             .circuit(2)
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 128))
+            .itemOutputs(GTUtility.copyAmountUnsafe(128, Materials.Graphene.getDust(1)))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(500))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -318,7 +315,7 @@ public class RecipeLoaderGlueLine {
                 Materials.Graphite.getDust(64),
                 Materials.Graphite.getDust(64),
                 Materials.Graphite.getDust(64))
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustGraphene", 512))
+            .itemOutputs(GTUtility.copyAmountUnsafe(512, Materials.Graphene.getDust(1)))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(250))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -333,7 +330,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemList.SFMixture.get(32))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(100))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -345,7 +342,7 @@ public class RecipeLoaderGlueLine {
             .itemOutputs(ItemList.SFMixture.get(64))
             .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(100))
             .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(mixerRecipes);
 
         GTValues.RA.stdBuilder()
@@ -435,12 +432,12 @@ public class RecipeLoaderGlueLine {
                 .itemInputs(
                     getModItem(Mods.GalacticraftMars.ID, "item.itemBasicAsteroids", 1, 7),
                     GTOreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 8),
-                    getModItem(Mods.NewHorizonsCoreMod.ID, "item.TungstenString", 8))
+                    getModItem(Mods.NewHorizonsCoreMod.ID, "TungstenString", 8))
                 .circuit(1)
                 .itemOutputs(getModItem(Mods.GalaxySpace.ID, "item.ThermalClothT2", 1))
                 .fluidInputs(MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(576))
                 .duration(30 * SECONDS)
-                .eut(1024)
+                .eut(TierEU.RECIPE_EV / 2)
                 .addTo(assemblerRecipes);
 
         }

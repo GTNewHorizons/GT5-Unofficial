@@ -8,10 +8,12 @@ import static gregtech.api.enums.Mods.ThaumicTinkerer;
 import static gregtech.api.enums.Mods.TwilightForest;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.loaders.misc.GTBees.combs;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -24,7 +26,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class CentrifugeRecipes implements Runnable {
@@ -64,7 +68,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1))
             .outputChances(10000, 10000, 10000, 9500, 9000, 8500)
             .duration(2 * MINUTES + 15 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -380,7 +384,7 @@ public class CentrifugeRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1))
             .outputChances(1250, 5000, 5000)
             .duration(12 * SECONDS + 10 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -391,7 +395,7 @@ public class CentrifugeRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1))
             .outputChances(2500, 5000, 5000)
             .duration(12 * SECONDS + 10 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -403,7 +407,7 @@ public class CentrifugeRecipes implements Runnable {
                 new ItemStack(Blocks.sand, 1))
             .outputChances(2500, 2500, 5000, 5000)
             .duration(32 * SECONDS + 10 * TICKS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -579,7 +583,7 @@ public class CentrifugeRecipes implements Runnable {
             .outputChances(2000, 1000, 250, 50, 250, 500)
             .fluidInputs(getFluidStack("ic2pahoehoelava", 100))
             .duration(2 * SECONDS)
-            .eut(1024)
+            .eut(TierEU.RECIPE_EV / 2)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -594,7 +598,7 @@ public class CentrifugeRecipes implements Runnable {
             .outputChances(8000, 4000, 1000, 450, 2250, 4500)
             .fluidInputs(getFluidStack("ic2pahoehoelava", 3_600))
             .duration(16 * SECONDS + 8 * TICKS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -640,7 +644,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.BandedIron.getDust(4))
             .outputChances(6400, 6000, 4500, 10000, 10000, 10000)
             .duration(5 * MINUTES)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         // Stone Dust and Metal Mixture centrifuge recipes
@@ -656,7 +660,7 @@ public class CentrifugeRecipes implements Runnable {
                 Materials.Sodalite.getDust(2))
             .outputChances(10000, 10000, 10000, 10000, 10000, 10000)
             .duration(7 * MINUTES + 12 * SECONDS)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -710,7 +714,7 @@ public class CentrifugeRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Charcoal, 3))
             .duration(15 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(centrifugeRecipes);
 
         if (Thaumcraft.isModLoaded() && Forestry.isModLoaded()) {
@@ -890,5 +894,15 @@ public class CentrifugeRecipes implements Runnable {
             .duration(43 * SECONDS + 16 * TICKS)
             .eut(20)
             .addTo(centrifugeRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Tesseract.get(1L), GregtechItemList.Laser_Lens_Special.get(1))
+            .fluidInputs(Materials.SpaceTime.getMolten(20 * INGOTS))
+            .fluidOutputs(Materials.Space.getMolten(10 * INGOTS), Materials.Time.getMolten(10 * INGOTS))
+            .metadata(CentrifugeRecipeKey.INSTANCE, true)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(centrifugeNonCellRecipes);
+
     }
 }

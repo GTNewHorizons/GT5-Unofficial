@@ -44,6 +44,14 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture
         .fullImage(GregTech.ID, "gui/overlay_slot/pattern_me");
 
+    public static final UITexture OVERLAY_SLOT_DRAWER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/drawer");
+    public static final UITexture OVERLAY_SLOT_DRAWER_SIDE = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_side");
+    public static final UITexture OVERLAY_SLOT_DRAWER_FRONT = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_front");
+    public static final UITexture OVERLAY_SLOT_DRAWER_TRIM = UITexture
+        .fullImage(GregTech.ID, "gui/overlay_slot/drawer_trim");
+
     public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_1");
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture
@@ -481,6 +489,8 @@ public class GTUITextures {
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_gray");
     public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM = SteamTexture
         .fullImage(GregTech.ID, "gui/picture/gt_logo_17x17_transparent_%s");
+    public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture
+        .fullImage(GregTech.ID, "gui/picture/exofoundry_logo");
     public static final UITexture PICTURE_INFORMATION = UITexture
         .fullImage(GregTech.ID, "gui/picture/information_symbol");
     public static final UITexture PICTURE_STALLED_ELECTRICITY = UITexture

@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -263,7 +264,9 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             this.lEUt = -this.lEUt;
         }
         this.updateSlots();
-
+        if (this.recipesDone == 0) this.recipesDone++;
+        // Multiblock base already includes 1 parallel
+        this.recipesDone += finalParallel - 1;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -308,30 +311,30 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(-lEUt)
+                + formatNumber(-lEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getMaxInputVoltage())
+                + formatNumber(getMaxInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*2A) "
                 + StatCollector.translateToLocal("GT5U.machines.tier")
@@ -358,7 +361,11 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -383,9 +390,9 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }

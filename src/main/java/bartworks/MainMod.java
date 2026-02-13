@@ -26,9 +26,11 @@ import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
 import bartworks.API.BioVatLogicAdder;
+import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
 import bartworks.client.creativetabs.GT2Tab;
+import bartworks.client.renderer.CircuitPartItemsRenderer;
 import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.BWItemBlocks;
@@ -42,7 +44,7 @@ import bartworks.common.loaders.RegisterServerCommands;
 import bartworks.common.loaders.StaticRecipeChangeLoaders;
 import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
-import bartworks.system.material.CircuitGeneration.CircuitPartLoader;
+import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeOverHaul;
@@ -103,7 +105,20 @@ public final class MainMod {
     public static MainMod instance;
 
     public MainMod() {
+        GregTechAPI.sBeforeGTPostload.add(() -> {
+            CircuitImprint.registerExternalModCircuitsInItemList();
+            CircuitImprint.registerSlicedCircuitsAndImprints();
+            CircuitImprint.populateImprintLookups();
+        });
 
+        GregTechAPI.sAfterGTPostload.add(() -> {
+            for (CircuitWraps wrap : CircuitWraps.values()) {
+                wrap.registerWrap();
+                wrap.registerWrapRecipe();
+            }
+            CircuitImprintLoader.makeCuttingRecipes();
+            CircuitImprintLoader.makeCraftingRecipes();
+        });
     }
 
     @Mod.EventHandler
@@ -124,7 +139,11 @@ public final class MainMod {
         BioCultureLoader.run();
 
         Werkstoff.init();
-        GregTechAPI.sAfterGTPostload.add(new CircuitPartLoader());
+        if (FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
+            GregTechAPI.sAfterGTPostload.add(CircuitPartItemsRenderer::new);
+        }
         if (event.getSide()
             .isClient()) {
             GregTechAPI.sBeforeGTLoad.add(new PrefixTextureLinker());
@@ -195,7 +214,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-        CircuitImprintLoader.run();
         BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers

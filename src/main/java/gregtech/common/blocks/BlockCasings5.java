@@ -31,28 +31,32 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IBlockWithActiveOffset;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTCoilTracker;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.render.GTRendererBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 /**
  * The casings are split into separate files because they are registered as regular blocks, and a regular block can have
  * 16 subtypes at most.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockCasings5 extends BlockCasingsAbstract
-    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta {
+    implements IHeatingCoil, IBlockWithTextures, IBlockWithClientMeta, IBlockWithActiveOffset, IGregtechWailaProvider {
 
     public static final Supplier<String> COIL_HEAT_TOOLTIP = translatedText("gt.coilheattooltip");
     public static final Supplier<String> COIL_UNIT_TOOLTIP = translatedText("gt.coilunittooltip");
-
-    public static final int ACTIVE_OFFSET = 16;
 
     public BlockCasings5() {
         super(ItemCasings.class, "gt.blockcasings5", MaterialCasings.INSTANCE, 16);
@@ -257,5 +261,13 @@ public class BlockCasings5 extends BlockCasingsAbstract
 
         HeatingCoilLevel coilLevel = BlockCasings5.getCoilHeatFromDamage(metadata);
         tooltip.add(COIL_HEAT_TOOLTIP.get() + coilLevel.getHeat() + COIL_UNIT_TOOLTIP.get());
+    }
+
+    @Override
+    public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+        ItemStack stack = accessor.getStack()
+            .copy();
+        stack.setItemDamage(stack.getItemDamage() % ACTIVE_OFFSET);
+        return stack;
     }
 }

@@ -30,7 +30,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -71,7 +70,7 @@ import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -489,7 +488,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     }
 
                     if (renderActive) {
-                        TileEntityNanoForgeRenderer tile = getRenderer();
+                        RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         if (data != null) {
                             Materials mat = data.mMaterial.mMaterial;
@@ -560,7 +559,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
             if (renderActive && !renderDisabled) {
-                TileEntityNanoForgeRenderer tile = getRenderer();
+                RenderingTileEntityNanoForge tile = getRenderer();
                 if (tile != null) {
                     // Manually calculating deltaT for server - annoying minecraft
                     long systemTime = System.currentTimeMillis();
@@ -846,9 +845,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         renderDisabled = !renderDisabled;
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled")));
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled"));
     }
 
     @Override
@@ -857,9 +854,9 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
             }
             return true;
         }
@@ -889,13 +886,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         return true;
     }
 
-    private TileEntityNanoForgeRenderer getRenderer() {
+    private RenderingTileEntityNanoForge getRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
         TileEntity tile = this.getBaseMetaTileEntity()
             .getWorld()
             .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
-        if (tile instanceof TileEntityNanoForgeRenderer nanoForgeTile) {
+        if (tile instanceof RenderingTileEntityNanoForge nanoForgeTile) {
             return nanoForgeTile;
         }
         return null;

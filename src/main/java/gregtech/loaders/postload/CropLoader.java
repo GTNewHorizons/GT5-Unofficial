@@ -1101,7 +1101,7 @@ public class CropLoader implements Runnable {
                 ItemList.Crop_Drop_Mica.get(1L),
                 null,
                 "gt.crop.micadia.name");
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTLog.err.println("GTMod: Failed to register Crops to IC2.");
             e.printStackTrace(GTLog.err);
         }

@@ -1,6 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -23,6 +25,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -843,9 +846,9 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_LuV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.UV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.ZPM), 4 },
                 NewHorizonsCoreMod.isModLoaded()
-                    ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.HeavyDutyRocketEngineTier3", 4)
+                    ? GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier3", 4)
                     : ItemList.Casing_Firebox_TungstenSteel.get(16),
                 ItemList.Large_Fluid_Cell_Osmium.get(1),
                 GTOreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1),
@@ -863,10 +866,10 @@ public class AssemblyLineRecipes implements Runnable {
         // Drone T3
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.TierdDrone1.get(1))
-            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UV))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 16),
-                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
                 ItemList.Field_Generator_UV.get(16),
                 ItemList.Gravistar.get(8),
                 ItemList.Emitter_UV.get(4),
@@ -881,5 +884,44 @@ public class AssemblyLineRecipes implements Runnable {
             .eut(TierEU.RECIPE_UHV)
             .addTo(AssemblyLine);
 
+        // Drone remote interface
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.TierdDrone2.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UHV))
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 16),
+                ItemList.Cover_Screen.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.UHV), 4 },
+                ItemList.Field_Generator_UHV.get(4),
+                ItemList.Sensor_UHV.get(8),
+                ItemList.Emitter_UHV.get(8),
+                ItemList.TierdDrone2.get(1),
+                ItemList.Tool_DataOrb.get(4))
+            .itemOutputs(ItemList.DroneRemoteInterface.get(1))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(15 * STACKS + 40 * INGOTS),
+                MaterialMisc.ETHYL_CYANOACRYLATE.getFluidStack(64_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(AssemblyLine);
+
+        // Drone T4
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.DroneRemoteInterface.get(1))
+            .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
+            .itemInputs(
+                MaterialsElements.STANDALONE.HYPOGEN.getIngot(1),
+                getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
+                new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
+                ItemList.Field_Generator_UHV.get(16),
+                ItemList.NuclearStar.get(8),
+                ItemList.Emitter_UHV.get(4),
+                ItemList.ZPM3.get(1),
+                ItemList.SpaceElevatorMotorT3.get(64))
+            .itemOutputs(ItemList.TierdDrone3.get(1))
+            .fluidInputs(Materials.ExcitedDTCC.getFluid(8_000), MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8_000))
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(AssemblyLine);
     }
 }

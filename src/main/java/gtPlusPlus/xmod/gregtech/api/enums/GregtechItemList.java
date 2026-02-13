@@ -727,7 +727,6 @@ public enum GregtechItemList implements IItemContainer {
     AlgagenicGrowthPromoterCatalyst,
 
     // Algae Items
-    Algae,
     AlgaeBiomass,
     GreenAlgaeBiomass,
     BrownAlgaeBiomass,
@@ -869,7 +868,6 @@ public enum GregtechItemList implements IItemContainer {
     AlkalusDisk,
     WitherGuard,
     MagicFeather,
-    PestKiller,
     FishTrap,
 
     // ----------------------------------------------------------------------------
@@ -887,18 +885,6 @@ public enum GregtechItemList implements IItemContainer {
     LithiumHydroperoxide,
     SmallLithiumHydroperoxide,
     TinyLithiumHydroperoxide,
-
-    ManureByproductsDust,
-    SmallManureByproductsDust,
-    TinyManureByproductsDust,
-
-    OrganicFertilizerDust,
-    SmallOrganicFertilizerDust,
-    TinyOrganicFertilizerDust,
-
-    DriedEarthDust,
-    SmallDriedEarthDust,
-    TinyDriedEarthDust,
 
     FormaldehydeCatalystDust,
     SmallFormaldehydeCatalystDust,
@@ -939,6 +925,14 @@ public enum GregtechItemList implements IItemContainer {
     Protactinium233Dust,
 
     ZirconiumPellet,
+
+    ZrCl4Dust,
+    SmallZrCl4Dust,
+    TinyZrCl4Dust,
+
+    CookedZrCl4Dust,
+    SmallCookedZrCl4Dust,
+    TinyCookedZrCl4Dust,
 
     SimpleHandPump,
     AdvancedHandPump,

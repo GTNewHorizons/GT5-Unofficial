@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -9,13 +11,11 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.net.GTPacketSetShape;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
@@ -26,8 +26,8 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public boolean disableFilter = false;
     public boolean disableLimited = false;
 
-    public static final int shapeSlot = 2;
-    public static final int circuitSlot = 3;
+    public int shapeSlot = getSlots(mTier);
+    public int circuitSlot = getSlots(mTier) + 1;
 
     public static final ItemStack[] extruderShapes = {
         // Tools
@@ -45,7 +45,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         // Materials
         ItemList.Shape_Extruder_Block.get(1), ItemList.Shape_Extruder_Bolt.get(1), ItemList.Shape_Extruder_Ingot.get(1),
         ItemList.Shape_Extruder_Plate.get(1), ItemList.Shape_Extruder_Ring.get(1), ItemList.Shape_Extruder_Rod.get(1),
-        ItemList.Shape_Extruder_Wire.get(1),
         // Containers, Misc
         ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
         ItemList.Shape_Extruder_Cell.get(1) };
@@ -79,7 +78,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public String[] getDescription() {
         return new String[] {
             "Input Bus with Mold for " + EnumChatFormatting.YELLOW + "Extrusion Machine" + EnumChatFormatting.RESET,
-            "Capacity: " + GTUtility.formatNumbers(getSlots(mTier)) + " Slots",
+            "Capacity: " + formatNumber(getSlots(mTier)) + " Slots",
             "Added by: " + EnumChatFormatting.BLUE + "VorTex" };
     }
 
@@ -114,7 +113,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
             this.setInventorySlotContents(shapeSlot, phantom);
         } catch (Throwable ignored) {}
         markDirty();
-        GTValues.NW.sendToServer(new GTPacketSetShape(this, selected));
     }
 
     public int findMatchingShapeIndex(ItemStack stack) {

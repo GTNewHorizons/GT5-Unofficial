@@ -187,7 +187,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.Energy_Core_ULV.get(1))
             .fluidInputs(MaterialsAlloy.POTIN.getFluidStack(4 * INGOTS))
             .duration(22 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // LV
@@ -339,7 +339,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.Energy_Buffer_1by1_ULV.get(1))
             .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(16 * INGOTS))
             .duration(45 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // LV
@@ -491,7 +491,7 @@ public class RecipesMachinesTiered {
             .itemOutputs(GregtechItemList.GTPP_Casing_ULV.get(1))
             .fluidInputs(Materials.Steel.getMolten(2 * INGOTS))
             .duration(20 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Integral Encasement II (LV)

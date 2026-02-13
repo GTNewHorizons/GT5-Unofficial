@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
@@ -24,7 +25,6 @@ import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.extractorRecipes;
 import static gregtech.api.recipe.RecipeMaps.extruderRecipes;
 import static gregtech.api.recipe.RecipeMaps.fermentingRecipes;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidHeaterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -50,6 +50,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -61,6 +62,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
@@ -70,6 +72,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
@@ -108,12 +111,11 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
+import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -136,7 +138,6 @@ import gregtech.common.tileentities.machines.multi.MTEAirFilter2;
 import gregtech.common.tileentities.machines.multi.MTEAirFilter3;
 import gregtech.common.tileentities.machines.multi.MTEAssemblyLine;
 import gregtech.common.tileentities.machines.multi.MTEBrickedBlastFurnace;
-import gregtech.common.tileentities.machines.multi.MTEChamberCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTECharcoalPit;
 import gregtech.common.tileentities.machines.multi.MTECleanroom;
 import gregtech.common.tileentities.machines.multi.MTECokeOven;
@@ -148,15 +149,19 @@ import gregtech.common.tileentities.machines.multi.MTEDistillationTower;
 import gregtech.common.tileentities.machines.multi.MTEElectricBlastFurnace;
 import gregtech.common.tileentities.machines.multi.MTEEntropicProcessor;
 import gregtech.common.tileentities.machines.multi.MTEExtremeDieselEngine;
+import gregtech.common.tileentities.machines.multi.MTEFluidShaper;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer1;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer2;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
@@ -170,11 +175,11 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbineHPSteam;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.multi.MTELatex;
+import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
 import gregtech.common.tileentities.machines.multi.MTEMultiLathe;
-import gregtech.common.tileentities.machines.multi.MTEMultiSolidifier;
 import gregtech.common.tileentities.machines.multi.MTENanoForge;
 import gregtech.common.tileentities.machines.multi.MTEOilCracker;
 import gregtech.common.tileentities.machines.multi.MTEOilDrill1;
@@ -190,6 +195,7 @@ import gregtech.common.tileentities.machines.multi.MTEPlasmaForge;
 import gregtech.common.tileentities.machines.multi.MTEPyrolyseOven;
 import gregtech.common.tileentities.machines.multi.MTEResearchCompleter;
 import gregtech.common.tileentities.machines.multi.MTESolarFactory;
+import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
@@ -201,6 +207,7 @@ import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompr
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
@@ -217,6 +224,8 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamCompressorBronze;
@@ -517,9 +526,23 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_Multi_Canner
             .set(new MTEMultiCanner(MULTI_CANNER_CONTROLLER.ID, "multimachine.canner", "TurboCan Pro").getStackForm(1));
 
-        ItemList.Machine_Multi_Solidifier.set(
-            new MTEMultiSolidifier(MULTI_SOLIDIFIER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
+        ItemList.Machine_Fluid_Shaper.set(
+            new MTEFluidShaper(MULTI_FLUID_SHAPER_CONTROLLER.ID, "multimachine.solidifier", "Fluid Shaper")
                 .getStackForm(1));
+        ItemList.Machine_Mass_Solidifier.set(
+            new MTEMassSolidifier(
+                MULTI_MASS_SOLIDIFIER_CONTROLLER.ID,
+                "multimachine.mass_solidifier",
+                "Mass Solidifier").getStackForm(1));
+        ItemList.Machine_Multi_ExoFoundry.set(
+            new MTEExoFoundry(MultiExoFoundryController.ID, "multimachine.exofoundry", "Exo-Foundry").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_ExoFoundry.get(1),
+            chain(
+                GTValues.AUTHORS_SUPPLIER,
+                GTValues.fancyAuthorChrom,
+                GTValues.AND_SUPPLIER,
+                GTValues.AuthorAuynonymous));
 
         ItemList.WormholeGenerator.set(
             new MTEWormholeGenerator(
@@ -568,18 +591,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEIndustrialBrewery(INDUSTRIAL_BREWERY_CONTROLLER.ID, "multimachine.brewery", "Big Barrel Brewery")
                 .getStackForm(1));
 
-        ItemList.Machine_Multi_ChamberCentrifuge.set(
-            new MTEChamberCentrifuge(
-                CHAMBER_CENTRIFUGE_CONTROLLER.ID,
-                "multimachine.chambercentrifuge",
-                "Spinmatron-2737").getStackForm(1));
+        ItemList.Machine_Multi_Spinmatron.set(
+            new MTESpinmatron(SPINMATRON_CONTROLLER.ID, "multimachine.spinmatron", "Spinmatron-2737").getStackForm(1));
         addItemTooltip(
-            ItemList.Machine_Multi_ChamberCentrifuge.get(1),
-            chain(
-                () -> "Authors: ",
-                GTValues.fancyAuthorChrom,
-                () -> EnumChatFormatting.GRAY + " & ",
-                GTValues.AuthorNoc));
+            ItemList.Machine_Multi_Spinmatron.get(1),
+            chain(GTValues.AUTHORS_SUPPLIER, GTValues.fancyAuthorChrom, GTValues.AND_SUPPLIER, GTValues.AuthorNoc));
 
         ItemList.Machine_Multi_Autoclave.set(
             new MTEMultiAutoclave(MULTI_AUTOCLAVE_CONTROLLER.ID, "multimachine.autoclave", "Industrial Autoclave")
@@ -605,6 +621,24 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 new MTEResearchCompleter(ResearchCompleter.ID, "Research Completer", "Research Completer")
                     .getStackForm(1));
         }
+
+        ItemList.IndustrialWireFactory.set(
+            new MTEIndustrialWireMill(
+                IndustrialWireMill.ID,
+                "industrialwiremill.controller.tier.single",
+                "Industrial Wire Factory").getStackForm(1));
+
+        ItemList.IndustrialPackager.set(
+            new MTEIndustrialPackager(
+                IndustrialPackager.ID,
+                "amazonprime.controller.tier.single",
+                "Amazon Warehousing Depot").getStackForm(1L));
+
+        ItemList.IndustrialCentrifuge.set(
+            new MTEIndustrialCentrifuge(
+                IndustrialCentrifuge.ID,
+                "industrialcentrifuge.controller.tier.single",
+                "Industrial Centrifuge").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -2853,7 +2887,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Basic Fluid Canner",
                 1,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2868,7 +2902,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Advanced Fluid Canner",
                 2,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2883,7 +2917,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Quick Fluid Canner",
                 3,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2898,7 +2932,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Turbo Fluid Canner",
                 4,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2913,7 +2947,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Instant Fluid Canner",
                 5,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                RecipeMaps.fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2928,7 +2962,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Elite Fluid Canner",
                 6,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2943,7 +2977,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Elite Fluid Canner II",
                 7,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2958,7 +2992,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Ultimate Liquid Can Actuator",
                 8,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2973,7 +3007,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator",
                 9,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -2988,7 +3022,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator II",
                 10,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -3003,7 +3037,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator III",
                 11,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -3018,7 +3052,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Epic Liquid Can Actuator IV",
                 12,
                 MachineType.FLUID_CANNER.tooltipDescription(),
-                fluidCannerRecipes,
+                RecipeMaps.cannerRecipes,
                 1,
                 1,
                 true,
@@ -8590,7 +8624,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8605,7 +8639,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8620,7 +8654,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8635,7 +8669,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8650,7 +8684,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 RecipeMaps.cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8665,7 +8699,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8680,7 +8714,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8695,7 +8729,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8710,7 +8744,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8725,7 +8759,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8740,7 +8774,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8755,7 +8789,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 cannerRecipes,
                 2,
                 2,
-                false,
+                true,
                 SoundResource.GTCEU_LOOP_BATH,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
                 "CANNER").getStackForm(1L));
@@ -8994,6 +9028,136 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
     private static void registerCokeOvenHatch() {
         ItemList.CokeOvenHatch
             .set(new MTEHatchCokeOven(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
+    }
+
+    private static void registerCompressedBus() {
+        ItemList.CompressedOutputBusLuV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
+                "hatch.comp-output-bus.tier.00",
+                "Compressed Output Bus (LuV)",
+                VoltageIndex.LuV,
+                256).getStackForm(1));
+
+        ItemList.CompressedOutputBusZPM.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
+                "hatch.comp-output-bus.tier.01",
+                "Compressed Output Bus (ZPM)",
+                VoltageIndex.ZPM,
+                2048).getStackForm(1));
+
+        ItemList.CompressedOutputBusUV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
+                "hatch.comp-output-bus.tier.02",
+                "Compressed Output Bus (UV)",
+                VoltageIndex.UV,
+                16384).getStackForm(1));
+
+        ItemList.CompressedOutputBusUHV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
+                "hatch.comp-output-bus.tier.03",
+                "Compressed Output Bus (UHV)",
+                VoltageIndex.UHV,
+                131072).getStackForm(1));
+
+        ItemList.CompressedOutputBusUEV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_1.ID,
+                "hatch.quantum-output-bus.tier.00",
+                "Quantum Output Bus (UEV)",
+                VoltageIndex.UEV,
+                2097152).getStackForm(1));
+
+        ItemList.CompressedOutputBusUIV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_2.ID,
+                "hatch.quantum-output-bus.tier.01",
+                "Quantum Output Bus (UIV)",
+                VoltageIndex.UIV,
+                Integer.MAX_VALUE / 64L).getStackForm(1));
+
+        ItemList.CompressedOutputBusUMV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_3.ID,
+                "hatch.quantum-output-bus.tier.02",
+                "Quantum Output Bus (UMV)",
+                VoltageIndex.UMV,
+                Integer.MAX_VALUE * 64L).getStackForm(1));
+
+        ItemList.CompressedOutputBusUXV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_4.ID,
+                "hatch.quantum-output-bus.tier.03",
+                "Quantum Output Bus (UXV)",
+                VoltageIndex.UXV,
+                Long.MAX_VALUE / 64L).getStackForm(1));
+
+        ItemList.CompressedInputBusLuV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_1.ID,
+                "hatch.comp-input-bus.tier.00",
+                "Compressed Input Bus (LuV)",
+                VoltageIndex.LuV,
+                256).getStackForm(1));
+
+        ItemList.CompressedInputBusZPM.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_2.ID,
+                "hatch.comp-input-bus.tier.01",
+                "Compressed Input Bus (ZPM)",
+                VoltageIndex.ZPM,
+                2048).getStackForm(1));
+
+        ItemList.CompressedInputBusUV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_3.ID,
+                "hatch.comp-input-bus.tier.02",
+                "Compressed Input Bus (UV)",
+                VoltageIndex.UV,
+                16384).getStackForm(1));
+
+        ItemList.CompressedInputBusUHV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_4.ID,
+                "hatch.comp-input-bus.tier.03",
+                "Compressed Input Bus (UHV)",
+                VoltageIndex.UHV,
+                131072).getStackForm(1));
+
+        ItemList.CompressedInputBusUEV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_1.ID,
+                "hatch.quantum-input-bus.tier.00",
+                "Quantum Input Bus (UEV)",
+                VoltageIndex.UEV,
+                2097152).getStackForm(1));
+
+        ItemList.CompressedInputBusUIV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_2.ID,
+                "hatch.quantum-input-bus.tier.01",
+                "Quantum Input Bus (UIV)",
+                VoltageIndex.UIV,
+                Integer.MAX_VALUE / 64L).getStackForm(1));
+
+        ItemList.CompressedInputBusUMV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_3.ID,
+                "hatch.quantum-input-bus.tier.02",
+                "Quantum Input Bus (UMV)",
+                VoltageIndex.UMV,
+                Integer.MAX_VALUE * 64L).getStackForm(1));
+
+        ItemList.CompressedInputBusUXV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_4.ID,
+                "hatch.quantum-input-bus.tier.03",
+                "Quantum Input Bus (UXV)",
+                VoltageIndex.UXV,
+                Long.MAX_VALUE / 64L).getStackForm(1));
     }
 
     private static void registerQuantumTank() {
@@ -10622,6 +10786,20 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
     }
 
+    private static void registerDrawerFramer() {
+
+        // if storage drawers is not loaded, do not load the drawer framer machine
+        if (!StorageDrawers.isModLoaded()) return;
+
+        ItemList.Machine_LV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_LV.ID, "framer.tier.01", "Basic Drawer Framer", 1).getStackForm(1L));
+        ItemList.Machine_MV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_MV.ID, "framer.tier.02", "Advanced Drawer Framer", 2).getStackForm(1L));
+        ItemList.Machine_HV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_HV.ID, "framer.tier.03", "Precise Drawer Framer", 3).getStackForm(1L));
+
+    }
+
     @Override
     public void run() {
         GTLog.out.println("GTMod: Registering MetaTileEntities.");
@@ -10644,6 +10822,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOutputBus();
         registerVoidBus();
         registerCokeOvenHatch();
+        registerCompressedBus();
         registerMufflerHatch();
         registerBoiler();
         registerBatteryBuffer1x1();
@@ -10735,6 +10914,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerDrawerFramer();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
