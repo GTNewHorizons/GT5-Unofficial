@@ -51,7 +51,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.AntimatterGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase
     implements IConstructable, ISurvivalConstructable {
