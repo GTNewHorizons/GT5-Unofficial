@@ -123,6 +123,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.Contract;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -204,11 +205,9 @@ import ic2.api.tile.IWrenchable;
 import ic2.core.IC2Potion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectIntMutablePair;
-import it.unimi.dsi.fastutil.objects.ObjectList;
+import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 
 /**
@@ -735,77 +734,96 @@ public class GTUtility {
 
     /**
      * Compacts an inventory like this:
-     * Empty_0, Iron_32, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
+     * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
      * into this:
-     * Iron_64, Iron_64, Gold_48
-     * while preserving the exact order of items by their first appearance in the inventory
+     * Iron_64, Iron_64, Gold_48, Iron_16
      */
     public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
-        boolean didSomething = false;
-        boolean encounteredEmptySlots = false;
+        int len = inv.size();
 
-        // ItemStack => (List<ItemStack>, (int)amount), where amount is a sum of all .stackSize in List<ItemStack>
-        // This map is linked, which means it preserves the order in which elements were added
-        Object2ObjectLinkedOpenCustomHashMap<ItemStack, ObjectIntMutablePair<ObjectList<ItemStack>>> stackToPair = new Object2ObjectLinkedOpenCustomHashMap<>(
-            inv.size(),
+        // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
+        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = new Object2ObjectOpenCustomHashMap<>(
             GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
 
-        // 1. Build a map which will contain all unique ItemStacks mapped to their List<ItemStack> and amount
-        for (int i = 0; i < inv.size(); i++) {
+        for (int i = 0; i < len; i++) {
             ItemStack stack = inv.get(i);
-            if (stack == null) {
-                encounteredEmptySlots = true;
-                continue;
-            }
-            // We'll reuse every gap
-            if (encounteredEmptySlots) didSomething = true;
 
-            ObjectIntMutablePair<ObjectList<ItemStack>> pair = stackToPair.get(stack);
-            if (pair == null) {
-                ObjectList<ItemStack> stackList = new ObjectArrayList<>();
-                stackList.add(stack);
-                stackToPair.put(stack, ObjectIntMutablePair.of(stackList, stack.stackSize));
-            } else {
-                ObjectList<ItemStack> stackList = pair.left();
-                int amount = pair.rightInt();
+            if (stack == null) continue;
 
-                // Iron, Iron, Iron, Gold, Iron <- we encountered an Iron stack out of its group, we'll need to move it
-                if (!didSomething && stackToPair.lastKey() != stackList.get(0)) didSomething = true;
-
-                stackList.add(stack);
-                pair.right(amount + stack.stackSize);
-            }
-            inv.set(i, null);
+            slots.computeIfAbsent(stack, ignored -> new ObjectArrayList<>())
+                .add(ObjectIntPair.of(stack, i));
         }
 
-        int slot = 0;
+        MutableBoolean didSomething = new MutableBoolean(false);
 
-        // 2. Refill the inventory from scratch by placing all stacks of the same type at once at a time
-        for (Object2ObjectMap.Entry<ItemStack, ObjectIntMutablePair<ObjectList<ItemStack>>> entry : stackToPair
-            .object2ObjectEntrySet()) {
+        // For each ItemStack, merge stacks from the end of the list to the front
+        slots.forEach((ignored, stacks) -> {
+            int stackLen = stacks.size();
 
-            ItemStack stack = entry.getKey();
-            ObjectIntMutablePair<ObjectList<ItemStack>> pair = entry.getValue();
-            ObjectList<ItemStack> oldStacks = pair.left();
-            int amount = pair.rightInt();
+            int insert = 0;
+            int extract = stackLen - 1;
 
-            int oldStackIndex = 0;
-            while (amount > 0) {
-                // We gathered all old stacks with only one purpose - to reuse them as new stacks with different size
-                // so we can avoid allocating new ItemStack() and copying their NBT
-                ItemStack oldStack = oldStacks.get(oldStackIndex++);
-                int stackSize = Math.min(amount, stackSizes.getSlotStackLimit(slot, stack));
+            while (insert < stackLen && insert < extract) {
+                // Grab the next stack from the front of the list, to insert into if possible
+                var toInflate = stacks.get(insert);
+                ItemStack inflateStack = toInflate.left();
 
-                if (stackSize != oldStack.stackSize) didSomething = true;
+                int maxStack = stackSizes.getSlotStackLimit(toInflate.rightInt(), inflateStack);
+                int remaining = maxStack - inflateStack.stackSize;
 
-                oldStack.stackSize = stackSize;
-                inv.set(slot, oldStack);
-                amount -= stackSize;
-                slot++;
+                // Scan from the end of the list to the current stack, and try to move items from those stacks into the
+                // current stack
+                while (insert < extract) {
+                    var toBeExtracted = stacks.get(extract);
+
+                    int toTransfer = Math.min(toBeExtracted.left().stackSize, remaining);
+
+                    toBeExtracted.left().stackSize -= toTransfer;
+                    inflateStack.stackSize += toTransfer;
+                    remaining -= toTransfer;
+
+                    didSomething.setValue(true);
+
+                    if (toBeExtracted.left().stackSize <= 0) {
+                        inv.set(toBeExtracted.rightInt(), null);
+                        extract--;
+                    }
+
+                    if (inflateStack.stackSize >= maxStack) {
+                        break;
+                    }
+                }
+
+                insert++;
             }
+        });
+
+        int insert = 0;
+
+        // Put all stacks into the first slots, contiguously
+        while (insert < len) {
+            if (inv.get(insert) == null) {
+                ItemStack stack = null;
+
+                int extract = insert + 1;
+
+                while (extract < len && (stack = inv.get(extract)) == null) {
+                    extract++;
+                }
+
+                if (stack != null) {
+                    inv.set(insert, stack);
+                    inv.set(extract, null);
+                    didSomething.setValue(true);
+                } else {
+                    break;
+                }
+            }
+
+            insert++;
         }
 
-        return didSomething;
+        return didSomething.getValue();
     }
 
     public static void swapSlots(IInventory inv, int a, int b) {
