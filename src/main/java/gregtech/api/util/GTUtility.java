@@ -742,6 +742,7 @@ public class GTUtility {
      */
     public static boolean compactInventory(List<ItemStack> inv, ItemStackSizeCalculator stackSizes) {
         boolean didSomething = false;
+        boolean encounteredEmptySlots = false;
 
         // ItemStack => (List<ItemStack>, (int)amount), where amount is a sum of all .stackSize in List<ItemStack>
         // This map is linked, which means it preserves the order in which elements were added
@@ -752,7 +753,12 @@ public class GTUtility {
         // 1. Build a map which will contain all unique ItemStacks mapped to their List<ItemStack> and amount
         for (int i = 0; i < inv.size(); i++) {
             ItemStack stack = inv.get(i);
-            if (stack == null) continue;
+            if (stack == null) {
+                encounteredEmptySlots = true;
+                continue;
+            }
+            // We'll reuse every gap
+            if (encounteredEmptySlots) didSomething = true;
 
             ObjectIntMutablePair<ObjectList<ItemStack>> pair = stackToPair.get(stack);
             if (pair == null) {
