@@ -94,16 +94,14 @@ gt.crop.withereed.name=Withereed
 gt.crop.zomplant.name=Zomplant
 
 # Tooltip info of tile-entities
-gt.tileentity.eup_in=Voltage IN: §a%d (%s§a)§7
-gt.tileentity.eup_out=Voltage OUT: §a%d (%s§a)§7
-gt.tileentity.eup_amount=Amperage: §e%d§7
-gt.tileentity.eup_store=Capacity: §9%d§7 EU
+gt.tileentity.eup_in=Voltage IN:
+gt.tileentity.eup_out=Voltage OUT:
+gt.tileentity.eup_amount=Amperage:
 gt.tileentity.has_muffler=is Muffled
 gt.tileentity.has_steam_upgrade=has Steam Upgrade
 gt.tileentity.colored=Colored (%s%s§7)
 
 item.gt.advancedsensorcard.name=GregTech Advanced Sensor Card
-gt.blackholerenderer.name=Black Hole Renderer
 gt.block.longdistancepipe.name=Long Distance Pipeline Pipe
 gt.blockcasings.cyclotron_coils.name=Solenoid Superconductor Coil
 gt.blockcasings.name=Machine Casing
@@ -138,12 +136,14 @@ gt.blockores.name=Ore
 gt.blockreinforced.name=Reinforced Block
 gt.blockstones.name=Stone
 gt.blocktintedglass.name=Tinted Industrial Glass
+gt.blackholerenderer.name=Black Hole Renderer
+gt.dronerenderer.name=Drone Renderer
+gt.nanoforgerenderer.name=Nano Forge Renderer
 gt.wormholerenderer.name=Wormhole Renderer
 item.gt.comb.name=Comb
 item.gt.drop.name=Drop
 item.gt.pollen.name=Pollen
 item.gt.propolis.name=Propolis
-tile.gt.dronerender.name=Drone Renderer
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Stored Heat: %s
@@ -627,6 +627,21 @@ item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
 
+GT5U.tooltip.pump.0=The best way to empty Oceans!
+GT5U.tooltip.pump.1=§e%d§7 EU/operation, §f%d§7 sec per bucket, no stuttering
+GT5U.tooltip.pump.2=Maximum pumping area: §f%dx%d
+GT5U.tooltip.pump.3=Use Screwdriver to regulate pumping area
+GT5U.tooltip.pump.4=Use Soft Mallet to disable and retract the pipe
+GT5U.tooltip.pump.5=Disable the bottom pump to retract the pipe!
+GT5U.tooltip.pump.6=Use Soldering Iron to auto retract the pipe when hitting a rock
+
+GT5U.tooltip.miner.0=Digging ore instead of you
+GT5U.tooltip.miner.1=Use Screwdriver to regulate work area
+GT5U.tooltip.miner.2=Use Soft Mallet to disable and retract the pipe
+GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
+GT5U.tooltip.miner.4=Maximum work area: §f%dx%d
+GT5U.tooltip.miner.5=Small ore fortune bonus of §f%d
+
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
 GTPP.tooltip.fish_trap.1=Can also be placed beside up to 4 other fish traps
@@ -642,11 +657,6 @@ GTPP.tooltip.circuit_table.2=Default is used to select slot for auto-insertion
 GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
 GTPP.tooltip.decayables_chest.2=Place with right-click
-
-# Butterfly Killer
-GTPP.tooltip.butterfly_killer.0=Kills Forestry Butterflies, Bats and other pests
-GTPP.tooltip.butterfly_killer.1=Use either Formaldehyde or Hydrogen cyanide
-GTPP.tooltip.butterfly_killer.2=Be wary of your neighbours
 
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Easy Flask Configuration
@@ -799,6 +809,7 @@ GT5U.MBTT.SpeedTiered=%s faster than single block machines of the same voltage, 
 GT5U.MBTT.EuDiscountBase=Uses %s of the EU normally required
 GT5U.MBTT.EuDiscountTiered=Uses %s less EU per %s Tier
 GT5U.MBTT.Parallel_Multiplicative=%s Parallels per %s Tier
+GT5U.MBTT.StructureBy=Structure by
 
 GT5U.MBTT.Parallel.Base=%s Parallels
 GT5U.MBTT.Parallel.Additional=%s Parallels per %s Tier
@@ -835,6 +846,9 @@ GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
 GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
+GT5U.MBTT.Deprecated=§4DEPRECATED - %s
+GT5U.MBTT.Deprecated.Removal=Controller will be removed in next major update!
+GT5U.MBTT.Deprecated.NEI=§4Check NEI for new Controller and conversion recipe
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
 GT5U.MBTT.PCB.RotBio=Bio Rotation
@@ -1037,6 +1051,8 @@ gt.recipe.unpackager=Unpackager
 gt.recipe.unpackager.description=Grabs things out of Boxes
 gt.recipe.wiremill=Wiremill
 gt.recipe.wiremill.description=Produces Wires more efficiently
+gt.recipe.drawerframer=Drawer Framer
+gt.recipe.drawerframer.description=Frames drawers exactly like the Framing Table
 
 # RecipeMaps that are not listed on MachineType enum
 gt.recipe.fakeAssemblylineProcess=Assemblyline Process
@@ -1096,6 +1112,14 @@ gt.recipe.category.forge_hammer_recycling=Forge Hammer Recycling
 gt.recipe.category.tic_part_extruding=TiC Part Extruding
 gt.recipe.category.tic_bolt_molding=TiC Bolt Molding
 
+GT5U.recipes.recipe_by.original=Original Recipe by: %s
+GT5U.recipes.recipe_by.modified=Modified by: %s
+GT5U.recipes.recipe_by=Original Recipe by: %s
+GT5U.recipes.not_consume=Does not get consumed in the process
+GT5U.recipes.not_consume_parallel=Considered in parallel calculation, but not get consumed
+GT5U.recipes.chance.consume=Consume Chance: %s
+GT5U.recipes.chance.output=Output Chance: %s
+
 GT5U.machines.tier=Tier
 GT5U.machines.workarea=Work Area
 GT5U.machines.workareaset=Work Area set to
@@ -1118,6 +1142,12 @@ GT5U.machines.minermulti=Multiblock Miner
 GT5U.machines.muffled=Sound Muffling
 GT5U.machines.muffled.on=Sound Muffling: §aEnabled§r
 GT5U.machines.muffled.off=Sound Muffling: §cDisabled§r
+GT5U.machines.MTETransformerHiAmp.descLn1=Transforms 4A to 16A
+GT5U.machines.MTETransformerHiAmp.descLn2=Toggle 2A/8A half-mode with Screwdriver
+GT5U.machines.MTETransformerHiAmp.descLn3=Accepts up to 6A (3A in half-mode) from energy network
+GT5U.machines.MTETransformerWet.descLn1=Transforms 16A to 64A
+GT5U.machines.MTETransformerWet.descLn2=Toggle 8A/32A half-mode with Screwdriver
+GT5U.machines.MTETransformerWet.descLn3=Accepts up to 20A (10A in half-mode) from energy network
 GT5U.machines.digitalchest.voidoverflow.enabled=Overflow Voiding Mode §aOn§r
 GT5U.machines.digitalchest.voidoverflow.disabled=Overflow Voiding Mode §cOff§r
 GT5U.machines.digitalchest.inputfilter.enabled=Input Filter §aOn§r
@@ -1313,8 +1343,9 @@ GT5U.machines.output_bus.saved=Saved Config to Data Stick
 GT5U.machines.output_bus.loaded=Loaded Config From Data Stick
 GT5U.machines.output_bus.invalid=Invalid Data Stick config
 GT5U.machines.dronecentre.shutdown=You cannot control machine when drone centre shut down!
-GT5U.machines.dronecentre.turnon=Successfully turn on all machines!
-GT5U.machines.dronecentre.turnoff=Successfully turn off all machines!
+GT5U.machines.dronecentre.turnon=Successfully turn on all machines in group: %s
+GT5U.machines.dronecentre.turnoff=Successfully turn off all machines in group: %s
+GT5U.machines.dronecentre.forceturnoff=Successfully turn off all machines in group: %s and disable all covers!
 GT5U.machines.dronecentre.noconnection=No valid connection
 GT5U.machines.dronecentre.enableRender=Enable Drone Render
 GT5U.machines.dronecentre.disableRender=Disable Drone Render
@@ -1407,20 +1438,27 @@ GT5U.gui.button.ore_drill_cobblestone_off=§7Replace with cobblestone: §4OFF
 GT5U.gui.button.drill_retract_pipes=§7Abort and retract mining pipes
 GT5U.gui.button.drill_retract_pipes_active=§4Cannot interrupt abort procedure
 GT5U.gui.button.drone_setname=Set custom name for machine
-GT5U.gui.button.drone_highlight=Highlight machine in the world
-GT5U.gui.button.drone_outofrange=§4Machine is too far, drone control system not available!
+GT5U.gui.button.drone_highlight=Highlighting machine in the world
+GT5U.gui.button.drone_teleport=Press shift to teleport to the machine
 GT5U.gui.button.drone_open_list=Open Machine List
-GT5U.gui.button.drone_poweron_all=Turn ON ALL machines, no matter how remote
-GT5U.gui.button.drone_poweroff_all=Turn OFF ALL machines, no matter how remote
+GT5U.gui.button.drone_poweron_all=Turn on all machines in selected group
+GT5U.gui.button.drone_poweroff_all=Turn on all machines in selected group (Press Shift to disable machine control covers)
 GT5U.gui.button.drone_name=Sort by §3name
 GT5U.gui.button.drone_distance=Sort by §3distance
-GT5U.gui.button.drone_error=Sort by §3shutdown status
-GT5U.gui.button.drone_showLocalName=Show localized name
+GT5U.gui.button.drone_status=Sort by §3shutdown status
+GT5U.gui.button.drone_searchoriname=Also search original name
+GT5U.gui.button.drone_select_group=Click here to add/remove machine
+GT5U.gui.button.drone_production=Open production panel
+GT5U.gui.button.drone_editmode=Group edit mode
+GT5U.gui.button.drone_pause.1=Auto update connection list
+GT5U.gui.button.drone_pause.2=Disable this if your machine controller cover is malfunctioning!
+GT5U.gui.button.drone_key_panel=Open connection key panel
 GT5U.gui.button.toggle_output_slot_lock=Toggle output slot
 GT5U.gui.button.power_panel=Open Power Panel
 GT5U.gui.button.turbinemenu=Open Chamber Controller
 GT5U.gui.button.machineinfo=Display Machine Information
 GT5U.gui.button.max_parallel=Always use maximum
+GT5U.gui.button.compressed_bus_settings=Open Bus Settings
 
 GT5U.gui.text.rangedvalue=Range: %s-%s
 GT5U.gui.text.lockedvalue=Locked: %s
@@ -1502,6 +1540,22 @@ GT5U.gui.text.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
+GT5U.gui.text.drone_no_connection=No any connection
+GT5U.gui.text.drone_active_production=Active production recorder
+GT5U.gui.text.drone_maxrecord=Max record：
+GT5U.gui.text.drone_production_connection=Connection
+GT5U.gui.text.drone_production_power=Power
+GT5U.gui.text.drone_production_item=Item
+GT5U.gui.text.drone_production_fluid=Fluid
+GT5U.gui.text.drone_connectionCount=Total connections: %s
+GT5U.gui.text.drone_power_total=Total EU consumed in last %s:
+GT5U.gui.text.drone_connectionList=Connected machine list
+GT5U.gui.text.drone_average=Average EU consumed in last %s
+GT5U.gui.text.drone_item_total=Total item produced in last %s:
+GT5U.gui.text.drone_fluid_total=Total fluid produced in last %s:
+GT5U.gui.text.drone_key=Set connection key
+GT5U.gui.text.drone_warning_text=§4Warning: §7This machine is under attack.
+GT5U.gui.text.drone_remote_text=Drone Centre Remote Control
 GT5U.gui.text.shutdown_duration=§4Shut down §e%s §4h §e%s §4min §e%s §4s ago.
 GT5U.gui.text.out_of_fluid=§4No following fluids supplied: §b%s§f x §6%s L
 GT5U.gui.text.out_of_item=§4No following items supplied: §b%s§f x §6%s
@@ -1562,6 +1616,11 @@ GT5U.gui.text.invalidfluidsup=Invalid Fluid Supplied
 GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.stack_capacity=Stack Capacity
+GT5U.gui.text.bus_settings=Bus Settings
+GT5U.gui.text.amount_out_of=§9Amount: %,d / %,d
+GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
+
 
 
 GT5U.gui.hoverable.runningfine=Running Fine.
@@ -1574,7 +1633,8 @@ GT5U.gui.hoverable.error=ERROR! REPORT ME!
 GT5U.gui.config.client=Client
 GT5U.gui.config.client.color_modulation=Color Modulation
 GT5U.gui.config.client.color_modulation.cable_insulation=Cable Insulation
-GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal (Default GUI Color)
+GT5U.gui.config.client.color_modulation.machine_metal=Machine Metal
+GT5U.gui.config.client.color_modulation.gui_metal=Gui Metal (Default GUI Color)
 GT5U.gui.config.client.interface=Interface
 GT5U.gui.config.client.preference=Preference
 GT5U.gui.config.client.blockoverlay=GT Tool Block Overlay
@@ -1602,6 +1662,11 @@ GT5U.gui.config.worldgen=Worldgen
 GT5U.gui.config.worldgen.general=General
 
 GT5U.gui.text.cannot_change_when_running=Can't change configuration when running!
+
+GT5U.gui.tooltip.drone_active_production=[Warning] This function is experimental and may reduce performance.
+GT5U.gui.tooltip.drone_maxrecord=Set max record quota. Each output from every machine consumes one quota. [Warning] Large numbers may cause performance issues!
+GT5U.gui.tooltip.drone_production_clear=Clean production info
+GT5U.gui.tooltip.drone_key=Prioritize connecting to the drone center with the same key
 
 GT5U.gui.tooltip.purification_plant.debug_mode=Toggle debug mode.
 GT5U.gui.text.purification_plant.hit_to_start=Hit with Soft Mallet to start.
@@ -1641,6 +1706,7 @@ GT5U.gui.text.wormhole_generator.max_io.large=§7Max I/O per hatch: §b%3.3e§7 
 
 GT5U.gui.text.status.active=Active
 GT5U.gui.text.status.online=Online
+GT5U.gui.text.status.offline=Offline
 GT5U.gui.text.status.disabled=Disabled
 GT5U.gui.text.status.incomplete=Incomplete Structure
 GT5U.gui.text.x=X: %s
@@ -1741,6 +1807,8 @@ GT5U.gui.chat.powerfail.list.truncated=%s additional powerfails truncated
 GT5U.gui.chat.powerfail.shown=Enabled powerfail overlay rendering.
 GT5U.gui.chat.powerfail.hidden=Disabled powerfail overlay rendering.
 
+GT5U.gui.chat.bindcentre=Successfully bind drone centre.
+GT5U.gui.chat.drone_level_low=Upgrade to T4 drone to active the teleport function
 # chats
 GT5U.chat.void_miner.mode.black_list=Mode: Blacklist
 GT5U.chat.void_miner.mode.white_list=Mode: Whitelist
@@ -1832,6 +1900,13 @@ GT5U.hatch.fluid.filter.enable=Fluid output filter set to: %s
 GT5U.hatch.item.filter.enable=Item output filter set to: %s
 GT5U.hatch.fluid.filter.disable=Fluid output filtering disabled
 GT5U.hatch.item.filter.disable=Item output filtering disabled
+GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
+GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
+GT5U.hatch.outputme.checkMode.desc=NOTE: Check Mode checks whether there is enough space for the output, resulting in more lag.
+GT5U.hatch.outputme.cacheMode.true=Cache Mode §cOn§r
+GT5U.hatch.outputme.cacheMode.false=Cache Mode §aOff§r
+GT5U.hatch.outputme.cacheMode.desc=Stores to the internal cell instead of to the ME Network.
+GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
@@ -2218,8 +2293,14 @@ GT5U.waila.boiler_solar.output=Solar Boiler Output:§r %d/%d L/s
 GT5U.waila.hatch.crafting_input_slave.linked=Linked
 GT5U.waila.hatch.crafting_input_slave.unlinked=Not linked
 GT5U.waila.hatch.crafting_input_slave.bound_to=Bound to %d, %d, %d
-GT5U.waila.hatch.output_bus_me.item_cache_capacity=Item cache capacity: %s%s%s
-GT5U.waila.hatch.output_me.fluid_cache_capacity=Fluid cache capacity: %s%s L%s
+GT5U.waila.hatch.outputme.item_cache_capacity=Item cache capacity: §e%s§r
+GT5U.waila.hatch.outputme.fluid_cache_capacity=Fluid cache capacity: §e%s L§r
+GT5U.waila.hatch.outputme.item_cache_empty=This bus has no cached stacks
+GT5U.waila.hatch.outputme.item_cache_detail=The bus contains §6%d§r cached stack%s:
+GT5U.waila.hatch.outputme.item_cache_detail.more=§oAnd %d more...
+GT5U.waila.hatch.outputme.fluid_cache_empty=This hatch has no cached fluids
+GT5U.waila.hatch.outputme.fluid_cache_detail=The hatch contains §6%d§r cached fluid%s:
+GT5U.waila.hatch.outputme.fluid_cache_detail.more=§oAnd %d more...
 GT5U.waila.industrial_apiary.current_queen=Current Queen: %s
 GT5U.waila.industrial_apiary.effective_production=Effective Production: %s
 GT5U.waila.industrial_apiary.error=Error: %s
@@ -2757,6 +2838,14 @@ GT5U.gui.text.foundry.pairings.realizedpotential.required=Requires §bHypercoole
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip1=§c2x§r EU Cost
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip2=%s2x§r Speed
 GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercooler§r to utilize Eternity
+
+# Void Miner GUI
+GT5U.gui.text.vm.title=§nOre Voiding Selection
+GT5U.gui.text.vm.searchhint=Search by name
+GT5U.gui.button.vm.whitelist=Whitelist - Unselected ores will be §4voided
+GT5U.gui.button.vm.blacklist=Blacklist - Selected ores will be §4voided
+GT5U.gui.button.vm.select=Select all ores
+GT5U.gui.button.vm.deselect=Deselect all ores
 
 achievement.gt.blockmachines.wireless.receiver.tier.00=ULV Wireless Energy Hatch
 achievement.gt.blockmachines.wireless.receiver.tier.00.desc=Pickup this item to see the recipe in NEI
@@ -3485,6 +3574,8 @@ GT5U.scanner.chunk_info_1=§cPollution in Chunk: %s gibbl
 GT5U.scanner.chunk_info_2=§aNo Pollution in Chunk! HAYO!
 GT5U.scanner.chunk_info_3=§f%s: §6%sL
 GT5U.scanner.chunk_info_4=Nothing: §60L
+GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
+GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 
 # info data
 GT5U.infodata.no_network=No Network
@@ -3526,6 +3617,9 @@ GT5U.infodata.hatch.crafting_input_me.bus.online=The bus is §aonline§r
 GT5U.infodata.hatch.crafting_input_me.bus.offline=The bus is §coffline%s§r
 GT5U.infodata.hatch.crafting_input_me.show_pattern.enable=§aShow on Interface Terminal
 GT5U.infodata.hatch.crafting_input_me.show_pattern.disabled=§cHide on Interface Terminal
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern=Pattern Optimization
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable=§7Allowed
+GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled=§7Disabled
 GT5U.infodata.hatch.internal_inventory=Internal Inventory:
 GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
 GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
@@ -4196,6 +4290,10 @@ achievement.gt.tierdDrone1=Drone (Level 2)
 achievement.gt.tierdDrone1.desc=Pickup this item to see the recipe in NEI
 achievement.gt.tierdDrone2=Drone (Level 3)
 achievement.gt.tierdDrone2.desc=Pickup this item to see the recipe in NEI
+achievement.gt.tierdDrone3=Drone (Level 4)
+achievement.gt.tierdDrone3.desc=Pickup this item to see the recipe in NEI
+achievement.gt.Item_Drone_Remote_Interface=Drone Centre Remote Interface
+achievement.gt.Item_Drone_Remote_Interface.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.nanoforge=Nano Forge
 achievement.gt.blockmachines.multimachine.nanoforge.desc=Pickup this item to see the recipe in NEI
 achievement.gt.metaitem.03.4010=Carbon Nanites

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -45,6 +47,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.glodblock.github.common.item.ItemFluidPacket;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -112,17 +118,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
+import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
     IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
-
-    @Override
-    protected boolean useMui2() {
-        return false;
-    }
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
@@ -459,11 +461,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private static final int SLOT_MANUAL_SIZE = 9;
     private static final int MAX_INV_COUNT = MAX_PATTERN_COUNT + SLOT_MANUAL_SIZE + 1;
     private static final int SLOT_CIRCUIT = MAX_PATTERN_COUNT;
-    private static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
+    public static final int SLOT_MANUAL_START = SLOT_CIRCUIT + 1;
     private static final int MANUAL_SLOT_WINDOW = 10;
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
-    public List<ProcessingLogic> processingLogics = new ArrayList<>();
+    public Set<ProcessingLogic> processingLogics = Collections.newSetFromMap(new WeakHashMap<>());
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
 
     // holds all internal inventories
@@ -480,8 +482,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private String customName = null;
     private final boolean supportFluids;
     private boolean additionalConnection = false;
-    private boolean disablePatternOptimization = false;
-    private boolean showPattern = true;
+    public boolean disablePatternOptimization = false;
+    public boolean showPattern = true;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
         super(
@@ -915,6 +917,16 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchCraftingInputMEGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(MANUAL_SLOT_WINDOW, this::createSlotManualWindow);
         builder.widget(
@@ -1019,7 +1031,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         return requestSource;
     }
 
-    private void onPatternChange(int index, ItemStack newItem) {
+    public void onPatternChange(int index, ItemStack newItem) {
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
         World world = getBaseMetaTileEntity().getWorld();
@@ -1067,12 +1079,19 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
     }
 
-    private void resetCraftingInputRecipeMap() {
+    @Override
+    public void resetCraftingInputRecipeMap(ProcessingLogic pl) {
+        for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
+            if (sl == null) continue;
+            pl.removeInventoryRecipeCache(sl);
+        }
+
+    }
+
+    @Override
+    public void resetCraftingInputRecipeMap() {
         for (ProcessingLogic pl : processingLogics) {
-            for (PatternSlot<MTEHatchCraftingInputME> sl : internalInventory) {
-                if (sl == null) continue;
-                pl.removeInventoryRecipeCache(sl);
-            }
+            resetCraftingInputRecipeMap(pl);
         }
     }
 
@@ -1191,7 +1210,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         super.onBlockDestroyed();
     }
 
-    private void refundAll(boolean shouldDrop) {
+    public void refundAll(boolean shouldDrop) {
         for (PatternSlot<MTEHatchCraftingInputME> slot : internalInventory) {
             if (slot == null) continue;
             try {
@@ -1295,7 +1314,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
                 .endAtSlot(SLOT_MANUAL_START + SLOT_MANUAL_SIZE - 1)
                 .phantom(false)
                 .background(getGUITextureSet().getItemSlot())
-                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(this::resetCraftingInputRecipeMap))
+                .widgetCreator(slot -> new SlotWidget(slot).setChangeListener(() -> resetCraftingInputRecipeMap()))
                 .build()
                 .setPos(7, 7));
         return builder.build();

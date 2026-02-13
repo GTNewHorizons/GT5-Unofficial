@@ -812,7 +812,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     @Override
     public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return checkMachine_EM(iGregTechTileEntity, itemStack);
+        mMachine = checkMachine_EM(iGregTechTileEntity, itemStack);
+
+        onStructureCheckFinished();
+
+        return mMachine;
     }
 
     /**
@@ -939,9 +943,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
 
-                mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
-
-                doStructureValidation();
+                checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]

@@ -71,7 +71,7 @@ public class RecipesMachines {
                 .itemOutputs(new ItemStack(ModBlocks.blockDecayablesChest))
                 .fluidInputs(Materials.Lead.getMolten(16 * INGOTS))
                 .duration(1 * MINUTES + 30 * SECONDS)
-                .eut(60)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(assemblerRecipes);
         }
 

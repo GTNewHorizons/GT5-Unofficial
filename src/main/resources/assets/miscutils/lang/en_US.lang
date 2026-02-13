@@ -49,7 +49,6 @@ tile.blockCircuitProgrammer.name=Circuit Programmer
 tile.blockDecayablesChest.name=Lead Lined Box
 tile.blockVolumetricFlaskSetter.name=Volumetric Flask Configurator
 tile.blockSuperLight.name=Shining Star
-tile.blockPestKiller.name=Pest Killer
 tile.blockSuperJukebox.name=Sir Mixalot [Jukebox]
 tile.blockSuperJukebox.deprecated=§cDEPRECATED, Use the Electric Jukeboxes instead
 
@@ -3517,9 +3516,6 @@ item.GTPP.bauble.fireprotection.0.name.name=Supreme Pizza Gloves
 # Added 16/5/19
 item.itemCellSeleniumDioxide.name=Selenium Dioxide Cell
 item.itemCellSeleniousAcid.name=Selenious Acid Cell
-
-# Added 25/7/19
-container.pestkiller=Pest Killer
 
 # Added 15/8/19
 gtpp.nei.decayables=Decayables Chest

@@ -952,6 +952,14 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_MV)
             .addTo(chemicalBathRecipes);
 
+        // dust to fluid extraction, which isn't autogenned in Bartworks
+        GTValues.RA.stdBuilder()
+            .itemInputs(GGMaterial.lithiumChloride.get(OrePrefixes.dust, 1))
+            .fluidOutputs(GGMaterial.lithiumChloride.getMolten(1 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(fluidExtractionRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.marM200.get(OrePrefixes.ingot, 18), Materials.Cerium.getIngots(1))
             .fluidInputs(GGMaterial.lithiumChloride.getMolten(1 * INGOTS))

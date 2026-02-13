@@ -2574,6 +2574,7 @@ public class MaterialsInit {
         Materials.Amber = loadAmber();
         Materials.Ammonium = loadAmmonium();
         Materials.Amordrine = loadAmordrine();
+        Materials.AncientDebris = loadAncientDebris();
         Materials.Andesite = loadAndesite();
         Materials.Ardite = loadArdite();
         Materials.Aredrite = loadAredrite();
@@ -2793,6 +2794,13 @@ public class MaterialsInit {
             .addOreItems()
             .addToolHeadItems()
             .addSubTag(SubTag.METAL)
+            .constructMaterial();
+    }
+
+    private static Materials loadAncientDebris() {
+        return new MaterialBuilder().setName("Debris")
+            .setDefaultLocalName("Ancient Debris")
+            .setARGB(0x351a0b)
             .constructMaterial();
     }
 
@@ -3162,9 +3170,9 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("ElectrumFlux")
             .setDefaultLocalName("Fluxed Electrum")
             .setChemicalFormula("The formula is too long...")
-            .setIconSet(TextureSet.SET_SHINY)
+            .setIconSet(TextureSet.SET_FLUXED)
             .setColor(Dyes.dyeYellow)
-            .setARGB(0x00ffff78)
+            .setARGB(0x00ffffff)
             .setTool(512, 3, 16.0f)
             .addDustItems()
             .addMetalItems()
