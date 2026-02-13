@@ -18,6 +18,8 @@ import gregtech.api.enums.Textures;
  * subtypes at most.
  * <p>
  * This class hosts various special types of tiered glass with not many tiers.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockGlass1 extends BlockCasingsAbstract {
 
