@@ -4,21 +4,21 @@ import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.util.DimensionHelper;
 
-public class TileEntityWormhole extends TileEntity {
+public class RenderingTileEntityWormhole extends AbstractRenderingTileEntity {
 
     public int dimIndex = 0;
 
     public double targetRadius = 0;
+
+    public RenderingTileEntityWormhole() {
+        super(1);
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -68,25 +68,6 @@ public class TileEntityWormhole extends TileEntity {
             return null;
         }
         return ModBlocks.getBlock(record.abbr());
-    }
-
-    @Override
-    public double getMaxRenderDistanceSquared() {
-        return 65536;
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound nbttagcompound = new NBTTagCompound();
-        writeToNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbttagcompound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-
-        readFromNBT(pkt.func_148857_g());
-        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
 
 }
