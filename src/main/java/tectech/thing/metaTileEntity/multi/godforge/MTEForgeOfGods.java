@@ -76,7 +76,7 @@ import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEForgeOfGodsGui;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -335,7 +335,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         }
 
-        if (data.isUpgradeActive(EE)) {
+        if (data.isUpgradeActive(END)) {
             if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 data.setRingAmount(3);
                 if (!data.isRendererDisabled()) {
@@ -378,7 +378,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (data.isUpgradeActive(CD)) {
                     maxModuleCount += 4;
                 }
-                if (data.isUpgradeActive(EE)) {
+                if (data.isUpgradeActive(END)) {
                     maxModuleCount += 4;
                 }
 

@@ -140,6 +140,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                         final NBTTagCompound tTag = new NBTTagCompound();
                         tTag.setInteger("IntSlot", i);
                         tStack.writeToNBT(tTag);
+                        if (tStack.stackSize > Byte.MAX_VALUE) {
+                            tTag.setInteger("Count", tStack.stackSize);
+                        }
                         tItemList.appendTag(tTag);
                     }
                 }
