@@ -1451,9 +1451,9 @@ tt.keyword.Computation=Computation
 tt.keyword.Problems=Problems
 tt.keyword.Efficiency=Efficiency
 #Button that allows to pass power to other machines
-tt.keyword.PowerPass=PowerPass
+tt.keyword.PowerPass=PowerPass: §9%s
 #Button that vents EM
-tt.keyword.SafeVoid=SafeVoid
+tt.keyword.SafeVoid=SafeVoid: §9%s
 tt.keyword.Parametrizer=Parametrizer
 tt.keyword.Value=Value
 tt.keyword.Input=Input
@@ -1473,7 +1473,7 @@ tt.keyphrase.Energy_Hatches=Energy Hatches
 tt.keyphrase.Probably_uses=Currently uses
 tt.keyphrase.Probably_makes=Currently generates
 tt.keyphrase.Tier_Rating=Tier Rating
-tt.keyphrase.Amp_Rating=Amp Rating
+tt.keyphrase.Amp_Rating=Amp Rating §a%s A
 tt.keyphrase.Computation_Available=Computation Available
 tt.keyphrase.Computation_Remaining=Computation Remaining
 tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes
