@@ -2770,6 +2770,25 @@ public enum ItemList implements IItemContainer {
     CompressedInputBusUIV,
     CompressedInputBusUMV,
     CompressedInputBusUXV,
+    // new controllers
+    IndustrialWireFactory,
+    IndustrialPackager,
+    IndustrialCentrifuge,
+
+    BasicCircuitBoard,
+    EnhancedCircuitBoard,
+    RefinedCircuitBoard,
+    IntricateCircuitBoard,
+
+    ControllerCircuit,
+    ReceiverCircuit,
+    SignalCircuit,
+
+    HighEnergyFlowCircuit,
+
+    RawImprintBoard,
+    ImprintBoard,
+
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,
     CircuitImprint_NanoAssembly,
