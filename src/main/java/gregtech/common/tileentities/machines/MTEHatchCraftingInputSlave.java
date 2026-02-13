@@ -82,6 +82,11 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
         if (aTimer % 100 == 0 && masterSet) {

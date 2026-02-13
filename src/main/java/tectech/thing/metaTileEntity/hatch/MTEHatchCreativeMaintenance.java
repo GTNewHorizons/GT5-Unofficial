@@ -66,6 +66,11 @@ public class MTEHatchCreativeMaintenance extends MTEHatchMaintenance {
     }
 
     @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
         aBaseMetaTileEntity.disableTicking();

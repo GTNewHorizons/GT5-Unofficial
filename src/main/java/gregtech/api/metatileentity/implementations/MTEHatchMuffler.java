@@ -87,6 +87,11 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity()
