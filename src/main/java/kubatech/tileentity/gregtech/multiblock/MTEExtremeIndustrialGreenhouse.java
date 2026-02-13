@@ -237,7 +237,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int OFFSET_V = 6;
     private static final int OFFSET_D = 0;
     private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
-    private static final Casings CASING_OLD = Casings.CleanStainlessSteelCasing;
+    private static final Casings CASING_OLD = Casings.CleanStainlessSteelMachineCasing;
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
         .addShape(
@@ -288,8 +288,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
                 .casingIndex(CASING_OLD.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement())))
-        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement()))
+                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement())))
+        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement()))
         .build();
 
     @Override
