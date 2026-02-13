@@ -553,16 +553,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                 }
 
                 if (mTickTimer > 10) {
-                    byte textureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-                        | (mRedstone ? 16 : 0)
-                        | (mLockUpgrade ? 32 : 0)
-                        | (mWorks ? 64 : 0)
-                        | (mMuffler ? 128 : 0));
-
-                    if (textureData != oldTextureData) {
-                        oldTextureData = textureData;
-                        sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
-                    }
+                    maybeSendTextureData();
 
                     byte updateData = mMetaTileEntity.getUpdateData();
 
@@ -1023,6 +1014,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
         mActive = aActive;
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onSetActive(aActive);
+            maybeSendTextureData();
+        }
+    }
+
+    private void maybeSendTextureData() {
+        byte textureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
+            | (mRedstone ? 16 : 0)
+            | (mLockUpgrade ? 32 : 0)
+            | (mWorks ? 64 : 0)
+            | (mMuffler ? 128 : 0));
+
+        if (textureData != oldTextureData) {
+            oldTextureData = textureData;
+            sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
         }
     }
 

@@ -37,7 +37,7 @@ import gregtech.api.util.GTUtility;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
-        mInventoryChanged = false;
+        mInventoryChanged = false, mTickDisabled = false;
 
     protected NBTTagCompound pendingDescriptionPacket;
 
@@ -74,6 +74,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         mIgnoreNextUnload = true;
         hasTimeStatisticsStarted = false;
         Arrays.fill(mTimeStatistics, 0);
+        mTickDisabled = true;
     }
 
     @Override
@@ -327,6 +328,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public void issueClientUpdate() {
         mSendClientData = true;
+        if (mTickDisabled) {
+            sendClientData();
+        }
     }
 
     abstract protected void sendClientData();
@@ -339,6 +343,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public void issueTileUpdate() {
         mNeedsTileUpdate = true;
+        if (mTickDisabled) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            mNeedsTileUpdate = false;
+        }
     }
 
     @Override
