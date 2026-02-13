@@ -17,7 +17,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.common.RecipeAdder;
 import tectech.TecTech;
@@ -59,7 +58,7 @@ public class TTRecipeAdder extends RecipeAdder {
             aOutput,
             assDuration,
             assEUt);
-        RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
+        TecTechRecipeMaps.TTResearchStationALRecipe recipeTT = new TecTechRecipeMaps.TTResearchStationALRecipe(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             0,
@@ -67,7 +66,10 @@ public class TTRecipeAdder extends RecipeAdder {
             aFluidInputs,
             aOutput,
             assDuration,
-            assEUt);
+            assEUt,
+            totalComputationRequired,
+            researchAmperage,
+            computationRequiredPerSec);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
@@ -199,7 +201,7 @@ public class TTRecipeAdder extends RecipeAdder {
             tAlts);
         recipeGT.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
-        GTRecipe.RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
+        TecTechRecipeMaps.TTResearchStationALRecipe recipeTT = new TecTechRecipeMaps.TTResearchStationALRecipe(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             0,
@@ -208,7 +210,10 @@ public class TTRecipeAdder extends RecipeAdder {
             aOutput,
             assDuration,
             assEUt,
-            tAlts);
+            tAlts,
+            totalComputationRequired,
+            researchAmperage,
+            computationRequiredPerSec);
         recipeTT.setPersistentHash(tPersistentHash);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
