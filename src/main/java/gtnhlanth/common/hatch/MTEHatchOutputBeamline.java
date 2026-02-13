@@ -139,4 +139,5 @@ public class MTEHatchOutputBeamline extends MTEHatchBeamlineConnector implements
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity arg0) {
         return new MTEHatchOutputBeamline(mName, mTier, mDescriptionArray, mTextures);
     }
+
 }

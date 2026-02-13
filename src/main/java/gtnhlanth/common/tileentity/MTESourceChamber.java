@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,6 +47,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
@@ -87,7 +90,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build())
             .addElement(
                 'i',
-                buildHatchAdder(MTESourceChamber.class).atLeast(InputBus)
+                buildHatchAdder(MTESourceChamber.class).atLeast(InputBus, InputHatch)
                     .casingIndex(CASING_INDEX)
                     .hint(1)
                     .build())
@@ -139,6 +142,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addInfo("Creates beams of Particles")
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addSeparator()
+            .addInfo(EnumChatFormatting.RED + "Takes 1 input bus OR 1 input hatch")
             .addInfo("NEI shows the minimum " + EnumChatFormatting.AQUA + "EU/t requirement" + EnumChatFormatting.GRAY + ", Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
             .addInfo("All recipes last for one second")
             .addInfo("This upper limit is approached asymptotically as operating power increases")
@@ -168,6 +172,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addEnergyHatch(addHintNumber(3))
             .addMaintenanceHatch(addHintNumber(3))
             .addInputBus(addHintNumber(1))
+            .addInputHatch(addHintNumber(1))
             .addOutputBus(addHintNumber(2))
             .toolTipFinisher();
         return tt;
@@ -179,6 +184,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
+
+        if (mte instanceof MTEHatchAdvancedOutputBeamline) {
+            return false;
+        }
 
         if (mte instanceof MTEHatchOutputBeamline) {
             return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
@@ -192,6 +201,8 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     public CheckRecipeResult checkProcessing() {
         ItemStack[] tItems = this.getStoredInputs()
             .toArray(new ItemStack[0]);
+        FluidStack[] tFluids = this.getStoredFluids()
+            .toArray(new FluidStack[0]);
 
         long tVoltageMaxTier = this.getMaxInputVoltage(); // Used to keep old math the same
         long tVoltageActual = GTValues.VP[(int) this.getInputVoltageTier()];
@@ -199,6 +210,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         GTRecipe tRecipe = LanthanidesRecipeMaps.sourceChamberRecipes.findRecipeQuery()
             .caching(false)
             .items(tItems)
+            .fluids(tFluids)
             .voltage(tVoltageActual)
             .find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -206,7 +218,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         SourceChamberMetadata metadata = tRecipe.getMetadata(SOURCE_CHAMBER_METADATA);
         if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
 
-        if (!tRecipe.isRecipeInputEqual(true, GTValues.emptyFluidStackArray, tItems)) {
+        if (!tRecipe.isRecipeInputEqual(true, tFluids, tItems)) {
             return CheckRecipeResultRegistry.NO_RECIPE; // Consumes input item
         }
 
@@ -377,7 +389,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
         this.mOutputBeamline.clear(); // Necessary due to the nature of the beamline hatch adder
 
         return checkPiece("sc", 2, 4, 0) && this.mMaintenanceHatches.size() == 1
-            && this.mInputBusses.size() == 1
+            && (this.mInputBusses.size() == 1 || this.mInputHatches.size() == 1)
             && this.mOutputBusses.size() == 1
             && this.mOutputBeamline.size() == 1
             && this.mEnergyHatches.size() == 1;
