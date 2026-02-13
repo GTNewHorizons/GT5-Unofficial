@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 
 import cpw.mods.fml.relauncher.Side;
@@ -38,6 +39,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.misc.DrillingLogicDelegate;
 
 public class MTEPump extends MTEBasicMachine {
@@ -69,6 +71,22 @@ public class MTEPump extends MTEBasicMachine {
 
     private boolean mDisallowRetract = true;
 
+    private static String[] MTEPumpTooltip(int aTier) {
+        return new String[] { StatCollector.translateToLocal("GT5U.tooltip.pump.0"),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.pump.1",
+                TooltipHelper.euText(getEuUsagePerTier(aTier)),
+                NumberFormatUtil.formatNumber(GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier)))),
+            StatCollector.translateToLocalFormatted(
+                "GT5U.tooltip.pump.2",
+                NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1),
+                NumberFormatUtil.formatNumber(getMaxDistanceForTier(aTier) * 2 + 1)),
+            StatCollector.translateToLocal("GT5U.tooltip.pump.3"),
+            StatCollector.translateToLocal("GT5U.tooltip.pump.4"),
+            StatCollector.translateToLocal("GT5U.tooltip.pump.5"),
+            StatCollector.translateToLocal("GT5U.tooltip.pump.6") };
+    }
+
     public MTEPump(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -76,16 +94,7 @@ public class MTEPump extends MTEBasicMachine {
             aNameRegional,
             aTier,
             1,
-            new String[] { "The best way to empty Oceans!",
-                getEuUsagePerTier(aTier) + " EU/operation, "
-                    + GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))
-                    + " sec per bucket, no stuttering",
-                "Maximum pumping area: " + (getMaxDistanceForTier(aTier) * 2 + 1)
-                    + "x"
-                    + (getMaxDistanceForTier(aTier) * 2 + 1),
-                "Use Screwdriver to regulate pumping area", "Use Soft Mallet to disable and retract the pipe",
-                "Disable the bottom pump to retract the pipe!",
-                "Use Soldering Iron to auto retract the pipe when hitting a rock", },
+            MTEPumpTooltip(aTier),
             2,
             2,
             TextureFactory.of(
