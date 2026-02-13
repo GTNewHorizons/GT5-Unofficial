@@ -146,6 +146,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         fluidStack -> mFluidOut = fluidStack,
         this::getCapacity);
 
+    public FluidStackTank getFluidOutputTank() {
+        return this.fluidOutputTank;
+    }
+
     /**
      * Registers machine with single-line description.
      *

@@ -335,7 +335,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
             }
         }
 
-        if (data.isUpgradeActive(EE)) {
+        if (data.isUpgradeActive(END)) {
             if (checkPiece(STRUCTURE_PIECE_THIRD_RING, 47, 13, -76)) {
                 data.setRingAmount(3);
                 if (!data.isRendererDisabled()) {
@@ -378,7 +378,7 @@ public class MTEForgeOfGods extends TTMultiblockBase implements IConstructable, 
                 if (data.isUpgradeActive(CD)) {
                     maxModuleCount += 4;
                 }
-                if (data.isUpgradeActive(EE)) {
+                if (data.isUpgradeActive(END)) {
                     maxModuleCount += 4;
                 }
 

@@ -605,6 +605,21 @@ item.GTPP.air_filter.name.t2=Воздушный фильтр [Тир 2]
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
 
+GT5U.tooltip.pump.0=Лучший способ опустошить океаны!
+GT5U.tooltip.pump.1=§e%d§7 EU/операция, §f%d§7 сек на ведро
+GT5U.tooltip.pump.2=Макс. площадь выкачивания: §f%dx%d
+GT5U.tooltip.pump.3=Используйте отвёртку, чтобы отрегулировать область выкачивания
+GT5U.tooltip.pump.4=Используйте киянку для отключения и втянуть трубу
+GT5U.tooltip.pump.5=Отключите нижний насос, чтобы втягивать трубу!
+GT5U.tooltip.pump.6=Используйте паяльник для авто. втягивания трубы при ударе о камень
+
+GT5U.tooltip.miner.0=Копаем руду вместо тебя
+GT5U.tooltip.miner.1=Используйте отвёртку, чтобы регулировать рабочую область
+GT5U.tooltip.miner.2=Используйте киянку для отключения и втянуть трубу
+GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
+GT5U.tooltip.miner.4=Макс. рабочая площадь: §f%dx%d
+GT5U.tooltip.miner.5=Бонус удачи §f%d§7 к маленьким рудам
+
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
 GTPP.tooltip.fish_trap.1=Can also be placed beside up to 4 other fish traps
@@ -620,11 +635,6 @@ GTPP.tooltip.circuit_table.2=Default is used to select slot for auto-insertion
 GTPP.tooltip.decayables_chest.0=Chest which holds radioactive materials
 GTPP.tooltip.decayables_chest.1=Items which decay will tick while inside
 GTPP.tooltip.decayables_chest.2=Place with right-click
-
-# Butterfly Killer
-GTPP.tooltip.butterfly_killer.0=Убивает бабочек, летучих мышей и других вредителей в лесу
-GTPP.tooltip.butterfly_killer.1=Используйте Формальдегид или Синильную кислоту
-GTPP.tooltip.butterfly_killer.2=Будьте терпеливы к своим соседям
 
 # Volumetric Flask Setter
 GTPP.tooltip.volumetric_flask_setter.0=Простая конфигурация колбы
