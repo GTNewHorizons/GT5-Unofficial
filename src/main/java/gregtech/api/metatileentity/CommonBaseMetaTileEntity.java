@@ -241,7 +241,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     protected void addProfilingInformation(List<String> tList) {
-        if (hasTimeStatisticsStarted) {
+        if (mTickDisabled) {
+            tList.add("Tick Disabled");
+        } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
             int amountOfZero = 0;
