@@ -28,6 +28,7 @@ import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.items.GTGenericBlock;
@@ -37,6 +38,8 @@ import gregtech.common.render.GTRendererCasing;
 
 /**
  * The base class for casings. Casings are the blocks that are mainly used to build multiblocks.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public abstract class BlockCasingsAbstract extends GTGenericBlock
     implements gregtech.api.interfaces.IHasIndexedTexture {
@@ -163,7 +166,7 @@ public abstract class BlockCasingsAbstract extends GTGenericBlock
 
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return gregtech.api.enums.Dyes.MACHINE_METAL.toInt();
+        return Dyes.MACHINE_METAL.toInt();
     }
 
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advancedTooltips) {

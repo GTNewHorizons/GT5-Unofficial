@@ -70,6 +70,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
@@ -86,7 +87,7 @@ import com.google.common.collect.HashBiMap;
 
 import bartworks.API.WerkstoffAdderRegistry;
 import bartworks.MainMod;
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import bartworks.system.material.gtenhancement.GTMetaItemEnhancer;
 import bartworks.system.material.processingLoaders.AdditionalRecipes;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -828,6 +829,9 @@ public class WerkstoffLoader {
         // No Byproducts
         Pair.of(Materials.Platinum, 1),
         Pair.of(Materials.Stone, 2));
+    // TODO: If there is a moment where we are happy with breaking everyone's platline, change Aqua Regia recipes to
+    // satisfy Chem
+    // TODO: Balance with formula (HCl)3(HNO3) and then add the correct formula to the material
     public static final Werkstoff AquaRegia = new Werkstoff(
         new short[] { 0xff, 0xb1, 0x32 },
         "Aqua Regia",
@@ -836,10 +840,7 @@ public class WerkstoffLoader {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         48,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.HydrochloricAcid, 3),
-        Pair.of(Materials.NitricAcid, 1));
+        TextureSet.SET_FLUID);
     public static final Werkstoff PTResidue = new Werkstoff(
         new short[] { 0x64, 0x63, 0x2E },
         "Platinum Residue",
@@ -1757,7 +1758,7 @@ public class WerkstoffLoader {
                 pos++;
             }
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
-            BWMetaItems.init();
+            CircuitPartsItem.init();
 
             if (BetterLoadingScreen.isModLoaded()) {
                 CLSCompat.disableCls();
@@ -2035,6 +2036,25 @@ public class WerkstoffLoader {
             for (IWerkstoffRunnable registration : registrations) {
                 registration.run(werkstoff);
             }
+        }
+        addOreByProductsForBridgeMaterials();
+    }
+
+    private static void addOreByProductsForBridgeMaterials() {
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            Materials bridgeMaterial = werkstoff.getBridgeMaterial();
+            List<Materials> mOreByProducts = bridgeMaterial.mOreByProducts;
+            if (mOreByProducts.size() > 0) continue; // Not to add if there're already oreByProducts.
+
+            int size = werkstoff.getNoOfByProducts();
+            for (int i = 0; i < size; i++) {
+                ISubTagContainer material = werkstoff.getOreByProductRaw(i); // At least not duplicate now.
+                if (material instanceof Materials) mOreByProducts.add(((Materials) material));
+                else if (material instanceof Werkstoff) mOreByProducts.add(((Werkstoff) material).getBridgeMaterial());
+                else throw new ClassCastException();
+            }
+            if (size < 3) mOreByProducts.add(werkstoff.getBridgeMaterial());
+            // So it should be the same to Materials' mOreByProducts.
         }
     }
 

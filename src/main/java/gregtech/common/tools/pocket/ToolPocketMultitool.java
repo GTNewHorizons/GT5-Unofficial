@@ -3,6 +3,7 @@ package gregtech.common.tools.pocket;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -24,7 +25,9 @@ public class ToolPocketMultitool extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.POCKET_MULTITOOL_CLOSED : Textures.ItemIcons.VOID;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_pocketMultiToolClosed]
+            : Textures.ItemIcons.VOID;
     }
 
     @Override

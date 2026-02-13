@@ -1,24 +1,6 @@
 // Add any additional repositories for your dependencies here
 
 repositories {
-    mavenLocal()
-    exclusiveContent {
-        forRepository {
-            ivy {
-                name = 'CoreTweaks releases'
-                url = 'https://github.com/makamys/CoreTweaks/releases/download/'
-                patternLayout {
-                    artifact '[revision]/[module]-1.7.10-[revision]+nomixin(-[classifier])(.[ext])'
-                }
-                metadataSources {
-                    artifact()
-                }
-            }
-        }
-        filter {
-            includeGroup('CoreTweaks')
-        }
-    }
     ivy {
         url = 'https://files.vexatos.com/'
         patternLayout {

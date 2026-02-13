@@ -30,7 +30,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -42,7 +41,7 @@ public class RecipesMachinesMulti {
         advHeatExchanger();
         distillus();
         cryoFreezer();
-        vulcanus();
+        volcanus();
         steamMultis();
 
         multiArcFurnace();
@@ -62,7 +61,6 @@ public class RecipesMachinesMulti {
         multiWiremill();
         multiSifter();
         multiThermalCentrifuge();
-        multiWiremill();
         multiWasher();
         multiCutter();
         multiExtruder();
@@ -289,8 +287,16 @@ public class RecipesMachinesMulti {
                 OreDictNames.craftingPiston, 'G', MaterialsAlloy.TUMBAGA.getGear(1), 'F',
                 MaterialsAlloy.TUMBAGA.getFrameBox(1) });
 
-        // Steam Hearth
         if (EtFuturumRequiem.isModLoaded()) {
+            // Steam Fuser
+            GTModHandler.addCraftingRecipe(
+                GregtechItemList.Controller_SteamAlloySmelterMulti.get(1),
+                new Object[] { "BTB", "FUF", "BLB", 'B', ItemList.Casing_BronzePlatedBricks.get(1L), 'T',
+                    GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 1L), 'F',
+                    getModItem(EtFuturumRequiem.ID, "blast_furnace", 1, 0), 'U', MaterialsAlloy.TUMBAGA.getFrameBox(1),
+                    'L', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1L) });
+
+            // Steam Hearth
             GTModHandler.addCraftingRecipe(
                 GregtechItemList.Controller_SteamFurnaceMulti.get(1),
                 new Object[] { "RGR", "YBZ", "WFW", 'R', OrePrefixes.plateDouble.get(Materials.Bronze), 'G',
@@ -303,7 +309,7 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Hatch_Input_Steam.get(1),
             new Object[] { "PBP", "PTP", "PBP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'B',
-                OrePrefixes.pipeMedium.get(Materials.Bronze), 'T', GregtechItemList.GTFluidTank_ULV });
+                OrePrefixes.pipeMedium.get(Materials.Bronze), 'T', GregtechItemList.GTFluidTank_ULV.get(1) });
 
         // Steam Input Bus
         GTModHandler.addCraftingRecipe(
@@ -314,19 +320,13 @@ public class RecipesMachinesMulti {
 
         // Steam Output Bus
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Hatch_Input_Bus_Steam.get(1),
+            GregtechItemList.Hatch_Output_Bus_Steam.get(1),
             new Object[] { "BSB", "THT", "BSB", 'B', OrePrefixes.plate.get(Materials.Bronze), 'T',
                 MaterialsAlloy.TUMBAGA.getPlate(1), 'S', OrePrefixes.plate.get(Materials.Tin), 'H',
                 new ItemStack(Blocks.hopper) });
     }
 
     public static void multiCentrifuge() {
-        // Industrial Centrifuge
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_Centrifuge.get(1),
-            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitData", 'B',
-                OrePrefixes.pipeHuge.get(Materials.StainlessSteel), 'C', MaterialsAlloy.MARAGING250.getPlate(1), 'D',
-                ItemList.Machine_EV_Centrifuge, 'E', MaterialsAlloy.INCONEL_792.getPlate(1), 'F', ItemList.Casing_EV });
 
         // Centrifuge Casing
         GTModHandler.addCraftingRecipe(
@@ -342,7 +342,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Centrifuge1.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -367,7 +367,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CokeOven.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Heat Resistant Coke Oven Casing
@@ -400,7 +400,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Electrolyzer.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Electrolyzer
@@ -427,14 +427,16 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MaterialPress.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Material Press
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_PlatePress.get(1),
-            new Object[] { "PCP", "HMH", "PCP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'C', "circuitData", 'H',
-                ItemList.Casing_EV, 'M', ItemList.Machine_EV_Bender });
+            new Object[] { "PGP", "MFN", "PRP", 'P', OrePrefixes.plate.get(Materials.Titanium), 'G',
+                OrePrefixes.gearGt.get(Materials.Titanium), 'R', MaterialsAlloy.TANTALLOY_60.getGear(1), 'F',
+                OrePrefixes.frameGt.get(Materials.Titanium), 'M', ItemList.Machine_EV_Press, 'N',
+                ItemList.Machine_EV_Bender });
     }
 
     private static void multiMacerator() {
@@ -454,7 +456,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MacerationStack.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Maceration Stack
@@ -485,14 +487,9 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WireFactory.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Industrial Wire Factory
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_WireFactory.get(1),
-            new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
-                ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
     }
 
     private static void multiMassFabricator() {
@@ -516,7 +513,7 @@ public class RecipesMachinesMulti {
                 MaterialsAlloy.INCONEL_690.getFrameBox(1))
             .itemOutputs(GregtechItemList.Casing_MatterFab.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Matter Generation Coil
@@ -535,7 +532,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_MatterGen.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Research on Containment Fields
@@ -597,7 +594,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Sifter.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Sieve Grate
@@ -613,7 +610,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_SifterGrate.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -631,7 +628,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_ThermalCentrifuge.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Large Thermal Refinery
@@ -657,7 +654,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_WashPlant.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Ore Washing Plant
@@ -683,7 +680,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_CuttingFactoryFrame.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Cutting Factory
@@ -708,7 +705,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Extruder.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Industrial Extrusion Machine
@@ -742,7 +739,7 @@ public class RecipesMachinesMulti {
                 ItemList.Hatch_Input_IV.get(1) });
     }
 
-    private static void vulcanus() {
+    private static void volcanus() {
         // Volcanus Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Adv_BlastFurnace.get(1),
@@ -763,7 +760,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Adv_BlastFurnace.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
         // Volcanus
@@ -790,7 +787,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Hatch_Input_Pyrotheum.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -819,14 +816,9 @@ public class RecipesMachinesMulti {
                 ItemList.Conveyor_Module_HV.get(1))
             .itemOutputs(GregtechItemList.Casing_AmazonWarehouse.get(1L))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
 
-        // Amazon Warehousing Depot
-        GTModHandler.addCraftingRecipe(
-            GregtechItemList.Amazon_Warehouse_Controller.get(1),
-            new Object[] { "DCD", "PMP", "ODO", 'D', GregtechItemList.Casing_AmazonWarehouse, 'C', "circuitElite", 'P',
-                ItemList.Electric_Piston_IV, 'M', ItemList.Machine_IV_Boxinator, 'O', ItemList.Conveyor_Module_IV });
     }
 
     private static void multiMixer() {
@@ -851,7 +843,7 @@ public class RecipesMachinesMulti {
             .circuit(1)
             .itemOutputs(GregtechItemList.Casing_Multi_Use.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(assemblerRecipes);
     }
 
@@ -985,7 +977,7 @@ public class RecipesMachinesMulti {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Casing_Refinery_Structural.get(4),
-                new ItemStack(ModItems.itemCircuitLFTR, 1),
+                GregtechItemList.LFTRControlCircuit.get(1),
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Platinum, 16),
                 GregtechItemList.TransmissionComponent_IV.get(2),
                 GregtechItemList.Gregtech_Computer_Cube.get(1))
