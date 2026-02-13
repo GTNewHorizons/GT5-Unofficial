@@ -1805,7 +1805,7 @@ GT5U.item.toolbox.tooltip.select_tool=%s: Select active tool
 GT5U.item.toolbox.tooltip.deselect_tool=Sneak-%s: Deselect active tool
 GT5U.item.toolbox.tooltip.open_toolbox=%s: Open toolbox
 
-GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic engineering journey.
+GT5U.item.toolbox.byline.closed=Your stalwart ally for an epic\n §oengineering journey.
 # The tool-specific bylines are pretty much all jokes. Accuracy in translation isn't important.
 GT5U.item.toolbox.byline.wrench=The solution? Use a machine. And if\n §othat don't work? Use more machine.
 # Translator note: A horrible English pun. "Wire" -> "Why are". Don't feel obligated to preserve it ;)
