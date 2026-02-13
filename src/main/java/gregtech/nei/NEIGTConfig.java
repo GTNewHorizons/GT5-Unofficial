@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 
-import bartworks.system.material.CircuitGeneration.BWMetaItems;
+import bartworks.system.material.CircuitGeneration.CircuitPartsItem;
 import codechicken.lib.config.ConfigTagParent;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.SearchField;
@@ -210,7 +210,7 @@ public class NEIGTConfig implements IConfigureNEI {
             new HandlerInfo.Builder(CAL_IMPRINT_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
                 .setMaxRecipesPerPage(100)
                 .setDisplayStack(
-                    BWMetaItems.getCircuitParts()
+                    CircuitPartsItem.getCircuitParts()
                         .getStack(0))
                 .build());
     }

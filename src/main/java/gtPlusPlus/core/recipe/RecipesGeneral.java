@@ -175,20 +175,6 @@ public class RecipesGeneral {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        // Pest Killer
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Casing_LV.get(1),
-                ItemList.Pump_MV.get(1),
-                MaterialsAlloy.EGLIN_STEEL.getPlate(4),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2))
-            .circuit(16)
-            .itemOutputs(GregtechItemList.PestKiller.get(1))
-            .fluidInputs(GTModHandler.getHotWater(500))
-            .duration(1 * MINUTES)
-            .eut(TierEU.RECIPE_LV / 2)
-            .addTo(assemblerRecipes);
-
         addCompressedCactusCharcoal();
         addCompressedCactusCoke();
         addCompressedSugarCharcoal();
