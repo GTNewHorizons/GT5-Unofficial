@@ -87,7 +87,7 @@ public class MTEIndustrialCentrifugeLegacy extends GTPPMultiBlockBase<MTEIndustr
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addDeprecatedLine("CHECK NEI TO FIND NEW CONTROLLER")
+            .addStructureDeprecatedLine()
             .addBulkMachineInfo(6, 2.25F, 0.9F)
             .addInfo("Disable animations with a screwdriver")
             .addPollutionAmount(getPollutionPerSecond(null))

@@ -626,6 +626,21 @@ item.GTPP.air_filter.name.t2=Air Filter [Tier 2]
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
 
+GT5U.tooltip.pump.0=The best way to empty Oceans!
+GT5U.tooltip.pump.1=§e%d§7 EU/operation, §f%d§7 sec per bucket, no stuttering
+GT5U.tooltip.pump.2=Maximum pumping area: §f%dx%d
+GT5U.tooltip.pump.3=Use Screwdriver to regulate pumping area
+GT5U.tooltip.pump.4=Use Soft Mallet to disable and retract the pipe
+GT5U.tooltip.pump.5=Disable the bottom pump to retract the pipe!
+GT5U.tooltip.pump.6=Use Soldering Iron to auto retract the pipe when hitting a rock
+
+GT5U.tooltip.miner.0=Digging ore instead of you
+GT5U.tooltip.miner.1=Use Screwdriver to regulate work area
+GT5U.tooltip.miner.2=Use Soft Mallet to disable and retract the pipe
+GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
+GT5U.tooltip.miner.4=Maximum work area: §f%dx%d
+GT5U.tooltip.miner.5=Small ore fortune bonus of §f%d
+
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
 GTPP.tooltip.fish_trap.1=Can also be placed beside up to 4 other fish traps
@@ -830,6 +845,9 @@ GT5U.MBTT.BoroGlassAny=Borosilicate Glass (any, mixed)
 GT5U.MBTT.BoroGlassTiered=Borosilicate Glass (any)
 GT5U.MBTT.ConfigMenu=Configuration Menu
 GT5U.MBTT.PerfectOC=Machine does not lose efficiency when overclocked
+GT5U.MBTT.Deprecated=§4DEPRECATED - %s
+GT5U.MBTT.Deprecated.Removal=Controller will be removed in next major update!
+GT5U.MBTT.Deprecated.NEI=§4Check NEI for new Controller and conversion recipe
 GT5U.MBTT.PCB.Tier=PCB Factory Tier
 GT5U.MBTT.PCB.Bio=Biochamber
 GT5U.MBTT.PCB.RotBio=Bio Rotation
