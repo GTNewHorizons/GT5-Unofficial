@@ -42,7 +42,6 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTUtility.formatShortenedLong;
 import static gregtech.api.util.GTUtility.truncateText;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static gregtech.api.util.MultiblockTooltipBuilder.ContributorList.newList;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 
 import java.io.IOException;
@@ -237,7 +236,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     private static final int OFFSET_V = 6;
     private static final int OFFSET_D = 0;
     private static final String STRUCTURE_PIECE_MAIN_OLD = "mainold";
-    private static final Casings CASING_OLD = Casings.CleanStainlessSteelCasing;
+    private static final Casings CASING_OLD = Casings.CleanStainlessSteelMachineCasing;
     private static final IStructureDefinition<MTEExtremeIndustrialGreenhouse> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEExtremeIndustrialGreenhouse>builder()
         .addShape(
@@ -288,8 +287,8 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                 .atLeast(InputBus, OutputBus, Energy, Maintenance, InputHatch)
                 .casingIndex(CASING_OLD.textureId)
                 .hint(1)
-                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement())))
-        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelCasing.asElement()))
+                .buildAndChain(onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement())))
+        .addElement('C', onElementPass(t -> t.mCasing++, Casings.CleanStainlessSteelMachineCasing.asElement()))
         .build();
 
     @Override
@@ -390,9 +389,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addOutputBus("Any casing", 1)
             .addInputHatch("Any casing", 1)
             .addEnergyHatch("Any casing", 1)
-            .toolTipFinisher(
-                newList().addAuthors(GTValues.AuthorKuba)
-                    .addStructureAuthors("HydroCN"));
+            .addAuthors(GTValues.AuthorKuba)
+            .addStructureAuthors("HydroCN")
+            .toolTipFinisher();
         return tt;
     }
 
