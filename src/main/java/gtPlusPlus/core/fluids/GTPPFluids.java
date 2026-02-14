@@ -62,6 +62,7 @@ public class GTPPFluids {
 
     // General Chem
     public static Fluid Nitrobenzene;
+    public static Fluid Aniline;
     public static Fluid BoricAcid;
     public static Fluid Polyurethane;
     public static Fluid Cyclohexane;
@@ -272,6 +273,8 @@ public class GTPPFluids {
 
         Nitrobenzene = FluidUtils
             .generateFluidNoPrefix("nitrobenzene", "Nitrobenzene", 278, new short[] { 70, 50, 40, 100 }, true);
+
+        Aniline = FluidUtils.generateFluidNoPrefix("aniline", "Aniline", 266, new short[] { 100, 100, 30, 100 }, true);
 
         BoricAcid = FluidUtils
             .generateFluidNoPrefix("boricacid", "Boric Acid", 278, new short[] { 90, 30, 120, 100 }, true);

@@ -1,9 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GalaxySpace;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
@@ -15,7 +13,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.core.material.MaterialMisc.SODIUM_NITRATE;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -26,7 +23,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import bartworks.system.material.WerkstoffLoader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -38,7 +34,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalRecipes implements Runnable {
@@ -5396,29 +5391,29 @@ public class ChemicalRecipes implements Runnable {
 
         // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
         // TODO: Remove
-//        GTValues.RA.stdBuilder()
-//            .circuit(1)
-//            .fluidInputs(
-//                new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 1_000),
-//                new FluidStack(FluidRegistry.getFluid("aniline"), 2_000),
-//                Materials.HydrochloricAcid.getFluid(1_000))
-//            .fluidOutputs(Materials.DiaminodiphenylmethanMixture.getFluid(1_000))
-//            .duration(60 * SECONDS)
-//            .eut(TierEU.RECIPE_EV)
-//            .addTo(multiblockChemicalReactorRecipes);
+        // GTValues.RA.stdBuilder()
+        // .circuit(1)
+        // .fluidInputs(
+        // new FluidStack(FluidRegistry.getFluid("fluid.formaldehyde"), 1_000),
+        // new FluidStack(FluidRegistry.getFluid("aniline"), 2_000),
+        // Materials.HydrochloricAcid.getFluid(1_000))
+        // .fluidOutputs(Materials.DiaminodiphenylmethanMixture.getFluid(1_000))
+        // .duration(60 * SECONDS)
+        // .eut(TierEU.RECIPE_EV)
+        // .addTo(multiblockChemicalReactorRecipes);
 
         // C6H5NO2 + 6H =Pd= C6H7N + 2H2O
         // TODO: Remove
-//        GTValues.RA.stdBuilder()
-//            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
-//            .circuit(1)
-//            .fluidInputs(
-//                new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000),
-//                Materials.Hydrogen.getGas(54_000))
-//            .fluidOutputs(Materials.Water.getFluid(18_000), new FluidStack(FluidRegistry.getFluid("aniline"), 9_000))
-//            .duration(45 * SECONDS)
-//            .eut(TierEU.RECIPE_EV)
-//            .addTo(multiblockChemicalReactorRecipes);
+        // GTValues.RA.stdBuilder()
+        // .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1))
+        // .circuit(1)
+        // .fluidInputs(
+        // new FluidStack(FluidRegistry.getFluid("nitrobenzene"), 9000),
+        // Materials.Hydrogen.getGas(54_000))
+        // .fluidOutputs(Materials.Water.getFluid(18_000), new FluidStack(FluidRegistry.getFluid("aniline"), 9_000))
+        // .duration(45 * SECONDS)
+        // .eut(TierEU.RECIPE_EV)
+        // .addTo(multiblockChemicalReactorRecipes);
 
         // C6H6 + HNO3 =H2SO4= C6H5NO2 + H2O
 
