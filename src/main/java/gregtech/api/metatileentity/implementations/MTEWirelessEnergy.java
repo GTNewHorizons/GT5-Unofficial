@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
@@ -10,15 +9,17 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import net.minecraft.util.EnumChatFormatting;
-
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 import gregtech.common.misc.WirelessEnergyHatchManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
@@ -37,9 +38,9 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-            EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-            EnumChatFormatting.GRAY + "Does not explode in rain!", AuthorColen };
+        return GTSplit.splitLocalizedWithSuffix(
+            "gt.blockmachines.energy_hatch_wireless.desc",
+            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen));
     }
 
     @Override

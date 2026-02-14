@@ -7,7 +7,6 @@ import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gregtech.api.util.GTUtility.formatStringSafe;
 
 import java.util.ArrayList;
 
@@ -29,6 +28,7 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
 
@@ -62,11 +62,12 @@ public class GregtechConduits {
             this.rgba = new short[] { (short) r, (short) g, (short) b, (short) a };
         }
 
-        public String getLocalizedNameForItem(String aFormat) {
-            return formatStringSafe(
-                aFormat.replace("%s", "%temp")
-                    .replace("%material", "%s"),
-                this.defaultLocalName).replace("%temp", "%s");
+        public String getLocalizedMaterialKey() {
+            return MaterialUtils.getMaterialLocalizedNameKey(defaultLocalName);
+        }
+
+        public Material getMaterial() {
+            return Material.mMaterialCache.get(defaultLocalName.toLowerCase());
         }
     }
 
@@ -131,7 +132,7 @@ public class GregtechConduits {
             new GTPPMTECable(
                 aStartID + 0,
                 "wire." + aMaterial.mName.toLowerCase() + ".01",
-                "1x " + aMaterial.mDefaultLocalName + " Wire",
+                "gt.oreprefix.1x_material_wire",
                 0.125F,
                 aMaterial,
                 aLoss,
@@ -146,7 +147,7 @@ public class GregtechConduits {
             new GTPPMTECable(
                 aStartID + 1,
                 "wire." + aMaterial.mName.toLowerCase() + ".02",
-                "2x " + aMaterial.mDefaultLocalName + " Wire",
+                "gt.oreprefix.2x_material_wire",
                 0.25F,
                 aMaterial,
                 aLoss,
@@ -161,7 +162,7 @@ public class GregtechConduits {
             new GTPPMTECable(
                 aStartID + 2,
                 "wire." + aMaterial.mName.toLowerCase() + ".04",
-                "4x " + aMaterial.mDefaultLocalName + " Wire",
+                "gt.oreprefix.4x_material_wire",
                 0.375F,
                 aMaterial,
                 aLoss,
@@ -176,7 +177,7 @@ public class GregtechConduits {
             new GTPPMTECable(
                 aStartID + 3,
                 "wire." + aMaterial.mName.toLowerCase() + ".08",
-                "8x " + aMaterial.mDefaultLocalName + " Wire",
+                "gt.oreprefix.8x_material_wire",
                 0.50F,
                 aMaterial,
                 aLoss,
@@ -191,7 +192,7 @@ public class GregtechConduits {
             new GTPPMTECable(
                 aStartID + 4,
                 "wire." + aMaterial.mName.toLowerCase() + ".12",
-                "12x " + aMaterial.mDefaultLocalName + " Wire",
+                "gt.oreprefix.12x_material_wire",
                 0.625F,
                 aMaterial,
                 aLoss,
@@ -206,7 +207,7 @@ public class GregtechConduits {
             new GTPPMTECable(
                 aStartID + 5,
                 "wire." + aMaterial.mName.toLowerCase() + ".16",
-                "16x " + aMaterial.mDefaultLocalName + " Wire",
+                "gt.oreprefix.16x_material_wire",
                 0.75F,
                 aMaterial,
                 aLoss,
@@ -222,7 +223,7 @@ public class GregtechConduits {
                 new GTPPMTECable(
                     aStartID + 6,
                     "cable." + aMaterial.mName.toLowerCase() + ".01",
-                    "1x " + aMaterial.mDefaultLocalName + " Cable",
+                    "gt.oreprefix.1x_material_cable",
                     0.25F,
                     aMaterial,
                     aLossInsulated,
@@ -237,7 +238,7 @@ public class GregtechConduits {
                 new GTPPMTECable(
                     aStartID + 7,
                     "cable." + aMaterial.mName.toLowerCase() + ".02",
-                    "2x " + aMaterial.mDefaultLocalName + " Cable",
+                    "gt.oreprefix.2x_material_cable",
                     0.375F,
                     aMaterial,
                     aLossInsulated,
@@ -252,7 +253,7 @@ public class GregtechConduits {
                 new GTPPMTECable(
                     aStartID + 8,
                     "cable." + aMaterial.mName.toLowerCase() + ".04",
-                    "4x " + aMaterial.mDefaultLocalName + " Cable",
+                    "gt.oreprefix.4x_material_cable",
                     0.5F,
                     aMaterial,
                     aLossInsulated,
@@ -267,7 +268,7 @@ public class GregtechConduits {
                 new GTPPMTECable(
                     aStartID + 9,
                     "cable." + aMaterial.mName.toLowerCase() + ".08",
-                    "8x " + aMaterial.mDefaultLocalName + " Cable",
+                    "gt.oreprefix.8x_material_cable",
                     0.625F,
                     aMaterial,
                     aLossInsulated,
@@ -282,7 +283,7 @@ public class GregtechConduits {
                 new GTPPMTECable(
                     aStartID + 10,
                     "cable." + aMaterial.mName.toLowerCase() + ".12",
-                    "12x " + aMaterial.mDefaultLocalName + " Cable",
+                    "gt.oreprefix.12x_material_cable",
                     0.75F,
                     aMaterial,
                     aLossInsulated,
@@ -297,7 +298,7 @@ public class GregtechConduits {
                 new GTPPMTECable(
                     aStartID + 11,
                     "cable." + aMaterial.mName.toLowerCase() + ".16",
-                    "16x " + aMaterial.mDefaultLocalName + " Cable",
+                    "gt.oreprefix.16x_material_cable",
                     0.875f,
                     aMaterial,
                     aLossInsulated,
@@ -324,188 +325,189 @@ public class GregtechConduits {
         final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable,
         final boolean aAutoInsulated) {
         Logger.WARNING(
-            "Gregtech5u Content | Registered " + aMaterial.getLocalizedName() + " as a new material for Wire & Cable.");
+            "Gregtech5u Content | Registered " + aMaterial.getDefaultLocalName()
+                + " as a new material for Wire & Cable.");
         registerOre(
             OrePrefixes.wireGt01,
             aMaterial,
             new GTPPMTECable(
                 aStartID + 0,
-                "wire." + aMaterial.getLocalizedName()
+                "wire." + aMaterial.getDefaultLocalName()
                     .toLowerCase() + ".01",
-                "1x " + aMaterial.getLocalizedName() + " Wire",
+                "gt.oreprefix.1x_material_wire",
                 0.125F,
                 aLoss,
                 1L * aAmperage,
                 aVoltage,
                 false,
                 !aAutoInsulated,
-                aMaterial.getRGBA()).getStackForm(1L));
+                aMaterial).getStackForm(1L));
         registerOre(
             OrePrefixes.wireGt02,
             aMaterial,
             new GTPPMTECable(
                 aStartID + 1,
-                "wire." + aMaterial.getLocalizedName()
+                "wire." + aMaterial.getDefaultLocalName()
                     .toLowerCase() + ".02",
-                "2x " + aMaterial.getLocalizedName() + " Wire",
+                "gt.oreprefix.2x_material_wire",
                 0.25F,
                 aLoss,
                 2L * aAmperage,
                 aVoltage,
                 false,
                 !aAutoInsulated,
-                aMaterial.getRGBA()).getStackForm(1L));
+                aMaterial).getStackForm(1L));
         registerOre(
             OrePrefixes.wireGt04,
             aMaterial,
             new GTPPMTECable(
                 aStartID + 2,
-                "wire." + aMaterial.getLocalizedName()
+                "wire." + aMaterial.getDefaultLocalName()
                     .toLowerCase() + ".04",
-                "4x " + aMaterial.getLocalizedName() + " Wire",
+                "gt.oreprefix.4x_material_wire",
                 0.375F,
                 aLoss,
                 4L * aAmperage,
                 aVoltage,
                 false,
                 !aAutoInsulated,
-                aMaterial.getRGBA()).getStackForm(1L));
+                aMaterial).getStackForm(1L));
         registerOre(
             OrePrefixes.wireGt08,
             aMaterial,
             new GTPPMTECable(
                 aStartID + 3,
-                "wire." + aMaterial.getLocalizedName()
+                "wire." + aMaterial.getDefaultLocalName()
                     .toLowerCase() + ".08",
-                "8x " + aMaterial.getLocalizedName() + " Wire",
+                "gt.oreprefix.8x_material_wire",
                 0.50F,
                 aLoss,
                 8L * aAmperage,
                 aVoltage,
                 false,
                 !aAutoInsulated,
-                aMaterial.getRGBA()).getStackForm(1L));
+                aMaterial).getStackForm(1L));
         registerOre(
             OrePrefixes.wireGt12,
             aMaterial,
             new GTPPMTECable(
                 aStartID + 4,
-                "wire." + aMaterial.getLocalizedName()
+                "wire." + aMaterial.getDefaultLocalName()
                     .toLowerCase() + ".12",
-                "12x " + aMaterial.getLocalizedName() + " Wire",
+                "gt.oreprefix.12x_material_wire",
                 0.625F,
                 aLoss,
                 12L * aAmperage,
                 aVoltage,
                 false,
                 !aAutoInsulated,
-                aMaterial.getRGBA()).getStackForm(1L));
+                aMaterial).getStackForm(1L));
         registerOre(
             OrePrefixes.wireGt16,
             aMaterial,
             new GTPPMTECable(
                 aStartID + 5,
-                "wire." + aMaterial.getLocalizedName()
+                "wire." + aMaterial.getDefaultLocalName()
                     .toLowerCase() + ".16",
-                "16x " + aMaterial.getLocalizedName() + " Wire",
+                "gt.oreprefix.16x_material_wire",
                 0.75F,
                 aLoss,
                 16L * aAmperage,
                 aVoltage,
                 false,
                 !aAutoInsulated,
-                aMaterial.getRGBA()).getStackForm(1L));
+                aMaterial).getStackForm(1L));
         if (aInsulatable) {
             registerOre(
                 OrePrefixes.cableGt01,
                 aMaterial,
                 new GTPPMTECable(
                     aStartID + 6,
-                    "cable." + aMaterial.getLocalizedName()
+                    "cable." + aMaterial.getDefaultLocalName()
                         .toLowerCase() + ".01",
-                    "1x " + aMaterial.getLocalizedName() + " Cable",
+                    "gt.oreprefix.1x_material_cable",
                     0.25F,
                     aLossInsulated,
                     1L * aAmperage,
                     aVoltage,
                     true,
                     false,
-                    aMaterial.getRGBA()).getStackForm(1L));
+                    aMaterial).getStackForm(1L));
             registerOre(
                 OrePrefixes.cableGt02,
                 aMaterial,
                 new GTPPMTECable(
                     aStartID + 7,
-                    "cable." + aMaterial.getLocalizedName()
+                    "cable." + aMaterial.getDefaultLocalName()
                         .toLowerCase() + ".02",
-                    "2x " + aMaterial.getLocalizedName() + " Cable",
+                    "gt.oreprefix.2x_material_cable",
                     0.375F,
                     aLossInsulated,
                     2L * aAmperage,
                     aVoltage,
                     true,
                     false,
-                    aMaterial.getRGBA()).getStackForm(1L));
+                    aMaterial).getStackForm(1L));
             registerOre(
                 OrePrefixes.cableGt04,
                 aMaterial,
                 new GTPPMTECable(
                     aStartID + 8,
-                    "cable." + aMaterial.getLocalizedName()
+                    "cable." + aMaterial.getDefaultLocalName()
                         .toLowerCase() + ".04",
-                    "4x " + aMaterial.getLocalizedName() + " Cable",
+                    "gt.oreprefix.4x_material_cable",
                     0.5F,
                     aLossInsulated,
                     4L * aAmperage,
                     aVoltage,
                     true,
                     false,
-                    aMaterial.getRGBA()).getStackForm(1L));
+                    aMaterial).getStackForm(1L));
             registerOre(
                 OrePrefixes.cableGt08,
                 aMaterial,
                 new GTPPMTECable(
                     aStartID + 9,
-                    "cable." + aMaterial.getLocalizedName()
+                    "cable." + aMaterial.getDefaultLocalName()
                         .toLowerCase() + ".08",
-                    "8x " + aMaterial.getLocalizedName() + " Cable",
+                    "gt.oreprefix.8x_material_cable",
                     0.625F,
                     aLossInsulated,
                     8L * aAmperage,
                     aVoltage,
                     true,
                     false,
-                    aMaterial.getRGBA()).getStackForm(1L));
+                    aMaterial).getStackForm(1L));
             registerOre(
                 OrePrefixes.cableGt12,
                 aMaterial,
                 new GTPPMTECable(
                     aStartID + 10,
-                    "cable." + aMaterial.getLocalizedName()
+                    "cable." + aMaterial.getDefaultLocalName()
                         .toLowerCase() + ".12",
-                    "12x " + aMaterial.getLocalizedName() + " Cable",
+                    "gt.oreprefix.12x_material_cable",
                     0.75F,
                     aLossInsulated,
                     12L * aAmperage,
                     aVoltage,
                     true,
                     false,
-                    aMaterial.getRGBA()).getStackForm(1L));
+                    aMaterial).getStackForm(1L));
             registerOre(
                 OrePrefixes.cableGt16,
                 aMaterial,
                 new GTPPMTECable(
                     aStartID + 11,
-                    "cable." + aMaterial.getLocalizedName()
+                    "cable." + aMaterial.getDefaultLocalName()
                         .toLowerCase() + ".16",
-                    "16x " + aMaterial.getLocalizedName() + " Cable",
+                    "gt.oreprefix.16x_material_cable",
                     0.875f,
                     aLossInsulated,
                     16L * aAmperage,
                     aVoltage,
                     true,
                     false,
-                    aMaterial.getRGBA()).getStackForm(1L));
+                    aMaterial).getStackForm(1L));
         }
     }
 
@@ -517,7 +519,7 @@ public class GregtechConduits {
             new MTEFluidPipe(
                 startID,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Tiny",
-                "Tiny " + material.mDefaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.tiny_material_fluid_pipe",
                 0.25F,
                 material,
                 transferRatePerTick * 2,
@@ -528,7 +530,7 @@ public class GregtechConduits {
             new MTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Small",
-                "Small " + material.mDefaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.small_material_fluid_pipe",
                 0.375F,
                 material,
                 transferRatePerTick * 4,
@@ -539,7 +541,7 @@ public class GregtechConduits {
             new MTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + material.mDefaultLocalName,
-                material.mDefaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.material_fluid_pipe",
                 0.5F,
                 material,
                 transferRatePerTick * 12,
@@ -550,7 +552,7 @@ public class GregtechConduits {
             new MTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Large",
-                "Large " + material.mDefaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.large_material_fluid_pipe",
                 0.75F,
                 material,
                 transferRatePerTick * 24,
@@ -561,7 +563,7 @@ public class GregtechConduits {
             new MTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + material.mDefaultLocalName + "_Huge",
-                "Huge " + material.mDefaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.huge_material_fluid_pipe",
                 0.875F,
                 material,
                 transferRatePerTick * 48,
@@ -577,7 +579,7 @@ public class GregtechConduits {
             new GTPPMTEFluidPipe(
                 startID,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Tiny",
-                "Tiny " + pipeStats.defaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.tiny_material_fluid_pipe",
                 0.25F,
                 pipeStats,
                 transferRatePerTick * 2,
@@ -588,7 +590,7 @@ public class GregtechConduits {
             new GTPPMTEFluidPipe(
                 startID + 1,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Small",
-                "Small " + pipeStats.defaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.small_material_fluid_pipe",
                 0.375F,
                 pipeStats,
                 transferRatePerTick * 4,
@@ -599,7 +601,7 @@ public class GregtechConduits {
             new GTPPMTEFluidPipe(
                 startID + 2,
                 "GT_Pipe_" + pipeStats.defaultLocalName,
-                pipeStats.defaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.material_fluid_pipe",
                 0.5F,
                 pipeStats,
                 transferRatePerTick * 12,
@@ -610,7 +612,7 @@ public class GregtechConduits {
             new GTPPMTEFluidPipe(
                 startID + 3,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Large",
-                "Large " + pipeStats.defaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.large_material_fluid_pipe",
                 0.75F,
                 pipeStats,
                 transferRatePerTick * 24,
@@ -621,7 +623,7 @@ public class GregtechConduits {
             new GTPPMTEFluidPipe(
                 startID + 4,
                 "GT_Pipe_" + pipeStats.defaultLocalName + "_Huge",
-                "Huge " + pipeStats.defaultLocalName + " Fluid Pipe",
+                "gt.oreprefix.huge_material_fluid_pipe",
                 0.875F,
                 pipeStats,
                 transferRatePerTick * 48,
@@ -631,7 +633,11 @@ public class GregtechConduits {
 
     public static void generatePipeRecipes(final Material material) {
         // generatePipeRecipes multiplies the voltage multiplier by 8 because ??! reasons.
-        generatePipeRecipes(material, material.getLocalizedName(), material.getMass(), material.vVoltageMultiplier / 8);
+        generatePipeRecipes(
+            material,
+            material.getDefaultLocalName(),
+            material.getMass(),
+            material.vVoltageMultiplier / 8);
     }
 
     public static void generatePipeRecipes(final Material material, final String materialName, final long Mass,
@@ -805,7 +811,7 @@ public class GregtechConduits {
     }
 
     public static boolean registerOre(OrePrefixes aPrefix, Material aMaterial, ItemStack aStack) {
-        return registerOre(aPrefix.get(StringUtils.sanitizeString(aMaterial.getLocalizedName())), aStack);
+        return registerOre(aPrefix.get(StringUtils.sanitizeString(aMaterial.getDefaultLocalName())), aStack);
     }
 
     public static boolean registerOre(Object aName, ItemStack aStack) {

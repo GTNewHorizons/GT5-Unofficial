@@ -564,3 +564,9 @@ research.ESSENTIA_SMELTERY.page.0=The Advanced Alchemical Furnace is no longer e
 research.ESSENTIA_SMELTERY.page.1=Ignis and Aqua are the basic conditions for the operation of LES. The minimum demand is about the highest Energy Hatch tier^2*1.15cv/work, and the machine can only run after this requirement is satisfied.<BR><BR>Ordo affects the pollution and the generation of Flux Gas (randomly exhaust Flux Gas at the facing of the muffler when smelting Essentia).<BR><BR>Perditio can speed up the machine's work, up to 200% (100cv/5t).
 research.ESSENTIA_SMELTERY.page.2=The Essentia Diffusion Cell tier and structure size only affect the machine parallel, and the max parallel is 64x.<BR><BR>Items without Essentia will be smelted to 1 point of perditio.
 research.ESSENTIA_OUTPUT_HATCH_ME.page.0=Someday you will use it...<BR><BR>Be sure to connect to the network. It has no cache!
+
+# Tooltip for Material
+gt.bwMetaGenerateddust.10023.tooltip=§3Check Plate recipe in Forming Press
+gt.bwMetaGeneratedgem.10023.tooltip=§3Check Plate recipe in Forming Press
+gt.bwMetaGeneratedrawOre.10023.tooltip=§3Check Plate recipe in Forming Press
+gt.bwMetaGeneratedcrushed.10023.tooltip=§3Check Plate recipe in Forming Press

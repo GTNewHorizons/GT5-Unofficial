@@ -24,7 +24,6 @@ import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -46,7 +45,7 @@ public class BaseOreComponent extends Item {
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
+        this.materialName = material.getDefaultLocalName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -113,22 +112,11 @@ public class BaseOreComponent extends Item {
         final boolean bool) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (Client.tooltip.showFormula) {
-                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                        list.add(
-                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                    } else {
-                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                    }
-                }
-                if (Client.tooltip.showRadioactiveText) {
-                    if (this.componentMaterial.isRadioactive) {
-                        list.add(
-                            GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: "
-                                + this.componentMaterial.vRadiationLevel);
-                    }
-                }
+                componentMaterial.addTooltips(list);
             } else {
+                if (!Client.tooltip.showFormula) {
+                    return;
+                }
                 String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
                 if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
                     list.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));

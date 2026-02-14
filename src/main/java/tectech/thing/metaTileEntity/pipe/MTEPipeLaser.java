@@ -39,7 +39,7 @@ public class MTEPipeLaser extends MetaPipeEntity implements IConnectsToEnergyTun
     private boolean active;
 
     public MTEPipeLaser(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0);
+        super(aID, aName, 0);
     }
 
     public MTEPipeLaser(String aName) {

@@ -21,7 +21,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import bartworks.system.material.Werkstoff;
@@ -34,6 +33,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Client;
+import gregtech.common.fluid.GTFluid;
+import gtPlusPlus.api.objects.minecraft.FluidGT6;
+import gtPlusPlus.core.material.Material;
 
 public class ItemFluidDisplay extends GTGenericItem {
 
@@ -46,13 +48,8 @@ public class ItemFluidDisplay extends GTGenericItem {
 
     @Override
     protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
-        if (Client.tooltip.showFormula) {
-            if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
-                String tChemicalFormula = getChemicalFormula(
-                    new FluidStack(FluidRegistry.getFluid(aStack.getItemDamage()), 1));
-                if (!tChemicalFormula.isEmpty())
-                    aList.add(EnumChatFormatting.YELLOW + tChemicalFormula + EnumChatFormatting.RESET);
-            }
+        if (FluidRegistry.getFluid(aStack.getItemDamage()) != null) {
+            addTooltipForFluid(FluidRegistry.getFluid(aStack.getItemDamage()), aList);
         }
 
         if (GTValues.D1 || Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
@@ -135,40 +132,22 @@ public class ItemFluidDisplay extends GTGenericItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public static String getChemicalFormula(FluidStack aRealFluid) {
-        return sFluidTooltips.computeIfAbsent(aRealFluid.getFluid(), fluid -> {
-            for (ItemStack tContainer : GTUtility.getContainersFromFluid(aRealFluid)) {
-                if (isCell(tContainer)) {
-                    Materials tMaterial = getMaterialFromCell(tContainer);
-                    if (!tMaterial.equals(Materials._NULL)) {
-                        if (tMaterial.mChemicalFormula.equals("?")) {
-                            return "";
-                        } else {
-                            if (!tMaterial.mChemicalFormula.isEmpty()) {
-                                // Check if its a werkstoff. If so, use that tooltip instead
-                                Werkstoff w = WerkstoffLoader.fluids.inverse()
-                                    .get(fluid);
-                                if (w != null) {
-                                    return w.getLocalizedToolTip();
-                                }
-                            }
-                            return tMaterial.mChemicalFormula;
-                        }
-                    } else {
-                        // For GT++ Fluid Display
-                        // GT++ didn't register a Material in GT, so I have to find the Chemical Formula in its cell's
-                        // tooltip
-                        List<String> tTooltip = tContainer.getTooltip(null, true);
-                        for (String tInfo : tTooltip) {
-                            if (!tInfo.contains(" ") && !tInfo.contains(":") && tTooltip.indexOf(tInfo) != 0) {
-                                return tInfo;
-                            }
-                        }
-                    }
-                }
-            }
-            return "";
-        });
+    public static void addTooltipForFluid(Fluid fluid, List<String> list) {
+        final Werkstoff w = WerkstoffLoader.fluids.inverse()
+            .get(fluid);
+        if (w != null) {
+            w.addTooltips(list);
+            return;
+        }
+        if (fluid instanceof FluidGT6 gtppFluid) {
+            final Material material = gtppFluid.getMaterial();
+            if (material != null) material.addTooltips(list);
+            return;
+        }
+        if (fluid instanceof GTFluid gtFluid) {
+            Materials material = Materials.FLUID_MAP.get(gtFluid);
+            if (material != null) material.addTooltips(list);
+        }
     }
 
     @Override

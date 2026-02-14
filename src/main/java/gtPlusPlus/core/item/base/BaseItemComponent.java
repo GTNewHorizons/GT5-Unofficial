@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -25,13 +27,12 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -43,7 +44,7 @@ public class BaseItemComponent extends Item {
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
-    public final String translatedMaterialName;
+    public final Supplier<String> translatedMaterialName;
     public final ComponentTypes componentType;
     public final int componentColour;
     public short[] extraData;
@@ -54,8 +55,8 @@ public class BaseItemComponent extends Item {
     public BaseItemComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
-        this.translatedMaterialName = material.getTranslatedName();
+        this.materialName = material.getDefaultLocalName();
+        this.translatedMaterialName = material::getLocalizedName;
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -69,12 +70,10 @@ public class BaseItemComponent extends Item {
             GTOreDictUnificator.registerOre("gear" + material.getUnlocalizedName(), new ItemStack(this));
         }
         registerComponent();
-
-        GTLanguageManager.addStringLocalization("gtplusplus.item." + unlocalName + ".name", getFormattedLangName());
     }
 
     // For Cell Generation
-    public BaseItemComponent(final String unlocalName, final String localName, final short[] RGBA) {
+    public BaseItemComponent(final String unlocalName, final Fluid fluid, final String localName, final short[] RGBA) {
 
         // Handles .'s from fluid internal names.
         String aFormattedNameForFluids;
@@ -88,9 +87,7 @@ public class BaseItemComponent extends Item {
         this.componentMaterial = aTempMaterial;
         this.unlocalName = "itemCell" + aFormattedNameForFluids;
         this.materialName = localName;
-        this.translatedMaterialName = getFluidName(
-            "fluid." + this.materialName.toLowerCase()
-                .replace(" ", ""));
+        this.translatedMaterialName = () -> GTUtility.getFluidName(fluid, true);
         this.componentType = ComponentTypes.CELL;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(aFormattedNameForFluids);
@@ -104,14 +101,6 @@ public class BaseItemComponent extends Item {
             ComponentTypes.CELL.getOreDictName() + StringUtils.sanitizeStringKeepBrackets(localName),
             new ItemStack(this));
         registerComponent();
-
-        GTLanguageManager
-            .addStringLocalization("gtplusplus.item." + this.unlocalName + ".name", getFormattedLangName());
-    }
-
-    private String getFormattedLangName() {
-        return componentType.getName()
-            .replace("@", "%material");
     }
 
     public boolean registerComponent() {
@@ -167,25 +156,9 @@ public class BaseItemComponent extends Item {
         return this.materialName;
     }
 
-    public String getFluidName(String aKey) {
-        String trans;
-        trans = GTLanguageManager.getTranslation(aKey);
-        if (!trans.equals(aKey)) return trans;
-        aKey = "fluid." + aKey;
-        trans = GTLanguageManager.getTranslation(aKey);
-        if (!trans.equals(aKey)) return trans;
-        return GTLanguageManager.addStringLocalization(
-            "gtplusplus.fluid." + this.materialName.toLowerCase()
-                .replace(" ", ""),
-            this.materialName);
-    }
-
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return GTLanguageManager.getTranslation("gtplusplus.item." + unlocalName + ".name")
-            .replace("%s", "%temp")
-            .replace("%material", translatedMaterialName)
-            .replace("%temp", "%s");
+        return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", translatedMaterialName.get());
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -196,20 +169,7 @@ public class BaseItemComponent extends Item {
         try {
             if (this.materialName != null && !this.materialName.isEmpty() && (this.componentMaterial != null)) {
 
-                if (Client.tooltip.showFormula) {
-                    if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                        list.add(
-                            StringUtils.sanitizeStringKeepBracketsQuestion(this.componentMaterial.vChemicalFormula));
-                    } else {
-                        list.add(StringUtils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                    }
-                }
-
-                if (Client.tooltip.showRadioactiveText) {
-                    if (this.componentMaterial.isRadioactive) {
-                        list.add(GTPPCore.GT_Tooltip_Radioactive.get());
-                    }
-                }
+                this.componentMaterial.addTooltips(list);
 
                 if (Client.tooltip.showHotIngotText) {
                     if (this.componentType == ComponentTypes.INGOT || this.componentType == ComponentTypes.HOTINGOT) {

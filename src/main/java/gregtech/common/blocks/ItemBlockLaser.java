@@ -6,8 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import gregtech.api.util.GTLanguageManager;
+import net.minecraft.util.StatCollector;
 
 public class ItemBlockLaser extends ItemBlock {
 
@@ -17,8 +16,6 @@ public class ItemBlockLaser extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean f3_h) {
-        tooltip.add(
-            GTLanguageManager
-                .addStringLocalization("gt.laserplatingtooltip", "Engineered to withstand extreme temperatures"));
+        tooltip.add(StatCollector.translateToLocal("gt.laserplatingtooltip"));
     }
 }

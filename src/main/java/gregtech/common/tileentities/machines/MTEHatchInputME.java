@@ -8,7 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATC
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -83,6 +82,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -94,12 +94,14 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
     IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
@@ -132,7 +134,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected static final FluidTankInfo[] EMPTY_FLUID_TANK_INFOS = new FluidTankInfo[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
+        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, null);
         this.autoPullAvailable = autoPullAvailable;
     }
 
@@ -889,7 +891,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP)) return;
-
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
@@ -1173,25 +1174,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
-    private static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(8);
-        strings.add("Advanced fluid input for Multiblocks");
-        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);
-        strings.add("Retrieves directly from ME");
-        strings.add("Keeps 16 fluid types in stock");
-
-        if (autoPullAvailable) {
-            strings.add(
-                "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
-            strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add(
-                "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
-            strings.add("WARNING: Fast recipe checks can be laggy. Use with caution.");
-        }
-
-        strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy/pasted using a data stick.");
-        return strings.toArray(new String[0]);
+    @Override
+    public String[] getDescription() {
+        if (autoPullAvailable) return GTSplit.splitFormatted(
+            "gt.blockmachines.input_hatch_me.desc",
+            TIER_COLORS[9] + VN[9],
+            StatCollector.translateToLocal("gt.blockmachines.input_hatch_me.autopull.desc") + GTSplit.LB);
+        return GTSplit.splitFormatted("gt.blockmachines.input_hatch_me.desc", TIER_COLORS[8] + VN[8], "");
     }
 
     protected static class Slot {

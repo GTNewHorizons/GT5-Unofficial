@@ -62,7 +62,7 @@ public class TinkersUtils {
 
     public static void generateCastingRecipes(Material aMaterial, int aID) {
         Fluid aMoltenIron = TinkerSmeltery.moltenIronFluid;
-        FluidType fluidType = FluidType.getFluidType(aMaterial.getLocalizedName());
+        FluidType fluidType = FluidType.getFluidType(aMaterial.getDefaultLocalName());
         for (CastingRecipe recipe : getTableCastingRecipes()) {
             CastingRecipeHandler newRecipe = new CastingRecipeHandler(recipe);
             if (newRecipe.castingMetal.getFluid() == aMoltenIron && newRecipe.cast != null

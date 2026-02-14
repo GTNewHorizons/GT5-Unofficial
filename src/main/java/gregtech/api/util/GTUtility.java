@@ -175,10 +175,12 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
+import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.items.toolbox.ToolboxUtil;
 import gregtech.common.ores.OreManager;
+import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import ic2.api.recipe.ICannerBottleRecipeManager;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputItemStack;
@@ -1073,11 +1075,10 @@ public class GTUtility {
 
     public static String getFluidName(Fluid aFluid, boolean aLocalized) {
         if (aFluid == null) return E;
-        String rName = aLocalized ? aFluid.getLocalizedName(new FluidStack(aFluid, 0)) : aFluid.getUnlocalizedName();
-        if (rName.contains("fluid.") || rName.contains("tile.")) return capitalizeString(
-            rName.replaceAll("fluid.", E)
-                .replaceAll("tile.", E));
-        return rName;
+        if (!aLocalized) return aFluid.getUnlocalizedName();
+        if (aFluid instanceof GTFluid gtFluid) return gtFluid.getLocalizedName();
+        if (aFluid instanceof FluidGT6 fluidGT6) return fluidGT6.getLocalizedName();
+        return aFluid.getLocalizedName();
     }
 
     public static String getFluidName(FluidStack aFluid, boolean aLocalized) {
@@ -1392,12 +1393,13 @@ public class GTUtility {
         sBookCount++;
         rStack = new ItemStack(Items.written_book, 1);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setString("title", GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle));
+        GTLanguageManager.addStringLocalization("Book." + aTitle + ".Name", aTitle);
+        tNBT.setString("title", StatCollector.translateToLocal("Book." + aTitle + ".Name"));
         tNBT.setString("author", aAuthor);
         NBTTagList tNBTList = new NBTTagList();
         for (byte i = 0; i < aPages.length; i++) {
-            aPages[i] = GTLanguageManager
-                .addStringLocalization("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
+            GTLanguageManager.addStringLocalization("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i), aPages[i]);
+            aPages[i] = StatCollector.translateToLocal("Book." + aTitle + ".Page" + ((i < 10) ? "0" + i : i));
             if (i < 48) {
                 if (aPages[i].length() < 256) tNBTList.appendTag(new NBTTagString(aPages[i]));
                 else GTLog.err.println("WARNING: String for written Book too long! -> " + aPages[i]);
@@ -1407,11 +1409,7 @@ public class GTUtility {
             }
         }
         tNBTList.appendTag(
-            new NBTTagString(
-                "Credits to " + aAuthor
-                    + " for writing this Book. This was Book Nr. "
-                    + sBookCount
-                    + " at its creation. Gotta get 'em all!"));
+            new NBTTagString(StatCollector.translateToLocalFormatted("gt.book.credits", aAuthor, sBookCount)));
         tNBT.setTag("pages", tNBTList);
         rStack.setTagCompound(tNBT);
         GTLog.out.println(
@@ -2412,7 +2410,7 @@ public class GTUtility {
      */
     @Deprecated
     public static String trans(String aKey, String aEnglish) {
-        return GTLanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_" + aKey, aEnglish);
+        return StatCollector.translateToLocal("Interaction_DESCRIPTION_Index_" + aKey);
     }
 
     /**

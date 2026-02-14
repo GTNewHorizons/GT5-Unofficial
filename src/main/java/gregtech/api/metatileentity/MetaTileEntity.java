@@ -112,9 +112,11 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * @param aID the machine ID
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-        super(aID, aBasicName, aRegionalName, aInvSlotCount);
+        super(aID, aBasicName, aInvSlotCount);
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
+
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
 
         inventoryHandler = new ItemStackHandler(mInventory) {
 
@@ -191,7 +193,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public String getLocalName() {
-        return GTLanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
     }
 
     @Override

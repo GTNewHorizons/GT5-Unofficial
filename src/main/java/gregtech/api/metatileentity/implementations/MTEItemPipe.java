@@ -7,12 +7,15 @@ import static gregtech.api.enums.Textures.BlockIcons.PIPE_RESTRICTOR;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
@@ -27,14 +30,17 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
-public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPipe, ILocalizedMetaPipeEntity {
 
     public final float mThickNess;
     public final Materials mMaterial;
@@ -45,10 +51,13 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     public ForgeDirection mLastReceivedFrom = ForgeDirection.UNKNOWN, oLastReceivedFrom = ForgeDirection.UNKNOWN;
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
+    private String mPrefixKey;
+    private String materialKeyOverride;
 
-    public MTEItemPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
-        super(aID, aName, aNameRegional, aInvSlotCount, false);
+        super(aID, aName, aInvSlotCount, false);
+        this.mPrefixKey = aPrefixKey;
         mIsRestrictive = aIsRestrictive;
         mThickNess = aThickNess;
         mMaterial = aMaterial;
@@ -57,9 +66,9 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
         addInfo(aID);
     }
 
-    public MTEItemPipe(int aID, String aName, String aNameRegional, float aThickNess, Materials aMaterial,
+    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
-        this(aID, aName, aNameRegional, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
+        this(aID, aName, aPrefixKey, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
     }
 
     public MTEItemPipe(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,
@@ -402,14 +411,21 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
 
     @Override
     public String[] getDescription() {
-        if (mTickTime == 20) return new String[] { "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/sec",
-            "Routing Value: %%%" + formatNumber(mStepSize) };
-        else if (mTickTime % 20 == 0) return new String[] {
-            "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + (mTickTime / 20) + "%%% sec",
-            "Routing Value: %%%" + formatNumber(mStepSize) };
-        else return new String[] {
-            "Item Capacity: %%%" + getMaxPipeCapacity() + "%%% Stacks/%%%" + mTickTime + "%%% ticks",
-            "Routing Value: %%%" + formatNumber(mStepSize) };
+        final String capacity;
+        if (mTickTime == 20) {
+            capacity = StatCollector
+                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.persecond", getMaxPipeCapacity());
+        } else if (mTickTime % 20 == 0) {
+            capacity = StatCollector.translateToLocalFormatted(
+                "gt.blockmachines.itempipe.capacity.second",
+                getMaxPipeCapacity(),
+                mTickTime / 20);
+        } else {
+            capacity = StatCollector
+                .translateToLocalFormatted("gt.blockmachines.itempipe.capacity.tick", getMaxPipeCapacity(), mTickTime);
+        }
+        return new String[] { capacity, StatCollector
+            .translateToLocalFormatted("gt.blockmachines.itempipe.rounting_value", formatNumber(mStepSize)) };
     }
 
     private boolean isInventoryEmpty() {
@@ -420,5 +436,28 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     @Override
     public float getCollisionThickness() {
         return mThickNess;
+    }
+
+    @Override
+    public Materials getMaterial() {
+        return mMaterial;
+    }
+
+    @Override
+    public String getPrefixKey() {
+        return mPrefixKey;
+    }
+
+    @Override
+    public String getMaterialKeyOverride() {
+        return materialKeyOverride;
+    }
+
+    public MTEItemPipe renameMaterial(@Nullable String newName) {
+        if (newName == null) return this;
+        final String key = mMaterial.getLocalizedNameKey() + ".itempipe.newname";
+        GTLanguageManager.addStringLocalization(key, newName);
+        this.materialKeyOverride = key;
+        return this;
     }
 }

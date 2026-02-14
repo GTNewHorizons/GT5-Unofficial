@@ -94,12 +94,18 @@ public class DroneConnection {
         return cachedMachine;
     }
 
-    public MTEMultiBlockBase getLinkedCentre() {
-        return cachedCentre;
+    public String getCustomName(boolean localized) {
+        if (localized) return StatCollector.translateToLocal("gt.blockmachines." + unlocalizedName + ".name");
+
+        return customName;
     }
 
     public String getCustomName() {
-        return customName;
+        return getCustomName(false);
+    }
+
+    public MTEMultiBlockBase getLinkedCentre() {
+        return cachedCentre;
     }
 
     public ChunkCoordinates getCentreCoord() {

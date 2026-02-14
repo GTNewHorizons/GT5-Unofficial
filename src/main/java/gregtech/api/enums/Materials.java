@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -34,8 +35,10 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
 import gregtech.common.render.items.GaiaSpiritRenderer;
@@ -1114,13 +1117,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public float mSteamMultiplier = 1.0F;
     public float mGasMultiplier = 1.0F;
     public float mPlasmaMultiplier = 1.0F;
-    public String mChemicalFormula = "?";
-    public String flavorText;
+    private String mChemicalFormula = "?";
+    private boolean isFormulaNeededLocalized = false;
     public String mName;
     public String mDefaultLocalName;
     public String mCustomID = "null";
     public String mConfigSection = "null";
-    public String mLocalizedName = "null";
     public Dyes mColor = Dyes._NULL;
     public Element mElement = null;
     public Materials mOreReplacement = this;
@@ -1155,7 +1157,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         String defaultLocalName,
         @Nullable Element element,
         @Nullable String chemicalFormula,
-        String flavorText,
         boolean unifiable,
         TextureSet iconSet,
         Dyes color,
@@ -1223,8 +1224,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
                 .collect(Collectors.joining())
                 .replaceAll("_", "-");
         }
-
-        this.flavorText = flavorText;
 
         // Set texture and colors
         mIconSet = iconSet;
@@ -1752,6 +1751,23 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return mDensity;
     }
 
+    public void setChemicalFormula(String aChemicalFormula, boolean isNeededLocalization) {
+        this.mChemicalFormula = aChemicalFormula;
+        if (isNeededLocalization) {
+            this.isFormulaNeededLocalized = true;
+            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", aChemicalFormula);
+        }
+    }
+
+    public void setChemicalFormula(String aChemicalFormula) {
+        setChemicalFormula(aChemicalFormula, false);
+    }
+
+    public String getChemicalFormula() {
+        return isFormulaNeededLocalized ? StatCollector.translateToLocal(getLocalizedNameKey() + ".ChemicalFormula")
+            : mChemicalFormula;
+    }
+
     public String getChemicalTooltip() {
         return getChemicalTooltip(1, false);
     }
@@ -1765,17 +1781,36 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     public String getChemicalTooltip(long aMultiplier, boolean aShowQuestionMarks) {
-        if (!aShowQuestionMarks && mChemicalFormula.equals("?")) return "";
+        final String aChemicalFormula = getChemicalFormula();
+        if (!aShowQuestionMarks && aChemicalFormula.equals("?")) return "";
         if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
             return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1))
-                ? mChemicalFormula
-                : "(" + mChemicalFormula + ")") + aMultiplier;
+                ? aChemicalFormula
+                : "(" + aChemicalFormula + ")") + aMultiplier;
         }
-        return mChemicalFormula;
+        return aChemicalFormula;
     }
 
+    @Nullable
     public String getFlavorText() {
-        return flavorText;
+        final String key = getLocalizedNameKey() + ".flavorText";
+        return StatCollector.canTranslate(key) ? StatCollector.translateToLocal(key) : null;
+    }
+
+    public void addTooltips(List<String> list, long aMultiplier) {
+        if (Client.tooltip.showFormula) {
+            final String chemicalTooltip = getChemicalTooltip(aMultiplier);
+            if (GTUtility.isStringValid(chemicalTooltip)) list.add(chemicalTooltip);
+        }
+        if (Client.tooltip.showFlavorText) {
+            final String flavorTooltip = getFlavorText() != null ? "§8§o" + getFlavorText() : null;
+            if (flavorTooltip != null) list.add(flavorTooltip);
+        }
+    }
+
+    @Override
+    public void addTooltips(List<String> list) {
+        addTooltips(list, 1);
     }
 
     /**
@@ -1925,7 +1960,11 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
 
     @Override
     public String getLocalizedName() {
-        return mLocalizedName;
+        return StatCollector.translateToLocal(getLocalizedNameKey());
+    }
+
+    public String getLocalizedNameKey() {
+        return "Material." + this.mName.toLowerCase();
     }
 
     @Override
@@ -1971,7 +2010,15 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
         return formatStringSafe(
             aFormat.replace("%s", "%temp")
                 .replace("%material", "%s"),
-            this.mLocalizedName).replace("%temp", "%s");
+            this.getLocalizedName()).replace("%temp", "%s");
+    }
+
+    public static boolean isMaterialItem(int meta) {
+        return meta >= 0 && meta < 32000;
+    }
+
+    public static boolean isMaterialItem(@NotNull ItemStack stack) {
+        return isMaterialItem(stack.getItemDamage());
     }
 
     @Override

@@ -1,12 +1,13 @@
 package gregtech.common.items.behaviors;
 
-import static gregtech.api.enums.GTValues.AuthorQuerns;
+import static gregtech.api.enums.GTAuthors.AuthorQuerns;
 import static net.minecraft.util.MovingObjectPosition.MovingObjectType.BLOCK;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +28,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.items.MetaBaseItem;
@@ -60,7 +62,6 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
 
     public BehaviourSprayColorInfinite(ItemStack sprayCan) {
         super(sprayCan, sprayCan, sprayCan, Other.sprayCanChainRange, 0);
-        this.mTooltip = "";
         mCurrentColor = 0;
     }
 
@@ -121,8 +122,8 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
         }
 
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
-        aList.add(mTooltipChain);
-        aList.add(mTooltipUnstackable);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
+        aList.add(StatCollector.translateToLocal("gt.behaviour.unstackable"));
         aList.add(" ");
 
         if (!statuses.isEmpty()) {
@@ -137,7 +138,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
     public Optional<List<String>> getAdditionalToolTipsWhileSneaking(final MetaBaseItem aItem, final List<String> aList,
         final ItemStack aStack) {
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.infinite"));
-        aList.add(mTooltipChain);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.chain"));
         aList.add(" ");
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.switch"));
         aList.add(StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.tooltip.gui"));
@@ -148,7 +149,7 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 "gt.behaviour.paintspray.infinite.tooltip.prevent_shake",
                 GameSettings.getKeyDisplayString(GTMod.clientProxy().shakeLockKey.getKeyCode())));
         aList.add(" ");
-        aList.add(AuthorQuerns);
+        aList.add(GTAuthors.buildAuthorsWithFormat(AuthorQuerns));
 
         return Optional.of(aList);
     }
@@ -364,5 +365,10 @@ public class BehaviourSprayColorInfinite extends BehaviourSprayColor {
                 index == REMOVE_COLOR ? StatCollector.translateToLocal("gt.behaviour.paintspray.infinite.gui.solvent")
                     : Dyes.getOrDefault(index, Dyes.MACHINE_METAL).mName);
         }
+    }
+
+    @Override
+    protected Supplier<String> getTooltip() {
+        return null;
     }
 }

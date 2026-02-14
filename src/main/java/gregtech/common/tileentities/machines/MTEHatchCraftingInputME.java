@@ -96,6 +96,7 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -115,6 +116,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
@@ -122,6 +124,7 @@ import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchCraftingInputME extends MTEHatchInputBus
     implements IConfigurationCircuitSupport, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ICraftingProvider,
     IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
@@ -485,20 +488,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     public boolean disablePatternOptimization = false;
     public boolean showPattern = true;
 
+    private ScheduledReason scheduledReason = ScheduledReason.UNDEFINED;
+
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            supportFluids ? 10 : 6,
-            MAX_INV_COUNT,
-            new String[] { "Advanced item input for Multiblocks",
-                "Hatch Tier: " + TIER_COLORS[supportFluids ? 10 : 6] + VN[supportFluids ? 10 : 6],
-                "Processes patterns directly from ME",
-                supportFluids ? "It supports patterns including fluids"
-                    : "It does not support patterns including fluids",
-                "Change ME connection behavior by right-clicking with wire cutter",
-                "Ignores the contents of other buses or hatches", "Also ignores other patterns within the same bus" });
+        super(aID, aName, aNameRegional, supportFluids ? 10 : 6, MAX_INV_COUNT, null);
         disableSort = true;
         this.supportFluids = supportFluids;
     }
@@ -1179,17 +1172,29 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (!getBaseMetaTileEntity().isAllowedToWork()) return false;
         if (!(table instanceof MEInventoryCrafting meic)) return false;
 
-        if (!supportFluids) {
-            for (int i = 0; i < table.getSizeInventory(); ++i) {
-                if (meic.getAEStackInSlot(i) instanceof IAEFluidStack) return false;
+        for (int i = 0; i < table.getSizeInventory(); ++i) {
+            IAEStack<?> stackInSlot = meic.getAEStackInSlot(i);
+            if (stackInSlot == null || stackInSlot instanceof IAEItemStack
+                || (supportFluids && stackInSlot instanceof IAEFluidStack)) {
+                continue;
             }
+
+            scheduledReason = ScheduledReason.UNSUPPORTED_STACK;
+            return false;
         }
+
         if (!patternDetailsPatternSlotMap.get(patternDetails)
             .insertItemsAndFluids(meic)) {
+            scheduledReason = ScheduledReason.SOMETHING_STUCK;
             return false;
         }
         justHadNewItems = true;
         return true;
+    }
+
+    @Override
+    public ScheduledReason getScheduledReason() {
+        return scheduledReason;
     }
 
     @Override
@@ -1395,5 +1400,18 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
         } catch (Exception ignored) {}
         CraftingGridCache.unpauseRebuilds();
+    }
+
+    @Override
+    public String[] getDescription() {
+        if (supportFluids) return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[10] + VN[10],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.support_fluid.desc") + GTSplit.LB);
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_bus_crafting_me.desc",
+            TIER_COLORS[6] + VN[6],
+            StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc")
+                + GTSplit.LB);
     }
 }

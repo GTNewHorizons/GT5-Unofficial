@@ -14,10 +14,10 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 
@@ -1107,7 +1107,7 @@ public class OrePrefixes {
     /** A decorative sheet metal block. */
     public static final OrePrefixes sheetmetal = new OrePrefixBuilder("sheetmetal")
         .withDefaultLocalName("Sheetmetal Blocks")
-        .withNameKey("gt.component.sheetmetal")
+        .withSuffix(" Sheetmetal")
         .unifiable()
         .recyclable()
         .materialBased()
@@ -2098,7 +2098,6 @@ public class OrePrefixes {
     private final @NotNull String defaultLocalName;
     private final @NotNull String materialPrefix;
     private final @NotNull String materialPostfix;
-    private final @Nullable String nameKey;
     private final boolean isUnifiable;
     private final boolean isMaterialBased;
     private final boolean isSelfReferencing;
@@ -2117,7 +2116,6 @@ public class OrePrefixes {
         @NotNull String defaultLocalName,
         @NotNull String materialPrefix,
         @NotNull String materialPostfix,
-        @Nullable String nameKey,
         boolean isUnifiable,
         boolean isMaterialBased,
         boolean isSelfReferencing,
@@ -2135,7 +2133,6 @@ public class OrePrefixes {
         this.defaultLocalName = defaultLocalName;
         this.materialPrefix = materialPrefix;
         this.materialPostfix = materialPostfix;
-        this.nameKey = nameKey;
         this.isUnifiable = isUnifiable;
         this.isMaterialBased = isMaterialBased;
         this.isSelfReferencing = isSelfReferencing;
@@ -2851,12 +2848,44 @@ public class OrePrefixes {
             };
         }
 
-        if (nameKey != null) {
-            // Replace the %s with %material so that it works with the existing system.
-            return GTUtility.translate(nameKey, "%material");
-        }
-
         // Use Standard Localization
         return materialPrefix + "%material" + materialPostfix;
+    }
+
+    public String getDefaultLocalNameFormatForItem() {
+        return getDefaultLocalNameForItem(Materials._NULL);
+    }
+
+    public static String getOreprefixKey(String prefix, String formatString) {
+        return "gt.oreprefix." + prefix.toLowerCase()
+            .replace(" ", "_")
+            .replace(formatString, "material");
+    }
+
+    public static String getOreprefixKey(String prefix) {
+        return getOreprefixKey(prefix, "%material");
+    }
+
+    public String getOreprefixKey(Materials materials) {
+        return "gt.oreprefix." + this.getDefaultLocalNameFormatForItem(materials)
+            .toLowerCase()
+            .replace(" ", "_")
+            .replace("%material", "material");
+    }
+
+    public String getOreprefixKey() {
+        return getOreprefixKey(Materials._NULL);
+    }
+
+    public String getLocalizedNameForItem(Materials materials) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String materialName) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix), materialName);
+    }
+
+    public static String getLocalizedNameForItem(String prefix, String formatString, String materialName) {
+        return StatCollector.translateToLocalFormatted(getOreprefixKey(prefix, formatString), materialName);
     }
 }

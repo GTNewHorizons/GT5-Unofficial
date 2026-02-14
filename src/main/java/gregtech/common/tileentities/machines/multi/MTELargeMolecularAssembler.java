@@ -568,7 +568,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 patterns.put(is, cachedDetail);
             } else {
                 ICraftingPatternDetails detail = pattern.getPatternForItem(is, getBaseMetaTileEntity().getWorld());
-                if (detail != null) {
+                if (detail != null && detail.isCraftable()) {
                     patterns.put(is, detail);
                     changed = true;
                 }

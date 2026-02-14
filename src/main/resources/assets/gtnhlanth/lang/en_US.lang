@@ -157,6 +157,8 @@ beamline.out_pre=Multiblock Beamline Output
 beamline.pipe.desc.0=Transport for particles
 beamline.pipe.desc.1=Signal does not cross or bend
 
+gt.blockmachines.beamline_pipe.name=Beamline Pipe
+
 tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 

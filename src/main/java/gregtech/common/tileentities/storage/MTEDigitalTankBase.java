@@ -40,7 +40,6 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEDigitalTankBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -114,16 +113,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
             if (tContents != null && tContents.amount > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_INFO", "Contains Fluid: ")
-                        + EnumChatFormatting.YELLOW
-                        + tContents.getLocalizedName()
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_TANK_AMOUNT", "Fluid Amount: ")
-                        + EnumChatFormatting.GREEN
-                        + NumberFormatUtil.formatNumber(tContents.amount)
-                        + " L"
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted(
+                        "gt.tileentity.tank_amount",
+                        NumberFormatUtil.formatNumber(tContents.amount)));
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
