@@ -1,5 +1,6 @@
 package gregtech.common.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -7,20 +8,11 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.common.tileentities.render.TileEntityLaser;
+import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 
 public class LaserRenderer extends TileEntitySpecialRenderer {
 
-    private double zOffset = 0.0;
-    private double xOffset = 0.0;
-
-    private void maths(float counter) {
-        float tc = (0.05F * counter);
-        zOffset = 0.5 + 0.45 * Math.sin(2 * Math.PI * tc);
-        xOffset = 0.5 + 0.45 * Math.sin(0.5 * Math.PI * tc);
-    }
-
-    private void renderFakeLine(TileEntityLaser laser, double x1, double y1, double z1, double x2, double y2,
+    private void renderFakeLine(RenderingTileEntityLaser laser, double x1, double y1, double z1, double x2, double y2,
         double z2) {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
@@ -42,9 +34,17 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        final TileEntityLaser ltile = (TileEntityLaser) tile;
-
+        final RenderingTileEntityLaser ltile = (RenderingTileEntityLaser) tile;
         if (ltile.getShouldRender()) {
+            // Movement calculations
+            final float laserSpeed = 5F;
+            float counter = ((Minecraft.getMinecraft().theWorld.getTotalWorldTime() + timeSinceLastTick) * laserSpeed)
+                % 80;
+
+            float tc = (0.05F * counter);
+            double zOffset = 0.5 + 0.45 * Math.sin(2 * Math.PI * tc);
+            double xOffset = 0.5 + 0.45 * Math.sin(0.5 * Math.PI * tc);
+
             // Push GL state
             GL11.glPushMatrix();
             GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -70,14 +70,6 @@ public class LaserRenderer extends TileEntitySpecialRenderer {
             // Pop GL state
             GL11.glPopAttrib();
             GL11.glPopMatrix();
-
-            // Movement calculations
-            maths(ltile.counter);
-            float laserSpeed = 0.8F;
-            ltile.counter += laserSpeed;
-            if (ltile.counter >= 80) {
-                ltile.counter = 0;
-            }
         }
     }
 }
