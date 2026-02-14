@@ -115,8 +115,9 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 tooltip.add(
                     StatCollector.translateToLocalFormatted("gt.tileentity.tank_info", tContents.getLocalizedName()));
                 tooltip.add(
-                    StatCollector
-                        .translateToLocalFormatted("gt.tileentity.tank_amount", NumberFormatUtil.formatNumber(tContents.amount)));
+                    StatCollector.translateToLocalFormatted(
+                        "gt.tileentity.tank_amount",
+                        NumberFormatUtil.formatNumber(tContents.amount)));
             } else if (stack.stackTagCompound.hasKey("lockedFluidName")) {
                 String fluidName = stack.stackTagCompound.getString("lockedFluidName");
                 Fluid fluid = FluidRegistry.getFluid(fluidName);

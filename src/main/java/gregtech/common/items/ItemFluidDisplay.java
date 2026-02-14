@@ -32,6 +32,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 import gregtech.common.fluid.GTFluid;
 import gtPlusPlus.api.objects.minecraft.FluidGT6;
 import gtPlusPlus.core.material.Material;

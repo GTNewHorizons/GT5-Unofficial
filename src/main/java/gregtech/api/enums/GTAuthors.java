@@ -89,6 +89,16 @@ public class GTAuthors {
     public static final String Authorminecraft7771 = "" + EnumChatFormatting.BLUE
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
+
+    public static final String AuthorHamCorp = "Author: " + EnumChatFormatting.GOLD
+        + "Ham"
+        + EnumChatFormatting.WHITE
+        + "Corp";
+
+    public static final String Authorzub = "Author: " + EnumChatFormatting.DARK_PURPLE
+        + EnumChatFormatting.ITALIC
+        + "zub";
+
     public static final Supplier<String> AuthorCloud = chain(
         text("" + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
         animatedText(
@@ -134,12 +144,37 @@ public class GTAuthors {
     public static final String AuthorEigenRaven = EnumChatFormatting.DARK_PURPLE + "Eigen"
         + EnumChatFormatting.BOLD
         + "Raven";
-    public static final String AuthorNotAPenguin = "" + EnumChatFormatting.WHITE
-        + EnumChatFormatting.BOLD
-        + "Not"
+    public static final String AuthorNotAPenguin = EnumChatFormatting.WHITE + "Not"
         + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
         + "APenguin";
+
+    public static final Supplier<String> AuthorNotAPenguinAnimated = chain(
+        createNotAPenguinLetter(0),
+        createNotAPenguinLetter(1),
+        createNotAPenguinLetter(2),
+        createNotAPenguinLetter(3),
+        createNotAPenguinLetter(4),
+        createNotAPenguinLetter(5),
+        createNotAPenguinLetter(6),
+        createNotAPenguinLetter(7),
+        createNotAPenguinLetter(8),
+        createNotAPenguinLetter(9),
+        createNotAPenguinLetter(10));
+
+    private static Supplier<String> createNotAPenguinLetter(int index) {
+        final String[] letters = new String[] { "N", "o", "t", "A", "P", "e", "n", "g", "u", "i", "n" };
+        String[] colorList = new String[letters.length];
+        for (int i = 0; i < letters.length; ++i) {
+            int[] whiteIndices = new int[] { (letters.length - index - 1 + letters.length) % letters.length,
+                (letters.length - index + letters.length) % letters.length,
+                (letters.length - index + 1 + letters.length) % letters.length };
+            if (i == whiteIndices[0] || i == whiteIndices[1] || i == whiteIndices[2]) {
+                colorList[i] = WHITE + ITALIC + letters[index];
+            } else colorList[i] = AQUA + letters[index];
+        }
+        return emptyAnimatedText(1, 100, colorList);
+    }
+
     public static final String AuthorPineapple = EnumChatFormatting.BLUE + "Recursive Pineapple";
     public static final Supplier<String> AuthorNoc = chain(
         animatedText(
