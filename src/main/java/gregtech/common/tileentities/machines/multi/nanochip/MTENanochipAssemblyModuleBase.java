@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.nanochip;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -607,10 +608,10 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return new String[] {
             translateToLocalFormatted(
                 "GT5U.tooltip.nac.module.scanner.current_eu",
-                GTUtility.scientificFormat(currentEU)),
+                formatNumber(currentEU)),
             translateToLocalFormatted(
                 "GT5U.tooltip.nac.module.scanner.total_buffer",
-                GTUtility.scientificFormat(euBufferSize)) };
+                formatNumber(euBufferSize)) };
     }
 
     /**
