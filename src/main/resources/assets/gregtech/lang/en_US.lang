@@ -1376,6 +1376,7 @@ GT5U.machines.betterjukebox.shuffle.tooltip=Shuffle mode (play random discs inst
 GT5U.machines.betterjukebox.headphonesbound=Headphones bound to jukebox
 GT5U.machines.betterjukebox.headphonesunbound=Shift-click on an electric jukebox to bind headphones
 GT5U.machines.computation_hatch.computation=Computation
+GT5U.machines.computation_hatch.computation.amount=Computation: §e%s
 GT5U.machines.laser_hatch.amperage=Amperage
 GT5U.machines.hatch_output.lockfluid.label=Locked Fluid
 GT5U.machines.hatch_output.lockfluid.empty=None
