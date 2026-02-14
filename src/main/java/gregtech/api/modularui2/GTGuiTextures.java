@@ -391,6 +391,13 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL,
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
+    public static final UITexture OVERLAY_SLOT_FILTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/filter")
+        .fullImage()
+        .imageSize(18, 18)
+        .canApplyTheme()
+        .name("overlay_slot/filter")
+        .build();
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
 
@@ -450,6 +457,11 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+    public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
+    public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/redstoneSnifferLocate");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture.builder()
         .fullImage()
         .canApplyTheme()
