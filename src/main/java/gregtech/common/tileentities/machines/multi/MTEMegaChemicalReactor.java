@@ -86,9 +86,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         .addElement('B', Casings.PTFEPipeCasing.asElement())
         .addElement(
             'C',
-            ofChain(
-                activeCoils(Casings.FusionCoilBlock.asElement()),
-                activeCoils(Casings.EternalCoilBlock.asElement())))
+            ofChain(Casings.FusionCoilBlock.asElement(), activeCoils(Casings.EternalCoilBlock.asElement())))
         .addElement('D', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
