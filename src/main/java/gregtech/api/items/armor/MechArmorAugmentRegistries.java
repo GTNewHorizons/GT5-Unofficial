@@ -391,7 +391,7 @@ public class MechArmorAugmentRegistries {
             .providesBehaviors(CreativeFlightBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.Jetpack)
             .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(3)
+            .setMinimumCore(2)
             .setRarity(EnumRarity.epic)
         ),
         Jetpack(ItemList.Augment_Jetpack, new AugmentBuilder()
@@ -410,7 +410,7 @@ public class MechArmorAugmentRegistries {
             .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.Jetpack)
             .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(2)
+            .setMinimumCore(1)
             .setRarity(EnumRarity.rare)
         ),
         FireImmunity(ItemList.Augment_FireImmunity, new AugmentBuilder()
@@ -419,7 +419,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Leggings)
             .providesBehaviors(FireImmunityBehavior.INSTANCE)
             .setCategory(AugmentCategory.Protection)
-            .setMinimumCore(2)
+            .setMinimumCore(1)
             .setRarity(EnumRarity.common)
         ),
         StepAssist(ItemList.Augment_StepAssist, new AugmentBuilder()
@@ -428,7 +428,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(StepAssistBehavior.INSTANCE)
             .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(2)
+            .setMinimumCore(1)
             .setRarity(EnumRarity.common)
         ),
         GogglesOfRevealing(ItemList.Augment_GogglesOfRevealing, new AugmentBuilder()
@@ -446,7 +446,7 @@ public class MechArmorAugmentRegistries {
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.CreativeFlight)
             .setCategory(AugmentCategory.Movement)
-            .setMinimumCore(3)
+            .setMinimumCore(2)
             .setRarity(EnumRarity.rare)
         ),
         Hazmat(ItemList.Augment_Hazmat, new AugmentBuilder()
@@ -511,7 +511,7 @@ public class MechArmorAugmentRegistries {
             .setId("SpaceSuit")
             .setItemId("augmentspacesuit")
             .providesBehaviors(SpaceSuitBehavior.INSTANCE)
-            .setMinimumCore(2)
+            .setMinimumCore(1)
             .setCategory(AugmentCategory.Protection)
             .setRarity(EnumRarity.rare)
         ),
@@ -529,6 +529,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(OmniMovementBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.SpeedBoost)
+            .setMinimumCore(1)
             .setCategory(AugmentCategory.Movement)
             .setRarity(EnumRarity.rare)
         ),

@@ -13,7 +13,7 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
     }
 
     private AugmentCategory category = AugmentCategory.Protection;
-    private int minimumCore = 1;
+    private int minimumCore = 0;
     /// The maximum number of times this augment can be installed.
     private int maxStack = 1;
     private EnumRarity rarity;
