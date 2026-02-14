@@ -186,7 +186,6 @@ public class TooltipHelper {
     public static String cableLossText(long lossPerMeter) {
         return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
             + " "
-            + EnumChatFormatting.GRAY
-            + StatCollector.translateToLocal("GT5U.item.cable.eu_volt");
+            + EnumChatFormatting.GRAY;
     }
 }
