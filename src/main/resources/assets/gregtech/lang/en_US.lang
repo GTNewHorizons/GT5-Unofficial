@@ -197,6 +197,8 @@ gt.block.any_sub_block=Any Sub Block of this one
 gt.author=Author: %s
 gt.authors=Authors: %s
 
+gt.voltage.tier=-tier
+
 # Tooltip for Block Machines
 gt.blockmachines.cable.desc=Max Voltage: %s\nMax Amperage: %s\nLoss/Meter/Ampere: %s EU-Volt
 gt.blockmachines.gt_frame.desc.format=Just something you can put covers on.
