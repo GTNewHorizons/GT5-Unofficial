@@ -24,7 +24,6 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -33,7 +32,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
-import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
@@ -49,7 +47,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 public class CellLoader implements IWerkstoffRunnable {
@@ -231,11 +228,6 @@ public class CellLoader implements IWerkstoffRunnable {
         }
 
         // Tank "Recipe"
-        GTUtility.addFluidContainerData(
-            new FluidContainerRegistry.FluidContainerData(
-                new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
-                werkstoff.get(cell),
-                Materials.Empty.getCells(1)));
         FluidContainerRegistry.registerFluidContainer(
             werkstoff.getFluidOrGas(1)
                 .getFluid(),
@@ -243,14 +235,10 @@ public class CellLoader implements IWerkstoffRunnable {
             Materials.Empty.getCells(1));
 
         if (Forestry.isModLoaded()) {
-            FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
-                new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
+            FluidContainerRegistry.registerFluidContainer(
+                werkstoff.getFluidOrGas(1_000),
                 werkstoff.get(capsule),
-                GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1),
-                true);
-            GTUtility.addFluidContainerData(emptyData);
-            FluidContainerRegistry.registerFluidContainer(emptyData);
-
+                GTModHandler.getModItem(Forestry.ID, "waxCapsule", 1));
         }
 
         if (werkstoff.hasItemType(dust)) {
