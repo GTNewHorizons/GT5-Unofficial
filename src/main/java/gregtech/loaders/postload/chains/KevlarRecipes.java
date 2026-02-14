@@ -4,9 +4,9 @@ import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerR
 import static gregtech.api.enums.OrePrefixes.dust;
 import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
-import static gregtech.api.util.GTRecipeConstants.PRECISE_ASSEMBLER_CASING_TIER;
+import static gregtech.api.util.GTRecipeConstants.*;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.mixerNonCellRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -23,7 +23,7 @@ public class KevlarRecipes {
 
     public static void run() {
 
-        // TPA, Precursor to TLC
+        // TPA, Precursor to TPA Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.BlueMetalCatalyst.get(0))
             .fluidInputs(Materials.Dimethylbenzene.getFluid(1000), Materials.Oxygen.getGas(6000))
@@ -32,6 +32,14 @@ public class KevlarRecipes {
             .eut(TierEU.RECIPE_EV)
             .metadata(CHEMPLANT_CASING_TIER, 3)
             .addTo(chemicalPlantRecipes);
+
+        // TPA Dust, Precursor to TLC
+        GTValues.RA.stdBuilder()
+            .fluidInputs(Materials.TerephthalicAcid.getFluid(1000))
+            .itemOutputs(Materials.TerephthalicAcid.getDust(1))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(vacuumFreezerRecipes);
 
         // Precursor to TLC
         GTValues.RA.stdBuilder()
@@ -43,8 +51,8 @@ public class KevlarRecipes {
 
         // TLC, Precursor to LCK
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.RedMetalCatalyst.get(0))
-            .fluidInputs(Materials.Hexachloroxylene.getFluid(1000), Materials.TerephthalicAcid.getFluid(1000))
+            .itemInputs(GregtechItemList.RedMetalCatalyst.get(0), Materials.TerephthalicAcid.getDust(1))
+            .fluidInputs(Materials.Hexachloroxylene.getFluid(1000))
             .itemOutputs(Materials.TerephthaloylChloride.getDust(2))
             .fluidOutputs(Materials.HydrochloricAcid.getFluid(2000))
             .duration(5 * SECONDS)
@@ -92,7 +100,7 @@ public class KevlarRecipes {
                 Materials.DilutedHydrochloricAcid.getFluid(4000))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
-            .addTo(multiblockChemicalReactorRecipes);
+            .addTo(mixerNonCellRecipes);
 
         // MDI, Precursor to Polyurethane
         GTValues.RA.stdBuilder()
@@ -113,6 +121,14 @@ public class KevlarRecipes {
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .circuit(1)
+            .fluidInputs(Materials.Ethylene.getGas(1000), Materials.Water.getFluid(1000))
+            .fluidOutputs(Materials.Ethyleneglycol.getFluid(1000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(mixerNonCellRecipes);
 
         // TODO - Balance TBD, also must change spinneret recipe
         GTValues.RA.stdBuilder()

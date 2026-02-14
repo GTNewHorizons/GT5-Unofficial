@@ -14428,6 +14428,7 @@ public class MaterialsInit {
             .setColor(Dyes.dyeWhite)
             .addCell()
             .addFluid()
+            .addDustItems()
             .setMeltingPoint(480)
             .addMaterial(Materials.Carbon, 8)
             .addMaterial(Materials.Hydrogen, 6)

@@ -1063,18 +1063,6 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_EV)
             .addTo(chemicalReactorRecipes);
 
-        // C2H4O + H2O = C2H6O2
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.EthyleneOxide, 1))
-            .circuit(1)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Ethyleneglycol.getFluid(1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
-
         // Cu + O = CuO
 
         GTValues.RA.stdBuilder()
@@ -4007,16 +3995,6 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(Materials.HypochlorousAcid.getFluid(1_000))
             .duration(3 * SECONDS)
             .eut(8)
-            .addTo(chemicalReactorRecipes);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1))
-            .circuit(2)
-            .itemOutputs(ItemList.Cell_Empty.get(1))
-            .fluidInputs(Materials.EthyleneOxide.getGas(1_000))
-            .fluidOutputs(Materials.Ethyleneglycol.getFluid(1_000))
-            .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_HV)
             .addTo(chemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
