@@ -157,6 +157,7 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialMixer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
@@ -636,6 +637,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialCentrifuge.ID,
                 "industrialcentrifuge.controller.tier.single",
                 "Industrial Centrifuge").getStackForm(1));
+
+        ItemList.IndustrialMixer.set(
+            new MTEIndustrialMixer(
+                IndustrialMixer.ID,
+                "industrialmixer.controller.tier.single",
+                "Industrial Mixing Machine").getStackForm(1L));
     }
 
     private static void registerSteamMachines() {

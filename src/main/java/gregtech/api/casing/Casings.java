@@ -443,6 +443,8 @@ public enum Casings implements ICasing {
             return true;
         }
     },
+    MixerCasing
+        (() -> GregTechAPI.sBlockCasings12, 13, gt(16, 5, 13)),
 
     AlchemicalConstructTiered(() -> GameRegistry.findBlock(Mods.Thaumcraft.ID, "blockMetalDevice"), 9, -1) {
         @Override
@@ -628,6 +630,8 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings3Misc, 9, gtpp(2, 9)),
     CentrifugeCasing
         (() -> ModBlocks.blockCasingsMisc, 0, gtpp(0, 0)),
+    MultiUseCasing
+        (() -> ModBlocks.blockCasings3Misc, 2, gtpp(2, 2)),
 
 
 
