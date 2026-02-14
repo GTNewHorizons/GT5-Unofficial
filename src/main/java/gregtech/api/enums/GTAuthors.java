@@ -90,14 +90,9 @@ public class GTAuthors {
         + EnumChatFormatting.LIGHT_PURPLE
         + "minecraft7771";
 
-    public static final String AuthorHamCorp = EnumChatFormatting.GOLD
-        + "Ham"
-        + EnumChatFormatting.WHITE
-        + "Corp";
+    public static final String AuthorHamCorp = EnumChatFormatting.GOLD + "Ham" + EnumChatFormatting.WHITE + "Corp";
 
-    public static final String Authorzub = "" + EnumChatFormatting.DARK_PURPLE
-        + EnumChatFormatting.ITALIC
-        + "zub";
+    public static final String Authorzub = "" + EnumChatFormatting.DARK_PURPLE + EnumChatFormatting.ITALIC + "zub";
 
     public static final Supplier<String> AuthorCloud = chain(
         text("" + EnumChatFormatting.AQUA + EnumChatFormatting.BOLD),
