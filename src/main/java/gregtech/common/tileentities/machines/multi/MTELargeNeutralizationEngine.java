@@ -59,6 +59,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
@@ -76,6 +77,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int fuelValue = 0;
     private int fuelConsumption = 0;
+    private float boosterEUBoost = 1;
+    private int boosterBoostTicks = 0;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -267,6 +270,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         super.saveNBTData(aNBT);
         aNBT.setByte("structureTier", (byte) structureTier);
         aNBT.setInteger("fuelConsumption", fuelConsumption);
+        aNBT.setFloat("boosterEUBoost", boosterEUBoost);
+        aNBT.setInteger("boosterBoostTicks", boosterBoostTicks);
     }
 
     @Override
@@ -274,6 +279,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         super.loadNBTData(aNBT);
         structureTier = aNBT.getByte("structureTier");
         fuelConsumption = aNBT.getInteger("fuelConsumption");
+        boosterEUBoost = aNBT.getFloat("boosterEUBoost");
+        boosterBoostTicks = aNBT.getInteger("boosterBoostTicks");
     }
 
     @Override
@@ -304,8 +311,13 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return aTotal;
     }
 
+    private int getFuelEUOutput(int fluidAmount) {
+        return this.fuelValue * fluidAmount;
+    }
+
     private int getEUOutput(int fluidAmount) {
-        return Math.toIntExact(Math.min(getMaximumEUOutput(), (long) this.fuelValue * fluidAmount));
+        return Math
+            .min((int) (getFuelEUOutput(fluidAmount) * this.boosterEUBoost), GTUtility.safeInt(getMaximumEUOutput()));
     }
 
     @Override
@@ -313,8 +325,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     public CheckRecipeResult checkProcessing() {
         ArrayList<FluidStack> storedFluids = getStoredFluids();
         if (storedFluids.isEmpty()) {
-            this.mEUt = 0;
-            this.mEfficiency = 0;
+            this.shutDown();
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
         }
         for (FluidStack storedFluid : storedFluids) {
@@ -325,15 +336,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             FluidStack storedFluidConsume = storedFluid.copy();
             this.fuelConsumption = storedFluidConsume.amount;
             if (!depleteInput(storedFluidConsume)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
-            this.mEUt = mEfficiency < 2000 ? 0 : getEUOutput(fuelConsumption);
-            this.mEfficiencyIncrease = 20;
+            this.mEUt = getEUOutput(fuelConsumption);
+            this.mEfficiencyIncrease = 50;
             this.mProgresstime = 1;
             this.mMaxProgresstime = 1;
             return CheckRecipeResultRegistry.GENERATING;
         }
+        this.shutDown();
+        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+    }
+
+    private void shutDown() {
         this.mEUt = 0;
         this.mEfficiency = 0;
-        return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override
