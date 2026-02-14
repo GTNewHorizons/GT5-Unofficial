@@ -97,11 +97,31 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator, LCE")
-            .addInfo("Supply Diesel Fuels and 1000L of Lubricant per hour to run")
-            .addInfo("Supply 40L/s of Oxygen to boost output (optional)")
-            .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")
-            .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
-            .addInfo("You need to wait for it to reach 300% to output full power")
+            .addInfo(
+                "Supply Diesel Fuels and " + EnumChatFormatting.WHITE
+                    + "1000L"
+                    + EnumChatFormatting.GRAY
+                    + " of Lubricant per hour to run")
+            .addInfo(
+                "Supply " + EnumChatFormatting.WHITE
+                    + "40L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of Oxygen to boost output (optional)")
+            .addInfo(
+                "Default: Produces " + EnumChatFormatting.WHITE
+                    + "2048EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " at 100% fuel efficiency")
+            .addInfo(
+                "Boosted: Produces " + EnumChatFormatting.YELLOW
+                    + "6144EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " at 150% fuel efficiency")
+            .addInfo(
+                "You need to wait for it to reach " + EnumChatFormatting.WHITE
+                    + "300%"
+                    + EnumChatFormatting.GRAY
+                    + " to output full power")
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
