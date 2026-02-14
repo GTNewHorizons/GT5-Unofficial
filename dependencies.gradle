@@ -136,7 +136,7 @@ dependencies {
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.13:dev')
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha20:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha16:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.3.8-GTNH"))
