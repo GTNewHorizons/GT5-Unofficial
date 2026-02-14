@@ -207,6 +207,13 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             redstoneChannelInfo.set(hatch.getChannel(), hatch.getRedstoneInput());
         }
 
+
+        // Necessary because it's possible these maps are out of date
+        // if players color a hatch between structure checks on the splitter.
+        // Note: If it turns out the splitter is really laggy, instead we need to call it
+        // in VacuumConveyorHatch.onColorChange
+        this.vacuumConveyorInputs.fixConsistency();
+        this.vacuumConveyorOutputs.fixConsistency();
         // First step in recipe checking is finding all inputs we have to deal with.
         // As a result of this process, we also get the colors of the hatch each item is found in, which
         // we will use for routing the outputs
