@@ -1849,4 +1849,6 @@ public final class RecipeMaps {
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .build();
+
+    public static final ScannerHandlerRegistry scannerHandlers = new ScannerHandlerRegistry();
 }
