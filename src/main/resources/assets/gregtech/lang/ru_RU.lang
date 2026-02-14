@@ -2912,6 +2912,7 @@ GT5U.infodata.oil_drill.drilling_flow=Поток бурения: %s Л/тик
 
 GT5U.infodata.critical_info=Важнейшая информация
 GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
+GT5U.infodata.plasma_forge.fuel_discount=Fuel Discount: %s
 GT5U.infodata.plasma_forge.convergence=Конвергенция: %s
 GT5U.infodata.plasma_forge.convergence.progress=, perfect convergence reached in %s min
 GT5U.infodata.plasma_forge.convergence.achieved=, perfect convergence achieved
