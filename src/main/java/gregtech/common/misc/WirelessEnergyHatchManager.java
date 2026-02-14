@@ -1,14 +1,15 @@
 package gregtech.common.misc;
 
-import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
+import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
+import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import gregtech.api.metatileentity.implementations.MTEWirelessEnergy;
 
 @EventBusSubscriber
 public class WirelessEnergyHatchManager {

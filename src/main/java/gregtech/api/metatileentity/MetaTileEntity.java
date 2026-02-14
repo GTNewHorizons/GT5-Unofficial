@@ -3,8 +3,6 @@ package gregtech.api.metatileentity;
 import java.util.List;
 import java.util.function.Supplier;
 
-import appeng.api.networking.events.MENetworkBootingStatusChange;
-import appeng.api.networking.events.MENetworkPowerStatusChange;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -26,6 +24,8 @@ import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import appeng.api.crafting.ICraftingIconProvider;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AECableType;
 import appeng.core.localization.WailaText;

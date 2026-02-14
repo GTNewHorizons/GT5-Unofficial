@@ -10,13 +10,13 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import gregtech.common.misc.WirelessEnergyHatchManager;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.common.misc.WirelessEnergyHatchManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class MTEWirelessEnergy extends MTEHatchEnergy {
@@ -39,8 +39,7 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     public String[] getDescription() {
         return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
             EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-            EnumChatFormatting.GRAY + "Does not explode in rain!",
-            AuthorColen };
+            EnumChatFormatting.GRAY + "Does not explode in rain!", AuthorColen };
     }
 
     @Override
