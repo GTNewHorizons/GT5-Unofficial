@@ -37,12 +37,12 @@ dependencies {
     api("com.github.GTNewHorizons:StructureLib:1.4.28:dev")
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
     api("com.github.GTNewHorizons:NotEnoughItems:2.8.68-GTNH:dev")
-    api("com.github.GTNewHorizons:GTNHLib:0.9.13:dev")
+    api("com.github.GTNewHorizons:GTNHLib:0.9.20:dev")
     api("com.github.GTNewHorizons:NotEnoughIds:2.1.10:dev")
     api("com.github.GTNewHorizons:ModularUI:1.3.1:dev")
-    api("com.github.GTNewHorizons:ModularUI2:2.3.39-1.7.10:dev")
+    api("com.github.GTNewHorizons:ModularUI2:2.3.43-1.7.10:dev")
     api("com.github.GTNewHorizons:waila:1.19.22:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-826-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-829-GTNH:dev")
     api("com.github.GTNewHorizons:AE2FluidCraft-Rework:1.5.58-gtnh:dev")
     api("com.github.GTNewHorizons:Postea:1.1.5:dev")
 
@@ -55,7 +55,7 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Infernal-Mobs:1.10.3-GTNH:dev")
 
-    compileOnlyApi("com.github.GTNewHorizons:Avaritia:1.85:dev")
+    devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.85:dev")
 
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.9:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.55:dev") { transitive = false }
@@ -72,19 +72,19 @@ dependencies {
     compileOnly("TGregworks:TGregworks:1.7.10-GTNH-1.0.27:deobf") {transitive = false}
     compileOnly("com.github.GTNewHorizons:ThaumicBases:1.9.7:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderCore:0.5.5:dev") { transitive = false }
-    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.11:dev') { transitive = false }
+    compileOnly('com.github.GTNewHorizons:VisualProspecting:1.5.15:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.126-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Hardcore-Ender-Expansion:1.13.0-GTNH:dev") { transitive = false }
 
     implementation("com.github.GTNewHorizons:TinkersConstruct:1.14.27-GTNH:dev")
-    compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.14-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:StorageDrawers:2.2.15-GTNH:dev") { transitive = false }
 
     compileOnly("com.github.GTNewHorizons:Chisel:2.17.14-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.4.3:dev") { transitive = false }
     compileOnly rfg.deobf("curse.maven:cofh-core-69162:2388751")
     compileOnly("com.github.GTNewHorizons:Nuclear-Control:2.7.5:dev") { transitive = false }
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.58:dev")
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.7.62:dev")
     compileOnly('com.github.GTNewHorizons:Botania:1.13.14-GTNH:dev') { transitive = false }
     compileOnly("com.github.GTNewHorizons:Natura:2.8.15:dev") { transitive = false }
     compileOnly('com.github.GTNewHorizons:HoloInventory:2.5.6-GTNH:dev') { transitive = false }
@@ -93,7 +93,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:OpenComputers:1.12.16-GTNH:dev") {transitive = false}
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     compileOnlyApi rfg.deobf('curse.maven:advsolar-362768:2885953')
-    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.28-GTNH:dev') {transitive =  false}
+    compileOnly('com.github.GTNewHorizons:ThaumicEnergistics:1.7.31-GTNH:dev') {transitive =  false}
     compileOnly("com.github.GTNewHorizons:BloodMagic:1.8.12:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:CraftTweaker:3.4.2:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.7.4-GTNH:dev") { transitive = false }
@@ -133,10 +133,10 @@ dependencies {
     runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.18:dev')
 
     // For testing
-    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.11:dev')
+    //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.13:dev')
 
     // For testing ctm
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha11:dev') { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha16:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
     runtimeOnlyNonPublishable(rfg.deobf("com.github.GTNewHorizons:CoreTweaks:0.3.3.8-GTNH"))
