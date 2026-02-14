@@ -22,7 +22,6 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -206,7 +205,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         for (var hatch : redstoneHatches) {
             redstoneChannelInfo.set(hatch.getChannel(), hatch.getRedstoneInput());
         }
-
 
         // Necessary because it's possible these maps are out of date
         // if players color a hatch between structure checks on the splitter.
