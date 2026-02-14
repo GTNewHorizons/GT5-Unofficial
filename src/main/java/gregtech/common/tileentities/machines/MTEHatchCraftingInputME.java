@@ -96,6 +96,7 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.PatternMultiplierHelper;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
+import appeng.util.ScheduledReason;
 import appeng.util.inv.MEInventoryCrafting;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -486,6 +487,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private boolean additionalConnection = false;
     public boolean disablePatternOptimization = false;
     public boolean showPattern = true;
+
+    private ScheduledReason scheduledReason = ScheduledReason.UNDEFINED;
 
     public MTEHatchCraftingInputME(int aID, String aName, String aNameRegional, boolean supportFluids) {
         super(aID, aName, aNameRegional, supportFluids ? 10 : 6, MAX_INV_COUNT, null);
@@ -1169,17 +1172,29 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         if (!getBaseMetaTileEntity().isAllowedToWork()) return false;
         if (!(table instanceof MEInventoryCrafting meic)) return false;
 
-        if (!supportFluids) {
-            for (int i = 0; i < table.getSizeInventory(); ++i) {
-                if (meic.getAEStackInSlot(i) instanceof IAEFluidStack) return false;
+        for (int i = 0; i < table.getSizeInventory(); ++i) {
+            IAEStack<?> stackInSlot = meic.getAEStackInSlot(i);
+            if (stackInSlot == null || stackInSlot instanceof IAEItemStack
+                || (supportFluids && stackInSlot instanceof IAEFluidStack)) {
+                continue;
             }
+
+            scheduledReason = ScheduledReason.UNSUPPORTED_STACK;
+            return false;
         }
+
         if (!patternDetailsPatternSlotMap.get(patternDetails)
             .insertItemsAndFluids(meic)) {
+            scheduledReason = ScheduledReason.SOMETHING_STUCK;
             return false;
         }
         justHadNewItems = true;
         return true;
+    }
+
+    @Override
+    public ScheduledReason getScheduledReason() {
+        return scheduledReason;
     }
 
     @Override
