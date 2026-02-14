@@ -76,9 +76,6 @@ public enum Casings implements ICasing {
     IsamillGearBoxCasing
         (() -> ModBlocks.blockCasings5Misc, 2, gtpp(2,0)),
 
-    TurbineShaft
-        (() -> ModBlocks.blockSpecialMultiCasings,0,gtpp(2,1)),
-
     // ------------------ Gregtech Casings -----------------
 
     //Block Casings 1
@@ -618,19 +615,189 @@ public enum Casings implements ICasing {
     ReboltedIridiumCasing
         (() -> WerkstoffLoader.BWBlockCasingsAdvanced, 31850, 31850),
 
-    WireFactoryCasing
-        (() -> ModBlocks.blockCasingsMisc, 6, gtpp(0, 6)),
-    SupplyDepotCasing
-        (() -> ModBlocks.blockCasings3Misc, 9, gtpp(2, 9)),
+    // GTPP casings
+
+    // GregtechMetaCasingBlocks4 (gtplusplus.blockcasings.4)
+    TriniumTitaniumCasing
+        (() -> ModBlocks.blockCasings4Misc, 0, gtpp(3, 0)),
+    TechCasing
+        (() -> ModBlocks.blockCasings4Misc, 1, gtpp(3, 1)),
+    OrganicPanelAGlowing
+        (() -> ModBlocks.blockCasings4Misc, 2, gtpp(3, 2)),
+    TemperedArcFurnaceCasing
+        (() -> ModBlocks.blockCasings4Misc, 3, gtpp(3, 3)),
+    QuantumForceTransformerCoilCasing
+        (() -> ModBlocks.blockCasings4Misc, 4, gtpp(3, 4)),
+    // 5–8,12–15 are skipped
+    VacuumCasing
+        (() -> ModBlocks.blockCasings4Misc, 10, gtpp(3, 10)),
+    TurbodyneCasing
+        (() -> ModBlocks.blockCasings4Misc, 11, gtpp(3, 11)),
+
+    // GregtechMetaCasingBlocks (miscutils.blockcasings)
     CentrifugeCasing
         (() -> ModBlocks.blockCasingsMisc, 0, gtpp(0, 0)),
+    StructuralCokeOvenCasing
+        (() -> ModBlocks.blockCasingsMisc, 1, gtpp(0, 1)),
+    HeatResistantCokeOvenCasing
+        (() -> ModBlocks.blockCasingsMisc, 2, gtpp(0, 2)),
+    HeatProofCokeOvenCasing
+        (() -> ModBlocks.blockCasingsMisc, 3, gtpp(0, 3)),
+    MaterialPressCasing
+        (() -> ModBlocks.blockCasingsMisc, 4, gtpp(0, 4)),
+    ElectrolyzerCasing
+        (() -> ModBlocks.blockCasingsMisc, 5, gtpp(0, 5)),
+    WireFactoryCasing
+        (() -> ModBlocks.blockCasingsMisc, 6, gtpp(0, 6)),
+    MacerationStackCasing
+        (() -> ModBlocks.blockCasingsMisc, 7, gtpp(0, 7)),
+    MatterGenerationCoil
+        (() -> ModBlocks.blockCasingsMisc, 8, gtpp(0, 8)),
+    MatterFabricatorCasing
+        (() -> ModBlocks.blockCasingsMisc, 9, gtpp(0, 9)),
+    IronPlatedBricks
+        (() -> ModBlocks.blockCasingsMisc, 10, gtpp(0, 10)),
+    MultitankExteriorCasing
+        (() -> ModBlocks.blockCasingsMisc, 11, gtpp(0, 11)),
+    HastelloyNReactorCasing
+        (() -> ModBlocks.blockCasingsMisc, 12, gtpp(0, 12)),
+    ReactorShieldCasing
+        (() -> ModBlocks.blockCasingsMisc, 13, gtpp(0, 13)),
+    BlastSmelterHeatContainmentCoil
+        (() -> ModBlocks.blockCasingsMisc, 14, gtpp(0, 14)),
+    BlastSmelterCasing
+        (() -> ModBlocks.blockCasingsMisc, 15, gtpp(0, 15)),
 
+    // GregtechMetaCasingBlocks3 (gtplusplus.blockcasings.3)
+    AquaticCasing
+        (() -> ModBlocks.blockCasings3Misc, 0, gtpp(2, 0)),
+    InconelReinforcedCasing
+        (() -> ModBlocks.blockCasings3Misc, 1, gtpp(2, 1)),
+    MultiUseCasing
+        (() -> ModBlocks.blockCasings3Misc, 2, gtpp(2, 2)),
+    TriniumPlatedCasing
+        (() -> ModBlocks.blockCasings3Misc, 3, gtpp(2, 3)),
+    VanadiumRedoxPowerCellIV
+        (() -> ModBlocks.blockCasings3Misc, 4, gtpp(2, 4)),
+    VanadiumRedoxPowerCellLuV
+        (() -> ModBlocks.blockCasings3Misc, 5, gtpp(2, 5)),
+    VanadiumRedoxPowerCellZPM
+        (() -> ModBlocks.blockCasings3Misc, 6, gtpp(2, 6)),
+    VanadiumRedoxPowerCellUV
+        (() -> ModBlocks.blockCasings3Misc, 7, gtpp(2, 7)),
+    VanadiumRedoxPowerCellUHV
+        (() -> ModBlocks.blockCasings3Misc, 8, gtpp(2, 8)),
+    SupplyDepotCasing
+        (() -> ModBlocks.blockCasings3Misc, 9, gtpp(2, 9)),
+    AdvancedCryogenicCasing
+        (() -> ModBlocks.blockCasings3Misc, 10, gtpp(2, 10)),
+    VolcanusCasing
+        (() -> ModBlocks.blockCasings3Misc, 11, gtpp(2, 11)),
+    FusionMachineCasingMKIII
+        (() -> ModBlocks.blockCasings3Misc, 12, gtpp(2, 12)),
+    AdvancedFusionCoil
+        (() -> ModBlocks.blockCasings3Misc, 13, gtpp(2, 13)),
+    // blank
+    ContainmentCasing
+        (() -> ModBlocks.blockCasings3Misc, 15, gtpp(2, 15)),
 
-
+    // GregtechMetaCasingBlocks6 (gtplusplus.blockcasings.6)
     FusionMachineCasingMKIV
         (() -> ModBlocks.blockCasings6Misc, 0, gtpp(3, 4)),
     AdvancedFusionCoilII
         (() -> ModBlocks.blockCasings6Misc, 1, gtpp(3, 5)),
+    UnnamedCasing6_2
+        (() -> ModBlocks.blockCasings6Misc, 2, gtpp(3, 6)),
+
+    // GregtechMetaCasingBlocks5 (gtplusplus.blockcasings.5)
+    IsaMillExteriorCasing
+        (() -> ModBlocks.blockCasings5Misc, 0, gtpp(0, 2)),
+    IsaMillPiping
+        (() -> ModBlocks.blockCasings5Misc, 1, -1),
+    IsaMillGearboxCasing
+        (() -> ModBlocks.blockCasings5Misc, 2, -1),
+    ElementalConfinementShell
+        (() -> ModBlocks.blockCasings5Misc, 3, gtpp(0, 3)),
+    SpargeTowerExteriorCasing
+        (() -> ModBlocks.blockCasings5Misc, 4, gtpp(0, 4)),
+    SturdyPrinterCasing
+        (() -> ModBlocks.blockCasings5Misc, 5, gtpp(1, 10)),
+    ForgeCasing
+        (() -> ModBlocks.blockCasings5Misc, 6, gtpp(1, 11)),
+    NeutronPulseManipulator
+        (() -> ModBlocks.blockCasings5Misc, 7, -1),
+    CosmicFabricManipulator
+        (() -> ModBlocks.blockCasings5Misc, 8, -1),
+    InfinityInfusedManipulator
+        (() -> ModBlocks.blockCasings5Misc, 9, -1),
+    SpaceTimeContinuumRipper
+        (() -> ModBlocks.blockCasings5Misc, 10, -1),
+    NeutronShieldingCore
+        (() -> ModBlocks.blockCasings5Misc, 11, -1),
+    CosmicFabricShieldingCore
+        (() -> ModBlocks.blockCasings5Misc, 12, -1),
+    InfinityInfusedShieldingCore
+        (() -> ModBlocks.blockCasings5Misc, 13, -1),
+    SpaceTimeBendingCore
+        (() -> ModBlocks.blockCasings5Misc, 14, -1),
+    ForceFieldGlass
+        (() -> ModBlocks.blockCasings5Misc, 15, -1),
+
+    // GregtechMetaTieredCasingBlocks1 — tiered Integral Encasement / Framework
+    IntegralEncasementULV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 0, -1),
+    IntegralEncasementLV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 1, -1),
+    IntegralEncasementMV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 2, -1),
+    IntegralEncasementHV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 3, -1),
+    IntegralEncasementEV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 4, -1),
+    IntegralFrameworkIV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 5, -1),
+    IntegralFrameworkLuV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 6, -1),
+    IntegralFrameworkZPM
+        (() -> ModBlocks.blockCasingsTieredGTPP, 7, -1),
+    IntegralFrameworkUV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 8, -1),
+    IntegralFrameworkUHV
+        (() -> ModBlocks.blockCasingsTieredGTPP, 9, -1),
+
+    // GregtechMetaSpecialMultiCasings
+    TurbineShaft
+        (() -> ModBlocks.blockSpecialMultiCasings, 0, gtpp(1, 0)),
+    ReinforcedSteamTurbineCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 1, gtpp(1, 1)),
+    ReinforcedHPSteamTurbineCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 2, gtpp(1, 2)),
+    ReinforcedGasTurbineCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 3, gtpp(1, 3)),
+    ReinforcedPlasmaTurbineCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 4, gtpp(1, 4)),
+    TeslaContainmentCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 5, gtpp(1, 5)),
+    StructuralSolarCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 6, gtpp(1, 6)),
+    SaltContainmentCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 7, gtpp(1, 7)),
+    ThermallyInsulatedCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 8, gtpp(1, 8)),
+    FlotationCellCasings
+        (() -> ModBlocks.blockSpecialMultiCasings, 9, gtpp(1, 9)),
+    ReinforcedEngineCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 10, gtpp(1, 10)),
+    MolecularContainmentCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 11, gtpp(1, 11)),
+    HighVoltageCurrentCapacitor
+        (() -> ModBlocks.blockSpecialMultiCasings, 12, gtpp(1, 12)),
+    ParticleContainmentCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 13, gtpp(1, 13)),
+    ReinforcedHeatExchangerCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 14, gtpp(1, 14)),
+    ReinforcedSCTurbineCasing
+        (() -> ModBlocks.blockSpecialMultiCasings, 15, gtpp(1, 15)),
 
     MagicCasing
         (() -> Loaders.magicCasing, 0, -1),
