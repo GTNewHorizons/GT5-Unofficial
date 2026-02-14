@@ -108,15 +108,23 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                     + EnumChatFormatting.GRAY
                     + " of Oxygen to boost output (optional)")
             .addInfo(
-                "Default: Produces " + EnumChatFormatting.WHITE
+                "Default: Produces " + EnumChatFormatting.YELLOW
                     + "2048EU/t"
                     + EnumChatFormatting.GRAY
-                    + " at 100% fuel efficiency")
+                    + " at "
+                    + EnumChatFormatting.WHITE
+                    + "100%"
+                    + EnumChatFormatting.GRAY
+                    + " fuel efficiency")
             .addInfo(
                 "Boosted: Produces " + EnumChatFormatting.YELLOW
                     + "6144EU/t"
                     + EnumChatFormatting.GRAY
-                    + " at 150% fuel efficiency")
+                    + " at "
+                    + EnumChatFormatting.WHITE
+                    + "150%"
+                    + EnumChatFormatting.GRAY
+                    + " fuel efficiency")
             .addInfo(
                 "You need to wait for it to reach " + EnumChatFormatting.WHITE
                     + "300%"
