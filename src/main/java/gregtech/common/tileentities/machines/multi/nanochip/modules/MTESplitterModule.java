@@ -163,28 +163,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return new ArrayList<>(set);
     }
 
-    private static EnumChatFormatting getPrefixColor(byte color) {
-        return switch (color) {
-            case 0 -> EnumChatFormatting.BLACK;
-            case 1 -> EnumChatFormatting.RED;
-            case 2 -> EnumChatFormatting.DARK_GREEN;
-            case 3 -> EnumChatFormatting.DARK_RED;
-            case 4 -> EnumChatFormatting.DARK_BLUE;
-            case 5 -> EnumChatFormatting.DARK_AQUA;
-            case 6 -> EnumChatFormatting.AQUA;
-            case 7 -> EnumChatFormatting.GRAY;
-            case 8 -> EnumChatFormatting.DARK_GRAY;
-            case 9 -> EnumChatFormatting.LIGHT_PURPLE;
-            case 10 -> EnumChatFormatting.GREEN;
-            case 11 -> EnumChatFormatting.YELLOW;
-            case 12 -> EnumChatFormatting.BLUE;
-            case 13 -> EnumChatFormatting.DARK_PURPLE;
-            case 14 -> EnumChatFormatting.GOLD;
-            case 15 -> EnumChatFormatting.WHITE;
-            default -> EnumChatFormatting.RESET;
-        };
-    }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
