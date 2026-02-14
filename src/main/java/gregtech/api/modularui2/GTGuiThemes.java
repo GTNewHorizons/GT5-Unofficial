@@ -339,4 +339,8 @@ public final class GTGuiThemes {
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xFFDBE0).getRGB())
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
+    public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
+        .parent(TECTECH_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+        .build();
 }

@@ -1462,6 +1462,28 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+    public static final UITexture TT_OVERLAY_BUTTON_WHITELIST = UITexture.builder()
+        .location(gtnhintergalactic.GTNHIntergalactic.MODID, "gui/overlay_button/whitelist")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_BLACKLIST = UITexture.builder()
+        .location(gtnhintergalactic.GTNHIntergalactic.MODID, "gui/overlay_button/blacklist")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_CALCULATOR = UITexture
+        .fullImage(MODID, "gui/overlay_button/calculator");
+    public static final UITexture TT_OVERLAY_BUTTON_UTILITY_PANEL = UITexture
+        .fullImage(MODID, "gui/overlay_button/asteroid");
+    public static final UITexture TT_OVERLAY_BUTTON_FILTER_NO_DRONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/disable")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_TARGET_ASTEROID = UITexture.builder()
+        .location(MODID, "gui/overlay_button/target_asteroid")
+        .imageSize(16, 16)
+        .build();
+    public static final UITexture TT_OVERLAY_BUTTON_CALCULATE = UITexture
+        .fullImage(MODID, "gui/overlay_button/calculate");
 
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/pattern_me")
@@ -1497,6 +1519,11 @@ public final class GTGuiTextures {
         .location(MODID, "gui/picture/tectech_logo_dark")
         .fullImage()
         .name(GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .build();
+    public static final UITexture PICTURE_INTERGALACTIC_LOGO = UITexture.builder()
+        .location(GTNHIntergalactic.ID, "gui/picture/space_elevator_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
         .build();
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
