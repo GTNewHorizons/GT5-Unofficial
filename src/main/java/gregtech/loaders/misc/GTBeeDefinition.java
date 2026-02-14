@@ -297,9 +297,7 @@ public enum GTBeeDefinition implements IBeeDefinition {
         }),
     // Tea bee, Humidity: normal, Parents: Ash and Fertilizer, Mutationrate: 10%, combrate: 10%
     TEA(GTBranchDefinition.ORGANIC, "Tea", false, new Color(0x65D13A), new Color(0x9a9679), beeSpecies -> {
-        beeSpecies.addProduct(
-            GTModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)),
-            0.10f);
+        beeSpecies.addProduct(GTModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1), 0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(NORMAL);
         beeSpecies.setHasEffect();

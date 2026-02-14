@@ -40,7 +40,6 @@ import goodgenerator.blocks.tileEntity.MTESupercriticalFluidTurbine;
 import goodgenerator.blocks.tileEntity.MTEUniversalChemicalFuelEngine;
 import goodgenerator.blocks.tileEntity.MTEYottaFluidTank;
 import goodgenerator.blocks.tileEntity.render.TileAntimatter;
-import goodgenerator.crossmod.ic2.CropsLoader;
 import goodgenerator.crossmod.nei.NEIConfig;
 import goodgenerator.items.GGItem;
 import goodgenerator.items.GGItemBlocks;
@@ -541,7 +540,6 @@ public class Loaders {
     public static void initLoad() {
         GTMetaTileRegister();
         initLoadRecipes();
-        CropsLoader.registerCrops();
     }
 
     public static void postInitLoad() {

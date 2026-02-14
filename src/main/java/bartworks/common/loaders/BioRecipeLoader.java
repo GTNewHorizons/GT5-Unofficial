@@ -124,7 +124,7 @@ public class BioRecipeLoader {
         for (FluidStack fluidStack : easyFluids) {
 
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Crop_Drop_Grapes.get(16))
+                .itemInputs(new Object[] { "cropGrape", 16 })
                 .special(BioItemList.getPetriDish(BioCultureLoader.WhineYeast))
                 .fluidInputs(new FluidStack(fluidStack, 100))
                 .fluidOutputs(FluidRegistry.getFluidStack("potion.wine", 12))
