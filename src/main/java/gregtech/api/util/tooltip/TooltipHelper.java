@@ -184,8 +184,6 @@ public class TooltipHelper {
      * @return A string of the form "[lossPerMeter] EU-Volt"
      */
     public static String cableLossText(long lossPerMeter) {
-        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter)
-            + " "
-            + EnumChatFormatting.GRAY;
+        return CABLE_LOSS_COLOR + NumberFormatUtil.formatNumber(lossPerMeter) + EnumChatFormatting.GRAY;
     }
 }
