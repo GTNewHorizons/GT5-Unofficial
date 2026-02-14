@@ -57,9 +57,11 @@ dependencies {
 
     devOnlyNonPublishable("com.github.GTNewHorizons:Avaritia:1.85:dev")
 
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.0.0-alpha16:dev') { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.9:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.55:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.18:dev") { transitive = false }
+    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.15:dev')
     compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.4:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.17-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.24-GTNH:dev") { transitive = false }
@@ -119,7 +121,6 @@ dependencies {
     // }
 
     // For testing EEC multiblock
-    // runtimeOnlyNonPublishable("com.github.GTNewHorizons:EnderIO:2.10.18:dev") { transitive = false }
     // runtimeOnlyNonPublishable rfg.deobf("curse.maven:extra-utilities-225561:2264384")
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Mobs-Info:0.5.10-GTNH:dev")
 
@@ -130,7 +131,6 @@ dependencies {
     testImplementation("com.github.GTNewHorizons:Chisel:2.17.14-GTNH:dev") { transitive = false }
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.4.0:dev")
-    runtimeOnlyNonPublishable('com.github.GTNewHorizons:EnderIO:2.10.18:dev')
 
     // For testing
     //runtimeOnlyNonPublishable('com.github.GTNewHorizons:TCNEIAdditions:1.5.13:dev')

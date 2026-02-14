@@ -1975,7 +1975,7 @@ public class GTProxy implements IFuelHandler {
         }
         GTOreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
         GTOreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);
-        GTUtility.addFluidContainerData(aFluidEvent.data);
+        GTUtility.insertInFluidToContainersMap(aFluidEvent.data);
     }
 
     @SubscribeEvent
