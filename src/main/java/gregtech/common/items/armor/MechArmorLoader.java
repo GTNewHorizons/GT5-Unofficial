@@ -37,10 +37,10 @@ public class MechArmorLoader {
         GameRegistry.registerItem(MechArmorLeggings, "itemLeggingsMech", GregTech.ID);
         GameRegistry.registerItem(MechArmorBoots, "itemBootsMech", GregTech.ID);
 
-        ItemList.Mechanical_Helmet.set(MechArmorHelmet);
-        ItemList.Mechanical_Chestplate.set(MechArmorChestplate);
-        ItemList.Mechanical_Leggings.set(MechArmorLeggings);
-        ItemList.Mechanical_Boots.set(MechArmorBoots);
+        ItemList.Mechanical_Helmet.set(MechArmorHelmet.getStack());
+        ItemList.Mechanical_Chestplate.set(MechArmorChestplate.getStack());
+        ItemList.Mechanical_Leggings.set(MechArmorLeggings.getStack());
+        ItemList.Mechanical_Boots.set(MechArmorBoots.getStack());
 
         MechArmorAugmentRegistries.init();
     }

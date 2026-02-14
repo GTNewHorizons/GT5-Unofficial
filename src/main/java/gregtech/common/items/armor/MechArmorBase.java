@@ -292,7 +292,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public boolean showDurabilityBar(ItemStack stack) {
         ArmorState state = ArmorState.load(stack);
 
-        if (state.core == null) return false;
+        if (state == null || state.core == null) return false;
         return !state.hasBehavior(BehaviorName.InfiniteEnergy);
     }
 
