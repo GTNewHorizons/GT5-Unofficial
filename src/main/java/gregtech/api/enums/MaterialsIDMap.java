@@ -533,6 +533,7 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(760, Materials.NaphthenicAcid);
         r(764, Materials.TerephthalicAcid);
         r(765, Materials.Kevlar);
+        r(766, Materials.Hexachloroxylene);
         r(770, Materials.Endium);
         r(772, Materials.NickelAluminide);
         r(774, Materials.LiquidCrystalKevlar);

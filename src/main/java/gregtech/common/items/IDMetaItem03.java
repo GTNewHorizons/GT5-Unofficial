@@ -149,6 +149,7 @@ public enum IDMetaItem03 {
     KevlarFiber(192),
     WovenKevlar(193),
     Spinneret(194),
+    DrawnKevlarFiber(195),
     IndustrialApiary_Upgrade_Frame(199),
     IndustrialApiary_Upgrade_Acceleration_1(200),
     IndustrialApiary_Upgrade_Acceleration_2(201),

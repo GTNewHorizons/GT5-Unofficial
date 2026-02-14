@@ -313,6 +313,7 @@ public class ChemicalBathRecipes implements Runnable {
             .eut(384)
             .addTo(chemicalBathRecipes);
 
+        // TODO - move to kevlar multi once done
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.WovenKevlar.get(1))
             .itemOutputs(Materials.Kevlar.getPlates(1))

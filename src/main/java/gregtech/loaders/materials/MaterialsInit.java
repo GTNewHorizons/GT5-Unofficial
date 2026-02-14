@@ -14215,6 +14215,7 @@ public class MaterialsInit {
         Materials.Kevlar = loadKevlar();
         Materials.TerephthalicAcid = loadTerephthalicAcid();
         Materials.NaphthenicAcid = loadNaphthenicAcid();
+        Materials.Hexachloroxylene = loadHexachloroxylene();
     }
 
     private static Materials loadMethyleneDiphenylDiisocyanate() {
@@ -14442,6 +14443,20 @@ public class MaterialsInit {
             .setFuel(MaterialBuilder.FuelType.SemiFluid, 80)
             .addCell()
             .addFluid()
+            .constructMaterial();
+    }
+
+    private static Materials loadHexachloroxylene() {
+        return new MaterialBuilder().setName("Hexachloroxylene")
+            .setDefaultLocalName("Hexachloroxylene")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeYellow)
+            .setARGB(0x00a3b584)
+            .addCell()
+            .addFluid()
+            .addMaterial(Materials.Carbon, 8)
+            .addMaterial(Materials.Hydrogen, 4)
+            .addMaterial(Materials.Chlorine, 6)
             .constructMaterial();
     }
 
