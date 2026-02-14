@@ -7769,6 +7769,7 @@ public class MaterialsInit {
         Materials.Butene = loadButene();
         Materials.CalciumAcetateSolution = loadCalciumAcetateSolution();
         Materials.CarbonMonoxide = loadCarbonMonoxide();
+        Materials.CaesiumHydroxide = loadCaesiumHydroxide();
         Materials.Chloramine = loadChloramine();
         Materials.Chloroform = loadChloroform();
         Materials.Chloromethane = loadChloromethane();
@@ -7802,6 +7803,7 @@ public class MaterialsInit {
         Materials.Polystyrene = loadPolystyrene();
         Materials.PolyvinylAcetate = loadPolyvinylAcetate();
         Materials.PolyvinylChloride = loadPolyvinylChloride();
+        Materials.PotassiumHydroxide = loadPotassiumHydroxide();
         Materials.Propane = loadPropane();
         Materials.Propene = loadPropene();
         Materials.SaltWater = loadSaltWater();
@@ -7890,6 +7892,19 @@ public class MaterialsInit {
             .addMaterial(Materials.Hydrogen, 8)
             .addElectrolyzerRecipe()
             .addCrackingRecipes()
+            .constructMaterial();
+    }
+
+    private static Materials loadCaesiumHydroxide() {
+        return new MaterialBuilder().setName("CaesiumHydroxide_GT5U")
+            .setDefaultLocalName("Caesium Hydroxide")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0x00becaee)
+            .addDustItems()
+            .addMaterial(Materials.Caesium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
     }
 
@@ -8416,6 +8431,19 @@ public class MaterialsInit {
             .addSubTag(SubTag.FLAMMABLE)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.STRETCHY)
+            .constructMaterial();
+    }
+
+    private static Materials loadPotassiumHydroxide() {
+        return new MaterialBuilder().setName("PotassiumHydroxide_GT5U")
+            .setDefaultLocalName("Potassium Hydroxide")
+            .setIconSet(TextureSet.SET_DULL)
+            .setColor(Dyes.dyeLightBlue)
+            .setARGB(0x007e4a9e)
+            .addDustItems()
+            .addMaterial(Materials.Potassium, 1)
+            .addMaterial(Materials.Oxygen, 1)
+            .addMaterial(Materials.Hydrogen, 1)
             .constructMaterial();
     }
 

@@ -544,6 +544,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Butane;
     public static Materials Butene;
     public static Materials CalciumAcetateSolution;
+    public static Materials CaesiumHydroxide;
     public static Materials CarbonMonoxide;
     public static Materials Chloramine;
     public static Materials Chloroform;
@@ -578,6 +579,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Polystyrene;
     public static Materials PolyvinylAcetate;
     public static Materials PolyvinylChloride;
+    public static Materials PotassiumHydroxide;
     public static Materials Propane;
     public static Materials Propene;
     public static Materials SaltWater;

@@ -1900,6 +1900,30 @@ public class ChemicalRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
+        // H2O + K = KOH + H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Potassium.getDust(1))
+            .circuit(1)
+            .itemOutputs(Materials.PotassiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
+        // H2O + Cs = CsOH + H
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(Materials.Caesium.getDust(1))
+            .circuit(1)
+            .itemOutputs(Materials.CaesiumHydroxide.getDust(3))
+            .fluidInputs(Materials.Water.getFluid(1_000))
+            .fluidOutputs(Materials.Hydrogen.getGas(1_000))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(UniversalChemical);
+
         // H + Cl = HCl
 
         GTValues.RA.stdBuilder()

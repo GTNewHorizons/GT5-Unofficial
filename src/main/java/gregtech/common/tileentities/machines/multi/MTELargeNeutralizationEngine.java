@@ -77,7 +77,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
 
     private int fuelValue = 0;
     private int fuelConsumption = 0;
-    private float boosterEUBoost = 1;
+    private float boosterEUBoost = 1.0F;
     private int boosterBoostTicks = 0;
 
     public MTELargeNeutralizationEngine(int aID, String aName, String aNameRegional) {
@@ -265,6 +265,21 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return (byte) structureTier;
     }
 
+    private void useBooster() {
+        if (depleteInput(Materials.CaesiumHydroxide.getDust(1))) {
+            this.boosterEUBoost = 2.5F;
+            this.boosterBoostTicks = 200;
+        } else if (depleteInput(Materials.PotassiumHydroxide.getDust(1))) {
+            this.boosterEUBoost = 1.9F;
+            this.boosterBoostTicks = 20;
+        } else if (depleteInput(Materials.SodiumHydroxide.getDust(1))) {
+            this.boosterEUBoost = 1.5F;
+            this.boosterBoostTicks = 20;
+        } else {
+            this.boosterEUBoost = 1.0F;
+        }
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
@@ -323,7 +338,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        ArrayList<FluidStack> storedFluids = getStoredFluids();
+        ArrayList<FluidStack> storedFluids = this.getStoredFluids();
         if (storedFluids.isEmpty()) {
             this.shutDown();
             return CheckRecipeResultRegistry.NO_FUEL_FOUND;
@@ -336,6 +351,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             FluidStack storedFluidConsume = storedFluid.copy();
             this.fuelConsumption = storedFluidConsume.amount;
             if (!depleteInput(storedFluidConsume)) return CheckRecipeResultRegistry.NO_FUEL_FOUND;
+            if (boosterBoostTicks > 0) {
+                boosterBoostTicks--;
+            } else {
+                useBooster();
+            }
             this.mEUt = getEUOutput(fuelConsumption);
             this.mEfficiencyIncrease = 50;
             this.mProgresstime = 1;

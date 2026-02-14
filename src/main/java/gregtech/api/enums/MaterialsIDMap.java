@@ -161,6 +161,8 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(234, Materials.DenseSupercriticalSteam);
         r(241, Materials.PlatinumGroupSludge);
         r(242, Materials.WeedEX9000);
+        r(243, Materials.PotassiumHydroxide);
+        r(244, Materials.CaesiumHydroxide);
         r(299, Materials.Stone);
         r(300, Materials.Bronze);
         r(301, Materials.Brass);
