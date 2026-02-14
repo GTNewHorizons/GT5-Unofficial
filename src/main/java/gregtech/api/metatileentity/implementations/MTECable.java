@@ -47,6 +47,7 @@ import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -514,14 +515,9 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     public String[] getDescription() {
         return GTSplit.splitLocalizedFormatted(
             "gt.blockmachines.cable.desc",
-            EnumChatFormatting.GREEN + formatNumber(mVoltage)
-                + " ("
-                + GTUtility.getColoredTierNameFromVoltage(mVoltage)
-                + EnumChatFormatting.GREEN
-                + ")"
-                + EnumChatFormatting.GRAY,
-            EnumChatFormatting.YELLOW + formatNumber(mAmperage) + EnumChatFormatting.GRAY,
-            EnumChatFormatting.RED + formatNumber(mCableLossPerMeter) + EnumChatFormatting.GRAY);
+            TooltipHelper.voltageText(mVoltage),
+            TooltipHelper.ampText(mAmperage),
+            TooltipHelper.cableLossText(mCableLossPerMeter));
     }
 
     @Override
