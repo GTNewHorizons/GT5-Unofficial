@@ -22,7 +22,6 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -163,28 +162,6 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         return new ArrayList<>(set);
     }
 
-    private static EnumChatFormatting getPrefixColor(byte color) {
-        return switch (color) {
-            case 0 -> EnumChatFormatting.BLACK;
-            case 1 -> EnumChatFormatting.RED;
-            case 2 -> EnumChatFormatting.DARK_GREEN;
-            case 3 -> EnumChatFormatting.DARK_RED;
-            case 4 -> EnumChatFormatting.DARK_BLUE;
-            case 5 -> EnumChatFormatting.DARK_AQUA;
-            case 6 -> EnumChatFormatting.AQUA;
-            case 7 -> EnumChatFormatting.GRAY;
-            case 8 -> EnumChatFormatting.DARK_GRAY;
-            case 9 -> EnumChatFormatting.LIGHT_PURPLE;
-            case 10 -> EnumChatFormatting.GREEN;
-            case 11 -> EnumChatFormatting.YELLOW;
-            case 12 -> EnumChatFormatting.BLUE;
-            case 13 -> EnumChatFormatting.DARK_PURPLE;
-            case 14 -> EnumChatFormatting.GOLD;
-            case 15 -> EnumChatFormatting.WHITE;
-            default -> EnumChatFormatting.RESET;
-        };
-    }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType(getModuleType().getMachineModeText())
@@ -229,6 +206,12 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             redstoneChannelInfo.set(hatch.getChannel(), hatch.getRedstoneInput());
         }
 
+        // Necessary because it's possible these maps are out of date
+        // if players color a hatch between structure checks on the splitter.
+        // Note: If it turns out the splitter is really laggy, instead we need to call it
+        // in VacuumConveyorHatch.onColorChange
+        this.vacuumConveyorInputs.fixConsistency();
+        this.vacuumConveyorOutputs.fixConsistency();
         // First step in recipe checking is finding all inputs we have to deal with.
         // As a result of this process, we also get the colors of the hatch each item is found in, which
         // we will use for routing the outputs
