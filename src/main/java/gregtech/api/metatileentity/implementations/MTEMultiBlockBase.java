@@ -144,7 +144,9 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -744,6 +746,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
+    @Override
+    public void onDisableWorking() {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+            ddl.findConnection(this)
+                .ifPresent(conn -> {
+                    conn.setActive(false);
+                    conn.setShutdownReason(getBaseMetaTileEntity().getLastShutDownReason());
+                });
+        }
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+            ddl.findConnection(this)
+                .ifPresent(conn -> conn.setActive(true));
+        }
+    }
+
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
@@ -753,8 +774,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 if (mMaxProgresstime > 0) {
                     incrementProgressTime();
-
                     if (mProgresstime >= mMaxProgresstime) {
+                        // Record production data
+                        if (!mMaintenanceHatches.isEmpty()
+                            && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+                            MTEDroneCentre centre = ddl.getCentre();
+                            if (centre != null) {
+                                ProductionRecord pdr = centre.productionDataRecorder;
+                                if (pdr.isActive())
+                                    pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
+                            }
+                        }
                         if (mOutputItems != null) {
                             addItemOutputs(mOutputItems);
                             mOutputItems = null;
@@ -1349,9 +1379,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         IGregTechTileEntity igte = getBaseMetaTileEntity();
-        igte.disableWorking();
-        igte.setShutDownReason(reason);
-        igte.setShutdownStatus(true);
+        if (igte != null) {
+            igte.setShutDownReason(reason);
+            igte.setShutdownStatus(true);
+            igte.disableWorking();
+        }
         if (reason.wasCritical()) {
             sendSound(INTERRUPT_SOUND_INDEX);
         }

@@ -141,7 +141,7 @@ item.gt.comb.name=Соты
 item.gt.drop.name=Молочко
 item.gt.pollen.name=Пыльца
 item.gt.propolis.name=Прополис
-tile.gt.dronerender.name=Рендерер дронов
+gt.dronerenderer.name=Рендерер дронов
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Нагрев: %s
@@ -2922,6 +2922,7 @@ GT5U.infodata.oil_drill.drilling_flow=Поток бурения: %s Л/тик
 
 GT5U.infodata.critical_info=Важнейшая информация
 GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
+GT5U.infodata.plasma_forge.fuel_discount=Fuel Discount: %s
 GT5U.infodata.plasma_forge.convergence=Конвергенция: %s
 GT5U.infodata.plasma_forge.convergence.progress=, perfect convergence reached in %s min
 GT5U.infodata.plasma_forge.convergence.achieved=, perfect convergence achieved
