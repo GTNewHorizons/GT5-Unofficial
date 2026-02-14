@@ -64,7 +64,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         super(aName);
     }
 
-    private static final int CASING_INDEX = Casings.ChemicallyInertCasing.textureId;
+    private static final int CASING_INDEX = Casings.ChemicallyInertMachineCasing.textureId;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEMegaChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEMegaChemicalReactor>builder()
@@ -82,7 +82,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
                 .atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus, InputHatch, OutputBus, OutputHatch)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
-                .buildAndChain(Casings.ChemicallyInertCasing.asElement()))
+                .buildAndChain(Casings.ChemicallyInertMachineCasing.asElement()))
         .addElement('B', Casings.PTFEPipeCasing.asElement())
         .addElement(
             'C',
