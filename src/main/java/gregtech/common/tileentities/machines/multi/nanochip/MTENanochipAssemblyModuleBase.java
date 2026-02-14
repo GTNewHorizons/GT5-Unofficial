@@ -606,12 +606,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted(
-                "GT5U.tooltip.nac.module.scanner.current_eu",
-                formatNumber(currentEU)),
-            translateToLocalFormatted(
-                "GT5U.tooltip.nac.module.scanner.total_buffer",
-                formatNumber(euBufferSize)) };
+            translateToLocalFormatted("GT5U.tooltip.nac.module.scanner.current_eu", formatNumber(currentEU)),
+            translateToLocalFormatted("GT5U.tooltip.nac.module.scanner.total_buffer", formatNumber(euBufferSize)) };
     }
 
     /**
