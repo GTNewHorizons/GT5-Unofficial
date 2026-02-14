@@ -24,7 +24,7 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
 
-import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 
 public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
@@ -113,7 +113,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         initialized = true;
     }
 
-    private void renderBlackHole(TileEntityBlackhole tile, double x, double y, double z, float timer) {
+    private void renderBlackHole(RenderingTileEntityBlackhole tile, double x, double y, double z, float timer) {
         blackholeProgram.use();
         bindTexture(blackholeTexture);
         GL20.glUniform1f(u_Stability, tile.getStability());
@@ -151,7 +151,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         ShaderProgram.clear();
     }
 
-    private void renderLasers(TileEntityBlackhole tile, double x, double y, double z, float timer) {
+    private void renderLasers(RenderingTileEntityBlackhole tile, double x, double y, double z) {
         laserProgram.use();
         bindTexture(laserTexture);
 
@@ -200,20 +200,14 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof TileEntityBlackhole blackhole)) return;
+        if (!(tile instanceof RenderingTileEntityBlackhole blackhole)) return;
 
         if (!initialized) {
             init();
             if (!initialized) return;
         }
-        if (((TileEntityBlackhole) tile).getLaserRender()) {
-            renderLasers(
-                blackhole,
-                x,
-                y,
-                z,
-                tile.getWorldObj()
-                    .getTotalWorldTime() + timeSinceLastTick);
+        if (blackhole.getLaserRender()) {
+            renderLasers(blackhole, x, y, z);
         }
 
         renderBlackHole(
