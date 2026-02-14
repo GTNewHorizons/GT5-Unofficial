@@ -96,8 +96,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Nullable
     private static Integer getStructureCasingTier(Block b, int m) {
         if (b != getBlock()) return null;
-        if (m <= 0 || m >= 4) return null;
-        return m;
+        if (m <= 4 || m >= 8) return null;
+        return m - 4;
     }
 
     private static Block getBlock() {

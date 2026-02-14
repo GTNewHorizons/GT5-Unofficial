@@ -392,6 +392,12 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings12, 3, gt(16, 5, 3)),
     AlchemicallyImmuneIchoriumCasing
         (() -> GregTechAPI.sBlockCasings12, 4, gt(16, 5, 4)),
+    StrengthenedInanimateCasing
+        (()->GregTechAPI.sBlockCasings12,5,gt(16,5,5)),
+    PreciseStationaryCasing
+        (()->GregTechAPI.sBlockCasings12,6,gt(16,5,6)),
+    UltimateStaticCasing
+        (()->GregTechAPI.sBlockCasings12,7,gt(16,5,7)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -588,12 +594,6 @@ public enum Casings implements ICasing {
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
     // Block Glass 1
-    StrengthenedInanimateCasing
-        (()->GregTechAPI.sBlockCasings12,1,gt(16,5,1)),
-    PreciseStationaryCasing
-        (()->GregTechAPI.sBlockCasings12,2,gt(16,5,2)),
-    UltimateStaticCasing
-        (()->GregTechAPI.sBlockCasings12,3,gt(16,5,3)),
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
     ElectronPermeableNeutroniumCoatedGlass
