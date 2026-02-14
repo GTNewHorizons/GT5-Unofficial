@@ -97,9 +97,13 @@ public class DroneConnection {
     public String getCustomName(boolean localized) {
         if (localized) return StatCollector.translateToLocal("gt.blockmachines." + unlocalizedName + ".name");
 
-
-       return customName;
+        return customName;
     }
+
+    public String getCustomName() {
+        return getCustomName(false);
+    }
+
     public MTEMultiBlockBase getLinkedCentre() {
         return cachedCentre;
     }
