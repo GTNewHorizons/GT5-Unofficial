@@ -25,6 +25,9 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -230,6 +233,11 @@ import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Up;
 import static gregtech.common.items.IDMetaItem03.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet;
 import static gregtech.common.items.IDMetaItem03.Relativistic_Heat_Capacitor;
 import static gregtech.common.items.IDMetaItem03.Spinneret;
+import static gregtech.common.items.IDMetaItem03.StableBaryonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableBosonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableEmptyContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableLeptonContainmentUnit;
+import static gregtech.common.items.IDMetaItem03.StableMesonContainmentUnit;
 import static gregtech.common.items.IDMetaItem03.Thermal_Superconductor;
 import static gregtech.common.items.IDMetaItem03.Timepiece;
 import static gregtech.common.items.IDMetaItem03.Transdimensional_Alignment_Matrix;
@@ -1437,6 +1445,30 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "If you sift this, you're a monster",
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
+
+        ItemList.Armor_Chip_T1
+            .set(addItem(Armor_Chip_T1.ID, "Basic Armor Chip", "Creates Tier 1 Mechanical Armor augments"));
+        ItemList.Armor_Chip_T2
+            .set(addItem(Armor_Chip_T2.ID, "Advanced Armor Chip", "Creates Tier 2 Mechanical Armor augments"));
+        ItemList.Armor_Chip_T3
+            .set(addItem(Armor_Chip_T3.ID, "Exotic Armor Chip", "Creates Tier 3 Mechanical Armor augments"));
+        ItemList.StableBaryonContainmentUnit.set(
+            addItem(
+                StableBaryonContainmentUnit.ID,
+                "Stable Baryon Containment Unit",
+                "Maybe contains a bound baryon?"));
+        ItemList.StableLeptonContainmentUnit.set(
+            addItem(
+                StableLeptonContainmentUnit.ID,
+                "Stable Lepton Containment Unit",
+                "Maybe contains a bound lepton?"));
+        ItemList.StableMesonContainmentUnit.set(
+            addItem(StableMesonContainmentUnit.ID, "Stable Meson Containment Unit", "Maybe contains a bound meson?"));
+        ItemList.StableBosonContainmentUnit.set(
+            addItem(StableBosonContainmentUnit.ID, "Stable Boson Containment Unit", "Maybe contains a bound boson?"));
+
+        ItemList.StableEmptyContainmentUnit
+            .set(addItem(StableEmptyContainmentUnit.ID, "Stable Empty Containment Unit", "Maybe contains nothing?"));
 
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();

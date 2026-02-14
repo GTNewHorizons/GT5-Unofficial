@@ -304,7 +304,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
                 EnumChatFormatting.GOLD + "1",
                 3)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 

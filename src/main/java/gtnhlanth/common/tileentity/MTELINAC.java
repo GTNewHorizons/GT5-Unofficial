@@ -53,6 +53,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -233,6 +234,10 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
 
         IMetaTileEntity mte = te.getMetaTileEntity();
         if (mte == null) return false;
+
+        if (mte instanceof MTEHatchAdvancedOutputBeamline) {
+            return false;
+        }
 
         if (mte instanceof MTEHatchOutputBeamline) {
             return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);

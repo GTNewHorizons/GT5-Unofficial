@@ -40,6 +40,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
+import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
@@ -96,6 +97,7 @@ import gregtech.common.items.MetaGeneratedItem03;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import gregtech.common.tileentities.render.RenderingTileEntityDrone;
@@ -173,6 +175,8 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        new CircuitComponentFakeItem();
+        MechArmorLoader.run();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused

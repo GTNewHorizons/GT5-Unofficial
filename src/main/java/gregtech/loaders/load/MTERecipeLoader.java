@@ -1615,6 +1615,11 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PHP", "CMC", "PHP", 'P', OrePrefixes.plate.get(Materials.BlueSteel), 'H',
                 ItemList.Casing_IV, 'C', "circuitElite", 'M', ItemList.Machine_IV_Wiremill });
 
+        // Industrial Electrolyzer
+        GTModHandler.addCraftingRecipe(
+            ItemList.IndustrialElectrolyzer.get(1),
+            new Object[] { "PCP", "HMH", "PRP", 'P', MaterialsAlloy.STELLITE.getPlate(1), 'C', "circuitElite", 'H',
+                ItemList.Casing_IV, 'M', ItemList.Machine_IV_Electrolyzer, 'R', MaterialsAlloy.STELLITE.getRotor(1) });
     }
 
     // This method is for all the structure rework shapeless crafing migration recipes
@@ -1637,6 +1642,11 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.IndustrialCentrifuge.get(1),
             new Object[] { GregtechItemList.Industrial_Centrifuge });
+
+        // Industrial Electrolyzer Conversion Recipe
+        GTModHandler.addShapelessCraftingRecipe(
+            ItemList.IndustrialElectrolyzer.get(1),
+            new Object[] { GregtechItemList.Industrial_Electrolyzer });
     }
 
     private static void registerSifter() {

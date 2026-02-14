@@ -3,6 +3,8 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -36,9 +38,11 @@ import gregtech.api.util.GTUtility;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
 
     protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
-        mInventoryChanged = false;
+        mInventoryChanged = false, mTickDisabled = false;
 
     protected NBTTagCompound pendingDescriptionPacket;
+
+    private boolean mIgnoreNextUnload = false;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
@@ -63,6 +67,34 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void enableTicking() {
+        getWorld().func_147448_a(Collections.singleton(this));
+        mTickDisabled = false;
+    }
+
+    @Override
+    public void disableTicking() {
+        getWorld().func_147457_a(this);
+        mIgnoreNextUnload = true;
+        hasTimeStatisticsStarted = false;
+        Arrays.fill(mTimeStatistics, 0);
+        mTickDisabled = true;
+    }
+
+    @Override
+    public final void onChunkUnload() {
+        if (mIgnoreNextUnload) {
+            mIgnoreNextUnload = false;
+            return;
+        }
+        onUnload();
+    }
+
+    public void onUnload() {
+        super.onChunkUnload();
     }
 
     protected abstract void updateEntityProfiled();
@@ -212,7 +244,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     protected void addProfilingInformation(List<String> tList) {
-        if (hasTimeStatisticsStarted) {
+        if (mTickDisabled) {
+            tList.add("Tick Disabled");
+        } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
             int amountOfZero = 0;
@@ -270,6 +304,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public Packet getDescriptionPacket() {
         issueClientUpdate();
+        sendClientData();
 
         IMetaTileEntity imte = getMetaTileEntity();
 
@@ -305,7 +340,12 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public void issueClientUpdate() {
         mSendClientData = true;
+        if (mTickDisabled) {
+            sendClientData();
+        }
     }
+
+    abstract protected void sendClientData();
 
     @Override
     public void issueBlockUpdate() {
@@ -315,6 +355,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public void issueTileUpdate() {
         mNeedsTileUpdate = true;
+        if (mTickDisabled) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            mNeedsTileUpdate = false;
+        }
     }
 
     @Override

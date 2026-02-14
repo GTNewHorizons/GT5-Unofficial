@@ -133,6 +133,8 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.items.armor.ArmorEventHandlers;
+import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -160,6 +162,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.maglev.TetherManager;
 import gregtech.common.handlers.OffhandToolFunctionalityHandler;
+import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
@@ -1047,11 +1050,17 @@ public class GTProxy implements IFuelHandler {
         if (!this.enableUndergroundGravelGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.GRAVEL);
         if (!this.enableUndergroundDirtGen) PREVENTED_ORES.add(OreGenEvent.GenerateMinable.EventType.DIRT);
 
+        ArmorEventHandlers ArmorEvents = new ArmorEventHandlers();
+
         MinecraftForge.EVENT_BUS.register(new SpaceProjectWorldSavedData());
         MinecraftForge.EVENT_BUS.register(new GlobalEnergyWorldSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GTWorldgenerator.OregenPatternSavedData(""));
         MinecraftForge.EVENT_BUS.register(new GlobalMetricsCoverDatabase());
         MinecraftForge.EVENT_BUS.register(new PowerGogglesWorldSavedData());
+        MinecraftForge.EVENT_BUS.register(ArmorEvents);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(ArmorEvents);
         FMLCommonHandler.instance()
             .bus()
             .register(new GTWorldgenerator.OregenPatternSavedData(""));
@@ -1062,7 +1071,8 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
-            .registerGlobalListener(MetaGeneratedTool::switchToolMode);
+            .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
+            .registerGlobalListener(ItemGTToolbox::switchToolMode);
 
         GregTechAPI.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry
@@ -1084,6 +1094,8 @@ public class GTProxy implements IFuelHandler {
     public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
+
+        new ArmorKeybinds();
 
         // This needs to happen late enough that all of the fluids we need have been registered.
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
@@ -1965,7 +1977,7 @@ public class GTProxy implements IFuelHandler {
         }
         GTOreDictUnificator.addToBlacklist(aFluidEvent.data.emptyContainer);
         GTOreDictUnificator.addToBlacklist(aFluidEvent.data.filledContainer);
-        GTUtility.addFluidContainerData(aFluidEvent.data);
+        GTUtility.insertInFluidToContainersMap(aFluidEvent.data);
     }
 
     @SubscribeEvent

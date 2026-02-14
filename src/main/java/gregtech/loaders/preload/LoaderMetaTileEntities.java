@@ -111,6 +111,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
@@ -121,6 +122,7 @@ import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTEMicrowaveEnergyTransmitter;
 import gregtech.common.tileentities.machines.basic.MTEMiner;
+import gregtech.common.tileentities.machines.basic.MTEModificationTable;
 import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 import gregtech.common.tileentities.machines.basic.MTENameRemover;
 import gregtech.common.tileentities.machines.basic.MTEPotionBrewer;
@@ -157,6 +159,7 @@ import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialElectrolyzer;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
@@ -199,6 +202,12 @@ import gregtech.common.tileentities.machines.multi.MTESpinmatron;
 import gregtech.common.tileentities.machines.multi.MTETranscendentPlasmaMixer;
 import gregtech.common.tileentities.machines.multi.MTEVacuumFreezer;
 import gregtech.common.tileentities.machines.multi.MTEWormholeGenerator;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamCrafter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamMirror;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamSplitter;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEBeamStabilizer;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
+import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCollider;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
@@ -208,6 +217,22 @@ import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompr
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import gregtech.common.tileentities.machines.multi.foundry.MTEExoFoundry;
+import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex;
+import gregtech.common.tileentities.machines.multi.nanochip.MTEVacuumConveyorPipe;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEAssemblyMatrixModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBiologicalCoordinationModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEBoardProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTECuttingChamberModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEncasementWrapperModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEEtchingArrayModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEOpticalOrganizerModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESMDProcessorModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESuperconductorSplitterModule;
+import gregtech.common.tileentities.machines.multi.nanochip.modules.MTEWireTracerModule;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBBioChamber;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBCoolingTower;
 import gregtech.common.tileentities.machines.multi.pcb.MTEPCBFactory;
@@ -311,46 +336,73 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 PURIFICATION_PLANT_CONTROLLER.ID,
                 "multimachine.purificationplant",
                 "Water Purification Plant").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationPlant.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitClarifier.set(
             new MTEPurificationUnitClarifier(
                 PURIFICATION_UNIT_CLARIFIER.ID,
                 "multimachine.purificationunitclarifier",
                 "Clarifier Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitClarifier.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitFlocculator.set(
             new MTEPurificationUnitFlocculation(
                 PURIFICATION_UNIT_FLOCCULATOR.ID,
                 "multimachine.purificationunitflocculator",
                 "Flocculation Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitFlocculator.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPhAdjustment.set(
             new MTEPurificationUnitPhAdjustment(
                 PURIFICATION_UNIT_PH_ADJUSTMENT.ID,
                 "multimachine.purificationunitphadjustment",
                 "pH Neutralization Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitPhAdjustment.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitOzonation.set(
             new MTEPurificationUnitOzonation(
                 PURIFICATION_UNIT_OZONATION.ID,
                 "multimachine.purificationunitozonation",
                 "Ozonation Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitOzonation.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitPlasmaHeater.set(
             new MTEPurificationUnitPlasmaHeater(
                 PURIFICATION_UNIT_PLASMA_HEATER.ID,
                 "multimachine.purificationunitplasmaheater",
                 "Extreme Temperature Fluctuation Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitPlasmaHeater.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitUVTreatment.set(
             new MTEPurificationUnitUVTreatment(
                 PURIFICATION_UNIT_UV_TREATMENT.ID,
                 "multimachine.purificationunituvtreatment",
                 "High Energy Laser Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitUVTreatment.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitDegasifier.set(
             new MTEPurificationUnitDegasser(
                 PURIFICATION_UNIT_DEGASIFIER.ID,
                 "multimachine.purificationunitdegasifier",
                 "Residual Decontaminant Degasser Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitDegasifier.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Machine_Multi_PurificationUnitParticleExtractor.set(
             new MTEPurificationUnitBaryonicPerfection(
                 PURIFICATION_UNIT_PARTICLE_EXTRACTOR.ID,
                 "multimachine.purificationunitextractor",
                 "Absolute Baryonic Perfection Purification Unit").getStackForm(1L));
+        addItemTooltip(
+            ItemList.Machine_Multi_PurificationUnitParticleExtractor.get(1),
+            chain(GTValues.AUTHOR_SUPPLIER, GTValues.AuthorNotAPenguinAnimated));
         ItemList.Hatch_DegasifierControl.set(
             new MTEHatchDegasifierControl(
                 HATCH_DEGASIFIER_CONTROL.ID,
@@ -609,8 +661,121 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             new MTEDecayWarehouse(DECAY_WAREHOUSE.ID, "multimachine.decay-warehouse", "Decay Warehouse")
                 .getStackForm(1));
 
+        ItemList.LargeHadronCollider.set(
+            new MTELargeHadronCollider(
+                LARGE_HADRON_COLLIDER.ID,
+                "multimachine.large-hadron-collider",
+                "Large Hadron Collider").getStackForm(1));
+
+        ItemList.BeamCrafter
+            .set(new MTEBeamCrafter(BEAM_CRAFTER.ID, "multimachine.beam-crafter", "Beam Crafter").getStackForm(1));
+
+        ItemList.BeamMirror
+            .set(new MTEBeamMirror(BEAM_MIRROR.ID, "multimachine.beam-mirror", "Beam Mirror").getStackForm(1));
+
+        ItemList.BeamSplitter
+            .set(new MTEBeamSplitter(BEAM_SPLITTER.ID, "multimachine.beam-splitter", "Beam Splitter").getStackForm(1));
+        ItemList.BeamStabilizer.set(
+            new MTEBeamStabilizer(BEAM_STABILIZER.ID, "multimachine.beam-stabilizer", "Beam Stabilizer")
+                .getStackForm(1));
+
         ItemList.LATEX.set(new MTELatex(LATEX.ID, "multimachine.latex", "L.A.T.E.X.").getStackForm(1));
         addItemTooltip(ItemList.LATEX.get(1), chain(() -> "Author: ", GTAuthors.AuthorThree));
+
+        ItemList.Machine_Multi_NanochipAssemblyComplex.set(
+            new MTENanochipAssemblyComplex(
+                NANOCHIP_ASSEMBLY_CONTROLLER.ID,
+                "multimachine.nanochipassemblycomplex",
+                "Nanochip Assembly Complex").getStackForm(1));
+        addItemTooltip(
+            ItemList.Machine_Multi_NanochipAssemblyComplex.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_AssemblyMatrix.set(
+            new MTEAssemblyMatrixModule(
+                NANOCHIP_MODULE_ASSEMBLY_MATRIX.ID,
+                "multimachine.nanochipmodule.assemblymatrix",
+                "Nanochip Assembly Matrix").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_AssemblyMatrix.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_SMDProcessor.set(
+            new MTESMDProcessorModule(
+                NANOCHIP_MODULE_SMD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.smdprocessor",
+                "Part Preparation Apparatus").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_SMDProcessor.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_BoardProcessor.set(
+            new MTEBoardProcessorModule(
+                NANOCHIP_MODULE_BOARD_PROCESSOR.ID,
+                "multimachine.nanochipmodule.boadprocessor",
+                "Full-Board Immersion Device").getStackForm(1));
+        addItemTooltip(ItemList.NanoChipModule_BoardProcessor.get(1), chain(() -> "Author: ", GTValues.AuthorNoc));
+        ItemList.NanoChipModule_EtchingArray.set(
+            new MTEEtchingArrayModule(
+                NANOCHIP_MODULE_ETCHING_ARRAY.ID,
+                "multimachine.nanochipmodule.etchingarray",
+                "Ultra-high Energy Etching Array").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_EtchingArray.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_CuttingChamber.set(
+            new MTECuttingChamberModule(
+                NANOCHIP_MODULE_CUTTING_CHAMBER.ID,
+                "multimachine.nanochipmodule.cuttingchamber",
+                "Nanoprecision Cutting Chamber").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_CuttingChamber.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_WireTracer.set(
+            new MTEWireTracerModule(
+                NANOCHIP_MODULE_WIRE_TRACER.ID,
+                "multimachine.nanochipmodule.wiretracer",
+                "Nanoprecision Wire Tracer").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_WireTracer.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_SuperconductorSplitter.set(
+            new MTESuperconductorSplitterModule(
+                NANOCHIP_MODULE_SUPERCONDUCTOR_SPLITTER.ID,
+                "multimachine.nanochipmodule.superconductorsplitter",
+                "Superconductive Strand Splitter").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_SuperconductorSplitter.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_Splitter.set(
+            new MTESplitterModule(
+                NANOCHIP_MODULE_SPLITTER.ID,
+                "multimachine.nanochipmodule.splitter",
+                "Nanopart Splitter").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_Splitter.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_OpticalOrganizer.set(
+            new MTEOpticalOrganizerModule(
+                NANOCHIP_MODULE_OPTICAL_ORGANIZER.ID,
+                "multimachine.nanochipmodule.opticalorganizer",
+                "Optically Optimized Organizer").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_OpticalOrganizer.get(1),
+            chain(() -> "Author: ", GTValues.fancyAuthorChrom));
+        ItemList.NanoChipModule_EncasementWrapper.set(
+            new MTEEncasementWrapperModule(
+                NANOCHIP_MODULE_ENCASEMENT_WRAPPER.ID,
+                "multimachine.nanochipmodule.encasementwrapper",
+                "Nanometer Encasement Wrapper").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_EncasementWrapper.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
+        ItemList.NanoChipModule_BiologicalCoordinator.set(
+            new MTEBiologicalCoordinationModule(
+                NANOCHIP_MODULE_BIOLOGICAL_COORDINATOR.ID,
+                "multimachine.nanochipmodule.biologicalcoordinator",
+                "Accelerated Biological Coordinator").getStackForm(1));
+        addItemTooltip(
+            ItemList.NanoChipModule_BiologicalCoordinator.get(1),
+            chain(() -> "Author: ", GTValues.AuthorNotAPenguinAnimated));
 
         if (Thaumcraft.isModLoaded()) {
             ItemList.ResearchCompleter.set(
@@ -635,6 +800,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 IndustrialCentrifuge.ID,
                 "industrialcentrifuge.controller.tier.single",
                 "Industrial Centrifuge").getStackForm(1));
+
+        ItemList.IndustrialElectrolyzer.set(
+            new MTEIndustrialElectrolyzer(
+                IndustrialElectrolyzer.ID,
+                "industrialelectrolyzer.controller.tier.single",
+                "Industrial Electrolyzer").getStackForm(1L));
     }
 
     private static void registerSteamMachines() {
@@ -9176,6 +9347,11 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.proxy",
                 "Crafting Input Proxy").getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER.ID,
+                "hatch.pattern_provider.crafting",
+                "Crafting Pattern Provider").getStackForm(1L));
     }
 
     private static void registerMagHatch() {
@@ -10650,6 +10826,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTENameRemover(NAME_REMOVER.ID, "fix.name.remover", "Name Remover", 0).getStackForm(1L));
     }
 
+    private static void registerModificationTable() {
+        ItemList.ModificationTable.set(
+            new MTEModificationTable(MODIFICATION_TABLE.ID, "modificationtable", "Modification Table")
+                .getStackForm(1L));
+    }
+
     private static void registerAirFilters() {
         ItemList.Machine_Multi_AirFilterT1.set(
             new MTEAirFilter1(AIR_FILTER_CONTROLLER_T1.ID, "multimachine.airfilter.01", "Electric Air Filter T1")
@@ -10674,6 +10856,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         ItemList.Machine_HV_DrawerFramer
             .set(new MTEDrawerFramer(GT_Framer_HV.ID, "framer.tier.03", "Precise Drawer Framer", 3).getStackForm(1L));
 
+    }
+
+    private static void registerNacHatches() {
+        ItemList.Hatch_VacuumConveyor_Input.set(
+            new MTEHatchVacuumConveyorInput(
+                HATCH_VACUUM_CONVEYOR_INPUT.ID,
+                "vacuum.hatch.input",
+                "Vacuum Conveyor Input",
+                11).getStackForm(1L));
+        ItemList.Hatch_VacuumConveyor_Output.set(
+            new MTEHatchVacuumConveyorOutput(
+                HATCH_VACUUM_CONVEYOR_OUTPUT.ID,
+                "vacuum.hatch.output",
+                "Vacuum Conveyor Output",
+                11).getStackForm(1L));
+        ItemList.Hatch_Splitter_Level.set(
+            new MTEHatchSplitterRedstone(
+                HATCH_SPLITTER_LEVEL.ID,
+                "hatch.splitter.redstone",
+                "Splitter Redstone Input",
+                10).getStackForm(1));
+
+        ItemList.VacuumConveyorPipe.set(
+            new MTEVacuumConveyorPipe(VACUUM_CONVEYOR_PIPE.ID, "vacuum.pipe", "Vacuum Conveyor Pipe").getStackForm(1L));
     }
 
     @Override
@@ -10789,7 +10995,9 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerPrinter();
         registerOven();
         registerNameRemover();
+        registerModificationTable();
         registerAirFilters();
+        registerNacHatches();
         registerDrawerFramer();
 
         ItemList.AdvDebugStructureWriter.set(
@@ -10849,6 +11057,12 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 "Bulk Catalyst Housing",
                 10,
                 Integer.MAX_VALUE).getStackForm(1));
+        ItemList.AdvancedBeamlineOutputHatch.set(
+            new MTEHatchAdvancedOutputBeamline(
+                HATCH_ADVANCED_BEAMLINE_OUTPUT.ID,
+                "hatch.advancedbeamlineoutput",
+                "Filtered Beamline Output Hatch",
+                8).getStackForm(1));
 
         ItemList.LargeMolecularAssembler.set(
             new MTELargeMolecularAssembler(

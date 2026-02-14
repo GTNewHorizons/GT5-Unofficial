@@ -450,7 +450,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_hydrochloric_acid"),
                 EnumChatFormatting.GOLD + "1",
                 4)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 

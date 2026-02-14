@@ -16,6 +16,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTSplit;
+import gregtech.common.misc.WirelessEnergyHatchManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 @IMetaTileEntity.SkipGenerateDescription
@@ -104,11 +105,15 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
             // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
             if (aTick % ticks_between_energy_addition == 0L) {
                 tryFetchingEnergy();
+                if (aTick > 100) {
+                    aBaseMetaTileEntity.disableTicking();
+                    WirelessEnergyHatchManager.addHatch(this);
+                }
             }
         }
     }
 
-    private void tryFetchingEnergy() {
+    public void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);

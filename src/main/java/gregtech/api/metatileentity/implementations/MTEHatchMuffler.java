@@ -81,6 +81,11 @@ public class MTEHatchMuffler extends MTEHatch {
     }
 
     @Override
+    public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
+        return false;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity()
@@ -89,6 +94,9 @@ public class MTEHatchMuffler extends MTEHatch {
                 this.getBaseMetaTileEntity()
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
+        }
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.disableTicking();
         }
     }
 

@@ -757,6 +757,7 @@ gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elementa
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
 gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer casing
 gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
+gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
@@ -1457,9 +1458,9 @@ tt.keyword.Computation=Computation
 tt.keyword.Problems=Problems
 tt.keyword.Efficiency=Efficiency
 #Button that allows to pass power to other machines
-tt.keyword.PowerPass=PowerPass
+tt.keyword.PowerPass=PowerPass: §9%s
 #Button that vents EM
-tt.keyword.SafeVoid=SafeVoid
+tt.keyword.SafeVoid=SafeVoid: §9%s
 tt.keyword.Parametrizer=Parametrizer
 tt.keyword.Value=Value
 tt.keyword.Input=Input
@@ -1479,7 +1480,7 @@ tt.keyphrase.Energy_Hatches=Energy Hatches
 tt.keyphrase.Probably_uses=Currently uses
 tt.keyphrase.Probably_makes=Currently generates
 tt.keyphrase.Tier_Rating=Tier Rating
-tt.keyphrase.Amp_Rating=Amp Rating
+tt.keyphrase.Amp_Rating=Amp Rating §a%s A
 tt.keyphrase.Computation_Available=Computation Available
 tt.keyphrase.Computation_Remaining=Computation Remaining
 tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes
@@ -1965,6 +1966,12 @@ tt.eoh.spacetime.standard.tooltip.1=§b§lCapable of running recipes up to tier 
 tt.infodata.multi.energy_hatches=Energy Hatches: %s EU / %s EU
 tt.infodata.multi.currently_generates=Currently generates: %s EU/t at %s A
 tt.infodata.multi.computation=Computation: %s / %s
+tt.infodata.multi.connection_health=Quantum Computer Connection: %s
+tt.infodata.multi.connection_health.inactive=Inactive
+tt.infodata.multi.connection_health.established=Established
+tt.infodata.multi.connection_health.waiting=Waiting for Response
+tt.infodata.multi.connection_health.decoherence=Decoherence Detected
+tt.infodata.multi.computation=Computation: §a%s §r/ §e%s
 tt.infodata.multi.max_parallel=Max Parallel: %s
 tt.infodata.multi.multiplier.recipe_time=Recipe time multiplier: %s
 tt.infodata.multi.multiplier.energy=Energy multiplier: %s
@@ -2010,6 +2017,41 @@ tt.infodata.tesla.current_output=Current Output: %s EU / %s EU
 ## Base factory pipe
 tt.infodata.pipe.active=Active.
 tt.infodata.pipe.inactive=Not active.
+
+## Space Elevator
+tt.spaceelevator.storedEnergy=Stored Energy: %d
+# Space Miner
+tt.spaceminer.distance=Distance
+tt.spaceminer.parallel=Parallels
+tt.spaceminer.cycle=Cycle Distance
+tt.spaceminer.range=Cycle Range
+tt.spaceminer.step=Cycle Step
+tt.spaceminer.filterButtonTooltip=Open Filter
+tt.spaceminer.togglefilter=Toggle Filter
+tt.spaceminer.asteroidutilitypanelButtonTooltip=Open Space Miner Utility Panel
+tt.spaceminer.asteroidButtonTooltipInfo=Click me to get more info!
+tt.spaceminer.asteroidButtonFilter=Right click to add asteroid to filter
+tt.spaceminer.textFieldOre=Ore
+tt.spaceminer.textFieldDistance=Distance
+tt.spaceminer.textFieldTier=Tier
+tt.spaceminer.calculatorButtonTooltip=Open Space Miner Calculator
+tt.spaceminer.asteroidutilitypanel.miningDrones=Can be mined by:
+tt.spaceminer.asteroidutilitypanel.itemUsage=Uses 4 of each per parallel
+tt.spaceminer.asteroidutilitypanel.sizeForDrone=Asteroid size with this drone: %d-%d
+tt.spaceminer.asteroidutilitypanel.miningTime=Mining operation time with this drone: %ss
+tt.spaceminer.asteroidutilitypanel.distanceRange=Found at: %s%d-%d%s distance
+tt.spaceminer.asteroidutilitypanel.computation=Requires %s%d computation/s per parallel
+tt.spaceminer.asteroidutilitypanel.moduleTier=Requires at least tier %d Space Mining module
+tt.spaceminer.asteroidutilitypanel.drops=Drops:
+tt.spaceminer.asteroidutilitypanel.targetAsteroidButtonTooltip=Target this asteroid
+tt.spaceminer.calculator.missing.distance=Missing distance setting!
+tt.spaceminer.calculator.missing.moduleTier=Missing module tier!
+tt.spaceminer.calculator.missing.drone=Missing drone!
+tt.spaceminer.calculator.calculate=Calculate
+tt.spaceminer.calculator.asteroidChance= %s
+tt.spaceminer.filter.minableAsteroids=Currently minable asteroids for
+tt.spaceminer.filter.noValidInputs=No valid inputs!
+tt.spaceminer.filter.addOre=Click to add this ore to the filter
 
 # Gui
 tt.gui.tooltip.power_pass=Power Pass

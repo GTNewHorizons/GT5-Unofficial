@@ -239,7 +239,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addStructureInfo("Requires water to be placed in the structure.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 

@@ -12,12 +12,10 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -37,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -399,25 +399,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return "Grinding Machine, IGM";
     }
 
-    /*
-     * Milling Ball Handling
-     */
-
-    @Override
-    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
-        ArrayList<ItemStack> tItems = super.getStoredInputsForColor(color);
-        for (MTEHatchMillingBalls tHatch : validMTEList(mMillingBallBuses)) {
-            byte busColor = tHatch.getBaseMetaTileEntity()
-                .getColorization();
-            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
-            ArrayList<ItemStack> aHatchContent = tHatch.getContentUsageSlots();
-            if (!aHatchContent.isEmpty()) {
-                tItems.addAll(aHatchContent);
-            }
-        }
-        return tItems;
-    }
-
     public int getMaxBallDurability(ItemStack aStack) {
         return ItemGenericChemBase.getMaxBallDurability(aStack);
     }
@@ -429,29 +410,23 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
     }
 
-    private ItemStack findMillingBall(ItemStack[] aItemInputs) {
-        if (mMillingBallBuses.size() != 1) return null;
+    @NotNull
+    private ItemStack[] getAvailableMillingBalls() {
+        if (mMillingBallBuses.size() != 1) return GTValues.emptyItemStackArray;
 
         MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
 
-        if (aBus == null) return null;
+        if (aBus == null) return GTValues.emptyItemStackArray;
+        @NotNull
+        ArrayList<ItemStack> availableItems = aBus.getContentUsageSlots();
+        return availableItems.toArray(GTValues.emptyItemStackArray);
 
-        ArrayList<ItemStack> aAvailableItems = aBus.getContentUsageSlots();
+    }
 
-        if (aAvailableItems.isEmpty()) return null;
-
+    private ItemStack searchForMillingBall(ItemStack[] aItemInputs, ItemStack millingBallType) {
         for (final ItemStack aInput : aItemInputs) {
-            if (!isMillingBall(aInput)) continue;
-
-            for (ItemStack aBall : aAvailableItems) {
-                if (!GTUtility.areStacksEqual(aBall, aInput, true)) continue;
-
-                Logger.INFO("Found a valid milling ball to use.");
-                return aBall;
-            }
-
+            if (GTUtility.areStacksEqual(millingBallType, aInput, true)) return aInput;
         }
-
         return null;
     }
 
@@ -484,25 +459,51 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
             ItemStack millingBall;
 
+            public CheckRecipeResult process() {
+                if (getAvailableMillingBalls().length == 0) return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                return super.process();
+            }
+
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                millingBall = findMillingBall(inputItems);
-                if (millingBall == null) {
-                    return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                ItemStack typeOfBall = null;
+                for (ItemStack item : recipe.mInputs) {
+                    if (isMillingBall(item)) {
+                        typeOfBall = item;
+                        break;
+                    }
+                }
+
+                if (typeOfBall != null) {
+                    millingBall = searchForMillingBall(getAvailableMillingBalls(), typeOfBall);
+                    if (millingBall == null) {
+                        return SimpleCheckRecipeResult.ofFailure("no_milling_ball");
+                    }
+                } else {
+                    Logger.ERROR("Cannot find a millingball in IsaMill Recipe.");
+                    millingBall = null;
+                    return CheckRecipeResultRegistry.NO_RECIPE;
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                CheckRecipeResult result = super.process();
-                if (result.wasSuccessful()) {
+            public ItemStack[] prepareCatalyst(ItemStack[] inputs) {
+                return ArrayUtils.addAll(inputs, getAvailableMillingBalls());
+            }
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
+                if (GTUtility.isStackValid(millingBall)) {
                     damageMillingBall(millingBall);
                 }
-                return result;
+                millingBall = null;
+                return super.onRecipeStart(recipe);
             }
+
         }.enablePerfectOverclock();
     }
 }

@@ -34,6 +34,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.util.GTLog;
@@ -230,6 +232,17 @@ public abstract class MetaBaseItem extends GTGenericItem
             GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
+    }
+
+    /** Returns null for item damage out of bounds. */
+    public Materials getMaterial(int damage) {
+        if (damage < 0) {
+            return null;
+        }
+        if (damage >= 32000) {
+            return null;
+        }
+        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
     }
 
     @Override
@@ -669,4 +682,26 @@ public abstract class MetaBaseItem extends GTGenericItem
         return false;
     }
 
+    @Override
+    public String getItemStackDisplayName(final ItemStack itemStack) {
+        final String base = super.getItemStackDisplayName(itemStack);
+
+        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
+        if (behaviorList == null) {
+            return base;
+        }
+
+        try {
+            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
+                final String newName = behavior.getNameOverride(base, itemStack);
+                if (newName != null) {
+                    return newName;
+                }
+            }
+        } catch (Exception e) {
+            if (D1) e.printStackTrace(GTLog.err);
+        }
+
+        return base;
+    }
 }

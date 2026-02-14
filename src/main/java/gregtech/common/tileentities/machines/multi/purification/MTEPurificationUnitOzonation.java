@@ -245,7 +245,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_ozone"),
                 EnumChatFormatting.GOLD + "1",
                 2)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
