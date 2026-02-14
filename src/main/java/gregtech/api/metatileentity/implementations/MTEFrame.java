@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
@@ -14,13 +15,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 
 public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
-    private static final String localizedDescFormat = GTLanguageManager
-        .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
     public final Materials mMaterial;
 
     public MTEFrame(int aID, String aName, String aNameRegional, Materials aMaterial) {
@@ -65,7 +63,8 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
 
     @Override
     public String[] getDescription() {
-        return localizedDescFormat.split("\\R");
+        return StatCollector.translateToLocal("gt.blockmachines.gt_frame.desc.format")
+            .split("\\R");
     }
 
     @Override
