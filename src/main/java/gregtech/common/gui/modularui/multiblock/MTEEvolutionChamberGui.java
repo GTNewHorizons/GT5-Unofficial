@@ -202,10 +202,11 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
         super.registerSyncValues(syncManager);
         syncManager.registerSlotGroup("culture_slot", 1);
 
-        GenericSyncValue<ArtificialOrganism> organismSyncer = new GenericSyncValue<ArtificialOrganism>(
-            () -> multiblock.currentSpecies,
-            ao -> { multiblock.currentSpecies = ao; },
-            new ArtificialOrganismAdapter());
+        GenericSyncValue<ArtificialOrganism> organismSyncer = GenericSyncValue.builder(ArtificialOrganism.class)
+            .getter(() -> multiblock.currentSpecies)
+            .setter(ao -> multiblock.currentSpecies = ao)
+            .adapter(new ArtificialOrganismAdapter())
+            .build();
         syncManager.syncValue("ao", organismSyncer);
 
         // AO Count syncers
@@ -236,9 +237,10 @@ public class MTEEvolutionChamberGui extends MTEMultiBlockBaseGui<MTEEvolutionCha
 
         // The popup panel which shows trait details
         IPanelHandler traitPanel = syncManager
-            .panel("trait_listing", (p_syncManager, syncHandler) -> getTraitPopup(), true);
+            .syncedPanel("trait_listing", true, (p_syncManager, syncHandler) -> getTraitPopup());
         // The "tutorial" popup panel
-        IPanelHandler infoPanel = syncManager.panel("info_panel", (p_syncManager, syncHandler) -> getInfoPopup(), true);
+        IPanelHandler infoPanel = syncManager
+            .syncedPanel("info_panel", true, (p_syncManager, syncHandler) -> getInfoPopup());
 
         // AO count Syncers
         GenericSyncValue<ArtificialOrganism> organismSyncer = syncManager.findSyncHandler("ao", GenericSyncValue.class);

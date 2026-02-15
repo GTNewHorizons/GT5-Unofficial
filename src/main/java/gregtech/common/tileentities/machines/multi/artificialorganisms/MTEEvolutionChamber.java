@@ -193,7 +193,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     private static Integer getTierFromMeta(Block block, Integer metaID) {
         if (block != GregTechAPI.sBlockCasings12) return null;
         if (metaID < 6 || metaID > 8) return null;
-        return metaID;
+        return metaID - 5;
     }
 
     @Override
@@ -238,8 +238,7 @@ public class MTEEvolutionChamber extends MTEExtendedPowerMultiBlockBase<MTEEvolu
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
-        // stupid fix because casing tier was 117 if machine was not formed ???
-        int casingMeta = mMachine ? Math.max(6, getCasingTier()) : 1;
+        int casingMeta = mMachine ? Math.max(6, getCasingTier() + 5) : 6;
         if (side == aFacing) {
             if (currentSpecies != null && currentSpecies.getFinalized()) {
                 rTexture = new ITexture[] {
