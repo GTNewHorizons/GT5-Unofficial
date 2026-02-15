@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -1029,7 +1030,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     }
 
     @Override
-    public Materials getMaterial() {
+    public IOreMaterial getMaterial() {
         return mMaterial;
     }
 

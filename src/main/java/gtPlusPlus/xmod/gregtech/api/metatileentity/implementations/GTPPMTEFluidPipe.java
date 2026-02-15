@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import java.util.List;
 
+import gregtech.api.interfaces.IOreMaterial;
+import gtPlusPlus.core.material.Material;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.HarvestTool;
@@ -64,17 +66,10 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
     }
 
     @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocalFormatted(
-            getPrefixKey(),
-            StatCollector.translateToLocal(pipeStats.getLocalizedMaterialKey()));
-    }
-
-    @Override
-    public void addMaterialTooltip(List<String> desc) {
-        if (shouldSkipMaterialTooltip()) return;
-        if (pipeStats.getMaterial() == null) return;
-        pipeStats.getMaterial()
-            .addTooltips(desc);
+    public IOreMaterial getMaterial() {
+        if (pipeStats == null) {
+            return null;
+        }
+        return pipeStats.getMaterial();
     }
 }

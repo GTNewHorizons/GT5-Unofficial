@@ -62,10 +62,6 @@ public class GregtechConduits {
             this.rgba = new short[] { (short) r, (short) g, (short) b, (short) a };
         }
 
-        public String getLocalizedMaterialKey() {
-            return MaterialUtils.getMaterialLocalizedNameKey(defaultLocalName);
-        }
-
         public Material getMaterial() {
             return Material.mMaterialCache.get(defaultLocalName.toLowerCase());
         }

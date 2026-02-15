@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -664,7 +665,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
     }
 
     @Override
-    public Materials getMaterial() {
+    public IOreMaterial getMaterial() {
         return mMaterial;
     }
 

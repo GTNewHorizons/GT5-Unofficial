@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -439,7 +440,7 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     }
 
     @Override
-    public Materials getMaterial() {
+    public IOreMaterial getMaterial() {
         return mMaterial;
     }
 

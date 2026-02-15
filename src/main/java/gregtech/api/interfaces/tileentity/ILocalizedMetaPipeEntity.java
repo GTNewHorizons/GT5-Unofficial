@@ -2,6 +2,7 @@ package gregtech.api.interfaces.tileentity;
 
 import java.util.List;
 
+import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Materials;
@@ -16,7 +17,7 @@ public interface ILocalizedMetaPipeEntity {
      *
      * @apiNote if this returns <code>null</code>, you need to rewrite {@link #getLocalizedName()}.
      */
-    Materials getMaterial();
+    IOreMaterial getMaterial();
 
     /**
      * Get the language key of the unformatted name.
@@ -39,12 +40,14 @@ public interface ILocalizedMetaPipeEntity {
      * Get the localized name of the meta pipe entity.
      */
     default String getLocalizedName() {
-        if (getPrefixKey() != null && getMaterial() != null) {
-            if (getMaterialKeyOverride() == null) {
-                return StatCollector.translateToLocalFormatted(getPrefixKey(), getMaterial().getLocalizedName());
+        final String prefixKey = getPrefixKey();
+        final IOreMaterial material = getMaterial();
+        if (prefixKey != null && material != null) {
+            final String materialKeyOverride = getMaterialKeyOverride();
+            if (materialKeyOverride == null) {
+                return StatCollector.translateToLocalFormatted(prefixKey, material.getLocalizedName());
             }
-            if (getMaterial() != null) return StatCollector
-                .translateToLocalFormatted(getPrefixKey(), StatCollector.translateToLocal(getMaterialKeyOverride()));
+            return StatCollector.translateToLocalFormatted(prefixKey, StatCollector.translateToLocal(materialKeyOverride));
         }
         return "Unnamed with ILocalizedMetaPipeEntity";
     }

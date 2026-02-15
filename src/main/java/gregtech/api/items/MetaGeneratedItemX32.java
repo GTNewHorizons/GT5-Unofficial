@@ -221,12 +221,12 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     }
 
     private @Nullable Materials getMaterial(int damage) {
-        if (Materials.isMaterialItem(damage)) return null;
+        if (!Materials.isMaterialItem(damage)) return null;
         return GregTechAPI.sGeneratedMaterials[damage % 1000];
     }
 
     private @Nullable OrePrefixes getOrePrefix(int damage) {
-        if (Materials.isMaterialItem(damage)) return null;
+        if (!Materials.isMaterialItem(damage)) return null;
         final int i = damage / 1000;
         if (i >= mGeneratedPrefixList.length) return null;
         return mGeneratedPrefixList[i];
