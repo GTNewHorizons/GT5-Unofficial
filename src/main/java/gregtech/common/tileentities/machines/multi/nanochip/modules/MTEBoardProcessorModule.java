@@ -358,7 +358,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     public void flushTank() {
         if ((storedFluidStack != null) && (!mOutputHatches.isEmpty())) {
             impurityFluidAmount = fluidAmount;
-            FluidStack toFlush = new FluidStack(impurityFluidStack.getFluid(), impurityFluidAmount);
+            FluidStack toFlush = new FluidStack(
+                impurityFluidStack.getFluid(),
+                impurityFluidStack.getFluid() == Materials.PrismaticGas.mFluid ? impurityFluidAmount / 4
+                    : impurityFluidAmount);
             addOutput(toFlush);
             storedFluidStack = null;
             impurityFluidStack = null;
