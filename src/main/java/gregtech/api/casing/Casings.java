@@ -903,6 +903,32 @@ public enum Casings implements ICasing {
         (() -> TTCasingsContainer.sBlockCasingsTT, 13, tt(13)),
     UltimateContainmentFieldGenerator
         (() -> TTCasingsContainer.sBlockCasingsTT, 14, tt(14)),
+    RedstoneAlloyPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 0, tt(16)),
+    MVSuperconductorPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 1, tt(17)),
+    HVSuperconductorPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 2, tt(18)),
+    EVSuperconductorPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 3, tt(19)),
+    IVSuperconductorPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 4, tt(20)),
+    LuVSuperconductorPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 5, tt(21)),
+    TeslaBaseCasing(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 7, tt(22)),
+    TeslaToroidCasing(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 8, tt(23)),
+    TeslaSecondaryWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 9, tt(24)),
+    ZPMSuperconductorPrimaryTeslaWindings(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 6, tt(25)),
+    ReinforcedTemporalStructureCasing(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 10, tt(26)),
+    ReinforcedSpatialStructureCasing(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 11, tt(27)),
+    InfiniteSpacetimeEnergyBoundaryCasing(
+        ()-> TTCasingsContainer.sBlockCasingsBA0, 12, tt(28)),
     ;
     // spotless:on
 
