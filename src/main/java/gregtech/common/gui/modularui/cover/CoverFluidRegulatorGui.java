@@ -104,12 +104,16 @@ public class CoverFluidRegulatorGui extends CoverBaseGui<CoverFluidRegulator> {
     }
 
     private @NotNull String validateTickRateText(String tickRateText) {
-        return Long.toString(
-            (long) valiateTickRate(
-                MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
-                    .getResult()
-                    .getNumberValue()
-                    .doubleValue()));
+        return Long
+            .toString(
+                (long) valiateTickRate(
+                    MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
+                        .getResult() == null
+                            ? 20
+                            : MathUtils.parseExpression(tickRateText, cover.getTickRateForUi(), true)
+                                .getResult()
+                                .getNumberValue()
+                                .doubleValue()));
     }
 
     /**
