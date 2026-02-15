@@ -99,7 +99,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                 }
                 return true;
             })
-                .background(GTGuiTextures.BUTTON_STANDARD, GuiTextures.GEAR)
+                .background(GTGuiTextures.BUTTON_NANOCHIP, GuiTextures.GEAR)
                 .disableHoverBackground()
                 .tooltip(tooltip -> tooltip.add("Open Rules manager"))
                 .size(18));
