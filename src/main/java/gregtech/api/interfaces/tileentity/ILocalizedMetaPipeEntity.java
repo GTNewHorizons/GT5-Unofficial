@@ -2,10 +2,9 @@ package gregtech.api.interfaces.tileentity;
 
 import java.util.List;
 
-import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.util.StatCollector;
 
-import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IOreMaterial;
 
 /**
  * Interface to provide localization for meta pipe entity with a united format.
@@ -47,7 +46,8 @@ public interface ILocalizedMetaPipeEntity {
             if (materialKeyOverride == null) {
                 return StatCollector.translateToLocalFormatted(prefixKey, material.getLocalizedName());
             }
-            return StatCollector.translateToLocalFormatted(prefixKey, StatCollector.translateToLocal(materialKeyOverride));
+            return StatCollector
+                .translateToLocalFormatted(prefixKey, StatCollector.translateToLocal(materialKeyOverride));
         }
         return "Unnamed with ILocalizedMetaPipeEntity";
     }

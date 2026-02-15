@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import gregtech.api.interfaces.IOreMaterial;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +33,7 @@ import gregtech.api.graphs.PowerNode;
 import gregtech.api.graphs.PowerNodes;
 import gregtech.api.graphs.consumers.ConsumerNode;
 import gregtech.api.graphs.paths.PowerNodePath;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

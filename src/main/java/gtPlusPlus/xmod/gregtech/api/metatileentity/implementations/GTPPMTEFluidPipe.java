@@ -1,12 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import java.util.List;
-
-import gregtech.api.interfaces.IOreMaterial;
-import gtPlusPlus.core.material.Material;
-import net.minecraft.util.StatCollector;
-
 import gregtech.api.enums.HarvestTool;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
