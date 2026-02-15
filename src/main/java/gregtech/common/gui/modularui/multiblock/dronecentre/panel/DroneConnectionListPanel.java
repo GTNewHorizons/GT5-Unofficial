@@ -71,7 +71,8 @@ public class DroneConnectionListPanel extends ModularPanel {
                 if (dynamicWidget.hasChildren()) {
                     IWidget child = dynamicWidget.getChildren()
                         .get(0);
-                    if (child instanceof DroneListWidget<?, ?> list && list.getScrollData().getScrollSize()!=0) {
+                    if (child instanceof DroneListWidget<?, ?>list && list.getScrollData()
+                        .getScrollSize() != 0) {
                         lastScroll = list.getScrollY();
                     }
                 }
