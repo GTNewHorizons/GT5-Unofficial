@@ -1,15 +1,16 @@
 package gregtech.common.blocks;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.config.Client;
 
 public class ItemFrames extends ItemBlock {
@@ -52,9 +53,12 @@ public class ItemFrames extends ItemBlock {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (Client.tooltip.showFormula) {
-            aList.add(GTLanguageManager.getTranslation("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
+            aList.add(StatCollector.translateToLocal("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
         }
-        aList.add(GTLanguageManager.getTranslation("gt.blockmachines.gt_frame.desc.format"));
+        Collections.addAll(
+            aList,
+            StatCollector.translateToLocal("gt.blockmachines.gt_frame.desc.format")
+                .split("\\\\n"));
     }
 
     @Override
