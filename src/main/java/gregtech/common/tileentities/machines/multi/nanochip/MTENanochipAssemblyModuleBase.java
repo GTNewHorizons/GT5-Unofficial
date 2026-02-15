@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -154,7 +155,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     public enum ModuleHatchElement implements IHatchElement<MTENanochipAssemblyModuleBase<?>> {
 
         VacuumConveyorHatch(MTENanochipAssemblyModuleBase::addConveyorToMachineList,
-            MTENanochipAssemblyModuleBase.class) {
+            MTEHatchVacuumConveyor.class) {
 
             @Override
             public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {
