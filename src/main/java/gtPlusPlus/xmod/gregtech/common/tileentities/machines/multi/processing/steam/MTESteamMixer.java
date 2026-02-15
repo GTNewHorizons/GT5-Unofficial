@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -81,22 +82,36 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         return "Mixer";
     }
 
+    // TODO: remove old structure after 2.9/next release cycle
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_OLD = "old";
 
     private IStructureDefinition<MTESteamMixer> STRUCTURE_DEFINITION = null;
+
     // spotless:off
     private final String[][] shape = new String[][]{
+        {"     ","  A  "," ABA ","  A  ","     "},
+        {"  A  ","     ","A C A","     ","  A  "},
+        {" A~A ","A D A","ADBDA","A D A"," AAA "},
+        {" AAA ","AAAAA","AAAAA","AAAAA"," AAA "}};
+    private final String[][] shape_old = new String[][]{
         {"       ","   A   ","   A   "," AAAAA ","   A   ","   A   ","       "},
         {"   A   ","   A   ","       ","AA B AA","       ","   A   ","   A   "},
         {"   A   ","       ","       ","A  C  A","       ","       ","   A   "},
         {" AAAAA ","A     A","A     A","A  C  A","A     A","A     A"," AAAAA "},
-        {" AA~AA ","AD   DA","A D D A","A  B  A","A D D A","AD   DA"," AAAAA "},
+        {" AA~AA ","AE   EA","A E E A","A  B  A","A E E A","AE   EA"," AAAAA "},
         {" AAAAA ","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA","AAAAAAA"," AAAAA "}};
     //spotless:on
 
-    private static final int HORIZONTAL_OFF_SET = 3;
-    private static final int VERTICAL_OFF_SET = 4;
-    private static final int DEPTH_OFF_SET = 0;
+    private static final int HORIZONTAL_OFFSET = 2;
+    private static final int VERTICAL_OFFSET = 2;
+    private static final int DEPTH_OFFSET = 0;
+    private static final int HORIZONTAL_OFFSET_OLD = 3;
+    private static final int VERTICAL_OFFSET_OLD = 4;
+    private static final int DEPTH_OFFSET_OLD = 0;
+
+    private int revision = 1;
 
     private int tierGearBoxCasing = -1;
     private int tierPipeCasing = -1;
@@ -175,6 +190,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamMixer>builder()
 
                 .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+                .addShape(STRUCTURE_PIECE_OLD, transpose(shape_old))
                 .addElement(
                     'B',
                     ofBlocksTiered(
@@ -191,7 +207,8 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing))
-                .addElement('D', ofBlock(Blocks.iron_block, 0))
+                .addElement('D', ofBlock(Blocks.iron_bars, 0))
+                .addElement('E', ofBlock(Blocks.iron_block, 0))
                 .addElement(
                     'A',
                     ofChain(
@@ -223,28 +240,51 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            hintsOnly,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET);
+        if (revision >= 1) {
+            this.buildPiece(
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                hintsOnly,
+                HORIZONTAL_OFFSET,
+                VERTICAL_OFFSET,
+                DEPTH_OFFSET);
+        } else {
+            this.buildPiece(
+                STRUCTURE_PIECE_OLD,
+                stackSize,
+                hintsOnly,
+                HORIZONTAL_OFFSET_OLD,
+                VERTICAL_OFFSET_OLD,
+                DEPTH_OFFSET_OLD);
+        }
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET,
-            elementBudget,
-            env,
-            false,
-            true);
+        if (revision >= 1) {
+            return this.survivalBuildPiece(
+                STRUCTURE_PIECE_MAIN,
+                stackSize,
+                HORIZONTAL_OFFSET,
+                VERTICAL_OFFSET,
+                DEPTH_OFFSET,
+                elementBudget,
+                env,
+                false,
+                true);
+        } else {
+            return this.survivalBuildPiece(
+                STRUCTURE_PIECE_OLD,
+                stackSize,
+                HORIZONTAL_OFFSET_OLD,
+                VERTICAL_OFFSET_OLD,
+                DEPTH_OFFSET_OLD,
+                elementBudget,
+                env,
+                false,
+                true);
+        }
     }
 
     @Override
@@ -253,10 +293,13 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!(revision >= 1 ? checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)
+            : checkPiece(STRUCTURE_PIECE_OLD, HORIZONTAL_OFFSET_OLD, VERTICAL_OFFSET_OLD, DEPTH_OFFSET_OLD)))
+            return false;
+        boolean casingCountValid = revision >= 1 ? tCountCasing >= 25 : tCountCasing >= 90;
         if (tierGearBoxCasing == 1 && tierPipeCasing == 1
             && tierMachineCasing == 1
-            && tCountCasing >= 90
+            && casingCountValid
             && !mSteamInputFluids.isEmpty()) {
             updateHatchTexture();
             tierMachine = 1;
@@ -264,7 +307,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         }
         if (tierGearBoxCasing == 2 && tierPipeCasing == 2
             && tierMachineCasing == 2
-            && tCountCasing >= 90
+            && casingCountValid
             && !mSteamInputFluids.isEmpty()) {
             updateHatchTexture();
             tierMachine = 2;
@@ -317,7 +360,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(7, 6, 7, false)
+            .beginStructureBlock(5, 4, 5, false)
             .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
             .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
@@ -330,17 +373,18 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
                     + " Any casing")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "90-100x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
+            .addStructureInfo(EnumChatFormatting.GOLD + "25-35x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Iron Bars")
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
             .addStructureInfo(
-                EnumChatFormatting.GOLD + "90-100x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
+                EnumChatFormatting.GOLD + "25-35x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Block of Iron")
+            .addStructureInfo(EnumChatFormatting.GOLD + "1x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Iron Bars")
+            .addStructureAuthors(GTValues.AuthorJL2210)
             .toolTipFinisher(GTValues.AuthorEvgenWarGold);
         return tt;
     }
@@ -389,6 +433,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         super.saveNBTData(aNBT);
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("tierMachineCasing", tierMachineCasing);
+        aNBT.setInteger("revision", revision);
     }
 
     @Override
@@ -396,6 +441,7 @@ public class MTESteamMixer extends MTESteamMultiBase<MTESteamMixer> implements I
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
         tierMachineCasing = aNBT.getInteger("tierMachineCasing");
+        revision = aNBT.hasKey("revision", NBT.TAG_INT) ? aNBT.getInteger("revision") : 0;
     }
 
     @SideOnly(Side.CLIENT)
