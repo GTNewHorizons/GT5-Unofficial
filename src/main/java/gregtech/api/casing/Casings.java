@@ -30,6 +30,7 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
+import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -73,6 +74,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings1, 14, gt(0, 0, 14)),
     SuperconductingCoilBlock
         (() -> GregTechAPI.sBlockCasings1, 15, gt(0, 0, 15)),
+
     // Block Casings 2
     SolidSteelMachineCasing
         (() -> GregTechAPI.sBlockCasings2, 0, gt(0, 1, 0)),
@@ -105,7 +107,8 @@ public enum Casings implements ICasing {
     TitaniumPipeCasing
         (() -> GregTechAPI.sBlockCasings2, 14, gt(0, 1, 14)),
     TungstensteelPipeCasing
-        (() -> GregTechAPI.sBlockCasings2, 15, gt(0, 1, 15  )),
+        (() -> GregTechAPI.sBlockCasings2, 15, gt(0, 1, 15)),
+
     // Block Casings 3
     YellowStripesBlockA
         (() -> GregTechAPI.sBlockCasings3, 0, gt(0, 2, 0)),
@@ -139,6 +142,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings3, 14, gt(0, 2, 14)),
     TungstensteelFireboxCasing
         (() -> GregTechAPI.sBlockCasings3, 15, gt(0, 2, 15)),
+
     // Block Casings 4
     RobustTungstenSteelMachineCasing
         (() -> GregTechAPI.sBlockCasings4, 0, gt(0, 3, 0)),
@@ -168,6 +172,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings4, 14, gt(0, 3, 14)),
     Firebricks
         (() -> GregTechAPI.sBlockCasings4, 15, gt(0, 3, 15)),
+
     // Block Casings 5
     CupronickelCoilBlock
         (() -> GregTechAPI.sBlockCasings5, 0, gt(1, 0, 0)),
@@ -197,6 +202,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings5, 12, gt(1, 0, 12)),
     EternalCoilBlock
         (() -> GregTechAPI.sBlockCasings5, 13, gt(1, 0, 13)),
+
     // Block Casings 6
     HermeticCasing
         (() -> GregTechAPI.sBlockCasings6, 0, gt(8, 7, 0)),
@@ -228,6 +234,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings6, 13, gt(8, 7, 13)),
     HermeticCasing14
         (() -> GregTechAPI.sBlockCasings6, 14, gt(8, 7, 14)),
+
     // Block Casings 8
     ChemicallyInertMachineCasing
         (() -> GregTechAPI.sBlockCasings8, 0, gt(1, 3, 0)),
@@ -257,6 +264,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings8, 13, gt(1, 3, 13)),
     InfinityCooledCasing
         (() -> GregTechAPI.sBlockCasings8, 14, gt(1, 3, 14)),
+
     // Block Casings 9
     PBIPipeCasing
         (() -> GregTechAPI.sBlockCasings9, 0, gt(16, 1, 0)),
@@ -290,6 +298,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings9, 14, gt(16, 1, 14)),
     FemtometerCalibratedParticleBeamCasing
         (() -> GregTechAPI.sBlockCasings9, 15, gt(16, 1, 15)),
+
     // Block Casings 10
     MagTechCasing
         (() -> GregTechAPI.sBlockCasings10, 0, gt(16, 3, 0)),
@@ -323,6 +332,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings10, 14, gt(16, 3, 14)),
     ReinforcedWoodenCasing
         (() -> GregTechAPI.sBlockCasings10, 15, gt(16, 3, 15)),
+
     // Block Casings 11
     TinItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 0, gt(16, 4, 0)),
@@ -340,6 +350,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings11, 6, gt(16, 4, 6)),
     BlackPlutoniumItemPipeCasing
         (() -> GregTechAPI.sBlockCasings11, 7, gt(16, 4, 7)),
+
     // Block Casings 12
     CokeOvenBricks
         (() -> GregTechAPI.sBlockCasings12, 0, gt(16, 5, 0)),
@@ -470,6 +481,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasings13, 8, gt(16, 6, 8)),
     NaniteReplicationFramework
         (() -> GregTechAPI.sBlockCasings13, 9, gt(16, 6, 9)),
+
     // Block Casings Foundry
     PrimaryExoFoundryCasing
         (() -> GregTechAPI.sBlockCasingsFoundry, 0, gt(8, 5, 0)),
@@ -523,6 +535,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasingsNH, 13, gt(8, 4, 13)),
     MAXMachineCasing
         (() -> GregTechAPI.sBlockCasingsNH, 14, gt(8, 4, 14)),
+
     // Block Cyclotron Coils (Solenoids)
     MVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 0, gt(2, 0, 0)),
@@ -546,6 +559,7 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sSolenoidCoilCasings, 9, gt(2, 0, 9)),
     UMVSolenoidSuperconductorCoil
         (() -> GregTechAPI.sSolenoidCoilCasings, 10, gt(2, 0, 10)),
+
     // Block Glass 1
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),
@@ -619,7 +633,6 @@ public enum Casings implements ICasing {
     // GregtechMetaCasingBlocks2 (gtplusplus.blockcasings.2)
     // For some reason a couple of these blockCasings2Misc casings don't register their textures in the expected indices
     // Instead, block casings 5 uses these indices
-
     ThermalProcessingCasing
         (() -> ModBlocks.blockCasings2Misc, 0, gtpp(1, 0)),
     HastelloyNSealantBlock
@@ -652,7 +665,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings2Misc, 15, gtpp(1, 15)),
 
     // GregtechMetaCasingBlocks3 (gtplusplus.blockcasings.3)
-
     AquaticCasing
         (() -> ModBlocks.blockCasings3Misc, 0, gtpp(2, 0)),
     InconelReinforcedCasing
@@ -686,7 +698,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings3Misc, 15, gtpp(2, 15)),
 
     // GregtechMetaCasingBlocks4 (gtplusplus.blockcasings.4)
-
     TriniumTitaniumCasing
         (() -> ModBlocks.blockCasings4Misc, 0, gtpp(3, 0)),
     TechCasing
@@ -704,7 +715,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings4Misc, 11, gtpp(3, 11)),
 
     // GregtechMetaCasingBlocks5 (gtplusplus.blockcasings.5)
-
     IsaMillExteriorCasing
         (() -> ModBlocks.blockCasings5Misc, 0, gtpp(0, 2)),
     IsaMillPiping
@@ -739,7 +749,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings5Misc, 15, -1),
 
     // GregtechMetaCasingBlocks6 (gtplusplus.blockcasings.6)
-
     FusionMachineCasingMKIV
         (() -> ModBlocks.blockCasings6Misc, 0, gtpp(3, 4)),
     AdvancedFusionCoilII
@@ -748,7 +757,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasings6Misc, 2, gtpp(3, 6)),
 
     // GregtechMetaTieredCasingBlocks1 — tiered Integral Encasement / Framework
-
     IntegralEncasementULV
         (() -> ModBlocks.blockCasingsTieredGTPP, 0, -1),
     IntegralEncasementLV
@@ -771,7 +779,6 @@ public enum Casings implements ICasing {
         (() -> ModBlocks.blockCasingsTieredGTPP, 9, -1),
 
     // GregtechMetaSpecialMultiCasings
-
     TurbineShaft
         (() -> ModBlocks.blockSpecialMultiCasings, 0, gtpp(1, 0)),
     ReinforcedSteamTurbineCasing
@@ -805,10 +812,39 @@ public enum Casings implements ICasing {
     ReinforcedSCTurbineCasing
         (() -> ModBlocks.blockSpecialMultiCasings, 15, gtpp(1, 15)),
 
-    // ------------------ Tectech Casings -----------------
-    QuantumGlass
-        (() -> BlockQuantumGlass.INSTANCE, 0, -1),
+    // GregtechMetaSpecialMultiCasings2
+    ResonanceChamber1
+        (() -> ModBlocks.blockSpecialMultiCasings, 0, -1),
+    ResonanceChamber2
+        (() -> ModBlocks.blockSpecialMultiCasings, 1, -1),
+    ResonanceChamber3
+        (() -> ModBlocks.blockSpecialMultiCasings, 2, -1),
+    ResonanceChamber4
+        (() -> ModBlocks.blockSpecialMultiCasings, 3, -1),
+    Modulator1
+        (() -> ModBlocks.blockSpecialMultiCasings, 4, -1),
+    Modulator2
+        (() -> ModBlocks.blockSpecialMultiCasings, 5, -1),
+    Modulator3
+        (() -> ModBlocks.blockSpecialMultiCasings, 6, -1),
+    Modulator4
+        (() -> ModBlocks.blockSpecialMultiCasings, 7, -1),
 
+    // GregtechMetaSpecialMachineCasings
+    StrongBronzeMachineCasing
+        (() -> ModBlocks.blockCustomMachineCasings, 0, -1),
+    SturdyAluminiumMachineCasing
+        (() -> ModBlocks.blockCustomMachineCasings, 1, -1),
+    VigorousLaureniumMachineCasing
+        (() -> ModBlocks.blockCustomMachineCasings, 2, gtpp(2,4)),
+    RuggedBotmiumMachineCasing
+        (() -> ModBlocks.blockCustomMachineCasings, 3, gtpp(3,4)),
+
+    // GregtechMetaCasingBlocksPipeGearbox - skipped, unused, uncraftable
+
+    // ------------------ Tectech Casings -----------------
+
+    // TT Block Casings
     HighPowerCasing
         (() -> TTCasingsContainer.sBlockCasingsTT, 0, tt(0)),
     ComputerCasing
@@ -839,32 +875,121 @@ public enum Casings implements ICasing {
         (() -> TTCasingsContainer.sBlockCasingsTT, 13, tt(13)),
     UltimateContainmentFieldGenerator
         (() -> TTCasingsContainer.sBlockCasingsTT, 14, tt(14)),
-    RedstoneAlloyPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 0, tt(16)),
-    MVSuperconductorPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 1, tt(17)),
-    HVSuperconductorPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 2, tt(18)),
-    EVSuperconductorPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 3, tt(19)),
-    IVSuperconductorPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 4, tt(20)),
-    LuVSuperconductorPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 5, tt(21)),
-    TeslaBaseCasing(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 7, tt(22)),
-    TeslaToroidCasing(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 8, tt(23)),
-    TeslaSecondaryWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 9, tt(24)),
-    ZPMSuperconductorPrimaryTeslaWindings(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 6, tt(25)),
-    ReinforcedTemporalStructureCasing(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 10, tt(26)),
-    ReinforcedSpatialStructureCasing(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 11, tt(27)),
-    InfiniteSpacetimeEnergyBoundaryCasing(
-        ()-> TTCasingsContainer.sBlockCasingsBA0, 12, tt(28)),
+
+    // TT Block Casings BA0
+    RedstoneAlloyPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 0, tt(16)),
+    MVSuperconductorPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 1, tt(17)),
+    HVSuperconductorPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 2, tt(18)),
+    EVSuperconductorPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 3, tt(19)),
+    IVSuperconductorPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 4, tt(20)),
+    LuVSuperconductorPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 5, tt(21)),
+    TeslaBaseCasing
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 7, tt(22)),
+    TeslaToroidCasing
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 8, tt(23)),
+    TeslaSecondaryWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 9, tt(24)),
+    ZPMSuperconductorPrimaryTeslaWindings
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 6, tt(25)),
+    ReinforcedTemporalStructureCasing
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 10, tt(26)),
+    ReinforcedSpatialStructureCasing
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 11, tt(27)),
+    InfiniteSpacetimeEnergyBoundaryCasing
+        (()-> TTCasingsContainer.sBlockCasingsBA0, 12, tt(28)),
+
+
+    // SpacetimeCompressionFieldCasing
+    CrudeSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 0, gt(7,16)),
+    PrimitiveSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 1, gt(7,17)),
+    StableSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2, gt(7,18)),
+    AdvancedSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 3, gt(7,19)),
+    SuperbSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 4, gt(7,20)),
+    ExoticSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 5, gt(7,21)),
+    PerfectSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 6, gt(7,22)),
+    TiplerSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 7, gt(7,23)),
+    GallifreyanSpacetimeCompressionFieldGenerator
+        (() -> TTCasingsContainer.SpacetimeCompressionFieldGenerators, 8, gt(7,24)),
+
+    // StabilisationFieldCasing
+    CrudeStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 0, gt(7,32)),
+    PrimitiveStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 1, gt(7,33)),
+    StableStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 2, gt(7,34)),
+    AdvancedStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 3, gt(7,35)),
+    SuperbStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 4, gt(7,36)),
+    ExoticStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 5, gt(7,37)),
+    PerfectStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 6, gt(7,38)),
+    TiplerStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 7, gt(7,39)),
+    GallifreyanStabilisationFieldGenerator
+        (() -> TTCasingsContainer.StabilisationFieldGenerators, 8, gt(7,40)),
+
+    // TimeAccelerationFieldCasing
+    CrudeTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 0, gt(7,48)),
+    PrimitiveTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 1, gt(7,49)),
+    StableTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 2, gt(7,50)),
+    AdvancedTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 3, gt(7,51)),
+    SuperbTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 4, gt(7,52)),
+    ExoticTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 5, gt(7,53)),
+    PerfectTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 6, gt(7,54)),
+    TiplerTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 7, gt(7,55)),
+    GallifreyanTimeDilationFieldGenerator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7,56)),
+
+    // Godforge Casings
+    SingularityReinforcedStellarShieldingCasing
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 0, gt(7,64)),
+    CelestialMatterGuidanceCasing
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 1, gt(7,65)),
+    BoundlessGravitationallySeveredStructureCasing
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 2, gt(7,66)),
+    TranscendentallyAmplifiedMagneticConfinementCasing
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 3, gt(7,67)),
+    StellarEnergySiphonCasing
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 4, gt(7,68)),
+    RemoteGravitonFlowModulator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 5, gt(7,69)),
+    MedialGravitonFlowModulator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 6, gt(7,70)),
+    CentralGravitonFlowModulator
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 7, gt(7,71)),
+    HarmonicPhononTransmissionConduit
+        (() -> TTCasingsContainer.TimeAccelerationFieldGenerator, 8, gt(7,72)),
+
+    QuantumGlass
+        (() -> BlockQuantumGlass.INSTANCE, 0, -1),
+
+    SpatiallyTranscendentGravitationalLens
+        (() -> BlockGodforgeGlass.INSTANCE, 0, -1),
 
     // ------------------ Miscellaneous Elements -----------------
     MagicCasing
@@ -937,8 +1062,6 @@ public enum Casings implements ICasing {
                 tiers));
         }
     },
-
-
 
 
     ;
