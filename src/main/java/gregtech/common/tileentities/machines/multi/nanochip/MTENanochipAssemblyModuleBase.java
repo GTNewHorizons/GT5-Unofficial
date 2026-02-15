@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,6 +61,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCInputConsumer;
@@ -154,8 +154,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     public enum ModuleHatchElement implements IHatchElement<MTENanochipAssemblyModuleBase<?>> {
 
-        VacuumConveyorHatch(MTENanochipAssemblyModuleBase::addConveyorToMachineList,
-            MTEHatchVacuumConveyor.class) {
+        VacuumConveyorHatch(MTENanochipAssemblyModuleBase::addConveyorToMachineList, MTEHatchVacuumConveyor.class) {
 
             @Override
             public long count(MTENanochipAssemblyModuleBase<?> tileEntity) {

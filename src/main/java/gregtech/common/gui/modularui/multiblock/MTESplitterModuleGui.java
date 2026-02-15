@@ -37,6 +37,7 @@ import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.gui.widgets.CommonWidgets;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.modularui2.widget.ColorGridWidget;
 import gregtech.common.tileentities.machines.multi.nanochip.modules.MTESplitterModule;
@@ -106,8 +107,9 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
     }
 
     public ModularPanel createRuleManagerPanel(PanelSyncManager syncManager) {
-        ModularPanel ui = subPanel = new ModularPanel("gt:splitter:rules_manager")
-            .child(ButtonWidget.panelCloseButton());
+        ModularPanel ui = subPanel = new ModularPanel("gt:splitter:rules_manager").child(
+            CommonWidgets.panelCloseButton()
+                .background(GTGuiTextures.BUTTON_NANOCHIP));
         var rulesSyncer = (GenericListSyncHandler<SplitterRule>) syncManager.findSyncHandler("rules");
 
         final DynamicSyncHandler rulesHandler = new DynamicSyncHandler()
