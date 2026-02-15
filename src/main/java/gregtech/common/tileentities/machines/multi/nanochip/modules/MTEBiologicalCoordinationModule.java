@@ -156,6 +156,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             fakeFluids.add(Materials.BioMediumSterilized.getFluid(Integer.MAX_VALUE));
         }
         FluidStack[] inputFluids = fakeFluids.toArray(new FluidStack[] {});
+        this.fluidInputs = inputFluids;
 
         return recipeMap.findRecipeQuery()
             .items(inputs.toArray(new ItemStack[] {}))
