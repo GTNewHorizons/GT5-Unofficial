@@ -28,7 +28,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Stopwatch;
-import com.gtnewhorizon.gtnhlib.chat.ChatComponentCustomRegistry;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
 
@@ -79,7 +78,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.locser.ChatComponentLocSer;
 import gregtech.common.GTCapesLoader;
 import gregtech.common.GTClient;
 import gregtech.common.GTDummyWorld;
@@ -327,8 +325,6 @@ public class GTMod {
         new LoaderMetaPipeEntities().run();
 
         new LoaderCircuitBehaviors().run();
-
-        ChatComponentCustomRegistry.register(ChatComponentLocSer::new);
 
         // populate itemstack instance for NBT check in GTRecipe
         setItemStacks();

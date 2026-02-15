@@ -123,9 +123,6 @@ import gregtech.api.util.ItemEjectionHelper;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.api.util.locser.ILocSerManager;
-import gregtech.api.util.locser.LocSerFluidName;
-import gregtech.api.util.locser.LocSerItemName;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
@@ -2467,8 +2464,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     currentTip.add(
                         "  " + tag.getString("outputItemIcon" + i)
                             + EnumChatFormatting.AQUA
-                            + ILocSerManager.decodeFromBytes(tag.getByteArray("outputItemNameBytes" + i))
-                            .localize()
+                            + tag.getString("outputItemName" + i)
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
@@ -2478,8 +2474,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     currentTip.add(
                         "  " + tag.getString("outputFluidIcon" + i)
                             + EnumChatFormatting.AQUA
-                            + ILocSerManager.decodeFromBytes(tag.getByteArray("outputFluidNameBytes" + i))
-                            .localize()
+                            + tag.getString("outputFluidName" + i)
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
@@ -2550,7 +2545,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
                 tag.setString("outputItemIcon" + index, TTRenderStack.create(stack, true));
-                tag.setByteArray("outputItemNameBytes" + index, new LocSerItemName(stack).encodeToBytes());
+                tag.setString("outputItemName" + index, stack.getDisplayName());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2563,7 +2558,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 tag.setString(
                     "outputFluidIcon" + index,
                     TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
-                tag.setByteArray("outputFluidNameBytes" + index, new LocSerFluidName(stack).encodeToBytes());
+                tag.setString("outputFluidName" + index, stack.getLocalizedName());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }

@@ -32,12 +32,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.locser.LocSerNumber;
 
 public class MTEDiode extends MTEBasicHull {
 
@@ -80,7 +81,7 @@ public class MTEDiode extends MTEBasicHull {
             ++this.aAmps;
             if (this.aAmps > this.maxAmps) this.aAmps = 0;
         }
-        GTUtility.sendChatLocSer(aPlayer, "BW.chat.diode.max_amps", new LocSerNumber(this.aAmps));
+        GTUtility.sendChatTrans(aPlayer, "BW.chat.diode.max_amps", new ChatComponentNumber(this.aAmps));
     }
 
     @Override

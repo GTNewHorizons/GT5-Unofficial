@@ -76,7 +76,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.locser.LocSerFormat;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.covers.Cover;
@@ -1491,12 +1490,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             mStrongRedstone ^= wrenchingSide.flag;
-                            GTUtility.sendChatLocSer(
+                            GTUtility.sendChatTrans(
                                 aPlayer,
                                 (mStrongRedstone & wrenchingSide.flag) != 0
                                     ? "GT5U.chat.machine.redstone_output_set.strong"
                                     : "GT5U.chat.machine.redstone_output_set.weak",
-                                new LocSerFormat(GTUtility.getUnlocalizedSideName(wrenchingSide)));
+                                new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
                             issueBlockUpdate();
                         }

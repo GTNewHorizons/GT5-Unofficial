@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -47,8 +48,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.locser.LocSerFormat;
-import gregtech.api.util.locser.LocSerNumber;
 
 public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
     IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
@@ -131,14 +130,17 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         } catch (GridAccessException e) {
             // :P
         }
-        GTUtility.sendChatLocSer(aPlayer, "yothatch.chat.0", new LocSerNumber(this.priority));
+        GTUtility.sendChatTrans(aPlayer, "yothatch.chat.0", this.priority);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GTUtility.sendChatLocSer(aPlayer, "yothatch.chat.1", new LocSerFormat(getUnlocalizedReadMode(this.readMode)));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "yothatch.chat.1",
+            new ChatComponentTranslation(getUnlocalizedReadMode(this.readMode)));
         return true;
     }
 

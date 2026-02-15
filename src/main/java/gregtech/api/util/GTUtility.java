@@ -189,9 +189,6 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableSound;
-import gregtech.api.util.locser.ChatComponentLocSer;
-import gregtech.api.util.locser.ILocSer;
-import gregtech.api.util.locser.LocSerFormat;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.ores.OreManager;
 import gregtech.common.pollution.Pollution;
@@ -528,31 +525,16 @@ public class GTUtility {
     }
 
     /**
-     * Send a translated chat message to the player. Only accept String args.
-     * For advanced usage, use {@link GTUtility#sendChatLocSer}.
+     * Send a translated chat message to the player.
      *
      * @param player     The player who will receive the message.
      * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
      *                   placeholder '%s' or positioned one '%1$s'; otherwise, it cannot be translated.
-     * @param args       Substitutions for `%s` in the translation.
+     * @param args       Substitutions for `%s` in the translation. {@link IChatComponent} will be converted to their
+     *                   unformatted text.
      */
-    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, String... args) {
-        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, (Object[]) args));
-    }
-
-    /**
-     * Send a localized chat message to the player. Support stacking the format.
-     *
-     * @see ILocSer
-     * @see GTUtility#processFormatStacks(String)
-     *
-     * @param player     The player who will receive the message.
-     * @param messageKey The lang key of the translation. The text corresponding to the key must only contain
-     *                   placeholder '%s' or positioned one '%1$s'; otherwise, it cannot be translated.
-     * @param args       Substitutions for `%s` in the translation.
-     */
-    public static void sendChatLocSer(EntityPlayer player, @Nonnull String messageKey, ILocSer... args) {
-        player.addChatComponentMessage(new ChatComponentLocSer(new LocSerFormat(messageKey, args)));
+    public static void sendChatTrans(EntityPlayer player, @Nonnull String messageKey, Object... args) {
+        player.addChatComponentMessage(new ChatComponentTranslation(messageKey, args));
     }
 
     /**

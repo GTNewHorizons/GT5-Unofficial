@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -47,7 +48,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.locser.LocSerNumber;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -346,7 +346,8 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
             if (mTargetStackSize == 0) {
                 GTUtility.sendChatTrans(aPlayer, "GT5U.chat.buffer.not_regulate");
             } else {
-                GTUtility.sendChatLocSer(aPlayer, "GT5U.chat.buffer.regulate", new LocSerNumber(mTargetStackSize));
+                GTUtility
+                    .sendChatTrans(aPlayer, "GT5U.chat.buffer.regulate", new ChatComponentNumber(mTargetStackSize));
             }
         }
     }
