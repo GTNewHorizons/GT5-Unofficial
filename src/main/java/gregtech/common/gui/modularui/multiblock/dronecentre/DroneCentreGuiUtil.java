@@ -106,7 +106,7 @@ public class DroneCentreGuiUtil {
                     .child(
                         IKey.lang("GT5U.gui.text.drone_key")
                             .asWidget()
-                            .alignment(Alignment.CENTER))
+                            .textAlign(Alignment.CENTER))
                     .child(
                         new TextFieldWidget().height(16)
                             .widthRel(0.8f)

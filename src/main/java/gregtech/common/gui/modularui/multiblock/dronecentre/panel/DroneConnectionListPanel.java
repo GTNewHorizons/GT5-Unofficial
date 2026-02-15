@@ -252,7 +252,7 @@ public class DroneConnectionListPanel extends ModularPanel {
         if (clientConnections.isEmpty()) {
             return IKey.lang("GT5U.gui.text.drone_no_connection")
                 .asWidget()
-                .alignment(Alignment.CENTER)
+                .textAlign(Alignment.CENTER)
                 .align(Alignment.CENTER)
                 .widthRel(0.95f)
                 .scale(2);

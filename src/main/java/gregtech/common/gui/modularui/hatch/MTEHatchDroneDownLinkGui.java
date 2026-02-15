@@ -49,8 +49,8 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
         panel
             .child(
                 new TextWidget<>(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
-                    .alignment(Alignment.Center)
-                    .pos(0, 7)
+                    .textAlign(Alignment.Center)
+                    .marginTop(7)
                     .size(176, 10))
             .child(createKeyButton(syncManager, panel))
             .child(createDynamicTextWidget(syncManager));
@@ -58,10 +58,10 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
     }
 
     private IWidget createKeyButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler keyPanel = syncManager.panel(
+        IPanelHandler keyPanel = syncManager.syncedPanel(
             "keyPanel",
-            (p_syncManager, syncHandler) -> DroneCentreGuiUtil.createConnectionKeyPanel(syncManager, parent),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> DroneCentreGuiUtil.createConnectionKeyPanel(syncManager, parent));
         return new ButtonWidget<>().size(12, 12)
             .right(4)
             .top(4)
@@ -100,7 +100,7 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
         if (clientConnections.isEmpty()) {
             column.child(
                 new TextWidget<>(StatCollector.translateToLocal("GT5U.gui.text.drone_no_connection"))
-                    .alignment(Alignment.Center)
+                    .textAlign(Alignment.Center)
                     .size(160, 10));
         } else {
             for (DroneConnection conn : clientConnections) {
