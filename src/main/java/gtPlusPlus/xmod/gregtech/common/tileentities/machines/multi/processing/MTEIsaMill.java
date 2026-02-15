@@ -36,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -412,14 +411,14 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @NotNull
     private ItemStack[] getAvailableMillingBalls() {
-        if (mMillingBallBuses.size() != 1) return GTValues.emptyItemStackArray;
+        if (mMillingBallBuses.size() != 1) return new ItemStack[0];
 
         MTEHatchMillingBalls aBus = mMillingBallBuses.get(0);
 
-        if (aBus == null) return GTValues.emptyItemStackArray;
+        if (aBus == null) return new ItemStack[0];
         @NotNull
         ArrayList<ItemStack> availableItems = aBus.getContentUsageSlots();
-        return availableItems.toArray(GTValues.emptyItemStackArray);
+        return availableItems.toArray(new ItemStack[0]);
 
     }
 
