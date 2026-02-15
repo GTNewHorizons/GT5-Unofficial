@@ -1066,36 +1066,6 @@ public enum Casings implements ICasing {
     },
 
 
-    HighPowerCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 0, tt(0)),
-    ComputerCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 1, tt(1)),
-    ComputerHeatVent
-        (() -> TTCasingsContainer.sBlockCasingsTT, 2, tt(2)),
-    AdvancedComputerCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 3, tt(3)),
-    MolecularCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 4, tt(4)),
-    AdvancedMolecularCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 5, tt(5)),
-    ContainmentFieldGenerator
-        (() -> TTCasingsContainer.sBlockCasingsTT, 6, tt(6)),
-    MolecularCoil
-        (() -> TTCasingsContainer.sBlockCasingsTT, 7, tt(7)),
-    HollowCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 8, tt(8)),
-    SpacetimeAlteringCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 9, tt(9)),
-    TeleportationCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 10, tt(10)),
-    DimensionalBridgeGenerator
-        (() -> TTCasingsContainer.sBlockCasingsTT, 11, tt(11)),
-    UltimateMolecularCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 12, tt(12)),
-    UltimateAdvancedMolecularCasing
-        (() -> TTCasingsContainer.sBlockCasingsTT, 13, tt(13)),
-    UltimateContainmentFieldGenerator
-        (() -> TTCasingsContainer.sBlockCasingsTT, 14, tt(14)),
     NanochipMeshInterfaceCasing(
         () -> GregTechAPI.sBlockCasings12, 1, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(1)),
     NanochipReinforcementCasing(
