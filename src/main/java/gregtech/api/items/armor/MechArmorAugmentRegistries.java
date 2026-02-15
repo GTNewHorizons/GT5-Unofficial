@@ -487,6 +487,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
             .setCategory(AugmentCategory.Movement)
+            .setMinimumCore(1)
             .setMaxStack(3)
             .setRarity(EnumRarity.common)
         ),
@@ -496,6 +497,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(JumpBoostBehavior.MECH_ARMOR_INSTANCE)
             .setCategory(AugmentCategory.Movement)
+            .setMinimumCore(1)
             .setMaxStack(2)
             .setRarity(EnumRarity.common)
         ),
