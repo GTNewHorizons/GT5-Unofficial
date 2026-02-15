@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.utils.serialization.IByteBufAdapter;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtil;
@@ -20,14 +22,15 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public MTENanochipAssemblyModuleBase<?> deserialize(PacketBuffer buffer) throws IOException {
-        if (!buffer.readBoolean()) { // MTE, GTE or World are null, module is not formed
+        if (!buffer.readBoolean()) { // MTE, GTE, module is not formed
             return null;
         }
         int x = buffer.readInt();
         int y = buffer.readInt();
         int z = buffer.readInt();
-        World world = DimensionManager.getWorld(buffer.readInt());
-
+        World world;
+        if (!GTMod.proxy.isClientSide()) world = DimensionManager.getWorld(buffer.readInt());
+        else world = Minecraft.getMinecraft().thePlayer.worldObj;
         TileEntity te = GTUtil.getTileEntity(world, x, y, z, true);
         if (te == null) return null;
 
@@ -40,9 +43,7 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public void serialize(PacketBuffer buffer, MTENanochipAssemblyModuleBase module) throws IOException {
-        if (module != null && module.getBaseMetaTileEntity() != null
-            && module.getBaseMetaTileEntity()
-                .getWorld() != null) {
+        if (module != null && module.getBaseMetaTileEntity() != null) {
             buffer.writeBoolean(true);
             IGregTechTileEntity gte = module.getBaseMetaTileEntity();
             buffer.writeInt(gte.getXCoord());

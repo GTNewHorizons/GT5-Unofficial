@@ -48,6 +48,7 @@ public class CircuitBatch {
     public CircuitBatch() {}
 
     public CircuitBatch(int[] history) {
+        if (history.length == 0) return;
         primitives = history[0];
         crystals = history[1];
         wetwares = history[2];

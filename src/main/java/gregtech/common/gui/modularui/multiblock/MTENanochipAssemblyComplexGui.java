@@ -24,6 +24,7 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
@@ -101,6 +102,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         GenericListSyncHandler<MTENanochipAssemblyModuleBase<?>> moduleList = syncManager
             .findSyncHandler("modulesList", GenericListSyncHandler.class);
+
         DynamicSyncHandler moduleListHolder = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
             ListWidget<IWidget, ?> listWidget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START)
                 .coverChildren();
@@ -502,6 +504,7 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
                     .child(createTalkTextField(panel, syncManager))
                     .child(
                         Flow.row()
+                            .height(18)
                             .childPadding(2)
                             .child(createBarWidget(syncManager))
                             .child(createCalibrationProgressBar(syncManager))))
@@ -516,7 +519,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     protected ProgressWidget createCalibrationProgressBar(PanelSyncManager syncManager) {
         IntSyncValue blockSyncer = syncManager.findSyncHandler("currentBlock", IntSyncValue.class);
-        return new ProgressWidget().progress(() -> (double) blockSyncer.getValue() / BATCH_SIZE)
+        return new ProgressWidget()
+            .value(new DoubleValue.Dynamic((() -> (double) blockSyncer.getValue() / BATCH_SIZE), null))
             .texture(PROGRESSBAR_NANOCHIP_CALIBRATION, 18)
             .direction(ProgressWidget.Direction.CIRCULAR_CW)
             .size(18, 18)

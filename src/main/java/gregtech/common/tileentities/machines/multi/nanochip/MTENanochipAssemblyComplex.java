@@ -41,6 +41,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -303,9 +304,6 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
         if (aMetaTileEntity instanceof MTENanochipAssemblyModuleBase<?>module) {
             module.connect(this);
             return modules.add(module);
@@ -345,7 +343,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void onRemoval() {
         // On destroying the controller block, all modules should be disconnected
-        disconnectAll();
+        if (!GTMod.GT.isClientSide()) disconnectAll();
         super.onRemoval();
     }
 
@@ -670,7 +668,7 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             }
         }
         setCurrentThreshold(CircuitCalibration.getCurrentCalibration(this));
-        currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
+        if (aNBT.hasKey("currentBlock")) currentBlock = new CircuitBatch(aNBT.getIntArray("currentBlock"));
     }
 
     public List<MTENanochipAssemblyModuleBase<?>> getModules() {
