@@ -129,6 +129,7 @@ import gregtech.api.util.locser.LocSerItemName;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
+import gregtech.client.volumetric.ISoundPosition;
 import gregtech.common.config.MachineStats;
 import gregtech.common.data.GTCoilTracker;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -145,10 +146,12 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
+import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
+import gregtech.common.tileentities.machines.multi.drone.production.ProductionRecord;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTESteamMultiBase;
@@ -157,6 +160,8 @@ import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.overlay.tooltiprenderers.TTRenderStack;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity implements IControllerWithOptionalFeatures,
@@ -220,6 +225,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     private GTCoilTracker.MultiCoilLease coilLease = null;
 
     protected List<MTEHatch> mExoticEnergyHatches = new ArrayList<>();
+    protected List<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
+
     protected final ProcessingLogic processingLogic;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
@@ -528,13 +535,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
-            doStructureValidation();
+            onStructureCheckFinished();
         }
         mStructureChanged = false;
         return mMachine;
     }
 
-    protected final void doStructureValidation() {
+    protected void onStructureCheckFinished() {
         structureErrors = EnumSet.noneOf(StructureError.class);
         structureErrorContext = new NBTTagCompound();
 
@@ -645,7 +652,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
         } else {
-            doActivitySound(getActivitySoundLoop());
+            startActivitySound();
         }
     }
 
@@ -742,6 +749,25 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
+    @Override
+    public void onDisableWorking() {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+            ddl.findConnection(this)
+                .ifPresent(conn -> {
+                    conn.setActive(false);
+                    conn.setShutdownReason(getBaseMetaTileEntity().getLastShutDownReason());
+                });
+        }
+    }
+
+    @Override
+    public void onEnableWorking() {
+        if (!mMaintenanceHatches.isEmpty() && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+            ddl.findConnection(this)
+                .ifPresent(conn -> conn.setActive(true));
+        }
+    }
+
     protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
             if (onRunningTick(mInventory[1])) {
@@ -751,8 +777,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 if (mMaxProgresstime > 0) {
                     incrementProgressTime();
-
                     if (mProgresstime >= mMaxProgresstime) {
+                        // Record production data
+                        if (!mMaintenanceHatches.isEmpty()
+                            && mMaintenanceHatches.get(0) instanceof MTEHatchDroneDownLink ddl) {
+                            MTEDroneCentre centre = ddl.getCentre();
+                            if (centre != null) {
+                                ProductionRecord pdr = centre.productionDataRecorder;
+                                if (pdr.isActive())
+                                    pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
+                            }
+                        }
                         if (mOutputItems != null) {
                             addItemOutputs(mOutputItems);
                             mOutputItems = null;
@@ -906,14 +941,30 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
     }
 
     @SideOnly(Side.CLIENT)
+    protected void restartActivitySound() {
+        if (activitySoundLoop != null) {
+            activitySoundLoop.stop();
+            activitySoundLoop = null;
+        }
+
+        startActivitySound();
+    }
+
+    /// Cleans up old sound loops and starts new ones if needed. Called once per tick.
+    @SideOnly(Side.CLIENT)
+    protected void startActivitySound() {
+        if (activitySoundLoop != null && activitySoundLoop.isDonePlaying()) {
+            activitySoundLoop = null;
+        }
+
+        doActivitySound(getActivitySoundLoop());
+    }
+
+    @SideOnly(Side.CLIENT)
     protected void doActivitySound(SoundResource activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null && !getBaseMetaTileEntity().isMuffled()) {
             if (activitySoundLoop == null) {
-                activitySoundLoop = new GTSoundLoop(
-                    activitySound.resourceLocation,
-                    getBaseMetaTileEntity(),
-                    false,
-                    true);
+                activitySoundLoop = createSoundLoop(activitySound);
                 Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(activitySoundLoop);
@@ -924,6 +975,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 activitySoundLoop = null;
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected @NotNull GTSoundLoop createSoundLoop(SoundResource activitySound) {
+        return new GTSoundLoop(activitySound.resourceLocation, getBaseMetaTileEntity(), false, true)
+            .setPosition(getSoundPosition());
+    }
+
+    @SideOnly(Side.CLIENT)
+    protected ISoundPosition getSoundPosition() {
+        return null;
     }
 
     /**
@@ -1320,9 +1382,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         IGregTechTileEntity igte = getBaseMetaTileEntity();
-        igte.disableWorking();
-        igte.setShutDownReason(reason);
-        igte.setShutdownStatus(true);
+        if (igte != null) {
+            igte.setShutDownReason(reason);
+            igte.setShutdownStatus(true);
+            igte.disableWorking();
+        }
         if (reason.wasCritical()) {
             sendSound(INTERRUPT_SOUND_INDEX);
         }
@@ -1430,7 +1494,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         if (aEU <= 0) {
             return true;
         }
-        if (!mDynamoHatches.isEmpty()) {
+        if (!mDynamoHatches.isEmpty() || !mExoticDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;
@@ -1454,6 +1518,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             }
             totalOutput += aTotal;
         }
+        for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            // Check against voltage to check when hatch mixing
+            if (aFirstVoltageFound == -1) {
+                aFirstVoltageFound = aVoltage;
+            } else {
+                if (aFirstVoltageFound != aVoltage) {
+                    aFoundMixedDynamos = true;
+                }
+            }
+            totalOutput += aTotal;
+        }
 
         if (totalOutput < aEU || (aFoundMixedDynamos && !aAllowMixedVoltageDynamos)) {
             explodeMultiblock();
@@ -1465,7 +1542,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         int aAmpsToInject;
         int aRemainder;
         int ampsOnCurrentHatch;
-        for (MTEHatchDynamo aDynamo : validMTEList(mDynamoHatches)) {
+        for (MTEHatch aDynamo : validMTEList(mDynamoHatches)) {
+            leftToInject = aEU - injected;
+            aVoltage = aDynamo.maxEUOutput();
+            aAmpsToInject = (int) (leftToInject / aVoltage);
+            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aVoltage, false);
+            }
+            injected += aVoltage * ampsOnCurrentHatch;
+            if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aRemainder, false);
+                injected += aRemainder;
+            }
+        }
+        for (MTEHatch aDynamo : validMTEList(mExoticDynamoHatches)) {
             leftToInject = aEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);
@@ -1566,7 +1660,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
 
             if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                if (!tMEHatch.canFillFluid()) continue;
+                if (!tMEHatch.canAcceptFluid()) continue;
             }
 
             int tAmount = tHatch.fill(copiedFluidStack, false);
@@ -1958,9 +2052,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             if (hatch instanceof IDualInputHatchWithPattern withPattern) {
-                withPattern.setProcessingLogic(processingLogic);
+                if (this.processingLogic != null) {
+                    // processingLogic might be null, like a Space Elevator
+                    withPattern.setProcessingLogic(processingLogic);
+                }
             }
             return mDualInputHatches.add(hatch);
         }
@@ -2064,6 +2162,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
         return false;
     }
 
+    public boolean addExoticDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti mteHatchDynamoMulti) {
+            mteHatchDynamoMulti.updateTexture(aBaseCasingIndex);
+            mteHatchDynamoMulti.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticDynamoHatches.add(mteHatchDynamoMulti);
+        }
+        return false;
+    }
+
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -2094,6 +2204,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (hatch instanceof IDualInputHatchWithPattern withPattern) {
+                if (this.processingLogic != null) {
+                    // processingLogic might be null, like a Space Elevator
+                    withPattern.setProcessingLogic(processingLogic);
+                }
+            }
             return mDualInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
@@ -2349,13 +2465,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
                     currentTip.add(
-                        "  " + ILocSerManager.decodeFromBytes(tag.getByteArray("outputItemB" + i))
-                            .localize() + " x " + formatNumber(tag.getInteger("outputItemCount" + i)));
+                        "  " + tag.getString("outputItemIcon" + i)
+                            + EnumChatFormatting.AQUA
+                            + ILocSerManager.decodeFromBytes(tag.getByteArray("outputItemNameBytes" + i))
+                            .localize()
+                            + EnumChatFormatting.RESET
+                            + " x "
+                            + EnumChatFormatting.GOLD
+                            + formatNumber(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
                     currentTip.add(
-                        "  " + ILocSerManager.decodeFromBytes(tag.getByteArray("outputFluidB" + i))
-                            .localize() + " x " + formatNumber(tag.getInteger("outputFluidCount" + i)) + "L");
+                        "  " + tag.getString("outputFluidIcon" + i)
+                            + EnumChatFormatting.AQUA
+                            + ILocSerManager.decodeFromBytes(tag.getByteArray("outputFluidNameBytes" + i))
+                            .localize()
+                            + EnumChatFormatting.RESET
+                            + " x "
+                            + EnumChatFormatting.GOLD
+                            + formatNumber(tag.getInteger("outputFluidCount" + i))
+                            + "L");
                 }
                 if (totalOutputs > 3) {
                     currentTip.add(
@@ -2420,7 +2549,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
-                tag.setByteArray("outputItemB" + index, new LocSerItemName(stack).encodeToBytes());
+                tag.setString("outputItemIcon" + index, TTRenderStack.create(stack, true));
+                tag.setByteArray("outputItemNameBytes" + index, new LocSerItemName(stack).encodeToBytes());
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2430,7 +2560,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
             int index = 0;
             for (FluidStack stack : mOutputFluids) {
                 if (stack == null) continue;
-                tag.setByteArray("outputFluidB" + index, new LocSerFluidName(stack).encodeToBytes());
+                tag.setString(
+                    "outputFluidIcon" + index,
+                    TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
+                tag.setByteArray("outputFluidNameBytes" + index, new LocSerFluidName(stack).encodeToBytes());
                 tag.setInteger("outputFluidCount" + index, stack.amount);
                 index++;
             }
@@ -2522,6 +2655,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
     public List<MTEHatch> getExoticEnergyHatches() {
         return mExoticEnergyHatches;
+    }
+
+    public List<MTEHatch> getExoticDynamoHatches() {
+        return mExoticDynamoHatches;
     }
 
     /**
@@ -2730,7 +2867,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
 
             for (MTEHatchOutputBusME busME : meBusses) {
                 // If the bus has reached its max capacity, it can't accept anything
-                if (!busME.canAcceptItem()) continue;
+                if (!busME.canAcceptAnyItem()) continue;
 
                 // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
                 // We don't care about bus ordering here because we're just checking if it's possible
@@ -2754,7 +2891,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity implements IContr
                     return false;
                 }
 
-                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
+                if (((MTEHatchOutputME) tHatch).canFillFluid()) {
                     return true;
                 }
             }

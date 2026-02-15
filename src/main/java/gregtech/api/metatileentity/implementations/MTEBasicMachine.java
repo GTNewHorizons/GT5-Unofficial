@@ -146,6 +146,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         fluidStack -> mFluidOut = fluidStack,
         this::getCapacity);
 
+    public FluidStackTank getFluidOutputTank() {
+        return this.fluidOutputTank;
+    }
+
     /**
      * Registers machine with single-line description.
      *
@@ -1112,7 +1116,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mOutputItems[i] = null;
                 }
         }
-        mOutputFluid = tRecipe.getFluidOutput(0);
+        if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getFluidOutputChance(0))
+            mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
             calculateCustomOverclock(tRecipe);
             // In case recipe is too OP for that machine

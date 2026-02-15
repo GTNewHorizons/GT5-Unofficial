@@ -1789,7 +1789,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             addItem(
                 Food_Large_Sandwich_Steak.ID,
                 "Large Steak Sandwich",
-                "Yes, I once accidentially called it 'Steam Sandwich'",
+                "Yes, I once accidentally called it 'Steam Sandwich'",
                 new GTFoodStat(20, 1.0F, EnumAction.eat, null, false, true, false),
                 new TCAspects.TC_AspectStack(TCAspects.CORPUS, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.FAMES, 1L),
@@ -2399,6 +2399,11 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                 new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L)));
         ItemList.Item_Redstone_Sniffer
             .set(new ItemRedstoneSniffer("Item_Redstone_Sniffer", "Redstone Sniffer", "What are these frequencies?!"));
+        ItemList.DroneRemoteInterface.set(
+            new ItemDroneRemoteInterface(
+                "Item_Drone_Remote_Interface",
+                "Drone Remote Interface",
+                "Built-in super powerful navigation beacon!!"));
         ItemList.Vajra_Core.set(addItem(Vajra_Core.ID, "Vajra Core", ""));
         ItemList.Magnetron.set(addItem(Magnetron.ID, "Magnetron", ""));
         ItemList.ChaosLocator
@@ -2686,13 +2691,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .itemInputs(ItemList.Crop_Drop_Plumbilia.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Argentia.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Indigo.get(1L))
@@ -2710,13 +2715,13 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
             .itemInputs(ItemList.Crop_Drop_Coppon.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
         RA.stdBuilder()
             .itemInputs(ItemList.Crop_Drop_Tine.get(9L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .addTo(extractorRecipes);
 
     }

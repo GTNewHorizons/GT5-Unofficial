@@ -37,6 +37,9 @@ public class Client {
     @Config.Comment("Chat message section")
     public static final Chat chat = new Chat();
 
+    @Config.Comment("Tooltip section")
+    public static final Tooltip tooltip = new Tooltip();
+
     public static void save() {
         ConfigurationManager.save(Client.class);
     }
@@ -47,8 +50,11 @@ public class Client {
         @Config.Comment("RGB values for the cable insulation color modulation.")
         public CableInsulation cableInsulation = new CableInsulation();
 
-        @Config.Comment("RGB values for the machine metal color modulation (default GUI color).")
+        @Config.Comment("RGB values for the machine metal color modulation.")
         public MachineMetal machineMetal = new MachineMetal();
+
+        @Config.Comment("RGB values for the gui metal color modulation (default GUI color).")
+        public GuiMetal guiMetal = new GuiMetal();
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.cable_insulation")
         public static class CableInsulation {
@@ -68,6 +74,22 @@ public class Client {
 
         @Config.LangKey("GT5U.gui.config.client.color_modulation.machine_metal")
         public static class MachineMetal {
+
+            @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
+            public int red;
+
+            @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
+            public int green;
+
+            @Config.DefaultInt(255)
+            @Config.RangeInt(min = 0, max = 255)
+            public int blue;
+        }
+
+        @Config.LangKey("GT5U.gui.config.client.color_modulation.gui_metal")
+        public static class GuiMetal {
 
             @Config.DefaultInt(210)
             @Config.RangeInt(min = 0, max = 255)
@@ -246,6 +268,18 @@ public class Client {
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)
         public boolean renderTransMetalFancy;
+
+        @Config.Comment("Enables or disables Infinity rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderInfinityFancy;
+
+        @Config.Comment("Enables or disables Cosmic Neutronium fuzz rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderCosmicNeutroniumFancy;
+
+        @Config.Comment("Enables or disables Six-Phased Copper glitch rendering, also impacts all items using the same effect. Accessibility option.")
+        @Config.DefaultBoolean(true)
+        public boolean renderGlitchFancy;
     }
 
     @Config.LangKey("GT5U.gui.config.client.waila")
@@ -362,5 +396,44 @@ public class Client {
         @Config.DefaultBoolean(true)
         @Config.Name("Print Powerfail Help Text")
         public boolean printPowerfailHelpText;
+    }
+
+    @Config.LangKey("GT5U.gui.config.client.tooltip")
+    public static class Tooltip {
+
+        @Config.Comment("Enabled show Formula")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Formula")
+        public boolean showFormula;
+
+        @Config.Comment("Enabled show Flavor Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show Flavor Text")
+        public boolean showFlavorText;
+
+        @Config.Comment("Enabled show GT++ Radioactive Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Radioactive Text")
+        public boolean showRadioactiveText;
+
+        @Config.Comment("Enabled show GT++ Hot Ingot Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Hot Ingot Text")
+        public boolean showHotIngotText;
+
+        @Config.Comment("Enabled show GT++ Ctrl Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Ctrl Text")
+        public boolean showCtrlText;
+
+        @Config.Comment("Enabled show GT++ Ore contains Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Ore contains Text")
+        public boolean showOreContainsText;
+
+        @Config.Comment("Enabled show GT++ Mining Level Text")
+        @Config.DefaultBoolean(true)
+        @Config.Name("Show GT++ Mining Level Text")
+        public boolean showMiningLevelText;
     }
 }

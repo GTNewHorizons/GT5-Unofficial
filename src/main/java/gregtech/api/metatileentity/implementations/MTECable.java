@@ -45,6 +45,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTGCCompat;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverSolarPanel;
@@ -504,25 +505,13 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
 
     @Override
     public String[] getDescription() {
+        // The %%% are required for ItemMachines#addDescription
         return new String[] {
-            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + ": %%%"
-                + EnumChatFormatting.GREEN
-                + formatNumber(mVoltage)
-                + " ("
-                + GTUtility.getColoredTierNameFromVoltage(mVoltage)
-                + EnumChatFormatting.GREEN
-                + ")"
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%"
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mAmperage)
-                + EnumChatFormatting.GRAY,
+            StatCollector.translateToLocal("GT5U.item.cable.max_voltage") + " %%%"
+                + TooltipHelper.voltageText(mVoltage),
+            StatCollector.translateToLocal("GT5U.item.cable.max_amperage") + ": %%%" + TooltipHelper.ampText(mAmperage),
             StatCollector.translateToLocal("GT5U.item.cable.loss") + ": %%%"
-                + EnumChatFormatting.RED
-                + formatNumber(mCableLossPerMeter)
-                + EnumChatFormatting.GRAY
-                + "%%% "
-                + StatCollector.translateToLocal("GT5U.item.cable.eu_volt") };
+                + TooltipHelper.cableLossText(mCableLossPerMeter) };
     }
 
     @Override

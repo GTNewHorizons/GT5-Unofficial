@@ -172,8 +172,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                 .isFinished()) {
             ISpaceProject.ISP_Upgrade upgrade = projectWorkingOn.getUpgradeBeingBuilt();
             recipe = new GTRecipe(
-                false,
                 upgrade.getItemsCostPerStage(),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -184,8 +186,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                 0);
         } else if (!projectWorkingOn.isFinished()) {
             recipe = new GTRecipe(
-                false,
                 projectWorkingOn.getItemsCostPerStage(),
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,

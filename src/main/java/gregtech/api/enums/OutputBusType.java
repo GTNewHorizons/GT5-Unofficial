@@ -6,17 +6,21 @@ package gregtech.api.enums;
 public enum OutputBusType {
 
     Void,
+    CompressedFiltered,
     StandardFiltered,
+    MECacheFiltered,
     MEFiltered,
+    CompressedUnfiltered,
     StandardUnfiltered,
+    MECacheUnfiltered,
     MEUnfiltered,
     //
     ;
 
     public boolean isFiltered() {
         return switch (this) {
-            case Void, StandardFiltered, MEFiltered -> true;
-            case StandardUnfiltered, MEUnfiltered -> false;
+            case Void, StandardFiltered, MECacheFiltered, MEFiltered, CompressedFiltered -> true;
+            case StandardUnfiltered, MECacheUnfiltered, MEUnfiltered, CompressedUnfiltered -> false;
         };
     }
 }

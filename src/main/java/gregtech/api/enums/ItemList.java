@@ -779,6 +779,10 @@ public enum ItemList implements IItemContainer {
     Machine_HP_Compressor,
     Machine_HP_AlloySmelter,
 
+    Machine_LV_DrawerFramer,
+    Machine_MV_DrawerFramer,
+    Machine_HV_DrawerFramer,
+
     Hull_Bronze,
     Hull_HP,
     Hull_Bronze_Bricks,
@@ -1022,6 +1026,7 @@ public enum ItemList implements IItemContainer {
     Cover_Wireless_Energy_UMV,
     Cover_Wireless_Energy_UXV,
     Cover_Wireless_Energy_MAX,
+    Cover_Wireless_Energy_Debug,
 
     Hatch_Input_ULV,
     Hatch_Input_LV,
@@ -2154,6 +2159,8 @@ public enum ItemList implements IItemContainer {
     TierdDrone0,
     TierdDrone1,
     TierdDrone2,
+    TierdDrone3,
+    DroneRemoteInterface,
     Hatch_DroneDownLink,
     ElectronicsLump,
     WormholeGenerator,
@@ -2748,6 +2755,42 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    CompressedOutputBusLuV,
+    CompressedOutputBusZPM,
+    CompressedOutputBusUV,
+    CompressedOutputBusUHV,
+    CompressedOutputBusUEV,
+    CompressedOutputBusUIV,
+    CompressedOutputBusUMV,
+    CompressedOutputBusUXV,
+
+    CompressedInputBusLuV,
+    CompressedInputBusZPM,
+    CompressedInputBusUV,
+    CompressedInputBusUHV,
+    CompressedInputBusUEV,
+    CompressedInputBusUIV,
+    CompressedInputBusUMV,
+    CompressedInputBusUXV,
+    // new controllers
+    IndustrialWireFactory,
+    IndustrialPackager,
+    IndustrialCentrifuge,
+
+    BasicCircuitBoard,
+    EnhancedCircuitBoard,
+    RefinedCircuitBoard,
+    IntricateCircuitBoard,
+
+    ControllerCircuit,
+    ReceiverCircuit,
+    SignalCircuit,
+
+    HighEnergyFlowCircuit,
+
+    RawImprintBoard,
+    ImprintBoard,
+
     CircuitImprint_NanoProcessor,
     CircuitImprint_BasicCircuitBoard,
     CircuitImprint_NanoAssembly,
@@ -2888,7 +2931,7 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticalCPUContainmentHousings,
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
-    Wrap_LivingBioChips
+    Wrap_LivingBioChips,
 
     // semicolon after the comment to reduce merge conflicts
     ;
