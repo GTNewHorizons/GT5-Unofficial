@@ -1541,6 +1541,7 @@ GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_custom_name=Custom Machine Name
 GT5U.gui.text.drone_search=Search machine name
 GT5U.gui.text.drone_no_connection=No any connection
+GT5U.gui.text.drone_no_data=No data
 GT5U.gui.text.drone_active_production=Active production recorder
 GT5U.gui.text.drone_maxrecord=Max record：
 GT5U.gui.text.drone_production_connection=Connection
