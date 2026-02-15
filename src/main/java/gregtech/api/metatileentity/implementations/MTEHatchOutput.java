@@ -244,7 +244,10 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     inBrackets = this.getDrainableStack()
                         .getLocalizedName();
                 }
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.items_and_specific_fluid", new ChatComponentTranslation(inBrackets));
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "GT5U.chat.hatch.output.items_and_specific_fluid",
+                    new ChatComponentTranslation(inBrackets));
             }
             case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
@@ -260,7 +263,10 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     inBrackets = this.getDrainableStack()
                         .getLocalizedName();
                 }
-                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.specific_fluid", new ChatComponentTranslation(inBrackets));
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "GT5U.chat.hatch.output.specific_fluid",
+                    new ChatComponentTranslation(inBrackets));
             }
         }
     }
@@ -281,10 +287,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 // FIXME: localize it
                 String fluidName = getLockedFluidName();
                 // FluidStack fluidStack = FluidRegistry.getFluidStack(fluidName, 1);
-                GTUtility.sendChatTrans(
-                    aPlayer,
-                    "GT5U.chat.hatch.output.fluid.already_locked",
-                    fluidName);
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.hatch.output.fluid.already_locked", fluidName);
             } else {
                 setLockedFluidName(
                     tFluid.getFluid()
@@ -396,8 +399,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
             // FIXME: localize it
-            GTUtility
-                .sendChatTrans(player, "GT5U.chat.hatch.output.fluid.locked_to", mFluid.getLocalizedName());
+            GTUtility.sendChatTrans(player, "GT5U.chat.hatch.output.fluid.locked_to", mFluid.getLocalizedName());
             playerThatLockedfluid = null;
         }
     }

@@ -386,7 +386,7 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable {
                     .append("V")
                     .append(EnumChatFormatting.RESET);
             }
-            GTUtility.sendChatTrans(aPlayer, "GT5U.item.cable.swapped", message.toString());
+            GTUtility.sendChatTrans(aPlayer, "GT5U.item.cable.swapped.s", message.toString());
         }
     }
 
