@@ -14,15 +14,14 @@
 package bartworks.util;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Objects;
 
+import bartworks.API.enums.BioDataEnum;
+import gregtech.api.util.GTLanguageManager;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class BioData {
-
-    public static final ArrayList<BioData> BIO_DATA_ARRAY_LIST = new ArrayList<>();
 
     protected String name;
     protected int ID;
@@ -38,61 +37,32 @@ public class BioData {
         this.tier = tier;
     }
 
-    protected BioData(String name, int ID, EnumRarity rarity) {
-        this.name = name;
-        this.ID = ID;
-        this.rarity = rarity;
-        this.chance = 7500;
-        this.tier = 0;
+    public BioData(BioDataEnum data) {
+        this.rarity = data.rarity;
+        this.name = data.name;
+        this.ID = data.id;
+        this.chance = data.chance;
+        this.tier = data.tier;
     }
 
-    protected BioData(BioData bioData) {
-        this.rarity = bioData.rarity;
-        this.name = bioData.name;
-        this.ID = bioData.ID;
-        this.chance = bioData.chance;
-        this.tier = bioData.tier;
-    }
-
-    public static BioData convertBioPlasmidToBioData(BioPlasmid bioPlasmid) {
-        return new BioData(bioPlasmid.name, bioPlasmid.ID, bioPlasmid.rarity, bioPlasmid.chance, bioPlasmid.tier);
-    }
-
-    public static BioData convertBioDNAToBioData(BioDNA bioDNA) {
-        return new BioData(bioDNA.name, bioDNA.ID, bioDNA.rarity, bioDNA.chance, bioDNA.tier);
-    }
-
-    public static BioData createAndRegisterBioData(String aName, EnumRarity rarity, int chance, int tier) {
-        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity, chance, tier);
-        BIO_DATA_ARRAY_LIST.add(ret);
-        return ret;
-    }
-
-    public static BioData createAndRegisterBioData(String aName, EnumRarity rarity) {
-        BioData ret = new BioData(aName, BIO_DATA_ARRAY_LIST.size(), rarity);
-        BIO_DATA_ARRAY_LIST.add(ret);
-        return ret;
+    public String getLocalisedName() {
+        return GTLanguageManager.getTranslation(this.getName());
     }
 
     public static NBTTagCompound getNBTTagFromBioData(BioData bioData) {
+        String name = bioData != null ? bioData.name : BioDataEnum.NullBioData.name;
         NBTTagCompound ret = new NBTTagCompound();
-        ret.setByte("Rarity", BWUtil.getByteFromRarity(bioData.rarity));
-        ret.setString("Name", bioData.name);
-        // ret.setInteger("ID", bioData.ID); buggy when load Order changes
-        ret.setInteger("Chance", bioData.chance);
-        ret.setInteger("Tier", bioData.tier);
+        ret.setString("Name", name);
         return ret;
     }
 
     public static BioData getBioDataFromNBTTag(NBTTagCompound tag) {
         if (tag == null) return null;
-        return getBioDataFromName(tag.getString("Name"));
+        if (!tag.hasKey("Name")) return null;
+        return BioDataEnum.LOOKUPS_BY_NAME.get(tag.getString("Name")).getBioData();
     }
 
-    public static BioData getBioDataFromName(String Name) {
-        for (BioData bd : BIO_DATA_ARRAY_LIST) if (bd.name.equals(Name)) return bd;
-        return null;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -135,7 +105,7 @@ public class BioData {
 
     @Override
     public String toString() {
-        return "BioData{" + "name='" + this.name + '\'' + ", ID=" + this.ID + '}';
+        return String.format("BioData(name=%s, id=%d, rarity=%s, chance=%d, tier=%d)", this.name, this.ID, this.rarity.name(), this.chance, this.tier);
     }
 
     public EnumRarity getRarity() {

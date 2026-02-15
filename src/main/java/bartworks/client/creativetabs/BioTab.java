@@ -13,10 +13,9 @@
 
 package bartworks.client.creativetabs;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-
-import bartworks.common.loaders.BioItemList;
 
 public class BioTab extends CreativeTabs {
 
@@ -26,7 +25,6 @@ public class BioTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return BioItemList.getPetriDish(null)
-            .getItem();
+        return ItemList.EmptyPetriDish.get(1).getItem();
     }
 }

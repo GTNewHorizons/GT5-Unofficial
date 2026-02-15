@@ -91,10 +91,10 @@ tooltip.labparts.1.name=一个空的DNA烧瓶.
 tooltip.labparts.2.name=一个空的质粒单元.
 tooltip.labparts.3.name=生物工程专用洗涤粉
 tooltip.labparts.4.name=电泳分离DNA的粉末.
-tooltip.labparts.5.name=培养皿内含有:
+tooltip.labparts.5.name=培养皿内含有: %s
 tooltip.labparts.6.name=这是一种很弱的培养菌,不能在细菌培养皿中繁殖!
-tooltip.labparts.7.name=一个DNA烧瓶,内含:
-tooltip.labparts.8.name=一个质粒单元,内含:
+tooltip.labparts.7.name=一个DNA烧瓶,内含: %s
+tooltip.labparts.8.name=一个质粒单元,内含: %s
 
 tooltip.tile.waterpump.0.name=在有燃料时,产出
 tooltip.tile.waterpump.1.name=L/s水.

@@ -20,6 +20,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import java.awt.Color;
 
+import bartworks.API.enums.BioCultureEnum;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -79,7 +80,7 @@ public class FluidLoader {
 
         FluidStack dnaFluid = Gendustry.isModLoaded() ? GTModHandler.getLiquidDNA(100)
             : Materials.Biomass.getFluid(100L);
-        for (BioCulture B : BioCulture.BIO_CULTURE_ARRAY_LIST) {
+        for (BioCulture B : BioCultureEnum.BIO_CULTURES) {
             if (B.isBreedable()) {
                 B.setFluid(
                     GTFluidFactory.builder(

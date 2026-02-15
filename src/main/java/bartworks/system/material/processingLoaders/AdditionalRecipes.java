@@ -54,6 +54,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -69,9 +71,7 @@ import bartworks.common.loaders.FluidLoader;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BioCulture;
-import bartworks.util.BioDNA;
 import bartworks.util.BioData;
-import bartworks.util.BioPlasmid;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -87,24 +87,24 @@ public class AdditionalRecipes {
 
     private static void runBWRecipes() {
 
-        for (ItemStack stack : BioItemList.getAllPetriDishes()) {
+        for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
             BioData DNA = BioData.getBioDataFromNBTTag(
                 stack.getTagCompound()
                     .getCompoundTag("DNA"));
             if (DNA != null) {
-                ItemStack Detergent = BioItemList.getOther(1);
-                ItemStack DNAFlask = BioItemList.getDNASampleFlask(null);
+                ItemStack Detergent = ItemList.DetergentPowder.get(1);
+                ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
                 ItemStack EthanolCell = Materials.Ethanol.getCells(1);
                 GTValues.RA.stdBuilder()
                     .itemInputs(stack, DNAFlask, Detergent, EthanolCell)
                     .itemOutputs(
-                        BioItemList.getDNASampleFlask(BioDNA.convertDataToDNA(DNA)),
+                        BioDataEnum.getDNASampleFlask(DNA),
                         GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L))
                     .outputChances(DNA.getChance(), 100_00)
                     .fluidInputs(GTModHandler.getDistilledWater(1_000))
                     .special(BioItemList.mBioLabParts[0])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[3 + DNA.getTier()])
+                    .eut(GTValues.VP[DNA.getTier()])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -112,7 +112,7 @@ public class AdditionalRecipes {
 
         }
 
-        for (ItemStack stack : BioItemList.getAllDNASampleFlasks()) {
+        for (ItemStack stack : BioDataEnum.getAllDNASampleFlasks()) {
             BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
 
             if (DNA != null) {
@@ -131,14 +131,14 @@ public class AdditionalRecipes {
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[1])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[4 + DNA.getTier()])
+                    .eut(GTValues.VP[DNA.getTier()+1])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
             }
         }
 
-        for (ItemStack stack : BioItemList.getAllPlasmidCells()) {
+        for (ItemStack stack : BioDataEnum.getAllPlasmidCells()) {
             BioData DNA = BioData.getBioDataFromNBTTag(stack.getTagCompound());
 
             if (DNA != null) {
@@ -147,16 +147,16 @@ public class AdditionalRecipes {
                 BehaviourDataOrb.setDataName(inp, DNA.getName());
                 ItemStack inp2 = ItemList.Tool_DataOrb.get(0L);
                 BehaviourDataOrb.setDataTitle(inp2, "DNA Sample");
-                BehaviourDataOrb.setDataName(inp2, BioCultureLoader.BIO_DATA_BETA_LACMATASE.getName());
+                BehaviourDataOrb.setDataName(inp2, BioDataEnum.BetaLactamase.getBioData().getName());
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(FluidLoader.BioLabFluidCells[1], BioItemList.getPlasmidCell(null), inp, inp2)
+                    .itemInputs(FluidLoader.BioLabFluidCells[1], ItemList.EmptyPlasmid.get(1), inp, inp2)
                     .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
                     .outputChances(DNA.getChance(), 100_00)
                     .fluidInputs(GTModHandler.getLiquidDNA(1_000))
                     .special(BioItemList.mBioLabParts[2])
                     .duration(25 * SECONDS)
-                    .eut(GTValues.VP[4 + DNA.getTier()])
+                    .eut(GTValues.VP[DNA.getTier()+1])
                     .ignoreCollision()
                     .fake()
                     .addTo(bioLabRecipes);
@@ -164,13 +164,14 @@ public class AdditionalRecipes {
         }
 
         long energyUsageWithTransformModule = 1;
-        for (ItemStack stack : BioItemList.getAllPetriDishes()) {
+        for (ItemStack stack : BioCultureEnum.getAllPetriDishes()) {
             BioData DNA = BioData.getBioDataFromNBTTag(
                 stack.getTagCompound()
                     .getCompoundTag("DNA"));
             BioData Plasmid = BioData.getBioDataFromNBTTag(
                 stack.getTagCompound()
                     .getCompoundTag("Plasmid"));
+            if (DNA == null) continue;
             if (!Objects.equals(DNA.getName(), Plasmid.getName())) {
                 if ("TCetiEis Fucus Serratus".equals(DNA.getName())) {
                     energyUsageWithTransformModule = TierEU.RECIPE_LuV;
@@ -179,8 +180,8 @@ public class AdditionalRecipes {
                 }
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        BioItemList.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
-                        BioItemList.getPlasmidCell(BioPlasmid.convertDataToPlasmid(Plasmid)),
+                        BioCultureEnum.getPetriDish(BioCulture.getBioCulture(DNA.getName())),
+                        BioDataEnum.getPlasmidCell(Plasmid),
                         FluidLoader.BioLabFluidCells[2])
                     .itemOutputs(stack, ItemList.Cell_Empty.get(1L))
                     .outputChances(Plasmid.getChance(), 100_00)
@@ -200,13 +201,11 @@ public class AdditionalRecipes {
         // Clonal Cellular Synthesis- [Liquid DNA] + Medium Petri Dish + Plasma Membrane + Stem Cells + Genome Data
         GTValues.RA.stdBuilder()
             .itemInputs(
-                BioItemList.getPetriDish(null),
-                BioItemList.getOther(4),
+                ItemList.EmptyPetriDish.get(1),
+                ItemList.PlasmaMembrane.get(1),
                 ItemList.Circuit_Chip_Stemcell.get(2L),
                 Outp)
-            .itemOutputs(
-                BioItemList.getPetriDish(null)
-                    .setStackDisplayName("The Culture made from DNA"))
+            .itemOutputs(ItemList.EmptyPetriDish.get(1).setStackDisplayName("The Culture made from DNA"))
             .outputChances(75_00)
             .fluidInputs(GTModHandler.getLiquidDNA(8_000))
             .special(BioItemList.mBioLabParts[4])
@@ -218,11 +217,11 @@ public class AdditionalRecipes {
 
         FluidStack[] easyFluids = { Materials.Water.getFluid(1_000), GTModHandler.getDistilledWater(1_000) };
         for (FluidStack fluidStack : easyFluids) {
-            for (BioCulture bioCulture : BioCulture.BIO_CULTURE_ARRAY_LIST) {
+            for (BioCulture bioCulture : BioCultureEnum.BIO_CULTURES) {
                 if (bioCulture.isBreedable() && bioCulture.getTier() == 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(new ItemStack(Items.sugar, 64))
-                        .special(BioItemList.getPetriDish(bioCulture))
+                        .special(BioCultureEnum.getPetriDish(bioCulture))
                         .circuit(1)
                         .fluidInputs(fluidStack)
                         .fluidOutputs(new FluidStack(bioCulture.getFluid(), 10))
@@ -233,11 +232,11 @@ public class AdditionalRecipes {
 
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            BioItemList.getPetriDish(null),
+                            ItemList.EmptyPetriDish.get(1),
                             fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
                                 : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
                                     .get(0))
-                        .itemOutputs(BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1))
+                        .itemOutputs(BioCultureEnum.getPetriDish(bioCulture), Materials.Empty.getCells(1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
                         .duration(25 * SECONDS)

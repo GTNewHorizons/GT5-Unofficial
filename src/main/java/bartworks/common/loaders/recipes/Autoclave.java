@@ -3,6 +3,8 @@ package bartworks.common.loaders.recipes;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -21,7 +23,7 @@ public class Autoclave implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Circuit_Parts_PetriDish.get(1L))
-                .itemOutputs(BioItemList.getPetriDish(null))
+                .itemOutputs(ItemList.EmptyPetriDish.get(1))
                 .fluidInputs(used.getGas(10L) != null ? used.getGas(8L) : used.getFluid(16L))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -29,7 +31,7 @@ public class Autoclave implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(Items.glass_bottle))
-                .itemOutputs(BioItemList.getDNASampleFlask(null))
+                .itemOutputs(ItemList.EmptyDNAFlask.get(1))
                 .fluidInputs(used.getGas(10L) != null ? used.getGas(8L) : used.getFluid(16L))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

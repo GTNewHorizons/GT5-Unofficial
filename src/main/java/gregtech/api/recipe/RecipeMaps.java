@@ -30,6 +30,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import bartworks.API.enums.BioCultureEnum;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -653,7 +654,7 @@ public final class RecipeMaps {
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_MULTIPLE)
         .builderTransformer(
             b -> b.copy()
-                .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
+                .special(BioCultureEnum.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
                 .metadata(GLASS, 3)
                 .eut(b.getEUt())
                 .addTo(BartWorksRecipeMaps.bacterialVatRecipes))
