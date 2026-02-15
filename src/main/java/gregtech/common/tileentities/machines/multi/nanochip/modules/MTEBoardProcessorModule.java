@@ -340,7 +340,9 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                     depleteInput(toDeplete);
                     storedFluidStack = toDeplete;
                 } else if (storedFluidStack.isFluidEqual(fluid)) {
-                    FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(fluidCapacity - storedFluidStack.amount, fluid.amount));
+                    FluidStack toDeplete = new FluidStack(
+                        fluid.getFluid(),
+                        Math.min(fluidCapacity - storedFluidStack.amount, fluid.amount));
                     depleteInput(toDeplete);
                     storedFluidStack.amount += toDeplete.amount;
                 }
