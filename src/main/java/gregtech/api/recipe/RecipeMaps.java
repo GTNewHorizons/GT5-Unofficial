@@ -1753,7 +1753,7 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipBoardProcessorRecipes = RecipeMapBuilder
         .of("gt.recipe.nanochip.boardprocessor", NACRecipeMapBackend::new)
-        .maxIO(1, 1, 1, 0)
+        .maxIO(1, 1, 1, 1)
         .minInputs(1, 0)
         .build();
     public static final RecipeMap<NACRecipeMapBackend> nanochipEtchingArray = RecipeMapBuilder
