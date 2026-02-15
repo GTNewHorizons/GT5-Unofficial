@@ -256,6 +256,10 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
+        if (fillPercentage < 0.5) {
+            return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
+        }
+
         if (impurityPercentage == 1) {
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
@@ -315,9 +319,7 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 flushTank();
             }
 
-            if (storedFluidStack == null) {
-                fillTank();
-            }
+            fillTank();
 
         }
 
@@ -330,25 +332,30 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
     }
 
     public void fillTank() {
-        if (storedFluidStack == null) {
-            ArrayList<FluidStack> inputFluid = getStoredFluids();
-            for (FluidStack fluid : inputFluid) {
-                if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
-                    if (fluid.amount >= fluidCapacity / 2) {
-                        FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(fluidCapacity, fluid.amount));
-                        depleteInput(toDeplete);
-                        storedFluidStack = toDeplete;
-                        fluidAmount = toDeplete.amount;
-                        fillPercentage = (double) fluidAmount / fluidCapacity;
-                        if (storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
-                            impurityFluidStack = GGMaterial.ferrousChloride.getFluidOrGas(0);
-                        } else if (storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
-                            impurityFluidStack = Materials.GrowthMediumRaw.getFluid(0);
-                        } else if (storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
-                            impurityFluidStack = Materials.BioMediumRaw.getFluid(0);
-                        } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
-                            impurityFluidStack = Materials.PrismaticGas.getFluid(0);
-                        }
+        ArrayList<FluidStack> inputFluid = getStoredFluids();
+        for (FluidStack fluid : inputFluid) {
+            if (LEGAL_FLUIDS.contains(fluid.getFluid())) {
+                if (storedFluidStack == null) {
+                    FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(fluidCapacity, fluid.amount));
+                    depleteInput(toDeplete);
+                    storedFluidStack = toDeplete;
+                } else if (storedFluidStack.isFluidEqual(fluid)) {
+                    FluidStack toDeplete = new FluidStack(fluid.getFluid(), Math.min(fluidCapacity - storedFluidStack.amount, fluid.amount));
+                    depleteInput(toDeplete);
+                    storedFluidStack.amount += toDeplete.amount;
+                }
+
+                if (storedFluidStack != null) {
+                    fluidAmount = storedFluidStack.amount;
+                    fillPercentage = (double) fluidAmount / fluidCapacity;
+                    if (storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+                        impurityFluidStack = GGMaterial.ferrousChloride.getFluidOrGas(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
+                        impurityFluidStack = Materials.GrowthMediumRaw.getFluid(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+                        impurityFluidStack = Materials.BioMediumRaw.getFluid(0);
+                    } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+                        impurityFluidStack = Materials.PrismaticGas.getFluid(0);
                     }
                 }
             }
