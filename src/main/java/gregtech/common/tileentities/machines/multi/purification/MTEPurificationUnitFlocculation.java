@@ -298,7 +298,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addInfo(
                 "gain an additive " + EnumChatFormatting.RED
                     + SUCCESS_PER_LEVEL
-                    + "%"
+                    + "%%"
                     + EnumChatFormatting.GRAY
                     + " increase to success. If total fluid supplied is not")
             .addInfo(

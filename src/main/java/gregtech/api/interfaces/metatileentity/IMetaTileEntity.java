@@ -377,8 +377,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *
      * @param formattedStr the String to be formatted with parameter substitution markers.
      * @return the special formatting markers for automatic parsing.
-     * @apiNote this method should NOT be used when the class is annotated with {@link SkipGenerateDescription},
-     *          otherwise the game will display the format used for marking.
+     * @apiNote This method should NOT be used when the class is annotated with {@link SkipGenerateDescription},
+     *          otherwise the game will display the format used for marking.<br>
+     *          When use this method, please replace all "(number)%" with "(number)%%".
      * @see #getDescription()
      */
     default String addFormattedString(String formattedStr) {
