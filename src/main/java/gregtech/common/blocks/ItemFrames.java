@@ -51,12 +51,12 @@ public class ItemFrames extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> tooltip, boolean aF3_H) {
         if (Client.tooltip.showFormula) {
-            aList.add(StatCollector.translateToLocal("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
+            tooltip.add(StatCollector.translateToLocal("gt.blockframes." + aStack.getItemDamage() + ".tooltip"));
         }
         Collections.addAll(
-            aList,
+            tooltip,
             StatCollector.translateToLocal("gt.blockmachines.gt_frame.desc.format")
                 .split("\\\\n"));
     }
