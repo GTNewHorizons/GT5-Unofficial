@@ -64,7 +64,7 @@ public class MTEFrame extends MetaPipeEntity implements ITemporaryTE {
     @Override
     public String[] getDescription() {
         return StatCollector.translateToLocal("gt.blockmachines.gt_frame.desc.format")
-            .split("\\R");
+            .split("\\\\n");
     }
 
     @Override
