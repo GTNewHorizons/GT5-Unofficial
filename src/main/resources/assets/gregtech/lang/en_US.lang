@@ -3650,6 +3650,7 @@ GTPP.waila.steam.use=Currently uses: §e%s§r L/s Steam
 
 GTPP.CC.machinetier=Control Core Tier
 GTPP.CC.discount=EU Discount
+GTPP.CC.parallel=Parallel
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Worn as a Belt within Baubles
