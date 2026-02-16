@@ -28,8 +28,6 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockCasings12;
-import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import gtPlusPlus.core.block.ModBlocks;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -356,14 +354,22 @@ public enum Casings implements ICasing {
     // Block Casings 12
     CokeOvenBricks
         (() -> GregTechAPI.sBlockCasings12, 0, gt(16, 5, 0)),
+    NanochipMeshInterfaceCasing(
+        () -> GregTechAPI.sBlockCasings12, 1,  gt(16, 5, 1)),
+    NanochipReinforcementCasing(
+        () -> GregTechAPI.sBlockCasings12, 2, gt(16, 5, 2)),
+    NanochipComputationalMatrixCasing(
+        () -> GregTechAPI.sBlockCasings12, 3, gt(16, 5, 3)),
+    NanochipFirewallProjectionCasing(
+        () -> GregTechAPI.sBlockCasings12, 4, gt(16, 5, 4)),
     VibrationSafeCasing
-        (() -> GregTechAPI.sBlockCasings12, 1, gt(16, 5, 1)),
+        (() -> GregTechAPI.sBlockCasings12, 9, gt(16, 5, 9)),
     AlchemicallyResistantThaumiumCasing
-        (() -> GregTechAPI.sBlockCasings12, 2, gt(16, 5, 2)),
+        (() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)),
     AlchemicallyInertVoidCasing
-        (() -> GregTechAPI.sBlockCasings12, 3, gt(16, 5, 3)),
+        (() -> GregTechAPI.sBlockCasings12, 11, gt(16, 5, 11)),
     AlchemicallyImmuneIchoriumCasing
-        (() -> GregTechAPI.sBlockCasings12, 4, gt(16, 5, 4)),
+        (() -> GregTechAPI.sBlockCasings12, 12, gt(16, 5, 12)),
     AlchemicalCasing(() -> GregTechAPI.sBlockCasings12, 10, gt(16, 5, 10)) {
         @Override
         public String getLocalizedName() {
@@ -461,6 +467,8 @@ public enum Casings implements ICasing {
             return true;
         }
     },
+
+
 
     // Block Casings 13
     CableCasing
@@ -579,6 +587,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 6, gt(16, 0, 6)),
     ExoFoundryContainmentGlass
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
+    NanochipComplexGlass(
+        () -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
 
     // ------------------ Bartworks Casings -----------------
 
@@ -1064,18 +1074,6 @@ public enum Casings implements ICasing {
                 tiers));
         }
     },
-
-    // NAC casings
-    NanochipMeshInterfaceCasing(
-        () -> GregTechAPI.sBlockCasings12, 1, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(1)),
-    NanochipReinforcementCasing(
-        () -> GregTechAPI.sBlockCasings12, 2, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(2)),
-    NanochipComputationalMatrixCasing(
-        () -> GregTechAPI.sBlockCasings12, 3, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(3)),
-    NanochipFirewallProjectionCasing(
-        () -> GregTechAPI.sBlockCasings12, 4, ((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(4)),
-    NanochipComplexGlass(
-        () -> GregTechAPI.sBlockGlass1, 8, ((BlockGlass1) GregTechAPI.sBlockGlass1).getTextureIndex(8)),
 
     ;
     // spotless:on
