@@ -61,6 +61,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -92,7 +93,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -189,6 +189,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return true;
     }
 
     @Override
@@ -293,11 +298,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public IStructureDefinition<MTEExtremeEntityCrusher> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 
     @Override
@@ -410,14 +410,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (entityRenderer == null) {
             ChunkCoordinates coords = this.getBaseMetaTileEntity()
                 .getCoords();
+            ExtendedFacing facing = this.getExtendedFacing();
             int[] abc = new int[] { 0, -2, 2 };
             int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
+            facing.getWorldOffset(abc, xyz);
             xyz[0] += coords.posX;
             xyz[1] += coords.posY;
             xyz[2] += coords.posZ;
-            entityRenderer = new EntityRenderer(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
+            entityRenderer = new EntityRenderer(facing, aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
         } else {
             entityRenderer.setDead();
             entityRenderer = new EntityRenderer(entityRenderer, time);

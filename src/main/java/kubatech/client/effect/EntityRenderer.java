@@ -25,7 +25,8 @@ import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
 
-import net.minecraft.client.Minecraft;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -35,8 +36,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
@@ -52,16 +55,23 @@ import kubatech.config.Config;
 public class EntityRenderer extends EntityFX {
 
     private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Entity Renderer]");
+    private Vector3f verticalAxis;
+    private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;
+    private static final float RAD_90 = (float) Math.PI / 2f;
+    private static final float RAD_180 = (float) Math.PI;
 
-    public EntityRenderer(World p_i1218_1_, double x, double y, double z, int age) {
-        super(p_i1218_1_, x + 0.5d, y, z + 0.5d);
+    public EntityRenderer(ExtendedFacing extendedFacing, World world, double x, double y, double z, int age) {
+        super(world, x + 0.5d, y, z + 0.5d);
+        this.getAxesFromFacing(extendedFacing);
         this.particleMaxAge = age;
         this.particleAge = 0;
     }
 
     public EntityRenderer(EntityRenderer r, int age) {
         super(r.worldObj, r.posX, r.posY, r.posZ);
+        this.verticalAxis = r.verticalAxis;
+        this.horizontalAxis = r.horizontalAxis;
         this.particleMaxAge = age;
         this.particleAge = 0;
         this.ticksExisted = r.ticksExisted;
@@ -109,36 +119,50 @@ public class EntityRenderer extends EntityFX {
         entityToRender.lastTickPosY = entityToRender.posY;
         entityToRender.lastTickPosZ = entityToRender.posZ;
 
-        Minecraft mc = Minecraft.getMinecraft();
-
-        double rotation;
-        double headrotation;
-        {
-            double x1 = this.posX;
-            double x2 = mc.thePlayer.posX;
-            double y1 = this.posZ;
-            double y2 = mc.thePlayer.posZ;
-            double k = Math.toDegrees(Math.atan2(x2 - x1, y1 - y2));
-            if (k < 0d) k += 360d;
-            k -= 180d;
-            rotation = k;
-        }
-
-        {
-            double y1 = this.posY + entityToRender.getEyeHeight();
-            double y2 = mc.thePlayer.posY + mc.thePlayer.getEyeHeight();
-            double d = mc.thePlayer.getDistance(this.posX, y2, this.posZ);
-            double k = Math.toDegrees(Math.atan2(y1 - y2, d));
-            if (k < 0d) k += 360d;
-            headrotation = k;
-        }
-
         entityToRender.prevRotationYawHead = entityToRender.rotationYawHead;
         entityToRender.prevRenderYawOffset = entityToRender.renderYawOffset;
         entityToRender.prevRotationPitch = entityToRender.rotationPitch;
-        entityToRender.renderYawOffset = (float) rotation;
-        entityToRender.rotationYawHead = (float) rotation;
-        entityToRender.rotationPitch = (float) headrotation;
+
+        // TODO: Use new scale calculator
+        final float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
+
+        final double diffH1;
+        final double diffH2;
+        final double diffV1;
+        final Vector3f diffH;
+        final Vector3f diffV;
+
+        if (this.verticalAxis.x != 0) {
+            diffH1 = renderPosY - (this.posY + 0.5f);
+            diffH2 = renderPosZ - this.posZ;
+            diffV1 = renderPosX - (this.posX + (entityToRender.getEyeHeight() * desiredScale - 0.5f) * this.verticalAxis.x);
+            diffH = new Vector3f(0f, (float) diffH1, (float) diffH2);
+            diffV = new Vector3f((float) diffV1, (float) diffH1, (float) diffH2);
+        }
+        else if (this.verticalAxis.y != 0) {
+            diffH1 = renderPosX - this.posX;
+            diffH2 = renderPosZ - this.posZ;
+            diffV1 = renderPosY - (this.posY + entityToRender.getEyeHeight() * desiredScale);
+            diffH = new Vector3f((float) diffH1, 0f, (float) diffH2).normalize();
+            diffV = new Vector3f((float) diffH1, (float) diffV1, (float) diffH2).normalize();
+        }
+        else {
+            diffH1 = renderPosX - this.posX;
+            diffH2 = renderPosY - (this.posY + 0.5f);
+            diffV1 = renderPosZ - (this.posZ + (entityToRender.getEyeHeight() * desiredScale - 0.5f) * this.verticalAxis.z);
+            diffH = new Vector3f((float) diffH1, (float) diffH2, 0f);
+            diffV = new Vector3f((float) diffH1, (float) diffH2, (float) diffV1);
+        }
+
+        final float angleH = (float) Math.toDegrees(this.horizontalAxis.angleSigned(diffH, new Vector3f(this.verticalAxis).negate()));
+        final float angleV = (float) Math.toDegrees(this.verticalAxis.angleSigned(diffV, new Vector3f(this.verticalAxis).cross(diffV).normalize()));
+
+        // 0 degree yaw appears to be SOUTH (pos Z)
+        // Add 180 here since other angle convention uses NORTH as basis
+        entityToRender.renderYawOffset = angleH + 180f;
+        entityToRender.rotationYawHead = angleH + 180f;
+        // -90 is straight up
+        entityToRender.rotationPitch = angleV - 90f;
 
         float p_147936_2_ = 0.5f;
 
@@ -161,14 +185,38 @@ public class EntityRenderer extends EntityFX {
 
         int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         GL11.glPushMatrix();
-        GL11.glTranslatef(
-            (float) (this.posX - renderPosX),
-            (float) (this.posY - renderPosY),
-            (float) (this.posZ - renderPosZ));
+        if (this.verticalAxis.x != 0) {
+            GL11.glTranslatef(
+                (float) ((this.posX - 0.5f * this.verticalAxis.x) - renderPosX),
+                (float) ((this.posY + 0.5f) - renderPosY),
+                (float) ((this.posZ) - renderPosZ));
+            final float azi = (float) Math.toDegrees(new Vector3f(0f, 0f, -1f).angleSigned(this.horizontalAxis, this.verticalAxis));
+            GL11.glRotatef(azi, this.verticalAxis.x, this.verticalAxis.y, this.verticalAxis.z);
+            GL11.glRotatef(-90f * this.verticalAxis.x, 0f, 0f, 1f);
+        }
+        else if (this.verticalAxis.y != 0) {
+            GL11.glTranslatef(
+                (float) ((this.posX) - renderPosX),
+                (float) ((this.posY + (this.verticalAxis.y < 0 ? 1.0f : 0.0f)) - renderPosY),
+                (float) ((this.posZ) - renderPosZ));
+            final float azi = (float) Math.toDegrees(new Vector3f(0f, 0f, -1f).angleSigned(this.horizontalAxis, this.verticalAxis));
+            GL11.glRotatef(azi, this.verticalAxis.x, this.verticalAxis.y, this.verticalAxis.z);
+            if (this.verticalAxis.y < 0) {
+                GL11.glRotatef(180f, 1f, 0f, 0f);
+                GL11.glRotatef(180f, 0f, -1f, 0f);
+            }
+        }
+        else {
+            GL11.glTranslatef(
+                (float) ((this.posX) - renderPosX),
+                (float) ((this.posY + 0.5f) - renderPosY),
+                (float) ((this.posZ - 0.5f * this.verticalAxis.z) - renderPosZ));
+            final float azi = (float) Math.toDegrees(new Vector3f(0f, this.verticalAxis.z, 0f).angleSigned(this.horizontalAxis, this.verticalAxis));
+            GL11.glRotatef(azi, this.verticalAxis.x, this.verticalAxis.y, this.verticalAxis.z);
+            GL11.glRotatef(90f * this.verticalAxis.z, 1f, 0f, 0f);
+        }
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
-        // TODO: Use new scale calculator
-        float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
         if (desiredScale < 1f) GL11.glScalef(desiredScale, desiredScale, desiredScale);
 
         float healthScale = BossStatus.healthScale;
@@ -203,5 +251,40 @@ public class EntityRenderer extends EntityFX {
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);
+    }
+
+    private void getAxesFromFacing(ExtendedFacing extendedFacing) {
+        ForgeDirection direction = extendedFacing.getDirection();
+        Rotation rotation = extendedFacing.getRotation();
+
+        // Initial axes defined for default facing north
+        Vector3f vAxis = new Vector3f(0f, 1f, 0f);
+        Vector3f hAxis = new Vector3f(0f, 0f, -1f);
+
+        switch(direction) {
+            case EAST -> hAxis.rotateY(-RAD_90);
+            case SOUTH -> hAxis.rotateY(RAD_180);
+            case WEST -> hAxis.rotateY(RAD_90);
+            case UP -> {
+                vAxis.rotateX(RAD_90);
+                hAxis.rotateX(RAD_90);
+                // For some reason the UP rotation for controllers has an extra 180
+                vAxis.rotateAxis(RAD_180, hAxis.x, hAxis.y, hAxis.z);
+            }
+            case DOWN -> {
+                vAxis.rotateX(-RAD_90);
+                hAxis.rotateX(-RAD_90);
+            }
+            case NORTH, UNKNOWN -> {}
+        }
+
+        switch(rotation) {
+            case CLOCKWISE -> vAxis.rotateAxis(-RAD_90, hAxis.x, hAxis.y, hAxis.z);
+            case COUNTER_CLOCKWISE -> vAxis.rotateAxis(RAD_90, hAxis.x, hAxis.y, hAxis.z);
+            case UPSIDE_DOWN -> vAxis.negate();
+        }
+
+        this.verticalAxis = vAxis;
+        this.horizontalAxis = hAxis;
     }
 }
