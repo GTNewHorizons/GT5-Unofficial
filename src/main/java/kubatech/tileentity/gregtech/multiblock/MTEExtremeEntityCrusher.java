@@ -53,6 +53,7 @@ import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRES
 import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SPAWNER;
 import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SWORD;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -444,7 +445,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.entityCopy);
+                try {
+                    entityRenderer.setEntity(r.recipe.createEntityCopy());
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
+                         | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;
