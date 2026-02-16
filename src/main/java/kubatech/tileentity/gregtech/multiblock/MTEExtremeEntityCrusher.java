@@ -62,7 +62,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
@@ -95,6 +94,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -448,7 +448,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 try {
                     entityRenderer.setEntity(r.recipe.createEntityCopy());
                 } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
-                         | IllegalAccessException e) {
+                    | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             } else entityRenderer.setEntity(null);
@@ -918,10 +918,13 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     private void rotateSpikes() {
-        ChunkCoordinates coords = this.getBaseMetaTileEntity().getCoords();
-        World world = this.getBaseMetaTileEntity().getWorld();
+        ChunkCoordinates coords = this.getBaseMetaTileEntity()
+            .getCoords();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
         ExtendedFacing facing = this.getExtendedFacing();
-        int meta = facing.getRelativeUpInWorld().ordinal();
+        int meta = facing.getRelativeUpInWorld()
+            .ordinal();
         int[] abc = new int[] { 0, -1, 0 };
         int[] xyz = new int[] { 0, 0, 0 };
         for (int x = -1; x < 2; x++) {

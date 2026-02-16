@@ -25,9 +25,6 @@ import static net.minecraft.client.renderer.entity.RenderManager.renderPosX;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosY;
 import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
 
-import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
-import gregtech.api.util.GTUtility;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -35,23 +32,24 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joml.AxisAngle4f;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.glu.GLU;
 
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
+import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.kuba6000.mobsinfo.api.utils.MobUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GTUtility;
 import kubatech.Tags;
 import kubatech.config.Config;
 
@@ -108,8 +106,14 @@ public class EntityRenderer extends EntityFX {
 
     public void setEntity(EntityLiving entity) {
         entityToRender = entity;
-        Vector3f min = new Vector3f((float) entity.boundingBox.minX, (float) entity.boundingBox.minY, (float) entity.boundingBox.minZ);
-        Vector3f max = new Vector3f((float) entity.boundingBox.maxX, (float) entity.boundingBox.maxY, (float) entity.boundingBox.maxZ);
+        Vector3f min = new Vector3f(
+            (float) entity.boundingBox.minX,
+            (float) entity.boundingBox.minY,
+            (float) entity.boundingBox.minZ);
+        Vector3f max = new Vector3f(
+            (float) entity.boundingBox.maxX,
+            (float) entity.boundingBox.maxY,
+            (float) entity.boundingBox.maxZ);
         rot.transform(min);
         rot.transform(max);
         entityToRender.boundingBox.setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
@@ -150,27 +154,32 @@ public class EntityRenderer extends EntityFX {
         if (this.verticalAxis.x != 0) {
             diffH1 = renderPosY - (this.posY + 0.5f);
             diffH2 = renderPosZ - this.posZ;
-            diffV1 = renderPosX - (this.posX + (entityToRender.getEyeHeight() * desiredScale - 0.5f) * this.verticalAxis.x);
+            diffV1 = renderPosX
+                - (this.posX + (entityToRender.getEyeHeight() * desiredScale - 0.5f) * this.verticalAxis.x);
             diffH = new Vector3f(0f, (float) diffH1, (float) diffH2);
             diffV = new Vector3f((float) diffV1, (float) diffH1, (float) diffH2);
-        }
-        else if (this.verticalAxis.y != 0) {
+        } else if (this.verticalAxis.y != 0) {
             diffH1 = renderPosX - this.posX;
             diffH2 = renderPosZ - this.posZ;
             diffV1 = renderPosY - (this.posY + entityToRender.getEyeHeight() * desiredScale);
             diffH = new Vector3f((float) diffH1, 0f, (float) diffH2).normalize();
             diffV = new Vector3f((float) diffH1, (float) diffV1, (float) diffH2).normalize();
-        }
-        else {
+        } else {
             diffH1 = renderPosX - this.posX;
             diffH2 = renderPosY - (this.posY + 0.5f);
-            diffV1 = renderPosZ - (this.posZ + (entityToRender.getEyeHeight() * desiredScale - 0.5f) * this.verticalAxis.z);
+            diffV1 = renderPosZ
+                - (this.posZ + (entityToRender.getEyeHeight() * desiredScale - 0.5f) * this.verticalAxis.z);
             diffH = new Vector3f((float) diffH1, (float) diffH2, 0f);
             diffV = new Vector3f((float) diffH1, (float) diffH2, (float) diffV1);
         }
 
-        final float angleH = (float) Math.toDegrees(this.horizontalAxis.angleSigned(diffH, new Vector3f(this.verticalAxis).negate()));
-        final float angleV = (float) Math.toDegrees(this.verticalAxis.angleSigned(diffV, new Vector3f(this.verticalAxis).cross(diffV).normalize()));
+        final float angleH = (float) Math
+            .toDegrees(this.horizontalAxis.angleSigned(diffH, new Vector3f(this.verticalAxis).negate()));
+        final float angleV = (float) Math.toDegrees(
+            this.verticalAxis.angleSigned(
+                diffV,
+                new Vector3f(this.verticalAxis).cross(diffV)
+                    .normalize()));
 
         // 0 degree yaw appears to be SOUTH (pos Z)
         // Add 180 here since other angle convention uses NORTH as basis
@@ -199,28 +208,29 @@ public class EntityRenderer extends EntityFX {
                 (float) ((this.posX - 0.5f * this.verticalAxis.x) - renderPosX),
                 (float) ((this.posY + 0.5f) - renderPosY),
                 (float) ((this.posZ) - renderPosZ));
-            final float azi = (float) Math.toDegrees(new Vector3f(0f, 0f, -1f).angleSigned(this.horizontalAxis, this.verticalAxis));
+            final float azi = (float) Math
+                .toDegrees(new Vector3f(0f, 0f, -1f).angleSigned(this.horizontalAxis, this.verticalAxis));
             GL11.glRotatef(azi, this.verticalAxis.x, this.verticalAxis.y, this.verticalAxis.z);
             GL11.glRotatef(-90f * this.verticalAxis.x, 0f, 0f, 1f);
-        }
-        else if (this.verticalAxis.y != 0) {
+        } else if (this.verticalAxis.y != 0) {
             GL11.glTranslatef(
                 (float) ((this.posX) - renderPosX),
                 (float) ((this.posY + (this.verticalAxis.y < 0 ? 1.0f : 0.0f)) - renderPosY),
                 (float) ((this.posZ) - renderPosZ));
-            final float azi = (float) Math.toDegrees(new Vector3f(0f, 0f, -1f).angleSigned(this.horizontalAxis, this.verticalAxis));
+            final float azi = (float) Math
+                .toDegrees(new Vector3f(0f, 0f, -1f).angleSigned(this.horizontalAxis, this.verticalAxis));
             GL11.glRotatef(azi, this.verticalAxis.x, this.verticalAxis.y, this.verticalAxis.z);
             if (this.verticalAxis.y < 0) {
                 GL11.glRotatef(180f, 1f, 0f, 0f);
                 GL11.glRotatef(180f, 0f, -1f, 0f);
             }
-        }
-        else {
+        } else {
             GL11.glTranslatef(
                 (float) ((this.posX) - renderPosX),
                 (float) ((this.posY + 0.5f) - renderPosY),
                 (float) ((this.posZ - 0.5f * this.verticalAxis.z) - renderPosZ));
-            final float azi = (float) Math.toDegrees(new Vector3f(0f, this.verticalAxis.z, 0f).angleSigned(this.horizontalAxis, this.verticalAxis));
+            final float azi = (float) Math.toDegrees(
+                new Vector3f(0f, this.verticalAxis.z, 0f).angleSigned(this.horizontalAxis, this.verticalAxis));
             GL11.glRotatef(azi, this.verticalAxis.x, this.verticalAxis.y, this.verticalAxis.z);
             GL11.glRotatef(90f * this.verticalAxis.z, 1f, 0f, 0f);
         }
@@ -263,7 +273,7 @@ public class EntityRenderer extends EntityFX {
         Vector3f vAxis = new Vector3f(0f, 1f, 0f);
         Vector3f hAxis = new Vector3f(0f, 0f, -1f);
 
-        switch(direction) {
+        switch (direction) {
             case EAST -> hAxis.rotateY(-RAD_90);
             case SOUTH -> hAxis.rotateY(RAD_180);
             case WEST -> hAxis.rotateY(RAD_90);
@@ -280,7 +290,7 @@ public class EntityRenderer extends EntityFX {
             case NORTH, UNKNOWN -> {}
         }
 
-        switch(rotation) {
+        switch (rotation) {
             case CLOCKWISE -> vAxis.rotateAxis(-RAD_90, hAxis.x, hAxis.y, hAxis.z);
             case COUNTER_CLOCKWISE -> vAxis.rotateAxis(RAD_90, hAxis.x, hAxis.y, hAxis.z);
             case UPSIDE_DOWN -> vAxis.negate();
