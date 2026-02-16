@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 
 import java.io.IOException;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -22,16 +21,15 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
 
     @Override
     public MTENanochipAssemblyModuleBase<?> deserialize(PacketBuffer buffer) throws IOException {
-        if (!buffer.readBoolean()) { // MTE, GTE, module is not formed
+        if (!buffer.readBoolean()) { // MTE, GTE are null
             return null;
         }
         int x = buffer.readInt();
         int y = buffer.readInt();
         int z = buffer.readInt();
-        World world;
-        if (!GTMod.proxy.isClientSide()) world = DimensionManager.getWorld(buffer.readInt());
-        else world = Minecraft.getMinecraft().thePlayer.worldObj;
-        TileEntity te = GTUtil.getTileEntity(world, x, y, z, true);
+        World world = GTMod.GT.isClientSide() ? GTMod.GT.getThePlayer().worldObj
+            : DimensionManager.getWorld(buffer.readInt());
+        TileEntity te = GTUtil.getTileEntity(world, x, y, z, false);
         if (te == null) return null;
 
         IMetaTileEntity mte = GTUtility.getMetaTileEntity(te);
