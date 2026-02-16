@@ -148,7 +148,6 @@ public class ScannerHelper {
     // endregion
 
     // region Text
-    // spotless:off
     private static String addTitle(String name) {
         int maxWidth = 45;
 
@@ -162,8 +161,7 @@ public class ScannerHelper {
             padding.append("-");
         }
 
-        return EnumChatFormatting.AQUA.toString()
-            + EnumChatFormatting.STRIKETHROUGH
+        return EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
             + padding
             + EnumChatFormatting.RESET
             + EnumChatFormatting.AQUA
@@ -175,14 +173,16 @@ public class ScannerHelper {
     }
 
     private static void addBaseInfo(EntityPlayer player, World world, int x, int y, int z, List<String> list,
-                                    TileEntity tileEntity, Block block) {
+        TileEntity tileEntity, Block block) {
         list.add(addTitle("title_base_info"));
         list.add(trans("base_info_1", formatNumber(x), formatNumber(y), formatNumber(z)));
         try {
-            String name = ((tileEntity instanceof IInventory inv) ? inv.getInventoryName() : block.getUnlocalizedName());
+            String name = ((tileEntity instanceof IInventory inv) ? inv.getInventoryName()
+                : block.getUnlocalizedName());
             int meta = world.getBlockMetadata(x, y, z);
             float hardness = block.getBlockHardness(world, x, y, z);
-            float explosionResist = block.getExplosionResistance(player, world, x, y, z, player.posX, player.posY, player.posZ);
+            float explosionResist = block
+                .getExplosionResistance(player, world, x, y, z, player.posX, player.posY, player.posZ);
 
             list.add(trans("base_info_2", name, meta));
             list.add(trans("base_info_3", hardness, explosionResist));
@@ -242,7 +242,8 @@ public class ScannerHelper {
         return euAmount;
     }
 
-    private static int addDebuggableBlockInfo(EntityPlayer player, int x, int y, int z, List<String> list, Block block) {
+    private static int addDebuggableBlockInfo(EntityPlayer player, int x, int y, int z, List<String> list,
+        Block block) {
         int euAmount = 0;
         try {
             if (block instanceof IDebugableBlock debugableBlock) {
@@ -369,7 +370,8 @@ public class ScannerHelper {
         int euAmount = 0;
         try {
             if (tileEntity instanceof ICoverable coverable) {
-                final String coverInfo = coverable.getCoverAtSide(side).getDescription();
+                final String coverInfo = coverable.getCoverAtSide(side)
+                    .getDescription();
 
                 if (coverInfo != null && !coverInfo.equals(E)) {
                     list.add(addTitle("title_cover_info"));
@@ -417,7 +419,8 @@ public class ScannerHelper {
                 list.add(addTitle("title_crop_info"));
                 if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                 if (crop.getCrop() != null) {
-                    String cropName = crop.getCrop().name();
+                    String cropName = crop.getCrop()
+                        .name();
                     byte growth = crop.getGrowth();
                     byte gain = crop.getGain();
                     byte resist = crop.getResistance();
@@ -437,9 +440,19 @@ public class ScannerHelper {
                 list.add(trans("crop_info_3", nutrients, humidity, airQuality));
 
                 if (crop.getCrop() != null) {
-                    list.add(trans("crop_info_4", String.join(", ", crop.getCrop().attributes())));
+                    list.add(
+                        trans(
+                            "crop_info_4",
+                            String.join(
+                                ", ",
+                                crop.getCrop()
+                                    .attributes())));
 
-                    list.add(trans("crop_info_5", crop.getCrop().discoveredBy()));
+                    list.add(
+                        trans(
+                            "crop_info_5",
+                            crop.getCrop()
+                                .discoveredBy()));
                 }
                 euAmount += 1000;
             }
@@ -485,12 +498,10 @@ public class ScannerHelper {
                 String fluidAmount = formatNumber(fluid.amount);
 
                 list.add(trans("chunk_info_3", fluidName, fluidAmount));
-            }
-            else {
+            } else {
                 list.add(trans("chunk_info_4"));
             }
         }
     }
-    //spotless:on
     // endregion
 }
