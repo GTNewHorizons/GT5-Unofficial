@@ -725,7 +725,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     @Override
     public boolean doRandomMaintenanceDamage() {
         // Does not get have maintenance issues
-        return true;
+        return false;
     }
 
     @Override
