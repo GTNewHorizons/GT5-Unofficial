@@ -27,8 +27,8 @@ public class MTENanochipAssemblyModuleBaseAdapter implements IByteBufAdapter<MTE
         int x = buffer.readInt();
         int y = buffer.readInt();
         int z = buffer.readInt();
-        World world = GTMod.GT.isClientSide() ? GTMod.GT.getThePlayer().worldObj
-            : DimensionManager.getWorld(buffer.readInt());
+        World world = DimensionManager.getWorld(buffer.readInt());
+        if (world == null) world = GTMod.GT.getThePlayer().worldObj;
         TileEntity te = GTUtil.getTileEntity(world, x, y, z, false);
         if (te == null) return null;
 
