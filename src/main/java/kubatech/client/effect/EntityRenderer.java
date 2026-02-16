@@ -27,6 +27,7 @@ import static net.minecraft.client.renderer.entity.RenderManager.renderPosZ;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
+import gregtech.api.util.GTUtility;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -34,11 +35,14 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.BossStatus;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.joml.AxisAngle4f;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -58,12 +62,14 @@ public class EntityRenderer extends EntityFX {
     private Vector3f verticalAxis;
     private Vector3f horizontalAxis;
     private EntityLiving entityToRender = null;
+    private final AxisAngle4f rot;
     private static final float RAD_90 = (float) Math.PI / 2f;
     private static final float RAD_180 = (float) Math.PI;
 
     public EntityRenderer(ExtendedFacing extendedFacing, World world, double x, double y, double z, int age) {
         super(world, x + 0.5d, y, z + 0.5d);
         this.getAxesFromFacing(extendedFacing);
+        this.rot = GTUtility.getRotationAxisAngle4f(extendedFacing);
         this.particleMaxAge = age;
         this.particleAge = 0;
     }
@@ -72,6 +78,7 @@ public class EntityRenderer extends EntityFX {
         super(r.worldObj, r.posX, r.posY, r.posZ);
         this.verticalAxis = r.verticalAxis;
         this.horizontalAxis = r.horizontalAxis;
+        this.rot = r.rot;
         this.particleMaxAge = age;
         this.particleAge = 0;
         this.ticksExisted = r.ticksExisted;
@@ -100,13 +107,21 @@ public class EntityRenderer extends EntityFX {
     }
 
     public void setEntity(EntityLiving entity) {
-        this.entityToRender = entity;
+        entityToRender = entity;
+        Vector3f min = new Vector3f((float) entity.boundingBox.minX, (float) entity.boundingBox.minY, (float) entity.boundingBox.minZ);
+        Vector3f max = new Vector3f((float) entity.boundingBox.maxX, (float) entity.boundingBox.maxY, (float) entity.boundingBox.maxZ);
+        rot.transform(min);
+        rot.transform(max);
+        entityToRender.boundingBox.setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
     }
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
         float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         if (entityToRender == null) return;
+
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
@@ -177,14 +192,8 @@ public class EntityRenderer extends EntityFX {
         int j = i % 65536;
         int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
-        GL11.glColor4f(1f, 1f, 1f, 1F);
         RenderHelper.enableStandardItemLighting();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-
-        int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
-        GL11.glPushMatrix();
         if (this.verticalAxis.x != 0) {
             GL11.glTranslatef(
                 (float) ((this.posX - 0.5f * this.verticalAxis.x) - renderPosX),
@@ -238,19 +247,12 @@ public class EntityRenderer extends EntityFX {
         BossStatus.bossName = bossName;
         BossStatus.hasColorModifier = hasColorModifier;
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
-        stackdepth -= GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
-        if (stackdepth < 0) for (; stackdepth < 0; stackdepth++) GL11.glPopMatrix();
-        if (stackdepth > 0) for (; stackdepth > 0; stackdepth--) GL11.glPushMatrix();
-
-        GL11.glPopAttrib();
-
         int err;
         while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG.error(
             EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
 
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_COLOR_MATERIAL);
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
     }
 
     private void getAxesFromFacing(ExtendedFacing extendedFacing) {
