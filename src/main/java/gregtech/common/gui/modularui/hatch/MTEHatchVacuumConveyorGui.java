@@ -1,6 +1,8 @@
 package gregtech.common.gui.modularui.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,7 +195,9 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .tooltip(t -> {
                 if (!syncManager.isClient()) return; // needed since this runs on server and crashes
                 t.addStringLines(item.getTooltip(syncManager.getPlayer(), false))
-                    .addLine(EnumChatFormatting.DARK_GRAY + "Amount: " + formatNumber(amount));
+                    .addLine(
+                        EnumChatFormatting.DARK_GRAY
+                            + translateToLocalFormatted("GT5U.gui.text.nac.amount", formatNumber(amount)));
             });
     }
 
@@ -209,7 +213,7 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
                 syncContents.setValue(new CircuitComponentPacket());
                 return true;
             })
-            .tooltip(t -> { t.addLine("Delete Stored Circuit Components"); });
+            .tooltip(t -> { t.addLine(translateToLocal("GT5U.tooltip.nac.interface.delete_stored")); });
     }
 
     protected IWidget createCellDrainRow(PanelSyncManager syncManager) {
@@ -217,12 +221,12 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .coverChildren()
             .child(
                 new ButtonWidget<>().size(18)
-                    .overlay(GTGuiTextures.PICTURE_ARROW_WHITE_DOWN) // todo
+                    .overlay(GuiTextures.DOWNLOAD)
                     .onMousePressed(d -> {
                         syncManager.callSyncedAction("dumpCCs", $ -> {});
                         return true;
                     })
-                    .tooltip(t -> t.addLine("Empty Stored Circuit Components to an AE2 Cell")))
+                    .tooltip(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.interface.empty_stored"))))
             .child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, 0) {
 
                 @Override
