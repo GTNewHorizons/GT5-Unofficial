@@ -442,6 +442,15 @@
       }
     ]
   },
+  "machines.MTENanochipAssemblyComplex": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "MTENanochipAssemblyComplex",
+        "stream": false
+      }
+    ]
+  },
   "maintenance.MaintenanceAutoHatch": {
     "category": "block",
     "sounds": [

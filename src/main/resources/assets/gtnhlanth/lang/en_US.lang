@@ -15,6 +15,8 @@ GT5U.gui.text.gtnhlanth.inscoolant=Insufficient coolant in machine!
 GT5U.gui.text.gtnhlanth.noaccel=Particle type can't be accelerated!
 GT5U.gui.text.gtnhlanth.low_input_eut=Input EU/t too low to produce photons!
 GT5U.gui.text.gtnhlanth.scerror=Math error, broken recipe?
+GT5U.gui.text.gtnhlanth.wrongparticle=Incorrect Particle!
+GT5U.gui.text.gtnhlanth.toolowenergy=Below Required Energy!
 
 # NEI
 value.disstank=Ratio: %s:1
@@ -151,8 +153,6 @@ beamline.coolusage=Coolant Usage
 
 beamline.out_pre=Multiblock Beamline Output
 
-beamline.particleinput=Input Particle Info:
-
 beamline.pipe.desc.0=Transport for particles
 beamline.pipe.desc.1=Signal does not cross or bend
 
@@ -160,11 +160,12 @@ tile.recipe.tc=Target Chamber
 tile.recipe.sc=Source Chamber
 
 item.particle.name=Particle
-particle.electron=Electron
-particle.photon=Photon
-particle.alpha=Alpha
-particle.neutron=Neutron
-particle.proton=Proton
+particle.Electron=Electron
+particle.Photon=Photon
+particle.Alpha=Alpha
+particle.Neutron=Neutron
+particle.Proton=Proton
+particle.Positron=Positron
 GT5U.gui.text.dissolution_ratio=§7Wrong fluid input ratio
 
 tooltip.gtnhlanth.particle.rest_mass=Rest Mass: %f MeV

@@ -122,6 +122,7 @@ public enum SoundResource {
 
     GT_MACHINES_SPINMATRON(276, GregTech.ID, "machines.MTESpinmatron"),
     GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
+    GT_MACHINES_NANOCHIP(280, GregTech.ID, "machines.MTENanochipAssemblyComplex"),
 
     GT_TOOLBOX_OPEN(278, GregTech.ID, "items.ToolboxOpen"),
     GT_TOOLBOX_CLOSE(279, GregTech.ID, "items.ToolboxClose"),
