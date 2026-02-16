@@ -272,8 +272,12 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
     private IWidget createClearFilterButton() {
         return new ButtonWidget<>().size(18, 18)
             .marginBottom(4)
-            .overlay(GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN.asIcon().size(16))
-            .hoverOverlay(GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN_HOVER.asIcon().size(16))
+            .overlay(
+                GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN.asIcon()
+                    .size(16))
+            .hoverOverlay(
+                GTGuiTextures.TT_OVERLAY_BUTTON_TRASH_CAN_HOVER.asIcon()
+                    .size(16))
             .tooltipBuilder(t -> t.addLine(IKey.lang("tt.spaceminer.clearFilter")))
             .onMousePressed(mouseData -> {
                 for (int i = 0; i < 64; i++) {
