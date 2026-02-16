@@ -325,6 +325,7 @@ public final class GTGuiThemes {
     public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
         .parent(TECTECH_STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+        .build();
 
     public static final GTGuiTheme NANOCHIP = GTGuiTheme.builder("nanochip")
         .parent(STANDARD)
