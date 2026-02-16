@@ -210,7 +210,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0)) // PBI Pipe Casing
         .addElement('C', ofBlock(GregTechAPI.sBlockGlass1, 6)) // Central Grate Casing
         .addElement('D', chainAllGlasses())
-        .addElement('E', Casings.IsamillGearBoxCasing.asElement()) // Isamill central casing
+        .addElement('E', Casings.IsaMillGearboxCasing.asElement()) // Isamill central casing
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
         .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches

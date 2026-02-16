@@ -141,7 +141,7 @@ item.gt.comb.name=Соты
 item.gt.drop.name=Молочко
 item.gt.pollen.name=Пыльца
 item.gt.propolis.name=Прополис
-tile.gt.dronerender.name=Рендерер дронов
+gt.dronerenderer.name=Рендерер дронов
 
 # GT Item Descriptions
 gt.item.desc.stored_heat=Нагрев: %s
@@ -604,6 +604,21 @@ item.GTPP.air_filter.name.t2=Воздушный фильтр [Тир 2]
 
 GTPP.tooltip.air_filter.0=An Air filter for Atmospheric Reconditioning.
 GTPP.tooltip.air_filter.1=%d/%d uses left.
+
+GT5U.tooltip.pump.0=Лучший способ опустошить океаны!
+GT5U.tooltip.pump.1=§e%d§7 EU/операция, §f%d§7 сек на ведро
+GT5U.tooltip.pump.2=Макс. площадь выкачивания: §f%dx%d
+GT5U.tooltip.pump.3=Используйте отвёртку, чтобы отрегулировать область выкачивания
+GT5U.tooltip.pump.4=Используйте киянку для отключения и втянуть трубу
+GT5U.tooltip.pump.5=Отключите нижний насос, чтобы втягивать трубу!
+GT5U.tooltip.pump.6=Используйте паяльник для авто. втягивания трубы при ударе о камень
+
+GT5U.tooltip.miner.0=Копаем руду вместо тебя
+GT5U.tooltip.miner.1=Используйте отвёртку, чтобы регулировать рабочую область
+GT5U.tooltip.miner.2=Используйте киянку для отключения и втянуть трубу
+GT5U.tooltip.miner.3=§e%d§7 EU/t, §f%d§7 sec per block, no stuttering
+GT5U.tooltip.miner.4=Макс. рабочая площадь: §f%dx%d
+GT5U.tooltip.miner.5=Бонус удачи §f%d§7 к маленьким рудам
 
 # Fish trap
 GTPP.tooltip.fish_trap.0=This trap catches fish faster if surrounded by more water blocks
@@ -1561,14 +1576,14 @@ GT5U.hatch.item.filter.disable=Item output filtering disabled
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Загрязнение снижено до
-GT5U.multiblock.energy=Энергии накоплено
-GT5U.multiblock.Progress=Прогресс
-GT5U.multiblock.efficiency=Эффективность
-GT5U.multiblock.problems=Проблемы
-GT5U.multiblock.mei=Max Energy Income
+GT5U.multiblock.pollution=Загрязнение снижено до: §a%s§r%%
+GT5U.multiblock.energy=Энергии накоплено: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.Progress=Прогресс: §a%s §rs / §e%s §rs
+GT5U.multiblock.efficiency=Эффективность: §e%s§r%%
+GT5U.multiblock.problems=Проблемы: §c%s
+GT5U.multiblock.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
 GT5U.multiblock.maxtier=Макс. Тир
-GT5U.multiblock.usage=Сейчас используется
+GT5U.multiblock.usage=Сейчас используется: §c%s §rEU/t
 GT5U.multiblock.parallelism=Макс параллель
 GT5U.multiblock.curparallelism=Текущая параллель
 GT5U.multiblock.euModifier=EU Модификатор
@@ -2643,15 +2658,6 @@ GTPP.machines.tier=Тир
 GTPP.machines.input=Вход
 GTPP.machines.output=Вывод
 
-GTPP.multiblock.pollutionreduced=Загрязнение снижено до
-GTPP.multiblock.pollution=Загрязнение
-GTPP.multiblock.energy=Энергии накоплено
-GTPP.multiblock.progress=Прогресс
-GTPP.multiblock.efficiency=Эффективность
-GTPP.multiblock.problems=Проблемы
-GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Сейчас используется
-GTPP.multiblock.generation=Сейчас генерирует
 GTPP.multiblock.specialvalue=Особое значение
 GTPP.multiblock.duration=Длительность
 GTPP.multiblock.multimachine.metal=Metal режим: Компрессор (схема 20), Токарный станок (схема 21) и Электромагнитный поляризатор (схема 22).
@@ -2663,7 +2669,6 @@ GTPP.waila.steam.use=Сейчас используется: §e%s§r Л/с па�
 
 GTPP.CC.machinetier=Тир ядра управления
 GTPP.CC.discount=EU Скидка
-GTPP.CC.parallel=Максимум параллелей
 
 # Tooltips for the Charger Packs
 GTPP.battpack.tooltip.1=Носится как пояс в Baubles
@@ -2907,6 +2912,7 @@ GT5U.infodata.oil_drill.drilling_flow=Поток бурения: %s Л/тик
 
 GT5U.infodata.critical_info=Важнейшая информация
 GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
+GT5U.infodata.plasma_forge.fuel_discount=Fuel Discount: %s
 GT5U.infodata.plasma_forge.convergence=Конвергенция: %s
 GT5U.infodata.plasma_forge.convergence.progress=, perfect convergence reached in %s min
 GT5U.infodata.plasma_forge.convergence.achieved=, perfect convergence achieved

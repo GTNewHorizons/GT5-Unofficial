@@ -18,6 +18,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
@@ -36,6 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineWithRecipeBaseGui;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -483,6 +488,16 @@ public class MTEBasicMachineWithRecipe extends MTEBasicMachine {
     public MTEBasicMachineWithRecipe setRecipeCatalystPriority(int recipeCatalystPriority) {
         this.recipeCatalystPriority = recipeCatalystPriority;
         return this;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineWithRecipeBaseGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
     }
 
     @Override
