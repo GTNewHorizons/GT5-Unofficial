@@ -917,6 +917,26 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .equals(WellOfSufferingRitualName);
     }
 
+    private void rotateSpikes() {
+        ChunkCoordinates coords = this.getBaseMetaTileEntity().getCoords();
+        World world = this.getBaseMetaTileEntity().getWorld();
+        ExtendedFacing facing = this.getExtendedFacing();
+        int meta = facing.getRelativeUpInWorld().ordinal();
+        int[] abc = new int[] { 0, -1, 0 };
+        int[] xyz = new int[] { 0, 0, 0 };
+        for (int x = -1; x < 2; x++) {
+            abc[0] = x;
+            for (int z = 1; z < 4; z++) {
+                abc[2] = z;
+                facing.getWorldOffset(abc, xyz);
+                xyz[0] += coords.posX;
+                xyz[1] += coords.posY;
+                xyz[2] += coords.posZ;
+                world.setBlockMetadataWithNotify(xyz[0], xyz[1], xyz[2], meta, 3);
+            }
+        }
+    }
+
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         glassTier = -1;
@@ -926,6 +946,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (glassTier < VoltageIndex.UV)
             for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
         checkRitualConnection();
+        this.rotateSpikes();
         return true;
     }
 
