@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.chain;
 import static gregtech.api.enums.MetaTileEntityIDs.*;
 import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.amplifierRecipes;
@@ -49,6 +50,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.VoltageIndex;
 import gregtech.api.metatileentity.implementations.MTEBasicBatteryBuffer;
 import gregtech.api.metatileentity.implementations.MTEBasicHull;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -60,6 +62,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergyDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBusDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchInputDebug;
 import gregtech.api.metatileentity.implementations.MTEHatchMagnet;
@@ -69,6 +72,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchNanite;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBusCompressed;
 import gregtech.api.metatileentity.implementations.MTEHatchQuadrupleHumongous;
 import gregtech.api.metatileentity.implementations.MTEHatchVoid;
 import gregtech.api.metatileentity.implementations.MTEHatchVoidBus;
@@ -107,12 +111,11 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 import gregtech.common.tileentities.machines.basic.MTEBoxinator;
 import gregtech.common.tileentities.machines.basic.MTECharger;
+import gregtech.common.tileentities.machines.basic.MTEDrawerFramer;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 import gregtech.common.tileentities.machines.basic.MTEMagLevPylon;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
@@ -153,9 +156,12 @@ import gregtech.common.tileentities.machines.multi.MTEFusionComputer3;
 import gregtech.common.tileentities.machines.multi.MTEHeatExchanger;
 import gregtech.common.tileentities.machines.multi.MTEImplosionCompressor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialBrewery;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCentrifuge;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialExtractor;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialLaserEngraver;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialPackager;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialWireMill;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerBronze;
 import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
@@ -170,6 +176,7 @@ import gregtech.common.tileentities.machines.multi.MTELargeTurbinePlasma;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineSteam;
 import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
+import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -218,6 +225,8 @@ import gregtech.common.tileentities.machines.multi.purification.MTEPurificationU
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPhAdjustment;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitPlasmaHeater;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitUVTreatment;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterBronze;
 import gregtech.common.tileentities.machines.steam.MTESteamAlloySmelterSteel;
 import gregtech.common.tileentities.machines.steam.MTESteamCompressorBronze;
@@ -613,6 +622,30 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 new MTEResearchCompleter(ResearchCompleter.ID, "Research Completer", "Research Completer")
                     .getStackForm(1));
         }
+
+        ItemList.IndustrialWireFactory.set(
+            new MTEIndustrialWireMill(
+                IndustrialWireMill.ID,
+                "industrialwiremill.controller.tier.single",
+                "Industrial Wire Factory").getStackForm(1));
+
+        ItemList.IndustrialPackager.set(
+            new MTEIndustrialPackager(
+                IndustrialPackager.ID,
+                "amazonprime.controller.tier.single",
+                "Amazon Warehousing Depot").getStackForm(1L));
+
+        ItemList.IndustrialCentrifuge.set(
+            new MTEIndustrialCentrifuge(
+                IndustrialCentrifuge.ID,
+                "industrialcentrifuge.controller.tier.single",
+                "Industrial Centrifuge").getStackForm(1));
+
+        ItemList.MegaChemicalReactor.set(
+            new MTEMegaChemicalReactor(
+                MegaChemicalReactor.ID,
+                "multimachine.mega-chemical-reactor",
+                "Mega Chemical Reactor").getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -9004,6 +9037,136 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
             .set(new MTEHatchCokeOven(COKE_OVEN_HATCH.ID, "hatch.cokeoven", "Coke Oven Hatch").getStackForm(1L));
     }
 
+    private static void registerCompressedBus() {
+        ItemList.CompressedOutputBusLuV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_1.ID,
+                "hatch.comp-output-bus.tier.00",
+                "Compressed Output Bus (LuV)",
+                VoltageIndex.LuV,
+                256).getStackForm(1));
+
+        ItemList.CompressedOutputBusZPM.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_2.ID,
+                "hatch.comp-output-bus.tier.01",
+                "Compressed Output Bus (ZPM)",
+                VoltageIndex.ZPM,
+                2048).getStackForm(1));
+
+        ItemList.CompressedOutputBusUV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_3.ID,
+                "hatch.comp-output-bus.tier.02",
+                "Compressed Output Bus (UV)",
+                VoltageIndex.UV,
+                16384).getStackForm(1));
+
+        ItemList.CompressedOutputBusUHV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_COMPRESSED_4.ID,
+                "hatch.comp-output-bus.tier.03",
+                "Compressed Output Bus (UHV)",
+                VoltageIndex.UHV,
+                131072).getStackForm(1));
+
+        ItemList.CompressedOutputBusUEV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_1.ID,
+                "hatch.quantum-output-bus.tier.00",
+                "Quantum Output Bus (UEV)",
+                VoltageIndex.UEV,
+                2097152).getStackForm(1));
+
+        ItemList.CompressedOutputBusUIV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_2.ID,
+                "hatch.quantum-output-bus.tier.01",
+                "Quantum Output Bus (UIV)",
+                VoltageIndex.UIV,
+                Integer.MAX_VALUE / 64L).getStackForm(1));
+
+        ItemList.CompressedOutputBusUMV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_3.ID,
+                "hatch.quantum-output-bus.tier.02",
+                "Quantum Output Bus (UMV)",
+                VoltageIndex.UMV,
+                Integer.MAX_VALUE * 64L).getStackForm(1));
+
+        ItemList.CompressedOutputBusUXV.set(
+            new MTEHatchOutputBusCompressed(
+                HATCH_OUTPUT_BUS_QUANTUM_4.ID,
+                "hatch.quantum-output-bus.tier.03",
+                "Quantum Output Bus (UXV)",
+                VoltageIndex.UXV,
+                Long.MAX_VALUE / 64L).getStackForm(1));
+
+        ItemList.CompressedInputBusLuV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_1.ID,
+                "hatch.comp-input-bus.tier.00",
+                "Compressed Input Bus (LuV)",
+                VoltageIndex.LuV,
+                256).getStackForm(1));
+
+        ItemList.CompressedInputBusZPM.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_2.ID,
+                "hatch.comp-input-bus.tier.01",
+                "Compressed Input Bus (ZPM)",
+                VoltageIndex.ZPM,
+                2048).getStackForm(1));
+
+        ItemList.CompressedInputBusUV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_3.ID,
+                "hatch.comp-input-bus.tier.02",
+                "Compressed Input Bus (UV)",
+                VoltageIndex.UV,
+                16384).getStackForm(1));
+
+        ItemList.CompressedInputBusUHV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_COMPRESSED_4.ID,
+                "hatch.comp-input-bus.tier.03",
+                "Compressed Input Bus (UHV)",
+                VoltageIndex.UHV,
+                131072).getStackForm(1));
+
+        ItemList.CompressedInputBusUEV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_1.ID,
+                "hatch.quantum-input-bus.tier.00",
+                "Quantum Input Bus (UEV)",
+                VoltageIndex.UEV,
+                2097152).getStackForm(1));
+
+        ItemList.CompressedInputBusUIV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_2.ID,
+                "hatch.quantum-input-bus.tier.01",
+                "Quantum Input Bus (UIV)",
+                VoltageIndex.UIV,
+                Integer.MAX_VALUE / 64L).getStackForm(1));
+
+        ItemList.CompressedInputBusUMV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_3.ID,
+                "hatch.quantum-input-bus.tier.02",
+                "Quantum Input Bus (UMV)",
+                VoltageIndex.UMV,
+                Integer.MAX_VALUE * 64L).getStackForm(1));
+
+        ItemList.CompressedInputBusUXV.set(
+            new MTEHatchInputBusCompressed(
+                HATCH_INPUT_BUS_QUANTUM_4.ID,
+                "hatch.quantum-input-bus.tier.03",
+                "Quantum Input Bus (UXV)",
+                VoltageIndex.UXV,
+                Long.MAX_VALUE / 64L).getStackForm(1));
+    }
+
     private static void registerQuantumTank() {
         ItemList.Quantum_Tank_LV
             .set(new MTEQuantumTank(QUANTUM_TANK_LV.ID, "quantum.tank.tier.06", "Quantum Tank I", 6).getStackForm(1L));
@@ -10630,6 +10793,20 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .getStackForm(1L));
     }
 
+    private static void registerDrawerFramer() {
+
+        // if storage drawers is not loaded, do not load the drawer framer machine
+        if (!StorageDrawers.isModLoaded()) return;
+
+        ItemList.Machine_LV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_LV.ID, "framer.tier.01", "Basic Drawer Framer", 1).getStackForm(1L));
+        ItemList.Machine_MV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_MV.ID, "framer.tier.02", "Advanced Drawer Framer", 2).getStackForm(1L));
+        ItemList.Machine_HV_DrawerFramer
+            .set(new MTEDrawerFramer(GT_Framer_HV.ID, "framer.tier.03", "Precise Drawer Framer", 3).getStackForm(1L));
+
+    }
+
     @Override
     public void run() {
         GTLog.out.println("GTMod: Registering MetaTileEntities.");
@@ -10652,6 +10829,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOutputBus();
         registerVoidBus();
         registerCokeOvenHatch();
+        registerCompressedBus();
         registerMufflerHatch();
         registerBoiler();
         registerBatteryBuffer1x1();
@@ -10743,6 +10921,7 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
         registerOven();
         registerNameRemover();
         registerAirFilters();
+        registerDrawerFramer();
 
         ItemList.AdvDebugStructureWriter.set(
             new MTEAdvDebugStructureWriter(
