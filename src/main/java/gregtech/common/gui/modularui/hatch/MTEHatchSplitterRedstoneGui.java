@@ -34,7 +34,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
             new Column().coverChildren()
                 .align(Alignment.CENTER)
                 .child(
-                    IKey.str("Channel")
+                    IKey.lang("GT5U.gui.text.nac.splitter.channel")
                         .asWidget())
                 .child(
                     new Row().paddingBottom(4)
@@ -61,7 +61,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                                     return true;
                                 })))
                 .child(
-                    IKey.str("Current Redstone Level")
+                    IKey.lang("GT5U.gui.text.nac.splitter.redstone_level")
                         .asWidget())
                 .child(
                     IKey.dynamic(() -> EnumChatFormatting.RED + redstone.getStringValue())

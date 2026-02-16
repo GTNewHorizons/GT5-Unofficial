@@ -67,8 +67,8 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
     protected TerminalTextListWidget textList = new TerminalTextListWidget();
 
-    String fieldHintTalk = "Type 'talk' to enter talk mode";
-    String fieldHintExit = "Type 'exit' to exit talk mode";
+    private static final String TALK_MODE_COMMAND = "'talk'";
+    private static final String EXIT_MODE_COMMAND = "'exit'";
 
     public MTENanochipAssemblyComplexGui(MTENanochipAssemblyComplex base) {
         super(base);
@@ -830,7 +830,9 @@ public class MTENanochipAssemblyComplexGui extends MTEMultiBlockBaseGui<MTENanoc
 
         public void updateHintText() {
             BooleanSyncValue talkSyncer = syncManager.findSyncHandler("talk", BooleanSyncValue.class);
-            this.hintText(talkSyncer.getValue() ? fieldHintExit : fieldHintTalk);
+            this.hintText(
+                talkSyncer.getValue() ? translateToLocalFormatted("GT5U.gui.text.nac.hint.exit", EXIT_MODE_COMMAND)
+                    : translateToLocalFormatted("GT5U.gui.text.nac.hint.talk", TALK_MODE_COMMAND));
         }
     }
 
