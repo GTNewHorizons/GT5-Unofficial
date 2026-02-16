@@ -455,8 +455,9 @@ public class ParallelHelper {
             VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper().setMachine(machine)
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)
-                .setChanceGetter(recipe::getOutputChance)
-                .setChanceMultiplier(chanceMultiplier)
+                .setOutputChanceGetter(recipe::getOutputChance)
+                .setFluidOutputChanceGetter(recipe::getFluidOutputChance)
+                .setOutputChanceMultiplier(chanceMultiplier)
                 .setMaxParallel(maxParallel)
                 .build();
 
@@ -580,8 +581,10 @@ public class ParallelHelper {
             if (recipe.getFluidOutput(i) == null) continue;
             FluidStack origin = recipe.getFluidOutput(i)
                 .copy();
-            long fluids = (long) origin.amount * currentParallel;
-
+            final long chancedFluidMultiplier = calculateIntegralChancedOutputMultiplier(
+                (int) (recipe.getFluidOutputChance(i) * chanceMultiplier),
+                currentParallel);
+            long fluids = (long) origin.amount * chancedFluidMultiplier;
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
         fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);

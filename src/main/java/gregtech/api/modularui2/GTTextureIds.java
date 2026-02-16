@@ -6,27 +6,41 @@ public final class GTTextureIds {
     public static final String BACKGROUND_BRONZE = "gregtech:bg_bronze";
     public static final String BACKGROUND_STEEL = "gregtech:bg_steel";
     public static final String BACKGROUND_PRIMITIVE = "gregtech:bg_primitive";
+    public static final String BACKGROUND_FOUNDRY = "gregtech:bg_foundry";
+    public static final String BACKGROUND_NANOCHIP = "gregtech:bg_nanochip";
     public static final String BACKGROUND_COKE_OVEN = "gregtech:bg_coke_oven";
 
     public static final String BACKGROUND_POPUP_STANDARD = "gregtech:bg_popup_standard";
     public static final String BACKGROUND_POPUP_BRONZE = "gregtech:bg_popup_bronze";
     public static final String BACKGROUND_POPUP_STEEL = "gregtech:bg_popup_steel";
     public static final String BACKGROUND_POPUP_PRIMITIVE = "gregtech:bg_popup_primitive";
+    public static final String BACKGROUND_POPUP_FOUNDRY = "gregtech:bg_popup_foundry";
+    public static final String BACKGROUND_POPUP_NANOCHIP = "gregtech:bg_popup_nanochip";
 
     public static final String BACKGROUND_TITLE_STANDARD = "gregtech:bg_title_standard";
     public static final String BACKGROUND_TITLE_BRONZE = "gregtech:bg_title_bronze";
     public static final String BACKGROUND_TITLE_STEEL = "gregtech:bg_title_steel";
     public static final String BACKGROUND_TITLE_PRIMITIVE = "gregtech:bg_title_primitive";
+    public static final String BACKGROUND_TITLE_FOUNDRY = "gregtech:bg_title_foundry";
+    public static final String BACKGROUND_TITLE_NANOCHIP = "gregtech:bg_title_nanochip";
+    public static final String BACKGROUND_NAMEPLATE_NANOCHIP = "gregtech:bg_nameplate_nanochip";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
     public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
     public static final String BACKGROUND_CHAOS_LOCATOR = "gregtech:bg_chaos_locator";
+    public static final String BACKGROUND_CONTRIBUTORS_FOUNDRY = "gregtech:bg_contributors_foundry";
+
+    public static final String BACKGROUND_TEXT_FIELD = "gregtech:bg_text_field";
+    public static final String BACKGROUND_TEXT_FIELD_LIGHT_GRAY = "gregtech:bg_text_field_light_gray";
 
     public static final String SLOT_ITEM_STANDARD = "gregtech:slot_item_standard";
     public static final String SLOT_ITEM_BRONZE = "gregtech:slot_item_bronze";
     public static final String SLOT_ITEM_STEEL = "gregtech:slot_item_steel";
     public static final String SLOT_ITEM_PRIMITIVE = "gregtech:slot_item_primitive";
+    public static final String SLOT_ITEM_FOUNDRY = "gregtech:slot_item_foundry";
+    public static final String SLOT_EXTRUDER_SHAPE = "gregtech:slot_extrusion_standard";
+    public static final String SLOT_ITEM_NANOCHIP = "gregtech:slot_item_nanochip";
 
     public static final String SLOT_FLUID_STANDARD = "gregtech:slot_fluid_standard";
     public static final String SLOT_FLUID_BRONZE = "gregtech:slot_fluid_bronze";
@@ -76,6 +90,9 @@ public final class GTTextureIds {
     public static final String PROGRESSBAR_FUEL_BRONZE = "gregtech:progressbar_fuel_bronze";
     public static final String PROGRESSBAR_FUEL_STEEL = "gregtech:progressbar_fuel_steel";
     public static final String PROGRESSBAR_SIEVERT = "gregtech:progressbar_sievert";
+    public static final String PROGRESSBAR_METER_MINT = "gregtech:progressbar_meter_mint";
+    public static final String PROGRESSBAR_METER_ORANGE = "gregtech:progressbar_meter_orange";
+    public static final String PROGRESSBAR_METER_ROSE = "gregtech:progressbar_meter_rose";
 
     public static final String BUTTON_STANDARD = "gregtech:button_standard";
     public static final String BUTTON_STANDARD_PRESSED = "gregtech:button_standard_pressed";
@@ -86,6 +103,10 @@ public final class GTTextureIds {
     public static final String BUTTON_STEEL_PRESSED = "gregtech:button_steel_pressed";
     public static final String BUTTON_PRIMITIVE = "gregtech:button_primitive";
     public static final String BUTTON_PRIMITIVE_PRESSED = "gregtech:button_primitive_pressed";
+    public static final String BUTTON_FOUNDRY = "gregtech:button_foundry";
+    public static final String BUTTON_FOUNDRY_PRESSED = "gregtech:button_foundry_pressed";
+    public static final String BUTTON_NANOCHIP = "gregtech:button_nanochip";
+    public static final String BUTTON_NANOCHIP_PRESSED = "gregtech:button_nanochip_pressed";
 
     public static final String BUTTON_COVER_TAB_NORMAL_STANDARD = "gregtech:button_cover_tab_normal_standard";
     public static final String BUTTON_COVER_TAB_HIGHLIGHT_STANDARD = "gregtech:button_cover_tab_highlight_standard";
@@ -106,6 +127,8 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
     public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
+    public static final String PICTURE_LOGO_EXOFOUNDRY = "gregtech:picture_logo_exofoundry";
+    public static final String PICTURE_LOGO_NANOCHIP = "gregtech:picture_logo_nanochip";
 
     public static final String PICTURE_TRANSPARENT = "gregtech:picture_transparent";
     public static final String PICTURE_INFORMATION_SYMBOL = "gregtech:picture_information_symbol";
@@ -116,4 +139,21 @@ public final class GTTextureIds {
     public static final String PICTURE_DECAY_TIME_INSIDE = "bartworks:picture_bw_decay_time_inside";
     public static final String PICTURE_RADIATION_SHUTTER_FRAME = "bartworks:picture_bw_shutter_frame";
     public static final String PICTURE_RADIATION_SHUTTER_INSIDE = "bartworks:picture_bw_shutter_frame_inside";
+    public static final String PICTURE_EXOFOUNDRY_BASE = "gregtech:picture_exofoundry_base";
+    public static final String PICTURE_EXOFOUNDRY_UNSET = "gregtech:picture_exofoundry_unset";
+    public static final String PICTURE_EXOFOUNDRY_HR = "gregtech:picture_exofoundry_heliocast_reinforcement";
+    public static final String PICTURE_EXOFOUNDRY_HC = "gregtech:picture_exofoundry_hyper_cooler";
+    public static final String PICTURE_EXOFOUNDRY_TDS = "gregtech:picture_exofoundry_time_dilation_system";
+    public static final String PICTURE_EXOFOUNDRY_EOC = "gregtech:picture_exofoundry_efficient_overclock";
+    public static final String PICTURE_EXOFOUNDRY_ECB = "gregtech:picture_exofoundry_extra_casting_basins";
+    public static final String PICTURE_EXOFOUNDRY_SLC = "gregtech:picture_exofoundry_streamlined_casters";
+    public static final String PICTURE_EXOFOUNDRY_PES = "gregtech:picture_exofoundry_power_efficient_subsystems";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_PES_EOC = "gregtech:picture_exofoundry_pair_pes_eoc";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_PES_EOC_ACTIVE = "gregtech:picture_exofoundry_pair_pes_eoc_active";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_ECB_SLC = "gregtech:picture_exofoundry_pair_ecb_slc";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_ECB_SLC_ACTIVE = "gregtech:picture_exofoundry_pair_ecb_slc_active";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_UC_HC = "gregtech:picture_exofoundry_pair_uc_hc";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_UC_HC_ACTIVE = "gregtech:picture_exofoundry_pair_uc_hc_active";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF = "gregtech:picture_exofoundry_pair_hr_self";
+    public static final String PICTURE_EXOFOUNDRY_PAIR_HR_SELF_ACTIVE = "gregtech:picture_exofoundry_pair_hr_self_active";
 }

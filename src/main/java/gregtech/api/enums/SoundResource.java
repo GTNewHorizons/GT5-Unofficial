@@ -119,7 +119,11 @@ public enum SoundResource {
     GT_MAINTENANCE_AUTO_HATCH(273, GregTech.ID, "maintenance.MaintenanceAutoHatch"),
     GT_MAINTENANCE_DRONE_DOWNLINK_HATCH(274, GregTech.ID, "maintenance.MaintenanceDroneDownLinkHatch"),
     GT_MAINTENANCE_CREATIVE_HATCH(275, GregTech.ID, "maintenance.MaintenanceCreativeHatch"),
-    GT_MACHINES_CHAMBER_CENTRIFUGE(276, GregTech.ID, "machines.MTEChamberCentrifuge"),
+
+    GT_MACHINES_SPINMATRON(276, GregTech.ID, "machines.MTESpinmatron"),
+    GT_MACHINES_EXOFOUNDRY(277, GregTech.ID, "machines.MTEExoFoundry"),
+    GT_MACHINES_NANOCHIP(280, GregTech.ID, "machines.MTENanochipAssemblyComplex"),
+
     GUI_BUTTON_DOWN(-1, GregTech.ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, GregTech.ID, "gui.buttonUp"),
 

@@ -1,7 +1,7 @@
 package tectech.thing.metaTileEntity.multi.base;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -35,9 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
-import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
@@ -380,68 +378,22 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      * scanner gives it
      */
     @Override
-    public String[] getInfoData() { // TODO Do it
-        long storedEnergy = 0;
-        long maxEnergy = 0;
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
-        for (MTEHatchEnergyMulti tHatch : validMTEList(eEnergyMulti)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+    public String[] getInfoData() {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.progress",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.energy_hatches",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(storedEnergy) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(maxEnergy) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                getPowerFlow() * eAmpereFlow <= 0 ? "GT5U.infodata.currently_uses"
-                    : "tt.infodata.multi.currently_generates",
-                EnumChatFormatting.RED + GTUtility.formatNumbers(Math.abs(getPowerFlow())) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(eAmpereFlow) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("tt.keyphrase.Tier_Rating") + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[getMaxEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.GREEN
-                + VN[getMinEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("tt.keyphrase.Amp_Rating")
-                + " "
-                + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(eMaxAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.problems_efficiency",
-                "" + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET,
-                "" + EnumChatFormatting.YELLOW + mEfficiency / 100.0F + EnumChatFormatting.RESET + " %"),
-            StatCollector.translateToLocalFormatted("tt.keyword.PowerPass") + ": "
-                + EnumChatFormatting.BLUE
-                + ePowerPass
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToFallback("tt.keyword.SafeVoid")
-                + ": "
-                + EnumChatFormatting.BLUE
-                + eSafeVoid,
+        info.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.computation",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(eAvailableData) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(eRequiredData) + EnumChatFormatting.RESET) };
+                formatNumber(eAvailableData),
+                formatNumber(eRequiredData)));
+
+        info.add(StatCollector.translateToLocalFormatted("tt.keyphrase.Amp_Rating", formatNumber(eMaxAmpereFlow)));
+
+        info.add(StatCollector.translateToLocalFormatted("tt.keyword.PowerPass", ePowerPass));
+
+        info.add(StatCollector.translateToLocalFormatted("tt.keyword.SafeVoid", eSafeVoid));
+
+        return info.toArray(new String[0]);
     }
 
     /**
@@ -860,7 +812,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
      */
     @Override
     public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return checkMachine_EM(iGregTechTileEntity, itemStack);
+        mMachine = checkMachine_EM(iGregTechTileEntity, itemStack);
+
+        onStructureCheckFinished();
+
+        return mMachine;
     }
 
     /**
@@ -932,9 +888,6 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         isFacingValid(aBaseMetaTileEntity.getFrontFacing());
-        if (getBaseMetaTileEntity().isClientSide()) {
-            StructureLibAPI.queryAlignment((IAlignmentProvider) aBaseMetaTileEntity);
-        }
         onFirstTick_EM(aBaseMetaTileEntity);
     }
 
@@ -990,9 +943,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                     ((BaseTileEntity) aBaseMetaTileEntity).ignoreUnloadedChunks = mMachine;
                 }
 
-                mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
-
-                doStructureValidation();
+                checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if (!mMachine) {
                     if (ePowerPass && getEUVar() > V[3]
@@ -1056,7 +1007,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
                                     mLastWorkingTick = mTotalRunTime;
-
+                                    if (processingLogic != null) {
+                                        recipesDone += Math.max(processingLogic.getCurrentParallels(), lastParallel);
+                                    } else {
+                                        recipesDone += 1;
+                                    }
                                     if (aBaseMetaTileEntity.isAllowedToWork()) {
                                         if (checkRecipe()) {
                                             mEfficiency = Math.max(

@@ -74,6 +74,7 @@ import gregtech.api.hazards.HazardProtection;
 import gregtech.api.hazards.HazardProtectionTooltip;
 import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -94,6 +95,7 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
+import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
@@ -113,21 +115,23 @@ import gregtech.common.render.LaserRenderer;
 import gregtech.common.render.MetaGeneratedToolRenderer;
 import gregtech.common.render.NanoForgeRenderer;
 import gregtech.common.render.WormholeRenderer;
+import gregtech.common.render.items.CircuitComponentItemRenderer;
 import gregtech.common.render.items.DataStickRenderer;
 import gregtech.common.render.items.InfiniteSprayCanRenderer;
 import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.tileentities.debug.MTEAdvDebugStructureWriter;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
-import gregtech.common.tileentities.render.TileEntityDrone;
-import gregtech.common.tileentities.render.TileEntityLaser;
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityDrone;
+import gregtech.common.tileentities.render.RenderingTileEntityLaser;
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 import gregtech.crossmod.navigator.PowerfailLayerManager;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
 import gregtech.loaders.preload.GTPreLoad;
 import gregtech.nei.NEIGTConfig;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import mcp.mobius.waila.api.impl.ModuleRegistrar;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.SoundSystemException;
 
@@ -153,7 +157,7 @@ public class GTClient extends GTProxy {
     private final List<Materials> mMoltenNegG;
     private final List<Materials> mMoltenNegB;
     private final List<Materials> mMoltenNegA = Collections.emptyList();
-    private long mAnimationTick;
+    private static long mAnimationTick;
     /**
      * This is the place to def the value used below
      **/
@@ -163,7 +167,7 @@ public class GTClient extends GTProxy {
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
     private int mReloadCount;
-    private float renderTickTime;
+    private static float renderTickTime;
 
     public GTClient() {
         mAnimationTick = 0L;
@@ -315,11 +319,11 @@ public class GTClient extends GTProxy {
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDrone.class, new DroneRender());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaser.class, new LaserRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, new WormholeRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, new BlackholeRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityNanoForgeRenderer.class, new NanoForgeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityDrone.class, new DroneRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityLaser.class, new LaserRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityWormhole.class, new WormholeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityBlackhole.class, new BlackholeRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityNanoForge.class, new NanoForgeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new BaseMetaTileEntityRenderer());
 
         MetaGeneratedItemRenderer metaItemRenderer = new MetaGeneratedItemRenderer();
@@ -336,6 +340,8 @@ public class GTClient extends GTProxy {
                 MinecraftForgeClient.registerItemRenderer(tItem, metaToolRenderer);
             }
         }
+
+        MinecraftForgeClient.registerItemRenderer(CircuitComponentFakeItem.INSTANCE, new CircuitComponentItemRenderer());
 
         final FlaskRenderer flaskRenderer = new FlaskRenderer();
         MinecraftForgeClient.registerItemRenderer(ItemList.VOLUMETRIC_FLASK.getItem(), flaskRenderer);
@@ -378,6 +384,9 @@ public class GTClient extends GTProxy {
                 }
             });
         Pollution.onPostInitClient();
+
+        ModuleRegistrar.instance()
+            .registerTooltipRenderer("waila.gt.progress", new TTRenderGTProgressBar());
     }
 
     @Override
@@ -502,73 +511,80 @@ public class GTClient extends GTProxy {
                 changeDetected = 5;
             }
             heldItemForcesFullBlockBB = shouldHeldItemForceFullBlockBB();
-            mAnimationTick++;
-            if (mAnimationTick % 50L == 0L) {
-                mAnimationDirection = !mAnimationDirection;
-            }
-            final int tDirection = mAnimationDirection ? 1 : -1;
-            for (Materials tMaterial : mPosR) {
-                tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], tDirection);
-            }
 
-            for (Materials tMaterial : mPosG) {
-                tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], tDirection);
-            }
+            // Animation related bits need to cease when game is paused in singleplayer.
+            if (!Minecraft.getMinecraft()
+                .isGamePaused()) {
+                mAnimationTick++;
 
-            for (Materials tMaterial : mPosB) {
-                tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], tDirection);
-            }
+                if (mAnimationTick % 50L == 0L) {
+                    mAnimationDirection = !mAnimationDirection;
+                }
 
-            for (Materials tMaterial : mPosA) {
-                tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], tDirection);
-            }
+                final int tDirection = mAnimationDirection ? 1 : -1;
+                for (Materials tMaterial : mPosR) {
+                    tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], tDirection);
+                }
 
-            for (Materials tMaterial : mNegR) {
-                tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], -tDirection);
-            }
+                for (Materials tMaterial : mPosG) {
+                    tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], tDirection);
+                }
 
-            for (Materials tMaterial : mNegG) {
-                tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], -tDirection);
-            }
+                for (Materials tMaterial : mPosB) {
+                    tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], tDirection);
+                }
 
-            for (Materials tMaterial : mNegB) {
-                tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], -tDirection);
-            }
+                for (Materials tMaterial : mPosA) {
+                    tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], tDirection);
+                }
 
-            for (Materials tMaterial : mNegA) {
-                tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], -tDirection);
-            }
+                for (Materials tMaterial : mNegR) {
+                    tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], -tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenPosR) {
-                tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], tDirection);
-            }
+                for (Materials tMaterial : mNegG) {
+                    tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], -tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenPosG) {
-                tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], tDirection);
-            }
+                for (Materials tMaterial : mNegB) {
+                    tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], -tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenPosB) {
-                tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], tDirection);
-            }
+                for (Materials tMaterial : mNegA) {
+                    tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], -tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenPosA) {
-                tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], tDirection);
-            }
+                for (Materials tMaterial : mMoltenPosR) {
+                    tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenNegR) {
-                tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], -tDirection);
-            }
+                for (Materials tMaterial : mMoltenPosG) {
+                    tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenNegG) {
-                tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], -tDirection);
-            }
+                for (Materials tMaterial : mMoltenPosB) {
+                    tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenNegB) {
-                tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], -tDirection);
-            }
+                for (Materials tMaterial : mMoltenPosA) {
+                    tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], tDirection);
+                }
 
-            for (Materials tMaterial : mMoltenNegA) {
-                tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], -tDirection);
+                for (Materials tMaterial : mMoltenNegR) {
+                    tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], -tDirection);
+                }
+
+                for (Materials tMaterial : mMoltenNegG) {
+                    tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], -tDirection);
+                }
+
+                for (Materials tMaterial : mMoltenNegB) {
+                    tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], -tDirection);
+                }
+
+                for (Materials tMaterial : mMoltenNegA) {
+                    tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], -tDirection);
+                }
             }
         }
     }
@@ -635,12 +651,8 @@ public class GTClient extends GTProxy {
         return (short) tmp;
     }
 
-    public long getAnimationTicks() {
-        return mAnimationTick;
-    }
-
-    public float getPartialRenderTicks() {
-        return renderTickTime;
+    public static float getAnimationRenderTicks() {
+        return mAnimationTick + renderTickTime;
     }
 
     private boolean hideThings = false;
@@ -723,6 +735,7 @@ public class GTClient extends GTProxy {
     }
 
     @Override
+    @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         super.onWorldUnload(event);
         RenderOverlay.onWorldUnload(event.world);

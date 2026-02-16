@@ -205,6 +205,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     public static Materials Amber;
     public static Materials Ammonium;
     public static Materials Amordrine;
+    public static Materials AncientDebris;
     public static Materials Andesite;
     public static Materials Ardite;
     public static Materials Aredrite;
@@ -904,6 +905,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     // Magic Materials
     public static Materials ComplexityCatalyst;
     public static Materials EntropicCatalyst;
+    public static Materials SoulInfusedMedium;
 
     // Botania Materials
     public static Materials Manasteel;

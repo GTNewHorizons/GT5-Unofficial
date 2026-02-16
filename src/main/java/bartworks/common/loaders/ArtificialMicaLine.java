@@ -71,16 +71,16 @@ public class ArtificialMicaLine {
             .itemInputs(Materials.Potassium.getDust(2), Materials.CarbonDioxide.getCells(1))
             .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
             .fluidInputs(Materials.Oxygen.getGas(1_000))
-            .duration(2 * SECONDS)
-            .eut(8)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
         // K2O + CO2 = K2CO3
 
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Potash.getDust(3), Materials.CarbonDioxide.getCells(1))
             .itemOutputs(WerkstoffLoader.PotassiumCarbonate.get(OrePrefixes.dust, 6), Materials.Empty.getCells(1))
-            .duration(2 * SECONDS)
-            .eut(8)
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
             .addTo(UniversalChemical);
 
         // 55Quartz Dust + 20K2SiF6 + 12Al2O3 + 4K2CO3 = 91Raw Fluorophlogopite Dust
@@ -181,7 +181,7 @@ public class ArtificialMicaLine {
             GTValues.RA.stdBuilder()
                 .itemInputs(WerkstoffLoader.Fluorophlogopite.get(OrePrefixes.plate, 1))
                 .circuit(1)
-                .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.MicaInsulatorFoil", 4))
+                .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "MicaInsulatorFoil", 4))
                 .duration(10 * TICKS)
                 .eut(600)
                 .addTo(benderRecipes);

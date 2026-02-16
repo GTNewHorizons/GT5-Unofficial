@@ -19,6 +19,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import javax.annotation.Nonnull;
@@ -37,8 +38,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
@@ -70,6 +73,7 @@ import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.Material;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -236,6 +240,18 @@ public class GTStructureUtility {
                     env.getChatter());
             }
         };
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Supplier<ItemStack> frameSupplier) {
+        return lazy(t -> {
+            ItemStack stack = frameSupplier.get();
+            Block block = Block.getBlockFromItem(stack.getItem());
+            return ofBlock(block, stack.getItemDamage());
+        });
+    }
+
+    public static <T> IStructureElement<T> ofFrame(Material material) {
+        return ofFrame(() -> material.getFrameBox(1));
     }
 
     public static <T> HatchElementBuilder<T> buildHatchAdder() {
@@ -789,6 +805,52 @@ public class GTStructureUtility {
         Function<T, Integer> getter) {
         return GTStructureChannels.BOROGLASS.use(
             lazy(t -> ofBlocksTiered(GlassTier::getGlassBlockTier, GlassTier.getGlassList(), notSet, setter, getter)));
+    }
+
+    private static Integer getItemPipeCasingTier(Block block, int meta) {
+        if (block != GregTechAPI.sBlockCasings11) return null;
+        if (meta < 0 || meta > 7) return null;
+        return meta + 1;
+    }
+
+    public static <T> IStructureElement<T> chainItemPipeCasings() {
+        return chainItemPipeCasings(-1, (t, tier) -> {}, t -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainItemPipeCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.ITEM_PIPE_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    GTStructureUtility::getItemPipeCasingTier,
+                    ImmutableList.of(
+                        Pair.of(GregTechAPI.sBlockCasings11, 0),
+                        Pair.of(GregTechAPI.sBlockCasings11, 1),
+                        Pair.of(GregTechAPI.sBlockCasings11, 2),
+                        Pair.of(GregTechAPI.sBlockCasings11, 3),
+                        Pair.of(GregTechAPI.sBlockCasings11, 4),
+                        Pair.of(GregTechAPI.sBlockCasings11, 5),
+                        Pair.of(GregTechAPI.sBlockCasings11, 6),
+                        Pair.of(GregTechAPI.sBlockCasings11, 7)),
+                    notSet,
+                    setter,
+                    getter)));
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings() {
+        return chainAllCasings(-1, (te, t) -> {}, te -> -1);
+    }
+
+    public static <T> IStructureElement<T> chainAllCasings(int notSet, BiConsumer<T, Integer> setter,
+        Function<T, Integer> getter) {
+        return GTStructureChannels.TIER_CASING.use(
+            lazy(
+                t -> ofBlocksTiered(
+                    CasingTier::getCasingBlockTier,
+                    CasingTier.getCasingList(),
+                    notSet,
+                    setter,
+                    getter)));
     }
 
     public static <T> IStructureElement<T> noSurvivalAutoplace(IStructureElement<T> element) {

@@ -29,6 +29,8 @@ import gregtech.api.util.recipe.Scanning;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -151,6 +153,9 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<String> FOG_UPGRADE_NAME_SHORT = SimpleRecipeMetadataKey
         .create(String.class, "fog_plasma_upgrade_name_short");
 
+    public static final RecipeMetadataKey<FoundryModule> FOUNDRY_MODULE = SimpleRecipeMetadataKey
+        .create(FoundryModule.class, "foundry_module");
+
     /**
      * DEFC Casing tier.
      */
@@ -162,6 +167,12 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "chemplant_casing_tier");
+
+    /**
+     * Algae Pond tier.
+     */
+    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "algae_pond_tier");
 
     /**
      * QFT Focus tier.
@@ -264,6 +275,9 @@ public class GTRecipeConstants {
         .create(Integer.class, "eu_multiplier");
 
     public static final RecipeMetadataKey<Double> HALF_LIFE = SimpleRecipeMetadataKey.create(Double.class, "half-life");
+
+    public static final RecipeMetadataKey<CircuitCalibration> CIRCUIT_CALIBRATION_TYPE = SimpleRecipeMetadataKey
+        .create(CircuitCalibration.class, "circuit-calibration");
 
     /**
      * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info. Maybe this will come
@@ -745,6 +759,7 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(ALGAE_POND_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);

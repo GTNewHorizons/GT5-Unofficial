@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -96,18 +97,46 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Combustion Generator, LCE")
-            .addInfo("Supply Diesel Fuels and 1000L of Lubricant per hour to run")
-            .addInfo("Supply 40L/s of Oxygen to boost output (optional)")
-            .addInfo("Default: Produces 2048EU/t at 100% fuel efficiency")
-            .addInfo("Boosted: Produces 6144EU/t at 150% fuel efficiency")
-            .addInfo("You need to wait for it to reach 300% to output full power")
+            .addInfo(
+                "Supply Diesel Fuels and " + EnumChatFormatting.WHITE
+                    + "1000L"
+                    + EnumChatFormatting.GRAY
+                    + " of Lubricant per hour to run")
+            .addInfo(
+                "Supply " + EnumChatFormatting.WHITE
+                    + "40L/s"
+                    + EnumChatFormatting.GRAY
+                    + " of Oxygen to boost output (optional)")
+            .addInfo(
+                "Default: Produces " + EnumChatFormatting.YELLOW
+                    + "2048EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " at "
+                    + EnumChatFormatting.WHITE
+                    + "100%"
+                    + EnumChatFormatting.GRAY
+                    + " fuel efficiency")
+            .addInfo(
+                "Boosted: Produces " + EnumChatFormatting.YELLOW
+                    + "6144EU/t"
+                    + EnumChatFormatting.GRAY
+                    + " at "
+                    + EnumChatFormatting.WHITE
+                    + "150%"
+                    + EnumChatFormatting.GRAY
+                    + " fuel efficiency")
+            .addInfo(
+                "You need to wait for it to reach " + EnumChatFormatting.WHITE
+                    + "300%"
+                    + EnumChatFormatting.GRAY
+                    + " to output full power")
+            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
             .addController("Front center")
             .addCasingInfoRange("Stable Titanium Machine Casing", 16, 22, false)
             .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
             .addOtherStructurePart("Engine Intake Machine Casing", "8x, ring around controller")
-            .addStructureInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addDynamoHatch("Back center", 2)
             .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
             .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
@@ -309,11 +338,21 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setInteger("mEfficiency", mEfficiency);
+        aNBT.setBoolean("boostEu", boostEu);
+        aNBT.setInteger("fuelConsumption", fuelConsumption);
+        aNBT.setInteger("fuelValue", fuelValue);
+        aNBT.setInteger("fuelRemaining", fuelRemaining);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mEfficiency = aNBT.getInteger("mEfficiency");
+        boostEu = aNBT.getBoolean("boostEu");
+        fuelConsumption = aNBT.getInteger("fuelConsumption");
+        fuelValue = aNBT.getInteger("fuelValue");
+        fuelRemaining = aNBT.getInteger("fuelRemaining");
     }
 
     @Override
@@ -352,11 +391,11 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             getIdealStatus() == getRepairStatus()
@@ -366,22 +405,22 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                     + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.engine.output") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(((long) mEUt * mEfficiency / 10000))
+                + formatNumber(((long) mEUt * mEfficiency / 10000))
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(fuelConsumption)
+                + formatNumber(fuelConsumption)
                 + EnumChatFormatting.RESET
                 + " L/t",
             StatCollector.translateToLocal("GT5U.engine.value") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(fuelValue)
+                + formatNumber(fuelValue)
                 + EnumChatFormatting.RESET
                 + " EU/L",
             StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
                 + EnumChatFormatting.GOLD
-                + GTUtility.formatNumbers(fuelRemaining)
+                + formatNumber(fuelRemaining)
                 + EnumChatFormatting.RESET
                 + " L",
             StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
@@ -393,7 +432,11 @@ public class MTEDieselEngine extends MTEEnhancedMultiBlockBase<MTEDieselEngine> 
                 + EnumChatFormatting.GREEN
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
-                + " %" };
+                + " %",
+            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
+                + EnumChatFormatting.GREEN
+                + formatNumber(recipesDone)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

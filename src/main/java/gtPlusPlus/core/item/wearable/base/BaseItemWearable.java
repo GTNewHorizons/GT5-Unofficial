@@ -14,25 +14,18 @@ public abstract class BaseItemWearable extends ItemArmor implements ISpecialArmo
         super(material, renderIndex, armourType);
     }
 
-    public abstract int getRenderIndex();
-
     @Override
     public abstract ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source,
         double damage, int slot);
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public abstract void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage,
         int slot);
-
-    public void dyeArmour(ItemStack aArmour, int aColour) {
-        func_82813_b(aArmour, aColour);
-    }
 
     @Override
     public void func_82813_b(ItemStack p_82813_1_, int p_82813_2_) {

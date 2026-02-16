@@ -58,7 +58,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import ic2.core.Ic2Items;
 import tectech.recipe.TTRecipeAdder;
@@ -953,6 +952,14 @@ public class RecipeLoader2 {
             .eut(TierEU.RECIPE_MV)
             .addTo(chemicalBathRecipes);
 
+        // dust to fluid extraction, which isn't autogenned in Bartworks
+        GTValues.RA.stdBuilder()
+            .itemInputs(GGMaterial.lithiumChloride.get(OrePrefixes.dust, 1))
+            .fluidOutputs(GGMaterial.lithiumChloride.getMolten(1 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(fluidExtractionRecipes);
+
         GTValues.RA.stdBuilder()
             .itemInputs(GGMaterial.marM200.get(OrePrefixes.ingot, 18), Materials.Cerium.getIngots(1))
             .fluidInputs(GGMaterial.lithiumChloride.getMolten(1 * INGOTS))
@@ -1045,7 +1052,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T1.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedDiamondCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),
                     GTModHandler.getIC2Item("reactorVentCore", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
@@ -1061,7 +1068,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T1.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedDiamondCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedDiamondCrystalChip", 8),
                     ItemList.Circuit_Chip_NAND.get(16),
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 2))
                 .itemOutputs(ItemRefer.HiC_T2.get(1))
@@ -1109,7 +1116,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T3.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedEnergyChip", 8),
                     ItemList.Circuit_Chip_QuantumCPU.get(16),
                     GTModHandler.getIC2Item("reactorVentGold", 1L, 1))
                 .itemOutputs(ItemRefer.HiC_T4.get(1))
@@ -1125,7 +1132,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T3.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedEnergyChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedEnergyChip", 8),
                     ItemList.Circuit_Chip_QuantumCPU.get(16),
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.EnergeticAlloy, 2))
                 .itemOutputs(ItemRefer.HiC_T4.get(1))
@@ -1141,7 +1148,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T4.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedManyullynCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedManyullynCrystalChip", 8),
                     ItemList.Circuit_Chip_BioCPU.get(1),
                     Ic2Items.reactorVentSpread)
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
@@ -1157,7 +1164,7 @@ public class RecipeLoader2 {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     ItemRefer.HiC_T4.get(2),
-                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngravedManyullynCrystalChip", 8),
+                    GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EngravedManyullynCrystalChip", 8),
                     ItemList.Circuit_Chip_BioCPU.get(1),
                     GTOreDictUnificator.get(OrePrefixes.rotor, Materials.TungstenCarbide, 2))
                 .itemOutputs(ItemRefer.HiC_T5.get(1))
@@ -1347,7 +1354,10 @@ public class RecipeLoader2 {
 
         // Compact MK4 Fusion Coil
         GTValues.RA.stdBuilder()
-            .itemInputs(GregtechItemList.Casing_Fusion_Internal.get(3), ItemRefer.HiC_T5.get(1), CI.getEnergyCore(3, 1))
+            .itemInputs(
+                GregtechItemList.Casing_Fusion_Internal.get(3),
+                ItemRefer.HiC_T5.get(1),
+                GregtechItemList.Energy_Core_HV.get(1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T3.get(1))
             .fluidInputs(
                 FluidRegistry.getFluidStack("molten.energycrystal", 8 * INGOTS),
@@ -1389,7 +1399,7 @@ public class RecipeLoader2 {
                 GregtechItemList.Casing_Fusion_Internal2.get(3),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 1),
                 ItemRefer.HiC_T5.get(4),
-                CI.getEnergyCore(5, 1))
+                GregtechItemList.Energy_Core_IV.get(1))
             .itemOutputs(ItemRefer.Compact_Fusion_Coil_T4.get(1))
             .fluidInputs(
                 MaterialsAlloy.BLACK_TITANIUM.getFluidStack(8 * INGOTS),

@@ -10,7 +10,7 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
-import static gregtech.api.recipe.RecipeMaps.fluidCannerRecipes;
+import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -40,6 +40,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.items.BlockLongDistancePipe;
+import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.ItemBreederCell;
 import gregtech.api.items.ItemCoolantCellIC;
@@ -51,7 +52,6 @@ import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gregtech.common.blocks.BlockBlackholeRenderer;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings11;
@@ -64,23 +64,22 @@ import gregtech.common.blocks.BlockCasings5;
 import gregtech.common.blocks.BlockCasings6;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.BlockCasings9;
+import gregtech.common.blocks.BlockCasingsFoundry;
 import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
-import gregtech.common.blocks.BlockDrone;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
 import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
-import gregtech.common.blocks.BlockNanoForgeRenderer;
 import gregtech.common.blocks.BlockOresLegacy;
 import gregtech.common.blocks.BlockReinforced;
+import gregtech.common.blocks.BlockRenderer;
 import gregtech.common.blocks.BlockSheetMetal;
 import gregtech.common.blocks.BlockStones;
 import gregtech.common.blocks.BlockTintedIndustrialGlass;
-import gregtech.common.blocks.BlockWormholeRender;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.items.ItemAdvancedSensorCard;
 import gregtech.common.items.ItemDepletedCell;
@@ -99,11 +98,11 @@ import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.ores.GTOreAdapter;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
-import gregtech.common.tileentities.render.TileEntityDrone;
-import gregtech.common.tileentities.render.TileEntityLaser;
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityDrone;
+import gregtech.common.tileentities.render.RenderingTileEntityLaser;
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 
 public class LoaderGTBlockFluid implements Runnable {
 
@@ -175,6 +174,7 @@ public class LoaderGTBlockFluid implements Runnable {
         new ItemFluidDisplay();
         new ItemWirelessHeadphones();
         new ItemMagLevHarness();
+        new CircuitComponentFakeItem();
 
         // Tiered recipe materials actually appear to be set in MTEBasicMachineWithRecipe, making these
         // unused
@@ -737,19 +737,21 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockCasings12 = new BlockCasings12();
         GregTechAPI.sBlockCasings13 = new BlockCasings13();
         GregTechAPI.sBlockCasingsNH = new BlockCasingsNH();
+        GregTechAPI.sBlockCasingsFoundry = new BlockCasingsFoundry();
         GregTechAPI.sBlockGranites = new BlockGranites();
         GregTechAPI.sBlockLongDistancePipes = new BlockLongDistancePipe();
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
         GregTechAPI.sBlockOres1 = new BlockOresLegacy();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
-        GregTechAPI.sDroneRender = new BlockDrone();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
-        GregTechAPI.sWormholeRender = new BlockWormholeRender();
-        GregTechAPI.sBlackholeRender = new BlockBlackholeRenderer();
-        GregTechAPI.nanoForgeRender = new BlockNanoForgeRenderer();
+        GTLog.out.println("GTMod: Adding Renderer Blocks.");
+        GregTechAPI.sDroneRender = new BlockRenderer<>("dronerenderer", RenderingTileEntityDrone::new);
+        GregTechAPI.sWormholeRender = new BlockRenderer<>("wormholerenderer", RenderingTileEntityWormhole::new);
+        GregTechAPI.sBlackholeRender = new BlockRenderer<>("blackholerenderer", RenderingTileEntityBlackhole::new);
+        GregTechAPI.nanoForgeRender = new BlockRenderer<>("nanoforgerenderer", RenderingTileEntityNanoForge::new);
 
         GTOreAdapter.INSTANCE.init();
 
@@ -887,19 +889,19 @@ public class LoaderGTBlockFluid implements Runnable {
                 .getName());
 
         GTLog.out.println("GTMod: Registering the DroneRender.");
-        GameRegistry.registerTileEntity(TileEntityDrone.class, "DroneRender");
+        GameRegistry.registerTileEntity(RenderingTileEntityDrone.class, "DroneRender");
 
         GTLog.out.println("GTMod: Registering the LaserRender.");
-        GameRegistry.registerTileEntity(TileEntityLaser.class, "LaserRenderer");
+        GameRegistry.registerTileEntity(RenderingTileEntityLaser.class, "LaserRenderer");
 
         GTLog.out.println("GTMod: Registering the WormholeRender.");
-        GameRegistry.registerTileEntity(TileEntityWormhole.class, "WormholeRender");
+        GameRegistry.registerTileEntity(RenderingTileEntityWormhole.class, "WormholeRender");
 
         GTLog.out.println("GTMod: Registering the BlackholeRender.");
-        GameRegistry.registerTileEntity(TileEntityBlackhole.class, "BlackholeRender");
+        GameRegistry.registerTileEntity(RenderingTileEntityBlackhole.class, "BlackholeRender");
 
         GTLog.out.println("GTMod: Registering the NanoForgeRender.");
-        GameRegistry.registerTileEntity(TileEntityNanoForgeRenderer.class, "NanoForgeRender");
+        GameRegistry.registerTileEntity(RenderingTileEntityNanoForge.class, "NanoForgeRender");
 
         GTLog.out.println("GTMod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
@@ -1063,7 +1065,7 @@ public class LoaderGTBlockFluid implements Runnable {
             .fluidInputs(Materials.Steam.getGas(1_000))
             .duration(16 * TICKS)
             .eut(1)
-            .addTo(fluidCannerRecipes);
+            .addTo(cannerRecipes);
 
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375)
@@ -2377,6 +2379,6 @@ public class LoaderGTBlockFluid implements Runnable {
             .set(new ItemTierDrone("tierdDrone1", "Drone (Level 2)", "Dual Turbo High-Ejection Medium Aircraft", 2));
         ItemList.TierdDrone2
             .set(new ItemTierDrone("tierdDrone2", "Drone (Level 3)", "Single Engine Anti-Gravity Large Aircraft", 3));
-
+        ItemList.TierdDrone3.set(new ItemTierDrone("tierdDrone3", "Drone (Level 4)", "Warp engine FTL Shuttle", 4));
     }
 }

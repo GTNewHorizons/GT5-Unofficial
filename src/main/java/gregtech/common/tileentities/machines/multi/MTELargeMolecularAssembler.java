@@ -205,6 +205,8 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             for (List<ItemStack> l : aeJobs.subList(0, Math.min(parallel, aeJobs.size()))) {
                 outputs.addAll(l);
             }
+            // Multiblock base already includes 1 parallel
+            recipesDone += aeJobs.size() - 1;
             if (!outputs.isEmpty()) {
                 aeJobs.subList(0, Math.min(parallel, aeJobs.size()))
                     .clear();
@@ -556,7 +558,7 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                 patterns.put(is, cachedDetail);
             } else {
                 ICraftingPatternDetails detail = pattern.getPatternForItem(is, getBaseMetaTileEntity().getWorld());
-                if (detail != null) {
+                if (detail != null && detail.isCraftable()) {
                     patterns.put(is, detail);
                     changed = true;
                 }

@@ -1,5 +1,7 @@
 package gregtech.api.task;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -15,7 +17,6 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import gregtech.GTMod;
-import gregtech.api.util.GTUtility;
 import gregtech.common.config.Gregtech;
 
 /**
@@ -69,7 +70,7 @@ public final class CooperativeScheduler {
 
             try {
                 future.run();
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 GTMod.GT_FML_LOGGER.error(
                     "Caught error while running task; it will be cancelled (" + future.name + " " + future.task + ")",
                     t);
@@ -89,7 +90,7 @@ public final class CooperativeScheduler {
                         + " "
                         + future.task
                         + " took "
-                        + GTUtility.formatNumbers((end - start2) / 1e3)
+                        + formatNumber((end - start2) / 1e3)
                         + " microseconds");
             }
 
@@ -99,8 +100,8 @@ public final class CooperativeScheduler {
         }
 
         if (Gregtech.general.schedulerProfileLevel >= 1) {
-            GTMod.GT_FML_LOGGER.info(
-                "Task scheduler took " + GTUtility.formatNumbers((System.nanoTime() - start) / 1e3) + " microseconds");
+            GTMod.GT_FML_LOGGER
+                .info("Task scheduler took " + formatNumber((System.nanoTime() - start) / 1e3) + " microseconds");
         }
 
         for (CoopFuture<?> future : newTasks) {

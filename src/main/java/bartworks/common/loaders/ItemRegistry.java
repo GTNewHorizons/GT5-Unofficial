@@ -13,116 +13,7 @@
 
 package bartworks.common.loaders;
 
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorEV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorHV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorIV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorLV;
-import static gregtech.api.enums.MetaTileEntityIDs.AcidGeneratorMV;
-import static gregtech.api.enums.MetaTileEntityIDs.CircuitAssemblyLine;
-import static gregtech.api.enums.MetaTileEntityIDs.CompressedFluidHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.DeepEarthHeatingPump;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode12A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode16A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode2A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode4A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.Diode8A_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.ElectricImplosionCompressor;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_EV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_HV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_IV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_LV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_LuV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_MAX;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_MV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UEV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UHV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UIV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ULV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UMV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_UXV;
-import static gregtech.api.enums.MetaTileEntityIDs.EnergyDistributor_ZPM;
-import static gregtech.api.enums.MetaTileEntityIDs.GiantOutputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.HumongousInputHatch;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaBlastFurnace;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaChemicalReactor;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaDistillationTower;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaOilCracker;
-import static gregtech.api.enums.MetaTileEntityIDs.MegaVacuumFreezer;
-import static gregtech.api.enums.MetaTileEntityIDs.ThoriumHighTemperatureReactor;
-import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerI;
-import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerII;
-import static gregtech.api.enums.MetaTileEntityIDs.VoidMinerIII;
+import static gregtech.api.enums.MetaTileEntityIDs.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -148,12 +39,13 @@ import bartworks.common.items.SimpleSubItemClass;
 import bartworks.common.tileentities.classic.TileEntityHeatedWaterPump;
 import bartworks.common.tileentities.classic.TileEntityRotorBlock;
 import bartworks.common.tileentities.debug.MTECreativeScanner;
+import bartworks.common.tileentities.multis.MTEBioVat;
 import bartworks.common.tileentities.multis.MTECircuitAssemblyLine;
 import bartworks.common.tileentities.multis.MTEDeepEarthHeatingPump;
 import bartworks.common.tileentities.multis.MTEElectricImplosionCompressor;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.common.tileentities.multis.mega.MTEMegaBlastFurnace;
-import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactor;
+import bartworks.common.tileentities.multis.mega.MTEMegaChemicalReactorLegacy;
 import bartworks.common.tileentities.multis.mega.MTEMegaDistillTower;
 import bartworks.common.tileentities.multis.mega.MTEMegaOilCracker;
 import bartworks.common.tileentities.multis.mega.MTEMegaVacuumFreezer;
@@ -326,6 +218,7 @@ public class ItemRegistry {
     public static ItemStack THTR;
     public static ItemStack eic;
     public static ItemStack cal;
+    public static ItemStack vat;
     public static ItemStack compressedHatch;
     public static ItemStack giantOutputHatch;
     public static ItemStack humongousInputHatch;
@@ -510,8 +403,8 @@ public class ItemRegistry {
             MegaDistillationTower.ID,
             "MegaDistillationTower",
             "Mega Distillation Tower").getStackForm(1L);
-        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactor(
-            MegaChemicalReactor.ID,
+        ItemRegistry.megaMachines[3] = new MTEMegaChemicalReactorLegacy(
+            LegacyMegaChemicalReactor.ID,
             "MegaChemicalReactor",
             "Mega Chemical Reactor").getStackForm(1L);
         ItemRegistry.megaMachines[4] = new MTEMegaOilCracker(MegaOilCracker.ID, "MegaOilCracker", "Mega Oil Cracker")
@@ -522,6 +415,9 @@ public class ItemRegistry {
         ItemRegistry.voidminer[1] = new MTEVoidMiners.VMZPM(VoidMinerII.ID, "VoidMiner2", "Void Miner II")
             .getStackForm(1L);
         ItemRegistry.voidminer[0] = new MTEVoidMiners.VMLUV(VoidMinerI.ID, "VoidMiner1", "Void Miner I")
+            .getStackForm(1L);
+
+        ItemRegistry.vat = new MTEBioVat(BioVat.ID, "bw.biovat", StatCollector.translateToLocal("tile.biovat.name"))
             .getStackForm(1L);
     }
 }
