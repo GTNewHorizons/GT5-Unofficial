@@ -1416,8 +1416,10 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture TT_OVERLAY_BUTTON_CALCULATE = UITexture
         .fullImage(MODID, "gui/overlay_button/calculate");
-    public static final UITexture TT_OVERLAY_BUTTON_TRASH_CAN = UITexture.fullImage(MODID, "gui/overlay_button/trash_can");
-    public static final UITexture TT_OVERLAY_BUTTON_TRASH_CAN_HOVER = UITexture.fullImage(MODID, "gui/overlay_button/trash_can_hover");
+    public static final UITexture TT_OVERLAY_BUTTON_TRASH_CAN = UITexture
+        .fullImage(MODID, "gui/overlay_button/trash_can");
+    public static final UITexture TT_OVERLAY_BUTTON_TRASH_CAN_HOVER = UITexture
+        .fullImage(MODID, "gui/overlay_button/trash_can_hover");
 
     public static final UITexture OVERLAY_SLOT_PATTERN_ME = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/pattern_me")
