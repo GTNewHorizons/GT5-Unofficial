@@ -325,5 +325,21 @@ public final class GTGuiThemes {
     public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
         .parent(TECTECH_STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_INTERGALACTIC_LOGO)
+
+    public static final GTGuiTheme NANOCHIP = GTGuiTheme.builder("nanochip")
+        .parent(STANDARD)
+        .panel(GTTextureIds.BACKGROUND_NANOCHIP)
+        .itemSlot(GTTextureIds.SLOT_ITEM_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
+        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
+        .button(GTTextureIds.BUTTON_NANOCHIP)
+        .simpleToggleButton(
+            GTTextureIds.BUTTON_NANOCHIP,
+            GTTextureIds.BUTTON_NANOCHIP_PRESSED,
+            Dyes.MACHINE_METAL.toInt())
+        .color(Dyes.dyeWhite.toInt())
+        .textColor(new Color(0xFFDBE0).getRGB())
+        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), new Color(0xFFDBE0).getRGB())
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 }
