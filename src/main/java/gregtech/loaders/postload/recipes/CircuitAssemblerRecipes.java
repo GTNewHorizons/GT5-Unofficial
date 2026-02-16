@@ -11,9 +11,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.loaders.postload.MachineRecipeLoader.solderingMats;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
