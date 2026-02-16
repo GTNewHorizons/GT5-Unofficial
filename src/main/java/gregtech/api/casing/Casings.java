@@ -587,8 +587,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 6, gt(16, 0, 6)),
     ExoFoundryContainmentGlass
         (() -> GregTechAPI.sBlockGlass1, 7, gt(16, 0, 7)),
-    NanochipComplexGlass(
-        () -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
+    NanochipComplexGlass
+        (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
 
     // ------------------ Bartworks Casings -----------------
 
