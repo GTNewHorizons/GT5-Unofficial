@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.ICondition;
+import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GTArrayList;
@@ -2732,9 +2733,9 @@ public class OrePrefixes {
     }
 
     @SuppressWarnings("incomplete-switch")
-    public String getDefaultLocalNameFormatForItem(Materials aMaterial) {
+    public String getDefaultLocalNameFormatForItem(IOreMaterial aMaterial) {
         // Certain Materials have slightly different Localizations.
-        switch (aMaterial.mName) {
+        switch (aMaterial.getInternalName()) {
             case "Glass", "BorosilicateGlass" -> {
                 if (name.startsWith("gem")) return materialPrefix + "%material" + " Crystal";
                 if (name.startsWith("plate")) return materialPrefix + "%material" + " Pane";
@@ -2821,7 +2822,7 @@ public class OrePrefixes {
             }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
-            switch (aMaterial.mName) {
+            switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
                     if (name.startsWith("gem")) return materialPrefix + "Shard of " + "%material";
                     if (name.startsWith("crystal")) return materialPrefix + "Shard of " + "%material";
@@ -2841,7 +2842,7 @@ public class OrePrefixes {
         }
 
         if (this == ore) {
-            return switch (aMaterial.mName) {
+            return switch (aMaterial.getInternalName()) {
                 case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
                 case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
                 default -> materialPrefix + "%material" + materialPostfix;
@@ -2866,7 +2867,7 @@ public class OrePrefixes {
         return getOreprefixKey(prefix, "%material");
     }
 
-    public String getOreprefixKey(Materials materials) {
+    public String getOreprefixKey(IOreMaterial materials) {
         return "gt.oreprefix." + this.getDefaultLocalNameFormatForItem(materials)
             .toLowerCase()
             .replace(" ", "_")
@@ -2877,7 +2878,7 @@ public class OrePrefixes {
         return getOreprefixKey(Materials._NULL);
     }
 
-    public String getLocalizedNameForItem(Materials materials) {
+    public String getLocalizedNameForItem(IOreMaterial materials) {
         return StatCollector.translateToLocalFormatted(getOreprefixKey(materials), materials.getLocalizedName());
     }
 

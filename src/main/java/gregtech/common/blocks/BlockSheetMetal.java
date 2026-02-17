@@ -66,13 +66,7 @@ public class BlockSheetMetal extends BlockStorage implements IBlockWithTextures,
 
         if (material == null) material = Materials._NULL;
 
-        Materials gt = material.getGTMaterial();
-
-        if (gt != null) {
-            return OrePrefixes.sheetmetal.getLocalizedNameForItem(gt);
-        }
-
-        return OrePrefixes.block.getDefaultLocalNameForItem(Materials._NULL);
+        return OrePrefixes.sheetmetal.getLocalizedNameForItem(material);
     }
 
     @Override

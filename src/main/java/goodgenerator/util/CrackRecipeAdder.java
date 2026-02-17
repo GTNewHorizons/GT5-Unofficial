@@ -221,7 +221,7 @@ public class CrackRecipeAdder {
             new MTEFluidPipe(
                 ID + 2,
                 "GT_Pipe_" + unName,
-                "gt.oreprefix.tiny_material_fluid_pipe",
+                "gt.oreprefix.material_fluid_pipe",
                 0.5F,
                 material.getBridgeMaterial(),
                 flow,

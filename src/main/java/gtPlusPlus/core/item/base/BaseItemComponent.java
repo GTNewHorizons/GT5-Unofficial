@@ -158,6 +158,10 @@ public class BaseItemComponent extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
+        if (componentMaterial != null) {
+            return componentType.getGtOrePrefix()
+                .getLocalizedNameForItem(componentMaterial);
+        }
         return OrePrefixes.getLocalizedNameForItem(componentType.getName(), "@", translatedMaterialName.get());
     }
 
