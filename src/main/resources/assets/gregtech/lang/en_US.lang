@@ -1782,6 +1782,7 @@ GT5U.tooltip.nac.module.etching_array.action=Etches your Chip %s
 GT5U.tooltip.nac.module.etching_array.body.1=In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes:
 GT5U.tooltip.nac.module.etching_array.body.2=Divides §bEU Cost§7 by each §fAmperage Interval§7 over 256A
 GT5U.tooltip.nac.module.etching_array.body.3=Divides §aRecipe Duration§7 by §f(Hatch Tier - 9)
+GT5U.tooltip.nac.module.etching_array.installed=Installed Laser
 GT5U.tooltip.nac.module.optical_organizer.name=Optical Organizer
 GT5U.tooltip.nac.module.optical_organizer.flavor.1=Does mixing water together even make sense???
 GT5U.tooltip.nac.module.optical_organizer.action=Optimizes your Optical %s
