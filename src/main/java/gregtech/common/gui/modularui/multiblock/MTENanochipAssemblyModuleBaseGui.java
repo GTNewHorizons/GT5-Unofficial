@@ -43,8 +43,9 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
         ListWidget<IWidget, ?> widget = new ListWidget<>().crossAxisAlignment(Alignment.CrossAxis.START);
         widget.child(
             IKey.dynamic(
-                () -> connected.getBoolValue() ? EnumChatFormatting.GREEN + "Connected to Main Complex"
-                    : EnumChatFormatting.RED + "Disconnected from Main Complex")
+                () -> connected.getBoolValue()
+                    ? EnumChatFormatting.GREEN + translateToLocal("GT5U.gui.text.nac.module.status.connected")
+                    : EnumChatFormatting.RED + translateToLocal("GT5U.gui.text.nac.module.status.dis_connected"))
                 .asWidget());
         super.createTerminalTextWidget(syncManager, parent).getChildren()
             .forEach(widget::child);

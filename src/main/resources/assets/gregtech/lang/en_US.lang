@@ -1664,6 +1664,9 @@ GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
 GT5U.gui.text.nac.module.processor.flush_tank_auto=Flush automatically at
 GT5U.gui.text.nac.module.processor.impurity=Impurity
 
+GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
+GT5U.gui.text.nac.module.status.dis_connected=Disconnected from Main Complex
+
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
 GT5U.gui.text.nac.info.open=Open Info Panel
@@ -1704,6 +1707,7 @@ GT5U.gui.text.nac.info.calibration.special.header=Special Circuits (Pico and Qua
 GT5U.gui.text.nac.info.calibration.special.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.calibration.special.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.calibration.special.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
+
 # NAC Module Tooltip Keys
 GT5U.tooltip.nac.interface.machine_info=%s, %s
 GT5U.tooltip.nac.interface.delete_stored=Delete Stored Circuit Components
