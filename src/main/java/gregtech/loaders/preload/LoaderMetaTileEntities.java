@@ -1006,7 +1006,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1021,7 +1020,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1036,7 +1034,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1051,7 +1048,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1066,7 +1062,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1081,7 +1076,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1096,7 +1090,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1111,7 +1104,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1126,7 +1118,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1141,7 +1132,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1156,7 +1146,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1171,7 +1160,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -1188,7 +1176,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1203,7 +1190,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1218,7 +1204,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1233,7 +1218,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1248,7 +1232,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1263,7 +1246,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1278,7 +1260,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1293,7 +1274,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1308,7 +1288,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1323,7 +1302,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1338,7 +1316,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -1353,7 +1330,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true, 1000)
                 .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AMPLIFAB")
                 .build()
                 .getStackForm(1L));
@@ -2440,7 +2416,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2455,7 +2430,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2470,7 +2444,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2485,7 +2458,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2500,7 +2472,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2515,7 +2486,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2530,7 +2500,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2545,7 +2514,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2560,7 +2528,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2575,7 +2542,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2590,7 +2556,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2605,7 +2570,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_BATH")
                 .build()
                 .getStackForm(1L));
@@ -2622,7 +2586,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2637,7 +2600,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2652,7 +2614,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2667,7 +2628,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2682,7 +2642,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2697,7 +2656,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2712,7 +2670,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2727,7 +2684,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2742,7 +2698,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2757,7 +2712,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2772,7 +2726,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2787,7 +2740,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CHEMICAL_REACTOR")
                 .build()
                 .getStackForm(1L));
@@ -2805,7 +2757,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2820,7 +2771,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2835,7 +2785,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2850,7 +2799,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2865,7 +2813,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2880,7 +2827,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2895,7 +2841,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2910,7 +2855,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2925,7 +2869,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2940,7 +2883,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2955,7 +2897,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2970,7 +2911,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FERMENTER")
                 .build()
                 .getStackForm(1L));
@@ -2987,7 +2927,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3002,7 +2941,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3017,7 +2955,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3032,7 +2969,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3047,7 +2983,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3062,7 +2997,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3077,7 +3011,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3092,7 +3025,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3107,7 +3039,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3122,7 +3053,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3137,7 +3067,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3152,7 +3081,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_CANNER")
                 .build()
                 .getStackForm(1L));
@@ -3169,7 +3097,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3184,7 +3111,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3199,7 +3125,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3214,7 +3139,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3229,7 +3153,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3244,7 +3167,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3259,7 +3181,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3274,7 +3195,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3289,7 +3209,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3304,7 +3223,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3319,7 +3237,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3334,7 +3251,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(false, true)
                 .setSound(SoundResource.IC2_MACHINES_EXTRACTOR_OP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_EXTRACTOR")
                 .build()
                 .getStackForm(1L));
@@ -3351,7 +3267,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3366,7 +3281,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3381,7 +3295,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3396,7 +3309,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3411,7 +3323,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3426,7 +3337,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3441,7 +3351,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3456,7 +3365,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3471,7 +3379,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3486,7 +3393,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3501,7 +3407,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3516,7 +3421,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BOILER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_HEATER")
                 .build()
                 .getStackForm(1L));
@@ -3533,7 +3437,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3548,7 +3451,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3563,7 +3465,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3578,7 +3479,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3593,7 +3493,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3608,7 +3507,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3623,7 +3521,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3638,7 +3535,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3653,7 +3549,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3668,7 +3563,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3683,7 +3577,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3698,7 +3591,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(9, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_MIXER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("MIXER")
                 .build()
                 .getStackForm(1L));
@@ -3715,7 +3607,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3730,7 +3621,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3745,7 +3635,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 3)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3760,7 +3649,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3775,7 +3663,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3790,7 +3677,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3805,7 +3691,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3820,7 +3705,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3835,7 +3719,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3850,7 +3733,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3865,7 +3747,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -3880,7 +3761,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("AUTOCLAVE")
                 .build()
                 .getStackForm(1L));
@@ -4215,7 +4095,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4230,7 +4109,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4245,7 +4123,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4260,7 +4137,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4275,7 +4151,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4290,7 +4165,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4305,7 +4179,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4320,7 +4193,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4335,7 +4207,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4350,7 +4221,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4365,7 +4235,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4380,7 +4249,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_CUT)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CUTTER")
                 .build()
                 .getStackForm(1L));
@@ -4398,7 +4266,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4413,7 +4280,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4428,7 +4294,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4443,7 +4308,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4458,7 +4322,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4473,7 +4336,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4488,7 +4350,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4503,7 +4364,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4518,7 +4378,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4533,7 +4392,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4548,7 +4406,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4563,7 +4420,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GT_MACHINES_DISTILLERY_LOOP)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("DISTILLERY")
                 .build()
                 .getStackForm(1L));
@@ -4744,7 +4600,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4759,7 +4614,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4774,7 +4628,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4789,7 +4642,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4804,7 +4656,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4819,7 +4670,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4834,7 +4684,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4849,7 +4698,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4864,7 +4712,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4879,7 +4726,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4894,7 +4740,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -4909,7 +4754,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ELECTROLYZER")
                 .build()
                 .getStackForm(1L));
@@ -5404,7 +5248,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5419,7 +5262,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5434,7 +5276,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5449,7 +5290,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5464,7 +5304,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5479,7 +5318,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5494,7 +5332,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5509,7 +5346,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5524,7 +5360,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5539,7 +5374,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5554,7 +5388,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5569,7 +5402,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_COOLING)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("FLUID_SOLIDIFIER")
                 .build()
                 .getStackForm(1L));
@@ -5587,7 +5419,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5602,7 +5433,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5617,7 +5447,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5632,7 +5461,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5647,7 +5475,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5662,7 +5489,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5677,7 +5503,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5692,7 +5517,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5707,7 +5531,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5722,7 +5545,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5737,7 +5559,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5752,7 +5573,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PRESS")
                 .build()
                 .getStackForm(1L));
@@ -5845,7 +5665,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -5860,7 +5679,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -5875,7 +5693,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -5890,7 +5707,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -5905,7 +5721,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -5920,7 +5735,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -5935,7 +5749,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("HAMMER")
                 .build()
                 .getStackForm(1L));
@@ -6112,7 +5925,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6127,7 +5939,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6142,7 +5953,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6157,7 +5967,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6172,7 +5981,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6187,7 +5995,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6202,7 +6009,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6217,7 +6023,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6232,7 +6037,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6247,7 +6051,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6262,7 +6065,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6277,7 +6079,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(4, 1)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ELECTROLYZER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("LASER_ENGRAVER")
                 .build()
                 .getStackForm(1L));
@@ -6740,7 +6541,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6755,7 +6555,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6770,7 +6569,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6785,7 +6583,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6800,7 +6597,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6815,7 +6611,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6830,7 +6625,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6845,7 +6639,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6860,7 +6653,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6875,7 +6667,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6890,7 +6681,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -6905,7 +6695,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 3)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ORE_WASHER")
                 .build()
                 .getStackForm(1L));
@@ -7363,7 +7152,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7378,7 +7166,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7393,7 +7180,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7408,7 +7194,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7423,7 +7208,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7438,7 +7222,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7453,7 +7236,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7468,7 +7250,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7483,7 +7264,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7498,7 +7278,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7513,7 +7292,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7528,7 +7306,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.NONE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("SIFTER")
                 .build()
                 .getStackForm(1L));
@@ -7863,7 +7640,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7878,7 +7654,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7893,7 +7668,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 4)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7908,7 +7682,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7923,7 +7696,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7938,7 +7710,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7953,7 +7724,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7968,7 +7738,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7983,7 +7752,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -7998,7 +7766,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8013,7 +7780,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8028,7 +7794,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8046,7 +7811,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8061,7 +7825,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8076,7 +7839,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8091,7 +7853,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8106,7 +7867,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8121,7 +7881,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8136,7 +7895,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8151,7 +7909,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8166,7 +7923,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8181,7 +7937,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8196,7 +7951,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8211,7 +7965,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 6)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_CENTRIFUGE)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CENTRIFUGE")
                 .build()
                 .getStackForm(1L));
@@ -8229,7 +7982,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8244,7 +7996,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8259,7 +8010,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 4)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8274,7 +8024,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8289,7 +8038,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8304,7 +8052,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8319,7 +8066,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8334,7 +8080,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8349,7 +8094,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8364,7 +8108,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8379,7 +8122,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8394,7 +8136,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(1, 9)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("PLASMA_ARC_FURNACE")
                 .build()
                 .getStackForm(1L));
@@ -8411,7 +8152,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8426,7 +8166,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8441,7 +8180,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8456,7 +8194,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8471,7 +8208,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8486,7 +8222,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8501,7 +8236,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8516,7 +8250,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8531,7 +8264,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8546,7 +8278,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8561,7 +8292,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -8576,7 +8306,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(2, 2)
                 .setFluidSlots(true, true)
                 .setSound(SoundResource.GTCEU_LOOP_BATH)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CANNER")
                 .build()
                 .getStackForm(1L));
@@ -9807,7 +9536,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9822,7 +9550,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9837,7 +9564,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9852,7 +9578,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9867,7 +9592,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9882,7 +9606,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9897,7 +9620,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9912,7 +9634,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9927,7 +9648,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9942,7 +9662,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9957,7 +9676,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9972,7 +9690,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -9987,7 +9704,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
@@ -10002,7 +9718,6 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSlotsCount(6, 1)
                 .setFluidSlots(true, false)
                 .setSound(SoundResource.GTCEU_LOOP_ASSEMBLER)
-                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
                 .setOverlays("CIRCUITASSEMBLER")
                 .build()
                 .getStackForm(1L));
