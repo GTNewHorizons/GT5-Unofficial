@@ -89,13 +89,15 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                 t.clearText();
                 if (fluidTank.getFluid() != null) {
                     t.addLine(
-                        EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.immersion_fluid")
+                        EnumChatFormatting.BLUE
+                            + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.immersion_fluid")
                             + ": "
                             + EnumChatFormatting.GRAY
                             + fluidTank.getFluid()
                                 .getLocalizedName());
                 } else {
-                    t.addLine(EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.empty"));
+                    t.addLine(
+                        EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.empty"));
                 }
                 t.addLine(
                     EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.impurity")
