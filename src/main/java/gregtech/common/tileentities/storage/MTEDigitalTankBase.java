@@ -563,11 +563,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mOutputFluid) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("262", "Fluid Auto Output Disabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.disabled"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("263", "Fluid Auto Output Enabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.enabled"));
                     }
                 }
             })
@@ -585,8 +585,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 if (mLockFluid) {
                     if (mFluid == null) {
                         setLockedFluidName(null);
-                        inBrackets = GTUtility
-                            .trans("264", "currently none, will be locked to the next that is put in");
+                        inBrackets = StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.none");
                     } else {
                         setLockedFluidName(
                             getDrainableStack().getFluid()
@@ -596,14 +595,15 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (isServer) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            String.format("%s (%s)", GTUtility.trans("265", "1 specific Fluid"), inBrackets));
+                            StatCollector
+                                .translateToLocalFormatted("GT5U.machines.digitaltank.lockfluid.enabled", inBrackets));
                     }
                 } else {
                     fluidTank.drain(0, true);
                     if (isServer) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("266", "Lock Fluid Mode Disabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.disabled"));
                     }
                 }
                 fluidSlotWidget.notifyTooltipChange();
@@ -637,11 +637,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mVoidFluidPart) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("267", "Overflow Voiding Mode Disabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.disabled"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("268", "Overflow Voiding Mode Enabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.enabled"));
                     }
                 }
             })
@@ -658,11 +658,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                     if (!mVoidFluidFull) {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("269", "Void Full Mode Disabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.disabled"));
                     } else {
                         GTUtility.sendChatToPlayer(
                             buildContext.getPlayer(),
-                            GTUtility.trans("270", "Void Full Mode Enabled"));
+                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.enabled"));
                     }
                 }
             })
