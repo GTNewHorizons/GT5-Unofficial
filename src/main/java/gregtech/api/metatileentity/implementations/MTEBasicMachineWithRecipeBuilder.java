@@ -24,11 +24,28 @@ public final class MTEBasicMachineWithRecipeBuilder {
     private int outputSlotCount;
     private boolean hasInputFluidSlot = false;
     private boolean hasOutputFluidSlot = false;
+    private int fluidTankCapacity = 0;
     private SoundResource sound;
     private SpecialEffects specialEffect = SpecialEffects.NONE;
     private String overlays;
 
     public MTEBasicMachineWithRecipe build() {
+        if (fluidTankCapacity == 0) {
+            return new MTEBasicMachineWithRecipe(
+                id,
+                unlocalizedName,
+                englishName,
+                tier,
+                description,
+                recipes,
+                inputSlotCount,
+                outputSlotCount,
+                hasInputFluidSlot || hasOutputFluidSlot,
+                sound,
+                specialEffect,
+                overlays);
+        }
+
         return new MTEBasicMachineWithRecipe(
             id,
             unlocalizedName,
@@ -38,7 +55,7 @@ public final class MTEBasicMachineWithRecipeBuilder {
             recipes,
             inputSlotCount,
             outputSlotCount,
-            hasInputFluidSlot || hasOutputFluidSlot,
+            fluidTankCapacity,
             sound,
             specialEffect,
             overlays);
@@ -90,6 +107,13 @@ public final class MTEBasicMachineWithRecipeBuilder {
     public MTEBasicMachineWithRecipeBuilder setFluidSlots(boolean hasInput, boolean hasOutput) {
         this.hasInputFluidSlot = hasInput;
         this.hasOutputFluidSlot = hasOutput;
+        return this;
+    }
+
+    public MTEBasicMachineWithRecipeBuilder setFluidSlots(boolean hasInput, boolean hasOutput, int capacity) {
+        this.hasInputFluidSlot = hasInput;
+        this.hasOutputFluidSlot = hasOutput;
+        this.fluidTankCapacity = capacity;
         return this;
     }
 
