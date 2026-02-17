@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -294,10 +295,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
         ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 aPlayer,
-                mAllowInputFromOutputSide ? translateToLocal("gt.interact.desc.input_from_output_on")
-                    : translateToLocal("gt.interact.desc.input_from_output_off"));
+                mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
+                    : "gt.interact.desc.input_from_output_off");
         }
     }
 
@@ -561,13 +562,13 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mOutputFluid = val;
                 if (isServer) {
                     if (!mOutputFluid) {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.disabled"));
+                            "GT5U.machines.digitaltank.autooutput.disabled");
                     } else {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.autooutput.enabled"));
+                            "GT5U.machines.digitaltank.autooutput.enabled");
                     }
                 }
             })
@@ -581,29 +582,29 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 lockFluid(val);
                 fluidTank.setPreventDraining(mLockFluid);
 
-                String inBrackets;
+                Object inBrackets;
                 if (mLockFluid) {
                     if (mFluid == null) {
                         setLockedFluidName(null);
-                        inBrackets = StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.none");
+                        inBrackets = new ChatComponentTranslation("GT5U.machines.digitaltank.lockfluid.none");
                     } else {
                         setLockedFluidName(
                             getDrainableStack().getFluid()
                                 .getName());
-                        inBrackets = getDrainableStack().getLocalizedName();
+                        inBrackets = new ChatComponentTranslation(getDrainableStack().getUnlocalizedName());
                     }
                     if (isServer) {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector
-                                .translateToLocalFormatted("GT5U.machines.digitaltank.lockfluid.enabled", inBrackets));
+                            "GT5U.machines.digitaltank.lockfluid.enabled",
+                            inBrackets);
                     }
                 } else {
                     fluidTank.drain(0, true);
                     if (isServer) {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.lockfluid.disabled"));
+                            "GT5U.machines.digitaltank.lockfluid.disabled");
                     }
                 }
                 fluidSlotWidget.notifyTooltipChange();
@@ -635,13 +636,13 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 fluidTank.setAllowOverflow(allowOverflow());
                 if (isServer) {
                     if (!mVoidFluidPart) {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.disabled"));
+                            "GT5U.machines.digitaltank.voidoverflow.disabled");
                     } else {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidoverflow.enabled"));
+                            "GT5U.machines.digitaltank.voidoverflow.enabled");
                     }
                 }
             })
@@ -656,13 +657,13 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 fluidTank.setAllowOverflow(allowOverflow());
                 if (isServer) {
                     if (!mVoidFluidFull) {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.disabled"));
+                            "GT5U.machines.digitaltank.voidfull.disabled");
                     } else {
-                        GTUtility.sendChatToPlayer(
+                        GTUtility.sendChatTrans(
                             buildContext.getPlayer(),
-                            StatCollector.translateToLocal("GT5U.machines.digitaltank.voidfull.enabled"));
+                            "GT5U.machines.digitaltank.voidfull.enabled");
                     }
                 }
             })
