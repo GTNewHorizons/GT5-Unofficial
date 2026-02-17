@@ -6295,184 +6295,172 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private void registerMacerator() {
         ItemList.Machine_LV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_LV.ID,
-                "basicmachine.macerator.tier.01",
-                "Basic Macerator",
-                1,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "MACERATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_LV.ID)
+                .setName("basicmachine.macerator.tier.01", "Basic Macerator")
+                .setTier(1)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("MACERATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_MV.ID,
-                "basicmachine.macerator.tier.02",
-                "Advanced Macerator",
-                2,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                1,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "MACERATOR").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_MV.ID)
+                .setName("basicmachine.macerator.tier.02", "Advanced Macerator")
+                .setTier(2)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 1)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("MACERATOR")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_HV.ID,
-                "basicmachine.macerator.tier.03",
-                "Universal Macerator",
-                3,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                2,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_HV.ID)
+                .setName("basicmachine.macerator.tier.03", "Universal Macerator")
+                .setTier(3)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 2)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_EV.ID,
-                "basicmachine.macerator.tier.04",
-                "Universal Pulverizer",
-                4,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                3,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_EV.ID)
+                .setName("basicmachine.macerator.tier.04", "Universal Pulverizer")
+                .setTier(4)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 3)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Macerator.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_IV.ID,
-                "basicmachine.macerator.tier.05",
-                "Blend-O-Matic 9001",
-                5,
-                MachineType.MACERATOR.tooltipDescription(),
-                RecipeMaps.maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_IV.ID)
+                .setName("basicmachine.macerator.tier.05", "Blend-O-Matic 9001")
+                .setTier(5)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_LuV.ID,
-                "basicmachine.macerator.tier.06",
-                "Elite Pulverizer",
-                6,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_LuV.ID)
+                .setName("basicmachine.macerator.tier.06", "Elite Pulverizer")
+                .setTier(6)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_ZPM.ID,
-                "basicmachine.macerator.tier.07",
-                "Elite Pulverizer II",
-                7,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_ZPM.ID)
+                .setName("basicmachine.macerator.tier.07", "Elite Pulverizer II")
+                .setTier(7)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UV.ID,
-                "basicmachine.macerator.tier.08",
-                "Ultimate Shape Eliminator",
-                8,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UV.ID)
+                .setName("basicmachine.macerator.tier.08", "Ultimate Shape Eliminator")
+                .setTier(8)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UHV.ID,
-                "basicmachine.macerator.tier.09",
-                "Epic Shape Eliminator",
-                9,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UHV.ID)
+                .setName("basicmachine.macerator.tier.09", "Epic Shape Eliminator")
+                .setTier(9)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UEV.ID,
-                "basicmachine.macerator.tier.10",
-                "Epic Shape Eliminator II",
-                10,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UEV.ID)
+                .setName("basicmachine.macerator.tier.10", "Epic Shape Eliminator II")
+                .setTier(10)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UIV.ID,
-                "basicmachine.macerator.tier.11",
-                "Epic Shape Eliminator III",
-                11,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UIV.ID)
+                .setName("basicmachine.macerator.tier.11", "Epic Shape Eliminator III")
+                .setTier(11)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
         ItemList.MaceratorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                MACERATOR_UMV.ID,
-                "basicmachine.macerator.tier.12",
-                "Epic Shape Eliminator IV",
-                12,
-                MachineType.MACERATOR.tooltipDescription(),
-                maceratorRecipes,
-                1,
-                4,
-                false,
-                SoundResource.GTCEU_LOOP_MACERATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE,
-                "PULVERIZER").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MACERATOR_UMV.ID)
+                .setName("basicmachine.macerator.tier.12", "Epic Shape Eliminator IV")
+                .setTier(12)
+                .setDescription(MachineType.MACERATOR.tooltipDescription())
+                .setRecipes(maceratorRecipes)
+                .setSlotsCount(1, 4)
+                .setSound(SoundResource.GTCEU_LOOP_MACERATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.TOP_SMOKE)
+                .setOverlays("PULVERIZER")
+                .build()
+                .getStackForm(1L));
 
     }
 
