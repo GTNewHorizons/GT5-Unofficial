@@ -562,13 +562,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 mOutputFluid = val;
                 if (isServer) {
                     if (!mOutputFluid) {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.autooutput.disabled");
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.autooutput.disabled");
                     } else {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.autooutput.enabled");
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.autooutput.enabled");
                     }
                 }
             })
@@ -602,9 +600,8 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 } else {
                     fluidTank.drain(0, true);
                     if (isServer) {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.lockfluid.disabled");
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.lockfluid.disabled");
                     }
                 }
                 fluidSlotWidget.notifyTooltipChange();
@@ -636,13 +633,11 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 fluidTank.setAllowOverflow(allowOverflow());
                 if (isServer) {
                     if (!mVoidFluidPart) {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.voidoverflow.disabled");
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidoverflow.disabled");
                     } else {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.voidoverflow.enabled");
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidoverflow.enabled");
                     }
                 }
             })
@@ -657,13 +652,10 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 fluidTank.setAllowOverflow(allowOverflow());
                 if (isServer) {
                     if (!mVoidFluidFull) {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.voidfull.disabled");
+                        GTUtility
+                            .sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidfull.disabled");
                     } else {
-                        GTUtility.sendChatTrans(
-                            buildContext.getPlayer(),
-                            "GT5U.machines.digitaltank.voidfull.enabled");
+                        GTUtility.sendChatTrans(buildContext.getPlayer(), "GT5U.machines.digitaltank.voidfull.enabled");
                     }
                 }
             })
