@@ -8,8 +8,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.ReactorProcessingUnit_ZPM;
 import static gregtech.api.enums.MetaTileEntityIDs.ThoriumReactor;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -31,62 +30,60 @@ public class GregtechLFTR {
                 .getStackForm(1L));
         // Reactor Processing Units
         GregtechItemList.ReactorProcessingUnit_IV.set(
-            new MTEBasicMachineWithRecipe(
-                ReactorProcessingUnit_IV.ID,
-                "rpu.tier.01",
-                "Reactor Processing Unit I",
-                5,
-                new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.reactorProcessingUnitRecipes,
-                2,
-                9,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "REACTOR_PROCESSING_UNIT").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ReactorProcessingUnit_IV.ID)
+                .setName("rpu.tier.01", "Reactor Processing Unit I")
+                .setTier(5)
+                .setDescription(new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.reactorProcessingUnitRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("REACTOR_PROCESSING_UNIT")
+                .build()
+                .getStackForm(1L));
         GregtechItemList.ReactorProcessingUnit_ZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ReactorProcessingUnit_ZPM.ID,
-                "rpu.tier.02",
-                "Reactor Processing Unit II",
-                7,
-                new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.reactorProcessingUnitRecipes,
-                2,
-                9,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "REACTOR_PROCESSING_UNIT").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ReactorProcessingUnit_ZPM.ID)
+                .setName("rpu.tier.02", "Reactor Processing Unit II")
+                .setTier(7)
+                .setDescription(new String[] { "Processes Nuclear things", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.reactorProcessingUnitRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("REACTOR_PROCESSING_UNIT")
+                .build()
+                .getStackForm(1L));
         // Cold Traps
         GregtechItemList.ColdTrap_IV.set(
-            new MTEBasicMachineWithRecipe(
-                ColdTrap_IV.ID,
-                "coldtrap.tier.01",
-                "Cold Trap I",
-                5,
-                new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.coldTrapRecipes,
-                2,
-                9,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "COLD_TRAP").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ColdTrap_IV.ID)
+                .setName("coldtrap.tier.01", "Cold Trap I")
+                .setTier(5)
+                .setDescription(
+                    new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.coldTrapRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("COLD_TRAP")
+                .build()
+                .getStackForm(1L));
         GregtechItemList.ColdTrap_ZPM.set(
-            new MTEBasicMachineWithRecipe(
-                ColdTrap_ZPM.ID,
-                "coldtrap.tier.02",
-                "Cold Trap II",
-                7,
-                new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.coldTrapRecipes,
-                2,
-                9,
-                true,
-                SoundResource.NONE,
-                SpecialEffects.NONE,
-                "COLD_TRAP").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(ColdTrap_ZPM.ID)
+                .setName("coldtrap.tier.02", "Cold Trap II")
+                .setTier(7)
+                .setDescription(
+                    new String[] { "Just like the Arctic", "Does not require ice cubes", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.coldTrapRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.NONE)
+                .setOverlays("COLD_TRAP")
+                .build()
+                .getStackForm(1L));
         // Sparge Tower
         GregtechItemList.Controller_Sparge_Tower.set(
             new MTESpargeTower(Controller_Sparge_Tower.ID, "sparge.controller.single", "Sparge Tower Controller")

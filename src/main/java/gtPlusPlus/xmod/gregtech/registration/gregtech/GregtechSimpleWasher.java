@@ -19,8 +19,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipeBuilder;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -87,20 +86,20 @@ public class GregtechSimpleWasher {
 
     private static void registerSimpleWasher(GregtechItemList washer, int id, String unloc, String loc, int tier) {
         washer.set(
-            new MTEBasicMachineWithRecipe(
-                id,
-                unloc,
-                loc,
-                tier,
-                new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() },
-                simpleWasherRecipes,
-                1,
-                1,
-                true,
-                SoundResource.GTCEU_LOOP_BATH,
-                SpecialEffects.NONE,
-                "SIMPLE_WASHER").setRecipeCatalystPriority(-tier)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(id)
+                .setName(unloc, loc)
+                .setTier(tier)
+                .setDescription(
+                    new String[] { "It's like an automatic Cauldron for washing dusts.", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(simpleWasherRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(true, false)
+                .setSound(SoundResource.GTCEU_LOOP_BATH)
+                .setOverlays("SIMPLE_WASHER")
+                .build()
+                .setRecipeCatalystPriority(-tier)
+                .getStackForm(1L));
     }
 
     private static boolean generateDirtyDustRecipes() {

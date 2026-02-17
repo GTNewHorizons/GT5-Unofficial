@@ -18,8 +18,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
-import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe.SpecialEffects;
+import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipeBuilder;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -40,101 +39,101 @@ public class GregtechDehydrator {
     private static void registerMTEs() {
         // Basic
         GregtechItemList.GT_Dehydrator_MV.set(
-            new MTEBasicMachineWithRecipe(
-                GT_Dehydrator_MV.ID,
-                "machine.dehydrator.tier.00",
-                "Basic Dehydrator I",
-                2,
-                new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                2,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                SpecialEffects.NONE,
-                "DEHYDRATOR").setRecipeCatalystPriority(6)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(GT_Dehydrator_MV.ID)
+                .setName("machine.dehydrator.tier.00", "Basic Dehydrator I")
+                .setTier(2)
+                .setDescription(new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("DEHYDRATOR")
+                .build()
+                .setRecipeCatalystPriority(6)
+                .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_HV.set(
-            new MTEBasicMachineWithRecipe(
-                GT_Dehydrator_HV.ID,
-                "machine.dehydrator.tier.01",
-                "Basic Dehydrator II",
-                3,
-                new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                2,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                SpecialEffects.NONE,
-                "DEHYDRATOR").setRecipeCatalystPriority(5)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(GT_Dehydrator_HV.ID)
+                .setName("machine.dehydrator.tier.01", "Basic Dehydrator II")
+                .setTier(3)
+                .setDescription(new String[] { "This dehydrates your Grapes into Raisins.", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("DEHYDRATOR")
+                .build()
+                .setRecipeCatalystPriority(5)
+                .getStackForm(1L));
 
         // Chemical
         GregtechItemList.GT_Dehydrator_EV.set(
-            new MTEBasicMachineWithRecipe(
-                GT_Dehydrator_EV.ID,
-                "advancedmachine.dehydrator.tier.01",
-                "Chemical Dehydrator I",
-                4,
-                new String[] { "A hangover is the way your body reacts to dehydration.", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                2,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                SpecialEffects.NONE,
-                "DEHYDRATOR").setRecipeCatalystPriority(4)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(GT_Dehydrator_EV.ID)
+                .setName("advancedmachine.dehydrator.tier.01", "Chemical Dehydrator I")
+                .setTier(4)
+                .setDescription(
+                    new String[] { "A hangover is the way your body reacts to dehydration.",
+                        GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("DEHYDRATOR")
+                .build()
+                .setRecipeCatalystPriority(4)
+                .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_IV.set(
-            new MTEBasicMachineWithRecipe(
-                GT_Dehydrator_IV.ID,
-                "advancedmachine.dehydrator.tier.02",
-                "Chemical Dehydrator II",
-                5,
-                new String[] { "A hangover is the way your body reacts to dehydration.", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                2,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                SpecialEffects.NONE,
-                "DEHYDRATOR").setRecipeCatalystPriority(3)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(GT_Dehydrator_IV.ID)
+                .setName("advancedmachine.dehydrator.tier.02", "Chemical Dehydrator II")
+                .setTier(5)
+                .setDescription(
+                    new String[] { "A hangover is the way your body reacts to dehydration.",
+                        GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("DEHYDRATOR")
+                .build()
+                .setRecipeCatalystPriority(3)
+                .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_LuV.set(
-            new MTEBasicMachineWithRecipe(
-                GT_Dehydrator_LuV.ID,
-                "advancedmachine.dehydrator.tier.03",
-                "Chemical Dehydrator III",
-                6,
-                new String[] { "You could probably make space icecream with this..", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                2,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                SpecialEffects.NONE,
-                "DEHYDRATOR").setRecipeCatalystPriority(2)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(GT_Dehydrator_LuV.ID)
+                .setName("advancedmachine.dehydrator.tier.03", "Chemical Dehydrator III")
+                .setTier(6)
+                .setDescription(
+                    new String[] { "You could probably make space icecream with this..", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("DEHYDRATOR")
+                .build()
+                .setRecipeCatalystPriority(2)
+                .getStackForm(1L));
 
         GregtechItemList.GT_Dehydrator_ZPM.set(
-            new MTEBasicMachineWithRecipe(
-                GT_Dehydrator_ZPM.ID,
-                "advancedmachine.dehydrator.tier.04",
-                "Chemical Dehydrator IV",
-                7,
-                new String[] { "You can definitely make space icecream with this..", GTPPCore.GT_Tooltip.get() },
-                GTPPRecipeMaps.chemicalDehydratorRecipes,
-                2,
-                9,
-                true,
-                SoundResource.GTCEU_LOOP_CHEMICAL,
-                SpecialEffects.NONE,
-                "DEHYDRATOR").setRecipeCatalystPriority(1)
-                    .getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(GT_Dehydrator_ZPM.ID)
+                .setName("advancedmachine.dehydrator.tier.04", "Chemical Dehydrator IV")
+                .setTier(7)
+                .setDescription(
+                    new String[] { "You can definitely make space icecream with this..", GTPPCore.GT_Tooltip.get() })
+                .setRecipes(GTPPRecipeMaps.chemicalDehydratorRecipes)
+                .setSlotsCount(2, 9)
+                .setFluidSlots(true, true)
+                .setSound(SoundResource.GTCEU_LOOP_CHEMICAL)
+                .setOverlays("DEHYDRATOR")
+                .build()
+                .setRecipeCatalystPriority(1)
+                .getStackForm(1L));
 
         // Advanced
         GregtechItemList.Controller_Vacuum_Furnace.set(
