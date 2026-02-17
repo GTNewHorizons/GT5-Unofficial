@@ -21,6 +21,10 @@ public class BlockCasings12 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockcasings12", MaterialCasings.INSTANCE, 16);
 
         register(0, ItemList.CokeOvenCasing, "Coke Oven Bricks");
+        register(1, ItemList.MeshInterfaceNanochipCasing, "Nanochip Mesh Interface Casing");
+        register(2, ItemList.ReinforcementNanochipCasing, "Nanochip Reinforcement Casing");
+        register(3, ItemList.ComputationalMatrixNanochipCasing, "Nanochip Computational Matrix Casing");
+        register(4, ItemList.FirewallProjectionNanochipCasing, "Nanochip Firewall Projection Casing");
         register(5, ItemList.Casing_Strengthened_Inanimate, "Strengthened Inanimate Machine Casing");
         register(6, ItemList.Casing_Precise_Stationary, "Precise Stationary Machine Casing");
         register(7, ItemList.Casing_Ultimately_Static, "Ultimately Static Machine Casing");
@@ -57,6 +61,10 @@ public class BlockCasings12 extends BlockCasingsAbstract {
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.COKE_OVEN_CASING.getIcon();
+            case 1 -> Textures.BlockIcons.NANOCHIP_MESH_INTERFACE_CASING.getIcon();
+            case 2 -> Textures.BlockIcons.NANOCHIP_REINFORCEMENT_CASING.getIcon();
+            case 3 -> Textures.BlockIcons.NANOCHIP_COMPUTATIONAL_MATRIX_CASING.getIcon();
+            case 4 -> Textures.BlockIcons.NANOCHIP_FIREWALL_PROJECTION_CASING.getIcon();
             case 5 -> Textures.BlockIcons.MACHINE_CASING_STRENGTHENED_INANIMATE.getIcon();
             case 6 -> Textures.BlockIcons.MACHINE_CASING_PRECISE_STATIONARY.getIcon();
             case 7 -> Textures.BlockIcons.MACHINE_CASING_ULTIMATELY_STATIC.getIcon();

@@ -9,6 +9,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.DARK_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.ITALIC;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.LIGHT_PURPLE;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.OBFUSCATED;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.RED;
@@ -615,13 +616,6 @@ public class GTValues {
         + EnumChatFormatting.BOLD
         + "Raven";
 
-    public static final String AuthorNotAPenguin = "Author: " + EnumChatFormatting.WHITE
-        + EnumChatFormatting.BOLD
-        + "Not"
-        + EnumChatFormatting.AQUA
-        + EnumChatFormatting.BOLD
-        + "APenguin";
-
     public static final String AuthorPineapple = "Author: " + EnumChatFormatting.BLUE + "Recursive Pineapple";
 
     public static final String AuthorLeon = "Author: " + EnumChatFormatting.AQUA
@@ -662,8 +656,7 @@ public class GTValues {
 
     public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
 
-    public static final String AuthorPureBluez = "Author: " + EnumChatFormatting.WHITE
-        + "Pure"
+    public static final String StandalonePureBluez = EnumChatFormatting.WHITE + "Pure"
         + EnumChatFormatting.AQUA
         + "B"
         + EnumChatFormatting.DARK_AQUA
@@ -672,6 +665,8 @@ public class GTValues {
         + "u"
         + EnumChatFormatting.DARK_BLUE
         + "ez";
+
+    public static final String AuthorPureBluez = "Author: " + StandalonePureBluez;
 
     // for use with the chain
     public static final Supplier<String> AUTHOR_SUPPLIER = () -> "Author: ";
@@ -772,6 +767,39 @@ public class GTValues {
                     : letter);
         }
         return emptyAnimatedText(1, 1000, colorList);
+    }
+
+    public static final String StandaloneNotAPenguin = EnumChatFormatting.WHITE + "Not"
+        + EnumChatFormatting.AQUA
+        + "APenguin";
+
+    public static final String AuthorNotAPenguinStatic = "Author: " + EnumChatFormatting.BOLD + StandaloneNotAPenguin;
+
+    public static final Supplier<String> AuthorNotAPenguinAnimated = chain(
+        createNotAPenguinLetter(0),
+        createNotAPenguinLetter(1),
+        createNotAPenguinLetter(2),
+        createNotAPenguinLetter(3),
+        createNotAPenguinLetter(4),
+        createNotAPenguinLetter(5),
+        createNotAPenguinLetter(6),
+        createNotAPenguinLetter(7),
+        createNotAPenguinLetter(8),
+        createNotAPenguinLetter(9),
+        createNotAPenguinLetter(10));
+
+    private static Supplier<String> createNotAPenguinLetter(int index) {
+        final String[] letters = new String[] { "N", "o", "t", "A", "P", "e", "n", "g", "u", "i", "n" };
+        String[] colorList = new String[letters.length];
+        for (int i = 0; i < letters.length; ++i) {
+            int[] whiteIndices = new int[] { (letters.length - index - 1 + letters.length) % letters.length,
+                (letters.length - index + letters.length) % letters.length,
+                (letters.length - index + 1 + letters.length) % letters.length };
+            if (i == whiteIndices[0] || i == whiteIndices[1] || i == whiteIndices[2]) {
+                colorList[i] = WHITE + ITALIC + letters[index];
+            } else colorList[i] = AQUA + letters[index];
+        }
+        return emptyAnimatedText(1, 100, colorList);
     }
 
     public static final Supplier<String> AuthorSerenibyss = chain(
