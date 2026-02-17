@@ -553,6 +553,7 @@ public abstract class MTEDigitalTankBase extends MTEBasicTank
                 return fluidStack != null ? fluidStack.getLocalizedName()
                     : translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
             })
+                .setSynced(false)
                 .setDefaultColor(COLOR_TEXT_WHITE.get())
                 .setTextAlignment(Alignment.CenterLeft)
                 .setMaxWidth(65)
