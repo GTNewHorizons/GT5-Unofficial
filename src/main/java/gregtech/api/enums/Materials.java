@@ -1959,15 +1959,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer, I
     }
 
     @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal(getLocalizedNameKey());
-    }
-
-    public String getLocalizedNameKey() {
-        return "Material." + this.mName.toLowerCase();
-    }
-
-    @Override
     public int getId() {
         return mMetaItemSubID;
     }

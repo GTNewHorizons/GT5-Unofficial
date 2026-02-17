@@ -847,11 +847,6 @@ public class Material implements IOreMaterial {
     }
 
     @Override
-    public String getLocalizedName() {
-        return MaterialUtils.getMaterialLocalizedName(unlocalizedName);
-    }
-
-    @Override
     public String getLocalizedNameKey() {
         return MaterialUtils.getMaterialLocalizedNameKey(unlocalizedName);
     }

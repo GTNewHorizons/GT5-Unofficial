@@ -3,6 +3,7 @@ package gregtech.api.interfaces;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -20,15 +21,19 @@ import gtPlusPlus.core.material.Material;
  */
 public interface IOreMaterial extends ISubTagContainer {
 
-    String getLocalizedName();
-
-    String getLocalizedNameKey();
-
     void addTooltips(List<String> list);
 
     int getId();
 
     String getInternalName();
+
+    default String getLocalizedNameKey() {
+        return "Material." + getInternalName().toLowerCase();
+    }
+
+    default String getLocalizedName() {
+        return StatCollector.translateToLocal(getLocalizedNameKey());
+    }
 
     short[] getRGBA();
 

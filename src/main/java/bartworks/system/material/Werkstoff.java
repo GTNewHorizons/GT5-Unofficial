@@ -522,16 +522,6 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer, I
         return this.defaultName;
     }
 
-    @Override
-    public String getLocalizedName() {
-        return StatCollector.translateToLocal(getLocalizedNameKey());
-    }
-
-    public String getLocalizedNameKey() {
-        return "Material." + this.defaultName.toLowerCase()
-            .replace(" ", "");
-    }
-
     public String getVarName() {
         return this.defaultName.replace(" ", "");
     }
