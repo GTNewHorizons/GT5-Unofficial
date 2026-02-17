@@ -37,8 +37,10 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class ChemicalRecipes implements Runnable {
@@ -194,6 +196,15 @@ public class ChemicalRecipes implements Runnable {
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(chemicalReactorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(WerkstoffMaterialPool.BoronTrioxide.get(OrePrefixes.dust, 1))
+            .circuit(1)
+            .fluidInputs(Materials.SulfuricAcid.getFluid(2_000), Materials.Water.getFluid(1_000))
+            .fluidOutputs(new FluidStack(GTPPFluids.BoricAcid, 2_000), Materials.DilutedSulfuricAcid.getFluid(2_000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(multiblockChemicalReactorRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2))

@@ -222,7 +222,8 @@ public class RecipesGregTech {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4))
             .itemOutputs(
                 WerkstoffLoader.Thorianit.get(OrePrefixes.dust, 3),
-                MaterialsElements.getInstance().THORIUM232.getDust(1))
+                MaterialsElements.getInstance().THORIUM232.getDust(1),
+                MaterialsElements.getInstance().URANIUM233.getDust(3))
             .fluidInputs(GTModHandler.getDistilledWater(2_000), new FluidStack(GTPPFluids.BoricAcid, 500))
             .duration(100 * SECONDS)
             .eut(TierEU.RECIPE_EV)
