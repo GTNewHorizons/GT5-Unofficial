@@ -6,6 +6,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose
 import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM;
@@ -73,7 +74,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
         .addElement('A', chainAllGlasses())
         .addElement(
             'B',
-            buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
+            buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(6))
                 .hint(1)
                 .buildAndChain(

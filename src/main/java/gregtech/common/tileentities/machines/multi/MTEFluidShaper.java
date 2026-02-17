@@ -182,14 +182,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Solidifier")
-            .addInfo(
-                EnumChatFormatting.RED + "DEPRECATED!"
-                    + EnumChatFormatting.GRAY
-                    + " Will be removed in next major version. Use the "
-                    + EnumChatFormatting.YELLOW
-                    + "Mass Solidifier"
-                    + EnumChatFormatting.GRAY
-                    + " instead")
+            .addStructureDeprecatedLine()
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
