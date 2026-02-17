@@ -1661,11 +1661,11 @@ GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
 GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
 GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
 
-GT5U.gui.text.nac.module.processor.flush_tank_auto=Flush automatically at
-GT5U.gui.text.nac.module.processor.impurity=Impurity
+GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto=Flush automatically at
+GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
 
 GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
-GT5U.gui.text.nac.module.status.dis_connected=Disconnected from Main Complex
+GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
@@ -1811,11 +1811,11 @@ GT5U.tooltip.nac.module.superconductor_splitter.body.1=Requires 1000 L/s of Supe
 GT5U.tooltip.nac.module.wire_tracer.name=Wire Tracer
 GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
 GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
-GT5U.tooltip.nac.module.processor.immersion_fluid=Immersion Fluid
-GT5U.tooltip.nac.module.processor.empty=Empty
-GT5U.tooltip.nac.module.processor.impurity=Impurity
-GT5U.tooltip.nac.module.processor.flush_tank=Flush Tank
-GT5U.tooltip.nac.module.processor.edit_flush_tank=Edit auto-flush settings
+GT5U.tooltip.nac.module.boardprocessor.immersion_fluid=Immersion Fluid
+GT5U.tooltip.nac.module.boardprocessor.empty=Empty
+GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
+GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
+GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
 
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex

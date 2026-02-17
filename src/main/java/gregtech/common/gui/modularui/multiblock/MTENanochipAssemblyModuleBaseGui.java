@@ -45,7 +45,7 @@ public class MTENanochipAssemblyModuleBaseGui<T extends MTENanochipAssemblyModul
             IKey.dynamic(
                 () -> connected.getBoolValue()
                     ? EnumChatFormatting.GREEN + translateToLocal("GT5U.gui.text.nac.module.status.connected")
-                    : EnumChatFormatting.RED + translateToLocal("GT5U.gui.text.nac.module.status.dis_connected"))
+                    : EnumChatFormatting.RED + translateToLocal("GT5U.gui.text.nac.module.status.disconnected"))
                 .asWidget());
         super.createTerminalTextWidget(syncManager, parent).getChildren()
             .forEach(widget::child);

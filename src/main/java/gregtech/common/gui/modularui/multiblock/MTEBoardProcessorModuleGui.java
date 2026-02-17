@@ -89,16 +89,16 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                 t.clearText();
                 if (fluidTank.getFluid() != null) {
                     t.addLine(
-                        EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.processor.immersion_fluid")
+                        EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.immersion_fluid")
                             + ": "
                             + EnumChatFormatting.GRAY
                             + fluidTank.getFluid()
                                 .getLocalizedName());
                 } else {
-                    t.addLine(EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.processor.empty"));
+                    t.addLine(EnumChatFormatting.BLUE + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.empty"));
                 }
                 t.addLine(
-                    EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.processor.impurity")
+                    EnumChatFormatting.GREEN + translateToLocal("GT5U.tooltip.nac.module.boardprocessor.impurity")
                         + ": "
                         + numberFormat.format(impurity.getDoubleValue() * 100)
                         + "%");
@@ -138,7 +138,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                     syncManager.callSyncedAction("flushTank", $ -> {});
                     return false;
                 })
-                .tooltipBuilder(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.module.processor.flush_tank")))
+                .tooltipBuilder(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.module.boardprocessor.flush_tank")))
                 .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(createAutomationButton(syncManager, parent));
     }
@@ -160,14 +160,14 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
         return new Column().coverChildrenHeight()
             .align(Alignment.CENTER)
             .childPadding(4)
-            .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.processor.flush_tank_auto") + ":"))
+            .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto") + ":"))
             .child(
                 new TextFieldWidget().setNumbers(1, 100)
                     .setTextAlignment(Alignment.CENTER)
                     .setDefaultNumber(100)
                     .value(automationPercentage)
                     .size(60, 18))
-            .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.processor.impurity")));
+            .child(new TextWidget<>(translateToLocal("GT5U.gui.text.nac.module.boardprocessor.impurity")));
 
     }
 
@@ -184,7 +184,7 @@ public class MTEBoardProcessorModuleGui extends MTENanochipAssemblyModuleBaseGui
                 }
                 return true;
             })
-            .tooltipBuilder(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.module.processor.edit_flush_tank")))
+            .tooltipBuilder(t -> t.addLine(translateToLocal("GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank")))
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
