@@ -1099,184 +1099,184 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
 
     private static void registerMatterAmplifier() {
         ItemList.Machine_LV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_LV.ID,
-                "basicmachine.amplifab.tier.01",
-                "Basic Amplifabricator",
-                1,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_LV.ID)
+                .setName("basicmachine.amplifab.tier.01", "Basic Amplifabricator")
+                .setTier(1)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_MV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_MV.ID,
-                "basicmachine.amplifab.tier.02",
-                "Advanced Amplifabricator",
-                2,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_MV.ID)
+                .setName("basicmachine.amplifab.tier.02", "Advanced Amplifabricator")
+                .setTier(2)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_HV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_HV.ID,
-                "basicmachine.amplifab.tier.03",
-                "Advanced Amplifabricator II",
-                3,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_HV.ID)
+                .setName("basicmachine.amplifab.tier.03", "Advanced Amplifabricator II")
+                .setTier(3)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_EV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_EV.ID,
-                "basicmachine.amplifab.tier.04",
-                "Advanced Amplifabricator III",
-                4,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_EV.ID)
+                .setName("basicmachine.amplifab.tier.04", "Advanced Amplifabricator III")
+                .setTier(4)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.Machine_IV_Amplifab.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_IV.ID,
-                "basicmachine.amplifab.tier.05",
-                "Advanced Amplifabricator IV",
-                5,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                RecipeMaps.amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_IV.ID)
+                .setName("basicmachine.amplifab.tier.05", "Advanced Amplifabricator IV")
+                .setTier(5)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_LuV.ID,
-                "basicmachine.amplifab.tier.06",
-                "Elite Amplifabricator",
-                6,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_LuV.ID)
+                .setName("basicmachine.amplifab.tier.06", "Elite Amplifabricator")
+                .setTier(6)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_ZPM.ID,
-                "basicmachine.amplifab.tier.07",
-                "Elite Amplifabricator II",
-                7,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_ZPM.ID)
+                .setName("basicmachine.amplifab.tier.07", "Elite Amplifabricator II")
+                .setTier(7)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UV.ID,
-                "basicmachine.amplifab.tier.08",
-                "Ultimate Amplicreator",
-                8,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UV.ID)
+                .setName("basicmachine.amplifab.tier.08", "Ultimate Amplicreator")
+                .setTier(8)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UHV.ID,
-                "basicmachine.amplifab.tier.09",
-                "Epic Amplicreator",
-                9,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UHV.ID)
+                .setName("basicmachine.amplifab.tier.09", "Epic Amplicreator")
+                .setTier(9)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UEV.ID,
-                "basicmachine.amplifab.tier.10",
-                "Epic Amplicreator II",
-                10,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UEV.ID)
+                .setName("basicmachine.amplifab.tier.10", "Epic Amplicreator II")
+                .setTier(10)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UIV.ID,
-                "basicmachine.amplifab.tier.11",
-                "Epic Amplicreator III",
-                11,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UIV.ID)
+                .setName("basicmachine.amplifab.tier.11", "Epic Amplicreator III")
+                .setTier(11)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
 
         ItemList.AmplifabricatorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                MATTER_AMPLIFIER_UMV.ID,
-                "basicmachine.amplifab.tier.12",
-                "Epic Amplicreator IV",
-                12,
-                MachineType.MATTER_AMPLIFIER.tooltipDescription(),
-                amplifierRecipes,
-                1,
-                1,
-                1000,
-                SoundResource.GTCEU_LOOP_REPLICATOR,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "AMPLIFAB").getStackForm(1L));
+            MTEBasicMachineWithRecipeBuilder.builder()
+                .setId(MATTER_AMPLIFIER_UMV.ID)
+                .setName("basicmachine.amplifab.tier.12", "Epic Amplicreator IV")
+                .setTier(12)
+                .setDescription(MachineType.MATTER_AMPLIFIER.tooltipDescription())
+                .setRecipes(amplifierRecipes)
+                .setSlotsCount(1, 1)
+                .setFluidSlots(false, true, 1000)
+                .setSound(SoundResource.GTCEU_LOOP_REPLICATOR)
+                .setSpecialEffect(MTEBasicMachineWithRecipe.SpecialEffects.NONE)
+                .setOverlays("AMPLIFAB")
+                .build()
+                .getStackForm(1L));
     }
 
     private static void registerAlloySmelter() {
