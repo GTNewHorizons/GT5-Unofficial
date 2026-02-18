@@ -106,12 +106,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addPerfectOCInfo()
             .addSeparator()
             .addTecTechHatchInfo()
-            .addInfo(
-                "Accepts " + EnumChatFormatting.BOLD
-                    + "one"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY
-                    + " energy hatch at most")
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
@@ -196,6 +190,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().enablePerfectOverclock()
+            .setUnlimitedTierSkips()
             .setMaxParallelSupplier(this::getTrueParallel);
     }
 
@@ -230,9 +225,6 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
         this.glassTier = -1;
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z)) return false;
-
-        // ensures at most one energy hatch
-        if (this.mExoticEnergyHatches.size() + this.mEnergyHatches.size() > 1) return false;
 
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {

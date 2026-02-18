@@ -1640,6 +1640,13 @@ GT5U.gui.text.compressed_bus_stored_items=Hold SHIFT to show all stored items
 GT5U.gui.text.nac.missing_water=Insufficient Water Supplied
 GT5U.gui.text.nac.waiting_for_power=Waiting For Power
 GT5U.gui.text.nac.no_valid_hatch_color=No VCO with color %s found
+GT5U.gui.text.nac.amount=Amount: %s
+GT5U.gui.text.nac.splitter.redstone_level=Current Redstone Level
+GT5U.gui.text.nac.splitter.channel=Channel
+GT5U.gui.text.nac.splitter.strength=Strength
+
+GT5U.gui.text.nac.hint.talk=Type %s to enter talk mode
+GT5U.gui.text.nac.hint.exit=Type %s to exit talk mode
 
 GT5U.gui.text.nac.contributors.idea_structure=Idea and Structure
 GT5U.gui.text.nac.bar.calibration.progress.1=Nanocalibration in progress.
@@ -1653,6 +1660,12 @@ GT5U.gui.text.nac.bar.label.exotics=Exotics Circuits
 GT5U.gui.text.nac.bar.label.cosmics=Cosmics Circuits
 GT5U.gui.text.nac.bar.label.temporals=Temporally Transcendent Circuits
 GT5U.gui.text.nac.bar.label.specials=High-Grade Specialty Circuits
+
+GT5U.gui.text.nac.module.boardprocessor.flush_tank_auto=Flush automatically at
+GT5U.gui.text.nac.module.boardprocessor.impurity=Impurity
+
+GT5U.gui.text.nac.module.status.connected=Connected to Main Complex
+GT5U.gui.text.nac.module.status.disconnected=Disconnected from Main Complex
 
 # NAC Info Panel
 GT5U.gui.text.nac.nameplate=Nanochip Assembly Complex
@@ -1694,8 +1707,11 @@ GT5U.gui.text.nac.info.calibration.special.header=Special Circuits (Pico and Qua
 GT5U.gui.text.nac.info.calibration.special.effect1=§3Tier 1§r - §21%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix
 GT5U.gui.text.nac.info.calibration.special.effect2=§3Tier 2§r - §25%% threshold§r - -20%% Recipe Time on Special Circuits in the Assembly Matrix (total 40%%)
 GT5U.gui.text.nac.info.calibration.special.effect3=§3Tier 3§r - §220%% threshold§r - -10%% Recipe Time on Special Circuits in the Assembly Matrix (total 50%%)
+
 # NAC Module Tooltip Keys
 GT5U.tooltip.nac.interface.machine_info=%s, %s
+GT5U.tooltip.nac.interface.delete_stored=Delete Stored Circuit Components
+GT5U.tooltip.nac.interface.empty_stored=Empty Stored Circuit Components to an AE2 Cell
 GT5U.tooltip.nac.interface.nac_module=NAC Module
 GT5U.tooltip.nac.interface.cc=§eCC§7
 GT5U.tooltip.nac.interface.ccs=§eCCs§7
@@ -1766,6 +1782,7 @@ GT5U.tooltip.nac.module.etching_array.action=Etches your Chip %s
 GT5U.tooltip.nac.module.etching_array.body.1=In a fully calibrated Crystal NAC, the laser source hatch provides bonuses based on its attributes:
 GT5U.tooltip.nac.module.etching_array.body.2=Divides §bEU Cost§7 by each §fAmperage Interval§7 over 256A
 GT5U.tooltip.nac.module.etching_array.body.3=Divides §aRecipe Duration§7 by §f(Hatch Tier - 9)
+GT5U.tooltip.nac.module.etching_array.installed=Installed Laser
 GT5U.tooltip.nac.module.optical_organizer.name=Optical Organizer
 GT5U.tooltip.nac.module.optical_organizer.flavor.1=Does mixing water together even make sense???
 GT5U.tooltip.nac.module.optical_organizer.action=Optimizes your Optical %s
@@ -1794,11 +1811,23 @@ GT5U.tooltip.nac.module.superconductor_splitter.body.1=Requires 1000 L/s of Supe
 GT5U.tooltip.nac.module.wire_tracer.name=Wire Tracer
 GT5U.tooltip.nac.module.wire_tracer.flavor.1=Maybe tracing out this mess of wires creates a pretty picture in the mind of the computer
 GT5U.tooltip.nac.module.wire_tracer.action=Traces your Wire %s
+GT5U.tooltip.nac.module.boardprocessor.immersion_fluid=Immersion Fluid
+GT5U.tooltip.nac.module.boardprocessor.empty=Empty
+GT5U.tooltip.nac.module.boardprocessor.impurity=Impurity
+GT5U.tooltip.nac.module.boardprocessor.flush_tank=Flush Tank
+GT5U.tooltip.nac.module.boardprocessor.edit_flush_tank=Edit auto-flush settings
+
 
 GT5U.tooltip.nac.hatch.splitter.body.1=Can be installed in a §eSplitter§7 module for the §aNanochip Assembly Complex
 GT5U.tooltip.nac.hatch.splitter.body.2=Allows for Redstone Input for rule control
 GT5U.tooltip.nac.hatch.splitter.body.3=Set the channel and redstone threshold in the GUI
 GT5U.tooltip.nac.hatch.splitter.body.4=A redstone rule is active if the supplied redstone signal is >= the threshold on that channel
+GT5U.tooltip.nac.hatch.splitter.rules_manager=Open Rules manager
+GT5U.tooltip.nac.hatch.splitter.add_rule=Add new Rule
+GT5U.tooltip.nac.hatch.splitter.rule.Color=Color
+GT5U.tooltip.nac.hatch.splitter.rule.redstone=Redstone
+GT5U.tooltip.nac.hatch.splitter.rule.item=Item
+GT5U.tooltip.nac.hatch.splitter.rule.remove=Remove Rule
 GT5U.tooltip.nac.hatch.vc.input.base.1=Provides §eCircuit Component§7 input for NAC modules
 GT5U.tooltip.nac.hatch.vc.output.base.1=Provides §eCircuit Component§7 output for NAC modules
 GT5U.tooltip.nac.hatch.vc.base.1=Must be %s to work
@@ -1808,6 +1837,9 @@ GT5U.tooltip.nac.hatch.vc.base.4=§eOutputs from recipes with inputs from a colo
 GT5U.tooltip.nac.hatch.vc.base.5=§ewill be placed in a Vacuum Conveyor Output of the corresponding color
 GT5U.tooltip.nac.module.scanner.current_eu=§eCurrent EU Stored: %s
 GT5U.tooltip.nac.module.scanner.total_buffer=§aTotal EU Buffer Size: %s
+
+GT5U.tooltip.nac.color_grid.click_select=Click to select
+GT5U.tooltip.nac.color_grid.selected=Selected
 
 # NAC circuit components
 gt.circuitcomponent.base=Packaged %s
@@ -2233,14 +2265,14 @@ GT5U.hatch.outputme.cache_capacity_label=Current cache capacity: §e%s§r
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
-GT5U.multiblock.pollution=Pollution reduced to
-GT5U.multiblock.energy=Stored Energy
-GT5U.multiblock.Progress=Progress
-GT5U.multiblock.efficiency=Efficiency
-GT5U.multiblock.problems=Problems
-GT5U.multiblock.mei=Max Energy Income
+GT5U.multiblock.pollution=Pollution reduced to: §a%s§r%%
+GT5U.multiblock.energy=Stored Energy: §a%s §rEU / §e%s §rEU
+GT5U.multiblock.Progress=Progress: §a%s §rs / §e%s §rs
+GT5U.multiblock.efficiency=Efficiency: §e%s§r%%
+GT5U.multiblock.problems=Problems: §c%s
+GT5U.multiblock.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
 GT5U.multiblock.maxtier=Max Tier
-GT5U.multiblock.usage=Currently uses
+GT5U.multiblock.usage=Currently uses: §c%s §rEU/t
 GT5U.multiblock.parallelism=Max Parallel
 GT5U.multiblock.curparallelism=Current Parallel
 GT5U.multiblock.euModifier=EU Modifier
@@ -2251,7 +2283,17 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.totalRunHours=Total runtime: §6%s§r hours
+GT5U.multiblock.totalRunMinutes=Total runtime: §6%s§r minutes
+GT5U.multiblock.totalRunSeconds=Total runtime: §6%s§r seconds
+GT5U.multiblock.totalRunTicks=Total runtime: §6%s§r ticks
+GT5U.multiblock.owned_by=Owned by: §6%s
+GT5U.multiblock.meta_tile_entity=Meta-ID: §6%s
+GT5U.multiblock.valid=§avalid
+GT5U.multiblock.invalid=§cinvalid
+GT5U.multiblock.is_meta_tile_entity=§cMetaTileEntity == null!
+
 
 # NEI recipe handlers
 GT5U.nei.heat_capacity=Heat Capacity: %s K (%s)
@@ -3658,15 +3700,6 @@ GTPP.machines.tier=Tier
 GTPP.machines.input=Input
 GTPP.machines.output=Output
 
-GTPP.multiblock.pollutionreduced=Pollution reduced to
-GTPP.multiblock.pollution=Pollution
-GTPP.multiblock.energy=Stored Energy
-GTPP.multiblock.progress=Progress
-GTPP.multiblock.efficiency=Efficiency
-GTPP.multiblock.problems=Problems
-GTPP.multiblock.mei=Max Energy Income
-GTPP.multiblock.usage=Currently uses
-GTPP.multiblock.generation=Currently generates
 GTPP.multiblock.specialvalue=Special Value
 GTPP.multiblock.duration=Duration
 GTPP.multiblock.multimachine.metal=Metal Mode. Does compressor (circuit 20), lathe (circuit 21) and electromagnetic polarizer (circuit 22).
@@ -3836,6 +3869,60 @@ GT5U.tooltip.purify.1=Throw into Cauldron to get clean Dust
 GT5U.tooltip.purify.2=Throw into Cauldron to get clean crushed Ore
 GT5U.tooltip.nqgen=Can be used as Enriched Naquadah Fuel Substitute
 
+# Scanner info
+GT5U.scanner.title_base_info=Block Info
+GT5U.scanner.title_fluid_handler_info=Tank Info
+GT5U.scanner.title_reactor_info=Reactor Info
+GT5U.scanner.title_debug_info=Debug Info
+GT5U.scanner.title_machine_info=Machine Info
+GT5U.scanner.title_custom_info=Custom Info
+GT5U.scanner.title_side_info=Side Info
+GT5U.scanner.title_wrench_info=Wrench Info
+GT5U.scanner.title_ic2_info=IC2 Info
+GT5U.scanner.title_cover_info=Cover Info
+GT5U.scanner.title_energy_info=Energy Info
+GT5U.scanner.title_crop_info=Crop Info
+GT5U.scanner.title_leaves_info=Leaves Info
+GT5U.scanner.title_chunk_info=Chunk Info
+
+GT5U.scanner.error_base_info=An exception was thrown while fetching this block's info
+GT5U.scanner.error_fluid_handler_info=An exception was thrown while fetching this tile's fluid tank info
+GT5U.scanner.error_reactor_info=An exception was thrown while fetching this reactor's info
+GT5U.scanner.error_debug_info=An exception was thrown while fetching this block's debug info
+GT5U.scanner.error_machine_info=An exception was thrown while fetching this machine's info
+GT5U.scanner.error_custom_info=An exception was thrown while fetching this machine's custom info
+GT5U.scanner.error_side_info=An exception was thrown while fetching this device's alignment info
+GT5U.scanner.error_wrench_info=An exception was thrown while fetching this device's IC2 wrenchability
+GT5U.scanner.error_ic2_info=An exception was thrown while fetching this device's info
+GT5U.scanner.error_cover_info=An exception was thrown while fetching this device's covers
+GT5U.scanner.error_energy_info=An exception was thrown while fetching this device's energy info
+GT5U.scanner.error_crop_info=An exception was thrown while fetching this crop's info
+GT5U.scanner.error_leaves_info=An exception was thrown while fetching this leaves' info
+
+GT5U.scanner.base_info_1=Position X: §6%s§r Y: §6%s§r Z: §6%s
+GT5U.scanner.base_info_2=Name: §6%s §fMetadata: §6%s
+GT5U.scanner.base_info_3=Hardness: §6%s §fBlast Resistance: §6%s
+GT5U.scanner.base_info_4=§6Is valid Beacon Pyramid Material
+GT5U.scanner.fluid_handler_info_1=Tank %s: §6%sL §f/ §6%sL §f%s
+GT5U.scanner.reactor_info_1=Heat: §6%s §f/ §6%s §fHeating Modifier: §6%s
+GT5U.scanner.side_info_1=Extended Facing: §6%s
+GT5U.scanner.wrench_info_1=Facing: §6%s §f/ Chance: §6%s%%
+GT5U.scanner.wrench_info_2=§6You can remove this with a Wrench
+GT5U.scanner.wrench_info_3=§cYou can NOT remove this with a Wrench
+GT5U.scanner.ic2_info_1=Conduction Loss: §6%s
+GT5U.scanner.ic2_info_2=Contained Energy: §6%s EU §f/ §6%s EU
+GT5U.scanner.energy_info_1=Max IN: §6%s §f(%s) EU at §6%s A
+GT5U.scanner.energy_info_2=Max OUT: §6%s §f(%s) EU at §6%s A
+GT5U.scanner.energy_info_3=Energy: §6%s EU §f/ §6%s EU
+GT5U.scanner.crop_info_1=Crop name: §6%s §fGrowth: §6%s §fGain: §6%s §fResistance: §6%s
+GT5U.scanner.crop_info_2=Fertilizer: §6%s §fWater: §6%s §fWeed-Ex: §6%s §fScan-Level: §6%s
+GT5U.scanner.crop_info_3=Nutrients: §6%s §fHumidity: §6%s §fAir-Quality: §6%s
+GT5U.scanner.crop_info_4=Attributes: §6%s
+GT5U.scanner.crop_info_5=Discovered by: §6%s
+GT5U.scanner.chunk_info_1=§cPollution in Chunk: %s gibbl
+GT5U.scanner.chunk_info_2=§aNo Pollution in Chunk! HAYO!
+GT5U.scanner.chunk_info_3=§f%s: §6%sL
+GT5U.scanner.chunk_info_4=Nothing: §60L
 GT5U.tooltip.drone_remote_disconnected=Shift right click an active drone centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 

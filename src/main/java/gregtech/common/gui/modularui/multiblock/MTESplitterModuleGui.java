@@ -102,7 +102,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             })
                 .background(GTGuiTextures.BUTTON_NANOCHIP, GuiTextures.GEAR)
                 .disableHoverBackground()
-                .tooltip(tooltip -> tooltip.add("Open Rules manager"))
+                .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rules_manager")))
                 .size(18));
     }
 
@@ -129,7 +129,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                     .size(18)
                     .marginTop(4)
                     .overlay(GuiTextures.ADD)
-                    .tooltip(tooltip -> tooltip.add("Add new Rule")))
+                    .tooltip(tooltip -> tooltip.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.add_rule"))))
                 .child(new DynamicSyncedWidget<>()
                     .syncHandler(rulesHandler)
                     .coverChildren())
@@ -158,13 +158,13 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
             .child(new Column()
                 .child(new Row()
                     .child(createSelectorButton(rulesSyncer, index, COLOR)
-                        .tooltip(t -> t.add("Color"))
+                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.Color")))
                         .overlay(new ItemDrawable(Items.dye, 10)))
                     .child(createSelectorButton(rulesSyncer, index, REDSTONE)
-                        .tooltip(t -> t.add("Redstone"))
+                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.redstone")))
                         .overlay(new ItemDrawable(Items.redstone)))
                     .child(createSelectorButton(rulesSyncer, index, ITEM)
-                        .tooltip(t -> t.add("Item"))
+                        .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.item")))
                         .overlay(IKey.str("I")))
                     .childPadding(3)
                     .coverChildren())
@@ -187,7 +187,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                         return true;
                     })
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                    .tooltip(t -> t.add("Remove Rule"))
+                    .tooltip(t -> t.add(IKey.lang("GT5U.tooltip.nac.hatch.splitter.rule.remove")))
                     .posRel(0.5F, 0.1F)
                     .size(8))
                 .child(GTGuiTextures.PROGRESSBAR_ARROW_STANDARD.getSubArea(0F, 0F, 1F, 0.5F)
@@ -245,7 +245,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
 
         // spotless:off
         return new Column()
-            .child(IKey.str("Channel").asWidget())
+            .child(IKey.lang("GT5U.gui.text.nac.splitter.channel").asWidget())
             .child(new TextFieldWidget()
                 .value(new IntValue.Dynamic(
                     () -> rule.redstoneMode.channel,
@@ -255,7 +255,7 @@ public class MTESplitterModuleGui extends MTENanochipAssemblyModuleBaseGui<MTESp
                     }))
                 .setFormatAsInteger(true)
                 .size(52, 12))
-            .child(IKey.str("Strength").asWidget())
+            .child(IKey.lang("GT5U.gui.text.nac.splitter.strength").asWidget())
             .child(new TextFieldWidget()
                 .value(new IntValue.Dynamic(
                     () -> rule.redstoneMode.level,
