@@ -18,12 +18,12 @@ import kubatech.Tags;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.tileentity.gregtech.multiblock.modularui2.LockableCycleButtonWidget;
 
-public abstract class MTEKubaGui<T extends KubaTechGTMultiBlockBase<T>> extends MTEMultiBlockBaseGui<T> {
+public abstract class KubaTechGTMultiBlockBaseGui<T extends KubaTechGTMultiBlockBase<T>> extends MTEMultiBlockBaseGui<T> {
 
     public final String KUBA_RUNNING = "kuba_running";
     public final BooleanSyncValue isRunning = new BooleanSyncValue(() -> multiblock.mMaxProgresstime > 0);
 
-    public MTEKubaGui(T multiblock) {
+    public KubaTechGTMultiBlockBaseGui(T multiblock) {
         super(multiblock);
     }
 

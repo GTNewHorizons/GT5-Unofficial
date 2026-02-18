@@ -20,7 +20,7 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import crazypants.enderio.EnderIO;
 import gregtech.api.modularui2.GTGuiTextures;
 
-public class MTEExtremeEntityCrusherGui extends MTEKubaGui<MTEExtremeEntityCrusher> {
+public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGui<MTEExtremeEntityCrusher> {
 
     private static final Item poweredSpawnerItem = Item.getItemFromBlock(EnderIO.blockPoweredSpawner);
     private static final UITexture SLOT_EEC_SPAWNER = getKubaUITexture("gui/slot/gray_spawner");
