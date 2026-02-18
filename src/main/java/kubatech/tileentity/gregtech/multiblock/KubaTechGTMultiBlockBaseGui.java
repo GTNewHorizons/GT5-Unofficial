@@ -44,6 +44,7 @@ public abstract class KubaTechGTMultiBlockBaseGui<T extends KubaTechGTMultiBlock
     public class KubaCycleButtonWidget extends CycleButtonWidget {
 
         public KubaCycleButtonWidget(Supplier<IDrawable> supplier) {
+            super();
             IDrawable baseOverlay = new DynamicDrawable(supplier);
             this.overlay(new DynamicDrawable(() -> {
                 if (isLocked()) return new DrawableStack(baseOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
