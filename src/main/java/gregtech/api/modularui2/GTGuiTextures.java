@@ -48,6 +48,13 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_FOUNDRY)
         .build();
+    public static final UITexture BACKGROUND_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_default")
+        .imageSize(198, 203)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_NANOCHIP)
+        .build();
     public static final UITexture BACKGROUND_TITLE_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/title_dark")
         .imageSize(28, 28)
@@ -71,6 +78,13 @@ public final class GTGuiTextures {
         .adaptable(4)
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_TITLE_FOUNDRY)
+        .build();
+    public static final UITexture BACKGROUND_TITLE_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/tab/title_nanochip")
+        .imageSize(28, 28)
+        .adaptable(4)
+        .canApplyTheme()
+        .name(GTTextureIds.BACKGROUND_TITLE_NANOCHIP)
         .build();
     public static final UITexture BACKGROUND_POPUP_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/background/popup")
@@ -108,6 +122,23 @@ public final class GTGuiTextures {
         .imageSize(195, 136)
         .adaptable(4)
         .name(GTTextureIds.BACKGROUND_POPUP_FOUNDRY)
+        .build();
+    public static final UITexture NANOCHIP_BACKGROUND_TEXT_FIELD = UITexture.builder()
+        .location(GregTech.ID, "gui/background/popup_nanochip")
+        .imageSize(193, 134)
+        .adaptable(4)
+        .name(GTTextureIds.BACKGROUND_POPUP_NANOCHIP)
+        .build();
+    public static final UITexture BACKGROUND_NANOCHIP_RULE_POPUP = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_rule")
+        .imageSize(188, 70)
+        .adaptable(4)
+        .canApplyTheme()
+        .build();
+    public static final UITexture BACKGROUND_NANOCHIP_NAMEPLATE = UITexture.builder()
+        .location(GregTech.ID, "gui/background/nanochip_nameplate")
+        .imageSize(144, 24)
+        .name(GTTextureIds.BACKGROUND_NAMEPLATE_NANOCHIP)
         .build();
 
     public static final UITexture FOUNDRY_BACKGROUND_CONTRIBUTORS = UITexture.builder()
@@ -229,6 +260,14 @@ public final class GTGuiTextures {
         .adaptable(1)
         .canApplyTheme()
         .name(GTTextureIds.SLOT_ITEM_FOUNDRY)
+        .build();
+
+    public static final UITexture SLOT_ITEM_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/slot/item_nanochip")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.SLOT_ITEM_NANOCHIP)
         .build();
 
     public static final UITexture SLOT_FLUID_STANDARD = UITexture.builder()
@@ -390,6 +429,13 @@ public final class GTGuiTextures {
             GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL,
             GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
         .build();
+    public static final UITexture OVERLAY_SLOT_FILTER = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/filter")
+        .fullImage()
+        .imageSize(18, 18)
+        .canApplyTheme()
+        .name("overlay_slot/filter")
+        .build();
 
     public static final UITexture OVERLAY_SLOT_ARROW_4 = UITexture.fullImage(GTPlusPlus.ID, "gui/overlay_slot/arrow_4");
 
@@ -449,6 +495,11 @@ public final class GTGuiTextures {
         GregTech.ID,
         "gui/overlay_button/structure_update");
     public static final UITexture OVERLAY_BUTTON_FORBIDDEN = fullImage(GregTech.ID, "gui/overlay_button/forbidden");
+    public static final UITexture OVERLAY_BUTTON_PRINT = fullImage(GregTech.ID, "gui/overlay_button/print");
+    public static final UITexture OVERLAY_BUTTON_TRANSPOSE = fullImage(GregTech.ID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_REDSTONESNIFFERLOCATE = fullImage(
+        GregTech.ID,
+        "gui/overlay_button/redstoneSnifferLocate");
     public static final UITexture OVERLAY_BUTTON_MUFFLE_ON = UITexture.builder()
         .fullImage()
         .canApplyTheme()
@@ -825,6 +876,8 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.PROGRESSBAR_FUEL_STANDARD)
         .build();
+    public static final UITexture PROGRESSBAR_NANOCHIP_CALIBRATION = UITexture
+        .fullImage(GregTech.ID, "gui/progressbar/nanochip_calibration");
     private static final SteamTextureRegisterer PROGRESSBAR_FUEL_STEAM = SteamTextureRegisterer.builder()
         .location("gui/progressbar/fuel_%s")
         .fullImage()
@@ -1055,6 +1108,23 @@ public final class GTGuiTextures {
 
     public static final UITexture PROGRESSBAR_TESLA_TOWER_CURRENT = UITexture
         .fullImage(MODID, "gui/tesla_tower_current");
+
+    public static final UITexture PROGRESSBAR_METER_MINT = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_mint")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_MINT)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ORANGE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_orange")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ORANGE)
+        .build();
+    public static final UITexture PROGRESSBAR_METER_ROSE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/meter_rose")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_METER_ROSE)
+        .build();
+
     // endregion progressbar
 
     // region button
@@ -1104,6 +1174,15 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_FOUNDRY)
         .build();
+
+    public static final UITexture BUTTON_NANOCHIP = UITexture.builder()
+        .location(GregTech.ID, "gui/button/nanochip")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_NANOCHIP)
+        .build();
+
     public static final UITexture BUTTON_FOUNDRY_PRESSED = UITexture.builder()
         .location(GregTech.ID, "gui/button/foundry_pressed")
         .imageSize(18, 18)
@@ -1111,6 +1190,15 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BUTTON_FOUNDRY_PRESSED)
         .build();
+
+    public static final UITexture BUTTON_NANOCHIP_PRESSED = UITexture.builder()
+        .location(GregTech.ID, "gui/button/nanochip_pressed")
+        .imageSize(18, 18)
+        .adaptable(1)
+        .canApplyTheme()
+        .name(GTTextureIds.BUTTON_NANOCHIP_PRESSED)
+        .build();
+
     public static final UITexture BUTTON_COVER_TAB_NORMAL_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/tab/cover_normal")
         .fullImage()
@@ -1352,6 +1440,11 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/exofoundry_logo")
         .fullImage()
         .name(GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
+        .build();
+    public static final UITexture PICTURE_NANOCHIP_LOGO = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/nanochip_logo")
+        .fullImage()
+        .name(GTTextureIds.PICTURE_LOGO_NANOCHIP)
         .build();
 
     public static final UITexture PICTURE_TRANSPARENT = UITexture.builder()

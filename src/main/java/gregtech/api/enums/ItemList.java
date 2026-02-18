@@ -1543,6 +1543,23 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_Autoclave,
     Casing_Autoclave,
 
+    Machine_Multi_NanochipAssemblyComplex,
+    Hatch_VacuumConveyor_Input,
+    Hatch_VacuumConveyor_Output,
+    VacuumConveyorPipe,
+    NanoChipModule_AssemblyMatrix,
+    NanoChipModule_SMDProcessor,
+    NanoChipModule_BoardProcessor,
+    NanoChipModule_EtchingArray,
+    NanoChipModule_CuttingChamber,
+    NanoChipModule_WireTracer,
+    NanoChipModule_Splitter,
+    NanoChipModule_SuperconductorSplitter,
+    NanoChipModule_OpticalOrganizer,
+    NanoChipModule_EncasementWrapper,
+    NanoChipModule_BiologicalCoordinator,
+    Hatch_Splitter_Level,
+
     Machine_LV_Miner,
     Machine_MV_Miner,
     Machine_HV_Miner,
@@ -2160,6 +2177,8 @@ public enum ItemList implements IItemContainer {
     TierdDrone0,
     TierdDrone1,
     TierdDrone2,
+    TierdDrone3,
+    DroneRemoteInterface,
     Hatch_DroneDownLink,
     ElectronicsLump,
     WormholeGenerator,
@@ -2754,10 +2773,29 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    CompressedOutputBusLuV,
+    CompressedOutputBusZPM,
+    CompressedOutputBusUV,
+    CompressedOutputBusUHV,
+    CompressedOutputBusUEV,
+    CompressedOutputBusUIV,
+    CompressedOutputBusUMV,
+    CompressedOutputBusUXV,
+
+    CompressedInputBusLuV,
+    CompressedInputBusZPM,
+    CompressedInputBusUV,
+    CompressedInputBusUHV,
+    CompressedInputBusUEV,
+    CompressedInputBusUIV,
+    CompressedInputBusUMV,
+    CompressedInputBusUXV,
     // new controllers
     IndustrialWireFactory,
     IndustrialPackager,
     IndustrialCentrifuge,
+
+    MegaChemicalReactor,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
@@ -2913,7 +2951,12 @@ public enum ItemList implements IItemContainer {
     Wrap_OpticalCPUContainmentHousings,
     Wrap_OpticallyCompatibleMemories,
     Wrap_LivingCrystalChips,
-    Wrap_LivingBioChips
+    Wrap_LivingBioChips,
+    MeshInterfaceNanochipCasing,
+    ReinforcementNanochipCasing,
+    ComputationalMatrixNanochipCasing,
+    FirewallProjectionNanochipCasing,
+    ComplexNanochipGlass,
 
     // semicolon after the comment to reduce merge conflicts
     ;
